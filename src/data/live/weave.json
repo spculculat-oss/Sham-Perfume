@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "weaver",
- "updatedAt": "2026-10-26T08:49:34.471Z",
+ "updatedAt": "2026-10-26T11:54:07.063Z",
  "score": 0,
  "counts": {
   "complete": 0,
@@ -11,6 +11,7 @@
  "threads": [
   {
    "destination": "مصر",
+   "nameAr": "مصر",
    "code": "EG",
    "route": "unknown",
    "carrier": {
@@ -27,7 +28,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "egypt"
+    "id": "egypt",
+    "nameAr": "مصر"
    },
    "customs": {
     "verified": false,
@@ -41,6 +43,7 @@
   },
   {
    "destination": "السعودية",
+   "nameAr": "السعودية",
    "code": "SA",
    "route": "unknown",
    "carrier": {
@@ -57,7 +60,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "gulf"
+    "id": "gulf",
+    "nameAr": "دول الخليج"
    },
    "customs": {
     "verified": false,
@@ -71,6 +75,7 @@
   },
   {
    "destination": "الإمارات",
+   "nameAr": "الإمارات",
    "code": "AE",
    "route": "unknown",
    "carrier": {
@@ -87,7 +92,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "gulf"
+    "id": "gulf",
+    "nameAr": "دول الخليج"
    },
    "customs": {
     "verified": false,
@@ -101,6 +107,7 @@
   },
   {
    "destination": "الكويت",
+   "nameAr": "الكويت",
    "code": "KW",
    "route": "unknown",
    "carrier": {
@@ -117,7 +124,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "gulf"
+    "id": "gulf",
+    "nameAr": "دول الخليج"
    },
    "customs": {
     "verified": false,
@@ -131,6 +139,7 @@
   },
   {
    "destination": "قطر",
+   "nameAr": "قطر",
    "code": "QA",
    "route": "unknown",
    "carrier": {
@@ -147,7 +156,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "gulf"
+    "id": "gulf",
+    "nameAr": "دول الخليج"
    },
    "customs": {
     "verified": false,
@@ -161,6 +171,7 @@
   },
   {
    "destination": "البحرين",
+   "nameAr": "البحرين",
    "code": "BH",
    "route": "unknown",
    "carrier": {
@@ -177,7 +188,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "gulf"
+    "id": "gulf",
+    "nameAr": "دول الخليج"
    },
    "customs": {
     "verified": false,
@@ -191,6 +203,7 @@
   },
   {
    "destination": "عمان",
+   "nameAr": "عمان",
    "code": "OM",
    "route": "unknown",
    "carrier": {
@@ -207,7 +220,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "gulf"
+    "id": "gulf",
+    "nameAr": "دول الخليج"
    },
    "customs": {
     "verified": false,
@@ -221,6 +235,7 @@
   },
   {
    "destination": "الأردن",
+   "nameAr": "الأردن",
    "code": "JO",
    "route": "unknown",
    "carrier": {
@@ -237,7 +252,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -251,6 +267,7 @@
   },
   {
    "destination": "لبنان",
+   "nameAr": "لبنان",
    "code": "LB",
    "route": "unknown",
    "carrier": {
@@ -267,7 +284,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -281,6 +299,7 @@
   },
   {
    "destination": "العراق",
+   "nameAr": "العراق",
    "code": "IQ",
    "route": "unknown",
    "carrier": {
@@ -297,7 +316,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -311,6 +331,7 @@
   },
   {
    "destination": "سوريا",
+   "nameAr": "سوريا",
    "code": "SY",
    "route": "unknown",
    "carrier": {
@@ -327,7 +348,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -341,6 +363,7 @@
   },
   {
    "destination": "فلسطين",
+   "nameAr": "فلسطين",
    "code": "PS",
    "route": "unknown",
    "carrier": {
@@ -357,7 +380,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -371,6 +395,7 @@
   },
   {
    "destination": "اليمن",
+   "nameAr": "اليمن",
    "code": "YE",
    "route": "unknown",
    "carrier": {
@@ -387,7 +412,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -401,6 +427,7 @@
   },
   {
    "destination": "ليبيا",
+   "nameAr": "ليبيا",
    "code": "LY",
    "route": "unknown",
    "carrier": {
@@ -417,7 +444,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -431,6 +459,7 @@
   },
   {
    "destination": "تونس",
+   "nameAr": "تونس",
    "code": "TN",
    "route": "unknown",
    "carrier": {
@@ -447,7 +476,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -461,6 +491,7 @@
   },
   {
    "destination": "الجزائر",
+   "nameAr": "الجزائر",
    "code": "DZ",
    "route": "unknown",
    "carrier": {
@@ -477,7 +508,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -491,6 +523,7 @@
   },
   {
    "destination": "المغرب",
+   "nameAr": "المغرب",
    "code": "MA",
    "route": "unknown",
    "carrier": {
@@ -507,7 +540,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -521,6 +555,7 @@
   },
   {
    "destination": "السودان",
+   "nameAr": "السودان",
    "code": "SD",
    "route": "unknown",
    "carrier": {
@@ -537,7 +572,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -551,6 +587,7 @@
   },
   {
    "destination": "موريتانيا",
+   "nameAr": "موريتانيا",
    "code": "MR",
    "route": "unknown",
    "carrier": {
@@ -567,7 +604,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -581,6 +619,7 @@
   },
   {
    "destination": "الصومال",
+   "nameAr": "الصومال",
    "code": "SO",
    "route": "unknown",
    "carrier": {
@@ -597,7 +636,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -611,6 +651,7 @@
   },
   {
    "destination": "جيبوتي",
+   "nameAr": "جيبوتي",
    "code": "DJ",
    "route": "unknown",
    "carrier": {
@@ -627,7 +668,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -641,6 +683,7 @@
   },
   {
    "destination": "جزر القمر",
+   "nameAr": "جزر القمر",
    "code": "KM",
    "route": "unknown",
    "carrier": {
@@ -657,7 +700,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "arab"
+    "id": "arab",
+    "nameAr": "باقي الدول العربية"
    },
    "customs": {
     "verified": false,
@@ -671,6 +715,7 @@
   },
   {
    "destination": "ماليزيا",
+   "nameAr": "ماليزيا",
    "code": "MY",
    "route": "unknown",
    "carrier": {
@@ -687,7 +732,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "southeast_asia"
+    "id": "southeast_asia",
+    "nameAr": "جنوب شرق آسيا"
    },
    "customs": {
     "verified": false,
@@ -702,6 +748,7 @@
   },
   {
    "destination": "سنغافورة",
+   "nameAr": "سنغافورة",
    "code": "SG",
    "route": "unknown",
    "carrier": {
@@ -718,7 +765,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "southeast_asia"
+    "id": "southeast_asia",
+    "nameAr": "جنوب شرق آسيا"
    },
    "customs": {
     "verified": false,
@@ -732,6 +780,7 @@
   },
   {
    "destination": "BN",
+   "nameAr": "BN",
    "code": "BN",
    "route": "unknown",
    "carrier": {
@@ -748,7 +797,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "southeast_asia"
+    "id": "southeast_asia",
+    "nameAr": "جنوب شرق آسيا"
    },
    "customs": {
     "verified": false,
@@ -762,6 +812,7 @@
   },
   {
    "destination": "إندونيسيا",
+   "nameAr": "إندونيسيا",
    "code": "ID",
    "route": "unknown",
    "carrier": {
@@ -778,7 +829,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "southeast_asia"
+    "id": "southeast_asia",
+    "nameAr": "جنوب شرق آسيا"
    },
    "customs": {
     "verified": false,
@@ -792,6 +844,7 @@
   },
   {
    "destination": "تايلاند",
+   "nameAr": "تايلاند",
    "code": "TH",
    "route": "unknown",
    "carrier": {
@@ -808,7 +861,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "southeast_asia"
+    "id": "southeast_asia",
+    "nameAr": "جنوب شرق آسيا"
    },
    "customs": {
     "verified": false,
@@ -822,6 +876,7 @@
   },
   {
    "destination": "الفلبين",
+   "nameAr": "الفلبين",
    "code": "PH",
    "route": "unknown",
    "carrier": {
@@ -838,7 +893,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "southeast_asia"
+    "id": "southeast_asia",
+    "nameAr": "جنوب شرق آسيا"
    },
    "customs": {
     "verified": false,
@@ -852,6 +908,7 @@
   },
   {
    "destination": "فيتنام",
+   "nameAr": "فيتنام",
    "code": "VN",
    "route": "unknown",
    "carrier": {
@@ -868,7 +925,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "southeast_asia"
+    "id": "southeast_asia",
+    "nameAr": "جنوب شرق آسيا"
    },
    "customs": {
     "verified": false,
@@ -882,6 +940,7 @@
   },
   {
    "destination": "KH",
+   "nameAr": "KH",
    "code": "KH",
    "route": "unknown",
    "carrier": {
@@ -898,7 +957,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "southeast_asia"
+    "id": "southeast_asia",
+    "nameAr": "جنوب شرق آسيا"
    },
    "customs": {
     "verified": false,
@@ -912,6 +972,7 @@
   },
   {
    "destination": "LA",
+   "nameAr": "LA",
    "code": "LA",
    "route": "unknown",
    "carrier": {
@@ -928,7 +989,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "southeast_asia"
+    "id": "southeast_asia",
+    "nameAr": "جنوب شرق آسيا"
    },
    "customs": {
     "verified": false,
@@ -942,6 +1004,7 @@
   },
   {
    "destination": "ميانمار",
+   "nameAr": "ميانمار",
    "code": "MM",
    "route": "unknown",
    "carrier": {
@@ -958,7 +1021,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "southeast_asia"
+    "id": "southeast_asia",
+    "nameAr": "جنوب شرق آسيا"
    },
    "customs": {
     "verified": false,
@@ -972,6 +1036,7 @@
   },
   {
    "destination": "بريطانيا",
+   "nameAr": "بريطانيا",
    "code": "GB",
    "route": "unknown",
    "carrier": {
@@ -988,7 +1053,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1002,6 +1068,7 @@
   },
   {
    "destination": "IE",
+   "nameAr": "IE",
    "code": "IE",
    "route": "unknown",
    "carrier": {
@@ -1018,7 +1085,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1032,6 +1100,7 @@
   },
   {
    "destination": "FR",
+   "nameAr": "FR",
    "code": "FR",
    "route": "unknown",
    "carrier": {
@@ -1048,7 +1117,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1062,6 +1132,7 @@
   },
   {
    "destination": "DE",
+   "nameAr": "DE",
    "code": "DE",
    "route": "unknown",
    "carrier": {
@@ -1078,7 +1149,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1092,6 +1164,7 @@
   },
   {
    "destination": "IT",
+   "nameAr": "IT",
    "code": "IT",
    "route": "unknown",
    "carrier": {
@@ -1108,7 +1181,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1122,6 +1196,7 @@
   },
   {
    "destination": "ES",
+   "nameAr": "ES",
    "code": "ES",
    "route": "unknown",
    "carrier": {
@@ -1138,7 +1213,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1152,6 +1228,7 @@
   },
   {
    "destination": "PT",
+   "nameAr": "PT",
    "code": "PT",
    "route": "unknown",
    "carrier": {
@@ -1168,7 +1245,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1182,6 +1260,7 @@
   },
   {
    "destination": "NL",
+   "nameAr": "NL",
    "code": "NL",
    "route": "unknown",
    "carrier": {
@@ -1198,7 +1277,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1212,6 +1292,7 @@
   },
   {
    "destination": "BE",
+   "nameAr": "BE",
    "code": "BE",
    "route": "unknown",
    "carrier": {
@@ -1228,7 +1309,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1242,6 +1324,7 @@
   },
   {
    "destination": "LU",
+   "nameAr": "LU",
    "code": "LU",
    "route": "unknown",
    "carrier": {
@@ -1258,7 +1341,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1272,6 +1356,7 @@
   },
   {
    "destination": "AT",
+   "nameAr": "AT",
    "code": "AT",
    "route": "unknown",
    "carrier": {
@@ -1288,7 +1373,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1302,6 +1388,7 @@
   },
   {
    "destination": "سويسرا",
+   "nameAr": "سويسرا",
    "code": "CH",
    "route": "unknown",
    "carrier": {
@@ -1318,7 +1405,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1332,6 +1420,7 @@
   },
   {
    "destination": "SE",
+   "nameAr": "SE",
    "code": "SE",
    "route": "unknown",
    "carrier": {
@@ -1348,7 +1437,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1362,6 +1452,7 @@
   },
   {
    "destination": "النرويج",
+   "nameAr": "النرويج",
    "code": "NO",
    "route": "unknown",
    "carrier": {
@@ -1378,7 +1469,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1392,6 +1484,7 @@
   },
   {
    "destination": "DK",
+   "nameAr": "DK",
    "code": "DK",
    "route": "unknown",
    "carrier": {
@@ -1408,7 +1501,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1422,6 +1516,7 @@
   },
   {
    "destination": "FI",
+   "nameAr": "FI",
    "code": "FI",
    "route": "unknown",
    "carrier": {
@@ -1438,7 +1533,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1452,6 +1548,7 @@
   },
   {
    "destination": "IS",
+   "nameAr": "IS",
    "code": "IS",
    "route": "unknown",
    "carrier": {
@@ -1468,7 +1565,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1482,6 +1580,7 @@
   },
   {
    "destination": "PL",
+   "nameAr": "PL",
    "code": "PL",
    "route": "unknown",
    "carrier": {
@@ -1498,7 +1597,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1512,6 +1612,7 @@
   },
   {
    "destination": "CZ",
+   "nameAr": "CZ",
    "code": "CZ",
    "route": "unknown",
    "carrier": {
@@ -1528,7 +1629,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1542,6 +1644,7 @@
   },
   {
    "destination": "SK",
+   "nameAr": "SK",
    "code": "SK",
    "route": "unknown",
    "carrier": {
@@ -1558,7 +1661,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1572,6 +1676,7 @@
   },
   {
    "destination": "HU",
+   "nameAr": "HU",
    "code": "HU",
    "route": "unknown",
    "carrier": {
@@ -1588,7 +1693,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1602,6 +1708,7 @@
   },
   {
    "destination": "RO",
+   "nameAr": "RO",
    "code": "RO",
    "route": "unknown",
    "carrier": {
@@ -1618,7 +1725,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1632,6 +1740,7 @@
   },
   {
    "destination": "BG",
+   "nameAr": "BG",
    "code": "BG",
    "route": "unknown",
    "carrier": {
@@ -1648,7 +1757,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1662,6 +1772,7 @@
   },
   {
    "destination": "GR",
+   "nameAr": "GR",
    "code": "GR",
    "route": "unknown",
    "carrier": {
@@ -1678,7 +1789,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1692,6 +1804,7 @@
   },
   {
    "destination": "HR",
+   "nameAr": "HR",
    "code": "HR",
    "route": "unknown",
    "carrier": {
@@ -1708,7 +1821,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1722,6 +1836,7 @@
   },
   {
    "destination": "SI",
+   "nameAr": "SI",
    "code": "SI",
    "route": "unknown",
    "carrier": {
@@ -1738,7 +1853,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1752,6 +1868,7 @@
   },
   {
    "destination": "RS",
+   "nameAr": "RS",
    "code": "RS",
    "route": "unknown",
    "carrier": {
@@ -1768,7 +1885,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1782,6 +1900,7 @@
   },
   {
    "destination": "BA",
+   "nameAr": "BA",
    "code": "BA",
    "route": "unknown",
    "carrier": {
@@ -1798,7 +1917,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1812,6 +1932,7 @@
   },
   {
    "destination": "ME",
+   "nameAr": "ME",
    "code": "ME",
    "route": "unknown",
    "carrier": {
@@ -1828,7 +1949,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1842,6 +1964,7 @@
   },
   {
    "destination": "MK",
+   "nameAr": "MK",
    "code": "MK",
    "route": "unknown",
    "carrier": {
@@ -1858,7 +1981,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1872,6 +1996,7 @@
   },
   {
    "destination": "AL",
+   "nameAr": "AL",
    "code": "AL",
    "route": "unknown",
    "carrier": {
@@ -1888,7 +2013,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1902,6 +2028,7 @@
   },
   {
    "destination": "EE",
+   "nameAr": "EE",
    "code": "EE",
    "route": "unknown",
    "carrier": {
@@ -1918,7 +2045,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1932,6 +2060,7 @@
   },
   {
    "destination": "LV",
+   "nameAr": "LV",
    "code": "LV",
    "route": "unknown",
    "carrier": {
@@ -1948,7 +2077,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1962,6 +2092,7 @@
   },
   {
    "destination": "LT",
+   "nameAr": "LT",
    "code": "LT",
    "route": "unknown",
    "carrier": {
@@ -1978,7 +2109,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -1992,6 +2124,7 @@
   },
   {
    "destination": "CY",
+   "nameAr": "CY",
    "code": "CY",
    "route": "unknown",
    "carrier": {
@@ -2008,7 +2141,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -2022,6 +2156,7 @@
   },
   {
    "destination": "MT",
+   "nameAr": "MT",
    "code": "MT",
    "route": "unknown",
    "carrier": {
@@ -2038,7 +2173,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -2052,6 +2188,7 @@
   },
   {
    "destination": "أوكرانيا",
+   "nameAr": "أوكرانيا",
    "code": "UA",
    "route": "unknown",
    "carrier": {
@@ -2068,7 +2205,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -2082,6 +2220,7 @@
   },
   {
    "destination": "MD",
+   "nameAr": "MD",
    "code": "MD",
    "route": "unknown",
    "carrier": {
@@ -2098,7 +2237,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -2112,6 +2252,7 @@
   },
   {
    "destination": "تركيا",
+   "nameAr": "تركيا",
    "code": "TR",
    "route": "unknown",
    "carrier": {
@@ -2128,7 +2269,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "europe"
+    "id": "europe",
+    "nameAr": "أوروبا"
    },
    "customs": {
     "verified": false,
@@ -2142,6 +2284,7 @@
   },
   {
    "destination": "أمريكا",
+   "nameAr": "أمريكا",
    "code": "US",
    "route": "unknown",
    "carrier": {
@@ -2158,7 +2301,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "north_america"
+    "id": "north_america",
+    "nameAr": "أمريكا الشمالية"
    },
    "customs": {
     "verified": false,
@@ -2172,6 +2316,7 @@
   },
   {
    "destination": "كندا",
+   "nameAr": "كندا",
    "code": "CA",
    "route": "unknown",
    "carrier": {
@@ -2188,7 +2333,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "north_america"
+    "id": "north_america",
+    "nameAr": "أمريكا الشمالية"
    },
    "customs": {
     "verified": false,
@@ -2202,6 +2348,7 @@
   },
   {
    "destination": "المكسيك",
+   "nameAr": "المكسيك",
    "code": "MX",
    "route": "unknown",
    "carrier": {
@@ -2218,7 +2365,8 @@
     "checkedAt": "2026-10-25"
    },
    "zone": {
-    "id": "north_america"
+    "id": "north_america",
+    "nameAr": "أمريكا الشمالية"
    },
    "customs": {
     "verified": false,
