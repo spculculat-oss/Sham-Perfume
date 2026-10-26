@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-25T22:01:08.408Z",
+ "updatedAt": "2026-10-26T01:06:45.971Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -2311,12 +2311,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-26T01:06:45.971Z",
    "trust": {
     "score": 84,
     "verdict": "trusted",
-    "at": "2026-10-18T23:21:13.356Z",
+    "at": "2026-10-26T01:06:45.971Z",
     "checks": [
      {
       "id": "age",
@@ -2416,13 +2416,13 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "GBP",
-   "rateToEgp": 71.2388,
+   "rateToEgp": 74.4081,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*pacoperfumerias\\.co\\.uk/[^?#]+\\.html?$",
    "sitemaps": [
     "https://www.pacoperfumerias.co.uk/sitemap.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 6330
+   "productsEstimate": 6327
   },
   {
    "id": "nose-shop-jp",
@@ -3428,12 +3428,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T00:56:02.060Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-26T01:06:45.971Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-10-19T00:56:02.060Z",
+    "at": "2026-10-26T01:06:45.971Z",
     "checks": [
      {
       "id": "age",
@@ -3533,37 +3533,37 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 53.5247,
+   "rateToEgp": 55.6767,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*perfumania\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://perfumania.com/sitemap_agentic_discovery.xml",
     "https://perfumania.com/sitemap_products_1.xml?from=4466926518405&to=4467090882693",
-    "https://perfumania.com/sitemap_products_2.xml?from=4467091243141&to=5172600471685",
-    "https://perfumania.com/sitemap_products_3.xml?from=5172600504453&to=6612151435397",
-    "https://perfumania.com/sitemap_products_4.xml?from=6612151500933&to=7208918515845",
-    "https://perfumania.com/sitemap_products_5.xml?from=7208923857029&to=7356602548357",
-    "https://perfumania.com/sitemap_pages_1.xml?from=47882240133&to=95800361093",
-    "https://perfumania.com/sitemap_collections_1.xml?from=163318235269&to=282691174533",
+    "https://perfumania.com/sitemap_products_2.xml?from=4467091243141&to=5172600504453",
+    "https://perfumania.com/sitemap_products_3.xml?from=5172600569989&to=6612151500933",
+    "https://perfumania.com/sitemap_products_4.xml?from=6612151533701&to=7208923857029",
+    "https://perfumania.com/sitemap_products_5.xml?from=7208927756421&to=7364380491909",
+    "https://perfumania.com/sitemap_pages_1.xml?from=47882240133&to=95954731141",
+    "https://perfumania.com/sitemap_collections_1.xml?from=163318235269&to=283797127301",
     "https://perfumania.com/sitemap_blogs_1.xml",
     "https://perfumania.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 4396
+   "productsEstimate": 4402
   },
   {
    "id": "escentual-com",
    "host": "escentual.com",
    "name": "Escentual",
    "base": "https://escentual.com",
-   "status": "active",
+   "status": "paused",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T00:56:02.060Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-26T01:06:45.971Z",
    "trust": {
     "score": 93,
     "verdict": "trusted",
-    "at": "2026-10-19T00:56:02.060Z",
+    "at": "2026-10-26T01:06:45.971Z",
     "checks": [
      {
       "id": "age",
@@ -3660,8 +3660,8 @@
     "registeredAt": "2002-03-27T12:32:11.000Z"
    },
    "region": "americas",
-   "sampleOk": 3,
-   "sampleTotal": 6,
+   "sampleOk": 9,
+   "sampleTotal": 9,
    "currency": "USD",
    "rateToEgp": 53.5247,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*escentual\\.com/products/[^?#]+$",
@@ -3679,7 +3679,8 @@
     "https://escentual.com/sitemap_blogs_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 4662
+   "productsEstimate": 4662,
+   "reason": "أغلب منتجاته ليست عطوراً (56%)"
   },
   {
    "id": "luckyscent-com",
@@ -7366,6 +7367,23 @@
  ],
  "runs": [
   {
+   "at": "2026-10-26T01:06:45.971Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 3,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ perfumeprice.co.uk: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
+    "✓ perfumeprice.co.uk (CV 84/100): 6327 perfumes, 3/6 pages read without AI, GBP (1 = 74.4081 EGP) — still good",
+    "  ↳ perfumania.com: CV 90/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ perfumania.com (CV 90/100): 4402 perfumes, 4/6 pages read without AI, USD (1 = 55.6767 EGP) — still good",
+    "  ↳ escentual.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✗ escentual.com: أغلب منتجاته ليست عطوراً (56%)"
+   ]
+  },
+  {
    "at": "2026-10-25T22:01:08.408Z",
    "mode": "self",
    "found": 0,
@@ -7680,17 +7698,6 @@
   },
   {
    "at": "2026-10-22T13:07:28.280Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T12:46:41.468Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
