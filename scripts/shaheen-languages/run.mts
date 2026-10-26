@@ -1,7 +1,7 @@
 /**
  * «وكيل اللغات» — Shaheen's language-specialist runner (.github/workflows/shaheen-languages.yml).
  *
- * 1. The audit (no network): walks the visitor source tree, measures the store/banner pack coverage
+ * 1. The audit (no network): walks the visitor source tree, measures the store/banner/news pack coverage
  *    through the public لغات APIs (pure checks in ./audit.ts).
  * 2. «المترجم الذكي» (./smart.ts + ./translator.ts): every visitor string a language still shows in
  *    English is translated by Shaheen's AI engines (quota-aware, strict checks, a second engine reviews)
@@ -19,6 +19,8 @@ import { STORE_CORE_KEYS } from '../../src/لغات/storeKeys';
 import { storeCoreCoverage, storeLanguageCoverage } from '../../src/لغات/storeL10n';
 import { BANNER_KEYS } from '../../src/لغات/bannerKeys';
 import { BANNER_PACKS } from '../../src/لغات/bannerL10n';
+import { NEWS_KEYS } from '../../src/لغات/newsKeys';
+import { NEWS_PACKS } from '../../src/لغات/newsL10n';
 import type { SupportedLanguage } from '../../src/types/i18n';
 import { TRANSLATIONS } from '../../src/لغات/i18n';
 import { guidanceBlock } from '../../src/utils/aiTools';
@@ -65,6 +67,8 @@ const coverageOf = (lang: SupportedLanguage): LanguagePackCoverage => {
     banner: Array.isArray(bannerRow)
       ? bannerRow.filter((cell) => Boolean(cell)).length
       : BANNER_KEYS.filter((key) => Boolean((bannerRow as unknown as Record<string, string>)[key])).length,
+    // News rows are arrays aligned to NEWS_KEYS, same measurement as the banner.
+    news: ((NEWS_PACKS[lang] || []) as unknown as readonly string[]).filter((cell) => Boolean(cell)).length,
   };
 };
 
@@ -93,6 +97,7 @@ async function main(): Promise<void> {
     languages,
     storeCoreSize: STORE_CORE_KEYS.length,
     bannerSize: BANNER_KEYS.length,
+    newsSize: NEWS_KEYS.length,
     coverage,
     publicNumberInputs,
     operatorNumberInputs,
