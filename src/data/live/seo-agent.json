@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-26T07:16:10.228Z",
-  "nextRunAt": "2026-10-26T13:16:10.228Z",
+  "updatedAt": "2026-10-26T08:46:56.495Z",
+  "nextRunAt": "2026-10-26T14:46:56.495Z",
   "intervalHours": 6,
   "identity": {
     "nameAr": "منارة شاهين",
@@ -13,8 +13,8 @@
   "trust": {
     "level": "autonomous",
     "since": "2026-10-22T05:49:45.279Z",
-    "cycles": 40,
-    "cyclesAtLevel": 19,
+    "cycles": 41,
+    "cyclesAtLevel": 20,
     "noteAr": "اعتمد على نفسه: 20 درساً، 4 دورات بتوجيه، فحص 85+، 8.5/10 من شاهين، وسجل بلا انحدار."
   },
   "curriculum": {
@@ -535,12 +535,25 @@
           "راجع الروابط الداخلية: كل صفحة مهمة يجب أن تصل إليها من الصفحة الرئيسية أو خريطة الموقع.",
           "تجنب صفحات مكررة أو نصوص لا نهائية أو معاملات بحث قابلة للفهرسة."
         ]
+      },
+      {
+        "id": "seo-01",
+        "titleAr": "كيف يزحف Googlebot ويصل إلى صفحاتك",
+        "at": "2026-10-26T08:46:56.495Z",
+        "takeaway": "بصفمتي خبير الظهور في محركات البحث، سأعمل على ضمان اكتشاف Googlebot لجميع صفحات منصة صمم عطرك مع شام وسهولة زحفها عبر التحقق من تكامل خريطة الموقع وملف robots.txt والتأكد من إتاحة صفحات الأدوات والمنتجات بحالة سليمة لضمان دخولها مرحلة الفهرسة دون عوائق تقنية أو تكرار للمحتوى.",
+        "checklist": [
+          "فحص ملف robots.txt للتأكد من سماحه بالزحف إلى صفحات الأدوات الثابتة ومنتجات المتجر الـ 1162 وخريطة الموقع دون حظر غير مقصود.",
+          "التحقق من أن صفحات الأدوات والمنتجات تُخدّم برمز استجابة ناجح (200) وليست مخفية وراء جافاسكريبت معقد يعيق الاكتشاف.",
+          "مراجعة هيكل الروابط الداخلية لضمان وصول زاحف المحرك من الصفحة الرئيسية إلى كافة الأدوات والمنتجات بحد أقصى نقرات قصير.",
+          "تحديث واعتماد خريطة الموقع (sitemap.xml) لتشمل الصفحة الرئيسية وصفحات الأدوات الثابتة ومنتجات المتجر بشكل منظم ومحدث.",
+          "منع فهرسة الصفحات المكررة أو معاملات البحث الزائدة للحفاظ على كفاءة ميزانية الزحف الخاصة بالمحرك."
+        ]
       }
     ],
     "completedAt": "2026-10-22T19:03:10.360Z"
   },
   "audit": {
-    "at": "2026-10-26T07:16:10.228Z",
+    "at": "2026-10-26T08:46:56.495Z",
     "score": 100,
     "bySeverity": {
       "critical": 0,
@@ -827,6 +840,13 @@
     },
     {
       "at": "2026-10-26T07:16:10.228Z",
+      "score": 100,
+      "applied": 0,
+      "shaheen": 10,
+      "level": "autonomous"
+    },
+    {
+      "at": "2026-10-26T08:46:56.495Z",
       "score": 100,
       "applied": 0,
       "shaheen": 10,
@@ -1155,10 +1175,18 @@
       "urls": 200,
       "ok": true,
       "detail": "قبلت المحركات الدفع السريع."
+    },
+    {
+      "engine": "IndexNow (Bing, Yandex, Naver, Seznam, Yep)",
+      "method": "indexnow",
+      "at": "2026-10-26T08:46:56.495Z",
+      "urls": 200,
+      "ok": true,
+      "detail": "قبلت المحركات الدفع السريع."
     }
   ],
   "submissionBook": {
-    "lastIndexNowAt": "2026-10-26T07:16:10.228Z",
+    "lastIndexNowAt": "2026-10-26T08:46:56.495Z",
     "urls": [
       "https://spculculat-oss.github.io/Sham-Perfume/p/jreve-body-spray-woman-for-her-200ml-386.html",
       "https://spculculat-oss.github.io/Sham-Perfume/p/deep-black-sport-x-volare-100ml-387.html",
@@ -1763,16 +1791,16 @@
     ]
   },
   "coach": {
-    "at": "2026-10-26T07:16:10.228Z",
+    "at": "2026-10-26T08:46:56.495Z",
     "score": 10,
     "strengths": [
-      "الالتزام التام بالقواعد البيضاء وعدم وجود أخطاء حرجة أو كبيرة في الفحص",
-      "استقرار الأداء والحصول على تقييم 100/100 بانتظام عبر الدورات الأخيرة",
-      "فهم دقيق لآلية زحف المحركات وتنظيم الصفحات وفق المعايير المطلوبة"
+      "التزام تام بقواعد محركات البحث البيضاء وخلو الفحص من أي ملاحظات حرجة أو كبيرة أو صغيرة.",
+      "استقرار الأداء واستمرار تقييم الفحص عند الحد الأقصى 100/100 لعدة دورات متتالية.",
+      "استيفاء كامل لشروط الاعتماد على النفس من حيث عدد الدورات والدروس المكتملة."
     ],
     "issues": [],
     "readyForAutonomy": true,
-    "note": "أداء ممتاز ومستقر يؤهل الوكيل لمواصلة العمل بثقة داخل المنظومة."
+    "note": "أداء ممتاز ومستقر يعكس التزاماً كاملاً بالمعايير الفنية والأنظمة المعتمدة دون أي تجاوزات."
   },
   "coachHistory": [
     {
@@ -1964,6 +1992,11 @@
       "at": "2026-10-26T07:16:10.228Z",
       "score": 10,
       "readyForAutonomy": true
+    },
+    {
+      "at": "2026-10-26T08:46:56.495Z",
+      "score": 10,
+      "readyForAutonomy": true
     }
   ],
   "mediaReport": {
@@ -1986,7 +2019,7 @@
   },
   "engines": {
     "aiAvailable": true,
-    "studies": 40,
+    "studies": 41,
     "failures": []
   },
   "searchEngines": [
@@ -1994,63 +2027,63 @@
       "id": "google",
       "nameAr": "Google",
       "status": "ready",
-      "at": "2026-10-26T07:16:10.228Z",
+      "at": "2026-10-26T08:46:56.495Z",
       "detail": "خريطة + خلاصة معلنتان في robots.txt — الوصول لا يحتاج حساباً."
     },
     {
       "id": "bing",
       "nameAr": "Bing",
       "status": "submitted",
-      "at": "2026-10-26T07:16:10.228Z",
+      "at": "2026-10-26T08:46:56.495Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yandex",
       "nameAr": "Yandex",
       "status": "submitted",
-      "at": "2026-10-26T07:16:10.228Z",
+      "at": "2026-10-26T08:46:56.495Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "naver",
       "nameAr": "Naver",
       "status": "submitted",
-      "at": "2026-10-26T07:16:10.228Z",
+      "at": "2026-10-26T08:46:56.495Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "seznam",
       "nameAr": "Seznam",
       "status": "submitted",
-      "at": "2026-10-26T07:16:10.228Z",
+      "at": "2026-10-26T08:46:56.495Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yep",
       "nameAr": "Yep",
       "status": "submitted",
-      "at": "2026-10-26T07:16:10.228Z",
+      "at": "2026-10-26T08:46:56.495Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "duckduckgo",
       "nameAr": "DuckDuckGo",
       "status": "submitted",
-      "at": "2026-10-26T07:16:10.228Z",
+      "at": "2026-10-26T08:46:56.495Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "ecosia",
       "nameAr": "Ecosia",
       "status": "submitted",
-      "at": "2026-10-26T07:16:10.228Z",
+      "at": "2026-10-26T08:46:56.495Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yahoo",
       "nameAr": "Yahoo",
       "status": "submitted",
-      "at": "2026-10-26T07:16:10.228Z",
+      "at": "2026-10-26T08:46:56.495Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
@@ -2067,7 +2100,7 @@
       "id": "copilot",
       "nameAr": "Microsoft Copilot",
       "status": "submitted",
-      "at": "2026-10-26T07:16:10.228Z",
+      "at": "2026-10-26T08:46:56.495Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
@@ -2095,7 +2128,7 @@
       ]
     },
     "crawl": {
-      "at": "2026-10-26T07:16:10.876Z",
+      "at": "2026-10-26T08:46:57.630Z",
       "ua": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
       "checked": 3,
       "ok": 3,
@@ -2125,29 +2158,25 @@
       "ok": false,
       "url": "https://spculculat-oss.github.io/Sham-Perfume/",
       "status": 429,
+      "detail": "تعذّر القياس: Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'pagespeedonline.googleapis.com' for consumer 'project_number:583797351490'.",
       "scores": {},
-      "detail": "تعذّر القياس: Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'pagespeedonline.googleapis.com' for consumer 'project_number:583797351490'."
+      "vitals": {}
     }
   },
   "nextActions": [
     {
-      "textAr": "التحقق من تحديث خريطة الموقع XML دورياً لضمان اكتشاف أي صفحات ثابتة جديدة بسرعة.",
+      "textAr": "تحديث خريطة الموقع (sitemap.xml) بانتظام لضمان اكتشاف أي تغييرات جديدة فورياً بواسطة محركات البحث.",
       "area": "content",
       "severity": "minor"
     },
     {
-      "textAr": "مراجعة العناوين والأوصاف الحالية للتأكد من خلوها من الحشو ووضوحها التام للزوار.",
+      "textAr": "مراجعة العناوين والأوصاف الحالية للتأكد من مطابقتها لسياسات وضوح محتوى صناعة العطور والأدوات المعملية.",
       "area": "titles",
       "severity": "minor"
     },
     {
-      "textAr": "تدقيق سرعة التحميل وأداء الأكواد لضمان تجربة تصفح سلسة ومستقرة للجميع.",
-      "area": "content",
-      "severity": "minor"
-    },
-    {
-      "textAr": "الاستمرار في تحسين محتوى أدوات المعمل ليكون دائماً مطابقاً للواقع والمعايير.",
-      "area": "content",
+      "textAr": "التحقق من البيانات المنظمة (Schema) للصفحات الثابتة لضمان توافقها التام مع المعايير القياسية الحالية.",
+      "area": "schema",
       "severity": "minor"
     }
   ],
@@ -2597,6 +2626,17 @@
       "submitted": 200,
       "notes": [],
       "ms": 13399
+    },
+    {
+      "at": "2026-10-26T08:46:56.495Z",
+      "trigger": "schedule",
+      "auditScore": 100,
+      "findings": 0,
+      "applied": 0,
+      "lessonId": "seo-01",
+      "submitted": 200,
+      "notes": [],
+      "ms": 5734
     }
   ],
   "notes": [
