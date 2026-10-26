@@ -1,9 +1,9 @@
 {
  "version": 1,
- "updatedAt": "2026-10-26T07:23:52.269Z",
- "publishedAt": "2026-10-26T07:23:52.269Z",
- "signature": "v1xrdq",
- "summaryAr": "وردية المحتوى وتجربة الزائر 07:23 UTC: 7 اختبار عملي (7 سليم)، 26 مشكلة مفتوحة — 0 بتتصلح آلياً، 15 عند شاهين، 0 مهمة تطوير، 3 محتاجة قرارك؛ 13 مراجعة خبير (12 اتقبلت، 1 اترفضت)؛ 1 اتصلحت من آخر دورية.",
+ "updatedAt": "2026-10-26T07:37:41.144Z",
+ "publishedAt": "2026-10-26T07:37:41.144Z",
+ "signature": "1b0uvd4",
+ "summaryAr": "وردية المحتوى وتجربة الزائر 07:37 UTC: 4 اختبار عملي (4 سليم)، 26 مشكلة مفتوحة — 0 بتتصلح آلياً، 15 عند شاهين، 0 مهمة تطوير، 3 محتاجة قرارك؛ 2 مراجعة خبير (1 اتقبلت، 1 اترفضت)؛ 0 اتصلحت من آخر دورية.",
  "health": 81,
  "bots": [
   {
@@ -53,7 +53,7 @@
    "status": "fail",
    "problems": 1,
    "reviewed": "2026-10-26T04:25:51Z",
-   "lastRunAt": "2026-10-26T04:25:51Z",
+   "lastRunAt": "2026-10-26T07:24:26Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)"
@@ -72,7 +72,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-26T01:23:25Z",
-   "lastRunAt": "2026-10-26T01:23:25Z",
+   "lastRunAt": "2026-10-26T07:27:38Z",
    "lastRunOk": true
   },
   {
@@ -80,7 +80,7 @@
    "status": "warn",
    "problems": 1,
    "reviewed": "2026-10-26T04:21:14Z",
-   "lastRunAt": "2026-10-26T06:20:07Z",
+   "lastRunAt": "2026-10-26T07:24:01Z",
    "lastRunOk": true
   },
   {
@@ -122,7 +122,7 @@
    "status": "fail",
    "problems": 2,
    "reviewed": "2026-10-26T05:13:30Z",
-   "lastRunAt": "2026-10-26T07:23:10Z",
+   "lastRunAt": "2026-10-26T07:31:08Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
@@ -136,7 +136,7 @@
    "status": "fail",
    "problems": 2,
    "reviewed": "2026-10-26T05:13:30Z",
-   "lastRunAt": "2026-10-26T07:23:10Z",
+   "lastRunAt": "2026-10-26T07:31:08Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
@@ -150,7 +150,7 @@
    "status": "fail",
    "problems": 1,
    "reviewed": "2026-10-26T04:25:51Z",
-   "lastRunAt": "2026-10-26T04:25:51Z",
+   "lastRunAt": "2026-10-26T07:24:26Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)"
@@ -192,8 +192,8 @@
    "id": "synapse",
    "status": "ok",
    "problems": 1,
-   "reviewed": "2026-10-26T04:06:16Z",
-   "lastRunAt": "2026-10-26T04:06:16Z",
+   "reviewed": "2026-10-26T07:25:18Z",
+   "lastRunAt": "2026-10-26T07:25:18Z",
    "lastRunOk": true
   },
   {
@@ -201,7 +201,7 @@
    "status": "warn",
    "problems": 2,
    "reviewed": "2026-10-26T04:06:16Z",
-   "lastRunAt": "2026-10-26T04:06:16Z",
+   "lastRunAt": "2026-10-26T07:25:18Z",
    "lastRunOk": true
   },
   {
@@ -252,8 +252,8 @@
    "id": "news",
    "status": "fail",
    "problems": 1,
-   "reviewed": "2026-10-26T04:25:51Z",
-   "lastRunAt": "2026-10-26T04:25:51Z",
+   "reviewed": "2026-10-26T07:24:26Z",
+   "lastRunAt": "2026-10-26T07:24:26Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)"
@@ -350,7 +350,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-26T01:24:04Z",
-   "lastRunAt": "2026-10-26T01:24:04Z",
+   "lastRunAt": "2026-10-26T07:28:42Z",
    "lastRunOk": true
   },
   {
@@ -438,7 +438,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-26T05:11:25Z",
-   "lastRunAt": "2026-10-26T06:07:52Z",
+   "lastRunAt": "2026-10-26T07:29:07Z",
    "lastRunOk": true
   },
   {
@@ -565,7 +565,7 @@
    "failed": 0,
    "level": "ok",
    "noteAr": "100 لغة كاملة النصوص الأساسية",
-   "at": "2026-10-26T07:23:52.269Z",
+   "at": "2026-10-26T07:37:41.144Z",
    "nameAr": "نصوص المتجر في كل اللغات",
    "nameEn": "Store texts in every language"
   },
@@ -575,7 +575,7 @@
    "checked": 30,
    "failed": 0,
    "noteAr": "30 خبر، آخر تحديث من 15 ساعة",
-   "at": "2026-10-26T07:23:52.269Z",
+   "at": "2026-10-26T07:37:41.144Z",
    "nameAr": "ملف النشرة",
    "nameEn": "News bulletin file"
   },
@@ -617,7 +617,7 @@
    "checked": 1161,
    "failed": 0,
    "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161",
-   "at": "2026-10-26T07:23:52.269Z",
+   "at": "2026-10-26T07:37:41.144Z",
    "nameAr": "خريطة الموقع لمحركات البحث",
    "nameEn": "Sitemap for search engines"
   },
@@ -637,7 +637,7 @@
    "checked": 6,
    "failed": 0,
    "noteAr": "النشرة على الموقع فيها 6 خبر",
-   "at": "2026-10-26T07:23:52.269Z",
+   "at": "2026-10-26T07:37:41.144Z",
    "nameAr": "النشرة على الموقع الحي",
    "nameEn": "News on the live site"
   },
@@ -662,7 +662,7 @@
    "level": "fail",
    "textAr": "نشرة الأخبار ودروس المساعد: آخر تشغيل فشل",
    "since": "2026-10-26T04:21:04.088Z",
-   "lastSeen": "2026-10-26T07:23:52.269Z",
+   "lastSeen": "2026-10-26T07:37:41.144Z",
    "status": "waiting_fix",
    "nextAr": "shaheen-news.yml اتشغل الساعة 04:21 UTC — مستنيين نتيجته قبل أي تشغيل تاني",
    "tries": [
@@ -683,7 +683,7 @@
    "level": "warn",
    "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 46/100 (12 ملاحظة)",
    "since": "2026-10-21T01:24:02.602Z",
-   "lastSeen": "2026-10-26T07:23:52.269Z",
+   "lastSeen": "2026-10-26T07:37:41.144Z",
    "status": "waiting_shaheen",
    "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
    "tries": [],
@@ -1630,6 +1630,59 @@
  ],
  "reviews": [
   {
+   "bot": "synapse",
+   "reviewerAr": "خبير فحص سينابس — شبكة عقل شاهين",
+   "reviewerEn": "Synapse — the mind graph reviewer",
+   "runAt": "2026-10-26T07:25:18Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.2 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "news",
+   "reviewerAr": "خبير فحص النشرة",
+   "reviewerEn": "News reviewer",
+   "runAt": "2026-10-26T07:24:26Z",
+   "verdict": "rejected",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "fail",
+     "noteAr": "failure"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "warn",
+     "noteAr": "من 15.4 ساعة"
+    },
+    {
+     "nameAr": "ملف النشرة",
+     "level": "ok",
+     "noteAr": "30 خبر، آخر تحديث من 15 ساعة (30 اختبار)"
+    },
+    {
+     "nameAr": "النشرة على الموقع الحي",
+     "level": "ok",
+     "noteAr": "النشرة على الموقع فيها 6 خبر (6 اختبار)"
+    }
+   ],
+   "defects": [
+    "التشغيل فشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
+    "آخر تشغيل فشل"
+   ]
+  },
+  {
    "bot": "tutor",
    "reviewerAr": "خبير فحص المعلم — الحلقات الضعيفة تبقى خطة دراسة",
    "reviewerEn": "Tutor — weak links become a study plan reviewer",
@@ -2346,46 +2399,6 @@
     "التشغيل فشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
     "آخر تشغيل فشل"
    ]
-  },
-  {
-   "bot": "academy",
-   "reviewerAr": "خبير فحص أكاديمية شاهين (المدرسة على مدار الساعة)",
-   "reviewerEn": "Shaheen's academy (school around the clock) reviewer",
-   "runAt": "2026-10-26T03:33:39Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 1 ساعة"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "state",
-   "reviewerAr": "خبير فحص دولة المنصة (أعلى سلطة بعد صاحب الموقع)",
-   "reviewerEn": "The Platform State (highest authority under the owner) reviewer",
-   "runAt": "2026-10-26T02:58:42Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 0.3 ساعة"
-    }
-   ],
-   "defects": []
   }
  ],
  "reviewedRuns": {
@@ -2405,7 +2418,7 @@
   "catalog": "2026-10-26T04:25:51Z",
   "product_pages": "2026-10-26T06:17:50Z",
   "secretary": "2026-10-26T04:25:51Z",
-  "news": "2026-10-26T04:25:51Z",
+  "news": "2026-10-26T07:24:26Z",
   "seo": "2026-10-26T07:18:21Z",
   "languages": "2026-10-25T21:33:07Z",
   "design_audit": "2026-10-26T07:11:55Z",
@@ -2430,7 +2443,7 @@
   "trade_lanes": "2026-10-26T06:18:29Z",
   "immune": "2026-10-26T04:06:16Z",
   "carriers": "2026-10-26T01:03:04Z",
-  "synapse": "2026-10-26T04:06:16Z",
+  "synapse": "2026-10-26T07:25:18Z",
   "tutor": "2026-10-26T07:11:55Z",
   "reflex": "2026-10-26T07:11:55Z",
   "ears": "2026-10-26T07:11:55Z"
