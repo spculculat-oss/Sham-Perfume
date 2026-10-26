@@ -1,17 +1,23 @@
 {
  "version": 1,
  "agent": "senses_world",
- "updatedAt": "2026-10-26T08:47:31.833Z",
- "score": 40,
+ "updatedAt": "2026-10-26T11:54:07.282Z",
+ "score": 70,
+ "counts": {
+  "ok": 1,
+  "note": 0,
+  "warn": 2,
+  "fail": 0
+ },
  "probes": [
   {
    "carrierId": "dhl_express_my",
    "carrierNameAr": "DHL إكسبريس (ماليزيا)",
    "originCountry": "MY",
    "robotsTxt": {
-    "fetched": false,
-    "allowed": null,
-    "note": "لم تُجلب robots.txt (الشبكة أو الموقع)"
+    "fetched": true,
+    "allowed": false,
+    "note": "robots.txt تم جلبها (200)"
    },
    "page": {
     "fetched": false,
@@ -19,119 +25,122 @@
     "mentionsDangerousGoods": false,
     "mentionsPerfume": false,
     "mentionsPrice": false,
-    "note": ""
+    "note": "لم تُجلب الصفحة"
    },
    "source": "https://www.dhl.com/my-en/home/our-divisions/express.html",
-   "checkedAt": "2026-10-26T08:47:31.833Z"
+   "checkedAt": "2026-10-26T11:54:07.282Z"
   },
   {
    "carrierId": "fedex_my",
    "carrierNameAr": "فيديكس (ماليزيا)",
    "originCountry": "MY",
    "robotsTxt": {
-    "fetched": false,
-    "allowed": null,
-    "note": "لم تُجلب robots.txt (الشبكة أو الموقع)"
+    "fetched": true,
+    "allowed": false,
+    "note": "robots.txt تم جلبها (200)"
    },
    "page": {
-    "fetched": false,
-    "status": null,
+    "fetched": true,
+    "status": 200,
     "mentionsDangerousGoods": false,
     "mentionsPerfume": false,
     "mentionsPrice": false,
-    "note": ""
+    "note": "الصفحة فُتحت (200)"
    },
    "source": "https://www.fedex.com/en-my/home.html",
-   "checkedAt": "2026-10-26T08:47:31.833Z"
+   "checkedAt": "2026-10-26T11:54:07.282Z"
   },
   {
    "carrierId": "aramex_my",
    "carrierNameAr": "أرامكس (ماليزيا)",
    "originCountry": "MY",
    "robotsTxt": {
-    "fetched": false,
-    "allowed": null,
-    "note": "لم تُجلب robots.txt (الشبكة أو الموقع)"
+    "fetched": true,
+    "allowed": false,
+    "note": "robots.txt تم جلبها (200)"
    },
    "page": {
     "fetched": false,
-    "status": null,
+    "status": 403,
     "mentionsDangerousGoods": false,
     "mentionsPerfume": false,
     "mentionsPrice": false,
-    "note": ""
+    "note": "الصفحة فُتحت (403)"
    },
    "source": "https://www.aramex.com/my/en",
-   "checkedAt": "2026-10-26T08:47:31.833Z"
+   "checkedAt": "2026-10-26T11:54:07.282Z"
   },
   {
    "carrierId": "ninja_van_my",
    "carrierNameAr": "نينجا فان (ماليزيا)",
    "originCountry": "MY",
    "robotsTxt": {
-    "fetched": false,
-    "allowed": null,
-    "note": "لم تُجلب robots.txt (الشبكة أو الموقع)"
+    "fetched": true,
+    "allowed": false,
+    "note": "robots.txt تم جلبها (200)"
    },
    "page": {
-    "fetched": false,
-    "status": null,
+    "fetched": true,
+    "status": 200,
     "mentionsDangerousGoods": false,
     "mentionsPerfume": false,
-    "mentionsPrice": false,
-    "note": ""
+    "mentionsPrice": true,
+    "note": "الصفحة فُتحت (200)"
    },
    "source": "https://www.ninjavan.co/en-my",
-   "checkedAt": "2026-10-26T08:47:31.833Z"
+   "checkedAt": "2026-10-26T11:54:07.282Z"
   },
   {
    "carrierId": "jnt_my",
    "carrierNameAr": "J&T إكسبريس (ماليزيا)",
    "originCountry": "MY",
    "robotsTxt": {
-    "fetched": false,
-    "allowed": null,
-    "note": "لم تُجلب robots.txt (الشبكة أو الموقع)"
+    "fetched": true,
+    "allowed": true,
+    "note": "robots.txt تم جلبها (200)"
    },
    "page": {
-    "fetched": false,
-    "status": null,
+    "fetched": true,
+    "status": 200,
     "mentionsDangerousGoods": false,
     "mentionsPerfume": false,
-    "mentionsPrice": false,
-    "note": ""
+    "mentionsPrice": true,
+    "note": "الصفحة فُتحت (200)"
    },
    "source": "https://www.jtexpress.my",
-   "checkedAt": "2026-10-26T08:47:31.833Z"
+   "checkedAt": "2026-10-26T11:54:07.282Z"
   },
   {
    "carrierId": "aramex_ae",
    "carrierNameAr": "أرامكس (الإمارات)",
    "originCountry": "AE",
    "robotsTxt": {
-    "fetched": false,
-    "allowed": null,
-    "note": "لم تُجلب robots.txt (الشبكة أو الموقع)"
+    "fetched": true,
+    "allowed": false,
+    "note": "robots.txt تم جلبها (200)"
    },
    "page": {
     "fetched": false,
-    "status": null,
+    "status": 403,
     "mentionsDangerousGoods": false,
     "mentionsPerfume": false,
     "mentionsPrice": false,
-    "note": ""
+    "note": "الصفحة فُتحت (403)"
    },
    "source": "https://www.aramex.com/ae/en",
-   "checkedAt": "2026-10-26T08:47:31.833Z"
+   "checkedAt": "2026-10-26T11:54:07.282Z"
   }
  ],
  "carriers": {
   "total": 6,
-  "reachable": 0,
+  "reachable": 3,
   "dgMentioned": 0,
-  "priceMentioned": 0,
+  "priceMentioned": 2,
   "noSource": 0
  },
- "summaryAr": "حسّاسات العالم: قرأت 0 من 6 صفحة شركة،0 تذكر مواد خطر",
- "planAr": []
+ "summaryAr": "حسّاسات العالم: قرأت 3 من 6 صفحة شركة،0 تذكر مواد خطر",
+ "planAr": [
+  "بعض صفحات الشركات ما فتحتش — راجع الروابط",
+  "مفيش شركة ذكرت قبول مواد خطر — تأكد قبل شحن جوي للعطور"
+ ]
 }
