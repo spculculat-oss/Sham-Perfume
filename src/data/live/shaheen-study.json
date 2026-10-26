@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "tutor",
- "updatedAt": "2026-10-26T07:11:34.322Z",
+ "updatedAt": "2026-10-26T12:41:00.438Z",
  "targets": [
   {
    "kind": "carrier",
@@ -764,7 +764,19 @@
    "targetId": "specialist:specialist_scents"
   },
   {
-   "id": "q-recall-specialist_culture-82",
+   "id": "q-recall-specialist_tech-82",
+   "question": "ازاي ابدا اتعلم برمجة؟",
+   "kind": "rule",
+   "expected": [
+    "الخبير",
+    "مساعدك"
+   ],
+   "source": "src/data/live/shaheen-memory.json",
+   "specialistId": "specialist_tech",
+   "targetId": "specialist:specialist_tech"
+  },
+  {
+   "id": "q-recall-specialist_culture-83",
    "question": "ايه هي المغالطة المنطقية؟",
    "kind": "rule",
    "expected": [
@@ -776,7 +788,7 @@
    "targetId": "specialist:specialist_culture"
   },
   {
-   "id": "q-recall-specialist_security-83",
+   "id": "q-recall-specialist_security-84",
    "question": "ايه هو التشفير؟",
    "kind": "rule",
    "expected": [
@@ -788,7 +800,7 @@
    "targetId": "specialist:specialist_security"
   },
   {
-   "id": "q-recall-specialist_business-84",
+   "id": "q-recall-specialist_business-85",
    "question": "ايه دور اتفاقيات التجارة الحرة في الجمارك؟",
    "kind": "rule",
    "expected": [
@@ -798,18 +810,6 @@
    "source": "src/data/live/shaheen-memory.json",
    "specialistId": "specialist_business",
    "targetId": "specialist:specialist_business"
-  },
-  {
-   "id": "q-recall-specialist_health-85",
-   "question": "ايه الفرق بين الفيروس والبكتيريا؟",
-   "kind": "rule",
-   "expected": [
-    "الأساسي",
-    "الفيروس"
-   ],
-   "source": "src/data/live/shaheen-memory.json",
-   "specialistId": "specialist_health",
-   "targetId": "specialist:specialist_health"
   }
  ],
  "covered": {
