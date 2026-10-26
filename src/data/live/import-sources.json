@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-26T13:22:04.307Z",
+ "updatedAt": "2026-10-26T14:55:10.839Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7367,6 +7367,17 @@
  ],
  "runs": [
   {
+   "at": "2026-10-26T14:55:10.839Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-10-26T13:22:04.307Z",
    "mode": "self",
    "found": 0,
@@ -7699,17 +7710,6 @@
    "rejected": 0,
    "notes": [
     "Web search: AI quota used up — the scout continues by himself",
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T13:46:42.390Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
     "0 new stores found this run (own methods, no AI)"
    ]
   }
