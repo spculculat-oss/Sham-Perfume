@@ -262,7 +262,7 @@ export const PROGRAMMING_LANGUAGES: [string, string, keyof typeof LANGUAGE_FAMIL
 ];
 
 // ── Shared lesson builders ───────────────────────────────────────────────────────────────────────────────
-export interface AcademyLesson extends TrainingDoc { track: TrackId; topic: string }
+export interface AcademyLesson extends TrainingDoc { track: TrackId; topic: string; /** «approved» = بحث معتمد يُدرج في المدرسة، غير المعتمد لا يدخل. */ approved?: boolean }
 export interface AcademyPair { lesson: AcademyLesson; question: BankQuestion }
 
 const lang = (ar: string, en: string, family: keyof typeof LANGUAGE_FAMILIES, useAr: string): AcademyLesson => ({
@@ -684,7 +684,7 @@ const PAIRS: AcademyPair[] = [
   ...AI_PROJECT_LESSONS, ...IT_LESSONS, ...FRONTIER_LESSONS, ...CHEM_LESSONS, ...PHYS_LESSONS, ...MATH_LESSONS,
   ...COMMERCE_LESSONS, ...TRADE_PRACTICAL_LESSONS, ...LAW_LESSONS, ...PR_LESSONS, ...MGMT_LESSONS, ...HIST_LESSONS, ...GEO_LESSONS, ...LIT_LESSONS, ...SOC_LESSONS,
   ...PSY_LESSONS, ...CYBERPSY_LESSONS, ...UXPSY_LESSONS, ...PERFUME_SKILLS,
-  ...UNIVERSITY_PAIRS, ...RESEARCH_PAIRS,
+  ...UNIVERSITY_PAIRS, ...RESEARCH_PAIRS.filter((p) => Boolean(p.lesson.approved)),
   ...BIOLOGY_LESSONS, ...MEDICINE_LESSONS,
   ...ENGINEERING_LESSONS, ...EARTH_LESSONS,
   ...EDUCATION_LESSONS, ...MEDIA_LESSONS, ...SPORTS_LESSONS, ...ARTS_LESSONS,

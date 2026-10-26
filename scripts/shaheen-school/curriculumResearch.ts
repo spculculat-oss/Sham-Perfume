@@ -6,7 +6,7 @@
 import type { AcademyLesson, AcademyPair, TrackId } from './curriculum';
 
 const lesson = (id: string, track: TrackId, topic: string, title: string, content: string): AcademyLesson => ({
-  id, title, content, tags: ['الأبحاث الراسخة'], track, topic,
+  id, title, content, tags: ['الأبحاث الراسخة'], track, topic, approved: true,
 });
 const ask = (l: AcademyLesson, q: string): AcademyPair => ({
   lesson: { ...l, title: q.replace(/؟+$/, '') },
