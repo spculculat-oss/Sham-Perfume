@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-26T01:06:45.971Z",
+ "updatedAt": "2026-10-26T07:00:01.807Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -4327,12 +4327,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-26T07:00:01.807Z",
    "trust": {
     "score": 84,
     "verdict": "trusted",
-    "at": "2026-10-19T04:31:58.644Z",
+    "at": "2026-10-26T07:00:01.807Z",
     "checks": [
      {
       "id": "age",
@@ -4432,7 +4432,7 @@
    "sampleOk": 5,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 53.5247,
+   "rateToEgp": 55.6767,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*scentsplit\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.scentsplit.com/sitemap_agentic_discovery.xml",
@@ -4443,12 +4443,12 @@
     "https://www.scentsplit.com/sitemap_products_5.xml?from=7573047214280&to=7720821358792",
     "https://www.scentsplit.com/sitemap_products_6.xml?from=7720821391560&to=8042998530248",
     "https://www.scentsplit.com/sitemap_products_7.xml?from=8042998595784&to=8166866518216",
-    "https://www.scentsplit.com/sitemap_products_8.xml?from=8166866550984&to=8229621203144",
-    "https://www.scentsplit.com/sitemap_products_9.xml?from=8229621235912&to=8311224434888",
-    "https://www.scentsplit.com/sitemap_products_10.xml?from=8311224467656&to=8334860124360"
+    "https://www.scentsplit.com/sitemap_products_8.xml?from=8166866550984&to=8229329567944",
+    "https://www.scentsplit.com/sitemap_products_9.xml?from=8229329633480&to=8310908715208",
+    "https://www.scentsplit.com/sitemap_products_10.xml?from=8310908747976&to=8334712078536"
    ],
    "via": "generic",
-   "productsEstimate": 10000
+   "productsEstimate": 9996
   },
   {
    "id": "flaconi-de",
@@ -7367,6 +7367,19 @@
  ],
  "runs": [
   {
+   "at": "2026-10-26T07:00:01.807Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ scentsplit.com: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ scentsplit.com (CV 84/100): 9996 perfumes, 5/6 pages read without AI, USD (1 = 55.6767 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-10-26T01:06:45.971Z",
    "mode": "self",
    "found": 0,
@@ -7687,17 +7700,6 @@
   },
   {
    "at": "2026-10-22T13:23:38.497Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T13:07:28.280Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
