@@ -265,3 +265,38 @@ export async function submitGoogleSitemap(input: { siteUrl: string; env: Env; fe
     return { ok: false, detail: safe(`تعذّر الوصول إلى Search Console: ${(error as Error).message}`, 220), submitted: 0 };
   }
 }
+
+/**
+ * Yandex Webmaster v4 API: optional sitemap registration (`YANDEX_WEBMASTER_TOKEN`, `YANDEX_WEBMASTER_USER_ID`,
+ * and optional `YANDEX_WEBMASTER_HOST_ID`). Without these keys Yandex already receives URLs immediately via IndexNow.
+ */
+export async function submitYandexSitemap(input: { siteUrl: string; env: Env; fetch?: Fetch }): Promise<SubmitResult> {
+  const token = input.env.YANDEX_WEBMASTER_TOKEN?.trim();
+  const userId = input.env.YANDEX_WEBMASTER_USER_ID?.trim();
+  if (!token || !userId) return { ok: false, detail: 'YANDEX_WEBMASTER_TOKEN غير مضبوط (اختياري — Yandex يستقبل IndexNow بلا مفتاح).', submitted: 0 };
+  const origin = new URL(input.siteUrl);
+  const hostId = input.env.YANDEX_WEBMASTER_HOST_ID?.trim() || `${origin.protocol.replace(':', '')}:${origin.hostname}:${origin.port || (origin.protocol === 'https:' ? '443' : '80')}`;
+  const sitemap = absoluteUrl('sitemap.xml', input.siteUrl);
+  const request = input.fetch || fetch;
+  try {
+    const response = await request(
+      `https://api.webmaster.yandex.net/v4/user/${encodeURIComponent(userId)}/hosts/${encodeURIComponent(hostId)}/user-added-sitemaps`,
+      {
+        method: 'POST',
+        headers: { authorization: `OAuth ${token}`, 'content-type': 'application/json; charset=utf-8' },
+        body: JSON.stringify({ url: sitemap }),
+        signal: AbortSignal.timeout(20_000),
+      },
+    );
+    const body = await response.text().catch(() => '');
+    const accepted = response.ok || response.status === 409; // 409 = sitemap already added
+    return {
+      ok: accepted,
+      status: response.status,
+      submitted: accepted ? 1 : 0,
+      detail: accepted ? `سُجّلت خريطة الموقع في Yandex Webmaster (${hostId}).` : safe(`Yandex HTTP ${response.status} ${body}`, 220),
+    };
+  } catch (error) {
+    return { ok: false, detail: safe(`تعذّر الوصول إلى Yandex Webmaster: ${(error as Error).message}`, 220), submitted: 0 };
+  }
+}

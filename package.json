@@ -21,6 +21,7 @@
     "sync:vercel-env": "node scripts/sync-vercel-env.mjs",
     "seo:build": "node --import tsx scripts/seo-build.mts dist",
     "seo:run": "node --import tsx scripts/seo-agent/run.mts",
+    "seo:report": "node --import tsx scripts/seo-agent/weekly-report.mts",
     "science:bench": "node --import tsx scripts/shaheen-school/science-bench.mts",
     "train:specialists": "node --import tsx scripts/shaheen-specialists/train.mts",
     "test:reader-browser": "node scripts/check-epub-reader.mjs",

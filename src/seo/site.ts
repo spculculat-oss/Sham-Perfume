@@ -105,6 +105,20 @@ export function hasGoogleConsole(env: Record<string, string | undefined>) {
   return Boolean(env.GSC_SERVICE_ACCOUNT_JSON?.trim() && (env.GSC_SITE_URL?.trim() || env.SEO_SITE_URL?.trim() || env.APP_URL?.trim()));
 }
 export const hasBingWebmaster = (env: Record<string, string | undefined>) => Boolean(env.BING_WEBMASTER_API_KEY?.trim());
+export const hasYandexWebmaster = (env: Record<string, string | undefined>) =>
+  Boolean(env.YANDEX_WEBMASTER_TOKEN?.trim() && env.YANDEX_WEBMASTER_USER_ID?.trim());
+
+/**
+ * Verified public profiles for Organization.sameAs: always includes the official repository, plus any
+ * comma-separated https URLs in SEO_SAME_AS (Pinterest, X, Telegram, YouTube, Instagram) once the owner opens them.
+ */
+export function socialLinks(env: Record<string, string | undefined> = {}): string[] {
+  const extra = (env.SEO_SAME_AS || '')
+    .split(',')
+    .map((item) => item.trim())
+    .filter((item) => /^https:\/\/[^\s"'<>]+$/i.test(item));
+  return [...new Set([SITE.github, ...extra])];
+}
 
 /** Canonical origin: an explicit SEO_SITE_URL wins, otherwise the main site (GitHub Pages) — on every host. */
 export function canonicalSiteUrl(env: Record<string, string | undefined> = {}): string {

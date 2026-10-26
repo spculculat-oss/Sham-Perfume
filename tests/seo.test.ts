@@ -9,14 +9,15 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { HOME_PAGE, SEO_PAGES, allSeoPages, pageByPath, tabSeo } from '../src/seo/pages';
-import { SITE, absoluteUrl, canonicalSiteUrl, indexNowKeyPath } from '../src/seo/site';
+import { SITE, absoluteUrl, canonicalSiteUrl, indexNowKeyPath, socialLinks } from '../src/seo/site';
 import { validateSeoCopy, visibleText } from '../src/seo/audit';
 import { SEO_AREAS, TOTAL_LESSONS, nextLesson } from '../src/seo/curriculum';
 import {
-  buildSitemapEntries, injectHomeFallback, injectHomeHead, renderFeed, renderLlmsTxt, renderRobots, renderSitemap, renderToolPage,
+  buildSitemapEntries, injectHomeFallback, injectHomeHead, renderFeed, renderLlmsTxt, renderMediaKit, renderRobots, renderSitemap, renderToolPage,
   renderToolsIndex, verificationFiles,
 } from '../src/seo/artifacts';
 import { emptySeoState, readSeoState } from '../src/seo/agentState';
+import { renderWeeklyVisibilityReport } from '../src/seo/visibilityReport';
 import lexicon from '../src/seo/lexicon.json';
 
 const site = 'https://sham-perfume-49bf.vercel.app/';
@@ -219,3 +220,63 @@ test('a published page path rounds-trips through the page map', () => {
     assert.equal(pageByPath(`/${page.path}`)?.id, page.id, 'leading slash must not matter');
   }
 });
+
+test('every tool page has a dedicated committed OG share card and renders the social share bar', () => {
+  for (const page of SEO_PAGES) {
+    const bytes = readFileSync(new URL(`../public/og/${page.id}.png`, import.meta.url));
+    assert.ok(bytes.length > 5_000, `og/${page.id}.png is too small`);
+    const html = renderToolPage(page, { siteUrl: site });
+    assert.ok(html.includes(`<meta property="og:image" content="${absoluteUrl(`og/${page.id}.png`, site)}">`));
+    assert.match(html, /class="share-bar"/);
+    assert.match(html, /https:\/\/wa\.me\/\?text=/);
+    assert.match(html, /https:\/\/t\.me\/share\/url\?url=/);
+    assert.match(html, /https:\/\/pinterest\.com\/pin\/create\/button\//);
+  }
+  for (const pinId of ['concentration', 'alcohol', 'maceration_simulator']) {
+    const bytes = readFileSync(new URL(`../public/og/pin-${pinId}.png`, import.meta.url));
+    assert.ok(bytes.length > 10_000, `og/pin-${pinId}.png is too small`);
+  }
+});
+
+test('the media kit page (/media/) is listed in sitemap.xml and llms.txt and carries copyable press snippets', () => {
+  const entries = buildSitemapEntries({ siteUrl: site, products: [] });
+  assert.ok(entries.some((entry) => entry.loc === absoluteUrl('media/', site)));
+  const llms = renderLlmsTxt(site, []);
+  assert.ok(llms.includes(absoluteUrl('media/', site)));
+  const html = renderMediaKit({ siteUrl: site, productsCount: 1114, env: { SEO_SAME_AS: 'https://www.pinterest.com/shamperfume/' } });
+  assert.ok(html.includes(`<link rel="canonical" href="${absoluteUrl('media/', site)}">`));
+  assert.ok(html.includes(`<meta property="og:image" content="${absoluteUrl('og/media.png', site)}">`));
+  assert.match(html, /"@type":"AboutPage"/);
+  assert.match(html, /"https:\/\/www\.pinterest\.com\/shamperfume\/"/);
+  assert.match(html, /id="bio-short"/);
+  assert.match(html, /id="cite-html"/);
+  assert.doesNotMatch(html, vendor);
+});
+
+test('Yandex verification and socialLinks are emitted cleanly when configured', () => {
+  const files = verificationFiles({ YANDEX_SITE_VERIFICATION: 'yandexToken9876' });
+  const yandexFile = files.find((f) => f.name === 'yandex_yandexToken9876.html');
+  assert.ok(yandexFile);
+  assert.match(yandexFile.content, /Verification: yandexToken9876/);
+  const profiles = socialLinks({ SEO_SAME_AS: 'https://x.com/sham, not-a-url, https://t.me/sham' });
+  assert.deepEqual(profiles, [SITE.github, 'https://x.com/sham', 'https://t.me/sham']);
+  const source = '<!doctype html><html lang="ar" dir="rtl"><head></head><body></body></html>';
+  const injected = injectHomeHead(source, { siteUrl: site, env: { YANDEX_SITE_VERIFICATION: 'yandexToken9876', SEO_SAME_AS: 'https://x.com/sham' } });
+  assert.equal(injectHomeHead(injected, { siteUrl: site, env: { YANDEX_SITE_VERIFICATION: 'yandexToken9876', SEO_SAME_AS: 'https://x.com/sham' } }), injected);
+  assert.match(injected, /<meta name="yandex-verification" content="yandexToken9876">/);
+  assert.match(injected, /"https:\/\/x\.com\/sham"/);
+});
+
+test('the weekly visibility report summarizes audit, crawler access, verification and media posts', () => {
+  const state = emptySeoState(new Date('2026-10-26T08:00:00Z'));
+  state.audit.score = 96;
+  state.audit.pagesChecked = 15;
+  state.discovery.crawl = { at: '2026-10-26T08:00:00Z', ua: 'Googlebot', checked: 3, ok: 3, results: [] };
+  const md = renderWeeklyVisibilityReport(state, { siteUrl: site, productsCount: 1114, sitemapCount: 1130, verificationOk: true });
+  assert.match(md, /96\/100/);
+  assert.match(md, /3\/3/);
+  assert.match(md, /google7ef3d5aa6cf98197\.html/);
+  assert.match(md, /1130 رابطاً/);
+  assert.doesNotMatch(md, vendor);
+});
+

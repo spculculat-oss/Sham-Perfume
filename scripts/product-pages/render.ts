@@ -217,8 +217,45 @@ ${notes.length ? `<section><h2${dl('pd_notes_pyramid')}>الهرم العطري<
 <section><h2${dl('pd_description')}>الوصف</h2><p data-name data-ar="${esc(p.description.ar)}" data-en="${esc(p.description.en || p.description.ar)}">${esc(p.description.ar)}</p></section>
 <p class="small">آخر تحديث لبيانات المنتج: ${esc((p.createdAt || new Date().toISOString()).slice(0, 10))} · <a href="../">كل أدوات المعمل</a> · <a href="../tools/">أدوات شام</a></p>
 ${related.length ? `<section><h2${dl('pd_related')}>قد يعجبك أيضاً</h2><div class="cards">${related.map(card).join('')}</div></section>` : ''}
+${renderProductLabTools()}
 </main><footer${dl('pd_footer')}>متجر شام — راجع «الخبير شاهين» بيانات هذا المنتج<nav><a href="../">الرئيسية</a><a href="index.html">كل المنتجات</a><a href="../tools/">الأدوات</a></nav></footer>${SWITCHER(JSON.stringify(pageLabelTable()).replace(/</g, '\\u003c'))}</body></html>
 `;
+}
+
+const PRODUCT_LAB_TOOLS: { href: string; arTitle: string; enTitle: string; arSub: string; enSub: string }[] = [
+  {
+    href: '../tools/perfume-formulation-calculator.html',
+    arTitle: 'حاسبة تركيب العطور',
+    enTitle: 'Perfume Formulation Calculator',
+    arSub: 'احسب نسب الزيت والكحول والماء لأي تركيز وحجم زجاجة',
+    enSub: 'Calculate oil, alcohol and water ratios for any bottle size',
+  },
+  {
+    href: '../tools/fragrance-pyramid.html',
+    arTitle: 'الهرم العطري ومحاكاة الرش',
+    enTitle: 'Fragrance Pyramid & Spray Simulator',
+    arSub: 'رتّب نوتات المقدمة والقلب والقاعدة وتابع تطورها على الجلد',
+    enSub: 'Arrange top, heart and base notes and simulate dry-down',
+  },
+  {
+    href: '../tools/raw-materials-encyclopedia.html',
+    arTitle: 'موسوعة المواد الخام العطرية',
+    enTitle: 'Raw Materials Encyclopedia',
+    arSub: 'تعرّف على عائلات المواد الخام وثباتها ونسب استخدامها',
+    enSub: 'Explore raw material families, longevity and usage ratios',
+  },
+  {
+    href: '../tools/maceration-simulator.html',
+    arTitle: 'محاكي التعتيق الزمني للعطر',
+    enTitle: 'Maceration Time Simulator',
+    arSub: 'خطط لمدة التعتيق وتابع مراحل نضج التركيبة',
+    enSub: 'Plan maceration days and track batch maturation',
+  },
+];
+
+function renderProductLabTools(): string {
+  return `<section class="lab-links"><h2 data-name data-ar="اقرأ وجرّب في معمل شام" data-en="Explore in the Sham Lab">اقرأ وجرّب في معمل شام</h2>`
+    + `<div class="cards">${PRODUCT_LAB_TOOLS.map((t) => `<a class="card" href="${t.href}"><b data-name data-ar="${esc(t.arTitle)}" data-en="${esc(t.enTitle)}">${esc(t.arTitle)}</b><div class="small" data-name data-ar="${esc(t.arSub)}" data-en="${esc(t.enSub)}">${esc(t.arSub)}</div></a>`).join('')}</div></section>`;
 }
 
 function card(p: StoreProduct) {

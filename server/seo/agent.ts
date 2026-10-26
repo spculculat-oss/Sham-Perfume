@@ -16,7 +16,7 @@ import { SEO_PAGES, HOME_PAGE, seoPage } from '../../src/seo/pages';
 import { SITE, SEO_AGENT, absoluteUrl } from '../../src/seo/site';
 import { topFixes, validateSeoCopy } from '../../src/seo/audit';
 import {
-  probeCrawlerAccess, probePageSpeed, submitBing, submitGoogleSitemap, submitIndexNow, submitWebSub,
+  probeCrawlerAccess, probePageSpeed, submitBing, submitGoogleSitemap, submitIndexNow, submitWebSub, submitYandexSitemap,
   type SubmitResult,
 } from './search';
 import { feedFingerprint } from '../../src/seo/discovery';
@@ -390,6 +390,12 @@ export async function runSeoCycle(input: CycleInput): Promise<CycleResult> {
       results.push(googleResult);
       state.submissions = [...state.submissions, { engine: 'Google Search Console', method: 'gsc' as const, at, urls: googleResult.submitted, ok: googleResult.ok, detail: googleResult.detail }].slice(-80);
       log(`Google: ${googleResult.ok ? 'أُرسلت الخريطة' : googleResult.detail}`);
+    }
+    if (env.YANDEX_WEBMASTER_TOKEN?.trim() && env.YANDEX_WEBMASTER_USER_ID?.trim()) {
+      const yandexResult = await submitYandexSitemap({ siteUrl: input.siteUrl, env, fetch: input.fetch });
+      results.push(yandexResult);
+      state.submissions = [...state.submissions, { engine: 'Yandex Webmaster API', method: 'yandex-api' as const, at, urls: yandexResult.submitted, ok: yandexResult.ok, detail: yandexResult.detail }].slice(-80);
+      log(`Yandex: ${yandexResult.ok ? 'أُرسلت الخريطة' : yandexResult.detail}`);
     }
     applySubmissionState(state, at, { indexNow: indexNowResult, bing: bingResult, google: googleResult }, env);
   } else {

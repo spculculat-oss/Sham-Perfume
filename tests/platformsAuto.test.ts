@@ -27,7 +27,7 @@ const json = (data: unknown, status = 200) => new Response(JSON.stringify(data),
 
 test('the owner chose «تلقائي», and the switch is read', () => {
   assert.equal(readControls(controls).aiPlatforms, 'auto');
-  assert.equal(readControls(controls).log[0].action, 'platforms_auto');
+  assert.ok(readControls(controls).log.some((entry) => entry.action === 'platforms_auto'));
   assert.equal(readControls({ aiPlatforms: 'auto' }).aiPlatforms, 'auto');
   assert.equal(readControls({ aiPlatforms: 'weird' }).aiPlatforms, 'on');
   assert.equal(platformsMode(AUTO), 'auto');

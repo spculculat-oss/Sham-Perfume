@@ -13,7 +13,7 @@ import {
 } from '../src/seo/discovery';
 import { renderFeed, renderRobots } from '../src/seo/artifacts';
 import { emptySeoState, readSeoState } from '../src/seo/agentState';
-import { probeCrawlerAccess, probePageSpeed, submitIndexNow, submitWebSub } from '../server/seo/search';
+import { probeCrawlerAccess, probePageSpeed, submitIndexNow, submitWebSub, submitYandexSitemap } from '../server/seo/search';
 
 const site = 'https://sham-perfume-49bf.vercel.app/';
 const feedUrl = `${site}feed.xml`;
@@ -169,3 +169,20 @@ test('discovery evidence survives a state round-trip and junk is dropped', () =>
   assert.equal(broken.discovery.pageSpeed?.scores.performance, undefined);
   assert.equal(broken.discovery.pageSpeed?.ok, false);
 });
+
+test('Yandex Webmaster sitemap submission is optional and handles 201 and 409', async () => {
+  const skipped = await submitYandexSitemap({ siteUrl: site, env: {} });
+  assert.equal(skipped.ok, false);
+  assert.match(skipped.detail, /IndexNow/);
+
+  const { fn, calls } = fakeFetch(() => new Response('{"sitemap_id":"1"}', { status: 201 }));
+  const accepted = await submitYandexSitemap({
+    siteUrl: site,
+    env: { YANDEX_WEBMASTER_TOKEN: 'tok123', YANDEX_WEBMASTER_USER_ID: '42' },
+    fetch: fn,
+  });
+  assert.equal(accepted.ok, true);
+  assert.equal(accepted.submitted, 1);
+  assert.match(calls[0].url, /api\.webmaster\.yandex\.net\/v4\/user\/42\/hosts\//);
+});
+
