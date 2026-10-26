@@ -11,7 +11,7 @@ import { join } from 'node:path';
 import { test } from 'node:test';
 import type { ShippingCosts } from '../src/utils/pricing';
 import { realShipping, shippingZone } from '../src/utils/pricing';
-import { buildWeave, isWeaveReport } from '../scripts/shaheen-memory/weaver';
+import { buildWeave, isWeaveReport, type WeaveInput } from '../scripts/shaheen-memory/weaver';
 import { buildCurate, isCurateReport } from '../scripts/shaheen-memory/curator';
 
 const root = new URL('..', import.meta.url).pathname;
@@ -24,8 +24,8 @@ const trade = read('src/data/live/trade-lanes.json') as {
 const costs = read('src/data/shipping-costs.json') as ShippingCosts;
 const shipping = { ...(read('src/data/shipping.json')), costs };
 const customs = read('src/data/customs.json') as { countries?: Record<string, { vatPercent?: number; source?: string | null }>; agreements?: { id: string; nameAr: string }[] };
-const fx = read('src/data/live/fx-rates.json') as { base: string; source?: string | null; updatedAt?: string; rates: Record<string, number> };
-const graph = read('src/data/live/shaheen-graph.json') as { nodes?: { id: string; kind: string }[]; edges?: { from: string; to: string; source?: string | null; updatedAt?: string | null }[] };
+const fx = read('src/data/live/fx-rates.json') as WeaveInput['fx'];
+const graph = read('src/data/live/shaheen-graph.json') as WeaveInput['graph'];
 
 test('الناسج: كل خيط وجهة له حالة (مكتمل / ناقص)، والمفقود يُسجل باسمه من غير اختراع', () => {
   const report = buildWeave({

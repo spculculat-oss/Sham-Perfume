@@ -23,6 +23,7 @@ import { useStoreMoney } from '../utils/storeCheckout';
 import { LegalDisclaimer } from './LegalDisclaimer';
 import { ProductReviewsSection } from './ProductReviewsSection';
 import { localLongevity } from '../لغات/longevity';
+import { cleanNote, noteAr } from '../utils/noteNames';
 
 /** كل نص في صفحة العطر — من src/لغات/storeL10n.ts بلغة الزائر (والإنجليزية كأرضية، لا عربية لغير العربي). */
 function detailLabels(lang: SupportedLanguage) {
@@ -120,7 +121,10 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
   const alsoViewed = together.map((sku) => products.find((p) => p.sku === sku)).filter((p): p is StoreProduct => Boolean(p && p.sku !== product.sku)).slice(0, 4);
   const related = products.filter((p) => p.sku !== product.sku && !alsoViewed.some((a) => a.sku === p.sku)).map((p) => ({ p, s: closeness(product, p) }))
     .filter((r) => r.s > 0).sort((a, b) => b.s - a.s).slice(0, 4).map((r) => r.p);
-  const notes = ([['top', product.notes.top], ['heart', product.notes.heart], ['base', product.notes.base]] as const).filter(([, list]) => list.length);
+  // On the Arabic page the notes are shown in Arabic (the supplier writes them in English); a note with no known Arabic
+  // name keeps its own name rather than disappear.
+  const noteText = (list: readonly string[]) => [...new Set(list.map((n) => (currentLang === 'ar' ? noteAr(n) || cleanNote(n) : cleanNote(n) || n)).filter((n) => n && !/^(notes?|premium scents?)$/i.test(n)))];
+  const notes = ([['top', noteText(product.notes.top)], ['heart', noteText(product.notes.heart)], ['base', noteText(product.notes.base)]] as const).filter(([, list]) => list.length);
   const askShaheen = () => {
     const prompt = makeStoreT(currentLang)('pd_ask_prompt', {
       name: storeLocalized(product.name, currentLang),

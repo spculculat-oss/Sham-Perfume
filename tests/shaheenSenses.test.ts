@@ -93,14 +93,11 @@ test('حسّاسات الموقع: أسعار الصرف تشيخ وتُبلّغ
 });
 
 test('حسّاسات العالم: كلprobe يسجل هل الصفحة فُتحت ومواد خطر؟ والمصدر والتاريخ', async () => {
-  const fetch = (async () => {
-    const res = new Response('', { status: 404 });
-    return res;
-  }) as unknown as typeof fetch;
+  const http = (async () => new Response('', { status: 404 })) as unknown as typeof globalThis.fetch;
   const report = await buildSensesWorld({
     now: NOW,
     candidates: candidates.candidates.slice(0, 3),
-    fetch,
+    http,
   });
   assert.ok(isSensesWorldReport(report));
   for (const p of report.probes) {

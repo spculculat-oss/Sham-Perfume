@@ -17,7 +17,7 @@ import {
 const root = new URL('..', import.meta.url).pathname;
 const read = (rel: string) => JSON.parse(readFileSync(join(root, rel), 'utf8'));
 type Money = { profitPerBottleEgp: number; costBasedDestinations: number; uncoveredDestinations: number; medianShippingMarginEgp: number | null };
-const report = read('src/data/live/trade-lanes.json') as { destinations: { code: string; proposedChargedEgp: number | null; costEgp: [number, number] | null }[]; money: Money };
+const report = read('src/data/live/trade-lanes.json') as { destinations: { code: string; proposedChargedEgp: number | null; costEgp: [number, number] | null }[]; money: Money; fx?: { egpPerUsd?: number } };
 const catalog = (read('src/data/products.json') as { products: { supplierPrice?: number; ourPrice?: number; published?: boolean }[] }).products;
 
 const covered = Object.keys(SHIPPING_COSTS.countries);
@@ -102,11 +102,15 @@ test('the trade report and the price engine agree on every destination', () => {
   assert.equal(report.money.uncoveredDestinations, report.destinations.length - covered.length);
   assert.ok(report.money.costBasedDestinations > 0);
   assert.ok((report.money.medianShippingMarginEgp || 0) > 0, 'the shipping itself earns something');
+  // The report's EGP figures were converted with the rate of its own day; the importer refreshes the rates between two
+  // trade reviews, so the engine is compared at that same rate (a rate change alone is not a disagreement).
+  const egpPerUsd = report.fx?.egpPerUsd;
+  const reportFx = egpPerUsd ? { ...BUNDLED_FX, rates: { ...BUNDLED_FX.rates, [HOME_CURRENCY]: egpPerUsd * (BUNDLED_FX.rates.USD || 1) } } : BUNDLED_FX;
   let checked = 0;
   for (const d of report.destinations) {
     if (!covered.includes(d.code)) continue;
     if (d.proposedChargedEgp === null) continue;
-    const engine = convert(shippingCost(d.code, 1), SHIPPING.currency, HOME_CURRENCY, BUNDLED_FX);
+    const engine = convert(shippingCost(d.code, 1), SHIPPING.currency, HOME_CURRENCY, reportFx);
     assert.ok(Math.abs(engine - d.proposedChargedEgp) <= 1, `${d.code}: report says ${d.proposedChargedEgp} EGP, the engine charges ${engine}`);
     checked += 1;
   }
