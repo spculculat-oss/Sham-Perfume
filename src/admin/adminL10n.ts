@@ -1676,6 +1676,89 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   '· خلفية العالم الحرارية الحية': { en: '· Live World Thermal Background' },
   'خلفية الصفحة الحرارية: شغّالة': { en: 'Page Thermal Backdrop: ON' },
   'خلفية الصفحة الحرارية: مخفية': { en: 'Page Thermal Backdrop: OFF' },
+
+  // ── Colored Country Thermal Map, Exact Entry Pinpoints & 6 Counters ──
+  'إحداثيات حية دقيقة': { en: 'Exact Edge Coordinates' },
+  'رصد المدينة': { en: 'City Match' },
+  'نطاق التوقيت': { en: 'Timezone Hub' },
+  'مركز الدولة': { en: 'Country Capital' },
+  'خريطة دول العالم الملونة ورصد نقاط الدخول الدقيقة': { en: 'Colored World Countries Map & Exact Entry Pinpoints' },
+  '182 دولة مفصولة + رصد المدن': { en: '182 Separated Countries + City Radar' },
+  'كل دولة مفصولة بحدودها ولونها الحراري — اضغط على أي دولة لتقريبها ورؤية المدن وأماكن دخول كل زائر بداخلها بالضبط': {
+    en: 'Every country is separated by its real borders and thermal color — click any country to zoom in and see exact visitor entry cities inside it.',
+  },
+  'الإجمالي التراكمي': { en: 'All-Time Total' },
+  'فصل ألوان الدول: مفعّل': { en: 'Country Color Separation: ON' },
+  'تلوين الدول النشطة فقط': { en: 'Active Countries Only' },
+  'نقاط دخول المدن: ظاهرة': { en: 'City Entry Pins: Visible' },
+  'نقاط دخول المدن: مخفية': { en: 'City Entry Pins: Hidden' },
+  'ابحث عن دولة أو مدينة دخول…': { en: 'Search country or entry city…' },
+  'زيارة': { en: 'visits' },
+  'خريطة الـ 182 دولة ملونة وجاهزة — 0 زيارة مسجلة حالياً': { en: '182-Country Colored Map Ready — 0 Visits Recorded Yet' },
+  'كل دولة مرسومة بحدودها المستقلة ولونها المميز بدون أي أرقام وهمية. فور دخول أي زائر حقيقي ستظهر نقطة مدينته ومحافظته وإحداثياته هنا لحظياً.': {
+    en: 'Every country is drawn with independent borders and distinct coloring without fake numbers. As visitors enter, their exact city, region, and coordinates light up immediately.',
+  },
+  'متواجدون الآن لحظياً: {n}': { en: 'Online Right Now: {n}' },
+  'مقياس الحرارة اللوني للدول:': { en: 'Country Thermal Scale:' },
+  'علامة الاستهداف = مكان دخول الزائر داخل الدولة': { en: 'Target Reticle = Exact Visitor Entry Inside Country' },
+  'إلغاء تحديد الدولة وعرض العالم': { en: 'Clear Country & Show Full World' },
+  'مناطق الدخول المرصودة:': { en: 'Detected Entry Locations:' },
+  'أماكن الدخول المرصودة داخل {country}:': { en: 'Detected Entry Locations Inside {country}:' },
+  'لم تُسجّل نقاط دخول فرعية داخل هذه الدولة بعد — فور دخول أول زائر منها سيظهر اسم المدينة/المحافظة وإحداثياتها هنا.': {
+    en: 'No sub-country entry points recorded inside this country yet — once the first visitor enters, their city/governorate and coordinates appear here.',
+  },
+  'اضغط على أي دولة في الخريطة لتقريب حدودها وعرض كل مدن ومناطق الدخول بداخلها.': {
+    en: 'Click any country on the map to zoom into its borders and inspect all entry cities inside it.',
+  },
+  'خريطة الدول بالألوان ورصد أماكن الدخول الدقيقة + منظومة العدادات الـ 6': {
+    en: 'Colored Country Map, Exact Visitor Entry Pinpoints & 6-Counter System',
+  },
+  'فصل كل دولة بلونها الحراري المستقل، وتحديد مدينة ومحافظة دخول كل زائر بدقة على الخريطة، مع عدادات منذ إنشاء الموقع، شهري، أسبوعي، يومي، تقسيم اليوم، ولحظي مباشر.': {
+    en: 'Separates every country with its thermal color, pinpoints each visitor entry city on the map, and tracks Since Creation, Monthly, Weekly, Daily, Day-Part, and Live Real-Time counters.',
+  },
+  'العداد اللحظي': { en: 'Live Counter' },
+  'آخر 5 د: {m5} · آخر ساعة: {h1}': { en: 'Last 5m: {m5} · Last 1h: {h1}' },
+  'عداد تقسيم اليوم': { en: 'Day-Part Counter' },
+  'العداد اليومي': { en: 'Daily Counter' },
+  'العداد الأسبوعي': { en: 'Weekly Counter' },
+  'آخر 7 أيام ({u} فريد)': { en: 'Last 7 days ({u} unique)' },
+  'العداد الشهري': { en: 'Monthly Counter' },
+  'منذ إنشاء الموقع': { en: 'Since Site Creation' },
+  'منذ {date} ({d} يوم · {u} فريد)': { en: 'Since {date} ({d}d · {u} unique)' },
+  'تفصيل عداد تقسيم اليوم (الأربع فترات + ساعات اليوم الـ 24 بتوقيت القاهرة)': {
+    en: 'Day-Part Counter Breakdown (4 Day Periods + 24 Cairo Hours)',
+  },
+  'ساعة الذروة الأعلى نشاطاً: الساعة {h}:00': { en: 'Peak Activity Hour: {h}:00' },
+  'يتم رصد وتقسيم كل زيارة تلقائياً حسب ساعة وفترة الدخول على مدار اليوم.': {
+    en: 'Every visit is automatically bucketed by entry hour and period across the 24-hour day.',
+  },
+  'تقسيم اليوم الحالي': { en: 'Today Breakdown' },
+  'التقسيم التراكمي منذ الإنشاء': { en: 'Cumulative Since Creation' },
+  'العرض الكامل (الخريطة الملونة + نقاط الدخول + التقرير + الكشف)': {
+    en: 'Full View (Colored Map + Entry Points + Report + Ledger)',
+  },
+  '🌍 خريطة الدول الملونة ونقاط الدخول': { en: '🌍 Colored Country Map & Entry Pins' },
+  '📍 سجل أماكن ومدن الدخول بدقة': { en: '📍 Exact Entry Cities & Coordinates' },
+  'أماكن دخول الزوار داخل كل دولة (المدن والمحافظات والإحداثيات)': {
+    en: 'Visitor Entry Locations Inside Each Country (Cities, Regions & Coordinates)',
+  },
+  '{n} نقطة دخول': { en: '{n} entry points' },
+  'لم تُسجّل نقاط دخول داخل الدول بعد — فور دخول أي زائر ستظهر مدينته ومحافظته وإحداثياته الدقيقة هنا.': {
+    en: 'No sub-country entry points recorded yet — as soon as a visitor enters, their exact city, region, and coordinates appear here.',
+  },
+  'المدينة / منطقة الدخول': { en: 'Entry City / Region' },
+  'الإحداثيات': { en: 'Coordinates' },
+  'الزيارات': { en: 'Visits' },
+  'حصة الدولة': { en: 'Country Share' },
+  'رادار عمليات الدخول الأخيرة لحظة بلحظة': { en: 'Live Recent Entry Radar' },
+  'متواجد الآن: {n}': { en: 'Online now: {n}' },
+  'سجل الرصد اللحظي جاهز — يعرض آخر 50 عملية دخول بمكانها الدقيق داخل الدولة والقسم الذي دخله الزائر بدون كشف هويته.': {
+    en: 'Live entry radar ready — lists the latest 50 entry events with exact sub-country location and visited section while preserving visitor privacy.',
+  },
+  'بمجرد تصفح الزوار لأقسام المنصة، يُدرج كل بلد ومدن الدخول بداخله تلقائياً هنا بترتيبه وعدد زياراته ونسبته المئوية ويضيء على الخريطة الملونة أعلاه.': {
+    en: 'As visitors browse the platform, every country and its entry cities appear here automatically with rank, visits, and share, lighting up on the colored map above.',
+  },
+  'أبرز مدينة دخول': { en: 'Top Entry City' },
 };
 
 let currentLang: SupportedLanguage = 'ar';

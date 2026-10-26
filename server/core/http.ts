@@ -601,6 +601,7 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json({
       ok: true,
       report,
+      liveNow: census.liveNow(),
       statement: buildPublicStatement(report),
       storage: { kind: durable.kind, persistent: durable.persistent, error: storeError },
     });

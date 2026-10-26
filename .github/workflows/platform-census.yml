@@ -49,7 +49,7 @@ jobs:
     timeout-minutes: 15
     env:
       PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
-      SHAM_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || vars.SHAM_API_BASE_URL || '' }}
+      SHAM_API_BASE_URL: ${{ vars.PAGES_API_BASE_URL || vars.VITE_API_BASE_URL || vars.SHAM_API_BASE_URL || 'https://sham-perfume-49bf.vercel.app' }}
     steps:
       - name: Checkout source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
