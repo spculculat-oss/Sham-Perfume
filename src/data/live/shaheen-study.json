@@ -1,0 +1,827 @@
+{
+ "version": 1,
+ "agent": "tutor",
+ "updatedAt": "2026-10-26T07:11:34.322Z",
+ "targets": [
+  {
+   "kind": "carrier",
+   "id": "carrier:poslaju_intl",
+   "labelAr": "بوس لاجو الدولي (بريد ماليزيا)",
+   "whyAr": "«بوس لاجو الدولي (بريد ماليزيا)»: لسه مش مؤكد إنها بتقبل العطور (UN1266) — وهي اللي بتحمل 73 وجهة",
+   "specialistId": "specialist_business",
+   "priority": 95
+  },
+  {
+   "kind": "destination",
+   "id": "destination:MY",
+   "labelAr": "ماليزيا",
+   "whyAr": "ماليزيا: مفيش تعريفة شحن منشورة — سعرها منطقة، ومفيش وعد إنه يغطي التكلفة",
+   "specialistId": "specialist_business",
+   "priority": 90
+  },
+  {
+   "kind": "consistency",
+   "id": "immune:pricing-rule",
+   "labelAr": "pricing-rule",
+   "whyAr": "36 منتج سعره أقل من قاعدة صاحب المتجر (التكلفة × ١.٥)",
+   "specialistId": "specialist_business",
+   "priority": 85
+  },
+  {
+   "kind": "destination",
+   "id": "destination:AE",
+   "labelAr": "الإمارات",
+   "whyAr": "الإمارات: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:AL",
+   "labelAr": "AL",
+   "whyAr": "AL: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:AT",
+   "labelAr": "AT",
+   "whyAr": "AT: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:BA",
+   "labelAr": "BA",
+   "whyAr": "BA: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:BE",
+   "labelAr": "BE",
+   "whyAr": "BE: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:BG",
+   "labelAr": "BG",
+   "whyAr": "BG: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:BH",
+   "labelAr": "البحرين",
+   "whyAr": "البحرين: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:BN",
+   "labelAr": "BN",
+   "whyAr": "BN: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:CA",
+   "labelAr": "كندا",
+   "whyAr": "كندا: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:CH",
+   "labelAr": "سويسرا",
+   "whyAr": "سويسرا: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:CY",
+   "labelAr": "CY",
+   "whyAr": "CY: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:CZ",
+   "labelAr": "CZ",
+   "whyAr": "CZ: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:DE",
+   "labelAr": "DE",
+   "whyAr": "DE: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:DJ",
+   "labelAr": "جيبوتي",
+   "whyAr": "جيبوتي: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:DK",
+   "labelAr": "DK",
+   "whyAr": "DK: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:DZ",
+   "labelAr": "الجزائر",
+   "whyAr": "الجزائر: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:EE",
+   "labelAr": "EE",
+   "whyAr": "EE: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:ES",
+   "labelAr": "ES",
+   "whyAr": "ES: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:FI",
+   "labelAr": "FI",
+   "whyAr": "FI: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:FR",
+   "labelAr": "FR",
+   "whyAr": "FR: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:GB",
+   "labelAr": "بريطانيا",
+   "whyAr": "بريطانيا: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:GR",
+   "labelAr": "GR",
+   "whyAr": "GR: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:HR",
+   "labelAr": "HR",
+   "whyAr": "HR: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:HU",
+   "labelAr": "HU",
+   "whyAr": "HU: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:ID",
+   "labelAr": "إندونيسيا",
+   "whyAr": "إندونيسيا: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:IE",
+   "labelAr": "IE",
+   "whyAr": "IE: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:IQ",
+   "labelAr": "العراق",
+   "whyAr": "العراق: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:IS",
+   "labelAr": "IS",
+   "whyAr": "IS: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:IT",
+   "labelAr": "IT",
+   "whyAr": "IT: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:KH",
+   "labelAr": "KH",
+   "whyAr": "KH: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:KM",
+   "labelAr": "جزر القمر",
+   "whyAr": "جزر القمر: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:KW",
+   "labelAr": "الكويت",
+   "whyAr": "الكويت: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:LA",
+   "labelAr": "LA",
+   "whyAr": "LA: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:LB",
+   "labelAr": "لبنان",
+   "whyAr": "لبنان: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:LT",
+   "labelAr": "LT",
+   "whyAr": "LT: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:LU",
+   "labelAr": "LU",
+   "whyAr": "LU: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:LV",
+   "labelAr": "LV",
+   "whyAr": "LV: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:LY",
+   "labelAr": "ليبيا",
+   "whyAr": "ليبيا: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:MA",
+   "labelAr": "المغرب",
+   "whyAr": "المغرب: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:MD",
+   "labelAr": "MD",
+   "whyAr": "MD: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:ME",
+   "labelAr": "ME",
+   "whyAr": "ME: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:MK",
+   "labelAr": "MK",
+   "whyAr": "MK: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:MM",
+   "labelAr": "ميانمار",
+   "whyAr": "ميانمار: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:MR",
+   "labelAr": "موريتانيا",
+   "whyAr": "موريتانيا: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:MT",
+   "labelAr": "MT",
+   "whyAr": "MT: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:MX",
+   "labelAr": "المكسيك",
+   "whyAr": "المكسيك: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:MY",
+   "labelAr": "ماليزيا",
+   "whyAr": "ماليزيا: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:NL",
+   "labelAr": "NL",
+   "whyAr": "NL: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:NO",
+   "labelAr": "النرويج",
+   "whyAr": "النرويج: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:OM",
+   "labelAr": "عمان",
+   "whyAr": "عمان: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:PH",
+   "labelAr": "الفلبين",
+   "whyAr": "الفلبين: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:PL",
+   "labelAr": "PL",
+   "whyAr": "PL: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:PS",
+   "labelAr": "فلسطين",
+   "whyAr": "فلسطين: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:PT",
+   "labelAr": "PT",
+   "whyAr": "PT: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:QA",
+   "labelAr": "قطر",
+   "whyAr": "قطر: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:RO",
+   "labelAr": "RO",
+   "whyAr": "RO: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:RS",
+   "labelAr": "RS",
+   "whyAr": "RS: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:SA",
+   "labelAr": "السعودية",
+   "whyAr": "السعودية: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:SD",
+   "labelAr": "السودان",
+   "whyAr": "السودان: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:SE",
+   "labelAr": "SE",
+   "whyAr": "SE: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:SG",
+   "labelAr": "سنغافورة",
+   "whyAr": "سنغافورة: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:SI",
+   "labelAr": "SI",
+   "whyAr": "SI: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:SK",
+   "labelAr": "SK",
+   "whyAr": "SK: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:SO",
+   "labelAr": "الصومال",
+   "whyAr": "الصومال: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:SY",
+   "labelAr": "سوريا",
+   "whyAr": "سوريا: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:TH",
+   "labelAr": "تايلاند",
+   "whyAr": "تايلاند: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:TN",
+   "labelAr": "تونس",
+   "whyAr": "تونس: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:TR",
+   "labelAr": "تركيا",
+   "whyAr": "تركيا: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:UA",
+   "labelAr": "أوكرانيا",
+   "whyAr": "أوكرانيا: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:VN",
+   "labelAr": "فيتنام",
+   "whyAr": "فيتنام: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  },
+  {
+   "kind": "destination",
+   "id": "destination:YE",
+   "labelAr": "اليمن",
+   "whyAr": "اليمن: الجمارك لسه مش متأكدين منها — والزائر لازم يسمع «بتتأكد قبل الدفع» مش رقم مخترع",
+   "specialistId": "specialist_business",
+   "priority": 60
+  }
+ ],
+ "questions": [
+  {
+   "id": "q-ship-EG",
+   "question": "الشحن لـمصر بكام؟ ومن أي شركة؟",
+   "kind": "shipping_cost",
+   "expected": [
+    "1876",
+    "بوس لاجو الدولي (بريد ماليزيا)"
+   ],
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "specialistId": "specialist_business",
+   "targetId": "destination:EG"
+  },
+  {
+   "id": "q-customs-EG",
+   "question": "جمارك مصر كام في المية؟",
+   "kind": "customs",
+   "expected": [
+    "14"
+   ],
+   "source": "src/data/customs.json",
+   "specialistId": "specialist_business",
+   "targetId": "destination:EG"
+  },
+  {
+   "id": "q-ship-SA",
+   "question": "الشحن لـالسعودية بكام؟ ومن أي شركة؟",
+   "kind": "shipping_cost",
+   "expected": [
+    "1667",
+    "بوس لاجو الدولي (بريد ماليزيا)"
+   ],
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "specialistId": "specialist_business",
+   "targetId": "destination:SA"
+  },
+  {
+   "id": "q-ship-AE",
+   "question": "الشحن لـالإمارات بكام؟ ومن أي شركة؟",
+   "kind": "shipping_cost",
+   "expected": [
+    "1667",
+    "بوس لاجو الدولي (بريد ماليزيا)"
+   ],
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "specialistId": "specialist_business",
+   "targetId": "destination:AE"
+  },
+  {
+   "id": "q-ship-KW",
+   "question": "الشحن لـالكويت بكام؟ ومن أي شركة؟",
+   "kind": "shipping_cost",
+   "expected": [
+    "1563",
+    "بوس لاجو الدولي (بريد ماليزيا)"
+   ],
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "specialistId": "specialist_business",
+   "targetId": "destination:KW"
+  },
+  {
+   "id": "q-ship-QA",
+   "question": "الشحن لـقطر بكام؟ ومن أي شركة؟",
+   "kind": "shipping_cost",
+   "expected": [
+    "1563",
+    "بوس لاجو الدولي (بريد ماليزيا)"
+   ],
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "specialistId": "specialist_business",
+   "targetId": "destination:QA"
+  },
+  {
+   "id": "q-ship-BH",
+   "question": "الشحن لـالبحرين بكام؟ ومن أي شركة؟",
+   "kind": "shipping_cost",
+   "expected": [
+    "1563",
+    "بوس لاجو الدولي (بريد ماليزيا)"
+   ],
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "specialistId": "specialist_business",
+   "targetId": "destination:BH"
+  },
+  {
+   "id": "q-ship-OM",
+   "question": "الشحن لـعمان بكام؟ ومن أي شركة؟",
+   "kind": "shipping_cost",
+   "expected": [
+    "3119",
+    "بوس لاجو الدولي (بريد ماليزيا)"
+   ],
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "specialistId": "specialist_business",
+   "targetId": "destination:OM"
+  },
+  {
+   "id": "q-ship-JO",
+   "question": "الشحن لـالأردن بكام؟ ومن أي شركة؟",
+   "kind": "shipping_cost",
+   "expected": [
+    "1563",
+    "بوس لاجو الدولي (بريد ماليزيا)"
+   ],
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "specialistId": "specialist_business",
+   "targetId": "destination:JO"
+  },
+  {
+   "id": "q-customs-JO",
+   "question": "جمارك الأردن كام في المية؟",
+   "kind": "customs",
+   "expected": [
+    "16"
+   ],
+   "source": "src/data/customs.json",
+   "specialistId": "specialist_business",
+   "targetId": "destination:JO"
+  },
+  {
+   "id": "q-ship-LB",
+   "question": "الشحن لـلبنان بكام؟ ومن أي شركة؟",
+   "kind": "shipping_cost",
+   "expected": [
+    "3308",
+    "بوس لاجو الدولي (بريد ماليزيا)"
+   ],
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "specialistId": "specialist_business",
+   "targetId": "destination:LB"
+  },
+  {
+   "id": "q-ship-IQ",
+   "question": "الشحن لـالعراق بكام؟ ومن أي شركة؟",
+   "kind": "shipping_cost",
+   "expected": [
+    "3687",
+    "بوس لاجو الدولي (بريد ماليزيا)"
+   ],
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "specialistId": "specialist_business",
+   "targetId": "destination:IQ"
+  },
+  {
+   "id": "q-recall-specialist_science-80",
+   "question": "ايه هي قوانين نيوتن التلاتة للحركة؟",
+   "kind": "rule",
+   "expected": [
+    "القانون",
+    "القصور"
+   ],
+   "source": "src/data/live/shaheen-memory.json",
+   "specialistId": "specialist_science",
+   "targetId": "specialist:specialist_science"
+  },
+  {
+   "id": "q-recall-specialist_scents-81",
+   "question": "اشرحلي طريقة استخدام العطر",
+   "kind": "rule",
+   "expected": [
+    "واتركه",
+    "فالفرك"
+   ],
+   "source": "src/data/live/shaheen-memory.json",
+   "specialistId": "specialist_scents",
+   "targetId": "specialist:specialist_scents"
+  },
+  {
+   "id": "q-recall-specialist_culture-82",
+   "question": "ايه هي المغالطة المنطقية؟",
+   "kind": "rule",
+   "expected": [
+    "المغالطة",
+    "المنطقية"
+   ],
+   "source": "src/data/live/shaheen-memory.json",
+   "specialistId": "specialist_culture",
+   "targetId": "specialist:specialist_culture"
+  },
+  {
+   "id": "q-recall-specialist_security-83",
+   "question": "ايه هو التشفير؟",
+   "kind": "rule",
+   "expected": [
+    "التشفير",
+    "البيانات"
+   ],
+   "source": "src/data/live/shaheen-memory.json",
+   "specialistId": "specialist_security",
+   "targetId": "specialist:specialist_security"
+  },
+  {
+   "id": "q-recall-specialist_business-84",
+   "question": "ايه دور اتفاقيات التجارة الحرة في الجمارك؟",
+   "kind": "rule",
+   "expected": [
+    "الجمارك",
+    "بتتحدد"
+   ],
+   "source": "src/data/live/shaheen-memory.json",
+   "specialistId": "specialist_business",
+   "targetId": "specialist:specialist_business"
+  },
+  {
+   "id": "q-recall-specialist_health-85",
+   "question": "ايه الفرق بين الفيروس والبكتيريا؟",
+   "kind": "rule",
+   "expected": [
+    "الأساسي",
+    "الفيروس"
+   ],
+   "source": "src/data/live/shaheen-memory.json",
+   "specialistId": "specialist_health",
+   "targetId": "specialist:specialist_health"
+  }
+ ],
+ "covered": {
+  "destinations": 74,
+  "explained": 74,
+  "priced": 73,
+  "verifiedCustoms": 3
+ },
+ "summaryAr": "المعلم: 74 حلقة ضعيفة اتحولت لخطة دراسة · 18 سؤال امتحان بإجابات موثّقة",
+ "planAr": [
+  "74 حلقة ضعيفة في العقل، أهمها: بوس لاجو الدولي (بريد ماليزيا)، ماليزيا، pricing-rule، الإمارات، AL — كل واحدة بقت مهمة دراسة لمتخصصها.",
+  "18 سؤال امتحان جاهز، إجابته مكتوبة في الملفات نفسها — الممتحن بيصحح عليها من غير أي تخمين.",
+  "العمق: 74 من 74 وجهة ليها درس بيشرحها · 73 بسعر شحن منشور · 3 بجمارك مؤكدة."
+ ]
+}

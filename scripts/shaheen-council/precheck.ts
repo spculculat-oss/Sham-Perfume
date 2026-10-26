@@ -348,6 +348,62 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       if (Number.isFinite(health) && health < 100) f.push({ level: health < 70 ? 'warn' : 'note', problem: `صحة العقل ${health}/100 — ${String(r.summaryAr || '')}`, fix: 'كل تعارض في تقرير المناعة بيسمّي طرفيه والإصلاح' });
       break;
     }
+    case 'tutor': {
+      // «المعلم»: خطة الدراسة نفسها — لو في حلقة ضعيفة من غير خطة، دي مشكلة؛ لو الخطة كبيرة، دي شغل للمدرسة.
+      const targets = arr(r.targets).map(o);
+      const questions = arr(r.questions).map(o);
+      const covered = o(r.covered);
+      const dests = Number(covered.destinations) || 0;
+      const explained = Number(covered.explained) || 0;
+      const priced = Number(covered.priced) || 0;
+      const verified = Number(covered.verifiedCustoms) || 0;
+      if (!targets.length) f.push({ level: 'warn', problem: 'خطة الدراسة فاضية — العقل مالوش حلقات ضعيفة مسجّلة، وده مش صحيح في الغالب', fix: 'المعلم يقرا شبكة العقل وتقرير المناعة من جديد' });
+      if (dests && !questions.length) f.push({ level: 'warn', problem: `${dests} وجهة في الخطة من غير أي سؤال امتحان — يعني مفيش طريقة نتأكد إن العقل اتعلّم`, fix: 'المعلم يبني سؤال موثّق لكل هدف' });
+      if (dests > explained) f.push({ level: 'note', idea: `${dests - explained} وجهة لسه من غير درس مكتوب يشرحها — المدرسة تاخدها من الخطة` });
+      if (dests > priced) f.push({ level: 'note', idea: `${dests - priced} وجهة من غير تعريفة شحن منشورة — «كشّاف الشحن» يدوّر مصدر` });
+      if (dests > verified) f.push({ level: 'note', idea: `الجمارك المؤكدة ${verified} وجهة بس من ${dests} — أي جمارك «بتتأكد» لازم تتقال للزائر كده` });
+      if (targets.length) f.push({ level: 'note', idea: `أول 3 أهداف: ${targets.slice(0, 3).map((t) => String(t.labelAr)).join('، ')}` });
+      break;
+    }
+    case 'examiner': {
+      // «الممتحن»: درجة الذكاء رقم واحد — تحت 60 إنذار، وأضعف متخصص هو أول اللي يتذاكر.
+      const iq = Number(r.iq);
+      const asked = Number(r.asked) || 0;
+      const correct = Number(r.correct) || 0;
+      if (Number.isFinite(iq)) {
+        if (iq < 60) f.push({ level: 'warn', problem: `درجة الذكاء ${iq}/100 — العقل لسه مش مستقر على أرقامه`, fix: 'خطة الدراسة تبدأ بأضعف متخصص، والامتحان يتكرر كل يوم' });
+        else if (iq < 85) f.push({ level: 'note', problem: `درجة الذكاء ${iq}/100 (${correct}/${asked})`, fix: 'كل سؤال فاته راجع للمعلم كهدف دراسة' });
+        else f.push({ level: 'note', idea: `درجة الذكاء ${iq}/100 — ${correct} من ${asked} بمصدرهم` });
+      } else f.push({ level: 'warn', problem: 'تقرير الممتحن من غير درجة ذكاء', fix: 'الممتحن يعيد الامتحان ويكتب درجة من 100' });
+      const weakest = arr(r.bySpecialist).map(o).filter((x) => Number(x.asked) > 0).sort((a, b) => Number(a.percent) - Number(b.percent))[0];
+      if (weakest && Number(weakest.percent) < 60) f.push({ level: 'note', problem: `أضعف متخصص: ${String(weakest.nameAr)} (${Number(weakest.percent)}%)`, fix: 'دروسه في المدرسة تتكتب الأول قبل أي حاجة جديدة' });
+      const gaps = Number(r.fromGap) || 0;
+      if (gaps) f.push({ level: 'note', idea: `${gaps} سؤال اتجاوب «فجوة» — المعنى إن المعلومة ناقصة في الملفات مش في الوكيل` });
+      break;
+    }
+    case 'reflex': {
+      // «الانعكاس»: كل وجهة لازم يكون لزائرها إجابة فورية بنفس رقم محرك السعر.
+      const entries = arr(r.entries).map(o);
+      const shipping = entries.filter((e) => String(e.kind) === 'shipping').length;
+      const customs = entries.filter((e) => String(e.kind) === 'customs').length;
+      const noSource = entries.filter((e) => !String(e.source || '').trim() || !String(e.checkedAt || '').trim()).length;
+      if (!entries.length) f.push({ level: 'warn', problem: 'جدول الانعكاس فاضي — الزائر هيسأل عن الشحن ومش هلاقي إجابة فورية', fix: 'الانعكاس يتبني من تعريفة الشحن المنشورة' });
+      if (noSource) f.push({ level: 'warn', problem: `${noSource} إجابة فورية من غير مصدر أو تاريخ`, fix: 'أي رقم في الانعكاس لازم ياخد مصدره وتاريخه من ملف الشحن' });
+      if (entries.length) f.push({ level: 'note', idea: `${entries.length} إجابة فورية (${shipping} شحن و${customs} جمارك) بتتجاوب في الشات من غير محرك ومن غير إنترنت` });
+      break;
+    }
+    case 'ears': {
+      // «الآذان»: اللي بيتسأل فعلاً — السؤال اللي اتكرر ومحدش رد عليه هو أهم إشارة في الاجتماع.
+      const total = Number(r.total) || 0;
+      const pending = Number(r.pending) || 0;
+      const dropped = Number(r.dropped) || 0;
+      const unmet = arr(r.unmetAr).map(String);
+      if (!total) f.push({ level: 'warn', problem: 'الآذان مقرتش أي سؤال حقيقي — يا إما الذاكرة فاضية يا إما القراءة باظت', fix: 'الآذان تقرا ذاكرة شاهين كاملة كل يوم' });
+      if (pending) f.push({ level: 'note', problem: `${pending} سؤال من ${total} لسه من غير جواب`, fix: 'أول واحد يرد عليهم متخصصهم في نفس اليوم' });
+      for (const q of unmet.slice(0, 3)) f.push({ level: 'note', idea: `سؤال بيتكرر ومفيش له درس: «${q}»` });
+      if (total) f.push({ level: 'note', idea: `${total} سؤال حقيقي اتقرا (${dropped} اتشال للخصوصية) — ده اللي الزوار بيسألوه فعلاً` });
+      break;
+    }
     case 'carriers': {
       // «كشّاف الشحن»: أخطاء التسعير اللي بيكررها كل تشغيل + أي بديل أرخص موثّق. الأسعار قرار صاحب المتجر.
       const errs = arr(r.errors).map(o);

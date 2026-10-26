@@ -858,15 +858,19 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
           ar
             ? `سعر الشحن: ${fmt(found.proposedChargedEgp ?? found.chargedEgp)} ج.م (تكلفة الشركة الحقيقية${found.proposedChargedEgp ? ' + هامش التجهيز — المكسب 50% صافي' : ''})`
             : `Shipping: ${fmt(found.proposedChargedEgp ?? found.chargedEgp)} EGP (the carrier's real cost${found.proposedChargedEgp ? ' + the handling margin — the 50% stays net' : ''})`,
+          found.carrier?.nameAr
+            ? (ar ? `الشركة اللي بتشحن المسار: ${found.carrier.nameAr}` : `Carrier on this lane: ${found.carrier.nameAr}`)
+            : null,
           found.customs.verified
             ? (ar ? `الجمارك: ضريبة ${found.customs.vatPercent ?? '—'}%${found.customs.dutyPercent ? ` ورسوم ${found.customs.dutyPercent[0]}–${found.customs.dutyPercent[1]}%` : ''}${found.customs.deMinimis ? ` · إعفاء حتى ${found.customs.deMinimis}` : ''} — العميل بيتحملها` : `Customs: VAT ${found.customs.vatPercent ?? '—'}%`)
             : (ar ? 'الجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع' : 'Customs: not verified yet — confirmed before payment'),
           ...(found.customs.restricted ? [ar ? `⚠️ ${found.customs.restricted}` : `⚠️ ${found.customs.restricted}`] : []),
           ar ? 'العطر UN1266 سائل قابل للاشتعال — الشحن الجوي بحدود IATA، والسعر النهائي بيتأكد قبل الدفع.' : 'Perfume is UN1266 flammable — air limits apply, the final price is confirmed before payment.',
         ];
+        const kept = lines.filter((line): line is string => typeof line === 'string' && line.length > 0);
         return {
-          tool: 'trade_lane', observation: clip(lines.join('\n')), strength: 0.9,
-          answer: `${lines.join('\n')}\n\n_${sourceNote('knowledge', ctx.lang)}._`,
+          tool: 'trade_lane', observation: clip(kept.join('\n')), strength: 0.9,
+          answer: `${kept.join('\n')}\n\n_${sourceNote('knowledge', ctx.lang)}._`,
           source: 'knowledge',
         };
       }

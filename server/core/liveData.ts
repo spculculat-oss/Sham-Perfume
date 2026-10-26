@@ -115,6 +115,8 @@ export interface TradeLanesFile {
     proposedChargedEgp?: number | null;
     /** The carrier's real cost for the first bottle; `[low, high]` for 500 g → 1 kg. */
     costEgp?: [number, number] | null;
+    /** The carrier that actually carries this lane, with the published source it came from. */
+    carrier?: { id: string; nameAr: string; source?: string | null } | null;
     customs: { verified: boolean; vatPercent: number | null; dutyPercent: [number, number] | null; deMinimis: string | null; restricted: string | null; noteAr: string };
   }[];
   platforms: { id: string; nameAr: string; fulfilment: string; originCountry: string | null; shipsTo: string[]; products: number }[];
