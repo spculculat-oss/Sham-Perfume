@@ -89,7 +89,12 @@ const REPORT_NAMES: Record<string, [string, string]> = {
   'shaheen-news.json': ['نشرة الأخبار الحقيقية', 'Real-news bulletin'],
   'shaheen-patrol.json': ['تقرير الدورية بالتناوب', 'Rotating patrol report'],
   'carrier-scout.json': ['تقرير كشّاف الشحن (أخطاء التسعير والبدائل)', 'Carrier scout report (shipping errors and alternatives)'],
-  'shaheen-graph.json': ['شبكة عقل شاهين (العقد والحواف ودرجة العقل)', "Shaheen's mind graph (nodes, edges, brain score)"],
+
+  'curate.json': ['بطاقات المعرفة (إجابات مؤكدة بمصدر وتاريخ)', 'Knowledge cards (verified answers with source and date)'],
+  'money-audit.json': ['حارس الفلوس — مراجعة آليات الدفع', 'Money audit — payment machinery review'],
+  'senses-site.json': ['حسّاسات الموقع — البيانات الداخلية', 'Site senses — internal data'],
+  'senses-world.json': ['حسّاسات العالم — البيانات الخارجية', 'World senses — external data'],
+  'weave.json': ['الناسج — الربط بين العقل والبيانات', 'Weaver — linking mind to data'],  'shaheen-graph.json': ['شبكة عقل شاهين (العقد والحواف ودرجة العقل)', "Shaheen's mind graph (nodes, edges, brain score)"],
   'shaheen-immune.json': ['تقرير مناعة شاهين (تعارضات العقل)', 'Shaheen immune report (contradictions in the mind)'],
   'shaheen-study.json': ['خطة دراسة شاهين (الحلقات الضعيفة)', "Shaheen's study plan (weak links)"],
   'shaheen-exam.json': ['تقرير الممتحن (درجة ذكاء العقل)', "Examiner report (the mind's IQ)"],
@@ -180,6 +185,8 @@ const WORKFLOW_NAMES: Record<string, [string, string]> = {
   'shaheen-carriers.yml': ['كشّاف الشحن', 'Carrier scout'],
   'shaheen-synapse.yml': ['سينابس — شبكة العقل', 'Synapse — the mind graph'],
   'shaheen-mind.yml': ['حلقة تعلّم شاهين (المعلم والممتحن والانعكاس والآذان)', "Shaheen's learning loop (tutor, examiner, reflex, ears)"],
+  'shaheen-senses.yml': ['حسّاسات الموقع والعالم', 'Site and world senses'],
+  'shaheen-weave.yml': ['الناسج والمؤرشف', 'Weaver and curator'],
 };
 const workflowEntry = (file: string): RefugeEntry => {
   const [nameAr, nameEn] = WORKFLOW_NAMES[file] ?? [file, file];

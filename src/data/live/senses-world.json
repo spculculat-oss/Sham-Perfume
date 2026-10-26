@@ -1,0 +1,137 @@
+{
+ "version": 1,
+ "agent": "senses_world",
+ "updatedAt": "2026-10-26T08:47:31.833Z",
+ "score": 40,
+ "probes": [
+  {
+   "carrierId": "dhl_express_my",
+   "carrierNameAr": "DHL إكسبريس (ماليزيا)",
+   "originCountry": "MY",
+   "robotsTxt": {
+    "fetched": false,
+    "allowed": null,
+    "note": "لم تُجلب robots.txt (الشبكة أو الموقع)"
+   },
+   "page": {
+    "fetched": false,
+    "status": null,
+    "mentionsDangerousGoods": false,
+    "mentionsPerfume": false,
+    "mentionsPrice": false,
+    "note": ""
+   },
+   "source": "https://www.dhl.com/my-en/home/our-divisions/express.html",
+   "checkedAt": "2026-10-26T08:47:31.833Z"
+  },
+  {
+   "carrierId": "fedex_my",
+   "carrierNameAr": "فيديكس (ماليزيا)",
+   "originCountry": "MY",
+   "robotsTxt": {
+    "fetched": false,
+    "allowed": null,
+    "note": "لم تُجلب robots.txt (الشبكة أو الموقع)"
+   },
+   "page": {
+    "fetched": false,
+    "status": null,
+    "mentionsDangerousGoods": false,
+    "mentionsPerfume": false,
+    "mentionsPrice": false,
+    "note": ""
+   },
+   "source": "https://www.fedex.com/en-my/home.html",
+   "checkedAt": "2026-10-26T08:47:31.833Z"
+  },
+  {
+   "carrierId": "aramex_my",
+   "carrierNameAr": "أرامكس (ماليزيا)",
+   "originCountry": "MY",
+   "robotsTxt": {
+    "fetched": false,
+    "allowed": null,
+    "note": "لم تُجلب robots.txt (الشبكة أو الموقع)"
+   },
+   "page": {
+    "fetched": false,
+    "status": null,
+    "mentionsDangerousGoods": false,
+    "mentionsPerfume": false,
+    "mentionsPrice": false,
+    "note": ""
+   },
+   "source": "https://www.aramex.com/my/en",
+   "checkedAt": "2026-10-26T08:47:31.833Z"
+  },
+  {
+   "carrierId": "ninja_van_my",
+   "carrierNameAr": "نينجا فان (ماليزيا)",
+   "originCountry": "MY",
+   "robotsTxt": {
+    "fetched": false,
+    "allowed": null,
+    "note": "لم تُجلب robots.txt (الشبكة أو الموقع)"
+   },
+   "page": {
+    "fetched": false,
+    "status": null,
+    "mentionsDangerousGoods": false,
+    "mentionsPerfume": false,
+    "mentionsPrice": false,
+    "note": ""
+   },
+   "source": "https://www.ninjavan.co/en-my",
+   "checkedAt": "2026-10-26T08:47:31.833Z"
+  },
+  {
+   "carrierId": "jnt_my",
+   "carrierNameAr": "J&T إكسبريس (ماليزيا)",
+   "originCountry": "MY",
+   "robotsTxt": {
+    "fetched": false,
+    "allowed": null,
+    "note": "لم تُجلب robots.txt (الشبكة أو الموقع)"
+   },
+   "page": {
+    "fetched": false,
+    "status": null,
+    "mentionsDangerousGoods": false,
+    "mentionsPerfume": false,
+    "mentionsPrice": false,
+    "note": ""
+   },
+   "source": "https://www.jtexpress.my",
+   "checkedAt": "2026-10-26T08:47:31.833Z"
+  },
+  {
+   "carrierId": "aramex_ae",
+   "carrierNameAr": "أرامكس (الإمارات)",
+   "originCountry": "AE",
+   "robotsTxt": {
+    "fetched": false,
+    "allowed": null,
+    "note": "لم تُجلب robots.txt (الشبكة أو الموقع)"
+   },
+   "page": {
+    "fetched": false,
+    "status": null,
+    "mentionsDangerousGoods": false,
+    "mentionsPerfume": false,
+    "mentionsPrice": false,
+    "note": ""
+   },
+   "source": "https://www.aramex.com/ae/en",
+   "checkedAt": "2026-10-26T08:47:31.833Z"
+  }
+ ],
+ "carriers": {
+  "total": 6,
+  "reachable": 0,
+  "dgMentioned": 0,
+  "priceMentioned": 0,
+  "noSource": 0
+ },
+ "summaryAr": "حسّاسات العالم: قرأت 0 من 6 صفحة شركة،0 تذكر مواد خطر",
+ "planAr": []
+}

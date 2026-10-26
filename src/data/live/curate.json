@@ -1,0 +1,1213 @@
+{
+ "version": 1,
+ "agent": "curator",
+ "updatedAt": "2026-10-26T08:49:34.471Z",
+ "score": 97,
+ "counts": {
+  "cards": 85,
+  "fresh": 85,
+  "needsReview": 0,
+  "lowConfidence": 1
+ },
+ "cards": [
+  {
+   "id": "exam-اشرحلي طريقة استخدام",
+   "topic": "اشرحلي طريقة استخدام العطر",
+   "answerAr": "واتركه",
+   "source": "library",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 14,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الممتحن",
+    "المعلم",
+    "الآذان"
+   ]
+  },
+  {
+   "id": "exam-ايه هي المغالطة المن",
+   "topic": "ايه هي المغالطة المنطقية؟",
+   "answerAr": "المغالطة",
+   "source": "academy",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 14,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الممتحن",
+    "المعلم",
+    "الآذان"
+   ]
+  },
+  {
+   "id": "exam-ايه هو التشفير؟",
+   "topic": "ايه هو التشفير؟",
+   "answerAr": "التشفير",
+   "source": "academy",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 14,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الممتحن",
+    "المعلم",
+    "الآذان"
+   ]
+  },
+  {
+   "id": "exam-ايه دور اتفاقيات الت",
+   "topic": "ايه دور اتفاقيات التجارة الحرة في الجمارك؟",
+   "answerAr": "الجمارك",
+   "source": "knowledge",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 14,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الممتحن",
+    "المعلم",
+    "الآذان"
+   ]
+  },
+  {
+   "id": "exam-ايه الفرق بين الفيرو",
+   "topic": "ايه الفرق بين الفيروس والبكتيريا؟",
+   "answerAr": "الأساسي",
+   "source": "science",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 14,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الممتحن",
+    "المعلم",
+    "الآذان"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـمصر بكام؟",
+   "topic": "الشحن لـمصر بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـمصر: 1876 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1705 ج.م) + هامش تجهيز 171 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: ضريبة 14% بتتضاف في بلدك والعميل بيتحملها.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-جمارك مصر كام؟",
+   "topic": "جمارك مصر كام؟",
+   "answerAr": "جمارك مصر: ضريبة قيمة مضافة 14% على الطرد، والعميل بيتحملها فوق سعر الشحن.\nالرسوم الجمركية بتتحدد بالبند وبلد المنشأ، وبتتأكد قبل الدفع — مفيش رقم مخترع.\nالمصدر: src/data/customs.json",
+   "source": "src/data/customs.json",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالسعودية بكا",
+   "topic": "الشحن لـالسعودية بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالسعودية: 1667 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1516 ج.م) + هامش تجهيز 151 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالإمارات بكا",
+   "topic": "الشحن لـالإمارات بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالإمارات: 1667 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1516 ج.م) + هامش تجهيز 151 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالكويت بكام؟",
+   "topic": "الشحن لـالكويت بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالكويت: 1563 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1421 ج.م) + هامش تجهيز 142 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـقطر بكام؟",
+   "topic": "الشحن لـقطر بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـقطر: 1563 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1421 ج.م) + هامش تجهيز 142 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالبحرين بكام",
+   "topic": "الشحن لـالبحرين بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالبحرين: 1563 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1421 ج.م) + هامش تجهيز 142 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـعمان بكام؟",
+   "topic": "الشحن لـعمان بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـعمان: 3119 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2843 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالأردن بكام؟",
+   "topic": "الشحن لـالأردن بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالأردن: 1563 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1421 ج.م) + هامش تجهيز 142 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: ضريبة 16% بتتضاف في بلدك والعميل بيتحملها.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-جمارك الأردن كام؟",
+   "topic": "جمارك الأردن كام؟",
+   "answerAr": "جمارك الأردن: ضريبة قيمة مضافة 16% على الطرد، والعميل بيتحملها فوق سعر الشحن.\nالرسوم الجمركية بتتحدد بالبند وبلد المنشأ، وبتتأكد قبل الدفع — مفيش رقم مخترع.\nالمصدر: src/data/customs.json",
+   "source": "src/data/customs.json",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـلبنان بكام؟",
+   "topic": "الشحن لـلبنان بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـلبنان: 3308 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3032 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالعراق بكام؟",
+   "topic": "الشحن لـالعراق بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالعراق: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـسوريا بكام؟",
+   "topic": "الشحن لـسوريا بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـسوريا: 3214 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2937 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـفلسطين بكام؟",
+   "topic": "الشحن لـفلسطين بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـفلسطين: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـاليمن بكام؟",
+   "topic": "الشحن لـاليمن بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـاليمن: 3251 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2975 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـليبيا بكام؟",
+   "topic": "الشحن لـليبيا بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـليبيا: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـتونس بكام؟",
+   "topic": "الشحن لـتونس بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـتونس: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالجزائر بكام",
+   "topic": "الشحن لـالجزائر بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالجزائر: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالمغرب بكام؟",
+   "topic": "الشحن لـالمغرب بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالمغرب: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالسودان بكام",
+   "topic": "الشحن لـالسودان بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالسودان: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـموريتانيا بك",
+   "topic": "الشحن لـموريتانيا بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـموريتانيا: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالصومال بكام",
+   "topic": "الشحن لـالصومال بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالصومال: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـجيبوتي بكام؟",
+   "topic": "الشحن لـجيبوتي بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـجيبوتي: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـجزر القمر بك",
+   "topic": "الشحن لـجزر القمر بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـجزر القمر: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـماليزيا بكام",
+   "topic": "الشحن لـماليزيا بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـماليزيا: 332 ج.م (سعر منطقة «جنوب شرق آسيا»).\nالمسار ده لسه من غير تعريفة شركة منشورة، فالرقم تقديري من جدول المناطق وبيتأكد قبل الدفع — مفيش رقم شركة مخترع.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالعطر UN1266 (سائل قابل للاشتعال) — القبول على المسار بيتأكد قبل الدفع.\nالمصدر: src/data/shipping.json · 2026-10-26",
+   "source": "src/data/shipping.json",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـسنغافورة بكا",
+   "topic": "الشحن لـسنغافورة بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـسنغافورة: 834 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (758 ج.م) + هامش تجهيز 76 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـBN بكام؟",
+   "topic": "الشحن لـBN بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـBN: 896 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (815 ج.م) + هامش تجهيز 81 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـإندونيسيا بك",
+   "topic": "الشحن لـإندونيسيا بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـإندونيسيا: 938 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (852 ج.م) + هامش تجهيز 85 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـتايلاند بكام",
+   "topic": "الشحن لـتايلاند بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـتايلاند: 938 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (852 ج.م) + هامش تجهيز 85 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالفلبين بكام",
+   "topic": "الشحن لـالفلبين بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالفلبين: 1147 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1042 ج.م) + هامش تجهيز 104 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـفيتنام بكام؟",
+   "topic": "الشحن لـفيتنام بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـفيتنام: 1042 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (948 ج.م) + هامش تجهيز 95 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـKH بكام؟",
+   "topic": "الشحن لـKH بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـKH: 1084 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (985 ج.م) + هامش تجهيز 98 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـLA بكام؟",
+   "topic": "الشحن لـLA بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـLA: 1084 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (985 ج.م) + هامش تجهيز 98 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـميانمار بكام",
+   "topic": "الشحن لـميانمار بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـميانمار: 1667 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1516 ج.م) + هامش تجهيز 151 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـبريطانيا بكا",
+   "topic": "الشحن لـبريطانيا بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـبريطانيا: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـIE بكام؟",
+   "topic": "الشحن لـIE بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـIE: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـFR بكام؟",
+   "topic": "الشحن لـFR بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـFR: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـDE بكام؟",
+   "topic": "الشحن لـDE بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـDE: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـIT بكام؟",
+   "topic": "الشحن لـIT بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـIT: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـES بكام؟",
+   "topic": "الشحن لـES بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـES: 2397 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2179 ج.م) + هامش تجهيز 218 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـPT بكام؟",
+   "topic": "الشحن لـPT بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـPT: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـNL بكام؟",
+   "topic": "الشحن لـNL بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـNL: 2293 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2084 ج.م) + هامش تجهيز 208 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـBE بكام؟",
+   "topic": "الشحن لـBE بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـBE: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـLU بكام؟",
+   "topic": "الشحن لـLU بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـLU: 3002 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2729 ج.م) + هامش تجهيز 273 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـAT بكام؟",
+   "topic": "الشحن لـAT بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـAT: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـسويسرا بكام؟",
+   "topic": "الشحن لـسويسرا بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـسويسرا: 2710 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2463 ج.م) + هامش تجهيز 247 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـSE بكام؟",
+   "topic": "الشحن لـSE بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـSE: 2710 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2463 ج.م) + هامش تجهيز 247 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالنرويج بكام",
+   "topic": "الشحن لـالنرويج بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالنرويج: 2501 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2274 ج.م) + هامش تجهيز 227 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـDK بكام؟",
+   "topic": "الشحن لـDK بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـDK: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـFI بكام؟",
+   "topic": "الشحن لـFI بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـFI: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـIS بكام؟",
+   "topic": "الشحن لـIS بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـIS: 2564 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2331 ج.م) + هامش تجهيز 233 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـPL بكام؟",
+   "topic": "الشحن لـPL بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـPL: 3308 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3032 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـCZ بكام؟",
+   "topic": "الشحن لـCZ بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـCZ: 3251 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2975 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـSK بكام؟",
+   "topic": "الشحن لـSK بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـSK: 3251 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2975 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـHU بكام؟",
+   "topic": "الشحن لـHU بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـHU: 3308 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3032 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـRO بكام؟",
+   "topic": "الشحن لـRO بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـRO: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـBG بكام؟",
+   "topic": "الشحن لـBG بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـBG: 3251 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2975 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـGR بكام؟",
+   "topic": "الشحن لـGR بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـGR: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـHR بكام؟",
+   "topic": "الشحن لـHR بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـHR: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـSI بكام؟",
+   "topic": "الشحن لـSI بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـSI: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـRS بكام؟",
+   "topic": "الشحن لـRS بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـRS: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـBA بكام؟",
+   "topic": "الشحن لـBA بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـBA: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـME بكام؟",
+   "topic": "الشحن لـME بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـME: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـMK بكام؟",
+   "topic": "الشحن لـMK بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـMK: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـAL بكام؟",
+   "topic": "الشحن لـAL بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـAL: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـEE بكام؟",
+   "topic": "الشحن لـEE بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـEE: 3251 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2975 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـLV بكام؟",
+   "topic": "الشحن لـLV بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـLV: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـLT بكام؟",
+   "topic": "الشحن لـLT بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـLT: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـCY بكام؟",
+   "topic": "الشحن لـCY بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـCY: 3251 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2975 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـMT بكام؟",
+   "topic": "الشحن لـMT بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـMT: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـأوكرانيا بكا",
+   "topic": "الشحن لـأوكرانيا بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـأوكرانيا: 3214 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2937 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـMD بكام؟",
+   "topic": "الشحن لـMD بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـMD: 3687 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3411 ج.م) + هامش تجهيز 276 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـتركيا بكام؟",
+   "topic": "الشحن لـتركيا بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـتركيا: 1459 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1326 ج.م) + هامش تجهيز 133 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـأمريكا بكام؟",
+   "topic": "الشحن لـأمريكا بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـأمريكا: 2085 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1895 ج.م) + هامش تجهيز 190 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: ضريبة 0% بتتضاف في بلدك والعميل بيتحملها.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-جمارك أمريكا كام؟",
+   "topic": "جمارك أمريكا كام؟",
+   "answerAr": "جمارك أمريكا: ضريبة قيمة مضافة 0% على الطرد، والعميل بيتحملها فوق سعر الشحن.\nالرسوم الجمركية بتتحدد بالبند وبلد المنشأ، وبتتأكد قبل الدفع — مفيش رقم مخترع.\nالمصدر: src/data/customs.json",
+   "source": "src/data/customs.json",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـكندا بكام؟",
+   "topic": "الشحن لـكندا بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـكندا: 2293 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2084 ج.م) + هامش تجهيز 208 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-الشحن لـالمكسيك بكام",
+   "topic": "الشحن لـالمكسيك بكام؟",
+   "answerAr": "الشحن لأول زجاجة لـالمكسيك: 2856 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2596 ج.م) + هامش تجهيز 260 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "reflex-بتشحنوا العطر؟ العطر",
+   "topic": "بتشحنوا العطر؟ العطر مادة خطرة؟",
+   "answerAr": "العطر سائل قابل للاشتعال ومصنّف UN1266 (Class 3) — الشحن الجوي بيخضع لحدود IATA، وشركات كتير بترفضه إلا بتصريح مواد خطرة.\nالشركة اللي بنستخدمها (بوس لاجو الدولي (بريد ماليزيا)) لسه بنتأكد إنها بتقبل العطور على المسار — ولحد ما نتأكد، مفيش وعد شحن دولي قبل التأكيد.\nالقاعدة: السعر والتوصيل بيتأكدوا قبل الدفع، مش بعديه.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "high",
+   "usedBy": [
+    "الانعكاس",
+    "الشات"
+   ]
+  },
+  {
+   "id": "sense-shipping-zone",
+   "topic": "الشحن التقديري (منطقة)",
+   "answerAr": "السعر تقدير من جدول المناطق pending شركة منشورة — بيتأكد قبل الدفع.",
+   "source": "src/data/shipping.json",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 7,
+   "stale": false,
+   "confidence": "medium",
+   "usedBy": [
+    "الانعكاس",
+    "التجارة الدولية"
+   ]
+  },
+  {
+   "id": "sense-customs-vat",
+   "topic": "الضريبة الجمركية",
+   "answerAr": "النسبة من غير مصدر مؤكد — لا تُعرض للزائر ولا في أي وعد.",
+   "source": "src/data/customs.json",
+   "checkedAt": "2026-10-26T08:49:34.471Z",
+   "refreshAfterDays": 30,
+   "stale": false,
+   "confidence": "low",
+   "usedBy": [
+    "التجارة الدولية",
+    "المعلم"
+   ]
+  }
+ ],
+ "summaryAr": "المؤرشف: 85 بطاقة معرفة،85 طازجة، 1 ثقة منخفضة · النتيجة 97/100",
+ "planAr": [
+  "بطاقة \"الضريبة الجمركية\" ثقة منخفضة — النسبة من غير مصدر مؤكد — لا تُعرض للزائر ولا في أي وعد."
+ ]
+}
