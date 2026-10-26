@@ -16,7 +16,6 @@ import {
 import { UserProfile } from '../types/auth';
 import { completeTwoFactorLogin, confirmPasswordReset, loginUser, profileFromMember, registerUser, requestPasswordReset } from '../utils/authStorage';
 import { CommunityApiError, cx, type AuthResult, type PasskeyGetOptions, type PendingLogin } from '../community/api';
-import { facebookAccessToken, googleAccessToken, oauthConfig, prepareFacebook, prepareGoogle, type OAuthPublicConfig } from '../community/oauthLink';
 import { usePasskey, webauthnAvailable } from '../community/passkeys';
 import { WORLD_COUNTRIES } from '../data/worldCountries';
 import { localOnlyProfile } from '../utils/paymentAccess';
@@ -392,6 +391,14 @@ const S = {
   passkey_btn: { ar: 'دخول بالبصمة أو الوجه', en: 'Sign in with fingerprint or face', fr: 'Se connecter avec l’empreinte ou le visage', es: 'Iniciar con huella o rostro', it: 'Accedi con impronta o volto', de: 'Mit Fingerabdruck oder Gesicht anmelden', ru: 'Вход по отпечатку или лицу', zh: '指纹或人脸登录', tr: 'Parmak izi veya yüzle giriş', fa: 'ورود با اثر انگشت یا صورت' },
   magic_link_btn: { ar: 'الرابط السحري (بدون كلمة مرور)', en: 'Magic link (passwordless)', fr: 'Lien magique (sans mot de passe)', es: 'Enlace mágico (sin contraseña)', it: 'Link magico (senza password)', de: 'Magischer Link (passwortlos)', ru: 'Волшебная ссылка (без пароля)', zh: '魔法链接 (无密码)', tr: 'Sihirli bağlantı (şifresiz)', fa: 'لینک جادویی (بدون رمز عبور)' },
   remember_me: { ar: 'تذكرني (احفظ الجلسة)', en: 'Remember me', fr: 'Se souvenir de moi', es: 'Recuérdame', it: 'Ricordami', de: 'Angemeldet bleiben', ru: 'Запомнить меня', zh: '记住我', tr: 'Beni hatırla', fa: 'مرا به یاد آور' },
+  enable2fa_label: { ar: 'تفعيل التحقق بخطوتين (اختياري) — تضيف بصمة موقتة من تطبيق المصادقة', en: 'Enable two-step verification (optional) — adds a time-based code from your authenticator app', fr: 'Activer la vérification en 2 étapes (optionnel) — ajoute un code temporaire de votre appli d’authentification', es: 'Activar verificación en 2 pasos (opcional) — añade un código temporal de tu app de autenticación', it: 'Attiva verifica in 2 passaggi (opzionale) — aggiunge un codice temporaneo dalla tua app di autenticazione', de: 'Zwei-Schritt-Verifizierung aktivieren (optional) — fügt einen zeitbasierten Code Ihrer Authenticator-App hinzu', ru: 'Включить двухфакторную проверку (опционально) — добавляет код из приложения-аутентификатора', zh: '启用两步验证（可选）—添加身份验证器应用的时间验证码', tr: 'İki adımlı doğrulamayı etkinleştir (isteğe bağlı) — doğrulayıcı uygulamanızdan zaman bazlı kod ekler', fa: 'فعال‌سازی تأیید دو مرحله‌ای (اختیاری) — اضافه کردن کد زمانی از برنامه تأیید هویت' },
+  totp_setup_title: { ar: 'إعداد التحقق بخطوتين', en: 'Set up two-step verification', fr: 'Configurer la vérification en 2 étapes', es: 'Configurar verificación en 2 pasos', it: 'Configura verifica in 2 passaggi', de: 'Zwei-Schritt-Verifizierung einrichten', ru: 'Настроить двухфакторную проверку', zh: '设置两步验证', tr: 'İki adımlı doğrulamayı ayarla', fa: 'تنظیم تأیید دو مرحله‌ای' },
+  totp_setup_hint: { ar: 'افتح تطبيق المصادقة (جوجل أوثنتاكر، أوثي، إلخ) وأضف حساباً جديداً باستخدام الكود التالي:', en: 'Open your authenticator app (Google Authenticator, Authy, etc.) and add a new account using this code:', fr: 'Ouvrez votre appli d’authentification (Google Authenticator, Authy, etc.) et ajoutez un nouveau compte avec ce code :', es: 'Abre tu app de autenticación (Google Authenticator, Authy, etc.) y agrega una nueva cuenta con este código:', it: 'Apri la tua app di autenticazione (Google Authenticator, Authy, ecc.) e aggiungi un nuovo account con questo codice:', de: 'Öffnen Sie Ihre Authenticator-App (Google Authenticator, Authy usw.) und fügen Sie ein neues Konto mit diesem Code hinzu:', ru: 'Откройте приложение-аутентификатор (Google Authenticator, Authy и т.д.) и добавьте новый аккаунт, используя этот код:', zh: '打开身份验证器应用（Google Authenticator、Authy 等）并使用此代码添加新帐户：', tr: 'Doğrulayıcı uygulamanızı (Google Authenticator, Authy vb.) açın ve yeni bir hesabı bu kodla ekleyin:', fa: 'برنامه تأیید هویت را باز کنید (گالِ Authenticator، Authy و غیره) و با استفاده از این کد یک حساب جدید اضافه کنید:' },
+  totp_setup_copy: { ar: 'نسخ الكود', en: 'Copy code', fr: 'Copier le code', es: 'Copiar código', it: 'Copia codice', de: 'Code kopieren', ru: 'Скопировать код', zh: '复制代码', tr: 'Kodu kopyala', fa: 'کپی کد' },
+  totp_setup_copied: { ar: 'تم نسخ الكود — ألصقه في تطبيق المصادقة', en: 'Code copied — paste it in your authenticator app', fr: 'Code copié — collez-le dans votre appli d’authentification', es: 'Código copiado — pégalo en tu app de autenticación', it: 'Codice copiato — incollalo nella tua app di autenticazione', de: 'Code kopiert — fügen Sie ihn in Ihrer Authenticator-App ein', ru: 'Код скопирован — вставьте его в приложение-аутентификатор', zh: '代码已复制 — 将其粘贴到您的身份验证器应用中', tr: 'Kod kopyalandı — doğrulayıcı uygulamanıza yapıştırın', fa: 'کد کپی شد — آن را در برنامه تأیید هویت بچسبانید' },
+  totp_setup_note: { ar: 'بعد الإضافة، سيعطيك التطبيق كوداً من 6 أرقام كل 30 ثانية. ادخله عند تسجيل الدخول من جهاز جديد.', en: 'After adding, the app gives a 6-digit code every 30 seconds. Enter it when signing in from a new device.', fr: 'Après ajout, l’application génère un code à 6 chiffres toutes les 30 secondes. Saisissez-le lors de la connexion depuis un nouvel appareil.', es: 'Después de agregar, la aplicación genera un código de 6 dígitos cada 30 segundos. Ingrésalo al iniciar sesión desde un dispositivo nuevo.', it: 'Dopo aver aggiunto, l’app genera un codice a 6 cifre ogni 30 secondi. Inseriscilo durante l’accesso da un nuovo dispositivo.', de: 'Nach dem Hinzufügen generiert die App alle 30 Sekunden einen 6-stelligen Code. Geben Sie ihn bei der Anmeldung von einem neuen Gerät ein.', ru: 'После добавления приложение генерирует 6-значный код каждые 30 секунд. Введите его при входе с нового устройства.', zh: '添加后，应用每30秒生成一个6位数验证码。从新设备登录时输入该代码。', tr: 'Ekledikten sonra uygulama her 30 saniyede bir 6 haneli kod oluşturur. Yeni bir cihazdan giriş yaparken bunu girin.', fa: 'پس از اضافه کردن، برنامه هر ۳۰ ثانیه یک کد ۶ رقمی می‌دهد. هنگام ورود از یک دستگاه جدید آن را وارد کنید.' },
+  totp_setup_complete: { ar: 'اكتمل الإعداد', en: 'Setup complete', fr: 'Configuration terminée', es: 'Configuración completa', it: 'Configurazione completa', de: 'Einrichtung abgeschlossen', ru: 'Настройка завершена', zh: '设置完成', tr: 'Kurulum tamamlandı', fa: 'تنظیم به پایان رسید' },
+  totp_setup_skip: { ar: 'تجاوز الآن', en: 'Skip for now', fr: 'Passer pour l’instant', es: 'Omitir por ahora', it: 'Salta per ora', de: 'Jetzt überspringen', ru: 'Пропустить на сейчас', zh: '暂时跳过', tr: 'Şimdi geç', fa: 'فرار برای حال' },
   err_passkey_none: { ar: 'مفيش بصمة مسجلة بالبريد ده — ضيف واحدة من بوابتك', en: 'No passkey is registered for this e-mail — add one from your portal', fr: 'Aucun passkey pour cet e-mail — ajoutez-en un depuis votre portail', es: 'No hay passkey para este correo — añade uno desde tu portal', it: 'Nessun passkey per questa e-mail — aggiungine uno dal tuo portale', de: 'Kein Passkey für diese E-Mail — fügen Sie einen in Ihrem Portal hinzu', ru: 'Для этой e-mail нет passkey — добавьте его в своём портале', zh: '该邮箱没有 passkey，请从您的个人中心添加', tr: 'Bu e-posta için passkey yok — portalınızdan ekleyin', fa: 'برای این ایمیل passkey‌ای نیست — از پورتالتان اضافه کنید' },
   google_btn: { ar: 'متابعة بجوجل', en: 'Continue with Google', fr: 'Continuer avec Google', es: 'Continuar con Google', it: 'Continua con Google', de: 'Mit Google fortfahren', ru: 'Продолжить с Google', zh: '使用 Google 继续', tr: 'Google ile devam et', fa: 'ادامه با گوگل' },
   facebook_btn: { ar: 'متابعة بفيسبوك', en: 'Continue with Facebook', fr: 'Continuer avec Facebook', es: 'Continuar con Facebook', it: 'Continua con Facebook', de: 'Mit Facebook fortfahren', ru: 'Продолжить с Facebook', zh: '使用 Facebook 继续', tr: 'Facebook ile devam et', fa: 'ادامه با فیسبوک' },
@@ -419,6 +426,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [name, setName] = useState('');
   const [craftLevel, setCraftLevel] = useState<'hobbyist' | 'perfumer' | 'master_lab'>('perfumer');
   const [regionId, setRegionId] = useState('SA');
+  /** التحقق بخطوتين اختياري أثناء التسجيل — لا يُفعَّل unless يختاره المستخدم. */
+  const [enable2fa, setEnable2fa] = useState(false);
+  /** السر المؤقت لحلقة التحقق بخطوتين بعد التسجيل (يُعرض مرة واحدة). */
+  const [totpSetupSecret, setTotpSetupSecret] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -437,7 +448,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   /* Account-security steps: the two-factor code, and forgot-password (e-mail code + new password). */
-  const [stage, setStage] = useState<'auth' | 'totp' | 'phone' | 'forgot' | 'forgot_code'>('auth');
+  const [stage, setStage] = useState<'auth' | 'totp' | 'phone' | 'forgot' | 'forgot_code' | 'totp_setup'>('auth');
   const [pendingToken, setPendingToken] = useState('');
   const [code, setCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -520,8 +531,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           return;
         }
 
-        const res = await registerUser(name, email, password, craftLevel, regionId);
+        const res = await registerUser(name, email, password, craftLevel, regionId, enable2fa);
         if (res.success && res.user) {
+          if (res.totpSecret) {
+            setTotpSetupSecret(res.totpSecret);
+            toStep('totp_setup');
+            return;
+          }
           onSuccess(res.user);
           onClose();
         } else {
@@ -534,42 +550,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
 
-  /* OAuth: the provider window is the link. A typed e-mail is never sent as a token, and a failure never creates a local account. */
-  const [oauthBusy, setOauthBusy] = useState<'google'|'facebook'|''>('');
-  const [oauthCfg, setOauthCfg] = useState<OAuthPublicConfig | null>(null);
-  useEffect(() => {
-    let cancel = false;
-    oauthConfig().then((cfg) => {
-      if (cancel) return;
-      setOauthCfg(cfg);
-      if (cfg.googleClientId) void prepareGoogle().catch(() => {});
-      if (cfg.facebookAppId) void prepareFacebook(cfg.facebookAppId).catch(() => {});
-    }).catch(() => { if (!cancel) setOauthCfg({ googleClientId: null, facebookAppId: null }); });
-    return () => { cancel = true; };
-  }, []);
-  const handleOAuth = async (provider: 'google'|'facebook') => {
-    setErrorMsg(null);
-    const clientId = provider === 'google' ? oauthCfg?.googleClientId : oauthCfg?.facebookAppId;
-    if (!clientId) { setErrorMsg(L('oauth_coming')); return; }
-    setOauthBusy(provider);
-    try {
-      const token = provider === 'google' ? await googleAccessToken(clientId) : await facebookAccessToken(clientId);
-      const result = await cx<AuthResult | PendingLogin>(`/community/auth/${provider}`, { body: { accessToken: token } });
-      if ('pending' in result) {
-        setPendingToken(result.pendingToken || '');
-        toStep(result.method === 'totp' ? 'totp' : 'phone');
-        return;
-      }
-      finish(profileFromMember(result.me));
-    } catch (e) {
-      if (e instanceof Error && e.message === 'cancelled') return;
-      if (e instanceof CommunityApiError && (e.code === 'OAUTH_NOT_CONFIGURED' || e.code === 'COMMUNITY_NOT_CONFIGURED')) {
-        setErrorMsg(L('oauth_coming'));
-        return;
-      }
-      setErrorMsg(L('oauth_failed'));
-    } finally { setOauthBusy(''); }
-  };
   /* Phone 2FA: WhatsApp/SMS code (optional, suggested) */
   const [phoneBusy, setPhoneBusy] = useState(false);
   const requestPhoneCode = async () => {
@@ -810,6 +790,48 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </>
           )}
 
+          {stage === 'totp_setup' && (
+            <div className="space-y-3">
+              <div>
+                <label className="font-semibold text-stone-800 block mb-1">{currentLang === 'ar' ? 'إعداد التحقق بخطوتين' : 'Set up two-step verification'}</label>
+                <p className="text-[11px] text-stone-500 mb-2">{currentLang === 'ar' ? 'افتح تطبيق المصادقة (جوجل أوثنتاكر، أوثي، إلخ) وأضف حساباً جديداً باستخدام الكود التالي:' : 'Open your authenticator app (Google Authenticator, Authy, etc.) and add a new account using this code:'}</p>
+                <div className="bg-stone-50 border border-stone-200 rounded-xl p-3 text-center font-mono text-lg tracking-wider text-stone-900 select-text">
+                  {totpSetupSecret}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (totpSetupSecret) {
+                      navigator.clipboard.writeText(totpSetupSecret).then(() => {
+                        setErrorMsg(currentLang === 'ar' ? 'تم نسخ الكود — ألصقه في تطبيق المصادقة' : 'Code copied — paste it in your authenticator app');
+                      });
+                    }
+                  }}
+                  className="text-[11px] text-amber-800 underline cursor-pointer"
+                >
+                  {currentLang === 'ar' ? 'نسخ الكود' : 'Copy code'}
+                </button>
+              </div>
+              <p className="text-[10px] text-stone-400 leading-snug bg-stone-50 p-2 rounded-lg border border-stone-200">
+                {currentLang === 'ar' ? 'بعد الإضافة، سيعطيك التطبيق كوداً من 6 أرقام setiap 30 ثانية. ادخله عند تسجيل الدخول من جهاز جديد.' : 'After adding, the app gives a 6-digit code every 30 seconds. Enter it when signing in from a new device.'}
+              </p>
+              <button
+                type="button"
+                onClick={() => { setTotpSetupSecret(null); onClose(); }}
+                className="w-full py-3 rounded-xl bg-amber-800 hover:bg-amber-900 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
+              >
+                {currentLang === 'ar' ? 'اكتمل الإعداد' : 'Setup complete'}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setTotpSetupSecret(null); toStep('auth'); }}
+                className="w-full py-2.5 rounded-xl border border-stone-200 bg-white text-stone-600 font-semibold text-xs transition-colors hover:bg-stone-50 cursor-pointer"
+              >
+                {currentLang === 'ar' ? 'تجاوز الآن' : 'Skip for now'}
+              </button>
+            </div>
+          )}
+
           {stage === 'auth' && (
           <>
           {mode === 'register' && (
@@ -925,7 +947,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </select>
               </div>
 
-              <div className="pt-1 flex items-start gap-2"></div>
+              <div className="pt-1 flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  id="enable-2fa"
+                  checked={enable2fa}
+                  onChange={(e) => setEnable2fa(e.target.checked)}
+                  className="mt-0.5 rounded text-amber-700 focus:ring-amber-700 cursor-pointer"
+                />
+                <label htmlFor="enable-2fa" className="text-[11px] text-stone-600 leading-snug cursor-pointer select-none">
+                  {currentLang === 'ar' ? 'تفعيل التحقق بخطوتين (اختياري) — تضيف بصمة موقتة من تطبيق المصادقة' : 'Enable two-step verification (optional) — adds a time-based code from your authenticator app'}
+                </label>
+              </div>
 
               {/* Sham Security — Google/Apple/Meta practices visible */}
               <div className="rounded-xl bg-amber-50 border border-amber-200 p-2.5 text-[10px] leading-relaxed text-amber-900">
@@ -995,37 +1028,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
                 <span>{currentLang === 'ar' ? 'الرابط السحري (بدون كلمة مرور)' : 'Magic link (passwordless)'}</span>
               </button>
-            )}
-
-            {/* Google / Facebook — their window is the link. No local account is invented if it closes. */}
-            {mode === 'login' && stage === 'auth' && (
-              <div className="space-y-2">
-                <div className="flex items-center gap-3 py-1">
-                  <span className="h-px flex-1 bg-stone-200" />
-                  <span className="text-[11px] text-stone-500 bg-white px-2">{L('oauth_divider')}</span>
-                  <span className="h-px flex-1 bg-stone-200" />
-                </div>
-                <button
-                  type="button"
-                  onClick={() => void handleOAuth('google')}
-                  disabled={!!oauthBusy}
-                  className="w-full py-2.5 rounded-xl border border-[#dadce0] bg-white hover:bg-[#f8f9fa] hover:shadow-sm text-[#3c4043] font-medium text-sm transition-all cursor-pointer flex items-center justify-center gap-3 disabled:opacity-60"
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                  <span>{oauthBusy==='google' ? '…' : L('google_btn')}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => void handleOAuth('facebook')}
-                  disabled={!!oauthBusy}
-                  className="w-full py-2.5 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] hover:shadow-sm text-white font-semibold text-sm transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
-                >
-                  <svg className="w-5 h-5 bg-white rounded-full p-1" viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true"><path d="M14 8h3V4h-3c-2.76 0-5 2.24-5 5v3H6v4h3v5h4v-5h3l1-4h-4V9c0-.55.45-1 1-1z"/></svg>
-                  <span>{oauthBusy==='facebook' ? '…' : L('facebook_btn')}</span>
-                </button>
-                <p className="text-[10px] text-stone-500 text-center leading-snug px-2">{oauthCfg === null ? '…' : (oauthCfg.googleClientId || oauthCfg.facebookAppId) ? L('oauth_hint') : L('oauth_coming')}</p>
-                <p className="text-[10px] text-stone-500 text-center leading-snug px-2">{L('phone_2fa_suggest')}</p>
-              </div>
             )}
 
             {mode === 'login' && stage === 'auth' && (
