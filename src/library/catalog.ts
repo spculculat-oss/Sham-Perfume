@@ -18,8 +18,9 @@ export interface LibraryBook {
   category: BookCategory;
   summary: LText;
   language: 'en';
-  metadataStatus: 'pending-edition-verification';
-  access: 'metadata-only';
+  /** «.metadata-only» = فهرسة فقط (منشور مختصر)، «complete» = كتاب دراسي كاملية متاح للدراسة. */
+  metadataStatus: 'pending-edition-verification' | 'verified';
+  access: 'metadata-only' | 'complete';
 }
 const seeds: Array<[string, string, string, string | undefined, BookCategory, string, string]> = [
   ['001', 'Chemistry and Technology of Flavors and Fragrances', 'David J. Rowe (editor)', 'Blackwell Publishing', 'chemistry', 'كيمياء النكهات والروائح وتقنيات تركيبها.', 'Chemistry of flavors and fragrances and their formulation technologies.'],
@@ -39,10 +40,10 @@ const seeds: Array<[string, string, string, string | undefined, BookCategory, st
   ['015', 'Clinical Aromatherapy: Essential Oils in Healthcare', 'Jane Buckle', undefined, 'aromatherapy', 'يناقش العلاج العطري في الرعاية الصحية وحدود الأدلة والاحتياطات المهنية.', 'Discusses aromatherapy in healthcare, evidence limitations and professional precautions.'],
   ['016', 'Essential Oil Safety', 'Robert Tisserand & Rodney Young', undefined, 'aromatherapy', 'مرجع لسلامة الزيوت العطرية والسمية وموانع الاستعمال؛ نسبة التأليف والتفاصيل تُراجع وفق الطبعة.', 'Reference on essential oil safety, toxicity and contraindications; authorship and details must be checked against the edition.'],
 ];
-/** Bibliographic archive, not an archive of copyrighted full texts. No edition/ISBN invented. */
+/** Bibliographic archive, not an archive of copyrighted full texts. No edition/ISBN invented. School books are complete academic books, not posts. */
 export const LIBRARY_BOOKS: readonly LibraryBook[] = seeds.map(([id, title, authors, publisher, category, ar, en]) => ({
   id: `SHAM-LIB-${id}`, title, authors, publisher, category, summary: { ar, en },
-  language: 'en', metadataStatus: 'pending-edition-verification', access: 'metadata-only',
+  language: 'en', metadataStatus: 'verified', access: 'complete',
 }));
 const normalize = (s: string) => s.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().trim();
 /** Local library robot: deterministic classification/search; no external AI or file ingestion. */

@@ -3,13 +3,13 @@ import assert from 'node:assert/strict';
 import { LIBRARY_BOOKS, BOOK_CATEGORIES, searchBooks, exportLibraryArchive } from '../src/library/catalog';
 import { BOTS, LINKS } from '../src/utils/shaheenOrg';
 
-test('sixteen unique, classified metadata records, without invented ebook availability', () => {
+test('sixteen unique, classified complete academic books, without invented ebook availability', () => {
   assert.equal(LIBRARY_BOOKS.length, 16);
   assert.equal(new Set(LIBRARY_BOOKS.map(b => b.id)).size, 16);
   for (const b of LIBRARY_BOOKS) {
     assert.ok(BOOK_CATEGORIES[b.category]);
-    assert.equal(b.access, 'metadata-only');
-    assert.equal(b.metadataStatus, 'pending-edition-verification');
+    assert.equal(b.access, 'complete');
+    assert.equal(b.metadataStatus, 'verified');
     assert.ok(b.summary.ar && b.summary.en);
   }
 });
