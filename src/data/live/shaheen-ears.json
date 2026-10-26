@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "ears",
- "updatedAt": "2026-10-26T06:43:51.641Z",
+ "updatedAt": "2026-10-26T07:11:34.322Z",
  "total": 400,
  "answered": 400,
  "pending": 0,
@@ -10,12 +10,12 @@
   {
    "specialistId": "specialist_scents",
    "specialistNameAr": "د. ليان العطور",
-   "asked": 309,
+   "asked": 310,
    "pending": 0,
    "top": [
     "اشرحلي طريقة استخدام العطر",
-    "اقترح نوتات لعطر صيفي منعش للرجال",
-    "ايه الفرق بين EDP و EDT و Parfum في نسبة الزيت والثبات؟"
+    "ايه هي تصميم تركيبة شتوية شرقية؟",
+    "ايه هي تصميم تركيبة صيفية حمضية؟"
    ]
   },
   {
@@ -41,17 +41,6 @@
    ]
   },
   {
-   "specialistId": "specialist_science",
-   "specialistNameAr": "د. هند العلوم",
-   "asked": 11,
-   "pending": 0,
-   "top": [
-    "ايه هي قوانين نيوتن التلاتة للحركة؟",
-    "ايه هو الاحتمال في الرياضيات؟",
-    "ايه هو الحمض النووي DNA؟"
-   ]
-  },
-  {
    "specialistId": "specialist_health",
    "specialistNameAr": "د. سلمى الحياة",
    "asked": 10,
@@ -63,25 +52,25 @@
    ]
   },
   {
-   "specialistId": "specialist_security",
-   "specialistNameAr": "م. سيف الأمن",
-   "asked": 7,
+   "specialistId": "specialist_science",
+   "specialistNameAr": "د. هند العلوم",
+   "asked": 9,
    "pending": 0,
    "top": [
-    "What is encryption and how does it protect data?",
-    "اشرحلي الحماية من الشمس ورقم SPF",
-    "معلومات عن الحماية من الشمس ورقم SPF"
+    "ايه هي قوانين نيوتن التلاتة للحركة؟",
+    "ايه هي الطاقة النووية وازاي بتولد كهربا؟",
+    "ايه هو الاحتمال في الرياضيات؟"
    ]
   },
   {
-   "specialistId": "specialist_learning",
-   "specialistNameAr": "أ. نورة التربية",
-   "asked": 6,
+   "specialistId": "specialist_security",
+   "specialistNameAr": "م. سيف الأمن",
+   "asked": 8,
    "pending": 0,
    "top": [
-    "ايه هي المنهج التجريبي في العلوم؟",
-    "ايه هو ايه هي المنهج التجريبي في العلوم",
-    "يعني ايه ايه هي المنهج التجريبي في العلوم"
+    "ايه هو التشفير؟",
+    "What is encryption and how does it protect data?",
+    "اشرحلي الحماية من الشمس ورقم SPF"
    ]
   },
   {
@@ -96,32 +85,43 @@
    ]
   },
   {
-   "specialistId": "specialist_culture",
-   "specialistNameAr": "أ. رضا الثقافة",
-   "asked": 3,
+   "specialistId": "specialist_learning",
+   "specialistNameAr": "أ. نورة التربية",
+   "asked": 5,
    "pending": 0,
    "top": [
+    "ايه هي المنهج التجريبي في العلوم؟",
+    "ايه هو ايه هي المنهج التجريبي في العلوم",
+    "يعني ايه ايه هي المنهج التجريبي في العلوم"
+   ]
+  },
+  {
+   "specialistId": "specialist_culture",
+   "specialistNameAr": "أ. رضا الثقافة",
+   "asked": 4,
+   "pending": 0,
+   "top": [
+    "ايه هي المغالطة المنطقية؟",
     "ايه هي workflows الأتمتة الذكية؟",
-    "ايه هو ايه هي workflows الأتمتة الذكية",
-    "يعني ايه ايه هي workflows الأتمتة الذكية"
+    "ايه هو ايه هي workflows الأتمتة الذكية"
    ]
   }
  ],
  "unmetAr": [
   "ايه هي قوانين نيوتن التلاتة للحركة؟",
   "اشرحلي طريقة استخدام العطر",
-  "اقترح نوتات لعطر صيفي منعش للرجال",
-  "ايه الفرق بين EDP و EDT و Parfum في نسبة الزيت والثبات؟",
-  "كم يوم أعتق عطر فيه مسك وعنبر وعود؟",
-  "ازاي احمي حساباتي على النت؟",
   "Suggest a warm oriental perfume formula for winter with percentages",
   "Suggest a fresh citrus perfume formula for summer with percentages",
-  "ازاي الـ GPS بيعرف مكاني؟",
-  "ايه الاكل الصحي المتوازن؟"
+  "ايه هي المغالطة المنطقية؟",
+  "ايه الاكلات اللي فيها بروتين كتير؟",
+  "ايه فوايد فيتامين د؟",
+  "ايه هو التشفير؟",
+  "ايه هي الطاقة النووية وازاي بتولد كهربا؟",
+  "ازاي اعرف اني بشرب مية كفاية؟"
  ],
  "summaryAr": "الآذان: 400 سؤال حقيقي اتقرا (400 اتجاوب و0 لسه) · 0 اتشال للخصوصية · أعلى طلب عند د. ليان العطور",
  "planAr": [
   "10 سؤال بيتكرر ومفيش له درس مكتوب — مثال: «ايه هي قوانين نيوتن التلاتة للحركة؟».",
-  "أكتر طلب عند د. ليان العطور (309 سؤال) — إجاباته الجاهزة بتفضل محدّثة."
+  "أكتر طلب عند د. ليان العطور (310 سؤال) — إجاباته الجاهزة بتفضل محدّثة."
  ]
 }

@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "tutor",
- "updatedAt": "2026-10-26T06:43:51.641Z",
+ "updatedAt": "2026-10-26T07:11:34.322Z",
  "targets": [
   {
    "kind": "carrier",
@@ -764,7 +764,31 @@
    "targetId": "specialist:specialist_scents"
   },
   {
-   "id": "q-recall-specialist_business-82",
+   "id": "q-recall-specialist_culture-82",
+   "question": "ايه هي المغالطة المنطقية؟",
+   "kind": "rule",
+   "expected": [
+    "المغالطة",
+    "المنطقية"
+   ],
+   "source": "src/data/live/shaheen-memory.json",
+   "specialistId": "specialist_culture",
+   "targetId": "specialist:specialist_culture"
+  },
+  {
+   "id": "q-recall-specialist_security-83",
+   "question": "ايه هو التشفير؟",
+   "kind": "rule",
+   "expected": [
+    "التشفير",
+    "البيانات"
+   ],
+   "source": "src/data/live/shaheen-memory.json",
+   "specialistId": "specialist_security",
+   "targetId": "specialist:specialist_security"
+  },
+  {
+   "id": "q-recall-specialist_business-84",
    "question": "ايه دور اتفاقيات التجارة الحرة في الجمارك؟",
    "kind": "rule",
    "expected": [
@@ -776,7 +800,7 @@
    "targetId": "specialist:specialist_business"
   },
   {
-   "id": "q-recall-specialist_health-83",
+   "id": "q-recall-specialist_health-85",
    "question": "ايه الفرق بين الفيروس والبكتيريا؟",
    "kind": "rule",
    "expected": [
@@ -786,29 +810,6 @@
    "source": "src/data/live/shaheen-memory.json",
    "specialistId": "specialist_health",
    "targetId": "specialist:specialist_health"
-  },
-  {
-   "id": "q-recall-specialist_tech-84",
-   "question": "ايه هي بنية DNA عند واتسون وكريك؟",
-   "kind": "rule",
-   "expected": [
-    "1953"
-   ],
-   "source": "src/data/live/shaheen-memory.json",
-   "specialistId": "specialist_tech",
-   "targetId": "specialist:specialist_tech"
-  },
-  {
-   "id": "q-recall-specialist_society-85",
-   "question": "ايه هي الثورة الخضراء عند بورلوج؟",
-   "kind": "rule",
-   "expected": [
-    "الستينيات",
-    "نورمان"
-   ],
-   "source": "src/data/live/shaheen-memory.json",
-   "specialistId": "specialist_society",
-   "targetId": "specialist:specialist_society"
   }
  ],
  "covered": {
