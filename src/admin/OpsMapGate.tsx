@@ -5,7 +5,7 @@ import { AdminApiError, adminRequest, getToken, setToken } from './adminApi';
 import { isStaticHosting } from '../utils/api';
 import { OPS_CODE, verifyOpsCode } from '../utils/opsCode';
 import bundledCensus from '../data/live/platform-census.json';
-import { emptyCensusReport, readCensusReport, type CensusReport } from '../utils/platformCensus';
+import { emptyCensusReport, emptyLiveNow, readCensusReport, type CensusLiveNow, type CensusReport } from '../utils/platformCensus';
 import { loadLiveCensusSnapshot } from './PlatformCensusPanel';
 import { WorldHeatmapPageBackdrop } from './WorldVisitHeatmap';
 import ShaheenOpsMapPanel from './ShaheenOpsMapPanel';
@@ -33,11 +33,12 @@ export default function OpsMapGate() {
   const [error, setError] = useState('');
   const [fails, setFails] = useState(0);
   const [censusReport, setCensusReport] = useState<CensusReport>(() => readCensusReport(bundledCensus));
+  const [censusLive, setCensusLive] = useState<CensusLiveNow>(() => emptyLiveNow());
   const [pageBgOn, setPageBgOn] = useState(true);
 
   useEffect(() => {
     if (!authed) return;
-    void loadLiveCensusSnapshot().then((s) => setCensusReport(s.report)).catch(() => {});
+    void loadLiveCensusSnapshot().then((s) => { setCensusReport(s.report); setCensusLive(s.liveNow); }).catch(() => {});
   }, [authed]);
 
   useEffect(() => {
@@ -96,7 +97,7 @@ export default function OpsMapGate() {
   }
   return (
     <div dir={adminDir()} className={`relative min-h-screen font-sans ${pageBgOn ? 'bg-[#050b16] text-stone-900' : 'bg-stone-100 text-stone-900'}`}>
-      {pageBgOn && <WorldHeatmapPageBackdrop report={censusReport} />}
+      {pageBgOn && <WorldHeatmapPageBackdrop report={censusReport} liveNow={censusLive} />}
       <div className="relative z-10 mx-auto max-w-7xl p-3 sm:p-6">
         <div className={`mb-3 flex flex-wrap items-center justify-between gap-2 rounded-2xl px-4 py-2.5 ${pageBgOn ? 'border border-slate-700/80 bg-slate-950/80 text-slate-100 backdrop-blur-md' : ''}`}>
           <h1 className="text-lg font-black flex items-center gap-2">

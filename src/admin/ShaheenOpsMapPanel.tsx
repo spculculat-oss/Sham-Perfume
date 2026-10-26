@@ -8,7 +8,7 @@ import bundledStateOrders from '../data/owner/state-orders.json';
 import bundledCensus from '../data/live/platform-census.json';
 import { readControls, type OwnerControls } from '../utils/ownerAuthority';
 import { readStateOrders, type StateOrders } from '../utils/platformState';
-import { readCensusReport, type CensusReport } from '../utils/platformCensus';
+import { emptyLiveNow, readCensusReport, type CensusLiveNow, type CensusReport } from '../utils/platformCensus';
 import { AGENT_LINK, agentLinkOn } from '../utils/agentLink';
 import LiveWorkMap from './LiveWorkMap';
 import OpsControlRoom from './OpsControlRoom';
@@ -117,15 +117,16 @@ export default function ShaheenOpsMapPanel() {
   const [controls, setControls] = useState<OwnerControls>(() => readControls(bundledControls));
   const [stateOrders, setStateOrders] = useState<StateOrders>(() => readStateOrders(bundledStateOrders));
   const [censusReport, setCensusReport] = useState<CensusReport>(() => readCensusReport(bundledCensus));
+  const [censusLive, setCensusLive] = useState<CensusLiveNow>(() => emptyLiveNow());
   const [showBgHeatmap, setShowBgHeatmap] = useState(true);
-  const [openCensusDrawer, setOpenCensusDrawer] = useState(false);
+  const [openCensusDrawer, setOpenCensusDrawer] = useState(true);
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { const t = setInterval(() => setNow(Date.now()), 15_000); return () => clearInterval(t); }, []);
   const detailRef = useRef<HTMLDivElement>(null);
 
   const load = useCallback(() => {
     setLoading(true);
-    void loadLiveCensusSnapshot().then((snap) => setCensusReport(snap.report)).catch(() => {});
+    void loadLiveCensusSnapshot().then((snap) => { setCensusReport(snap.report); setCensusLive(snap.liveNow); }).catch(() => {});
     Promise.all([getJson('shaheen-precheck.json'), getJson('shaheen-patrol.json'), getJson('ai-supervisor.json'), getJson('controls.json', RAW_OWNER), getJson('state-orders.json', RAW_OWNER), getJson('shaheen-school.json'), getJson('shaheen-sciences.json')])
       .then(([p, q, s, c, o, sc, sci]) => {
         // The school's latest reports, for «غرفة التحكم الحية».
@@ -194,6 +195,7 @@ export default function ShaheenOpsMapPanel() {
           >
             <WorldHeatmapSvgLayer
               report={censusReport}
+              liveNow={censusLive}
               width={1000}
               height={500}
               theme="dark"
@@ -309,6 +311,7 @@ export default function ShaheenOpsMapPanel() {
             {showBgHeatmap && (
               <WorldHeatmapSvgLayer
                 report={censusReport}
+                liveNow={censusLive}
                 width={MAP.width}
                 height={MAP.height}
                 theme="dark"

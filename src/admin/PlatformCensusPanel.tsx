@@ -1,15 +1,38 @@
 /**
  * «خانة التعداد والكشف العلني — هيكل دولة المنصة» (`src/admin/PlatformCensusPanel.tsx`)
  *
- * Dedicated census slot inside the Platform State structure in Administration (`#admin` & `#owner`):
- *   1. Official Census Robot status & GitHub workflow controls (`census` / `platform-census.yml`),
- *   2. Interactive World Thermal Heatmap (`WorldVisitHeatmap`),
- *   3. Comprehensive Executive Report («التقرير التنفيذي لصاحب المنصة») — regions, sections, devices, daily timeline,
- *   4. Certified Open Statement & Country Ledger («الكشف العلني المعتمد») with copy, CSV, and JSON export.
+ * Complete Census & Colored World Map Dashboard:
+ *   1. Six Complete Counters:
+ *      - عداد منذ إنشاء الموقع (`All-Time Since Site Creation`)
+ *      - عداد شهري (`Monthly Counter`)
+ *      - عداد أسبوعي (`Weekly Counter`)
+ *      - عداد يومي (`Daily Counter`)
+ *      - عداد تقسيم اليوم (`Day-Part & 24-Hour Counter`)
+ *      - عداد لحظي (`Live Real-Time Online Counter`)
+ *   2. Colored 182-Country Thermal World Map + Exact Sub-Country Visitor Entry Pinpoints (`WorldVisitHeatmap`).
+ *   3. Exact Entry Cities / Governorates Table + Live Entry Radar Feed (`recentEntries`).
+ *   4. Executive Report & Certified Open Statement (`الكشف العلني المعتمد`) with Copy, CSV, and JSON export.
  */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  Check, Copy, Download, ExternalLink, FileSpreadsheet, FileText, Flame, Globe, RefreshCw, ShieldCheck, Smartphone, Users,
+  Calendar,
+  Check,
+  Clock,
+  Copy,
+  Crosshair,
+  Download,
+  ExternalLink,
+  FileSpreadsheet,
+  FileText,
+  Flame,
+  Globe,
+  MapPin,
+  Radio,
+  RefreshCw,
+  ShieldCheck,
+  Smartphone,
+  Sun,
+  Users,
 } from 'lucide-react';
 import bundledCensus from '../data/live/platform-census.json';
 import { OWNER } from '../utils/ownerAuthority';
@@ -19,13 +42,24 @@ import WorldVisitHeatmap from './WorldVisitHeatmap';
 import {
   CENSUS_BOT,
   CENSUS_SECTIONS,
+  DAY_PARTS,
   HEAT_COLORS,
   WORLD_REGIONS,
   buildPublicStatement,
+  cairoDay,
+  cairoHour,
+  countryNameAr,
+  countryNameEn,
   csvStatement,
+  dayPartBreakdown,
+  dayPartOfHour,
+  emptyLiveNow,
+  enrichPlaces,
+  flagOfCountry,
   mergeCensusReports,
   plainTextStatement,
   readCensusReport,
+  type CensusLiveNow,
   type CensusReport,
   type WorldRegionId,
 } from '../utils/platformCensus';
@@ -33,15 +67,33 @@ import {
 const RAW_MAIN_CENSUS = `https://raw.githubusercontent.com/${OWNER.repo}/main/src/data/live/${CENSUS_BOT.reportFile}`;
 const WORKFLOW_URL = `https://github.com/${OWNER.repo}/actions/workflows/${CENSUS_BOT.workflowFile}`;
 
-export async function loadLiveCensusSnapshot(): Promise<{ report: CensusReport; liveServerConnected: boolean; storageKind?: string }> {
+function readLiveNow(raw: unknown): CensusLiveNow | undefined {
+  if (!raw || typeof raw !== 'object') return undefined;
+  const d = raw as Record<string, unknown>;
+  return {
+    asOf: typeof d.asOf === 'string' ? d.asOf : new Date().toISOString(),
+    activeVisitors: typeof d.activeVisitors === 'number' && d.activeVisitors > 0 ? Math.floor(d.activeVisitors) : 0,
+    last5mVisits: typeof d.last5mVisits === 'number' && d.last5mVisits > 0 ? Math.floor(d.last5mVisits) : 0,
+    last60mVisits: typeof d.last60mVisits === 'number' && d.last60mVisits > 0 ? Math.floor(d.last60mVisits) : 0,
+    activeCountries: Array.isArray(d.activeCountries) ? (d.activeCountries as CensusLiveNow['activeCountries']) : [],
+    activePlaces: Array.isArray(d.activePlaces) ? (d.activePlaces as CensusLiveNow['activePlaces']) : [],
+  };
+}
+
+export async function loadLiveCensusSnapshot(): Promise<{
+  report: CensusReport;
+  liveNow: CensusLiveNow;
+  liveServerConnected: boolean;
+  storageKind?: string;
+}> {
   const now = new Date();
   let merged = readCensusReport(bundledCensus, now);
+  let live = emptyLiveNow(now.toISOString());
   let liveServerConnected = false;
   let storageKind: string | undefined;
 
   const tasks: Promise<void>[] = [];
 
-  // 1. Latest committed report on main (works even on pure static GitHub Pages)
   tasks.push(
     fetch(`${RAW_MAIN_CENSUS}?t=${Date.now()}`, { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
@@ -51,26 +103,27 @@ export async function loadLiveCensusSnapshot(): Promise<{ report: CensusReport; 
       .catch(() => {}),
   );
 
-  // 2. Live API server (`/api/census/public`), when an API backend is reachable
   const publicEndpoint = apiUrl('/api/census/public');
   const skipLocalStatic = isStaticHosting && publicEndpoint.startsWith('/');
   if (!skipLocalStatic) {
     tasks.push(
       fetch(publicEndpoint, { cache: 'no-store', credentials: 'omit' })
         .then((r) => (r.ok ? r.json() : null))
-        .then((data: { ok?: boolean; report?: unknown; storage?: { kind?: string } } | null) => {
+        .then((data: { ok?: boolean; report?: unknown; liveNow?: unknown; storage?: { kind?: string } } | null) => {
           if (data?.report) {
             merged = mergeCensusReports(merged, readCensusReport(data.report, now), now);
             liveServerConnected = true;
             storageKind = data.storage?.kind;
           }
+          const parsedLive = readLiveNow(data?.liveNow);
+          if (parsedLive) live = parsedLive;
         })
         .catch(() => {}),
     );
   }
 
   await Promise.all(tasks);
-  return { report: merged, liveServerConnected, storageKind };
+  return { report: merged, liveNow: live, liveServerConnected, storageKind };
 }
 
 function downloadBlob(filename: string, content: string, mime: string) {
@@ -91,30 +144,54 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
   const isAr = lang === 'ar';
 
   const [report, setReport] = useState<CensusReport>(() => readCensusReport(bundledCensus));
+  const [liveNow, setLiveNow] = useState<CensusLiveNow>(() => emptyLiveNow());
   const [liveConnected, setLiveConnected] = useState(false);
   const [storageKind, setStorageKind] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [activeSubTab, setActiveSubTab] = useState<'all' | 'heatmap' | 'report' | 'statement'>('all');
+  const [dayPartScope, setDayPartScope] = useState<'today' | 'all'>('today');
+  const [activeSubTab, setActiveSubTab] = useState<'all' | 'heatmap' | 'places' | 'report' | 'statement'>('all');
 
-  const refresh = useCallback(async () => {
-    setLoading(true);
+  const refresh = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
     try {
       const snap = await loadLiveCensusSnapshot();
       setReport(snap.report);
+      setLiveNow(snap.liveNow);
       setLiveConnected(snap.liveServerConnected);
       setStorageKind(snap.storageKind);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    void refresh();
+    void refresh(false);
+    const timer = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return;
+      void refresh(true);
+    }, 12_000);
+    return () => clearInterval(timer);
   }, [refresh]);
 
   const statement = useMemo(() => buildPublicStatement(report), [report]);
+  const placesList = useMemo(
+    () => enrichPlaces(report, { country: selectedCountry, mode: 'total' }),
+    [report, selectedCountry],
+  );
+  const daySplit = useMemo(() => dayPartBreakdown(report, dayPartScope), [report, dayPartScope]);
+  const maxHourCount = Math.max(1, ...daySplit.hours);
+
+  const currentCairoHour = cairoHour(new Date());
+  const currentDayPartMeta = DAY_PARTS[dayPartOfHour(currentCairoHour)];
+  const currentDayPartVisits =
+    dayPartBreakdown(report, 'today').parts.find((p) => p.id === currentDayPartMeta.id)?.visits ?? 0;
+
+  const daysSinceCreation = useMemo(() => {
+    const startMs = Date.parse(report.siteCreatedAt) || Date.parse('2026-10-12T05:24:11Z');
+    return Math.max(1, Math.ceil((Date.now() - startMs) / 86_400_000));
+  }, [report.siteCreatedAt]);
 
   const copyStatement = async () => {
     try {
@@ -133,9 +210,10 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
   const maxSectionCount = Math.max(1, ...sectionEntries.map(([, v]) => v));
 
   const regionEntries = useMemo(
-    () => (Object.keys(WORLD_REGIONS) as WorldRegionId[])
-      .map((id) => ({ id, ...WORLD_REGIONS[id], ...report.byRegion[id] }))
-      .sort((a, b) => b.visits - a.visits),
+    () =>
+      (Object.keys(WORLD_REGIONS) as WorldRegionId[])
+        .map((id) => ({ id, ...WORLD_REGIONS[id], ...report.byRegion[id] }))
+        .sort((a, b) => b.visits - a.visits),
     [report.byRegion],
   );
   const maxRegionVisits = Math.max(1, ...regionEntries.map((r) => r.visits));
@@ -147,15 +225,23 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
 
   const fmtTime = (iso: string) =>
     Date.parse(iso) > 0
-      ? new Date(iso).toLocaleString(adminLocale(), { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Africa/Cairo' })
+      ? new Date(iso).toLocaleString(adminLocale(), {
+          dateStyle: 'medium',
+          timeStyle: 'short',
+          timeZone: 'Africa/Cairo',
+        })
       : '—';
 
   return (
     <section
       id="state-census-slot"
-      className={`rounded-2xl border ${embedded ? 'border-amber-300/80 bg-gradient-to-b from-amber-50/40 via-white to-white p-4 sm:p-5' : 'border-stone-200 bg-white p-4 sm:p-6'} shadow-sm space-y-5`}
+      className={`rounded-2xl border ${
+        embedded
+          ? 'border-amber-300/80 bg-gradient-to-b from-amber-50/40 via-white to-white p-4 sm:p-5'
+          : 'border-stone-200 bg-white p-4 sm:p-6'
+      } shadow-sm space-y-5`}
     >
-      {/* Header: Census Slot in Platform State Structure */}
+      {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-3 border-b border-stone-200 pb-4">
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2">
@@ -174,17 +260,17 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
             </span>
           </div>
           <h3 className="text-base sm:text-lg font-bold text-stone-900">
-            {T('روبوت التعداد وإحصاء الزيارات — التقرير التنفيذي والكشف العلني وخريطة العالم الحرارية')}
+            {T('خريطة الدول بالألوان ورصد أماكن الدخول الدقيقة + منظومة العدادات الـ 6')}
           </h3>
           <p className="text-xs text-stone-600">
-            {T('روبوت رسمي تحت سلطة «دولة المنصة» يحصي الزيارات الحقيقية والزوار الفريدين حول العالم ويقدم تقريراً وكشفاً علنياً نزيهاً لصاحب المنصة بدون أي بيانات شخصية أو أرقام وهمية.')}
+            {T('فصل كل دولة بلونها الحراري المستقل، وتحديد مدينة ومحافظة دخول كل زائر بدقة على الخريطة، مع عدادات منذ إنشاء الموقع، شهري، أسبوعي، يومي، تقسيم اليوم، ولحظي مباشر.')}
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
-            onClick={() => void refresh()}
+            onClick={() => void refresh(false)}
             disabled={loading}
             className="inline-flex items-center gap-1.5 rounded-xl border border-stone-300 bg-white px-3 py-1.5 text-xs font-semibold text-stone-800 hover:bg-stone-50 disabled:opacity-50"
           >
@@ -203,62 +289,224 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
         </div>
       </div>
 
-      {/* KPI Summary Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-        <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-3">
-          <p className="text-[11px] text-amber-900 font-semibold">{T('إجمالي الزيارات')}</p>
-          <p className="text-2xl font-extrabold text-stone-900 mt-1">{formatAdminNumber(report.totals.visits)}</p>
-          <p className="text-[10px] text-stone-500 mt-0.5">{T('زيارة حقيقية موثقة')}</p>
+      {/* ── THE 6 REQUESTED COUNTERS («منظومة العدادات الـ 6 الكاملة») ── */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5" data-testid="six-census-counters">
+        {/* 1. عداد لحظي (Live Real-Time Counter) */}
+        <div className="rounded-2xl border-2 border-emerald-400/70 bg-gradient-to-br from-emerald-950 via-slate-950 to-slate-900 text-white p-3 shadow-sm">
+          <div className="flex items-center justify-between gap-1">
+            <p className="text-[11px] text-emerald-300 font-bold flex items-center gap-1">
+              <Radio className="h-3.5 w-3.5 text-emerald-400 animate-pulse" />
+              {T('العداد اللحظي')}
+            </p>
+            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+          </div>
+          <p className="text-2xl font-black text-emerald-300 mt-1 tabular-nums">
+            {formatAdminNumber(liveNow.activeVisitors)}
+          </p>
+          <p className="text-[10px] text-slate-300 mt-0.5">
+            {TP('آخر 5 د: {m5} · آخر ساعة: {h1}', {
+              m5: formatAdminNumber(liveNow.last5mVisits),
+              h1: formatAdminNumber(liveNow.last60mVisits),
+            })}
+          </p>
         </div>
-        <div className="rounded-xl border border-emerald-200 bg-emerald-50/70 p-3">
-          <p className="text-[11px] text-emerald-900 font-semibold">{T('الزوار الفريدون')}</p>
-          <p className="text-2xl font-extrabold text-emerald-900 mt-1">{formatAdminNumber(report.totals.uniqueVisitors)}</p>
-          <p className="text-[10px] text-stone-500 mt-0.5">{T('بدون حفظ عناوين IP')}</p>
+
+        {/* 2. عداد تقسيم اليوم (Day-Part Counter) */}
+        <div className="rounded-2xl border border-violet-200 bg-violet-50/75 p-3">
+          <p className="text-[11px] text-violet-900 font-bold flex items-center gap-1">
+            <Clock className="h-3.5 w-3.5 text-violet-700" />
+            {T('عداد تقسيم اليوم')}
+          </p>
+          <p className="text-2xl font-extrabold text-violet-950 mt-1 tabular-nums">
+            {formatAdminNumber(currentDayPartVisits)}
+          </p>
+          <p className="text-[10px] text-violet-800 font-semibold mt-0.5 truncate">
+            {isAr ? currentDayPartMeta.ar : currentDayPartMeta.en} ({isAr ? currentDayPartMeta.rangeAr : currentDayPartMeta.rangeEn})
+          </p>
         </div>
-        <div className="rounded-xl border border-sky-200 bg-sky-50/70 p-3">
-          <p className="text-[11px] text-sky-900 font-semibold">{T('زيارات اليوم')}</p>
-          <p className="text-2xl font-extrabold text-sky-950 mt-1">{formatAdminNumber(report.totals.todayVisits)}</p>
-          <p className="text-[10px] text-stone-500 mt-0.5">
+
+        {/* 3. عداد يومي (Daily Counter) */}
+        <div className="rounded-2xl border border-sky-200 bg-sky-50/75 p-3">
+          <p className="text-[11px] text-sky-900 font-bold flex items-center gap-1">
+            <Sun className="h-3.5 w-3.5 text-sky-700" />
+            {T('العداد اليومي')}
+          </p>
+          <p className="text-2xl font-extrabold text-sky-950 mt-1 tabular-nums">
+            {formatAdminNumber(report.totals.todayVisits)}
+          </p>
+          <p className="text-[10px] text-stone-600 mt-0.5">
             {TP('{n} زائر فريد اليوم', { n: formatAdminNumber(report.totals.todayUnique) })}
           </p>
         </div>
-        <div className="rounded-xl border border-stone-200 bg-stone-50 p-3">
-          <p className="text-[11px] text-stone-600 font-semibold">{T('آخر 7 أيام')}</p>
-          <p className="text-2xl font-extrabold text-stone-900 mt-1">{formatAdminNumber(report.totals.last7DaysVisits)}</p>
-          <p className="text-[10px] text-stone-500 mt-0.5">
+
+        {/* 4. عداد أسبوعي (Weekly Counter) */}
+        <div className="rounded-2xl border border-cyan-200 bg-cyan-50/70 p-3">
+          <p className="text-[11px] text-cyan-900 font-bold flex items-center gap-1">
+            <Calendar className="h-3.5 w-3.5 text-cyan-700" />
+            {T('العداد الأسبوعي')}
+          </p>
+          <p className="text-2xl font-extrabold text-cyan-950 mt-1 tabular-nums">
+            {formatAdminNumber(report.totals.last7DaysVisits)}
+          </p>
+          <p className="text-[10px] text-stone-600 mt-0.5">
+            {TP('آخر 7 أيام ({u} فريد)', { u: formatAdminNumber(report.totals.last7DaysUnique) })}
+          </p>
+        </div>
+
+        {/* 5. عداد شهري (Monthly Counter) */}
+        <div className="rounded-2xl border border-indigo-200 bg-indigo-50/70 p-3">
+          <p className="text-[11px] text-indigo-900 font-bold flex items-center gap-1">
+            <Calendar className="h-3.5 w-3.5 text-indigo-700" />
+            {T('العداد الشهري')}
+          </p>
+          <p className="text-2xl font-extrabold text-indigo-950 mt-1 tabular-nums">
+            {formatAdminNumber(report.totals.thisMonthVisits)}
+          </p>
+          <p className="text-[10px] text-stone-600 mt-0.5">
             {TP('آخر 30 يوماً: {n}', { n: formatAdminNumber(report.totals.last30DaysVisits) })}
           </p>
         </div>
-        <div className="rounded-xl border border-indigo-200 bg-indigo-50/60 p-3">
-          <p className="text-[11px] text-indigo-900 font-semibold">{T('دول العالم النشطة')}</p>
-          <p className="text-2xl font-extrabold text-indigo-950 mt-1">{formatAdminNumber(report.totals.countriesCount)}</p>
-          <p className="text-[10px] text-stone-500 mt-0.5">{T('دولة مسجلة بالخريطة')}</p>
-        </div>
-        <div className="rounded-xl border border-purple-200 bg-purple-50/60 p-3">
-          <p className="text-[11px] text-purple-900 font-semibold">{T('الأقاليم القارية')}</p>
-          <p className="text-2xl font-extrabold text-purple-950 mt-1">
-            {formatAdminNumber(report.totals.regionsCount)} <span className="text-xs font-normal text-stone-500">/ {formatAdminNumber(6)}</span>
+
+        {/* 6. عداد منذ إنشاء الموقع (All-Time Counter Since Site Creation) */}
+        <div className="rounded-2xl border-2 border-amber-300 bg-amber-50/85 p-3">
+          <p className="text-[11px] text-amber-950 font-bold flex items-center gap-1">
+            <Flame className="h-3.5 w-3.5 text-amber-600" />
+            {T('منذ إنشاء الموقع')}
           </p>
-          <p className="text-[10px] text-stone-500 mt-0.5">{T('آخر تحديث:')} {fmtTime(report.updatedAt)}</p>
+          <p className="text-2xl font-black text-stone-900 mt-1 tabular-nums">
+            {formatAdminNumber(report.totals.visits)}
+          </p>
+          <p className="text-[10px] text-amber-900 font-semibold mt-0.5">
+            {TP('منذ {date} ({d} يوم · {u} فريد)', {
+              date: cairoDay(report.siteCreatedAt),
+              d: formatAdminNumber(daysSinceCreation),
+              u: formatAdminNumber(report.totals.uniqueVisitors),
+            })}
+          </p>
+        </div>
+      </div>
+
+      {/* ── DAY-PART & 24-HOUR BREAKDOWN («تفصيل عداد تقسيم اليوم على مدار الـ 24 ساعة») ── */}
+      <div className="rounded-2xl border border-stone-200 bg-stone-50/80 p-4 space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h4 className="text-xs sm:text-sm font-black text-stone-900 flex items-center gap-1.5">
+              <Clock className="h-4 w-4 text-violet-700" />
+              {T('تفصيل عداد تقسيم اليوم (الأربع فترات + ساعات اليوم الـ 24 بتوقيت القاهرة)')}
+            </h4>
+            <p className="text-[11px] text-stone-500">
+              {daySplit.peakHour !== null
+                ? TP('ساعة الذروة الأعلى نشاطاً: الساعة {h}:00', { h: formatAdminNumber(daySplit.peakHour) })
+                : T('يتم رصد وتقسيم كل زيارة تلقائياً حسب ساعة وفترة الدخول على مدار اليوم.')}
+            </p>
+          </div>
+          <div className="inline-flex rounded-xl border border-stone-200 bg-white p-0.5 text-xs">
+            <button
+              type="button"
+              onClick={() => setDayPartScope('today')}
+              className={`rounded-lg px-2.5 py-1 font-bold ${
+                dayPartScope === 'today' ? 'bg-stone-900 text-amber-200' : 'text-stone-600'
+              }`}
+            >
+              {T('تقسيم اليوم الحالي')}
+            </button>
+            <button
+              type="button"
+              onClick={() => setDayPartScope('all')}
+              className={`rounded-lg px-2.5 py-1 font-bold ${
+                dayPartScope === 'all' ? 'bg-stone-900 text-amber-200' : 'text-stone-600'
+              }`}
+            >
+              {T('التقسيم التراكمي منذ الإنشاء')}
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+          {daySplit.parts.map((part) => {
+            const isNow = currentDayPartMeta.id === part.id && dayPartScope === 'today';
+            return (
+              <div
+                key={part.id}
+                className={`rounded-xl border p-3 bg-white ${
+                  isNow ? 'border-violet-400 ring-2 ring-violet-200' : 'border-stone-200'
+                }`}
+              >
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold text-stone-800">{isAr ? part.ar : part.en}</span>
+                  <span className="text-[10px] font-mono text-stone-500">
+                    {isAr ? part.rangeAr : part.rangeEn}
+                  </span>
+                </div>
+                <div className="mt-1.5 flex items-baseline justify-between">
+                  <b className="text-xl font-black text-stone-900 tabular-nums">{formatAdminNumber(part.visits)}</b>
+                  <span className="text-xs font-bold" style={{ color: part.color }}>
+                    {formatAdminNumber(part.sharePercent)}%
+                  </span>
+                </div>
+                <div className="mt-1.5 h-1.5 rounded-full bg-stone-100 overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all"
+                    style={{ width: `${Math.min(100, part.sharePercent)}%`, backgroundColor: part.color }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* 24-Hour Histogram */}
+        <div className="rounded-xl border border-stone-200 bg-white p-3">
+          <div className="flex items-end gap-1 h-16" dir="ltr">
+            {daySplit.hours.map((cnt, hr) => {
+              const isCurrentHr = hr === currentCairoHour && dayPartScope === 'today';
+              const partColor = DAY_PARTS[dayPartOfHour(hr)].color;
+              return (
+                <div
+                  key={hr}
+                  className="flex-1 flex flex-col items-center gap-1 min-w-0"
+                  title={`${String(hr).padStart(2, '0')}:00 — ${cnt}`}
+                >
+                  <div className="w-full h-11 bg-stone-100 rounded-t flex items-end overflow-hidden">
+                    <div
+                      className="w-full rounded-t transition-all"
+                      style={{
+                        height: cnt > 0 ? `${Math.max(12, (cnt / maxHourCount) * 100)}%` : '0%',
+                        backgroundColor: isCurrentHr ? '#10b981' : partColor,
+                      }}
+                    />
+                  </div>
+                  <span
+                    className={`text-[9px] font-mono ${
+                      isCurrentHr ? 'font-black text-emerald-700' : 'text-stone-400'
+                    }`}
+                  >
+                    {String(hr).padStart(2, '0')}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* View Switcher Pills */}
       <div className="flex flex-wrap items-center gap-1.5 border-b border-stone-200 pb-2.5 text-xs">
-        {([
-          ['all', T('العرض الكامل (الخريطة + التقرير + الكشف العلني)')],
-          ['heatmap', T('🌍 الخريطة الحرارية التفاعلية')],
-          ['report', T('📊 التقرير التنفيذي لصاحب المنصة')],
-          ['statement', T('📜 الكشف العلني المعتمد')],
-        ] as const).map(([id, label]) => (
+        {(
+          [
+            ['all', T('العرض الكامل (الخريطة الملونة + نقاط الدخول + التقرير + الكشف)')],
+            ['heatmap', T('🌍 خريطة الدول الملونة ونقاط الدخول')],
+            ['places', T('📍 سجل أماكن ومدن الدخول بدقة')],
+            ['report', T('📊 التقرير التنفيذي لصاحب المنصة')],
+            ['statement', T('📜 الكشف العلني المعتمد')],
+          ] as const
+        ).map(([id, label]) => (
           <button
             key={id}
             type="button"
             onClick={() => setActiveSubTab(id)}
             className={`rounded-xl px-3 py-1.5 font-semibold transition ${
-              activeSubTab === id
-                ? 'bg-stone-900 text-amber-200'
-                : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
+              activeSubTab === id ? 'bg-stone-900 text-amber-200' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
             }`}
           >
             {label}
@@ -266,16 +514,129 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
         ))}
       </div>
 
-      {/* 1. Interactive World Thermal Heatmap */}
+      {/* 1. Interactive Colored Country World Heatmap + Exact Entry Pinpoints */}
       {(activeSubTab === 'all' || activeSubTab === 'heatmap') && (
         <WorldVisitHeatmap
           report={report}
+          liveNow={liveNow}
           selectedCountry={selectedCountry}
           onSelectCountry={setSelectedCountry}
         />
       )}
 
-      {/* 2. Comprehensive Executive Report for the Platform Owner */}
+      {/* 2. Exact Sub-Country Visitor Entry Locations & Live Recent Entry Radar */}
+      {(activeSubTab === 'all' || activeSubTab === 'places') && (
+        <div className="grid lg:grid-cols-2 gap-3">
+          {/* Aggregated Cities & Governorates Inside Countries */}
+          <div className="rounded-2xl border border-stone-200 bg-white p-4 space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <h4 className="text-sm font-black text-stone-900 flex items-center gap-1.5">
+                <Crosshair className="w-4 h-4 text-amber-700" />
+                {T('أماكن دخول الزوار داخل كل دولة (المدن والمحافظات والإحداثيات)')}
+              </h4>
+              <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-bold text-amber-900">
+                {TP('{n} نقطة دخول', { n: formatAdminNumber(report.totals.placesCount) })}
+              </span>
+            </div>
+
+            {placesList.length === 0 ? (
+              <p className="text-xs text-stone-500 py-4">
+                {T('لم تُسجّل نقاط دخول داخل الدول بعد — فور دخول أي زائر ستظهر مدينته ومحافظته وإحداثياته الدقيقة هنا.')}
+              </p>
+            ) : (
+              <div className="overflow-x-auto max-h-80">
+                <table className="w-full text-xs text-start border-collapse">
+                  <thead>
+                    <tr className="border-b border-stone-200 text-stone-500">
+                      <th className="py-2 px-2 text-start">{T('المدينة / منطقة الدخول')}</th>
+                      <th className="py-2 px-2 text-start">{T('الدولة')}</th>
+                      <th className="py-2 px-2 text-start">{T('الإحداثيات')}</th>
+                      <th className="py-2 px-2 text-start">{T('الزيارات')}</th>
+                      <th className="py-2 px-2 text-start">{T('حصة الدولة')}</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-stone-100">
+                    {placesList.slice(0, 30).map((pl) => (
+                      <tr
+                        key={pl.id}
+                        onClick={() => setSelectedCountry(pl.country)}
+                        className="cursor-pointer hover:bg-amber-50/60"
+                      >
+                        <td className="py-2 px-2 font-bold text-stone-900">
+                          📍 {isAr ? pl.cityAr : pl.cityEn}
+                          {pl.regionAr && isAr ? (
+                            <span className="block text-[10px] font-normal text-stone-500">{pl.regionAr}</span>
+                          ) : null}
+                        </td>
+                        <td className="py-2 px-2 whitespace-nowrap">
+                          {pl.flag} {isAr ? pl.countryAr : pl.countryEn}
+                        </td>
+                        <td className="py-2 px-2 font-mono text-[11px] text-stone-600" dir="ltr">
+                          {pl.lat.toFixed(2)}°, {pl.lon.toFixed(2)}°
+                        </td>
+                        <td className="py-2 px-2 font-black text-stone-900">{formatAdminNumber(pl.visits)}</td>
+                        <td className="py-2 px-2 font-bold text-amber-800">{formatAdminNumber(pl.countrySharePercent)}%</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* Live Rolling Visitor Entry Feed */}
+          <div className="rounded-2xl border border-stone-200 bg-white p-4 space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <h4 className="text-sm font-black text-stone-900 flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-emerald-700" />
+                {T('رادار عمليات الدخول الأخيرة لحظة بلحظة')}
+              </h4>
+              <span className="text-[11px] text-emerald-700 font-bold">
+                {TP('متواجد الآن: {n}', { n: formatAdminNumber(liveNow.activeVisitors) })}
+              </span>
+            </div>
+
+            {report.recentEntries.length === 0 ? (
+              <p className="text-xs text-stone-500 py-4">
+                {T('سجل الرصد اللحظي جاهز — يعرض آخر 50 عملية دخول بمكانها الدقيق داخل الدولة والقسم الذي دخله الزائر بدون كشف هويته.')}
+              </p>
+            ) : (
+              <ul className="divide-y divide-stone-100 max-h-80 overflow-y-auto text-xs">
+                {report.recentEntries.slice(0, 25).map((entry, idx) => {
+                  const secMeta = CENSUS_SECTIONS[entry.section] || CENSUS_SECTIONS.other;
+                  return (
+                    <li
+                      key={`${entry.at}-${entry.placeId}-${idx}`}
+                      className="py-2 flex items-center justify-between gap-2"
+                    >
+                      <div className="min-w-0">
+                        <div className="font-bold text-stone-900 truncate">
+                          {flagOfCountry(entry.country)}{' '}
+                          {isAr ? entry.cityAr : entry.cityEn} —{' '}
+                          <span className="text-stone-600">
+                            {isAr ? countryNameAr(entry.country) : countryNameEn(entry.country)}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-stone-500">
+                          {isAr ? secMeta.ar : secMeta.en} ·{' '}
+                          <span className="font-mono" dir="ltr">
+                            [{entry.lat.toFixed(2)}°, {entry.lon.toFixed(2)}°]
+                          </span>
+                        </div>
+                      </div>
+                      <span className="text-[11px] text-stone-500 shrink-0 whitespace-nowrap">
+                        {fmtTime(entry.at)}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 3. Comprehensive Executive Report for the Platform Owner */}
       {(activeSubTab === 'all' || activeSubTab === 'report') && (
         <div className="space-y-4">
           <div className="rounded-2xl border border-stone-200 bg-stone-50/80 p-4 space-y-2.5">
@@ -296,9 +657,7 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
             </ul>
           </div>
 
-          {/* Breakdown Grid: Regions + Sections + Devices & Daily Timeline */}
           <div className="grid md:grid-cols-3 gap-3">
-            {/* World Regions */}
             <div className="rounded-2xl border border-stone-200 bg-white p-4 space-y-2.5">
               <h5 className="font-bold text-xs text-stone-800 flex items-center gap-1.5">
                 <Globe className="w-4 h-4 text-amber-700" />
@@ -327,7 +686,6 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
               </div>
             </div>
 
-            {/* Top Visited Sections */}
             <div className="rounded-2xl border border-stone-200 bg-white p-4 space-y-2.5">
               <h5 className="font-bold text-xs text-stone-800 flex items-center gap-1.5">
                 <Users className="w-4 h-4 text-emerald-700" />
@@ -358,18 +716,19 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
               )}
             </div>
 
-            {/* Devices & 14-day Daily Trend */}
             <div className="rounded-2xl border border-stone-200 bg-white p-4 space-y-3">
               <h5 className="font-bold text-xs text-stone-800 flex items-center gap-1.5">
                 <Smartphone className="w-4 h-4 text-indigo-700" />
                 {T('الأجهزة والنبض اليومي')}
               </h5>
               <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                {([
-                  ['mobile', T('موبايل'), report.byDevice.mobile],
-                  ['desktop', T('كمبيوتر'), report.byDevice.desktop],
-                  ['tablet', T('تابلت'), report.byDevice.tablet],
-                ] as const).map(([k, label, val]) => (
+                {(
+                  [
+                    ['mobile', T('موبايل'), report.byDevice.mobile],
+                    ['desktop', T('كمبيوتر'), report.byDevice.desktop],
+                    ['tablet', T('تابلت'), report.byDevice.tablet],
+                  ] as const
+                ).map(([k, label, val]) => (
                   <div key={k} className="rounded-xl bg-stone-50 border border-stone-200/80 p-2">
                     <p className="font-bold text-sm text-stone-900">{formatAdminNumber(val)}</p>
                     <p className="text-[10px] text-stone-500">{label}</p>
@@ -407,7 +766,7 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
         </div>
       )}
 
-      {/* 3. Certified Public Statement / Open Ledger («الكشف العلني المعتمد لصاحب المنصة») */}
+      {/* 4. Certified Public Statement / Open Ledger */}
       {(activeSubTab === 'all' || activeSubTab === 'statement') && (
         <div className="rounded-2xl border-2 border-stone-800/15 bg-white overflow-hidden">
           <div className="p-4 bg-stone-900 text-stone-100 flex flex-wrap items-center justify-between gap-3">
@@ -436,7 +795,9 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
               </button>
               <button
                 type="button"
-                onClick={() => downloadBlob(`${statement.editionCode}.csv`, csvStatement(report), 'text/csv;charset=utf-8')}
+                onClick={() =>
+                  downloadBlob(`${statement.editionCode}.csv`, csvStatement(report), 'text/csv;charset=utf-8')
+                }
                 className="inline-flex items-center gap-1.5 rounded-xl bg-stone-800 border border-stone-700 text-stone-100 px-3 py-1.5 text-xs font-semibold hover:bg-stone-700"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
@@ -444,7 +805,13 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
               </button>
               <button
                 type="button"
-                onClick={() => downloadBlob(`${statement.editionCode}.json`, JSON.stringify({ statement, report }, null, 2), 'application/json')}
+                onClick={() =>
+                  downloadBlob(
+                    `${statement.editionCode}.json`,
+                    JSON.stringify({ statement, report, liveNow }, null, 2),
+                    'application/json',
+                  )
+                }
                 className="inline-flex items-center gap-1.5 rounded-xl bg-stone-800 border border-stone-700 text-stone-100 px-3 py-1.5 text-xs font-semibold hover:bg-stone-700"
               >
                 <Download className="w-3.5 h-3.5 text-sky-400" />
@@ -459,7 +826,7 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
                 {T('الكشف العلني مفعل ونزيه — 0 زيارة دولية مسجلة حتى هذه اللحظة')}
               </p>
               <p className="text-xs text-stone-500 max-w-xl mx-auto">
-                {T('بمجرد تصفح الزوار لأقسام المنصة، يُدرج كل بلد تلقائياً هنا بترتيبه وعدد زياراته ونسبته المئوية ويضيء على الخريطة الحرارية أعلاه.')}
+                {T('بمجرد تصفح الزوار لأقسام المنصة، يُدرج كل بلد ومدن الدخول بداخله تلقائياً هنا بترتيبه وعدد زياراته ونسبته المئوية ويضيء على الخريطة الملونة أعلاه.')}
               </p>
             </div>
           ) : (
@@ -469,7 +836,7 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
                   <tr className="bg-stone-100 text-stone-600 border-b border-stone-200">
                     <th className="py-2.5 px-3 text-start font-bold">#</th>
                     <th className="py-2.5 px-3 text-start font-bold">{T('الدولة')}</th>
-                    <th className="py-2.5 px-3 text-start font-bold">{T('الإقليم')}</th>
+                    <th className="py-2.5 px-3 text-start font-bold">{T('أبرز مدينة دخول')}</th>
                     <th className="py-2.5 px-3 text-start font-bold">{T('الحرارة')}</th>
                     <th className="py-2.5 px-3 text-start font-bold">{T('إجمالي الزيارات')}</th>
                     <th className="py-2.5 px-3 text-start font-bold">{T('الزوار الفريدون')}</th>
@@ -495,7 +862,18 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
                           {isAr ? row.nameAr : row.nameEn}{' '}
                           <span className="text-[10px] text-stone-400 font-mono" dir="ltr">({row.code})</span>
                         </td>
-                        <td className="py-2.5 px-3 text-stone-600">{isAr ? row.regionAr : row.regionEn}</td>
+                        <td className="py-2.5 px-3 text-stone-700 font-semibold">
+                          {row.topPlaceAr ? (
+                            <span>
+                              📍 {isAr ? row.topPlaceAr : row.topPlaceEn}{' '}
+                              <span className="text-[10px] text-stone-400">
+                                ({formatAdminNumber(row.placesCount)})
+                              </span>
+                            </span>
+                          ) : (
+                            '—'
+                          )}
+                        </td>
                         <td className="py-2.5 px-3">
                           <span className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold bg-stone-100 text-stone-800">
                             <span className="h-2 w-2 rounded-full inline-block" style={{ backgroundColor: heat.fill }} />
@@ -522,7 +900,9 @@ export default function PlatformCensusPanel({ embedded = false }: { embedded?: b
               </table>
               {statement.unspecifiedVisits > 0 && (
                 <p className="px-4 py-2 text-[11px] text-stone-500 bg-stone-50 border-t border-stone-200">
-                  {TP('🌐 زيارات غير محددة الدولة (بدون ترويسة جغرافية): {n} زيارة.', { n: formatAdminNumber(statement.unspecifiedVisits) })}
+                  {TP('🌐 زيارات غير محددة الدولة (بدون ترويسة جغرافية): {n} زيارة.', {
+                    n: formatAdminNumber(statement.unspecifiedVisits),
+                  })}
                 </p>
               )}
             </div>
