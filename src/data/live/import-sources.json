@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-26T07:00:01.807Z",
+ "updatedAt": "2026-10-26T13:22:04.307Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -4745,12 +4745,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-26T13:22:04.307Z",
    "trust": {
     "score": 76,
     "verdict": "trusted",
-    "at": "2026-10-19T12:55:05.997Z",
+    "at": "2026-10-26T13:22:04.307Z",
     "checks": [
      {
       "id": "age",
@@ -4850,13 +4850,13 @@
    "sampleOk": 9,
    "sampleTotal": 9,
    "currency": "USD",
-   "rateToEgp": 53.5247,
+   "rateToEgp": 55.6767,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*lattafa-usa\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.lattafa-usa.com/sitemap_agentic_discovery.xml",
     "https://www.lattafa-usa.com/sitemap_products_1.xml?from=9055147655391&to=15422183669983",
     "https://www.lattafa-usa.com/sitemap_pages_1.xml?from=119600185567&to=129349484767",
-    "https://www.lattafa-usa.com/sitemap_collections_1.xml?from=470062858463&to=488297201887",
+    "https://www.lattafa-usa.com/sitemap_collections_1.xml?from=470062858463&to=482683486431",
     "https://www.lattafa-usa.com/sitemap_blogs_1.xml"
    ],
    "via": "generic",
@@ -4906,12 +4906,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-26T13:22:04.307Z",
    "trust": {
     "score": 77,
     "verdict": "trusted",
-    "at": "2026-10-19T12:55:05.997Z",
+    "at": "2026-10-26T13:22:04.307Z",
     "checks": [
      {
       "id": "age",
@@ -5008,21 +5008,21 @@
     "registeredAt": "1998-04-25T04:00:00.000Z"
    },
    "region": "americas",
-   "sampleOk": 4,
-   "sampleTotal": 6,
+   "sampleOk": 9,
+   "sampleTotal": 9,
    "currency": "USD",
-   "rateToEgp": 53.5247,
+   "rateToEgp": 55.6767,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*aedes\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.aedes.com/sitemap_agentic_discovery.xml",
     "https://www.aedes.com/sitemap_products_1.xml?from=457680521&to=7701880340559",
-    "https://www.aedes.com/sitemap_products_2.xml?from=7701945516111&to=15439668478031",
-    "https://www.aedes.com/sitemap_pages_1.xml?from=21279917&to=117377073231",
-    "https://www.aedes.com/sitemap_collections_1.xml?from=30872249&to=492165955663",
+    "https://www.aedes.com/sitemap_products_2.xml?from=7701945516111&to=15474186649679",
+    "https://www.aedes.com/sitemap_pages_1.xml?from=21279921&to=117377073231",
+    "https://www.aedes.com/sitemap_collections_1.xml?from=30872249&to=492521095247",
     "https://www.aedes.com/sitemap_blogs_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 1241
+   "productsEstimate": 1249
   },
   {
    "id": "ruebroca-com",
@@ -7367,6 +7367,21 @@
  ],
  "runs": [
   {
+   "at": "2026-10-26T13:22:04.307Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 2,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ lattafa-usa.com: CV 76/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ lattafa-usa.com (CV 76/100): 283 perfumes, 9/9 pages read without AI, USD (1 = 55.6767 EGP) — still good",
+    "  ↳ aedes.com: CV 77/100 [age,https,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✓ aedes.com (CV 77/100): 1249 perfumes, 9/9 pages read without AI, USD (1 = 55.6767 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-10-26T07:00:01.807Z",
    "mode": "self",
    "found": 0,
@@ -7689,17 +7704,6 @@
   },
   {
    "at": "2026-10-22T13:46:42.390Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T13:23:38.497Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
