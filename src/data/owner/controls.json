@@ -1,11 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-10-26T07:16:48.376Z",
- "frozen": true,
+ "updatedAt": "2026-10-26T07:18:01.190Z",
+ "frozen": false,
  "paused": [],
  "selfDevelopment": "state",
  "aiPlatforms": "auto",
  "log": [
+  {
+   "at": "2026-10-26T07:18:01.190Z",
+   "action": "unfreeze",
+   "by": "spculculat-oss (#364)"
+  },
   {
    "at": "2026-10-26T07:16:48.376Z",
    "action": "freeze",
