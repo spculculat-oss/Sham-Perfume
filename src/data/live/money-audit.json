@@ -1,0 +1,829 @@
+{
+ "version": 1,
+ "agent": "money_guard",
+ "updatedAt": "2026-10-26T08:35:38.977Z",
+ "score": 82,
+ "counts": {
+  "fail": 1,
+  "warn": 1,
+  "note": 2,
+  "ok": 18
+ },
+ "invariants": [
+  {
+   "id": "SERVER_PRICES",
+   "ar": "الأسعار بتتحسب على السيرفر من الكتالوج — سعر المتصفح مايتبناش عليه",
+   "ok": true,
+   "where": "server/checkout.ts"
+  },
+  {
+   "id": "QUOTED_TOTAL",
+   "ar": "المبلغ اللي الزائر شافه بيتقارن بالمبلغ اللي هيتخصم — مفيش خصم بسعر مختلف في السكوت",
+   "ok": true,
+   "where": "server/checkout.ts"
+  },
+  {
+   "id": "SUPPLIER_COST",
+   "ar": "حارس المدفوعات عارف تكلفة المورد — يعرف يكشف بيع تحت التكلفة",
+   "ok": true,
+   "where": "server/checkout.ts"
+  },
+  {
+   "id": "GUARD_BEFORE_MONEY",
+   "ar": "حارس المدفوعات بيقف قبل تسجيل الطلب وقبل فتح صفحة الدفع",
+   "ok": true,
+   "where": "server/checkout.ts"
+  },
+  {
+   "id": "LEDGER_FIRST",
+   "ar": "الطلب بيتسجل في السجل المالي قبل ما صفحة الدفع تفتح",
+   "ok": true,
+   "where": "server/checkout.ts"
+  },
+  {
+   "id": "WEBHOOK_SIGNATURE",
+   "ar": "الويبهوك بيتحقق بتوقيع HMAC قبل أي تصديق",
+   "ok": true,
+   "where": "server/checkout.ts"
+  },
+  {
+   "id": "PROVIDER_REREAD",
+   "ar": "حالة الدفع بتتقرا من البوابة نفسها، مش من المتصفح ولا من الويبهوك وحده",
+   "ok": true,
+   "where": "server/checkout.ts"
+  },
+  {
+   "id": "AMOUNT_MATCH",
+   "ar": "المبلغ والعملة والجلسة بيتطابقوا مع الطلب قبل أي تأكيد",
+   "ok": true,
+   "where": "server/finance/service.ts"
+  },
+  {
+   "id": "ONE_SALE",
+   "ar": "بيعة واحدة لكل طلب — مفتاح واحد بيتقفل، فمفيش إيراد مكرر",
+   "ok": true,
+   "where": "server/finance/service.ts"
+  },
+  {
+   "id": "DURABLE_LEDGER",
+   "ar": "الدفع الحي متوقف لو السجل مش دائم — مفيش فلوس بلا ذاكرة",
+   "ok": true,
+   "where": "server/finance/service.ts"
+  },
+  {
+   "id": "NO_CARD_SECRET",
+   "ar": "سر الكارت مايوصلش سيرفرنا أبداً (الحقول المستضافة عند البوابة)",
+   "ok": true,
+   "where": "src/utils/cardNetwork.ts"
+  },
+  {
+   "id": "SAFE_REDIRECT",
+   "ar": "الرجوع من البوابة لنطاقات الموقع بس (قائمة مسموحة)",
+   "ok": true,
+   "where": "server/checkout.ts"
+  },
+  {
+   "id": "SAFE_SESSION_URL",
+   "ar": "رابط صفحة الدفع لازم يكون نطاق البوابة نفسه",
+   "ok": true,
+   "where": "src/utils/storeCheckout.ts"
+  },
+  {
+   "id": "RATE_LIMIT",
+   "ar": "حد معدل على الدفع والمطابقة — ضد التكرار والاحتيال",
+   "ok": true,
+   "where": "server/checkout.ts"
+  },
+  {
+   "id": "SIGN_IN_RULE",
+   "ar": "البطاقة والمحفظة بحساب مؤكد من السيرفر؛ المباشر للزائر",
+   "ok": true,
+   "where": "server/checkout.ts"
+  },
+  {
+   "id": "NO_AUTO_REFUND",
+   "ar": "مفيش استرداد أو تغيير حالة دفع تلقائي — القرار والكشف البشري",
+   "ok": true,
+   "where": "server/finance/service.ts"
+  },
+  {
+   "id": "IDEMPOTENT_BOOKS",
+   "ar": "كل قيد مالي بمفتاح منع تكرار",
+   "ok": true,
+   "where": "server/finance/service.ts"
+  },
+  {
+   "id": "TEST_MODE_VISIBLE",
+   "ar": "الوضع التجريبي بيتقال صريح للزائر — مش تحصيل حقيقي",
+   "ok": true,
+   "where": "server/finance/service.ts"
+  }
+ ],
+ "findings": [
+  {
+   "id": "gateway:off",
+   "level": "note",
+   "where": "server/core/kashier.ts",
+   "whatAr": "البوابة الأونلاين مش مفعّلة في البيئة دي — الدفع المباشر هو المسار الشغال",
+   "whyAr": "من غير مفاتيح، السيرفر بيرفض فتح جلسة دفع ويرجّع PAYMENTS_NOT_CONFIGURED (وهو سلوك صح).",
+   "fixAr": "مش مشكلة كود: مفاتيح كاشير وقرار الوضع الحي بيتظبطوا في إعدادات النشر بقرار صاحب المتجر."
+  },
+  {
+   "id": "customs:unverified",
+   "level": "warn",
+   "where": "src/data/customs.json",
+   "whatAr": "71 وجهة جمركها لسه مش مؤكد",
+   "whyAr": "السعر بيتبني على الشحن، لكن اللي العميل هيدفعه جمرك في بلده مش موثّق — والزائر لازم يسمع «بتتأكد قبل الدفع».",
+   "fixAr": "«كشّاف الشحن» يجيب مصدر جمرك لكل وجهة، ولحد ما يتأكد النص يفضل صريح."
+  },
+  {
+   "id": "shipping:zone",
+   "level": "note",
+   "where": "src/data/shipping.json",
+   "whatAr": "1 وجهة سعرها من جدول المناطق مش من تعريفة شركة منشورة",
+   "whyAr": "ده سعر تقديري (بديل محسوب)، مش تعريفة شركة — ممكن يطلع أرخص أو أغلى من الحقيقي.",
+   "fixAr": "الانعكاس بيقول «تقديري وبيتأكد قبل الدفع»؛ التعريفة الحقيقية تتحفظ في `shipping-lanes.json` بمصدرها."
+  },
+  {
+   "id": "codes:missing",
+   "level": "fail",
+   "where": "src/finance/errors.ts",
+   "whatAr": "1 كود خطأ في مسار الدفع من غير تفسير عربي",
+   "whyAr": "الزائر بيشوف «UNKNOWN_ACCOUNT» ومش فاهم حاجة، والإدارة مش عارفة تعمل إيه.",
+   "fixAr": "كل كود بيتضاف لقاموس `src/finance/errors.ts` بنصه وإصلاحه."
+  }
+ ],
+ "currencies": [
+  {
+   "code": "EG",
+   "nameAr": "مصر",
+   "official": "EGP",
+   "charge": "EGP",
+   "fallback": false,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "SA",
+   "nameAr": "السعودية",
+   "official": "SAR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "AE",
+   "nameAr": "الإمارات",
+   "official": "AED",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "KW",
+   "nameAr": "الكويت",
+   "official": "KWD",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "QA",
+   "nameAr": "قطر",
+   "official": "QAR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "BH",
+   "nameAr": "البحرين",
+   "official": "BHD",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "OM",
+   "nameAr": "عمان",
+   "official": "OMR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "JO",
+   "nameAr": "الأردن",
+   "official": "JOD",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "LB",
+   "nameAr": "لبنان",
+   "official": "LBP",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "IQ",
+   "nameAr": "العراق",
+   "official": "IQD",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "SY",
+   "nameAr": "سوريا",
+   "official": "SYP",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "PS",
+   "nameAr": "فلسطين",
+   "official": "ILS",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "YE",
+   "nameAr": "اليمن",
+   "official": "YER",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "LY",
+   "nameAr": "ليبيا",
+   "official": "LYD",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "TN",
+   "nameAr": "تونس",
+   "official": "TND",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "DZ",
+   "nameAr": "الجزائر",
+   "official": "DZD",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "MA",
+   "nameAr": "المغرب",
+   "official": "MAD",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "SD",
+   "nameAr": "السودان",
+   "official": "SDG",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "MR",
+   "nameAr": "موريتانيا",
+   "official": "MRU",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "SO",
+   "nameAr": "الصومال",
+   "official": "SOS",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "DJ",
+   "nameAr": "جيبوتي",
+   "official": "DJF",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "KM",
+   "nameAr": "جزر القمر",
+   "official": "KMF",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "MY",
+   "nameAr": "ماليزيا",
+   "official": "MYR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": false
+  },
+  {
+   "code": "SG",
+   "nameAr": "سنغافورة",
+   "official": "SGD",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "BN",
+   "nameAr": "BN",
+   "official": "BND",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "ID",
+   "nameAr": "إندونيسيا",
+   "official": "IDR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "TH",
+   "nameAr": "تايلاند",
+   "official": "THB",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "PH",
+   "nameAr": "الفلبين",
+   "official": "PHP",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "VN",
+   "nameAr": "فيتنام",
+   "official": "VND",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "KH",
+   "nameAr": "KH",
+   "official": "KHR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "LA",
+   "nameAr": "LA",
+   "official": "LAK",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "MM",
+   "nameAr": "ميانمار",
+   "official": "MMK",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "GB",
+   "nameAr": "بريطانيا",
+   "official": "GBP",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "IE",
+   "nameAr": "IE",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "FR",
+   "nameAr": "FR",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "DE",
+   "nameAr": "DE",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "IT",
+   "nameAr": "IT",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "ES",
+   "nameAr": "ES",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "PT",
+   "nameAr": "PT",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "NL",
+   "nameAr": "NL",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "BE",
+   "nameAr": "BE",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "LU",
+   "nameAr": "LU",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "AT",
+   "nameAr": "AT",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "CH",
+   "nameAr": "سويسرا",
+   "official": "CHF",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "SE",
+   "nameAr": "SE",
+   "official": "SEK",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "NO",
+   "nameAr": "النرويج",
+   "official": "NOK",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "DK",
+   "nameAr": "DK",
+   "official": "DKK",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "FI",
+   "nameAr": "FI",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "IS",
+   "nameAr": "IS",
+   "official": "ISK",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "PL",
+   "nameAr": "PL",
+   "official": "PLN",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "CZ",
+   "nameAr": "CZ",
+   "official": "CZK",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "SK",
+   "nameAr": "SK",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "HU",
+   "nameAr": "HU",
+   "official": "HUF",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "RO",
+   "nameAr": "RO",
+   "official": "RON",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "BG",
+   "nameAr": "BG",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "GR",
+   "nameAr": "GR",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "HR",
+   "nameAr": "HR",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "SI",
+   "nameAr": "SI",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "RS",
+   "nameAr": "RS",
+   "official": "RSD",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "BA",
+   "nameAr": "BA",
+   "official": "BAM",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "ME",
+   "nameAr": "ME",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "MK",
+   "nameAr": "MK",
+   "official": "MKD",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "AL",
+   "nameAr": "AL",
+   "official": "ALL",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "EE",
+   "nameAr": "EE",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "LV",
+   "nameAr": "LV",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "LT",
+   "nameAr": "LT",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "CY",
+   "nameAr": "CY",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "MT",
+   "nameAr": "MT",
+   "official": "EUR",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "UA",
+   "nameAr": "أوكرانيا",
+   "official": "UAH",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "MD",
+   "nameAr": "MD",
+   "official": "MDL",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "TR",
+   "nameAr": "تركيا",
+   "official": "TRY",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "US",
+   "nameAr": "أمريكا",
+   "official": "USD",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "CA",
+   "nameAr": "كندا",
+   "official": "CAD",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  },
+  {
+   "code": "MX",
+   "nameAr": "المكسيك",
+   "official": "MXN",
+   "charge": "EGP",
+   "fallback": true,
+   "priced": true,
+   "carrierRate": true
+  }
+ ],
+ "summaryAr": "حارس الفلوس: 1 ثغرة لازم تتقفل · 18 حماية متأكدة من 18",
+ "planAr": [
+  "1 كود خطأ في مسار الدفع من غير تفسير عربي — كل كود بيتضاف لقاموس `src/finance/errors.ts` بنصه وإصلاحه.",
+  "ملاحظة: 71 وجهة جمركها لسه مش مؤكد — «كشّاف الشحن» يجيب مصدر جمرك لكل وجهة، ولحد ما يتأكد النص يفضل صريح."
+ ]
+}

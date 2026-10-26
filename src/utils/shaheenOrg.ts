@@ -43,7 +43,8 @@ export type BotId =
   | 'chat_agent' | 'owner_desk' | 'state' | 'academy' | 'platform_owner'
   | 'specialist_scents' | 'specialist_tech' | 'specialist_security' | 'specialist_science' | 'specialist_business' | 'specialist_society'
   | 'specialist_health' | 'specialist_engineering' | 'specialist_learning' | 'specialist_culture' | 'lab' | 'census'
-  | 'service' | 'inventory' | 'brain' | 'sales' | 'catalog_review' | 'trade_lanes' | 'carriers' | 'synapse' | 'immune' | 'tutor' | 'examiner' | 'reflex' | 'ears';
+  | 'service' | 'inventory' | 'brain' | 'sales' | 'catalog_review' | 'trade_lanes' | 'carriers' | 'synapse' | 'immune' | 'tutor' | 'examiner' | 'reflex' | 'ears'
+  | 'senses_site' | 'senses_world' | 'weaver' | 'curator';
 
 export interface Bot {
   id: BotId;
@@ -94,6 +95,10 @@ export const BOTS: Bot[] = [
   { id: 'examiner', nameAr: 'الممتحن — درجة ذكاء العقل', nameEn: "Examiner — the mind's IQ", dept: 'content', workflow: 'shaheen-mind.yml', report: 'shaheen-exam.json', everyHours: 24, dutiesAr: 'بياخد أسئلة المعلم ويسألها للوكيل الحقيقي من غير إنترنت ومن غير أي محرك (اعتماد على النفس)، ويصحح الإجابة على الرقم/الاسم الموثّق في الملفات — مش على الأسلوب. النتيجة رقم واحد (درجة الذكاء من 100) لكل متخصص وللعقل كله، وكل سؤال فاته مكتوب باللي كان متوقع واللي جه والمصدر، ويرجع للمعلم تاني. تقريره src/data/live/shaheen-exam.json.' },
   { id: 'reflex', nameAr: 'الانعكاس — إجابات فورية بلا محرك', nameEn: 'Reflex — instant answers without an engine', dept: 'content', workflow: 'shaheen-mind.yml', report: 'shaheen-reflex.json', everyHours: 24, dutiesAr: 'بيولّد جدول الإجابات اللي الزائر لازم ياخدها في نفس اللحظة: الشحن لبلده بكام، جماركه كام، وهل بنشحن العطر. الأرقام محسوبة بمحرك السعر نفسه اللي الدفع بيستخدمه (تكلفة الشركة + هامش التجهيز) — فالإجابة الفورية مستحيل تخالف اللي الموقع بيحصّله، وكل إجابة معاها مصدرها وتاريخها. بيشتغل من غير أي محرك ومن غير إنترنت. تقريره src/data/live/shaheen-reflex.json.' },
   { id: 'ears', nameAr: 'الآذان — اللي بيتسأل فعلاً', nameEn: 'Ears — what the platform is really asked', dept: 'store', workflow: 'shaheen-mind.yml', report: 'shaheen-ears.json', everyHours: 24, dutiesAr: 'بيقرا الأسئلة الحقيقية اللي اتسألت واتجاوبت (ذاكرة شاهين) واللي لسه من غير جواب، ويرتبها لكل متخصص: أكتر حاجة بتتسأل، واللي اتسأل ومحدش رد عليه، واللي بيتكرر ومفيش له درس. أي سؤال فيه رقم شخصي أو إيميل بيتشال قبل التقرير — وبيتعد بس. التقرير ده بيغذي المعلم والمدرسة. تقريره src/data/live/shaheen-ears.json.' },
+  { id: 'senses_site', nameAr: 'حسّاسات الموقع — البيانات الداخلية', nameEn: 'Site senses — internal data', dept: 'store', workflow: 'shaheen-senses.yml', report: 'senses-site.json', everyHours: 6, dutiesAr: 'تقرأ بيانات الموقع نفسه (المنتجات، الأسعار، التكلفة، الشحن، الجمارك، أسعار الصرف، تقارير العقل الحية) وتبلغ عن حداثتها وثغراتها من غير ما تغير حاجة. كل رقم مع مصدره وتاريخه. تقريره src/data/live/senses-site.json.' },
+  { id: 'senses_world', nameAr: 'حسّاسات العالم — البيانات الخارجية', nameEn: 'World senses — external data', dept: 'store', workflow: 'shaheen-senses.yml', report: 'senses-world.json', everyHours: 6, dutiesAr: 'تقرأ صفحات شركات الشحن في العالم بأدب (robots.txt أولًا، صفحة واحدة لكل شركة، ميزانية صغيرة) وتسجل اللي شفته فقط: هل الصفحة فتحت؟ فيها مواد خطر؟ من غير اختراع أي سعر. تقريره src/data/live/senses-world.json.' },
+  { id: 'weaver', nameAr: 'الناسج — الربط بين العقل والبيانات', nameEn: 'Weaver — linking mind to data', dept: 'content', workflow: 'shaheen-weave.yml', report: 'weave.json', everyHours: 24, dutiesAr: 'يبسّط كل وجهة مع تكلفتها الحقيقية، شركتها، جماركها، منطقتها، واتفاقيتها في صف واحدة موثّقة بالمصدر والتاريخ، ويراجع كل حافة في شبكة العقل هل هي مبنية على بيانات حقيقية. الناقصة تسجل «غير متاح» من غير اختراع. تقريره src/data/live/weave.json.' },
+  { id: 'curator', nameAr: 'المؤرشف — بطاقات المعرفة', nameEn: 'Curator — knowledge cards', dept: 'content', workflow: 'shaheen-weave.yml', report: 'curate.json', everyHours: 24, dutiesAr: 'يحول كل إجابة مؤكدة (من خطة الدراسة، امتحان الممتحن، إجابات الانعكاس، تقارير الحسّاسات) إلى بطاقة معرفة: الإجابة، المصدر، تاريخ الفحص، وهل لسه طازجة ولا تحتاج مراجعة. البطاقة القديمة تقول «تحتاج مراجعة» من غير ما تُقدم كمؤكدة. تقريره src/data/live/curate.json.' },
   { id: 'product_pages', nameAr: 'فاحص صفحات المنتجات على الموبايل', nameEn: 'Product pages check (phone)', dept: 'store', workflow: 'product-pages-check.yml', everyHours: 24, dutiesAr: 'يفتح صفحات المنتجات على الموقع الحقيقي زي زائر على الموبايل ويتأكد إنها سليمة.' },
   { id: 'store_advisor', nameAr: 'مستشار التسوق «اسأل شاهين»', nameEn: 'Shopping advisor', dept: 'store', aiTools: ['store_advisor'], dutiesAr: 'يختار للزائر من منتجات المتجر الحقيقية حسب طلبه.' },
   // ── Content & search ──
@@ -294,6 +299,13 @@ export const LINKS: Link[] = [
   { from: 'examiner', to: 'council', whyAr: 'درجة الذكاء اليومية بتوصل للاجتماع، فتراجعها اللجنة وتقرر إيه اللي يتذاكر الأول' },
   { from: 'reflex', to: 'chat', whyAr: 'الإجابات الفورية بتتجاوب في الشات قبل أي محرك ومن غير إنترنت — نفس رقم محرك السعر بالظبط' },
   { from: 'trade_lanes', to: 'reflex', whyAr: 'أي تغيير في تعريفة أو هامش بيولّد جدول الانعكاس من جديد، فالإجابة الفورية ماتخالفش السعر أبداً' },
+  { from: 'senses_site', to: 'synapse', whyAr: 'بيانات الموقع الداخلية (منتجات، شحن، جمارك، أسعار صرف) تغذي شبكة العقل بكل رقم ومصدره' },
+  { from: 'senses_world', to: 'trade_lanes', whyAr: 'ما يقرأه حسّاسات العالم من صفحات شركات الشحن يحدّد الشركات اللي ممكن نتعامل معها لكل ممر' },
+  { from: 'trade_lanes', to: 'senses_world', whyAr: 'ممرات التجارة والوجهات ليها شركة تخبر حسّاسات العالم بأي شركات أولوية القراءة' },
+  { from: 'weaver', to: 'synapse', whyAr: 'الناسج يربط كل وجهة ببياناتها الحقيقية ويدخلها كحواف في شبكة العقل بتاريخها' },
+  { from: 'curator', to: 'library', whyAr: 'بطاقات المعرفة المؤكدة تصبح جزءًا من مكتبة شاهين للرد من غير ذكاء اصطناعي' },
+  { from: 'curator', to: 'reflex', whyAr: 'بطاقة المعرفة اللي اتأكدت من مصدرها/Tاريخها تقوّي إجابة الانعكاس الفورية' },
+  { from: 'senses_site', to: 'curator', whyAr: 'تقارير الحسّاسات الداخلية تقول للمؤرشف أي بطاقة لسه طازجة وأيها تحتاج مراجعة' },
   { from: 'school', to: 'synapse', whyAr: 'كل درس في منهج شاهين بيبقى عقدة في شبكة العقل، وبيتوصل بالدنيا الحقيقية اللي بيتطبق عليها (شركة شحن، وجهة) من كلام الدرس نفسه' },
   { from: 'synapse', to: 'specialists_board', whyAr: 'شبكة العقل بتربط كل درس بمتخصصه وبالقسم اللي بيستشيره، فالمتخصص بيجاوب من الشبكة مش من ملف لوحده' },
   { from: 'synapse', to: 'council', whyAr: 'درجة العقل وأضعف حلقة فيه بتوصل لاجتماع المجلس كل 3 ساعات، فالحلقة الضعيفة تتحول لخطة دراسة' },

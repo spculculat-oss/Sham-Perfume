@@ -1,0 +1,2250 @@
+{
+ "version": 1,
+ "agent": "weaver",
+ "updatedAt": "2026-10-26T08:49:34.471Z",
+ "score": 0,
+ "counts": {
+  "complete": 0,
+  "partial": 74,
+  "missing": 0
+ },
+ "threads": [
+  {
+   "destination": "مصر",
+   "code": "EG",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 30.85,
+    "extraItemUsd": 5.14,
+    "chargedEgp": 1705.44,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "egypt"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "السعودية",
+   "code": "SA",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 27.42,
+    "extraItemUsd": 8.57,
+    "chargedEgp": 1515.83,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "gulf"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "الإمارات",
+   "code": "AE",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 27.42,
+    "extraItemUsd": 6.86,
+    "chargedEgp": 1515.83,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "gulf"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "الكويت",
+   "code": "KW",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 25.71,
+    "extraItemUsd": 6.86,
+    "chargedEgp": 1421.29,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "gulf"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "قطر",
+   "code": "QA",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 25.71,
+    "extraItemUsd": 6.86,
+    "chargedEgp": 1421.29,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "gulf"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "البحرين",
+   "code": "BH",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 25.71,
+    "extraItemUsd": 6.86,
+    "chargedEgp": 1421.29,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "gulf"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "عمان",
+   "code": "OM",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 51.42,
+    "extraItemUsd": 13.71,
+    "chargedEgp": 2842.59,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "gulf"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "الأردن",
+   "code": "JO",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 25.71,
+    "extraItemUsd": 6.86,
+    "chargedEgp": 1421.29,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "لبنان",
+   "code": "LB",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 54.84,
+    "extraItemUsd": 13.71,
+    "chargedEgp": 3031.65,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "العراق",
+   "code": "IQ",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "سوريا",
+   "code": "SY",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 53.13,
+    "extraItemUsd": 13.71,
+    "chargedEgp": 2937.12,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "فلسطين",
+   "code": "PS",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "اليمن",
+   "code": "YE",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 53.81,
+    "extraItemUsd": 13.71,
+    "chargedEgp": 2974.71,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "ليبيا",
+   "code": "LY",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "تونس",
+   "code": "TN",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 10.28,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "الجزائر",
+   "code": "DZ",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "المغرب",
+   "code": "MA",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 15.42,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "السودان",
+   "code": "SD",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "موريتانيا",
+   "code": "MR",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "الصومال",
+   "code": "SO",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "جيبوتي",
+   "code": "DJ",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "جزر القمر",
+   "code": "KM",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "arab"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "ماليزيا",
+   "code": "MY",
+   "route": "unknown",
+   "carrier": {
+    "id": "jt_my",
+    "nameAr": "جي آند تي ماليزيا",
+    "source": "https://www.jtexpress.my/",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": null,
+    "extraItemUsd": null,
+    "chargedEgp": null,
+    "source": "https://www.jtexpress.my/",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "southeast_asia"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "cost",
+    "customs"
+   ]
+  },
+  {
+   "destination": "سنغافورة",
+   "code": "SG",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 13.71,
+    "extraItemUsd": 1.71,
+    "chargedEgp": 757.91,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "southeast_asia"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "BN",
+   "code": "BN",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 14.74,
+    "extraItemUsd": 2.06,
+    "chargedEgp": 814.85,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "southeast_asia"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "إندونيسيا",
+   "code": "ID",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 15.42,
+    "extraItemUsd": 2.06,
+    "chargedEgp": 852.45,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "southeast_asia"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "تايلاند",
+   "code": "TH",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 15.42,
+    "extraItemUsd": 2.06,
+    "chargedEgp": 852.45,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "southeast_asia"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "الفلبين",
+   "code": "PH",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 18.85,
+    "extraItemUsd": 2.74,
+    "chargedEgp": 1042.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "southeast_asia"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "فيتنام",
+   "code": "VN",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 17.14,
+    "extraItemUsd": 2.06,
+    "chargedEgp": 947.53,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "southeast_asia"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "KH",
+   "code": "KH",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 17.82,
+    "extraItemUsd": 2.06,
+    "chargedEgp": 985.12,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "southeast_asia"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "LA",
+   "code": "LA",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 17.82,
+    "extraItemUsd": 2.74,
+    "chargedEgp": 985.12,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "southeast_asia"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "ميانمار",
+   "code": "MM",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 27.42,
+    "extraItemUsd": 6.86,
+    "chargedEgp": 1515.83,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "southeast_asia"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "بريطانيا",
+   "code": "GB",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 5.14,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "IE",
+   "code": "IE",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 5.14,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "FR",
+   "code": "FR",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 5.14,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "DE",
+   "code": "DE",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 6.51,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "IT",
+   "code": "IT",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 5.14,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "ES",
+   "code": "ES",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 39.42,
+    "extraItemUsd": 5.14,
+    "chargedEgp": 2179.21,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "PT",
+   "code": "PT",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 5.14,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "NL",
+   "code": "NL",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 37.7,
+    "extraItemUsd": 7.88,
+    "chargedEgp": 2084.12,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "BE",
+   "code": "BE",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 5.14,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "LU",
+   "code": "LU",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 49.36,
+    "extraItemUsd": 7.54,
+    "chargedEgp": 2728.71,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "AT",
+   "code": "AT",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 10.28,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "سويسرا",
+   "code": "CH",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 44.56,
+    "extraItemUsd": 10.28,
+    "chargedEgp": 2463.36,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "SE",
+   "code": "SE",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 44.56,
+    "extraItemUsd": 10.28,
+    "chargedEgp": 2463.36,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "النرويج",
+   "code": "NO",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 41.13,
+    "extraItemUsd": 8.57,
+    "chargedEgp": 2273.74,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "DK",
+   "code": "DK",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 5.14,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "FI",
+   "code": "FI",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 5.14,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "IS",
+   "code": "IS",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 42.16,
+    "extraItemUsd": 6.86,
+    "chargedEgp": 2330.68,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "PL",
+   "code": "PL",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 54.84,
+    "extraItemUsd": 13.71,
+    "chargedEgp": 3031.65,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "CZ",
+   "code": "CZ",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 53.81,
+    "extraItemUsd": 13.71,
+    "chargedEgp": 2974.71,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "SK",
+   "code": "SK",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 53.81,
+    "extraItemUsd": 13.71,
+    "chargedEgp": 2974.71,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "HU",
+   "code": "HU",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 54.84,
+    "extraItemUsd": 12.34,
+    "chargedEgp": 3031.65,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "RO",
+   "code": "RO",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "BG",
+   "code": "BG",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 53.81,
+    "extraItemUsd": 13.71,
+    "chargedEgp": 2974.71,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "GR",
+   "code": "GR",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 6.86,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "HR",
+   "code": "HR",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "SI",
+   "code": "SI",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "RS",
+   "code": "RS",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "BA",
+   "code": "BA",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "ME",
+   "code": "ME",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "MK",
+   "code": "MK",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "AL",
+   "code": "AL",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "EE",
+   "code": "EE",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 53.81,
+    "extraItemUsd": 13.71,
+    "chargedEgp": 2974.71,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "LV",
+   "code": "LV",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "LT",
+   "code": "LT",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "CY",
+   "code": "CY",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 53.81,
+    "extraItemUsd": 13.71,
+    "chargedEgp": 2974.71,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "MT",
+   "code": "MT",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "أوكرانيا",
+   "code": "UA",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 53.13,
+    "extraItemUsd": 13.71,
+    "chargedEgp": 2937.12,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "MD",
+   "code": "MD",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 61.7,
+    "extraItemUsd": 18.85,
+    "chargedEgp": 3410.89,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "تركيا",
+   "code": "TR",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 23.99,
+    "extraItemUsd": 6.86,
+    "chargedEgp": 1326.21,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "europe"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "أمريكا",
+   "code": "US",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 34.28,
+    "extraItemUsd": 6.86,
+    "chargedEgp": 1895.06,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "north_america"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "كندا",
+   "code": "CA",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 37.7,
+    "extraItemUsd": 7.54,
+    "chargedEgp": 2084.12,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "north_america"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  },
+  {
+   "destination": "المكسيك",
+   "code": "MX",
+   "route": "unknown",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "dg": null
+   },
+   "cost": {
+    "firstItemUsd": 46.96,
+    "extraItemUsd": 10.28,
+    "chargedEgp": 2596.03,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+    "checkedAt": "2026-10-25"
+   },
+   "zone": {
+    "id": "north_america"
+   },
+   "customs": {
+    "verified": false,
+    "vatPercent": null,
+    "source": null
+   },
+   "complete": false,
+   "missing": [
+    "customs"
+   ]
+  }
+ ],
+ "graph": {
+  "nodes": 2481,
+  "edges": 4994,
+  "edgesWithSource": 4994,
+  "edgesDated": 0,
+  "orphans": 0
+ },
+ "summaryAr": "الناسج: 0/74 وجهة مكتملة المصدر والتاريخ · النتيجة 0/100",
+ "planAr": [
+  "مصر (EG): ناقص customs — سجله بمصدر وتاريخ",
+  "السعودية (SA): ناقص customs — سجله بمصدر وتاريخ",
+  "الإمارات (AE): ناقص customs — سجله بمصدر وتاريخ",
+  "الكويت (KW): ناقص customs — سجله بمصدر وتاريخ",
+  "قطر (QA): ناقص customs — سجله بمصدر وتاريخ",
+  "البحرين (BH): ناقص customs — سجله بمصدر وتاريخ"
+ ]
+}

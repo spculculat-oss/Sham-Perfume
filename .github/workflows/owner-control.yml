@@ -46,6 +46,10 @@ on:
           - examiner
           - reflex
           - ears
+          - senses_site
+          - senses_world
+          - weaver
+          - curator
           - inventory
           - news
           - precheck

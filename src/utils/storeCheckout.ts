@@ -190,10 +190,17 @@ export function usePayments(country = 'EG'): PaymentsInfo | null {
 }
 
 export interface CheckoutForm { name: string; email: string; phone: string; city: string; line: string }
-export class CheckoutError extends Error { constructor(readonly code: string) { super(code); } }
+export class CheckoutError extends Error {
+  constructor(readonly code: string, /** The fresh amount the server will charge, when the price changed. */ readonly now?: { total: number; currency: string }) { super(code); }
+}
 
 /** Opens a Kashier payment page for the cart and sends the visitor there. */
-export async function startCheckout(items: { sku: string; qty: number }[], country: string, form: CheckoutForm, lang: SupportedLanguage, method?: 'card' | 'wallet', context: 'cart' | 'direct' = 'cart'): Promise<void> {
+export async function startCheckout(
+  items: { sku: string; qty: number }[], country: string, form: CheckoutForm, lang: SupportedLanguage,
+  method?: 'card' | 'wallet', context: 'cart' | 'direct' = 'cart',
+  /** Exactly what the page showed: the server refuses to charge anything else (`PRICE_CHANGED`). */
+  shown?: { total: number; currency: string },
+): Promise<void> {
   trackInsight('checkout', { value: context }); // «خزنة فهم الزوار» (with consent; the form's contact data is never sent there)
   let response: Response;
   try {
@@ -203,11 +210,18 @@ export async function startCheckout(items: { sku: string; qty: number }[], count
       body: JSON.stringify({
         items, country, method, lang: lang === 'ar' ? 'ar' : 'en', returnUrl: `${location.origin}${location.pathname}`,
         contact: { name: form.name, email: form.email, phone: form.phone }, address: { city: form.city, line: form.line },
+        ...(shown && Number.isFinite(shown.total) && shown.total > 0 && /^[A-Z]{3}$/.test(shown.currency) ? { quoted: shown } : {}),
       }),
     });
   } catch { throw new CheckoutError('NETWORK'); }
-  const data = await response.json().catch(() => ({})) as { code?: string; ref?: string; sessionId?: string; sessionUrl?: string };
-  if (!response.ok || !data.sessionUrl || !data.sessionId || !data.ref) throw new CheckoutError(data.code || 'FAILED');
+  const data = await response.json().catch(() => ({})) as {
+    code?: string; ref?: string; sessionId?: string; sessionUrl?: string; now?: { total?: number; currency?: string };
+  };
+  if (!response.ok || !data.sessionUrl || !data.sessionId || !data.ref) {
+    const now = data.now && Number(data.now.total) > 0 && /^[A-Z]{3}$/.test(String(data.now.currency || ''))
+      ? { total: Number(data.now.total), currency: String(data.now.currency) } : undefined;
+    throw new CheckoutError(data.code || 'FAILED', now);
+  }
   try {
     const u = new URL(data.sessionUrl);
     if (u.protocol !== 'https:' || u.hostname !== 'payments.kashier.io' || u.port || u.username || u.password || !/^\/session\/[A-Za-z0-9_-]{6,64}$/.test(u.pathname)) throw new Error();

@@ -390,6 +390,8 @@ const S = {
   send_code: { ar: 'إرسال الكود', en: 'Send the code', fr: 'Envoyer le code', es: 'Enviar el código', it: 'Invia il codice', de: 'Code senden', ru: 'Отправить код', zh: '发送验证码', tr: 'Kodu gönder', fa: 'ارسال کد' },
   reset_done: { ar: 'اتغيرت كلمة السر. كل الأجهزة اتخارجت — سجّل دخول بالكلمة الجديدة', en: 'Password changed. Every device was signed out — sign in with the new password', fr: 'Mot de passe changé. Tous les appareils sont déconnectés — connectez-vous avec le nouveau mot de passe', es: 'Contraseña cambiada. Todos los dispositivos salieron — inicia sesión con la nueva contraseña', it: 'Password cambiata. Tutti i dispositivi sono usciti — accedi con la nuova password', de: 'Passwort geändert. Alle Geräte wurden abgemeldet — melden Sie sich mit dem neuen Passwort an', ru: 'Пароль изменён. Со всех устройств выполнен выход — войдите с новым паролем', zh: '密码已更改。所有设备已退出，请使用新密码登录', tr: 'Parola değişti. Tüm cihazlardan çıkış yapıldı — yeni parolanızla giriş yapın', fa: 'رمز عبور تغییر کرد. از همه دستگاه‌ها خارج شدید — با رمز جدید وارد شوید' },
   passkey_btn: { ar: 'دخول بالبصمة أو الوجه', en: 'Sign in with fingerprint or face', fr: 'Se connecter avec l’empreinte ou le visage', es: 'Iniciar con huella o rostro', it: 'Accedi con impronta o volto', de: 'Mit Fingerabdruck oder Gesicht anmelden', ru: 'Вход по отпечатку или лицу', zh: '指纹或人脸登录', tr: 'Parmak izi veya yüzle giriş', fa: 'ورود با اثر انگشت یا صورت' },
+  magic_link_btn: { ar: 'الرابط السحري (بدون كلمة مرور)', en: 'Magic link (passwordless)', fr: 'Lien magique (sans mot de passe)', es: 'Enlace mágico (sin contraseña)', it: 'Link magico (senza password)', de: 'Magischer Link (passwortlos)', ru: 'Волшебная ссылка (без пароля)', zh: '魔法链接 (无密码)', tr: 'Sihirli bağlantı (şifresiz)', fa: 'لینک جادویی (بدون رمز عبور)' },
+  remember_me: { ar: 'تذكرني (احفظ الجلسة)', en: 'Remember me', fr: 'Se souvenir de moi', es: 'Recuérdame', it: 'Ricordami', de: 'Angemeldet bleiben', ru: 'Запомнить меня', zh: '记住我', tr: 'Beni hatırla', fa: 'مرا به یاد آور' },
   err_passkey_none: { ar: 'مفيش بصمة مسجلة بالبريد ده — ضيف واحدة من بوابتك', en: 'No passkey is registered for this e-mail — add one from your portal', fr: 'Aucun passkey pour cet e-mail — ajoutez-en un depuis votre portail', es: 'No hay passkey para este correo — añade uno desde tu portal', it: 'Nessun passkey per questa e-mail — aggiungine uno dal tuo portale', de: 'Kein Passkey für diese E-Mail — fügen Sie einen in Ihrem Portal hinzu', ru: 'Для этой e-mail нет passkey — добавьте его в своём портале', zh: '该邮箱没有 passkey，请从您的个人中心添加', tr: 'Bu e-posta için passkey yok — portalınızdan ekleyin', fa: 'برای این ایمیل passkey‌ای نیست — از پورتالتان اضافه کنید' },
   google_btn: { ar: 'متابعة بجوجل', en: 'Continue with Google', fr: 'Continuer avec Google', es: 'Continuar con Google', it: 'Continua con Google', de: 'Mit Google fortfahren', ru: 'Продолжить с Google', zh: '使用 Google 继续', tr: 'Google ile devam et', fa: 'ادامه با گوگل' },
   facebook_btn: { ar: 'متابعة بفيسبوك', en: 'Continue with Facebook', fr: 'Continuer avec Facebook', es: 'Continuar con Facebook', it: 'Continua con Facebook', de: 'Mit Facebook fortfahren', ru: 'Продолжить с Facebook', zh: '使用 Facebook 继续', tr: 'Facebook ile devam et', fa: 'ادامه با فیسبوک' },
@@ -417,10 +419,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [name, setName] = useState('');
   const [craftLevel, setCraftLevel] = useState<'hobbyist' | 'perfumer' | 'master_lab'>('perfumer');
   const [regionId, setRegionId] = useState('SA');
-  // L-02 Fix: GDPR Art.7 — الموافقة لا تكون افتراضية. يجب أن يختار المستخدم صراحةً.
-  const [privacyAccepted, setPrivacyAccepted] = useState(false);
-  const [ageConfirmed, setAgeConfirmed] = useState(false);
-  const [dob, setDob] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -444,6 +442,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [code, setCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [forgotCooldown, setForgotCooldown] = useState(0);
+  /** «تذكرني»: إن أُطفِئت تُحفظ الجلسة في ذاكرة الجلسة فقط (تُمسح بإغلاق المتصفح). */
+  const [rememberMe, setRememberMe] = useState(true);
+  /** التحقق المباشر من صيغة البريد أثناء الكتابة. */
+  const [emailValid, setEmailValid] = useState(true);
+  const emailRe = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,24}$/;
 
   const toStep = (next: 'auth' | 'totp' | 'phone' | 'forgot' | 'forgot_code') => { setStage(next); setErrorMsg(null); setCode(''); setNewPassword(''); };
   React.useEffect(() => {
@@ -451,6 +454,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     const t = setTimeout(() => setForgotCooldown((c) => c - 1), 1000);
     return () => clearTimeout(t);
   }, [forgotCooldown]);
+
+  React.useEffect(() => {
+    if (!email) { setEmailValid(true); return; }
+    setEmailValid(emailRe.test(email));
+  }, [email]);
 
   const finish = (user: UserProfile) => { onSuccess(user); onClose(); };
 
@@ -491,7 +499,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       }
       if (mode === 'login') {
         const res = await loginUser(email, password);
-        if (res.success && res.user) { finish(res.user); return; }
+        if (res.success && res.user) {
+          if (!rememberMe) { try { const raw = localStorage.getItem('sham_auth_user_v1'); if (raw) { sessionStorage.setItem('sham_auth_user_v1', raw); localStorage.removeItem('sham_auth_user_v1'); } } catch {} }
+          finish(res.user); return;
+        }
         if ((res.error === 'totp_required' || (res as any).method === 'phone') && res.pendingToken) { setPendingToken(res.pendingToken || ''); toStep((res as any).method === 'phone' ? 'phone' : 'totp'); if ((res as any).method === 'phone') { try { await cx('/community/auth/login/phone/request', { body: { pendingToken: res.pendingToken } }); } catch {} } return; }
         if (res.error === 'totp_required') { setPendingToken(res.pendingToken || ''); toStep('totp'); return; }
         setErrorMsg(res.error ? (S[res.error as keyof typeof S] ? L(res.error as keyof typeof S) : res.error) : L('err_login'));
@@ -507,26 +518,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           setErrorMsg(L('err_password'));
           setIsLoading(false);
           return;
-        }
-        if (!privacyAccepted) {
-          setErrorMsg(L('err_privacy'));
-          setIsLoading(false);
-          return;
-        }
-        // L-02 + L-17: تحقق العمر — GDPR Art.8 (16+) / COPPA (13+)
-        if (!ageConfirmed) {
-          setErrorMsg(L('err_age'));
-          setIsLoading(false);
-          return;
-        }
-        if (dob) {
-          const birth = new Date(dob);
-          const age = (Date.now() - birth.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
-          if (age < 13) {
-            setErrorMsg(L('err_age'));
-            setIsLoading(false);
-            return;
-          }
         }
 
         const res = await registerUser(name, email, password, craftLevel, regionId);
@@ -852,9 +843,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 placeholder="perfumer@domain.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`w-full ${rtl ? 'pl-3 pr-9' : 'pl-9 pr-3'} py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-left font-mono`}
+                className={`w-full ${rtl ? 'pl-3 pr-9' : 'pl-9 pr-3'} py-2.5 bg-stone-50 border ${!emailValid && email ? 'border-rose-500' : 'border-stone-200'} rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-left font-mono`}
                 dir="ltr"
               />
+              {!email && !emailValid ? null : email && !emailValid ? (
+                <p className="text-[10px] text-rose-600 mt-1">{currentLang === 'ar' ? 'اكتب بريداً صالحاً (مثل perfumer@domain.com)' : 'Please enter a valid e-mail (e.g. perfumer@domain.com)'}</p>
+              ) : null}
             </div>
           </div>
 
@@ -931,43 +925,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </select>
               </div>
 
-              <div className="pt-1 flex items-start gap-2">
-                <input
-                  type="checkbox"
-                  id="privacy-check"
-                  checked={privacyAccepted}
-                  onChange={(e) => setPrivacyAccepted(e.target.checked)}
-                  className="mt-0.5 rounded text-amber-700 focus:ring-amber-700 cursor-pointer"
-                  required
-                />
-                <label htmlFor="privacy-check" className="text-[11px] text-stone-600 leading-snug">
-                  {L('privacy_check')}
-                  <button
-                    type="button"
-                    onClick={onOpenPrivacyPolicy}
-                    className="text-amber-800 font-semibold underline mx-1 cursor-pointer"
-                  >
-                    {L('privacy_link')}
-                  </button>
-                  <span className="text-red-600"> *</span>
-                </label>
-              </div>
-
-              {/* L-02 + L-17: تأكيد العمر + تاريخ ميلاد اختياري للتحقق */}
-              <div className="flex items-start gap-2">
-                <input
-                  type="checkbox"
-                  id="age-check"
-                  checked={ageConfirmed}
-                  onChange={(e) => setAgeConfirmed(e.target.checked)}
-                  className="mt-0.5 rounded text-amber-700 focus:ring-amber-700 cursor-pointer"
-                  required
-                />
-                <label htmlFor="age-check" className="text-[11px] text-stone-600 leading-snug">
-                  {L('age_check')}
-                  <span className="text-red-600"> *</span>
-                </label>
-              </div>
+              <div className="pt-1 flex items-start gap-2"></div>
 
               {/* Sham Security — Google/Apple/Meta practices visible */}
               <div className="rounded-xl bg-amber-50 border border-amber-200 p-2.5 text-[10px] leading-relaxed text-amber-900">
@@ -980,29 +938,40 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </ul>
               </div>
 
-              <div>
-                <label className="font-semibold text-stone-800 block mb-1 text-[11px]">
-                  {L('dob_label')}
-                </label>
-                <input
-                  type="date"
-                  value={dob}
-                  onChange={(e) => setDob(e.target.value)}
-                  max={new Date().toISOString().split('T')[0]}
-                  lang="en" dir="ltr" placeholder="YYYY-MM-DD"
-                  className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-amber-700 text-xs"
-                />
-              </div>
-
-              <p className="text-[9px] text-stone-400 leading-snug bg-stone-50 p-2 rounded-lg border border-stone-200">
-                {currentLang === 'ar' ? '⚖️ بموافقتك، تُسجل موافقتك مع الطابع الزمني (GDPR Art.7). يمكنك سحبها anytime عبر "مسح بياناتي".' : '⚖️ Consent logged with timestamp (GDPR Art.7). Withdraw anytime via "Erase my data".'}
-              </p>
             </>
           )}
           </>
           )}
 
           <div className="pt-2 space-y-2">
+            {/* Remember me: session kept in localStorage if on, sessionStorage if off */}
+            {mode === 'login' && stage === 'auth' && (
+              <div className="flex items-center gap-2 text-xs">
+                <input
+                  type="checkbox"
+                  id="remember-me"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="mt-0.5 rounded text-amber-700 focus:ring-amber-700 cursor-pointer"
+                />
+                <label htmlFor="remember-me" className="text-stone-600 cursor-pointer select-none">
+                  {currentLang === 'ar' ? 'تذكرني (احفظ الجلسة)' : 'Remember me'}
+                </label>
+              </div>
+            )}
+
+            {mode === 'login' && stage === 'auth' && webauthnAvailable() && email.includes('@') && (
+              <button
+                type="button"
+                onClick={() => void handlePasskeyLogin()}
+                disabled={passkeyBusy}
+                className="w-full py-2.5 rounded-xl border border-amber-400 bg-amber-600 text-white font-bold text-xs shadow-md transition-all hover:bg-amber-700 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
+              >
+                <Fingerprint className="w-3.5 h-3.5 text-amber-200" />
+                <span>{passkeyBusy ? '…' : L('passkey_btn')}</span>
+              </button>
+            )}
+
             <button
               type="submit"
               className="w-full py-3 rounded-xl bg-amber-800 hover:bg-amber-900 text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
@@ -1017,15 +986,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </span>
             </button>
 
-            {mode === 'login' && stage === 'auth' && webauthnAvailable() && email.includes('@') && (
+            {mode === 'login' && stage === 'auth' && email.includes('@') && (
               <button
                 type="button"
-                onClick={() => void handlePasskeyLogin()}
-                disabled={passkeyBusy}
-                className="w-full py-2.5 rounded-xl border border-amber-200 bg-amber-50 text-amber-900 font-semibold text-xs transition-colors hover:bg-amber-100 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
+                onClick={() => { if (forgotCooldown>0) return; void (async()=>{ const r=await requestPasswordReset(email); if(r.success) setForgotCooldown(60); })(); toStep('forgot'); }}
+                className="w-full py-2.5 rounded-xl border border-amber-200 bg-amber-50 text-amber-900 font-semibold text-xs transition-colors hover:bg-amber-100 cursor-pointer flex items-center justify-center gap-2"
               >
-                <Fingerprint className="w-3.5 h-3.5 text-amber-700" />
-                <span>{passkeyBusy ? '…' : L('passkey_btn')}</span>
+                <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
+                <span>{currentLang === 'ar' ? 'الرابط السحري (بدون كلمة مرور)' : 'Magic link (passwordless)'}</span>
               </button>
             )}
 

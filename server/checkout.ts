@@ -20,9 +20,9 @@ import { ValidationError } from './core/repository';
 import { toMinor } from '../src/finance/money';
 import { PAYMENT_HELD, reviewCharge } from '../src/finance/shield';
 import productsData from '../src/data/products.json';
-import { mergeCatalog, type RawProduct, type StoreCatalogFile, type StoreProduct } from '../src/utils/storeCatalog';
+import { mergeCatalog, skuOf, type RawProduct, type StoreCatalogFile, type StoreProduct } from '../src/utils/storeCatalog';
 import { customerPayOffer } from '../src/bank/worldPay';
-import { BUNDLED_FX, chargeCurrency, currencyFor, isCountry, isFxTable, quote, type FxTable, type ShippingTable } from '../src/utils/pricing';
+import { BUNDLED_FX, chargeCurrency, convert, currencyFor, isCountry, isFxTable, quote, type FxTable, type ShippingTable } from '../src/utils/pricing';
 import { createSession, kashierConfig, KashierError, sessionPayment, verifyWebhook, type KashierConfig } from './core/kashier';
 import { containsCardSecret, stripeCardNetwork, verdictFromProvider } from '../src/utils/cardNetwork';
 import { createNotifier } from './core/notify';
@@ -68,6 +68,12 @@ export { countryFromHeaders };
 export interface CheckoutInput {
   items: { sku: string; qty: number }[]; country: string; lang: 'ar' | 'en'; method?: 'card' | 'wallet';
   contact: { name: string; email: string; phone: string }; address: { city: string; line: string }; returnUrl?: string;
+  /**
+   * The total the page showed the visitor, in the currency it showed (the browser's own quote). The server
+   * recomputes that same number and refuses to charge a different one (`PRICE_CHANGED`) — so a price, a rate or a
+   * shipping change between opening the basket and paying can never be charged silently.
+   */
+  quoted?: { total: number; currency: string };
 }
 
 /** Validates the visitor's form. Returns an error code or the clean input. */
@@ -95,7 +101,40 @@ export function readCheckout(body: unknown): CheckoutInput | { error: string } {
   if (!isEmail(contact.email)) return { error: 'INVALID_EMAIL' };
   if (contact.phone.replace(/\D/g, '').length < 7) return { error: 'INVALID_PHONE' };
   if (!address.city || address.line.length < 5) return { error: 'MISSING_ADDRESS' };
-  return { items: [...merged].map(([sku, qty]) => ({ sku, qty })), country, ...(b.method ? { method: b.method as 'card' | 'wallet' } : {}), lang: b.lang === 'ar' ? 'ar' : 'en', contact, address, returnUrl: str(b.returnUrl, 500) || undefined };
+  const quoted = readQuoted(b.quoted);
+  return { items: [...merged].map(([sku, qty]) => ({ sku, qty })), country, ...(b.method ? { method: b.method as 'card' | 'wallet' } : {}), lang: b.lang === 'ar' ? 'ar' : 'en', contact, address, returnUrl: str(b.returnUrl, 500) || undefined, ...(quoted ? { quoted } : {}) };
+}
+
+/** The total the page showed: a positive amount in a real ISO currency, else nothing (never trusted as a price). */
+export function readQuoted(raw: unknown): { total: number; currency: string } | undefined {
+  const q = (raw && typeof raw === 'object' ? raw : undefined) as { total?: unknown; currency?: unknown } | undefined;
+  const total = Number(q?.total);
+  const currency = String(q?.currency || '').toUpperCase();
+  if (!Number.isFinite(total) || total <= 0 || total > 1e9 || !/^[A-Z]{3}$/.test(currency)) return undefined;
+  return { total: Math.round(total * 100) / 100, currency };
+}
+
+/**
+ * «السعر اللي شافه الزائر» — recompute the page's own quote in the same currency and compare.
+ * A tolerance of the larger of one unit and 0.5 % absorbs rounding between the browser's bundled rates and the
+ * server's live ones; anything beyond that is a real change the visitor must see before any money moves.
+ */
+export function quotedDrift(
+  input: CheckoutInput,
+  lines: { sku: string; qty: number; price: number }[],
+  rates: FxTable,
+  shipping: ShippingTable | undefined,
+): { changed: boolean; shown?: number; now?: number; currency?: string } {
+  if (!input.quoted) return { changed: false };
+  try {
+    const fresh = quote(lines, input.country, { fx: rates, shipping, currency: input.quoted.currency });
+    const tolerance = Math.max(1, Math.abs(fresh.total) * 0.005);
+    const changed = Math.abs(fresh.total - input.quoted.total) > tolerance;
+    return { changed, shown: input.quoted.total, now: fresh.total, currency: input.quoted.currency };
+  } catch {
+    // عملة مش في جدول الصرف: مانقدرش نقارن، ومابنمنعش البيع بسبب ده — الفحص على السيرفر بيتحسب بالعملة الرسمية.
+    return { changed: false };
+  }
 }
 
 /** Where Kashier sends the visitor back: their page, only if it is one of the site's own origins. */
@@ -151,6 +190,22 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     const lines = missing ? [] : input.items.map((i) => ({ sku: i.sku, qty: i.qty, price: bySku.get(i.sku)!.price }));
     return { list, lines, missing, rates: await fx().catch(() => bundledFx) };
   };
+  /**
+   * تكلفة المورد للطلب بعملة الخصم — عشان «حارس المدفوعات» يعرف يكشف بيع تحت التكلفة. لو أي بند مش معروف
+   * تكلفته، بنرجّع `undefined` (مجهولة) بدل ما نخترع رقماً.
+   */
+  const supplierCostOf = (items: { sku: string; qty: number }[], rates: FxTable, currency: string): number | undefined => {
+    const bySku = new Map(products.map((p) => [skuOf(p), Number(p.supplierPrice)]));
+    let egp = 0;
+    for (const item of items) {
+      const cost = bySku.get(item.sku);
+      if (!(typeof cost === 'number' && cost > 0)) return undefined;
+      egp += cost * item.qty;
+    }
+    if (!(egp > 0)) return undefined;
+    try { return convert(egp, 'EGP', currency, rates); } catch { return undefined; }
+  };
+
   const syncOrder = async (ref: string, req: express.Request, input: CheckoutInput, list: StoreProduct[], lines: { sku: string; qty: number; price: number }[], rates: FxTable, total: number, currency: string) => {
     if (!options.onCheckout) return;
     const catalogBySku = new Map(list.map((p) => [p.sku, p]));
@@ -218,11 +273,21 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     const display = quote(lines, input.country, { fx: rates, shipping: options.shipping });
     const charge = quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: chargeCurrency(currencyFor(input.country, rates), cfg.currencies) });
 
+    // «السعر اللي شافه الزائر»: لو اتغير، مانخصمش — بنعرض المبلغ الجديد ويوافق بنفسه.
+    const drift = quotedDrift(input, lines, rates, options.shipping);
+    if (drift.changed) {
+      res.status(409).json({
+        error: 'The price changed since you opened the basket', code: 'PRICE_CHANGED',
+        now: { total: drift.now, currency: drift.currency }, was: { total: drift.shown, currency: drift.currency },
+      });
+      return;
+    }
+
     // «حارس المدفوعات والعمولات»: the cart is reviewed on the server, right before any money moves.
     const verdict = reviewCharge({
       country: input.country, displayCurrency: display.currency, chargeCurrency: charge.currency,
       accepted: cfg.currencies, lines: charge.lines, items: charge.items, shipping: charge.shipping, total: charge.total,
-      officialCurrency: currencyFor(input.country, rates),
+      officialCurrency: currencyFor(input.country, rates), supplierCost: supplierCostOf(input.items, rates, charge.currency),
     });
     if (!verdict.ok) {
       console.warn('[finance_shield] payment held:', verdict.findings.filter((f) => f.level === 'stop').map((f) => f.code).join(','));
@@ -285,11 +350,19 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     const { list, lines, missing, rates } = await priceItems(input);
     if (missing) { res.status(409).json({ error: 'A product is no longer available', code: 'UNAVAILABLE', sku: missing.sku }); return; }
     const charge = quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: method.currency });
+    const drift = quotedDrift(input, lines, rates, options.shipping);
+    if (drift.changed) {
+      res.status(409).json({
+        error: 'The price changed since you opened the basket', code: 'PRICE_CHANGED',
+        now: { total: drift.now, currency: drift.currency }, was: { total: drift.shown, currency: drift.currency },
+      });
+      return;
+    }
     // «حارس المدفوعات»: the same instant review before a direct receipt (InstaPay, transfer, wallet, cash).
     const verdict = reviewCharge({
       country: input.country, displayCurrency: currencyFor(input.country, rates), chargeCurrency: charge.currency,
       accepted: [method.currency], lines: charge.lines, items: charge.items, shipping: charge.shipping, total: charge.total,
-      officialCurrency: currencyFor(input.country, rates),
+      officialCurrency: currencyFor(input.country, rates), supplierCost: supplierCostOf(input.items, rates, charge.currency),
     });
     if (!verdict.ok) {
       console.warn('[finance_shield] direct payment held:', verdict.findings.filter((f) => f.level === 'stop').map((f) => f.code).join(','));

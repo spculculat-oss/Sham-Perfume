@@ -78,6 +78,7 @@ import {
 } from '../utils/storeCheckout';
 import { DIRECT_PURCHASE_EVENT, takeDirectPurchase, type DirectPurchase } from '../utils/directPurchase';
 import { quote } from '../utils/pricing';
+import { explainFault } from '../finance/errors';
 import { useMerchantCartProducts } from '../community/cartItems';
 
 /**
@@ -581,6 +582,20 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     window.addEventListener(DIRECT_PURCHASE_EVENT, receive);
     return () => window.removeEventListener(DIRECT_PURCHASE_EVENT, receive);
   }, [signedIn, onRequireAuth]);
+  /**
+   * «رسالة الخطأ بلغة الزائر»: كل كود من كودات الدفع له جملة عربية/إنجليزية ثابتة (src/finance/errors.ts)،
+   * وآخر رقم متاح (المبلغ الجديد بعد تغيّر السعر) بيظهر معاها — مفيش «حصل خطأ» بلا تفسير.
+   */
+  const payFaultMessage = (error: unknown, fallback: string): string => {
+    const code = (error as { code?: string })?.code || '';
+    if (!code) return fallback;
+    const fault = explainFault(code, currentLang === 'ar' ? 'ar' : 'en');
+    const now = error instanceof CheckoutError ? error.now : undefined;
+    const amount = now && Number.isFinite(now.total) ? ` — ${now.total} ${now.currency}` : '';
+    return code === 'PRICE_CHANGED' || code === 'PAYMENT_HELD' || code === 'METHOD_UNAVAILABLE' || code === 'UNAVAILABLE'
+      ? `${currentLang === 'ar' ? fault.ar : fault.en}${amount}` : fallback;
+  };
+
   const changeCheckoutQty = (sku: string, qty: number) => {
     if (directPurchase) setDirectPurchase({ ...directPurchase, qty: Math.min(99, Math.max(1, qty)) });
     else setCartQty(sku, qty);
@@ -611,10 +626,13 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     if (!payments?.enabled || !chosenMethod) { setPayMessage(L.payError); return; }
     setPaying(true); setPayMessage('');
     try {
-      await startCheckout(summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty })), money.country, payForm, currentLang, chosenMethod, directPurchase ? 'direct' : 'cart');
+      // بنبعت اللي الزائر شافه بالظبط: السيرفر بيرفض يخصم مبلغ مختلف (PRICE_CHANGED).
+      await startCheckout(summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty })), money.country, payForm, currentLang, chosenMethod, directPurchase ? 'direct' : 'cart', { total: bill.total, currency: bill.currency });
     } catch (error) {
       if (error instanceof CheckoutError && error.code === 'LOGIN_REQUIRED') { onRequireAuth?.(); setPayMessage(L.payError); return; }
-      setPayMessage(error instanceof CheckoutError && ['INVALID_EMAIL', 'INVALID_PHONE', 'MISSING_ADDRESS', 'MISSING_NAME'].includes(error.code) ? L.payInvalid : L.payError);
+      setPayMessage(error instanceof CheckoutError && ['INVALID_EMAIL', 'INVALID_PHONE', 'MISSING_ADDRESS', 'MISSING_NAME'].includes(error.code)
+        ? L.payInvalid
+        : payFaultMessage(error, L.payError));
       // Keep the cart and delivery details. A failed redirect or gateway call is NEVER a payment.
     } finally { setPaying(false); }
   };
