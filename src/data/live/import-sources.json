@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-26T16:36:38.563Z",
+ "updatedAt": "2026-10-26T18:58:34.073Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -5461,12 +5461,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-26T18:58:34.073Z",
    "trust": {
     "score": 86,
     "verdict": "trusted",
-    "at": "2026-10-19T18:53:10.915Z",
+    "at": "2026-10-26T18:58:34.073Z",
     "checks": [
      {
       "id": "age",
@@ -5565,23 +5565,23 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "EUR",
-   "rateToEgp": 60.1032,
+   "rateToEgp": 62.1481,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*ausliebezumduft\\.de/products/[^?#]+$",
    "sitemaps": [
     "https://www.ausliebezumduft.de/sitemap_agentic_discovery.xml",
-    "https://www.ausliebezumduft.de/sitemap_products_1.xml?from=10143100928346&to=10143500140890",
-    "https://www.ausliebezumduft.de/sitemap_products_2.xml?from=10143500370266&to=10145456324954",
-    "https://www.ausliebezumduft.de/sitemap_products_3.xml?from=10145456423258&to=10145978155354",
-    "https://www.ausliebezumduft.de/sitemap_products_4.xml?from=10145978253658&to=10153924559194",
-    "https://www.ausliebezumduft.de/sitemap_products_5.xml?from=10153925738842&to=11031995580762",
+    "https://www.ausliebezumduft.de/sitemap_products_1.xml?from=10143100928346&to=10143500632410",
+    "https://www.ausliebezumduft.de/sitemap_products_2.xml?from=10143500927322&to=10145456816474",
+    "https://www.ausliebezumduft.de/sitemap_products_3.xml?from=10145456914778&to=10145980547418",
+    "https://www.ausliebezumduft.de/sitemap_products_4.xml?from=10145980645722&to=10243173253466",
+    "https://www.ausliebezumduft.de/sitemap_products_5.xml?from=10243173286234&to=11050163339610",
     "https://www.ausliebezumduft.de/sitemap_pages_1.xml?from=138209788250&to=161118781786",
-    "https://www.ausliebezumduft.de/sitemap_collections_1.xml?from=639574507866&to=646038651226",
-    "https://www.ausliebezumduft.de/sitemap_collections_2.xml?from=646038683994&to=680812872026",
+    "https://www.ausliebezumduft.de/sitemap_collections_1.xml?from=639574507866&to=646039667034",
+    "https://www.ausliebezumduft.de/sitemap_collections_2.xml?from=646039699802&to=680812872026",
     "https://www.ausliebezumduft.de/sitemap_blogs_1.xml",
     "https://www.ausliebezumduft.de/sitemap_articles_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 4937
+   "productsEstimate": 4967
   },
   {
    "id": "osswaldnyc-com",
@@ -5591,12 +5591,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-26T18:58:34.073Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-10-19T18:53:10.915Z",
+    "at": "2026-10-26T18:58:34.073Z",
     "checks": [
      {
       "id": "age",
@@ -5696,18 +5696,18 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 53.5247,
+   "rateToEgp": 55.6767,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*osswaldnyc\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.osswaldnyc.com/sitemap_agentic_discovery.xml",
-    "https://www.osswaldnyc.com/sitemap_products_1.xml?from=131027455&to=10336615727323",
+    "https://www.osswaldnyc.com/sitemap_products_1.xml?from=131027455&to=10362358595803",
     "https://www.osswaldnyc.com/sitemap_pages_1.xml?from=125059140&to=126722638043",
-    "https://www.osswaldnyc.com/sitemap_collections_1.xml?from=9704145&to=541556474075",
+    "https://www.osswaldnyc.com/sitemap_collections_1.xml?from=9704145&to=541483368667",
     "https://www.osswaldnyc.com/sitemap_blogs_1.xml",
     "https://www.osswaldnyc.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 992
+   "productsEstimate": 1000
   },
   {
    "id": "niche-beauty-com",
@@ -7367,6 +7367,21 @@
  ],
  "runs": [
   {
+   "at": "2026-10-26T18:58:34.073Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 2,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ ausliebezumduft.de: CV 86/100 [https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ ausliebezumduft.de (CV 86/100): 4967 perfumes, 3/6 pages read without AI, EUR (1 = 62.1481 EGP) — still good",
+    "  ↳ osswaldnyc.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✓ osswaldnyc.com (CV 83/100): 1000 perfumes, 3/6 pages read without AI, USD (1 = 55.6767 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-10-26T16:36:38.563Z",
    "mode": "self",
    "found": 0,
@@ -7692,17 +7707,6 @@
   },
   {
    "at": "2026-10-22T19:06:03.105Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T18:44:43.066Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
