@@ -122,6 +122,8 @@
   "rv_write": "Viết đánh giá",
   "sf_added": "Đã thêm ✓",
   "sf_address": "Địa chỉ đầy đủ",
+  "sf_ai_note_quick": "Gợi ý tự động từ bộ lọc của cửa hàng, dựa trên từ khóa của bạn — vui lòng kiểm tra chi tiết sản phẩm trước khi mua.",
+  "sf_ai_note_shaheen": "Gợi ý do AI tạo từ các sản phẩm của cửa hàng — vui lòng kiểm tra chi tiết sản phẩm trước khi mua.",
   "sf_all_brands": "Tất cả thương hiệu",
   "sf_all_categories": "Tất cả danh mục",
   "sf_ask_hint": "Hãy cho Shaheen biết bạn đang tìm gì — dịp sử dụng, mùa, nước hoa nam hay nữ, ngân sách — anh ấy sẽ chọn sản phẩm trong cửa hàng.",

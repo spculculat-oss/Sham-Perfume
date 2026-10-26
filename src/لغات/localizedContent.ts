@@ -716,6 +716,23 @@ const READ_TIME_TPL: Record<SupportedLanguage, string> = {
   ig: '{n} nkeji',
 };
 
+/** First integer in a display read-time ("3 دقائق", "۳ min", "4 min"), any numeral system. */
+const parseMinutes = (s?: string): number | undefined => {
+  if (!s) return undefined;
+  const norm = s
+    .replace(/[٠-٩]/g, (c) => String(c.charCodeAt(0) - 0x0660))
+    .replace(/[۰-۹]/g, (c) => String(c.charCodeAt(0) - 0x06f0));
+  const m = norm.match(/\d+/);
+  return m ? Number(m[0]) : undefined;
+};
+
+/**
+ * The article a non-Arabic visitor reads: English field → seed English body
+ * (NEWS_EN_FALLBACK) → an English field of the same article — never the
+ * Arabic body, so the news page upholds the same rule as the rest of the
+ * platform (Arabic only for Arabic). Verdict/impact are shown conditionally
+ * by the page, so an empty string simply hides the block for a stale item.
+ */
 export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: SupportedLanguage) => {
   if (lang === 'ar') return article;
 
@@ -730,22 +747,24 @@ export const getLocalizedNewsArticle = (article: PerfumeNewsItem, lang: Supporte
     sourceEn?: string;
   };
 
+  const title = article.titleEn || ext.summaryEn || en?.summary || '';
+  const summary = ext.summaryEn || en?.summary || article.titleEn || title;
+  const minutes = typeof ext.readTimeMinutes === 'number' ? ext.readTimeMinutes : parseMinutes(article.readTime);
+
   return {
     ...article,
-    titleAr: article.titleEn || article.titleAr,
+    titleAr: title,
     categoryLabelAr: CONTENT_LABEL_KEYS.news[article.category as keyof typeof CONTENT_LABEL_KEYS.news]
       ? contentLabel(CONTENT_LABEL_KEYS.news[article.category as keyof typeof CONTENT_LABEL_KEYS.news], lang)
       : article.categoryLabelAr,
-    summaryAr: ext.summaryEn || en?.summary || article.summaryAr,
-    contentAr: ext.contentEn || en?.content || article.contentAr,
-    expertVerdict: ext.verdictEn || en?.verdict || article.expertVerdict,
-    marketImpact: ext.impactEn || en?.impact || article.marketImpact,
+    summaryAr: summary,
+    contentAr: ext.contentEn || en?.content || summary,
+    expertVerdict: ext.verdictEn || en?.verdict || '',
+    marketImpact: ext.impactEn || en?.impact || '',
     date: ext.dateIso
       ? localeDate(lang, new Date(`${ext.dateIso}T00:00:00`), { day: 'numeric', month: 'long', year: 'numeric' })
       : article.date,
-    readTime: typeof ext.readTimeMinutes === 'number'
-      ? fmt(READ_TIME_TPL[lang], { n: ext.readTimeMinutes })
-      : article.readTime,
+    readTime: typeof minutes === 'number' ? fmt(READ_TIME_TPL[lang], { n: minutes }) : article.readTime,
     source: ext.sourceEn || article.source,
   };
 };

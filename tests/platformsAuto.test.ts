@@ -27,7 +27,8 @@ const json = (data: unknown, status = 200) => new Response(JSON.stringify(data),
 
 test('the owner chose «تلقائي», and the switch is read', () => {
   assert.equal(readControls(controls).aiPlatforms, 'auto');
-  assert.ok(readControls(controls).log.some((entry) => entry.action === 'platforms_auto'));
+  // Newer owner orders (freeze/unfreeze of all robots) may top the log; the auto-switch order stays on record.
+  assert.ok(readControls(controls).log.some((e) => e.action === 'platforms_auto'), 'the «تلقائي» order is recorded');
   assert.equal(readControls({ aiPlatforms: 'auto' }).aiPlatforms, 'auto');
   assert.equal(readControls({ aiPlatforms: 'weird' }).aiPlatforms, 'on');
   assert.equal(platformsMode(AUTO), 'auto');
