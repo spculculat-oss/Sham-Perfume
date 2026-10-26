@@ -11,6 +11,7 @@
  * tests/shaheenSchoolAcademy.test.ts (every question must find exactly its own lesson).
  */
 import { AI_TOOLS, type AiToolId } from '../../src/utils/aiTools';
+import { booksForTrack, approvedBooksForTrack, type LibraryBook } from '../../src/library/catalog';
 import type { ProgramInput } from '../../src/utils/shaheenBlocks';
 import type { BankQuestion, TrainingDoc } from './school';
 import { AI_PROJECT_LESSONS, CHEM_LESSONS, FRONTIER_LESSONS, IT_LESSONS, MATH_LESSONS, PHYS_LESSONS } from './curriculumWorld';
@@ -701,6 +702,23 @@ export function academyLessons(): TrainingDoc[] {
 
 export function academyQuestions(): BankQuestion[] {
   return PAIRS.map((p) => p.question);
+}
+
+/** Track-linked catalogue candidates for reading-list planning; metadata never becomes a lesson. */
+export function academyLibraryReferences(track: TrackId): LibraryBook[] {
+  return booksForTrack(track);
+}
+/** Strict publication gate: only an edition-verified, approved, lawfully accessible full work can teach. */
+export function approvedAcademyLibraryBooks(track: TrackId): LibraryBook[] {
+  return approvedBooksForTrack(track);
+}
+/** A coverage report for every school track exposes gaps rather than inventing books. */
+export function academyLibraryCoverage(): Array<{ track: TrackId; candidateCount: number; approvedCount: number }> {
+  return TRACKS.map(({ id }) => ({
+    track: id,
+    candidateCount: academyLibraryReferences(id).length,
+    approvedCount: approvedAcademyLibraryBooks(id).length,
+  }));
 }
 
 // ── The school's own block programs (built and scheduled every school run) ─────────────────────────────────

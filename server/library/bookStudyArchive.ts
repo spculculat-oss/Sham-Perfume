@@ -37,11 +37,18 @@ export const BOOK_STUDY_ARCHIVE = {
     storage: 'No copyrighted full text in this repository or static site. Keep licensed material in access-controlled storage.',
   },
   books: LIBRARY_BOOKS.map(book => {
-    const reference = REFERENCES.find(r => book.id === `SHAM-LIB-${r.suffix}`)!;
+    const reference = REFERENCES.find(r => book.id === `SHAM-LIB-${r.suffix}`);
+    const discoveryQuery = [book.title, book.titleEnglish, book.transliteration, book.authors, book.authorsNative].filter(Boolean).join(' ');
     return {
-      id: book.id, title: book.title,
-      suppliedAttribution: book.authors, topic: book.category,
-      discovery: { url: reference.url, source: 'prior-bibliographic-web-search', editionNote: reference.editionNote || 'تحديد الطبعة ومطابقة بياناتها مطلوبان.', fullTextAccessVerified: false },
+      id: book.id, title: book.title, titleEnglish: book.titleEnglish, language: book.language,
+      originArea: book.originArea, trackIds: book.trackIds, workKind: book.workKind,
+      suppliedAttribution: book.authors, topic: book.category, schoolApproval: book.schoolApproval,
+      discovery: {
+        url: reference?.url || `https://search.worldcat.org/search?q=${encodeURIComponent(discoveryQuery)}`,
+        source: reference ? 'prior-bibliographic-web-search' : 'WorldCat discovery query; not an identified bibliographic record',
+        editionNote: reference?.editionNote || 'سجل اكتشاف أولي فقط؛ يجب مطابقة عنوان الكتاب والطبعة والجهة الناشرة من فهرس موثوق.',
+        fullTextAccessVerified: false,
+      },
       studyStatus: 'awaiting-lawful-source' as const,
       rightsReview: 'pending' as const,
       reviewedSections: [] as Array<{ edition: string; locator: string; evidenceRef: string }>,
