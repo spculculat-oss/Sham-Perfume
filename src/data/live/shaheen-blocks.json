@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-26T18:59:45.971Z",
+ "updatedAt": "2026-10-26T23:15:21.710Z",
  "programs": [
   {
    "id": "school-day",
@@ -263,6 +263,13 @@
   }
  ],
  "runs": [
+  {
+   "program": "ai-self",
+   "at": "2026-10-26T23:15:21.710Z",
+   "ok": true,
+   "steps": 8,
+   "failed": 0
+  },
   {
    "program": "tool-dev",
    "at": "2026-10-26T13:23:26.468Z",
