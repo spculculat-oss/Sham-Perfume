@@ -1,0 +1,115 @@
+name: Shaheen mind — the learning loop (ears, tutor, examiner, reflex)
+
+# «حلقة تعلّم شاهين» (src/utils/shaheenOrg.ts + scripts/shaheen-mind/). Once a day, after «سينابس» has rebuilt the
+# mind, four robots close the loop between the mind and the real data — the site's own and the visitors' words:
+#   · «الآذان» reads every real question that was asked and answered (Shaheen memory) and sorts it per specialist:
+#     what is asked most, what was asked and never answered, what repeats with no lesson. Personal numbers and
+#     e-mails are dropped before the report — counted, never quoted (scripts/shaheen-mind/ears.ts).
+#   · «المعلم» turns every weak link of the mind into a study plan — a destination nobody explains, a destination
+#     with no published shipping rate, customs still «being verified», a carrier whose perfume acceptance is
+#     unconfirmed — and writes exam questions whose answers are the site's own numbers, each with its source.
+#   · «الممتحن» asks those questions to the real agent, offline and with no engine, and grades the answer against
+#     the documented number — not the style. One number comes out: «درجة الذكاء» from 100, per specialist and for
+#     the whole mind, and every miss goes back to «المعلم».
+#   · «الانعكاس» builds the instant answers a visitor needs before any engine runs (shipping to their country,
+#     customs, perfume on board) from the very functions checkout uses — so an instant answer can never disagree
+#     with what the site charges. Every entry carries its source and date.
+# No robot here changes a price or makes a promise: prices and promises stay the owner's decision.
+
+on:
+  schedule:
+    # After «سينابس» (27 */3) has refreshed the graph, and before «الفحص الشامل» (04:10) reads the reports.
+    - cron: '41 4 * * *'
+  workflow_dispatch:
+    inputs:
+      no_exam:
+        description: 'Skip the exam — keep the previous shaheen-exam.json (faster, for a partial run)'
+        type: boolean
+        default: false
+  push:
+    branches: [main, 'arena/**']
+    paths:
+      - 'scripts/shaheen-mind/**'
+      - 'src/utils/shaheenReflex.ts'
+      - 'src/utils/shaheenQuickApps.ts'
+      - 'src/data/shipping.json'
+      - 'src/data/shipping-costs.json'
+      - 'src/data/shipping-lanes.json'
+      - 'src/data/customs.json'
+      - 'src/data/live/trade-lanes.json'
+      - 'src/data/live/shaheen-graph.json'
+      - 'src/data/live/shaheen-immune.json'
+      - '.github/workflows/shaheen-mind.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-mind-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: he (or «دولة المنصة») can pause any of the four robots on its own.
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May these robots run?
+        id: gate
+        run: node scripts/owner/gate.mjs ears tutor examiner reflex
+
+  mind:
+    name: «الآذان» و«المعلم» و«الممتحن» و«الانعكاس»
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Run the learning loop
+        # A partial run must never overwrite a real exam with zeros — run.mts keeps the previous report instead.
+        run: node --import tsx scripts/shaheen-mind/run.mts ${{ inputs.no_exam && '--no-exam' || '' }}
+      - name: Behaviour tests
+        run: node --import tsx --test tests/shaheenMindLoop.test.ts
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen mind"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "شاهين: حلقة التعلّم ودرجة الذكاء $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/shaheen-ears.json \
+            src/data/live/shaheen-study.json \
+            src/data/live/shaheen-exam.json \
+            src/data/live/shaheen-reflex.json \
+            || { echo "::error::Could not push the learning-loop reports"; exit 1; }

@@ -17,6 +17,7 @@ import SeoPanel from './SeoPanel';
 import CommunityPanel from './CommunityPanel';
 import ShaheenGrowthPanel from './ShaheenGrowthPanel';
 import ShaheenOrgPanel from './ShaheenOrgPanel';
+import ShaheenMindPanel from './ShaheenMindPanel';
 import ShaheenPatrolPanel from './ShaheenPatrolPanel';
 import ShaheenOpsMapPanel from './ShaheenOpsMapPanel';
 import OwnerControlPanel from './OwnerControlPanel';
@@ -190,7 +191,7 @@ export default function AdminApp() {
           {tab === 'census' && <PlatformCensusPanel />}
           {tab === 'insights' && <VisitorInsightsPanel />}
           {tab === 'opsmap' && <ShaheenOpsMapPanel />}
-          {tab === 'supervisor' && <><ShaheenOrgPanel /><ShaheenPatrolPanel /><ShaheenCouncilPanel /><SupervisorPanel /></>}
+          {tab === 'supervisor' && <><ShaheenMindPanel /><ShaheenOrgPanel /><ShaheenPatrolPanel /><ShaheenCouncilPanel /><SupervisorPanel /></>}
           {tab === 'seo' && <SeoPanel />}
           {tab === 'sandbox' && <SandboxPanel />}
           {tab === 'updates' && <UpdatesPanel />}

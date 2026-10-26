@@ -42,6 +42,10 @@ on:
           - carriers
           - synapse
           - immune
+          - tutor
+          - examiner
+          - reflex
+          - ears
           - inventory
           - news
           - precheck

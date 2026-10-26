@@ -1,5 +1,6 @@
 import { cardOfferReply, hasSensitiveNumber, isOwnerClaim, offersCardDetails, ownerClaimReply, sensitiveNumberReply } from './ownerAuthority';
 import type { SupportedLanguage } from '../types/i18n';
+import { reflexAnswer } from './shaheenReflex';
 
 /**
  * «تطبيقات شاهين السريعة» — small, exact apps for the simple tasks visitors ask most, answered in the
@@ -15,7 +16,7 @@ import type { SupportedLanguage } from '../types/i18n';
  * (designing a perfume, comparing, a missing number) goes to Shaheen's AI engines as before. The answers
  * are calculations, not imitations of the AI, and say so («⚡ حاسبة شاهين الفورية»).
  */
-export type QuickAppId = 'alcohol' | 'concentration' | 'units' | 'thanks' | 'identity' | 'owner' | 'privacy';
+export type QuickAppId = 'alcohol' | 'concentration' | 'units' | 'thanks' | 'identity' | 'owner' | 'privacy' | 'reflex';
 export interface QuickAnswer { app: QuickAppId; reply: string }
 
 type Lang = 'ar' | 'en';
@@ -179,6 +180,10 @@ export function quickAnswer(text: string, language: SupportedLanguage): QuickAns
   if (!lang) return undefined;
   const clean = asciiDigits(text.trim());
   if (!clean || clean.length > 220) return undefined;
+  // «الانعكاس»: أسئلة الشحن والجمارك المتكررة بتتجاوب فورًا من جدول مبني على محرك السعر نفسه —
+  // برقمه ومصدره وتاريخه، ومن غير أي محرك أو انتظار.
+  const reflex = reflexAnswer(clean, lang);
+  if (reflex) return { app: 'reflex', reply: reflex };
   const chat = chatApp(clean, lang);
   if (chat) return chat;
   if (ASKS_DESIGN.test(clean)) return undefined; // a real design question deserves the full expert
@@ -189,6 +194,7 @@ export function quickAnswer(text: string, language: SupportedLanguage): QuickAns
 export const QUICK_APPS: Record<QuickAppId, { ar: string; en: string }> = {
   alcohol: { ar: 'تخفيف الكحول', en: 'Alcohol dilution' },
   concentration: { ar: 'كميات الزيت والكحول', en: 'Oil and alcohol amounts' },
+  reflex: { ar: 'إجابة فورية من شبكة العقل', en: 'Instant answer from the mind' },
   units: { ar: 'تحويل الأونصة والمل', en: 'Ounce ↔ ml' },
   thanks: { ar: 'الرد على الشكر', en: 'Thanks' },
   identity: { ar: 'التعريف بشاهين', en: 'Who is Shaheen' },
