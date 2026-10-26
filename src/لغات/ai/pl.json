@@ -121,6 +121,8 @@
   "rv_write": "Napisz opinię",
   "sf_added": "Dodano ✓",
   "sf_address": "Pełny adres",
+  "sf_ai_note_quick": "Automatyczna sugestia z filtra sklepu, oparta na Twoich słowach — sprawdź szczegóły produktu przed zakupem.",
+  "sf_ai_note_shaheen": "Sugestia generowana przez sztuczną inteligencję z produktów sklepu — sprawdź szczegóły produktu przed zakupem.",
   "sf_all_brands": "Wszystkie marki",
   "sf_all_categories": "Wszystkie kategorie",
   "sf_ask_hint": "Powiedz Shaheenowi, czego szukasz — na jaką okazję, porę roku, dla mężczyzny czy kobiety i w jakim budżecie — a wybierze coś ze sklepu.",
