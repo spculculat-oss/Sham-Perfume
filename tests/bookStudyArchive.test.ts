@@ -5,7 +5,7 @@ import { BOOK_STUDY_ARCHIVE, bookStudyBriefing } from '../server/library/bookStu
 import { LIBRARY_BOOKS } from '../src/library/catalog';
 import { buildBriefing } from '../scripts/shaheen-council/council';
 
-test('all sixteen books are queued internally, not falsely studied or cleared for training', () => {
+test('all catalogue books are queued internally, not falsely studied or cleared for training', () => {
   assert.deepEqual(BOOK_STUDY_ARCHIVE.books.map(b => b.id), LIBRARY_BOOKS.map(b => b.id));
   assert.equal(BOOK_STUDY_ARCHIVE.publicDisplay, false);
   assert.equal(BOOK_STUDY_ARCHIVE.approvedForAnswering, false);
@@ -14,6 +14,8 @@ test('all sixteen books are queued internally, not falsely studied or cleared fo
     assert.equal(b.discovery.fullTextAccessVerified, false);
     assert.equal(b.studyStatus, 'awaiting-lawful-source');
     assert.equal(b.rightsReview, 'pending');
+    assert.equal(b.schoolApproval, 'pending-review');
+    assert.ok(b.discovery.source.includes('WorldCat') || b.discovery.source === 'prior-bibliographic-web-search');
     assert.equal(b.modernScienceReview, 'not-started');
     assert.deepEqual(b.reviewedSections, []);
     assert.deepEqual(b.claimAssessments, []);
