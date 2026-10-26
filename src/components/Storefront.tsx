@@ -353,6 +353,14 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     return () => window.removeEventListener('sham-taste-updated', refresh);
   }, []);
   const yardstick = useMemo(() => priceYardstick(products), [products]);
+  // The price filter's bands come from the catalogue itself (its cheaper and dearer quarters, rounded to 500) — fixed
+  // 200/500 bands left «أقل من 200» empty and «أكثر من 500» the whole store once prices passed them.
+  const bands = useMemo(() => {
+    const round = (n: number) => Math.max(500, Math.round(n / 500) * 500);
+    const a = yardstick.low > 0 ? round(yardstick.low) : 200;
+    const b = yardstick.high > 0 ? Math.max(a + 500, round(yardstick.high)) : 500;
+    return { a, b };
+  }, [yardstick]);
   const taste = useMemo(() => withViewed(tasteFromAnswers(answers), products.filter((p) => viewed.includes(p.sku))), [answers, viewed, products]);
   const tasteReady = hasTaste(taste);
   const quizPrompt = useMemo(() => variantOf('quiz_prompt'), []);
@@ -374,9 +382,9 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
       if (brand !== 'all' && p.brand !== brand) return false;
       if (newOnly && !p.isNew) return false;
       if (inStockOnly && !p.inStock) return false;
-      if (priceRange === 'under200' && p.price >= 200) return false;
-      if (priceRange === '200to500' && (p.price < 200 || p.price > 500)) return false;
-      if (priceRange === 'above500' && p.price <= 500) return false;
+      if (priceRange === 'under200' && p.price >= bands.a) return false;
+      if (priceRange === '200to500' && (p.price < bands.a || p.price > bands.b)) return false;
+      if (priceRange === 'above500' && p.price <= bands.b) return false;
       if (words.length) {
         const text = searchText(p);
         if (!words.every((w) => text.includes(w))) return false;
@@ -386,16 +394,19 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
 
     const time = (p: StoreProduct) => (p.createdAt ? Date.parse(p.createdAt) || 0 : 0);
     if (sort === 'taste' && tasteReady) return rankForTaste(list.sort((a, b) => time(b) - time(a)), taste, yardstick);
+    // «رجالي» / «نسائي» also list the unisex perfumes — after his own ones, so the filter visibly does what it says.
+    const own = (p: StoreProduct) => (gender !== 'all' && gender !== 'unisex' && p.gender !== gender ? 1 : 0);
     return list.sort((a, b) =>
-      sort === 'priceLow'
+      (sort !== 'priceLow' && sort !== 'priceHigh' ? own(a) - own(b) : 0) ||
+      (sort === 'priceLow'
         ? a.price - b.price
         : sort === 'priceHigh'
         ? b.price - a.price
         : sort === 'rating'
         ? (b.rating || 0) - (a.rating || 0)
-        : time(b) - time(a)
+        : time(b) - time(a))
     );
-  }, [products, search, section, gender, family, category, brand, newOnly, inStockOnly, priceRange, sort, taste, tasteReady, yardstick]);
+  }, [products, search, section, gender, family, category, brand, newOnly, inStockOnly, priceRange, sort, taste, tasteReady, yardstick, bands]);
 
   useEffect(() => {
     setLimit(ALL);
@@ -649,7 +660,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
 
   // The price bands are catalog amounts (200 / 500 EGP) shown in the visitor's own currency (#169).
   const priceBand = (band: Exclude<PriceFilter, 'all'>) =>
-    extraLabel(`price_${band}`, currentLang).replace('{a}', money.price(200)).replace('{b}', money.price(500));
+    extraLabel(`price_${band}`, currentLang).replace('{a}', money.price(bands.a)).replace('{b}', money.price(bands.b));
 
   const countryPicker = (testId: string) => (
     <label className="inline-flex items-center gap-1.5 text-xs text-stone-600">
@@ -807,7 +818,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
             </p>
           )}
 
-          <ProductPayMethods lang={currentLang} country={money.country} productName={storeLocalized(p.name, currentLang)} productKey={p.sku} compact />
+          {/* On a phone the store-wide «وسائل الدفع» box above the grid already says it — one copy per card was the repetition visitors saw. */}
+          <div className="hidden sm:block"><ProductPayMethods lang={currentLang} country={money.country} productName={storeLocalized(p.name, currentLang)} productKey={p.sku} compact /></div>
           {/* Price & Action */}
           <div className="mt-auto pt-3 border-t border-stone-100 space-y-2">
             <div>
@@ -857,8 +869,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
         style={{ top: 'var(--sham-global-header-height, 0px)' }}
       >
         <div className="mx-auto flex max-w-7xl items-center gap-2.5 px-3 py-2.5 sm:gap-4 sm:px-4 sm:py-3.5">
-          {/* Store Brand Emblem */}
-          <div className="flex shrink-0 items-center gap-3">
+          {/* Store Brand Emblem (from sm up — on a phone the search needs the room) */}
+          <div className="hidden shrink-0 items-center gap-3 sm:flex">
             <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-300/40 bg-gradient-to-br from-amber-400 via-amber-600 to-stone-900 shadow-md shadow-amber-950/40">
               <Sparkles className="relative h-5 w-5 text-white" />
             </div>
@@ -892,7 +904,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     : 'border-white/15 bg-stone-900/90 hover:border-amber-300/50'
                 }`}
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-700 text-stone-950 shadow-sm shadow-amber-950/40">
+                <span className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-700 text-stone-950 shadow-sm shadow-amber-950/40 sm:flex">
                   <Search className="h-4 w-4" />
                 </span>
                 <input
@@ -1144,7 +1156,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
           <button
             type="button"
             onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setShowBank(true); }}
-            className="flex shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 cursor-pointer shadow-2xs"
+            className="flex shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-2.5 sm:px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 cursor-pointer shadow-2xs"
             data-testid="store-bank-button"
             title={currentLang === 'ar' ? 'حساب بنك شام' : 'Sham Bank account'}
           >
@@ -1156,7 +1168,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
           <button
             type="button"
             onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setShowPaymentModal(true); }}
-            className="flex shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 cursor-pointer shadow-2xs"
+            className="flex shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-2.5 sm:px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 cursor-pointer shadow-2xs"
             data-testid="store-vault-button"
             title={currentLang === 'ar' ? 'تسجيل البطاقات والمحافظ' : 'Register cards and wallets'}
           >

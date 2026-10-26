@@ -459,7 +459,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [emailValid, setEmailValid] = useState(true);
   const emailRe = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,24}$/;
 
-  const toStep = (next: 'auth' | 'totp' | 'phone' | 'forgot' | 'forgot_code') => { setStage(next); setErrorMsg(null); setCode(''); setNewPassword(''); };
+  const toStep = (next: 'auth' | 'totp' | 'phone' | 'forgot' | 'forgot_code' | 'totp_setup') => { setStage(next); setErrorMsg(null); setCode(''); setNewPassword(''); };
   React.useEffect(() => {
     if (forgotCooldown <= 0) return;
     const t = setTimeout(() => setForgotCooldown((c) => c - 1), 1000);

@@ -255,7 +255,9 @@ export interface TradeReport {
   /** The catalogue counted by **where the goods are** — the first thing a lane needs, and where to ask first. */
   origins: OriginGroup[];
   /** Supplier prices built on an older exchange rate than today's: our real cost is above the price's. */
-  fx: { thresholdPercent: number; lines: FxDriftLine[] };
+  /** `egpPerUsd`/`at`: the exchange rate every EGP figure in this report was converted with — the importer refreshes the
+   *  rates between two trade reviews, so a later check converts with these, not today's. */
+  fx: { thresholdPercent: number; lines: FxDriftLine[]; egpPerUsd?: number; at?: string };
   /**
    * What the shipping table should charge so the 50% stays whole — one line per existing zone, in the table's own
    * currency. A proposal only: the price is the owner's decision (O-06).
@@ -706,7 +708,7 @@ export function reviewTrade(input: TradeInput): TradeReport {
       originConfidence: p.originConfidence || 'unknown', shipsTo: p.shipsTo || [], products: Number(p.products) || 0,
       noteAr: p.fulfilment === 'unknown' ? 'محتاج قرار صاحب المتجر' : p.fulfilment === 'platform_ships' ? 'وساطة — المنصة بتشحن' : 'إحنا بنشحن',
     })),
-    destinations: plans, products, origins, fx: { thresholdPercent: fxThresholdPercent, lines: fxLines }, gaps,
+    destinations: plans, products, origins, fx: { thresholdPercent: fxThresholdPercent, lines: fxLines, egpPerUsd: convert(1, 'USD', HOME_CURRENCY, fx), ...(fx.updatedAt ? { at: fx.updatedAt } : {}) }, gaps,
     shippingProposal,
     money: {
       profitPerBottleEgp: profit, averageChargedEgp: averageCharged, pricedDestinations: known.length,
