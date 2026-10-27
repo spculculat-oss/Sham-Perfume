@@ -2,6 +2,10 @@ import type { LText } from '../لغات/localize';
 import {
   EAST_ASIAN_BOOKS, EAST_ASIAN_LANGUAGES, EAST_ASIAN_LANGUAGE_TARGETS, EAST_ASIAN_REGIONS,
 } from './eastAsianCatalog';
+import {
+  INTERNATIONAL_BOOKS, INTERNATIONAL_COUNTRIES, INTERNATIONAL_LANGUAGES, INTERNATIONAL_LANGUAGE_COVERAGE,
+  INTERNATIONAL_LANGUAGE_TARGETS, INTERNATIONAL_REGIONS, INTERNATIONAL_CATALOG_SCOPE,
+} from './internationalCatalog';
 
 export const BOOK_CATEGORIES = {
   chemistry: { ar: 'الكيمياء', en: 'Chemistry' },
@@ -29,6 +33,14 @@ export const BOOK_CATEGORIES = {
   management: { ar: 'الإدارة', en: 'Management' },
   commerce: { ar: 'الاقتصاد والتجارة', en: 'Economics & commerce' },
   science_reference: { ar: 'مراجع العلوم', en: 'Science reference' },
+  quantum: { ar: 'الحوسبة والفيزياء الكمية', en: 'Quantum science' },
+  statistics: { ar: 'الإحصاء وتصميم التجارب', en: 'Statistics & experimental design' },
+  environment: { ar: 'البيئة', en: 'Environment' },
+  sociology: { ar: 'علم الاجتماع', en: 'Sociology' },
+  anthropology: { ar: 'علم الإنسان', en: 'Anthropology' },
+  programming: { ar: 'البرمجة والخوارزميات', en: 'Programming & algorithms' },
+  communication: { ar: 'الاتصال والعلاقات العامة', en: 'Communication & public relations' },
+  sports_science: { ar: 'علوم الرياضة', en: 'Sports science' },
 } satisfies Record<string, LText>;
 export type BookCategory = keyof typeof BOOK_CATEGORIES;
 export type BookAccess = 'metadata-only' | 'licensed-full-text';
@@ -48,9 +60,14 @@ export interface LibraryBook {
   publisher?: string;
   category: BookCategory;
   summary: LText;
-  /** ISO 639/BCP-47 tag for the work, not proof that a particular edition is present. */
+  /** ISO 639/BCP-47 tag for the catalogued text or language edition, not proof a copy is present. */
   language: string;
-  originArea?: keyof typeof EAST_ASIAN_REGIONS;
+  /** Optional original language when this catalogue record is for a translation. */
+  sourceLanguage?: string;
+  /** Broad cultural/authorial region; not necessarily the publication location. */
+  originArea?: string;
+  /** Broad cultural/authorial country, not necessarily the publication location (ISO 3166-1 alpha-2). */
+  originCountry?: string;
   /** Existing records and new records all describe whole books, not posts or excerpts. */
   workKind: BookWorkKind;
   /** The complete text is not in this repository; licensed full text requires separate review. */
@@ -65,14 +82,27 @@ export interface LibraryBook {
 export const BOOK_LANGUAGES: Record<string, LText> = {
   en: { ar: 'الإنجليزية', en: 'English' },
   ...EAST_ASIAN_LANGUAGES,
+  ...INTERNATIONAL_LANGUAGES,
 };
-export { EAST_ASIAN_BOOKS, EAST_ASIAN_LANGUAGES, EAST_ASIAN_LANGUAGE_TARGETS, EAST_ASIAN_REGIONS };
+export const BOOK_REGIONS: Record<string, LText> = { ...EAST_ASIAN_REGIONS, ...INTERNATIONAL_REGIONS };
+export const BOOK_COUNTRIES: Record<string, LText> = { ...INTERNATIONAL_COUNTRIES };
+export {
+  EAST_ASIAN_BOOKS, EAST_ASIAN_LANGUAGES, EAST_ASIAN_LANGUAGE_TARGETS, EAST_ASIAN_REGIONS,
+  INTERNATIONAL_BOOKS, INTERNATIONAL_LANGUAGES, INTERNATIONAL_LANGUAGE_TARGETS, INTERNATIONAL_REGIONS,
+  INTERNATIONAL_COUNTRIES, INTERNATIONAL_CATALOG_SCOPE,
+};
 
 export const EAST_ASIAN_CATALOG_SCOPE = {
   kind: 'curated-starter-catalog' as const,
   exhaustive: false,
   note: 'A first, non-exhaustive bibliography. A zero-count language means its book records still need authoritative catalog research; it does not mean the language has no books.',
   noteAr: 'فهرس تأسيسي أولي غير شامل. اللغة ذات العدد صفر تحتاج بحثاً في فهارس موثوقة؛ لا يعني ذلك عدم وجود كتب بها.',
+};
+export const LIBRARY_CATALOG_SCOPE = {
+  kind: 'curated-starter-catalog' as const,
+  exhaustive: false,
+  note: 'The combined catalogue is a non-exhaustive starting index. Language coverage gaps require authoritative source research and do not imply that books do not exist.',
+  noteAr: 'الفهرس الموحّد تأسيسي وغير شامل؛ فجوات اللغات تحتاج بحثاً في مصادر موثوقة ولا تعني عدم وجود كتب.',
 };
 
 const seeds: Array<[string, string, string, string | undefined, BookCategory, string, string]> = [
@@ -102,7 +132,11 @@ const CATEGORY_TRACKS: Record<BookCategory, readonly string[]> = {
   education: ['education'], language: ['literature', 'education', 'media_info'], literature: ['literature'],
   philosophy: ['religion', 'social'], law: ['law'], geography: ['geography'], astronomy: ['earth_space'],
   computer_science: ['it_sciences'], psychology: ['psychology'], management: ['management'],
-  commerce: ['commerce'], science_reference: ['academic'],
+  commerce: ['commerce'], science_reference: ['academic'], quantum: ['quantum', 'physics'],
+  statistics: ['math', 'academic'], environment: ['earth_space'],
+  sociology: ['social'], anthropology: ['social', 'history'], programming: ['prog_langs', 'software'],
+  communication: ['pr', 'media_info'], sports_science: ['sports', 'biology'],
+
 };
 const existingBooks: LibraryBook[] = seeds.map(([id, title, authors, publisher, category, ar, en]) => ({
   id: `SHAM-LIB-${id}`, title, authors, publisher, category, summary: { ar, en }, language: 'en',
@@ -112,7 +146,7 @@ const existingBooks: LibraryBook[] = seeds.map(([id, title, authors, publisher, 
 }));
 
 /** Bibliographic index only; no full copyrighted books or excerpts are packaged here. */
-export const LIBRARY_BOOKS: readonly LibraryBook[] = [...existingBooks, ...EAST_ASIAN_BOOKS];
+export const LIBRARY_BOOKS: readonly LibraryBook[] = [...existingBooks, ...EAST_ASIAN_BOOKS, ...INTERNATIONAL_BOOKS];
 
 export interface LibrarySearchFilters {
   language?: string;
@@ -136,7 +170,9 @@ export function searchBooks(
       b.authors, b.authorsNative || '', b.publisher || '', b.summary.ar, b.summary.en,
       BOOK_CATEGORIES[b.category].ar, BOOK_CATEGORIES[b.category].en,
       languageName?.ar || b.language, languageName?.en || b.language,
-      b.originArea ? `${EAST_ASIAN_REGIONS[b.originArea].ar} ${EAST_ASIAN_REGIONS[b.originArea].en}` : '',
+      b.sourceLanguage || '',
+      b.originArea ? `${BOOK_REGIONS[b.originArea]?.ar || b.originArea} ${BOOK_REGIONS[b.originArea]?.en || b.originArea}` : '',
+      b.originCountry ? `${BOOK_COUNTRIES[b.originCountry]?.ar || b.originCountry} ${BOOK_COUNTRIES[b.originCountry]?.en || b.originCountry}` : '',
       ...b.trackIds,
     ].join(' '));
     return terms.every(t => haystack.includes(t));
@@ -164,15 +200,18 @@ export const EAST_ASIAN_LANGUAGE_COVERAGE = EAST_ASIAN_LANGUAGE_TARGETS.map(code
     state: bookCount ? 'records-pending-verification' as const : 'needs-source-research' as const,
   };
 });
+export { INTERNATIONAL_LANGUAGE_COVERAGE };
 
 export function exportLibraryArchive(): string {
   return JSON.stringify({
-    schemaVersion: 2,
+    schemaVersion: 3,
     supervisor: 'shaheen',
     robot: 'librarian',
     rights: 'Catalogue metadata only; no full book text or licensed electronic files supplied.',
-    scope: EAST_ASIAN_CATALOG_SCOPE,
+    scope: LIBRARY_CATALOG_SCOPE,
+    catalogs: [EAST_ASIAN_CATALOG_SCOPE, INTERNATIONAL_CATALOG_SCOPE],
     eastAsianLanguageCoverage: EAST_ASIAN_LANGUAGE_COVERAGE,
+    internationalLanguageCoverage: INTERNATIONAL_LANGUAGE_COVERAGE,
     books: LIBRARY_BOOKS,
   }, null, 2);
 }

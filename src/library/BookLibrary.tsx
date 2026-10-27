@@ -7,7 +7,8 @@ import React, { lazy, Suspense, useMemo, useState } from 'react';
 import type { SupportedLanguage } from '../types/i18n';
 import { loc, makeT } from '../لغات/localize';
 import {
-  BOOK_CATEGORIES, BOOK_LANGUAGES, EAST_ASIAN_LANGUAGE_COVERAGE, EAST_ASIAN_REGIONS, LIBRARY_BOOKS, searchBooks, exportLibraryArchive,
+  BOOK_CATEGORIES, BOOK_LANGUAGES, BOOK_REGIONS, BOOK_COUNTRIES, EAST_ASIAN_LANGUAGE_COVERAGE,
+  INTERNATIONAL_LANGUAGE_COVERAGE, LIBRARY_BOOKS, searchBooks, exportLibraryArchive,
   type BookCategory, type LibraryBook,
 } from './catalog';
 
@@ -19,13 +20,16 @@ const TEXT = {
   open: { ar: 'تفاصيل المرجع · ملف الكتاب غير مرفق', en: 'Reference details · no ebook attached' },
   loadingReader: { ar: 'جارٍ تحميل القارئ…', en: 'Loading reader…' },
   title: { ar: 'مكتبة شاهين الأكاديمية متعددة اللغات', en: 'Shaheen multilingual academic library' },
-  supervision: { ar: 'أمين المكتبة — فهرسة وتصنيف محليان تحت إشراف شاهين. فهرس شرق آسيا بداية منظمة، مش حصر كامل لكل الكتب.', en: 'Librarian — local cataloguing and classification under Shaheen. The East Asia collection is a structured starting catalogue, not an exhaustive list.' },
+  supervision: { ar: 'أمين المكتبة — فهرسة وتصنيف محليان تحت إشراف شاهين. المجموعات الإقليمية بداية منظمة، مش حصر كامل لكل الكتب.', en: 'Librarian — local cataloguing and classification under Shaheen. The regional collections are structured starting catalogues, not exhaustive lists.' },
   rights: { ar: 'الكتب هنا فهرسة ببليوغرافية فقط؛ مفيش نصوص كاملة مرفوعة. كل كتاب لازم تتراجع طبعته ومصدره وحقوقه قبل اعتماده أو دخوله في تعليم المدرسة. الكتب الطبية والتاريخية مش إرشاد علاجي حديث.', en: 'These are bibliographic records only; no full book texts are uploaded. Each edition, source, and right must be reviewed before approval or school use. Historical medical works are not current treatment guidance.' },
-  eastAsiaCoverage: { ar: 'لغات شرق آسيا: عدد السجلات في الفهرس الحالي وحالتها', en: 'East Asian languages: current catalogue-record count and status' },
+  eastAsiaCoverage: { ar: 'لغات شرق آسيا: عدد السجلات وحالتها', en: 'East Asian languages: record counts and status' },
+  internationalCoverage: { ar: 'أوروبا والأمريكتان وأستراليا وروسيا: اللغات وعدد السجلات', en: 'Europe, the Americas, Australia, and Russia: languages and record counts' },
+  regionCoverage: { ar: 'منطقة الكتب', en: 'Book region' },
   coveragePending: { ar: 'سجلات تحتاج مطابقة الطبعة', en: 'records need edition matching' },
   coverageMissing: { ar: 'لسه محتاجة بحث في فهارس موثوقة', en: 'need authoritative catalogue research' },
   notApproved: { ar: 'غير معتمد للتدريس أو الإجابة — فهرسة أولية فقط', en: 'Not approved for teaching or answers — preliminary catalogue record only' },
   language: { ar: 'لغة الكتاب', en: 'Book language' },
+  sourceLanguage: { ar: 'لغة الأصل', en: 'Original language' },
   allLanguages: { ar: 'كل اللغات', en: 'All languages' },
   pending: { ar: 'كتاب كامل في الفهرس • النص الكامل غير مرفق • الطبعة قيد التحقق', en: 'Complete work catalogued • full text not attached • edition pending verification' },
   licensedText: { ar: 'النص الكامل مرخص ومتاح للمراجعة؛ الاعتماد الدراسي منفصل', en: 'Licensed full text available for review; school approval is separate' },
@@ -42,19 +46,31 @@ const TEXT = {
 const isSchoolApproved = (book: LibraryBook) => book.metadataStatus === 'verified' && book.schoolApproval === 'approved' && book.access === 'licensed-full-text';
 const TRACK_NAMES: Record<string, { ar: string; en: string }> = {
   math: { ar: 'الرياضيات', en: 'Mathematics' }, history: { ar: 'التاريخ', en: 'History' },
+  quantum: { ar: 'الحوسبة الكمية', en: 'Quantum computing' },
+  ai_science: { ar: 'علوم الذكاء الاصطناعي', en: 'AI science' },
+  ai_projects: { ar: 'مشاريع الذكاء الاصطناعي', en: 'AI projects' },
+  smart_agents: { ar: 'الوكلاء الذكية', en: 'Smart agents' },
   engineering: { ar: 'الهندسة', en: 'Engineering' }, technical: { ar: 'التقنيات التطبيقية', en: 'Applied technology' },
+  experimental: { ar: 'التجارب والمنهج العلمي', en: 'Experiments & scientific method' },
   biology: { ar: 'الأحياء', en: 'Biology' }, earth_space: { ar: 'الأرض والبيئة', en: 'Earth & environment' },
   medicine: { ar: 'الطب', en: 'Medicine' }, literature: { ar: 'الأدب', en: 'Literature' },
   education: { ar: 'التعليم', en: 'Education' }, media_info: { ar: 'الإعلام والمعلومات', en: 'Media & information' },
   social: { ar: 'العلوم الاجتماعية', en: 'Social sciences' }, religion: { ar: 'الفلسفة والدين', en: 'Philosophy & religion' },
   management: { ar: 'الإدارة', en: 'Management' }, physics: { ar: 'الفيزياء', en: 'Physics' },
   chemistry: { ar: 'الكيمياء', en: 'Chemistry' }, it_sciences: { ar: 'تكنولوجيا المعلومات', en: 'IT sciences' },
-  software: { ar: 'هندسة البرمجيات', en: 'Software engineering' }, security: { ar: 'الأمن السيبراني', en: 'Security' },
+  software: { ar: 'هندسة البرمجيات', en: 'Software engineering' },
+  prog_langs: { ar: 'لغات البرمجة', en: 'Programming languages' },
+  blocks: { ar: 'البرمجة بالبلوكات', en: 'Block programming' },
+  graphics: { ar: 'الجرافيك والتصميم', en: 'Graphics & design' },
+  ux_psych: { ar: 'علم نفس تجربة المستخدم', en: 'UX psychology' },
+  pr: { ar: 'العلاقات العامة', en: 'Public relations' },
+  security: { ar: 'الأمن السيبراني', en: 'Security' },
   academic: { ar: 'الدراسة الأكاديمية', en: 'Academic study' }, geography: { ar: 'الجغرافيا', en: 'Geography' },
   commerce: { ar: 'التجارة والاقتصاد', en: 'Commerce & economics' }, psychology: { ar: 'علم النفس', en: 'Psychology' },
   law: { ar: 'القانون', en: 'Law' }, vocational: { ar: 'المهارات المهنية', en: 'Vocational skills' },
   arts: { ar: 'الفنون', en: 'Arts' },
 };
+const INTERNATIONAL_REGION_IDS = ['europe', 'americas', 'australia', 'russia'] as const;
 export function BookLibrary({ currentLang }: { currentLang: SupportedLanguage }) {
   const L = makeT(currentLang, TEXT);
   const [showGuide, setShowGuide] = useState(false);
@@ -79,6 +95,16 @@ export function BookLibrary({ currentLang }: { currentLang: SupportedLanguage })
         {loc(currentLang, item.language)} · {item.bookCount ? `${item.bookCount} ${L('coveragePending')}` : L('coverageMissing')}
       </span>)}</div>
     </section>
+    <section aria-label={L('internationalCoverage')} className="rounded-xl border border-violet-500/30 p-4 space-y-3">
+      <h3 className="font-semibold text-violet-200">{L('internationalCoverage')}</h3>
+      <p className="text-sm text-stone-300">{L('notExhaustive')}</p>
+      {INTERNATIONAL_REGION_IDS.map(region => <div key={region} className="space-y-2">
+        <h4 className="text-sm font-semibold">{loc(currentLang, BOOK_REGIONS[region])}</h4>
+        <div className="flex flex-wrap gap-2">{INTERNATIONAL_LANGUAGE_COVERAGE.filter(item => item.region === region).map(item => <span key={`${region}-${item.code}`} className="rounded-lg border border-stone-700 px-2 py-1 text-xs">
+          {loc(currentLang, item.language)} · {item.bookCount ? `${item.bookCount} ${L('coveragePending')}` : L('coverageMissing')}
+        </span>)}</div>
+      </div>)}
+    </section>
     <aside className="rounded-lg border border-amber-500/40 p-3 text-sm text-amber-100">{L('safety')}</aside>
     <div className="rounded-xl border border-emerald-500/40 p-4 space-y-2">
       <button onClick={() => setShowGuide(true)} className="rounded-lg bg-emerald-800 px-4 py-3 font-bold">{L('guide')}</button>
@@ -102,11 +128,13 @@ export function BookLibrary({ currentLang }: { currentLang: SupportedLanguage })
       <div className="flex flex-wrap gap-2 text-xs text-amber-300">
         <span>{loc(currentLang, BOOK_CATEGORIES[book.category])}</span>
         {BOOK_LANGUAGES[book.language] && <span>· {loc(currentLang, BOOK_LANGUAGES[book.language])}</span>}
-        {book.originArea && <span>· {loc(currentLang, EAST_ASIAN_REGIONS[book.originArea])}</span>}
+        {book.originArea && BOOK_REGIONS[book.originArea] && <span>· {loc(currentLang, BOOK_REGIONS[book.originArea])}</span>}
+        {book.originCountry && BOOK_COUNTRIES[book.originCountry] && <span>· {loc(currentLang, BOOK_COUNTRIES[book.originCountry])}</span>}
       </div>
       <h3 lang={book.language} dir="auto" className="font-bold text-lg"><button onClick={() => setSelectedBook(book)} className="text-start underline decoration-amber-500/40">{book.title}</button></h3>
       {book.titleEnglish && <p lang="en" dir="ltr" className="text-sm text-stone-300">{book.titleEnglish}</p>}
       {book.transliteration && <p lang="en" dir="ltr" className="text-xs text-stone-400">{book.transliteration}</p>}
+      {book.sourceLanguage && <p className="text-xs text-stone-400">{L('sourceLanguage')}: {loc(currentLang, BOOK_LANGUAGES[book.sourceLanguage])}</p>}
       {book.authorsNative && <p lang={book.language} dir="auto">{book.authorsNative}</p>}
       <p lang="en" dir="ltr">{book.authors}</p>{book.publisher && <p lang="en" dir="ltr" className="text-sm">{book.publisher}</p>}
       <div className="flex flex-wrap gap-1">{book.trackIds.map(trackId => <span key={trackId} className="rounded bg-stone-800 px-2 py-1 text-xs text-stone-300">{TRACK_NAMES[trackId] ? loc(currentLang, TRACK_NAMES[trackId]) : trackId}</span>)}</div>
