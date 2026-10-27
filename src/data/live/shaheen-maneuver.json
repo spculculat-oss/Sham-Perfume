@@ -1,7 +1,7 @@
 {
- "updatedAt": "2026-10-27T08:17:48.870Z",
+ "updatedAt": "2026-10-27T14:23:49.982Z",
  "run": {
-  "ms": 84469,
+  "ms": 119405,
   "browser": true,
   "pages": 20,
   "drills": 21,
@@ -15,15 +15,15 @@
    "status": "ok",
    "errors": 0,
    "ideas": 2,
-   "loadMs": 6348
+   "loadMs": 7180
   },
   {
    "id": "store",
    "titleAr": "المتجر",
    "status": "ok",
    "errors": 0,
-   "ideas": 2,
-   "loadMs": 5054
+   "ideas": 1,
+   "loadMs": 4976
   },
   {
    "id": "perfumes",
@@ -31,7 +31,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3508
+   "loadMs": 3490
   },
   {
    "id": "cosmetics",
@@ -39,7 +39,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3328
+   "loadMs": 3267
   },
   {
    "id": "productDetail",
@@ -47,7 +47,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3348
+   "loadMs": 3450
   },
   {
    "id": "concentration",
@@ -55,7 +55,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3323
+   "loadMs": 3330
   },
   {
    "id": "pyramid",
@@ -63,7 +63,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3640
+   "loadMs": 3648
   },
   {
    "id": "costing",
@@ -71,7 +71,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3325
+   "loadMs": 3298
   },
   {
    "id": "guide",
@@ -79,7 +79,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3283
+   "loadMs": 3297
   },
   {
    "id": "alcohol",
@@ -87,7 +87,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3216
+   "loadMs": 3219
   },
   {
    "id": "maceration_simulator",
@@ -95,7 +95,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3278
+   "loadMs": 3285
   },
   {
    "id": "master_ai",
@@ -103,7 +103,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3220
+   "loadMs": 3233
   },
   {
    "id": "perfume_news",
@@ -111,7 +111,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3370
+   "loadMs": 3322
   },
   {
    "id": "raw_materials",
@@ -119,7 +119,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3300
+   "loadMs": 3320
   },
   {
    "id": "world_perfumes",
@@ -127,7 +127,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3569
+   "loadMs": 3574
   },
   {
    "id": "perfume_designers",
@@ -135,7 +135,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3290
+   "loadMs": 3402
   },
   {
    "id": "cosmetic_designers",
@@ -143,7 +143,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3281
+   "loadMs": 3264
   },
   {
    "id": "molecule_studio",
@@ -151,7 +151,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3631
+   "loadMs": 3572
   },
   {
    "id": "library",
@@ -159,25 +159,59 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3213
+   "loadMs": 3232
   },
   {
    "id": "community",
    "titleAr": "المجتمع",
-   "status": "ok",
-   "errors": 0,
+   "status": "warn",
+   "errors": 2,
    "ideas": 2,
-   "loadMs": 2728
+   "loadMs": 3896
   },
   {
    "id": "shaheen_chat",
    "titleAr": "شات الخبير شاهين",
    "status": "ok",
    "errors": 0,
-   "ideas": 0
+   "ideas": 1
   }
  ],
  "findings": [
+  {
+   "id": "community:console",
+   "kind": "error",
+   "code": "console",
+   "section": "community",
+   "titleAr": "أخطاء في سجل المتصفح (1)",
+   "detailAr": "Failed to load resource: the server responded with a status of 404 ()",
+   "severity": "medium",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "المجتمع",
+   "examinerAr": "أ. مريم المجتمع",
+   "firstSeen": "2026-10-27T14:23:49.982Z",
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 1
+  },
+  {
+   "id": "community:asset-missing",
+   "kind": "error",
+   "code": "asset-missing",
+   "section": "community",
+   "titleAr": "ملفات أو صور مش موجودة (2)",
+   "detailAr": "404 spculculat-oss.github.io/Sham-Perfume/assets/CommunityApp-DzOPuQtu.js | 404 spculculat-oss.github.io/Sham-Perfume/assets/CommunityApp-DzOPuQtu.js",
+   "severity": "medium",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "المجتمع",
+   "examinerAr": "أ. مريم المجتمع",
+   "firstSeen": "2026-10-27T14:23:49.982Z",
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 1
+  },
   {
    "id": "alcohol:unnamed-button",
    "kind": "idea",
@@ -191,8 +225,8 @@
    "sectionAr": "الكحول في العطور",
    "examinerAr": "د. هند العلوم",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "community:unnamed-button",
@@ -207,8 +241,8 @@
    "sectionAr": "المجتمع",
    "examinerAr": "أ. مريم المجتمع",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "community:no-heading",
@@ -223,25 +257,8 @@
    "sectionAr": "المجتمع",
    "examinerAr": "أ. مريم المجتمع",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
-  },
-  {
-   "id": "community:ai-idea:إضافةزرتصفيةللمنشورةالأك",
-   "kind": "idea",
-   "code": "ai-idea",
-   "section": "community",
-   "titleAr": "إضافة زر تصفية للمنشورة الأكثر تفاعلاً في المجتمع",
-   "detailAr": "يمكن الأعضاء من استعراض التجارب الناجحة والملهمة بسرعة.",
-   "severity": "low",
-   "sources": [
-    "ai"
-   ],
-   "sectionAr": "المجتمع",
-   "examinerAr": "أ. مريم المجتمع",
-   "firstSeen": "2026-10-27T08:17:48.870Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 1
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "concentration:unnamed-button",
@@ -256,8 +273,25 @@
    "sectionAr": "حاسبة التركيز",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
+  },
+  {
+   "id": "concentration:ai-idea:إضافةتلميحمرئييوضحالفرقب",
+   "kind": "idea",
+   "code": "ai-idea",
+   "section": "concentration",
+   "titleAr": "إضافة تلميح مرئي يوضح الفرق بين نسبة الزيت والكحول",
+   "detailAr": "يساعد مبتدئي تصميم العطور على فهم تأثير النسب على التركيز.",
+   "severity": "low",
+   "sources": [
+    "ai"
+   ],
+   "sectionAr": "حاسبة التركيز",
+   "examinerAr": "د. ليان العطور",
+   "firstSeen": "2026-10-27T14:23:49.982Z",
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 1
   },
   {
    "id": "cosmetic_designers:unnamed-button",
@@ -272,8 +306,8 @@
    "sectionAr": "قسم المصممين — تجميل",
    "examinerAr": "د. سلمى الحياة",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "cosmetics:unnamed-button",
@@ -288,8 +322,8 @@
    "sectionAr": "قسم مستحضرات التجميل",
    "examinerAr": "د. سلمى الحياة",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "costing:unnamed-button",
@@ -304,25 +338,8 @@
    "sectionAr": "حاسبة التكلفة",
    "examinerAr": "أ. طارق التجارة",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
-  },
-  {
-   "id": "costing:ai-idea:توفيرزرلتصديرتفاصيلالتكل",
-   "kind": "idea",
-   "code": "ai-idea",
-   "section": "costing",
-   "titleAr": "توفير زر لتصدير تفاصيل التكلفة بملف نصي مختصر",
-   "detailAr": "يساعد صانع العطور في حساب أرباحه بدقة والاحتفاظ بسجلات دقيقة للوصفات.",
-   "severity": "low",
-   "sources": [
-    "ai"
-   ],
-   "sectionAr": "حاسبة التكلفة",
-   "examinerAr": "أ. طارق التجارة",
-   "firstSeen": "2026-10-27T08:17:48.870Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 1
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "guide:unnamed-button",
@@ -337,15 +354,15 @@
    "sectionAr": "دليل صناعة العطور",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "home:slow",
    "kind": "idea",
    "code": "slow",
    "section": "home",
-   "titleAr": "تسريع القسم (بيفتح في 6 ثواني)",
+   "titleAr": "تسريع القسم (بيفتح في 7 ثواني)",
    "severity": "low",
    "sources": [
     "browser"
@@ -353,8 +370,8 @@
    "sectionAr": "الرئيسية",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-24T08:03:56.689Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 13
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 14
   },
   {
    "id": "home:unnamed-button",
@@ -369,24 +386,24 @@
    "sectionAr": "الرئيسية",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
-   "id": "home:ai-idea:إضافةشريطتنبيهاتمتحركلأح",
+   "id": "home:ai-idea:إضافةزرسريعللوصولالمباشر",
    "kind": "idea",
    "code": "ai-idea",
    "section": "home",
-   "titleAr": "إضافة شريط تنبيهات متحرك لأحدث دورات تصميم العطور",
-   "detailAr": "يساعد الزائر على معرفة المستجدات السريعة في المنصة دون البحث الطويل.",
+   "titleAr": "إضافة زر سريع للوصول المباشر لآلة حسبة التكلفة",
+   "detailAr": "يسهل على الزائر حساب أسعار العطور مباشرة من الصفحة الرئيسية.",
    "severity": "low",
    "sources": [
     "ai"
    ],
    "sectionAr": "الرئيسية",
    "examinerAr": "د. ليان العطور",
-   "firstSeen": "2026-10-27T08:17:48.870Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
+   "firstSeen": "2026-10-27T14:23:49.982Z",
+   "lastSeen": "2026-10-27T14:23:49.982Z",
    "seen": 1
   },
   {
@@ -402,8 +419,8 @@
    "sectionAr": "مكتبة شاهين",
    "examinerAr": "أ. مريم المجتمع",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "maceration_simulator:unnamed-button",
@@ -418,8 +435,8 @@
    "sectionAr": "محاكي التخمير والنضج",
    "examinerAr": "د. هند العلوم",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "master_ai:unnamed-button",
@@ -434,8 +451,8 @@
    "sectionAr": "الخبير شاهين",
    "examinerAr": "م. عمر الحاسوب",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "molecule_studio:unnamed-button",
@@ -450,8 +467,8 @@
    "sectionAr": "استوديو الجزيئات",
    "examinerAr": "د. هند العلوم",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "perfume_designers:unnamed-button",
@@ -466,8 +483,8 @@
    "sectionAr": "قسم المصممين — عطور",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "perfume_news:unnamed-button",
@@ -482,8 +499,8 @@
    "sectionAr": "أخبار العطور",
    "examinerAr": "أ. مريم المجتمع",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "perfumes:unnamed-button",
@@ -498,8 +515,8 @@
    "sectionAr": "قسم العطور",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "productDetail:unnamed-button",
@@ -514,8 +531,8 @@
    "sectionAr": "صفحة المنتج",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
    "id": "pyramid:unnamed-button",
@@ -530,24 +547,24 @@
    "sectionAr": "حاسبة الهرم العطري",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
-   "id": "pyramid:ai-idea:إضافةزرلحفظالهرمالعطريال",
+   "id": "pyramid:ai-idea:توفيرأمثلةجاهزةللهرمالعط",
    "kind": "idea",
    "code": "ai-idea",
    "section": "pyramid",
-   "titleAr": "إضافة زر لحفظ الهرم العطري المصمم كصورة في الجهاز",
-   "detailAr": "يمكن الزائر من الاحتفاظ بتصميمه ومشاركته بسهولة مع الأصدقاء.",
+   "titleAr": "توفير أمثلة جاهزة للهرم العطري بنقرة واحدة",
+   "detailAr": "يمكن الزائر من تجربة تركيبات متوازنة بسرعة ودون حيرة.",
    "severity": "low",
    "sources": [
     "ai"
    ],
    "sectionAr": "حاسبة الهرم العطري",
    "examinerAr": "د. ليان العطور",
-   "firstSeen": "2026-10-27T08:17:48.870Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
+   "firstSeen": "2026-10-27T14:23:49.982Z",
+   "lastSeen": "2026-10-27T14:23:49.982Z",
    "seen": 1
   },
   {
@@ -563,23 +580,24 @@
    "sectionAr": "المواد الخام",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
-   "id": "store:slow",
+   "id": "shaheen_chat:ai-idea:إضافةاقتراحاتأسئلةسريعةل",
    "kind": "idea",
-   "code": "slow",
-   "section": "store",
-   "titleAr": "تسريع القسم (بيفتح في 5 ثواني)",
+   "code": "ai-idea",
+   "section": "shaheen_chat",
+   "titleAr": "إضافة اقتراحات أسئلة سريعة لمساعدتك في اختيار عطرك",
+   "detailAr": "تسهل على الزائر بدء المحادثة مع الخبير لمعرفة العطر المناسب له.",
    "severity": "low",
    "sources": [
-    "browser"
+    "ai"
    ],
-   "sectionAr": "المتجر",
-   "examinerAr": "د. ليان العطور",
-   "firstSeen": "2026-10-27T08:17:48.870Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-27T14:23:49.982Z",
+   "lastSeen": "2026-10-27T14:23:49.982Z",
    "seen": 1
   },
   {
@@ -595,24 +613,24 @@
    "sectionAr": "المتجر",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   },
   {
-   "id": "store:ai-idea:تفعيلفلترسريعحسبنوعالعائ",
+   "id": "store:ai-idea:تفعيلفلترسريعلأنواعالزجا",
    "kind": "idea",
    "code": "ai-idea",
    "section": "store",
-   "titleAr": "تفعيل فلتر سريع حسب نوع العائلة العطرية في المتجر",
-   "detailAr": "يسهل على الزائر العثور على المواد الخام المناسبة لذوقه بضغطة زر واحدة.",
+   "titleAr": "تفعيل فلتر سريع لأنواع الزجاجات والأحجام",
+   "detailAr": "يختصر وقت الزائر في البحث عن العبوات المناسبة لاحتياجه.",
    "severity": "low",
    "sources": [
     "ai"
    ],
    "sectionAr": "المتجر",
    "examinerAr": "د. ليان العطور",
-   "firstSeen": "2026-10-27T08:17:48.870Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
+   "firstSeen": "2026-10-27T14:23:49.982Z",
+   "lastSeen": "2026-10-27T14:23:49.982Z",
    "seen": 1
   },
   {
@@ -628,11 +646,47 @@
    "sectionAr": "عطور العالم",
    "examinerAr": "أ. مريم المجتمع",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T08:17:48.870Z",
-   "seen": 16
+   "lastSeen": "2026-10-27T14:23:49.982Z",
+   "seen": 17
   }
  ],
  "resolved": [
+  {
+   "id": "store:ai-idea:تفعيلفلترسريعحسبنوعالعائ",
+   "titleAr": "تفعيل فلتر سريع حسب نوع العائلة العطرية في المتجر",
+   "section": "store",
+   "at": "2026-10-27T14:23:49.982Z"
+  },
+  {
+   "id": "store:slow",
+   "titleAr": "تسريع القسم (بيفتح في 5 ثواني)",
+   "section": "store",
+   "at": "2026-10-27T14:23:49.982Z"
+  },
+  {
+   "id": "pyramid:ai-idea:إضافةزرلحفظالهرمالعطريال",
+   "titleAr": "إضافة زر لحفظ الهرم العطري المصمم كصورة في الجهاز",
+   "section": "pyramid",
+   "at": "2026-10-27T14:23:49.982Z"
+  },
+  {
+   "id": "home:ai-idea:إضافةشريطتنبيهاتمتحركلأح",
+   "titleAr": "إضافة شريط تنبيهات متحرك لأحدث دورات تصميم العطور",
+   "section": "home",
+   "at": "2026-10-27T14:23:49.982Z"
+  },
+  {
+   "id": "costing:ai-idea:توفيرزرلتصديرتفاصيلالتكل",
+   "titleAr": "توفير زر لتصدير تفاصيل التكلفة بملف نصي مختصر",
+   "section": "costing",
+   "at": "2026-10-27T14:23:49.982Z"
+  },
+  {
+   "id": "community:ai-idea:إضافةزرتصفيةللمنشورةالأك",
+   "titleAr": "إضافة زر تصفية للمنشورة الأكثر تفاعلاً في المجتمع",
+   "section": "community",
+   "at": "2026-10-27T14:23:49.982Z"
+  },
   {
    "id": "store:ai-idea:إضافةفلترسريعلتصفيةالعطو",
    "titleAr": "إضافة فلتر سريع لتصفية العطور حسب العائلة العطرية",
@@ -774,42 +828,6 @@
   {
    "id": "shaheen_chat:competitor-price:0:expect",
    "titleAr": "مقارنة السعر بمتجر تاني مش متغطية (بيرد بقايمة أو بيروح للمنصات)",
-   "section": "shaheen_chat",
-   "at": "2026-10-24T02:09:30.903Z"
-  },
-  {
-   "id": "shaheen_chat:calm-tracking:1:expect",
-   "titleAr": "«إزاي أتتبعه؟» مابتتفهمش من شاهين",
-   "section": "shaheen_chat",
-   "at": "2026-10-24T02:09:30.903Z"
-  },
-  {
-   "id": "shaheen_chat:calm-tracking:0:expect",
-   "titleAr": "سؤال تتبع هادي اتعامل كشكوى تأخير واعتذر عن حاجة محصلتش",
-   "section": "shaheen_chat",
-   "at": "2026-10-24T02:09:30.903Z"
-  },
-  {
-   "id": "shaheen_chat:wholesale-quantity:1:chat-repeat",
-   "titleAr": "شاهين كرر نفس الرد بالحرف",
-   "section": "shaheen_chat",
-   "at": "2026-10-24T02:09:30.903Z"
-  },
-  {
-   "id": "shaheen_chat:wholesale-quantity:1:expect",
-   "titleAr": "رد الجملة مابيلتقطش الكمية والمنتج اللي التاجر قالهم",
-   "section": "shaheen_chat",
-   "at": "2026-10-24T02:09:30.903Z"
-  },
-  {
-   "id": "shaheen_chat:how-to-order:1:expect",
-   "titleAr": "«إزاي أطلبه؟» بيكرر قايمة العطور بدل خطوات الطلب",
-   "section": "shaheen_chat",
-   "at": "2026-10-24T02:09:30.903Z"
-  },
-  {
-   "id": "shaheen_chat:recommend-after-advice:1:expect",
-   "titleAr": "بعد نصيحة الهدية «رشحلي» بيسأل من الأول وينسى المستلم والمناسبة",
    "section": "shaheen_chat",
    "at": "2026-10-24T02:09:30.903Z"
   }
