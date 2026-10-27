@@ -41,7 +41,8 @@ export const BOOK_STUDY_ARCHIVE = {
     const discoveryQuery = [book.title, book.titleEnglish, book.transliteration, book.authors, book.authorsNative].filter(Boolean).join(' ');
     return {
       id: book.id, title: book.title, titleEnglish: book.titleEnglish, language: book.language,
-      originArea: book.originArea, trackIds: book.trackIds, workKind: book.workKind,
+      sourceLanguage: book.sourceLanguage, originArea: book.originArea, originCountry: book.originCountry,
+      trackIds: book.trackIds, workKind: book.workKind,
       suppliedAttribution: book.authors, topic: book.category, schoolApproval: book.schoolApproval,
       discovery: {
         url: reference?.url || `https://search.worldcat.org/search?q=${encodeURIComponent(discoveryQuery)}`,
