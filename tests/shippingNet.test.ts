@@ -111,7 +111,12 @@ test('the trade report and the price engine agree on every destination', () => {
     if (!covered.includes(d.code)) continue;
     if (d.proposedChargedEgp === null) continue;
     const engine = convert(shippingCost(d.code, 1), SHIPPING.currency, HOME_CURRENCY, reportFx);
-    assert.ok(Math.abs(engine - d.proposedChargedEgp) <= 1, `${d.code}: report says ${d.proposedChargedEgp} EGP, the engine charges ${engine}`);
+    // The engine charges from the USD cost table (src/data/shipping-costs.json, converted from the carrier's own
+    // currency on the carriers robot's day); the report reads the carrier's rate card in its own currency (MYR…) at
+    // today's rate. Between two carrier runs the cross rate moves a little — up to 1% is that drift, not a different
+    // formula (a missing margin alone would be ~10%).
+    const tolerance = Math.max(1, d.proposedChargedEgp * 0.01);
+    assert.ok(Math.abs(engine - d.proposedChargedEgp) <= tolerance, `${d.code}: report says ${d.proposedChargedEgp} EGP, the engine charges ${engine}`);
     checked += 1;
   }
   assert.ok(checked >= 70, `only ${checked} destinations compared`);

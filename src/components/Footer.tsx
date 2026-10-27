@@ -219,11 +219,11 @@ export const Footer: React.FC<FooterProps> = ({
               <span className="font-semibold text-stone-400">{currentLang === 'ar' ? 'شكاوى حكومية:' : 'Gov complaints:'}</span>
               <a href="https://maroof.sa" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇸🇦 معروف</a>
               <a href="https://www.cpa.gov.eg" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇪🇬 حماية المستهلك</a>
-              <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇪🇺 EU ODR</a>
-              <a href="https://u.ae/en/information-and-services/social-affairs/having-a-consumer-complaint" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇦🇪 UAE</a>
+              <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇪🇺 {currentLang === 'ar' ? 'الاتحاد الأوروبي' : 'EU ODR'}</a>
+              <a href="https://u.ae/en/information-and-services/social-affairs/having-a-consumer-complaint" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇦🇪 {currentLang === 'ar' ? 'الإمارات' : 'UAE'}</a>
             </div>
             <div className="mt-2 flex flex-wrap gap-2 text-[10px] items-center">
-              <button onClick={() => window.dispatchEvent(new CustomEvent("open-cookie-settings"))} className="text-stone-400 hover:text-white underline cursor-pointer">🍪 Cookie Settings</button>
+              <button onClick={() => window.dispatchEvent(new CustomEvent("open-cookie-settings"))} className="text-stone-400 hover:text-white underline cursor-pointer">🍪 {currentLang === 'ar' ? 'إعدادات الكوكيز' : 'Cookie Settings'}</button>
               <span className="text-stone-600">·</span>
               <a href={contactMailto('dpo', currentLang)} dir="ltr" className="text-stone-500 hover:text-amber-400 underline">{currentLang === 'ar' ? 'حماية البيانات' : 'Data protection'}: {contactEmail('dpo')}</a>
             </div>
