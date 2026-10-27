@@ -1,10 +1,10 @@
 {
  "version": 1,
- "updatedAt": "2026-10-27T09:23:45.094Z",
- "publishedAt": "2026-10-27T09:23:45.094Z",
- "signature": "sjuqic",
- "summaryAr": "وردية المتجر والأسعار 09:23 UTC: 8 اختبار عملي (7 سليم)، 38 مشكلة مفتوحة — 5 بتتصلح آلياً، 25 عند شاهين، 0 مهمة تطوير، 3 محتاجة قرارك؛ 12 مراجعة خبير (7 اتقبلت، 5 اترفضت)؛ 0 اتصلحت من آخر دورية.",
- "health": 64,
+ "updatedAt": "2026-10-27T10:24:40.630Z",
+ "publishedAt": "2026-10-27T10:24:40.630Z",
+ "signature": "vvg4tr",
+ "summaryAr": "وردية المحتوى وتجربة الزائر 10:24 UTC: 7 اختبار عملي (7 سليم)، 42 مشكلة مفتوحة — 5 بتتصلح آلياً، 26 عند شاهين، 1 مهمة تطوير، 3 محتاجة قرارك؛ 10 مراجعة خبير (3 اتقبلت، 7 اترفضت)؛ 0 اتصلحت من آخر دورية.",
+ "health": 58,
  "bots": [
   {
    "id": "librarian",
@@ -16,7 +16,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-27T09:04:39Z",
-   "lastRunAt": "2026-10-27T09:04:39Z",
+   "lastRunAt": "2026-10-27T10:03:17Z",
    "lastRunOk": true
   },
   {
@@ -58,18 +58,21 @@
   },
   {
    "id": "secretary",
-   "status": "warn",
-   "problems": 1,
+   "status": "fail",
+   "problems": 2,
    "reviewed": "2026-10-27T03:38:35Z",
-   "lastRunAt": "2026-10-27T03:38:35Z",
-   "lastRunOk": true
+   "lastRunAt": "2026-10-27T10:16:52Z",
+   "lastRunOk": false,
+   "cause": [
+    "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)"
+   ]
   },
   {
    "id": "precheck",
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-27T06:47:04Z",
-   "lastRunAt": "2026-10-27T08:26:51Z",
+   "lastRunAt": "2026-10-27T10:12:28Z",
    "lastRunOk": true
   },
   {
@@ -85,7 +88,7 @@
    "status": "warn",
    "problems": 1,
    "reviewed": "2026-10-27T07:33:48Z",
-   "lastRunAt": "2026-10-27T08:26:29Z",
+   "lastRunAt": "2026-10-27T09:24:10Z",
    "lastRunOk": true
   },
   {
@@ -119,12 +122,12 @@
    "status": "fail",
    "problems": 1,
    "reviewed": "2026-10-27T09:09:17Z",
-   "lastRunAt": "2026-10-27T09:09:17Z",
+   "lastRunAt": "2026-10-27T10:18:03Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
     "test —   error: 'EG: report says 1907.94 EGP, the engine charges 1909.7980980799998'",
-    "test — not ok 1185 - the trade report and the price engine agree on every destination"
+    "test — not ok 1196 - the trade report and the price engine agree on every destination"
    ]
   },
   {
@@ -132,7 +135,7 @@
    "status": "fail",
    "problems": 2,
    "reviewed": "2026-10-27T07:26:58Z",
-   "lastRunAt": "2026-10-27T07:26:58Z",
+   "lastRunAt": "2026-10-27T10:07:17Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
@@ -146,7 +149,7 @@
    "status": "fail",
    "problems": 2,
    "reviewed": "2026-10-27T07:26:58Z",
-   "lastRunAt": "2026-10-27T07:26:58Z",
+   "lastRunAt": "2026-10-27T10:07:17Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
@@ -157,11 +160,14 @@
   },
   {
    "id": "catalog",
-   "status": "ok",
-   "problems": 0,
+   "status": "fail",
+   "problems": 1,
    "reviewed": "2026-10-27T03:38:35Z",
-   "lastRunAt": "2026-10-27T03:38:35Z",
-   "lastRunOk": true
+   "lastRunAt": "2026-10-27T10:16:52Z",
+   "lastRunOk": false,
+   "cause": [
+    "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)"
+   ]
   },
   {
    "id": "inventory",
@@ -199,8 +205,8 @@
    "id": "synapse",
    "status": "ok",
    "problems": 1,
-   "reviewed": "2026-10-27T07:20:48Z",
-   "lastRunAt": "2026-10-27T07:20:48Z",
+   "reviewed": "2026-10-27T10:08:45Z",
+   "lastRunAt": "2026-10-27T10:08:45Z",
    "lastRunOk": true
   },
   {
@@ -208,7 +214,7 @@
    "status": "warn",
    "problems": 2,
    "reviewed": "2026-10-27T07:20:48Z",
-   "lastRunAt": "2026-10-27T07:20:48Z",
+   "lastRunAt": "2026-10-27T10:08:45Z",
    "lastRunOk": true
   },
   {
@@ -292,7 +298,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-27T06:18:17Z",
-   "lastRunAt": "2026-10-27T06:18:17Z",
+   "lastRunAt": "2026-10-27T10:14:20Z",
    "lastRunOk": true
   },
   {
@@ -302,18 +308,21 @@
   },
   {
    "id": "news",
-   "status": "ok",
-   "problems": 0,
-   "reviewed": "2026-10-27T03:38:35Z",
-   "lastRunAt": "2026-10-27T03:38:35Z",
-   "lastRunOk": true
+   "status": "fail",
+   "problems": 1,
+   "reviewed": "2026-10-27T10:16:52Z",
+   "lastRunAt": "2026-10-27T10:16:52Z",
+   "lastRunOk": false,
+   "cause": [
+    "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)"
+   ]
   },
   {
    "id": "seo",
    "status": "fail",
    "problems": 1,
-   "reviewed": "2026-10-27T07:14:50Z",
-   "lastRunAt": "2026-10-27T07:44:03Z",
+   "reviewed": "2026-10-27T10:05:01Z",
+   "lastRunAt": "2026-10-27T10:05:01Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)"
@@ -323,13 +332,13 @@
    "id": "teacher",
    "status": "fail",
    "problems": 1,
-   "reviewed": "2026-10-27T07:01:26Z",
-   "lastRunAt": "2026-10-27T09:09:17Z",
+   "reviewed": "2026-10-27T10:18:03Z",
+   "lastRunAt": "2026-10-27T10:18:03Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
     "test —   error: 'EG: report says 1907.94 EGP, the engine charges 1909.7980980799998'",
-    "test — not ok 1185 - the trade report and the price engine agree on every destination"
+    "test — not ok 1196 - the trade report and the price engine agree on every destination"
    ]
   },
   {
@@ -354,18 +363,23 @@
   },
   {
    "id": "languages",
-   "status": "ok",
-   "problems": 0,
-   "reviewed": "2026-10-26T21:38:57Z",
-   "lastRunAt": "2026-10-26T21:38:57Z",
-   "lastRunOk": true
+   "status": "fail",
+   "problems": 1,
+   "reviewed": "2026-10-27T09:51:31Z",
+   "lastRunAt": "2026-10-27T09:51:31Z",
+   "lastRunOk": false,
+   "cause": [
+    "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
+    "test —   error: 'EG: report says 1907.94 EGP, the engine charges 1909.7980980799998'",
+    "test — not ok 1185 - the trade report and the price engine agree on every destination"
+   ]
   },
   {
    "id": "localization_audit",
    "status": "warn",
    "problems": 3,
    "reviewed": "2026-10-26T10:19:43Z",
-   "lastRunAt": "2026-10-26T10:19:43Z",
+   "lastRunAt": "2026-10-27T10:16:40Z",
    "lastRunOk": true
   },
   {
@@ -380,8 +394,8 @@
    "id": "design_audit",
    "status": "warn",
    "problems": 1,
-   "reviewed": "2026-10-27T06:52:51Z",
-   "lastRunAt": "2026-10-27T07:37:35Z",
+   "reviewed": "2026-10-27T10:12:40Z",
+   "lastRunAt": "2026-10-27T10:12:40Z",
    "lastRunOk": true
   },
   {
@@ -393,8 +407,8 @@
    "id": "visitor_tour",
    "status": "fail",
    "problems": 1,
-   "reviewed": "2026-10-27T06:52:51Z",
-   "lastRunAt": "2026-10-27T07:37:35Z",
+   "reviewed": "2026-10-27T10:12:40Z",
+   "lastRunAt": "2026-10-27T10:12:40Z",
    "lastRunOk": true
   },
   {
@@ -414,29 +428,29 @@
    "id": "service",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-27T06:41:23Z",
-   "lastRunAt": "2026-10-27T06:41:23Z",
+   "reviewed": "2026-10-27T09:24:34Z",
+   "lastRunAt": "2026-10-27T09:24:34Z",
    "lastRunOk": true
   },
   {
    "id": "school",
    "status": "fail",
    "problems": 1,
-   "reviewed": "2026-10-27T07:01:26Z",
-   "lastRunAt": "2026-10-27T09:09:17Z",
+   "reviewed": "2026-10-27T10:18:03Z",
+   "lastRunAt": "2026-10-27T10:18:03Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
     "test —   error: 'EG: report says 1907.94 EGP, the engine charges 1909.7980980799998'",
-    "test — not ok 1185 - the trade report and the price engine agree on every destination"
+    "test — not ok 1196 - the trade report and the price engine agree on every destination"
    ]
   },
   {
    "id": "academy",
    "status": "fail",
    "problems": 2,
-   "reviewed": "2026-10-27T06:23:18Z",
-   "lastRunAt": "2026-10-27T08:31:05Z",
+   "reviewed": "2026-10-27T09:27:23Z",
+   "lastRunAt": "2026-10-27T09:27:23Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
@@ -470,7 +484,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-27T07:42:39Z",
-   "lastRunAt": "2026-10-27T09:14:28Z",
+   "lastRunAt": "2026-10-27T10:00:26Z",
    "lastRunOk": true
   },
   {
@@ -478,7 +492,7 @@
    "status": "warn",
    "problems": 2,
    "reviewed": "2026-10-27T07:37:35Z",
-   "lastRunAt": "2026-10-27T07:37:35Z",
+   "lastRunAt": "2026-10-27T10:12:40Z",
    "lastRunOk": true
   },
   {
@@ -494,7 +508,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-27T05:36:41Z",
-   "lastRunAt": "2026-10-27T05:36:41Z",
+   "lastRunAt": "2026-10-27T10:12:54Z",
    "lastRunOk": true
   },
   {
@@ -502,7 +516,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-27T05:40:39Z",
-   "lastRunAt": "2026-10-27T05:40:39Z",
+   "lastRunAt": "2026-10-27T10:14:35Z",
    "lastRunOk": true
   },
   {
@@ -510,7 +524,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-27T07:46:33Z",
-   "lastRunAt": "2026-10-27T08:41:36Z",
+   "lastRunAt": "2026-10-27T09:38:43Z",
    "lastRunOk": true
   },
   {
@@ -523,7 +537,7 @@
    "status": "fail",
    "problems": 1,
    "reviewed": "2026-10-27T06:25:26Z",
-   "lastRunAt": "2026-10-27T08:28:15Z",
+   "lastRunAt": "2026-10-27T10:14:08Z",
    "lastRunOk": false,
    "cause": [
     "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)"
@@ -617,7 +631,7 @@
    "failed": 0,
    "level": "ok",
    "noteAr": "251 دولة: عملة واحدة في كل مكان",
-   "at": "2026-10-27T09:23:45.094Z",
+   "at": "2026-10-27T10:24:40.630Z",
    "nameAr": "عملة كل دولة",
    "nameEn": "Currency of every country"
   },
@@ -637,7 +651,7 @@
    "failed": 0,
    "level": "ok",
    "noteAr": "100 لغة كاملة النصوص الأساسية",
-   "at": "2026-10-27T07:33:36.202Z",
+   "at": "2026-10-27T10:24:40.630Z",
    "nameAr": "نصوص المتجر في كل اللغات",
    "nameEn": "Store texts in every language"
   },
@@ -646,8 +660,8 @@
    "level": "ok",
    "checked": 30,
    "failed": 0,
-   "noteAr": "30 خبر، آخر تحديث من 4 ساعة",
-   "at": "2026-10-27T07:33:36.202Z",
+   "noteAr": "30 خبر، آخر تحديث من 7 ساعة",
+   "at": "2026-10-27T10:24:40.630Z",
    "nameAr": "ملف النشرة",
    "nameEn": "News bulletin file"
   },
@@ -657,7 +671,7 @@
    "checked": 2,
    "failed": 0,
    "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا",
-   "at": "2026-10-27T09:23:45.094Z",
+   "at": "2026-10-27T10:24:40.630Z",
    "nameAr": "الموقع الأساسي يفتح",
    "nameEn": "Main site opens"
   },
@@ -668,7 +682,7 @@
    "failed": 0,
    "deep": true,
    "noteAr": "10 صفحة منتج فتحت بنفس سعر الكتالوج + جدول العملات موجود",
-   "at": "2026-10-27T09:23:45.094Z",
+   "at": "2026-10-27T10:24:40.630Z",
    "nameAr": "صفحات المنتجات على الموقع",
    "nameEn": "Product pages on the site"
   },
@@ -689,7 +703,7 @@
    "checked": 1161,
    "failed": 0,
    "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161",
-   "at": "2026-10-27T08:26:10.397Z",
+   "at": "2026-10-27T10:24:40.630Z",
    "nameAr": "خريطة الموقع لمحركات البحث",
    "nameEn": "Sitemap for search engines"
   },
@@ -706,10 +720,10 @@
   {
    "id": "news_api",
    "level": "ok",
-   "checked": 6,
+   "checked": 3,
    "failed": 0,
-   "noteAr": "النشرة على الموقع فيها 6 خبر",
-   "at": "2026-10-27T08:26:10.397Z",
+   "noteAr": "النشرة على الموقع فيها 3 خبر",
+   "at": "2026-10-27T10:24:40.630Z",
    "nameAr": "النشرة على الموقع الحي",
    "nameEn": "News on the live site"
   },
@@ -726,6 +740,424 @@
   }
  ],
  "open": [
+  {
+   "key": "tutor:آخر تشغيل فشل",
+   "bot": "tutor",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "المعلم — الحلقات الضعيفة تبقى خطة دراسة: آخر تشغيل فشل",
+   "since": "2026-10-27T07:33:36.202Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "task",
+   "nextAr": "مهمة تطوير #386 لوكيل البرمجة («نفذ مهام شاهين»)",
+   "tries": [],
+   "shaheen": {
+    "at": "2026-10-27T10:24:40.630Z",
+    "by": "ai",
+    "diagnosisAr": "فشل تشغيل أداة 'المعلم — الحلقات الضعيفة تبقى خطة دراسة' بسبب عدم توفر البيانات أو حدوث خطأ في قراءة ملفات التقارير المرتبطة (مثل تقرير المناعة أو شبكة العقل) أو تعذر تحديث الملف المستهدف src/data/live/shaheen-study.json بشكل سليم.",
+    "stepsAr": [
+     "التحقق من سلامة وجودة ملفات الإدخال الأساسية وتوافق بنيتها مع المتطلبات الحالية.",
+     "مراجعة سجلات الأخطاء في مسار العمل (Workflow) المرتبط لتحديد سبب الفشل بدقة.",
+     "التأكد من صحة مسارات وأذونات الكتابة لملف المخرجات src/data/live/shaheen-study.json."
+    ],
+    "needsCode": true,
+    "rerun": "shaheen-precheck.yml"
+   },
+   "issue": 386,
+   "rejectedBy": [
+    "tutor",
+    "reflex",
+    "ears",
+    "seo",
+    "teacher",
+    "school",
+    "lab",
+    "news",
+    "languages",
+    "academy"
+   ]
+  },
+  {
+   "key": "reflex:آخر تشغيل فشل",
+   "bot": "reflex",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "الانعكاس — إجابات فورية بلا محرك: آخر تشغيل فشل",
+   "since": "2026-10-27T07:33:36.202Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "waiting_shaheen",
+   "nextAr": "مفيش إصلاح آلي آمن — في دور شاهين يشخصها (سؤال واحد بس في كل وردية عشان باقة الزوار)",
+   "tries": [],
+   "shaheen": {
+    "at": "2026-10-27T07:33:36.202Z",
+    "by": "playbook",
+    "diagnosisAr": "الروبوت متأخر أو آخر تشغيل فشل.",
+    "stepsAr": [
+     "إعادة التشغيل",
+     "لو فشل تاني: قراءة سجل التشغيل وإصلاح السبب في الكود"
+    ],
+    "needsCode": true
+   },
+   "rejectedBy": [
+    "tutor",
+    "reflex",
+    "ears",
+    "seo",
+    "teacher",
+    "school",
+    "lab",
+    "news",
+    "languages",
+    "academy"
+   ]
+  },
+  {
+   "key": "ears:آخر تشغيل فشل",
+   "bot": "ears",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "الآذان — اللي بيتسأل فعلاً: آخر تشغيل فشل",
+   "since": "2026-10-27T07:33:36.202Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "waiting_shaheen",
+   "nextAr": "مفيش إصلاح آلي آمن — في دور شاهين يشخصها (سؤال واحد بس في كل وردية عشان باقة الزوار)",
+   "tries": [],
+   "shaheen": {
+    "at": "2026-10-27T07:33:36.202Z",
+    "by": "playbook",
+    "diagnosisAr": "الروبوت متأخر أو آخر تشغيل فشل.",
+    "stepsAr": [
+     "إعادة التشغيل",
+     "لو فشل تاني: قراءة سجل التشغيل وإصلاح السبب في الكود"
+    ],
+    "needsCode": true
+   },
+   "rejectedBy": [
+    "tutor",
+    "reflex",
+    "ears",
+    "seo",
+    "teacher",
+    "school",
+    "lab",
+    "news",
+    "languages",
+    "academy"
+   ]
+  },
+  {
+   "key": "news:آخر تشغيل فشل",
+   "bot": "news",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "نشرة الأخبار ودروس المساعد: آخر تشغيل فشل",
+   "since": "2026-10-27T10:24:40.630Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "fixing",
+   "nextAr": "اتصلح آلياً: shaheen-news.yml اتشغل تاني (محاولة 1/2) — الدورية الجاية تتأكد بالتجربة",
+   "tries": [
+    {
+     "at": "2026-10-27T10:24:40.630Z",
+     "workflow": "shaheen-news.yml"
+    }
+   ],
+   "rejectedBy": [
+    "news",
+    "seo",
+    "teacher",
+    "languages",
+    "school",
+    "academy"
+   ]
+  },
+  {
+   "key": "seo:آخر تشغيل فشل",
+   "bot": "seo",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "منارة شاهين (الظهور في البحث): آخر تشغيل فشل",
+   "since": "2026-10-27T07:33:36.202Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "waiting_fix",
+   "nextAr": "shaheen-seo.yml اتشغل الساعة 07:33 UTC — مستنيين نتيجته قبل أي تشغيل تاني",
+   "tries": [
+    {
+     "at": "2026-10-27T07:33:36.202Z",
+     "workflow": "shaheen-seo.yml"
+    }
+   ],
+   "rejectedBy": [
+    "tutor",
+    "reflex",
+    "ears",
+    "seo",
+    "teacher",
+    "school",
+    "lab",
+    "news",
+    "languages",
+    "academy"
+   ]
+  },
+  {
+   "key": "teacher:آخر تشغيل فشل",
+   "bot": "teacher",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "المعلم المحلي ومراجع الدروس: آخر تشغيل فشل",
+   "since": "2026-10-27T07:33:36.202Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "waiting_fix",
+   "nextAr": "shaheen-discover.yml اتشغل الساعة 07:33 UTC — مستنيين نتيجته قبل أي تشغيل تاني",
+   "tries": [
+    {
+     "at": "2026-10-27T07:33:36.202Z",
+     "workflow": "shaheen-discover.yml"
+    }
+   ],
+   "rejectedBy": [
+    "tutor",
+    "reflex",
+    "ears",
+    "seo",
+    "teacher",
+    "school",
+    "lab",
+    "news",
+    "languages",
+    "academy"
+   ]
+  },
+  {
+   "key": "languages:آخر تشغيل فشل",
+   "bot": "languages",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "وكيل اللغات — المترجم الذكي: آخر تشغيل فشل",
+   "since": "2026-10-27T10:24:40.630Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "fixing",
+   "nextAr": "اتصلح آلياً: shaheen-languages.yml اتشغل تاني (محاولة 1/2) — الدورية الجاية تتأكد بالتجربة",
+   "tries": [
+    {
+     "at": "2026-10-27T10:24:40.630Z",
+     "workflow": "shaheen-languages.yml"
+    }
+   ],
+   "team": [
+    {
+     "bot": "languages",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "design_audit",
+     "roleAr": "12 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
+    }
+   ],
+   "rejectedBy": [
+    "news",
+    "seo",
+    "teacher",
+    "languages",
+    "school",
+    "academy"
+   ]
+  },
+  {
+   "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
+   "bot": "design_audit",
+   "source": "self",
+   "shift": 1,
+   "level": "warn",
+   "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 46/100 (12 ملاحظة)",
+   "since": "2026-10-21T01:24:02.602Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "waiting_shaheen",
+   "nextAr": "مفيش إصلاح آلي آمن — في دور شاهين يشخصها (سؤال واحد بس في كل وردية عشان باقة الزوار)",
+   "tries": [],
+   "team": [
+    {
+     "bot": "design_audit",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "languages",
+     "roleAr": "12 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
+    },
+    {
+     "bot": "design_expert",
+     "roleAr": "6 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
+    }
+   ],
+   "shaheen": {
+    "at": "2026-10-22T07:31:33.332Z",
+    "by": "playbook",
+    "diagnosisAr": "مشكلة في أرقام الأداة نفسها محتاجة تطوير.",
+    "stepsAr": [
+     "تتحول لمهمة تطوير لو استمرت"
+    ],
+    "needsCode": true
+   }
+  },
+  {
+   "key": "visitor_tour:جولة الزائر: خطوات واقعة — home: فتح الموقع وتحميله، مع وجود تباين لغوي وتقطع ال",
+   "bot": "visitor_tour",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "جولة الزائر والمستشار الميداني: جولة الزائر: خطوات واقعة — home: فتح الموقع وتحميله، مع وجود تباين لغوي وتقطع النص العربي مع وجود عناصر إنجليزية.، store: فتح المتجر واستخدام فلتر Men؛ النتائج ظهرت وتغير المنتج الظاهر أثناء التصفح، مع ، product: فتح صفحة Hawas Ice by Rasasi 100ml EDP؛ السعر ظاهر، الصور تعرض والملاحظات متوفرة، cart: تمت إضافة المنتج إلى السلة وتعديل الكمية إلى In cart (2) لكن عرض محتوى السلة غير",
+   "since": "2026-10-27T07:33:36.202Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "waiting_shaheen",
+   "nextAr": "مفيش إصلاح آلي آمن — في دور شاهين يشخصها (سؤال واحد بس في كل وردية عشان باقة الزوار)",
+   "tries": [],
+   "team": [
+    {
+     "bot": "visitor_tour",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "product_pages",
+     "roleAr": "5 ملاحظة على صفحات المتجر من جولة الزائر — مراجع الصفحات يبدأ بيها"
+    }
+   ],
+   "shaheen": {
+    "at": "2026-10-27T07:33:36.202Z",
+    "by": "playbook",
+    "diagnosisAr": "مشكلة في أرقام الأداة نفسها محتاجة تطوير.",
+    "stepsAr": [
+     "تتحول لمهمة تطوير لو استمرت"
+    ],
+    "needsCode": true
+   },
+   "rejectedBy": [
+    "visitor_tour"
+   ]
+  },
+  {
+   "key": "school:آخر تشغيل فشل",
+   "bot": "school",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "مدرسة شاهين (الاعتماد على النفس): آخر تشغيل فشل",
+   "since": "2026-10-27T07:33:36.202Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "waiting_fix",
+   "nextAr": "shaheen-discover.yml اتشغل الساعة 07:33 UTC — مستنيين نتيجته قبل أي تشغيل تاني",
+   "tries": [],
+   "rejectedBy": [
+    "tutor",
+    "reflex",
+    "ears",
+    "seo",
+    "teacher",
+    "school",
+    "lab",
+    "news",
+    "languages",
+    "academy"
+   ]
+  },
+  {
+   "key": "academy:آخر تشغيل فشل",
+   "bot": "academy",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "أكاديمية شاهين (المدرسة على مدار الساعة): آخر تشغيل فشل",
+   "since": "2026-10-27T10:24:40.630Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "waiting_shaheen",
+   "nextAr": "مفيش إصلاح آلي آمن — في دور شاهين يشخصها (سؤال واحد بس في كل وردية عشان باقة الزوار)",
+   "tries": [],
+   "shaheen": {
+    "at": "2026-10-27T10:24:40.630Z",
+    "by": "playbook",
+    "diagnosisAr": "الروبوت متأخر أو آخر تشغيل فشل.",
+    "stepsAr": [
+     "إعادة التشغيل",
+     "لو فشل تاني: قراءة سجل التشغيل وإصلاح السبب في الكود"
+    ],
+    "needsCode": true
+   },
+   "rejectedBy": [
+    "news",
+    "seo",
+    "teacher",
+    "languages",
+    "school",
+    "academy"
+   ]
+  },
+  {
+   "key": "academy:التقرير متأخر جداً (# ساعة، المفروض كل #)",
+   "bot": "academy",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "أكاديمية شاهين (المدرسة على مدار الساعة): التقرير متأخر جداً (4 ساعة، المفروض كل 1)",
+   "since": "2026-10-27T10:24:40.630Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "waiting_shaheen",
+   "nextAr": "مفيش إصلاح آلي آمن — في دور شاهين يشخصها (سؤال واحد بس في كل وردية عشان باقة الزوار)",
+   "tries": [],
+   "shaheen": {
+    "at": "2026-10-27T10:24:40.630Z",
+    "by": "playbook",
+    "diagnosisAr": "الروبوت متأخر أو آخر تشغيل فشل.",
+    "stepsAr": [
+     "إعادة التشغيل",
+     "لو فشل تاني: قراءة سجل التشغيل وإصلاح السبب في الكود"
+    ],
+    "needsCode": true
+   },
+   "rejectedBy": [
+    "academy"
+   ]
+  },
+  {
+   "key": "lab:آخر تشغيل فشل",
+   "bot": "lab",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "المُجرِّب (معمل شاهين): آخر تشغيل فشل",
+   "since": "2026-10-27T07:33:36.202Z",
+   "lastSeen": "2026-10-27T10:24:40.630Z",
+   "status": "waiting_shaheen",
+   "nextAr": "مفيش إصلاح آلي آمن — في دور شاهين يشخصها (سؤال واحد بس في كل وردية عشان باقة الزوار)",
+   "tries": [],
+   "shaheen": {
+    "at": "2026-10-27T07:33:36.202Z",
+    "by": "playbook",
+    "diagnosisAr": "الروبوت متأخر أو آخر تشغيل فشل.",
+    "stepsAr": [
+     "إعادة التشغيل",
+     "لو فشل تاني: قراءة سجل التشغيل وإصلاح السبب في الكود"
+    ],
+    "needsCode": true
+   },
+   "rejectedBy": [
+    "tutor",
+    "reflex",
+    "ears",
+    "seo",
+    "teacher",
+    "school",
+    "lab",
+    "news",
+    "languages",
+    "academy"
+   ]
+  },
   {
    "key": "census:آخر تشغيل فشل",
    "bot": "census",
@@ -1440,281 +1872,6 @@
     "examiner",
     "deploy"
    ]
-  },
-  {
-   "key": "tutor:آخر تشغيل فشل",
-   "bot": "tutor",
-   "source": "self",
-   "shift": 1,
-   "level": "fail",
-   "textAr": "المعلم — الحلقات الضعيفة تبقى خطة دراسة: آخر تشغيل فشل",
-   "since": "2026-10-27T07:33:36.202Z",
-   "lastSeen": "2026-10-27T07:33:36.202Z",
-   "status": "waiting_shaheen",
-   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
-   "tries": [],
-   "shaheen": {
-    "at": "2026-10-27T07:33:36.202Z",
-    "by": "playbook",
-    "diagnosisAr": "الروبوت متأخر أو آخر تشغيل فشل.",
-    "stepsAr": [
-     "إعادة التشغيل",
-     "لو فشل تاني: قراءة سجل التشغيل وإصلاح السبب في الكود"
-    ],
-    "needsCode": true
-   },
-   "rejectedBy": [
-    "tutor",
-    "reflex",
-    "ears",
-    "seo",
-    "teacher",
-    "school",
-    "lab"
-   ]
-  },
-  {
-   "key": "reflex:آخر تشغيل فشل",
-   "bot": "reflex",
-   "source": "self",
-   "shift": 1,
-   "level": "fail",
-   "textAr": "الانعكاس — إجابات فورية بلا محرك: آخر تشغيل فشل",
-   "since": "2026-10-27T07:33:36.202Z",
-   "lastSeen": "2026-10-27T07:33:36.202Z",
-   "status": "waiting_shaheen",
-   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
-   "tries": [],
-   "shaheen": {
-    "at": "2026-10-27T07:33:36.202Z",
-    "by": "playbook",
-    "diagnosisAr": "الروبوت متأخر أو آخر تشغيل فشل.",
-    "stepsAr": [
-     "إعادة التشغيل",
-     "لو فشل تاني: قراءة سجل التشغيل وإصلاح السبب في الكود"
-    ],
-    "needsCode": true
-   },
-   "rejectedBy": [
-    "tutor",
-    "reflex",
-    "ears",
-    "seo",
-    "teacher",
-    "school",
-    "lab"
-   ]
-  },
-  {
-   "key": "ears:آخر تشغيل فشل",
-   "bot": "ears",
-   "source": "self",
-   "shift": 1,
-   "level": "fail",
-   "textAr": "الآذان — اللي بيتسأل فعلاً: آخر تشغيل فشل",
-   "since": "2026-10-27T07:33:36.202Z",
-   "lastSeen": "2026-10-27T07:33:36.202Z",
-   "status": "waiting_shaheen",
-   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
-   "tries": [],
-   "shaheen": {
-    "at": "2026-10-27T07:33:36.202Z",
-    "by": "playbook",
-    "diagnosisAr": "الروبوت متأخر أو آخر تشغيل فشل.",
-    "stepsAr": [
-     "إعادة التشغيل",
-     "لو فشل تاني: قراءة سجل التشغيل وإصلاح السبب في الكود"
-    ],
-    "needsCode": true
-   },
-   "rejectedBy": [
-    "tutor",
-    "reflex",
-    "ears",
-    "seo",
-    "teacher",
-    "school",
-    "lab"
-   ]
-  },
-  {
-   "key": "seo:آخر تشغيل فشل",
-   "bot": "seo",
-   "source": "self",
-   "shift": 1,
-   "level": "fail",
-   "textAr": "منارة شاهين (الظهور في البحث): آخر تشغيل فشل",
-   "since": "2026-10-27T07:33:36.202Z",
-   "lastSeen": "2026-10-27T07:33:36.202Z",
-   "status": "fixing",
-   "nextAr": "اتصلح آلياً: shaheen-seo.yml اتشغل تاني (محاولة 1/2) — الدورية الجاية تتأكد بالتجربة",
-   "tries": [
-    {
-     "at": "2026-10-27T07:33:36.202Z",
-     "workflow": "shaheen-seo.yml"
-    }
-   ],
-   "rejectedBy": [
-    "tutor",
-    "reflex",
-    "ears",
-    "seo",
-    "teacher",
-    "school",
-    "lab"
-   ]
-  },
-  {
-   "key": "teacher:آخر تشغيل فشل",
-   "bot": "teacher",
-   "source": "self",
-   "shift": 1,
-   "level": "fail",
-   "textAr": "المعلم المحلي ومراجع الدروس: آخر تشغيل فشل",
-   "since": "2026-10-27T07:33:36.202Z",
-   "lastSeen": "2026-10-27T07:33:36.202Z",
-   "status": "fixing",
-   "nextAr": "اتصلح آلياً: shaheen-discover.yml اتشغل تاني (محاولة 1/2) — الدورية الجاية تتأكد بالتجربة",
-   "tries": [
-    {
-     "at": "2026-10-27T07:33:36.202Z",
-     "workflow": "shaheen-discover.yml"
-    }
-   ],
-   "rejectedBy": [
-    "tutor",
-    "reflex",
-    "ears",
-    "seo",
-    "teacher",
-    "school",
-    "lab"
-   ]
-  },
-  {
-   "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
-   "bot": "design_audit",
-   "source": "self",
-   "shift": 1,
-   "level": "warn",
-   "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 46/100 (12 ملاحظة)",
-   "since": "2026-10-21T01:24:02.602Z",
-   "lastSeen": "2026-10-27T07:33:36.202Z",
-   "status": "waiting_shaheen",
-   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
-   "tries": [],
-   "team": [
-    {
-     "bot": "design_audit",
-     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
-    },
-    {
-     "bot": "languages",
-     "roleAr": "12 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
-    },
-    {
-     "bot": "design_expert",
-     "roleAr": "6 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
-    }
-   ],
-   "shaheen": {
-    "at": "2026-10-22T07:31:33.332Z",
-    "by": "playbook",
-    "diagnosisAr": "مشكلة في أرقام الأداة نفسها محتاجة تطوير.",
-    "stepsAr": [
-     "تتحول لمهمة تطوير لو استمرت"
-    ],
-    "needsCode": true
-   }
-  },
-  {
-   "key": "visitor_tour:جولة الزائر: خطوات واقعة — home: فتح الموقع وتحميله، مع وجود تباين لغوي وتقطع ال",
-   "bot": "visitor_tour",
-   "source": "self",
-   "shift": 1,
-   "level": "fail",
-   "textAr": "جولة الزائر والمستشار الميداني: جولة الزائر: خطوات واقعة — home: فتح الموقع وتحميله، مع وجود تباين لغوي وتقطع النص العربي مع وجود عناصر إنجليزية.، store: فتح المتجر واستخدام فلتر Men؛ النتائج ظهرت وتغير المنتج الظاهر أثناء التصفح، مع ، product: فتح صفحة Hawas Ice by Rasasi 100ml EDP؛ السعر ظاهر، الصور تعرض والملاحظات متوفرة، cart: تمت إضافة المنتج إلى السلة وتعديل الكمية إلى In cart (2) لكن عرض محتوى السلة غير",
-   "since": "2026-10-27T07:33:36.202Z",
-   "lastSeen": "2026-10-27T07:33:36.202Z",
-   "status": "waiting_shaheen",
-   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
-   "tries": [],
-   "team": [
-    {
-     "bot": "visitor_tour",
-     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
-    },
-    {
-     "bot": "product_pages",
-     "roleAr": "5 ملاحظة على صفحات المتجر من جولة الزائر — مراجع الصفحات يبدأ بيها"
-    }
-   ],
-   "shaheen": {
-    "at": "2026-10-27T07:33:36.202Z",
-    "by": "playbook",
-    "diagnosisAr": "مشكلة في أرقام الأداة نفسها محتاجة تطوير.",
-    "stepsAr": [
-     "تتحول لمهمة تطوير لو استمرت"
-    ],
-    "needsCode": true
-   },
-   "rejectedBy": [
-    "visitor_tour"
-   ]
-  },
-  {
-   "key": "school:آخر تشغيل فشل",
-   "bot": "school",
-   "source": "self",
-   "shift": 1,
-   "level": "fail",
-   "textAr": "مدرسة شاهين (الاعتماد على النفس): آخر تشغيل فشل",
-   "since": "2026-10-27T07:33:36.202Z",
-   "lastSeen": "2026-10-27T07:33:36.202Z",
-   "status": "waiting_fix",
-   "nextAr": "shaheen-discover.yml اتشغل الساعة 07:33 UTC — مستنيين نتيجته قبل أي تشغيل تاني",
-   "tries": [],
-   "rejectedBy": [
-    "tutor",
-    "reflex",
-    "ears",
-    "seo",
-    "teacher",
-    "school",
-    "lab"
-   ]
-  },
-  {
-   "key": "lab:آخر تشغيل فشل",
-   "bot": "lab",
-   "source": "self",
-   "shift": 1,
-   "level": "fail",
-   "textAr": "المُجرِّب (معمل شاهين): آخر تشغيل فشل",
-   "since": "2026-10-27T07:33:36.202Z",
-   "lastSeen": "2026-10-27T07:33:36.202Z",
-   "status": "waiting_shaheen",
-   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
-   "tries": [],
-   "shaheen": {
-    "at": "2026-10-27T07:33:36.202Z",
-    "by": "playbook",
-    "diagnosisAr": "الروبوت متأخر أو آخر تشغيل فشل.",
-    "stepsAr": [
-     "إعادة التشغيل",
-     "لو فشل تاني: قراءة سجل التشغيل وإصلاح السبب في الكود"
-    ],
-    "needsCode": true
-   },
-   "rejectedBy": [
-    "tutor",
-    "reflex",
-    "ears",
-    "seo",
-    "teacher",
-    "school",
-    "lab"
-   ]
   }
  ],
  "resolved": [
@@ -2040,6 +2197,283 @@
   }
  ],
  "reviews": [
+  {
+   "bot": "synapse",
+   "reviewerAr": "خبير فحص سينابس — شبكة عقل شاهين",
+   "reviewerEn": "Synapse — the mind graph reviewer",
+   "runAt": "2026-10-27T10:08:45Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.3 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "news",
+   "reviewerAr": "خبير فحص النشرة",
+   "reviewerEn": "News reviewer",
+   "runAt": "2026-10-27T10:16:52Z",
+   "verdict": "rejected",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "fail",
+     "noteAr": "failure"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "warn",
+     "noteAr": "من 6.9 ساعة"
+    },
+    {
+     "nameAr": "ملف النشرة",
+     "level": "ok",
+     "noteAr": "30 خبر، آخر تحديث من 7 ساعة (30 اختبار)"
+    },
+    {
+     "nameAr": "النشرة على الموقع الحي",
+     "level": "ok",
+     "noteAr": "النشرة على الموقع فيها 3 خبر (3 اختبار)"
+    }
+   ],
+   "defects": [
+    "التشغيل فشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
+    "آخر تشغيل فشل"
+   ]
+  },
+  {
+   "bot": "seo",
+   "reviewerAr": "خبير فحص الظهور في البحث",
+   "reviewerEn": "Search reviewer",
+   "runAt": "2026-10-27T10:05:01Z",
+   "verdict": "rejected",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "fail",
+     "noteAr": "failure"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "warn",
+     "noteAr": "من 9.2 ساعة"
+    },
+    {
+     "nameAr": "خريطة الموقع لمحركات البحث",
+     "level": "ok",
+     "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161 (1161 اختبار)"
+    },
+    {
+     "nameAr": "الموقع الأساسي يفتح",
+     "level": "ok",
+     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
+    }
+   ],
+   "defects": [
+    "التشغيل فشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
+    "آخر تشغيل فشل"
+   ]
+  },
+  {
+   "bot": "teacher",
+   "reviewerAr": "خبير فحص دروس المعلم المحلي",
+   "reviewerEn": "Local lessons reviewer",
+   "runAt": "2026-10-27T10:18:03Z",
+   "verdict": "rejected",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "fail",
+     "noteAr": "failure"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "warn",
+     "noteAr": "من 4.1 ساعة"
+    }
+   ],
+   "defects": [
+    "التشغيل فشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
+    "آخر تشغيل فشل"
+   ]
+  },
+  {
+   "bot": "languages",
+   "reviewerAr": "خبير فحص اللغات",
+   "reviewerEn": "Languages reviewer",
+   "runAt": "2026-10-27T09:51:31Z",
+   "verdict": "rejected",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "fail",
+     "noteAr": "failure"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "warn",
+     "noteAr": "من 12.8 ساعة"
+    },
+    {
+     "nameAr": "نصوص المتجر في كل اللغات",
+     "level": "ok",
+     "noteAr": "100 لغة كاملة النصوص الأساسية (100 اختبار)"
+    },
+    {
+     "nameAr": "عملة كل دولة",
+     "level": "ok",
+     "noteAr": "251 دولة: عملة واحدة في كل مكان (251 اختبار)"
+    }
+   ],
+   "defects": [
+    "التشغيل فشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
+    "آخر تشغيل فشل"
+   ]
+  },
+  {
+   "bot": "design_audit",
+   "reviewerAr": "خبير فحص التصميم واللغات",
+   "reviewerEn": "Design & languages reviewer",
+   "runAt": "2026-10-27T10:12:40Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 76.7 ساعة"
+    },
+    {
+     "nameAr": "نصوص المتجر في كل اللغات",
+     "level": "ok",
+     "noteAr": "100 لغة كاملة النصوص الأساسية (100 اختبار)"
+    },
+    {
+     "nameAr": "الموقع الأساسي يفتح",
+     "level": "ok",
+     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "visitor_tour",
+   "reviewerAr": "خبير فحص رحلة الشراء",
+   "reviewerEn": "Purchase journey reviewer",
+   "runAt": "2026-10-27T10:12:40Z",
+   "verdict": "rejected",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 3.6 ساعة"
+    },
+    {
+     "nameAr": "عملة كل دولة",
+     "level": "ok",
+     "noteAr": "251 دولة: عملة واحدة في كل مكان (251 اختبار)"
+    },
+    {
+     "nameAr": "صفحات المنتجات على الموقع",
+     "level": "ok",
+     "noteAr": "10 صفحة منتج فتحت بنفس سعر الكتالوج + جدول العملات موجود (11 اختبار)",
+     "deep": true
+    },
+    {
+     "nameAr": "الموقع الأساسي يفتح",
+     "level": "ok",
+     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
+    }
+   ],
+   "defects": [
+    "جولة الزائر: خطوات واقعة — home: فتح الموقع وتحميله، مع وجود تباين لغوي وتقطع النص العربي مع وجود عناصر إنجليزية.، store: فتح المتجر واستخدام فلتر Men؛ النتائج ظهرت وتغير المنتج الظاهر أثناء التصفح، مع ، product: فتح صفحة Hawas Ice by Rasasi 100ml EDP؛ السعر ظاهر، الصور تعرض والملاحظات متوفرة، cart: تمت إضافة المنتج إلى السلة وتعديل الكمية إلى In cart (2) لكن عرض محتوى السلة غير"
+   ]
+  },
+  {
+   "bot": "service",
+   "reviewerAr": "خبير فحص مكتب الدعم",
+   "reviewerEn": "Customer care reviewer",
+   "runAt": "2026-10-27T09:24:34Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 1 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "school",
+   "reviewerAr": "خبير فحص المذاكرة",
+   "reviewerEn": "School reviewer",
+   "runAt": "2026-10-27T10:18:03Z",
+   "verdict": "rejected",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "fail",
+     "noteAr": "failure"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "warn",
+     "noteAr": "من 4.1 ساعة"
+    }
+   ],
+   "defects": [
+    "التشغيل فشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
+    "آخر تشغيل فشل"
+   ]
+  },
+  {
+   "bot": "academy",
+   "reviewerAr": "خبير فحص أكاديمية شاهين (المدرسة على مدار الساعة)",
+   "reviewerEn": "Shaheen's academy (school around the clock) reviewer",
+   "runAt": "2026-10-27T09:27:23Z",
+   "verdict": "rejected",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "fail",
+     "noteAr": "failure"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "warn",
+     "noteAr": "من 4.1 ساعة"
+    }
+   ],
+   "defects": [
+    "التشغيل فشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
+    "آخر تشغيل فشل",
+    "التقرير متأخر جداً (4 ساعة، المفروض كل 1)"
+   ]
+  },
   {
    "bot": "state",
    "reviewerAr": "خبير فحص دولة المنصة (أعلى سلطة بعد صاحب الموقع)",
@@ -2528,249 +2962,6 @@
     }
    ],
    "defects": []
-  },
-  {
-   "bot": "verifier",
-   "reviewerAr": "خبير فحص المراجعة الخارجية",
-   "reviewerEn": "External review checker",
-   "runAt": "2026-10-27T07:37:35Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "warn",
-     "noteAr": "من 190.4 ساعة"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "live_check",
-   "reviewerAr": "خبير فحص المحرك",
-   "reviewerEn": "Engine reviewer",
-   "runAt": "2026-10-27T06:40:00Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "محرك الموقع (الخادم)",
-     "level": "ok",
-     "noteAr": "الخادم بيرد (1 اختبار)"
-    },
-    {
-     "nameAr": "النشرة على الموقع الحي",
-     "level": "ok",
-     "noteAr": "النشرة على الموقع فيها 6 خبر (6 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "keys",
-   "reviewerAr": "خبير فحص المفاتيح",
-   "reviewerEn": "Keys reviewer",
-   "runAt": "2026-10-27T05:36:41Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 0.1 ساعة"
-    },
-    {
-     "nameAr": "محرك الموقع (الخادم)",
-     "level": "ok",
-     "noteAr": "الخادم بيرد (1 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "intake",
-   "reviewerAr": "خبير فحص التحديثات",
-   "reviewerEn": "Updates reviewer",
-   "runAt": "2026-10-27T05:40:39Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 214.6 ساعة"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "studio_bridge",
-   "reviewerAr": "خبير فحص بوابة الاستوديو",
-   "reviewerEn": "Studio bridge reviewer",
-   "runAt": "2026-10-27T07:46:33Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 80.5 ساعة"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "deploy",
-   "reviewerAr": "خبير فحص النشر",
-   "reviewerEn": "Deploy reviewer",
-   "runAt": "2026-10-27T06:25:26Z",
-   "verdict": "rejected",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "fail",
-     "noteAr": "failure"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    },
-    {
-     "nameAr": "صفحات المنتجات على الموقع",
-     "level": "ok",
-     "noteAr": "10 صفحة منتج فتحت بنفس سعر الكتالوج + جدول العملات موجود (11 اختبار)",
-     "deep": true
-    },
-    {
-     "nameAr": "خريطة الموقع لمحركات البحث",
-     "level": "ok",
-     "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161 (1161 اختبار)"
-    }
-   ],
-   "defects": [
-    "التشغيل فشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
-    "آخر تشغيل فشل"
-   ]
-  },
-  {
-   "bot": "synapse",
-   "reviewerAr": "خبير فحص سينابس — شبكة عقل شاهين",
-   "reviewerEn": "Synapse — the mind graph reviewer",
-   "runAt": "2026-10-27T07:20:48Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 0.2 ساعة"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "tutor",
-   "reviewerAr": "خبير فحص المعلم — الحلقات الضعيفة تبقى خطة دراسة",
-   "reviewerEn": "Tutor — weak links become a study plan reviewer",
-   "runAt": "2026-10-27T07:15:51Z",
-   "verdict": "rejected",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "fail",
-     "noteAr": "failure"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "warn",
-     "noteAr": "من 18.9 ساعة"
-    }
-   ],
-   "defects": [
-    "التشغيل فشل: فشل في خطوة «Behaviour tests»",
-    "آخر تشغيل فشل"
-   ]
-  },
-  {
-   "bot": "reflex",
-   "reviewerAr": "خبير فحص الانعكاس — إجابات فورية بلا محرك",
-   "reviewerEn": "Reflex — instant answers without an engine reviewer",
-   "runAt": "2026-10-27T07:15:51Z",
-   "verdict": "rejected",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "fail",
-     "noteAr": "failure"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "warn",
-     "noteAr": "من 18.9 ساعة"
-    }
-   ],
-   "defects": [
-    "التشغيل فشل: فشل في خطوة «Behaviour tests»",
-    "آخر تشغيل فشل"
-   ]
-  },
-  {
-   "bot": "ears",
-   "reviewerAr": "خبير فحص الآذان — اللي بيتسأل فعلاً",
-   "reviewerEn": "Ears — what the platform is really asked reviewer",
-   "runAt": "2026-10-27T07:15:51Z",
-   "verdict": "rejected",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "fail",
-     "noteAr": "failure"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "warn",
-     "noteAr": "من 18.9 ساعة"
-    }
-   ],
-   "defects": [
-    "التشغيل فشل: فشل في خطوة «Behaviour tests»",
-    "آخر تشغيل فشل"
-   ]
   }
  ],
  "reviewedRuns": {
@@ -2790,21 +2981,21 @@
   "catalog": "2026-10-27T03:38:35Z",
   "product_pages": "2026-10-27T06:18:17Z",
   "secretary": "2026-10-27T03:38:35Z",
-  "news": "2026-10-27T03:38:35Z",
-  "seo": "2026-10-27T07:14:50Z",
-  "languages": "2026-10-26T21:38:57Z",
-  "design_audit": "2026-10-27T06:52:51Z",
-  "visitor_tour": "2026-10-27T06:52:51Z",
-  "school": "2026-10-27T07:01:26Z",
+  "news": "2026-10-27T10:16:52Z",
+  "seo": "2026-10-27T10:05:01Z",
+  "languages": "2026-10-27T09:51:31Z",
+  "design_audit": "2026-10-27T10:12:40Z",
+  "visitor_tour": "2026-10-27T10:12:40Z",
+  "school": "2026-10-27T10:18:03Z",
   "patrol": "2026-10-27T07:33:48Z",
-  "teacher": "2026-10-27T07:01:26Z",
+  "teacher": "2026-10-27T10:18:03Z",
   "owner_desk": "2026-10-26T09:39:43Z",
   "state": "2026-10-27T09:04:39Z",
-  "academy": "2026-10-27T06:23:18Z",
+  "academy": "2026-10-27T09:27:23Z",
   "maneuver": "2026-10-27T08:19:20Z",
   "lab": "2026-10-27T06:58:03Z",
   "inventory": "2026-10-27T06:42:54Z",
-  "service": "2026-10-27T06:41:23Z",
+  "service": "2026-10-27T09:24:34Z",
   "brain": "2026-10-23T23:50:09Z",
   "census": "2026-10-27T09:06:48Z",
   "finance_shield": "2026-10-27T07:23:06Z",
@@ -2815,7 +3006,7 @@
   "trade_lanes": "2026-10-27T06:18:35Z",
   "immune": "2026-10-27T07:20:48Z",
   "carriers": "2026-10-27T06:50:37Z",
-  "synapse": "2026-10-27T07:20:48Z",
+  "synapse": "2026-10-27T10:08:45Z",
   "tutor": "2026-10-27T07:15:51Z",
   "reflex": "2026-10-27T07:15:51Z",
   "ears": "2026-10-27T07:15:51Z",
@@ -2890,9 +3081,65 @@
    "at": "2026-10-27T09:23:45.094Z",
    "workflow": "shaheen-service.yml",
    "key": "census:آخر تشغيل فشل"
+  },
+  {
+   "at": "2026-10-27T10:24:40.630Z",
+   "workflow": "shaheen-news.yml",
+   "key": "news:آخر تشغيل فشل"
+  },
+  {
+   "at": "2026-10-27T10:24:40.630Z",
+   "workflow": "shaheen-languages.yml",
+   "key": "languages:آخر تشغيل فشل"
   }
  ],
  "teams": [
+  {
+   "key": "languages:آخر تشغيل فشل",
+   "textAr": "وكيل اللغات — المترجم الذكي: آخر تشغيل فشل",
+   "parts": [
+    {
+     "bot": "languages",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "design_audit",
+     "roleAr": "12 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
+    }
+   ]
+  },
+  {
+   "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
+   "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 46/100 (12 ملاحظة)",
+   "parts": [
+    {
+     "bot": "design_audit",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "languages",
+     "roleAr": "12 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
+    },
+    {
+     "bot": "design_expert",
+     "roleAr": "6 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
+    }
+   ]
+  },
+  {
+   "key": "visitor_tour:جولة الزائر: خطوات واقعة — home: فتح الموقع وتحميله، مع وجود تباين لغوي وتقطع ال",
+   "textAr": "جولة الزائر والمستشار الميداني: جولة الزائر: خطوات واقعة — home: فتح الموقع وتحميله، مع وجود تباين لغوي وتقطع النص العربي مع وجود عناصر إنجليزية.، store: فتح المتجر واستخدام فلتر Men؛ النتائج ظهرت وتغير المنتج الظاهر أثناء التصفح، مع ، product: فتح صفحة Hawas Ice by Rasasi 100ml EDP؛ السعر ظاهر، الصور تعرض والملاحظات متوفرة، cart: تمت إضافة المنتج إلى السلة وتعديل الكمية إلى In cart (2) لكن عرض محتوى السلة غير",
+   "parts": [
+    {
+     "bot": "visitor_tour",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "product_pages",
+     "roleAr": "5 ملاحظة على صفحات المتجر من جولة الزائر — مراجع الصفحات يبدأ بيها"
+    }
+   ]
+  },
   {
    "key": "finance:فحص الإدارة المالية غير سليم",
    "textAr": "أمين شاهين — الإدارة المالية: فحص الإدارة المالية غير سليم",
@@ -2992,47 +3239,15 @@
      "roleAr": "الإدارة المالية تحتاج مراجعة في اللوحة الخاصة؛ لا مبالغ أو بيانات طلبات في التقرير العام"
     }
    ]
-  },
-  {
-   "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
-   "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 46/100 (12 ملاحظة)",
-   "parts": [
-    {
-     "bot": "design_audit",
-     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
-    },
-    {
-     "bot": "languages",
-     "roleAr": "12 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
-    },
-    {
-     "bot": "design_expert",
-     "roleAr": "6 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
-    }
-   ]
-  },
-  {
-   "key": "visitor_tour:جولة الزائر: خطوات واقعة — home: فتح الموقع وتحميله، مع وجود تباين لغوي وتقطع ال",
-   "textAr": "جولة الزائر والمستشار الميداني: جولة الزائر: خطوات واقعة — home: فتح الموقع وتحميله، مع وجود تباين لغوي وتقطع النص العربي مع وجود عناصر إنجليزية.، store: فتح المتجر واستخدام فلتر Men؛ النتائج ظهرت وتغير المنتج الظاهر أثناء التصفح، مع ، product: فتح صفحة Hawas Ice by Rasasi 100ml EDP؛ السعر ظاهر، الصور تعرض والملاحظات متوفرة، cart: تمت إضافة المنتج إلى السلة وتعديل الكمية إلى In cart (2) لكن عرض محتوى السلة غير",
-   "parts": [
-    {
-     "bot": "visitor_tour",
-     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
-    },
-    {
-     "bot": "product_pages",
-     "roleAr": "5 ملاحظة على صفحات المتجر من جولة الزائر — مراجع الصفحات يبدأ بيها"
-    }
-   ]
   }
  ],
  "shift": {
-  "index": 0,
-  "nameAr": "وردية المتجر والأسعار",
-  "nameEn": "Store & pricing shift",
+  "index": 1,
+  "nameAr": "وردية المحتوى وتجربة الزائر",
+  "nameEn": "Content & visitor shift",
   "next": [
    "2026-10-27T12:00:00.000Z",
-   "2026-10-27T10:00:00.000Z",
+   "2026-10-27T13:00:00.000Z",
    "2026-10-27T11:00:00.000Z"
   ]
  },
