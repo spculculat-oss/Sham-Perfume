@@ -1,13 +1,13 @@
 {
  "version": 1,
  "agent": "localization-audit",
- "updatedAt": "2026-10-26T10:19:36.710Z",
+ "updatedAt": "2026-10-27T10:16:32.468Z",
  "tables": {
   "countries": 251,
   "currencies": 154,
   "languages": 100,
-  "fxUpdatedAt": "2026-10-25T00:02:31Z",
-  "fxAgeHours": 34,
+  "fxUpdatedAt": "2026-10-27T00:02:31Z",
+  "fxAgeHours": 10,
   "gateway": false
  },
  "rateGaps": [
@@ -744,7 +744,7 @@
  "hardcoded": [
   {
    "file": "src/utils/shaheenOrg.ts",
-   "line": 88,
+   "line": 89,
    "text": "{ id: 'catalog_review', nameAr: 'روبوت مراجعة المنتجات (الأسعار والأسماء والصور)', nameEn: 'Catalog review robot (prices, names, photos)', dept: 'store', workfl"
   }
  ],
@@ -835,7 +835,7 @@
  "planAr": [
   "1 دولة عملتها مش في جدول الصرف (KP:KPW): تتضاف في تحديث الأسعار أو يتقال للزائر صراحة إن العرض بالدولار.",
   "90 لغة ناقصة كلمات فلوس (أكترها af: 3) — المترجم الذكي يكملها.",
-  "1 مبلغ ثابت في الكود (أولها src/utils/shaheenOrg.ts:88) — يتشال ويتحسب من محرك التسعير."
+  "1 مبلغ ثابت في الكود (أولها src/utils/shaheenOrg.ts:89) — يتشال ويتحسب من محرك التسعير."
  ],
  "summaryAr": "فحص اللغات والعملات: 251 دولة و154 عملة و100 لغة — فيه 3 ملاحظة محتاجة شغل."
 }
