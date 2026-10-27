@@ -1,7 +1,35 @@
 {
- "updatedAt": "2026-10-27T11:00:34.623Z",
+ "updatedAt": "2026-10-27T11:56:45.101Z",
  "active": true,
  "decisions": [
+  {
+   "at": "2026-10-27T11:56:39.247Z",
+   "number": 387,
+   "kind": "task",
+   "title": "إصلاح مسار السلة وعرض محتوى المنتجات بدقة",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/387"
+  },
+  {
+   "at": "2026-10-27T11:56:42.514Z",
+   "number": 388,
+   "kind": "task",
+   "title": "تنقية بيانات المنتجات التي عليها ملاحظات",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/388"
+  },
   {
    "at": "2026-10-27T09:04:24.109Z",
    "number": 381,
@@ -454,7 +482,7 @@
  },
  "field": {
   "maneuverAt": "2026-10-27T08:17:48.870Z",
-  "at": "2026-10-27T11:00:27.804Z",
+  "at": "2026-10-27T11:56:35.224Z",
   "items": [
    {
     "id": "alcohol:unnamed-button",
