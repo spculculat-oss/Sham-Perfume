@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-27T14:25:43.561Z",
+ "updatedAt": "2026-10-27T15:24:21.750Z",
  "engines": {
   "deepseek": {
    "pausedUntil": "2026-10-21T08:05:00.000Z",
@@ -15,7 +15,7 @@
  "used": {
   "day": "2026-10-27",
   "counts": {
-   "gemini": 2
+   "gemini": 10
   }
  }
 }
