@@ -13,7 +13,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import type { FxTable, ShippingTable } from '../src/utils/pricing';
-import { convert, handlingFee, realShipping, shippingCost } from '../src/utils/pricing';
+import { BUNDLED_FX, SHIPPING, convert, handlingFee, realShipping, shippingCost } from '../src/utils/pricing';
 import { matchReflex, reflexAnswer, REFLEX } from '../src/utils/shaheenReflex';
 import type { ShaheenGraph } from '../src/utils/shaheenGraph';
 import { collectEars, isEarsReport, type EarsEntry } from '../scripts/shaheen-mind/ears';
@@ -334,7 +334,8 @@ test('المطابق: «بكام العطر ده؟» سؤال سعر متجر �
 test('المطابق: الإجابة الفورية بالعربي والإنجليزي من نفس المدخل', () => {
   const ar = reflexAnswer('الشحن لمصر بكام؟', 'ar')!;
   const en = reflexAnswer('الشحن لمصر بكام؟', 'en')!;
-  assert.ok(ar.includes('1876') && ar.includes('المصدر'));
+  const egpShipping = Math.round(convert(shippingCost('EG', 1), SHIPPING.currency, 'EGP', BUNDLED_FX));
+  assert.ok(ar.includes(String(egpShipping)) && ar.includes('المصدر'), `الإجابة لازم تستخدم سعر المحرك الحالي (${egpShipping})`);
   assert.ok(en.includes('EGP') && en.includes('Source'));
   assert.ok(REFLEX.entries.length > 0);
 });

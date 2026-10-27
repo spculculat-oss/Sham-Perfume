@@ -17,7 +17,7 @@ import {
 const root = new URL('..', import.meta.url).pathname;
 const read = (rel: string) => JSON.parse(readFileSync(join(root, rel), 'utf8'));
 type Money = { profitPerBottleEgp: number; costBasedDestinations: number; uncoveredDestinations: number; medianShippingMarginEgp: number | null };
-const report = read('src/data/live/trade-lanes.json') as { destinations: { code: string; proposedChargedEgp: number | null; costEgp: [number, number] | null }[]; money: Money; fx?: { egpPerUsd?: number } };
+const report = read('src/data/live/trade-lanes.json') as { updatedAt: string; destinations: { code: string; proposedChargedEgp: number | null; costEgp: [number, number] | null }[]; money: Money; fx?: { egpPerUsd?: number } };
 const catalog = (read('src/data/products.json') as { products: { supplierPrice?: number; ourPrice?: number; published?: boolean }[] }).products;
 
 const covered = Object.keys(SHIPPING_COSTS.countries);
@@ -98,6 +98,7 @@ test('free shipping is still off: nothing promises it and no order ships free by
 });
 
 test('the trade report and the price engine agree on every destination', () => {
+  assert.equal(SHIPPING_COSTS.checkedAt, report.updatedAt.slice(0, 10), 'the generated carrier-cost table is published with its report');
   assert.equal(report.money.costBasedDestinations, covered.length, 'the report counts exactly the destinations the engine prices from a cost');
   assert.equal(report.money.uncoveredDestinations, report.destinations.length - covered.length);
   assert.ok(report.money.costBasedDestinations > 0);
