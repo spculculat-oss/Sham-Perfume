@@ -7,6 +7,7 @@ name: Shaheen trade lanes — who ships, from where, and at what price
 # country (with its source and date), the trade agreement that could take the duty off (GAFTA, Egypt–EU), and the
 # perfume rule (UN1266 class 3 — most air carriers refuse it). Result: src/data/live/trade-lanes.json.
 # It arranges nothing itself, promises nothing to a visitor, and invents no price.
+# The published carrier-cost table is generated with the report and must be published in the same commit.
 
 on:
   schedule:
@@ -88,4 +89,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           node scripts/ci/publish.mjs "شاهين: الشحن والتجارة الدولية $(date -u +%Y-%m-%dT%H:%MZ)" \
             src/data/live/trade-lanes.json \
-            || { echo "::error::Could not push the trade report"; exit 1; }
+            src/data/shipping-costs.json \
+            || { echo "::error::Could not push the trade report and its carrier-cost table"; exit 1; }

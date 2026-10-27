@@ -169,6 +169,9 @@ test('the robot is placed under Shaheen and its report is real', () => {
   const root = new URL('..', import.meta.url).pathname;
   assert.ok(existsSync(join(root, '.github/workflows', bot!.workflow!)), 'its workflow exists');
   assert.ok(existsSync(join(root, 'src/data/live', bot!.report!)), 'its report exists');
+  const workflow = readFileSync(join(root, '.github/workflows', bot!.workflow!), 'utf8');
+  assert.match(workflow, /publish\.mjs[\s\S]*?src\/data\/live\/trade-lanes\.json[\s\S]*?src\/data\/shipping-costs\.json/,
+    'publish the report and the costs generated from it together, so the checkout engine does not drift');
   const ids = new Set(refugeIndex().map((e) => e.id));
   assert.ok(ids.has('robot:trade_lanes'));
   assert.ok(ids.has('report:trade-lanes.json'));
