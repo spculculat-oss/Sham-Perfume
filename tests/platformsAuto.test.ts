@@ -10,7 +10,7 @@ import type { AddressInfo } from 'node:net';
 import { test } from 'node:test';
 import express from 'express';
 import { AI_PLATFORMS_VAR, platformsAuto, platformsMode, platformsOff } from '../server/core/selfReliance';
-import { createShaheenRouter, getPublicModes, platformsReady } from '../server/shaheen';
+import { AUTO_ENGINE_MS, AUTO_TOTAL_MS, createShaheenRouter, getPublicModes, platformsReady } from '../server/shaheen';
 import { EngineHealth } from '../server/core/engineHealth';
 import { Repository } from '../server/core/repository';
 import { MemoryStore } from '../server/core/store';
@@ -36,6 +36,11 @@ test('the owner chose «تلقائي», and the switch is read', () => {
   assert.equal(platformsMode({ [AI_PLATFORMS_VAR]: 'off' }), 'off');
   assert.equal(platformsMode({}), 'on');
   assert.ok(OWNER_RULES.some((r) => r.id === 'O-10' && /تلقائي/.test(r.textAr) && /بيرد بنفسه/.test(r.textAr)));
+});
+
+test('«تلقائي»: the provider-first wait is capped at 15 seconds per platform and 20 seconds overall', () => {
+  assert.equal(AUTO_ENGINE_MS, 15_000);
+  assert.equal(AUTO_TOTAL_MS, 20_000);
 });
 
 test('the owner desk has the «تلقائي» order (and can still close or open the platforms)', () => {
@@ -69,10 +74,14 @@ test('«تلقائي»: the school studies with the platforms first, the local t
   assert.equal(teacherPreference({ ...AUTO, SCHOOL_PREFER: 'gemini' }), 'gemini');
 });
 
-async function withChat(env: Record<string, string>, fetch: typeof globalThis.fetch, memory: ShaheenMemory, run: (ask: (message: string) => Promise<{ status: number; data: Record<string, unknown> }>) => Promise<void>) {
+async function withChat(env: Record<string, string>, fetch: typeof globalThis.fetch, memory: ShaheenMemory,
+  run: (ask: (message: string) => Promise<{ status: number; data: Record<string, unknown> }>) => Promise<void>,
+  timeouts: { engineMs?: number; totalMs?: number } = {}) {
   const app = express();
   app.use(express.json());
-  app.use('/api', createShaheenRouter({ repo: new Repository(new MemoryStore(), {}), env: { ...AUTO, SHAM_ANSWER_CACHE_MINUTES: '0', SHAM_WEB_RESEARCH: '0', ...env }, fetch, memory }));
+  app.use('/api', createShaheenRouter({ repo: new Repository(new MemoryStore(), {}), env: { ...AUTO, SHAM_ANSWER_CACHE_MINUTES: '0', SHAM_WEB_RESEARCH: '0', ...env }, fetch, memory,
+    ...(timeouts.engineMs !== undefined ? { autoEngineTimeoutMs: timeouts.engineMs } : {}),
+    ...(timeouts.totalMs !== undefined ? { autoTotalTimeoutMs: timeouts.totalMs } : {}) }));
   const server = app.listen(0, '127.0.0.1');
   await new Promise((done) => server.once('listening', done));
   const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}/api`;
@@ -119,6 +128,28 @@ test('«تلقائي»: the platform fails — Shaheen answers on his own at onc
     assert.ok(unknown.data.memory === 'unknown' || unknown.data.memory === 'library', String(unknown.data.memory));
     assert.doesNotMatch(JSON.stringify([design.data, logic.data, unknown.data]), /openai|gpt|chatgpt/i, 'no vendor shown to the visitor');
   });
+});
+
+test('«تلقائي»: a connected platform that stalls is cut off quickly, then Shaheen answers himself', async () => {
+  let calls = 0;
+  const fetch = (async (_url: RequestInfo | URL, init?: RequestInit) => {
+    calls++;
+    const signal = init?.signal;
+    if (!signal) throw new Error('the platform call must have a timeout signal');
+    return new Promise<Response>((_resolve, reject) => {
+      if (signal.aborted) return reject(new Error('platform timed out'));
+      signal.addEventListener('abort', () => reject(new Error('platform timed out')), { once: true });
+    });
+  }) as typeof globalThis.fetch;
+  const memory = new ShaheenMemory(new MemoryStore(), {}, fetch, emptyMemory());
+  const started = Date.now();
+  await withChat({ OPENAI_API_KEY: 'sk-test' }, fetch, memory, async (ask) => {
+    const { status, data } = await ask('ايه هي المغالطة المنطقية؟');
+    assert.equal(status, 200);
+    assert.equal(data.memory, 'agent', 'the self-reliant agent takes over after the slow platform');
+    assert.equal(calls, 1, 'the connected platform is tried first');
+    assert.ok(Date.now() - started < 1000, 'a stalled provider does not hold the visitor for its long default timeout');
+  }, { engineMs: 30, totalMs: 100 });
 });
 
 test('«تلقائي» with no key at all: no platform is ever called, Shaheen answers himself', async () => {
