@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "tutor",
- "updatedAt": "2026-10-26T12:41:00.438Z",
+ "updatedAt": "2026-10-27T15:29:22.382Z",
  "targets": [
   {
    "kind": "carrier",
@@ -18,14 +18,6 @@
    "whyAr": "ماليزيا: مفيش تعريفة شحن منشورة — سعرها منطقة، ومفيش وعد إنه يغطي التكلفة",
    "specialistId": "specialist_business",
    "priority": 90
-  },
-  {
-   "kind": "consistency",
-   "id": "immune:pricing-rule",
-   "labelAr": "pricing-rule",
-   "whyAr": "36 منتج سعره أقل من قاعدة صاحب المتجر (التكلفة × ١.٥)",
-   "specialistId": "specialist_business",
-   "priority": 85
   },
   {
    "kind": "destination",
@@ -602,7 +594,7 @@
    "question": "الشحن لـمصر بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1876",
+    "1908",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -625,7 +617,7 @@
    "question": "الشحن لـالسعودية بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1667",
+    "1696",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -637,7 +629,7 @@
    "question": "الشحن لـالإمارات بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1667",
+    "1696",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -649,7 +641,7 @@
    "question": "الشحن لـالكويت بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1563",
+    "1590",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -661,7 +653,7 @@
    "question": "الشحن لـقطر بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1563",
+    "1590",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -673,7 +665,7 @@
    "question": "الشحن لـالبحرين بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1563",
+    "1590",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -685,7 +677,7 @@
    "question": "الشحن لـعمان بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3119",
+    "3172",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -697,7 +689,7 @@
    "question": "الشحن لـالأردن بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1563",
+    "1590",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -720,7 +712,7 @@
    "question": "الشحن لـلبنان بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3308",
+    "3365",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -732,7 +724,7 @@
    "question": "الشحن لـالعراق بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3687",
+    "3750",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -818,9 +810,9 @@
   "priced": 73,
   "verifiedCustoms": 3
  },
- "summaryAr": "المعلم: 74 حلقة ضعيفة اتحولت لخطة دراسة · 18 سؤال امتحان بإجابات موثّقة",
+ "summaryAr": "المعلم: 73 حلقة ضعيفة اتحولت لخطة دراسة · 18 سؤال امتحان بإجابات موثّقة",
  "planAr": [
-  "74 حلقة ضعيفة في العقل، أهمها: بوس لاجو الدولي (بريد ماليزيا)، ماليزيا، pricing-rule، الإمارات، AL — كل واحدة بقت مهمة دراسة لمتخصصها.",
+  "73 حلقة ضعيفة في العقل، أهمها: بوس لاجو الدولي (بريد ماليزيا)، ماليزيا، الإمارات، AL، AT — كل واحدة بقت مهمة دراسة لمتخصصها.",
   "18 سؤال امتحان جاهز، إجابته مكتوبة في الملفات نفسها — الممتحن بيصحح عليها من غير أي تخمين.",
   "العمق: 74 من 74 وجهة ليها درس بيشرحها · 73 بسعر شحن منشور · 3 بجمارك مؤكدة."
  ]
