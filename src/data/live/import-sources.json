@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-27T00:59:24.917Z",
+ "updatedAt": "2026-10-27T18:54:26.964Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -2655,15 +2655,15 @@
    "host": "escentials.com",
    "name": "escentials.com",
    "base": "https://escentials.com",
-   "status": "active",
+   "status": "paused",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 3,
-   "vettedAt": "2026-10-20T18:50:32.222Z",
+   "attempts": 4,
+   "vettedAt": "2026-10-27T18:54:26.964Z",
    "trust": {
     "score": 93,
     "verdict": "trusted",
-    "at": "2026-10-20T18:50:32.222Z",
+    "at": "2026-10-27T18:54:26.964Z",
     "checks": [
      {
       "id": "age",
@@ -2760,8 +2760,8 @@
     "registeredAt": "2002-10-20T11:09:35.000Z"
    },
    "region": "east-asia",
-   "sampleOk": 3,
-   "sampleTotal": 6,
+   "sampleOk": 8,
+   "sampleTotal": 9,
    "currency": "SGD",
    "rateToEgp": 42.1119,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*escentials\\.com/products/[^?#]+$",
@@ -2776,7 +2776,8 @@
     "https://escentials.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 1973
+   "productsEstimate": 1973,
+   "reason": "أغلب منتجاته ليست عطوراً (38%)"
   },
   {
    "id": "thefragranceshop-co-uk",
@@ -6358,15 +6359,15 @@
    "host": "perfumesclub.com",
    "name": "Perfumes online",
    "base": "https://www.perfumesclub.com",
-   "status": "active",
+   "status": "paused",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T08:43:49.241Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-27T18:54:26.964Z",
    "trust": {
     "score": 87,
     "verdict": "trusted",
-    "at": "2026-10-20T08:43:49.241Z",
+    "at": "2026-10-27T18:54:26.964Z",
     "checks": [
      {
       "id": "age",
@@ -6462,7 +6463,7 @@
     "registeredAt": "2008-12-02T11:38:47.000Z"
    },
    "region": "europe",
-   "sampleOk": 4,
+   "sampleOk": 3,
    "sampleTotal": 7,
    "currency": "EUR",
    "rateToEgp": 60.4222,
@@ -6481,7 +6482,8 @@
    ],
    "via": "json-ld",
    "productsEstimate": 46183,
-   "crawlDelayMs": 1000
+   "crawlDelayMs": 1000,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (3/7)"
   },
   {
    "id": "primor-eu",
@@ -7366,6 +7368,21 @@
  ],
  "runs": [
   {
+   "at": "2026-10-27T18:54:26.964Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 2,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ perfumesclub.com: CV 87/100 [age,https,identity,returns,shipping,privacy,terms,payment,social,authentic]",
+    "✗ perfumesclub.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (3/7)",
+    "  ↳ escentials.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✗ escentials.com: أغلب منتجاته ليست عطوراً (38%)"
+   ]
+  },
+  {
    "at": "2026-10-27T00:59:24.917Z",
    "mode": "self",
    "found": 0,
@@ -7697,17 +7714,6 @@
   },
   {
    "at": "2026-10-22T21:08:54.861Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T20:04:18.207Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
