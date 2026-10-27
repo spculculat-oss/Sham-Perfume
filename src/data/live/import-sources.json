@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-26T18:58:34.073Z",
+ "updatedAt": "2026-10-27T00:59:24.917Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -6109,12 +6109,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-20T00:56:49.671Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-27T00:59:24.917Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-10-20T00:56:49.671Z",
+    "at": "2026-10-27T00:59:24.917Z",
     "checks": [
      {
       "id": "age",
@@ -6214,23 +6214,22 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 53.9076,
+   "rateToEgp": 56.2698,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*fragranceoutlet\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.fragranceoutlet.com/sitemap_agentic_discovery.xml",
     "https://www.fragranceoutlet.com/sitemap_products_1.xml?from=2370653827&to=1368496767085",
-    "https://www.fragranceoutlet.com/sitemap_products_2.xml?from=1381238407277&to=3829807251565",
-    "https://www.fragranceoutlet.com/sitemap_products_3.xml?from=3829810823277&to=6549507473517",
-    "https://www.fragranceoutlet.com/sitemap_products_4.xml?from=6549507539053&to=7551565824109",
-    "https://www.fragranceoutlet.com/sitemap_products_5.xml?from=7551569002605&to=15381311062125",
-    "https://www.fragranceoutlet.com/sitemap_pages_1.xml?from=67170883&to=162123743341",
-    "https://www.fragranceoutlet.com/sitemap_collections_1.xml?from=82980675&to=266647437421",
-    "https://www.fragranceoutlet.com/sitemap_collections_2.xml?from=266647470189&to=321053851757",
+    "https://www.fragranceoutlet.com/sitemap_products_2.xml?from=1381238407277&to=3829810823277",
+    "https://www.fragranceoutlet.com/sitemap_products_3.xml?from=3851663048813&to=6549508063341",
+    "https://www.fragranceoutlet.com/sitemap_products_4.xml?from=6549508784237&to=7551578112109",
+    "https://www.fragranceoutlet.com/sitemap_products_5.xml?from=7551604031597&to=15403423989869",
+    "https://www.fragranceoutlet.com/sitemap_pages_1.xml?from=67170947&to=162123743341",
+    "https://www.fragranceoutlet.com/sitemap_collections_1.xml?from=82980675&to=511782322285",
     "https://www.fragranceoutlet.com/sitemap_blogs_1.xml",
     "https://www.fragranceoutlet.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 4780
+   "productsEstimate": 4784
   },
   {
    "id": "marionnaud-fr",
@@ -7367,6 +7366,19 @@
  ],
  "runs": [
   {
+   "at": "2026-10-27T00:59:24.917Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ fragranceoutlet.com: CV 90/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ fragranceoutlet.com (CV 90/100): 4784 perfumes, 3/6 pages read without AI, USD (1 = 56.2698 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-10-26T18:58:34.073Z",
    "mode": "self",
    "found": 0,
@@ -7696,17 +7708,6 @@
   },
   {
    "at": "2026-10-22T20:04:18.207Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T19:06:03.105Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
