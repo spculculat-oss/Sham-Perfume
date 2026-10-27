@@ -990,7 +990,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           badge: 'حصانة الأسرار العطرية',
           title: 'تركيباتك ومعادلاتك العطرية مشفرة محلياً وسحابياً ولا تُشارك أبداً',
           description: 'نظام تشفير خاص يضمن أن أسرار نسب خلطاتك تبقى ملكك الخاص دون أي وصول من أي أطراف تجارية أخرى.',
-          metric: 'AES Encryption',
+          metric: 'تشفير AES',
           timestamp: 'أمان قصوى',
           actionHint: 'فحص إعدادات التشفير',
           onSpecialAction: onOpenPrivacyModal,

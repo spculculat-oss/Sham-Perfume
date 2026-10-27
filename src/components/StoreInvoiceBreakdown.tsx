@@ -3,17 +3,10 @@ import { Receipt, Info } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
 
-const VAT_RATES: Record<string, { rate: number; name: string }> = {
-  EG: { rate: 14, name: 'VAT مصر 14%' },
-  SA: { rate: 15, name: 'VAT السعودية 15%' },
-  AE: { rate: 5, name: 'VAT الإمارات 5%' },
-  BH: { rate: 10, name: 'VAT البحرين 10%' },
-  OM: { rate: 5, name: 'VAT عمان 5%' },
-  GB: { rate: 20, name: 'VAT UK 20%' },
-  DE: { rate: 19, name: 'VAT DE 19%' },
-  FR: { rate: 20, name: 'VAT FR 20%' },
-  IT: { rate: 22, name: 'VAT IT 22%' },
-  US: { rate: 0, name: 'Sales tax varies by state' },
+/** Import VAT by destination (%). The line is named in the visitor's language — never «VAT» inside an Arabic bill. */
+const VAT_RATES: Record<string, number> = { EG: 14, SA: 15, AE: 5, BH: 10, OM: 5, GB: 20, DE: 19, FR: 20, IT: 22 };
+const countryName = (code: string, lang: SupportedLanguage) => {
+  try { return new Intl.DisplayNames([lang], { type: 'region' }).of(code) || code; } catch { return code; }
 };
 
 /** Customer-facing amounts only; internal costs and margins are not invoice line items. */
@@ -26,8 +19,9 @@ export const StoreInvoiceBreakdown: React.FC<{
   lang?: SupportedLanguage;
 }> = ({ subtotal, shipping, country, money, lang = 'ar' }) => {
   const rtl = isRTL(lang);
-  const vat = VAT_RATES[country.toUpperCase()];
-  const vatRate = vat?.rate || 0;
+  const code = country.toUpperCase();
+  const vatRate = VAT_RATES[code] || 0;
+  const vatName = lang === 'ar' ? `ضريبة القيمة المضافة — ${countryName(code, lang)} ${vatRate}%` : `VAT — ${countryName(code, lang)} ${vatRate}%`;
   const vatAmount = Math.round(subtotal * (vatRate / 100) * 100) / 100;
   const totalWithVat = Math.round((subtotal + vatAmount + shipping) * 100) / 100;
   const preVatTotal = subtotal + shipping;
@@ -49,7 +43,7 @@ export const StoreInvoiceBreakdown: React.FC<{
         </div>
         {vatRate > 0 && (
           <div className="flex justify-between text-amber-700">
-            <span>{vat.name}</span>
+            <span>{vatName}</span>
             <span className="font-mono">{money(vatAmount)}</span>
           </div>
         )}
@@ -60,7 +54,7 @@ export const StoreInvoiceBreakdown: React.FC<{
           </div>
         )}
         <div className="flex justify-between font-bold text-stone-900 border-t border-stone-200 pt-2">
-          <span>{lang === 'ar' ? 'الإجمالي التقريبي' : 'Est. Total'}</span>
+          <span>{lang === 'ar' ? 'الإجمالي مع الضريبة المتوقعة (تقديري)' : 'Est. Total'}</span>
           <span className="font-mono text-amber-900">{money(totalWithVat)}</span>
         </div>
       </div>

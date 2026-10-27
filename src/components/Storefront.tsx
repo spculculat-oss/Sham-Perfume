@@ -1725,11 +1725,12 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     <div key={product.sku} className="py-3 flex items-center gap-3">
                       <ProductImage product={product} className="w-12 h-12 rounded-xl shrink-0 border border-stone-200" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-stone-900 line-clamp-1">
+                        <p className="text-sm font-bold text-stone-900 line-clamp-2 leading-snug">
                           {storeLocalized(product.name, currentLang)}
                         </p>
-                        <p className="text-xs font-semibold text-stone-500 font-mono-numbers">
-                          {money.money(lineTotal.get(product.sku) ?? 0)}
+                        <p className="text-xs text-stone-500 font-mono-numbers" data-testid="cart-line-price">
+                          {qty > 1 && <span>{storeNumber(qty, currentLang)} × {money.money((lineTotal.get(product.sku) ?? 0) / qty)} = </span>}
+                          <span className="font-bold text-stone-800">{money.money(lineTotal.get(product.sku) ?? 0)}</span>
                         </p>
                       </div>
                       <div className="flex items-center gap-1 bg-stone-100 rounded-lg p-0.5">
@@ -1756,11 +1757,6 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     </div>
                   ))}
                 </div>
-
-                {step === 'cart' && !directPurchase && (
-                  <CompleteYourOrder products={products} basis={summary.lines.map((l) => l.product)} lang={currentLang} variant="cart" price={money.price}
-                    onAdd={add} onOpen={(p) => { setCartOpen(false); openDetails(p); }} added={justAdded} inCart={summary.lines.map((l) => l.product.sku)} />
-                )}
 
                 <div className="border-t border-stone-100 pt-4 space-y-2.5">
                   {countryPicker('store-cart-country')}
@@ -1922,6 +1918,15 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     </button>
                   )}
                 </div>
+
+                {/* #381/#387: the suggestions come after the total and the «أكمل الطلب» button — on a phone the bill
+                    and the next step are seen first, without scrolling past other products. */}
+                {step === 'cart' && !directPurchase && (
+                  <div className="pt-4">
+                    <CompleteYourOrder products={products} basis={summary.lines.map((l) => l.product)} lang={currentLang} variant="cart" price={money.price}
+                      onAdd={add} onOpen={(p) => { setCartOpen(false); openDetails(p); }} added={justAdded} inCart={summary.lines.map((l) => l.product.sku)} />
+                  </div>
+                )}
               </>
             ) : (
               <div className="py-16 text-center space-y-2">

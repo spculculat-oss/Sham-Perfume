@@ -253,16 +253,17 @@ export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
 
   return (
     <>
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 no-print">
+      {/* #381: on a phone the pill is one short line (no wrapping, no badge) so it covers less of the store and the cart. */}
+      <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 no-print">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex items-center gap-2 rounded-full bg-emerald-700 hover:bg-emerald-800 text-white shadow-xl px-5 py-3 text-sm font-bold"
+          className="flex items-center gap-1.5 sm:gap-2 whitespace-nowrap rounded-full bg-emerald-700 hover:bg-emerald-800 text-white shadow-xl px-3.5 py-2 sm:px-5 sm:py-3 text-xs sm:text-sm font-bold"
           aria-label={t.open}
         >
-          <Users className="w-5 h-5" />
+          <Users className="w-4 h-4 sm:w-5 sm:h-5" />
           <span>{t.open}</span>
-          <span className="flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold">
+          <span className="hidden sm:flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold">
             <Sparkles className="w-3 h-3" />{t.agentLabel}
           </span>
         </button>

@@ -92,7 +92,9 @@ const immune: ImmuneReport = checkConsistency({
   chargedUsd: Object.fromEntries(trade.destinations.map((d) => [d.code, shippedUsd(d.code) ?? Number.NaN]).filter(([, v]) => Number.isFinite(v)) as [string, number][]),
   destinationCostEgp: trade.destinations.map((d) => ({ code: d.code, nameAr: d.nameAr, costEgp: d.costEgp, carrierId: d.carrier?.id || null, promise: d.promise })),
   costTable: { currency: costs.currency, source: costs.source, checkedAt: costs.checkedAt, countries: costs.countries },
-  products: catalog.products.map((p) => ({ sku: String(p.sku), nameAr: String(p.nameAr), ourPrice: Number(p.ourPrice) || 0, supplierPrice: Number(p.supplierPrice) || 0, supplierId: supplierOf(p.supplierId) })),
+  // #388: only what is on sale — the 51 hidden legacy samples (never sold, no supplier) were reported as
+  // «36 below the ×1.5 rule» and «51 without a supplier» although no visitor can buy them.
+  products: catalog.products.filter((p) => p.published !== false).map((p) => ({ sku: String(p.sku), nameAr: String(p.nameAr), ourPrice: Number(p.ourPrice) || 0, supplierPrice: Number(p.supplierPrice) || 0, supplierId: supplierOf(p.supplierId) })),
   expectedPrice: (cost) => ourPriceOf(cost, 1.5),
   promises: trade.destinations.map((d) => ({ code: d.code, nameAr: d.nameAr, promise: d.promise })),
   customs: trade.destinations.map((d) => ({ code: d.code, nameAr: d.nameAr, verified: d.customs.verified, vatPercent: d.customs.vatPercent, source: customsSource(d.code), checkedAt: customsFile.updatedAt || null })),
