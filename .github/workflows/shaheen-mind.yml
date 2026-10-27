@@ -30,6 +30,7 @@ on:
     branches: [main, 'arena/**']
     paths:
       - 'scripts/shaheen-mind/**'
+      - 'tests/shaheenMindLoop.test.ts'
       - 'src/utils/shaheenReflex.ts'
       - 'src/utils/shaheenQuickApps.ts'
       - 'src/data/shipping.json'
