@@ -35,6 +35,8 @@ test('the handbook covers the platform: identity, policies, pricing, money, tool
   for (const d of LEGAL_DECISIONS) assert.ok(policies.includes(d.textAr), `legal decision ${d.id} is in the book word for word`);
   assert.match(policies, /جوجل/);
   assert.match(policies, /كلمات سر/);
+  assert.match(policies, /لا تدخل مدرسة شاهين أو ذاكرتها قبل اعتماد علمي موثق/);
+  assert.match(BOTS.find((b) => b.id === 'teacher')!.dutiesAr, /نتائج البحث الخارجي غير المراجعة لا تدخل المدرسة/);
 });
 
 test("the handbook's pricing is the store's real rule and shipping table", () => {

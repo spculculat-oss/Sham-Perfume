@@ -18,7 +18,7 @@ import { answerBook } from '../doctor/answers';
 import { councilStudy, readCouncil } from '../shaheen-council/council';
 import { RAW_MATERIALS_DATABASE } from '../../src/data/rawMaterials';
 import { referenceBlock, searchLibrary } from '../../src/utils/shaheenLibrary';
-import { research, RESEARCH_USER_AGENT, researchBlock, type Research } from '../../src/utils/webResearch';
+import { research, RESEARCH_USER_AGENT } from '../../src/utils/webResearch';
 import {
   buildBank, emptySchool, exam, importerShare, isSchoolFile, LOCAL_TEACHER_STYLE, materialDocs, pickStudy, parseReview, REVIEW_SYSTEM, reviewPrompt, selfLesson, STUDY_SYSTEM, studyCheck, studyPrompt,
   teacherPreference, spellingReport, toolStats, trackStats, visitorQuestions, type BankQuestion, type SchoolFile, type TrainingDoc,
@@ -86,7 +86,6 @@ if (selfTaught) say(`Learned ${selfTaught} answers by himself from his library (
 // ── Study ─────────────────────────────────────────────────────────────────────────────────────────────────
 let studied = 0;
 let localTaught = 0;
-let researched = 0;
 let reviewRejected = 0;
 let mode: 'ai' | 'self' | 'local' = 'self';
 let engineUsed = '';
@@ -95,7 +94,8 @@ const quota = quotaBook(live('ai-quota.json'));
 const answers = answerBook(live('ai-memory.json'));
 let ask: Awaited<ReturnType<typeof makeAsk>>;
 // SCHOOL_PREFER=self_hosted: the local teacher first (free, always there), the AI services as the fallback.
-try { ask = await makeAsk(env, { bot: 'teacher', quota, memory: answers, maxWaitMs: 60_000, prefer: teacherPreference(env), onEngine: (id) => { engineUsed = id; } }); } catch { ask = undefined; }
+// Exclude the live-search provider: unreviewed web findings must never become school lessons.
+try { ask = await makeAsk(env, { bot: 'teacher', quota, memory: answers, maxWaitMs: 60_000, prefer: teacherPreference(env), excludeEngines: ['perplexity'], onEngine: (id) => { engineUsed = id; } }); } catch { ask = undefined; }
 if (env.SHAM_LLM_BASE_URL?.trim()) say(`Local teacher ready (${env.SHAM_LLM_MODEL || 'open model'} on this runner, no key)`);
 // Shaheen's supervisor (scripts/shaheen-supervisor) can add quality guidance for the study answers.
 const supervisor = read<{ tools?: Record<string, { guidance?: { text?: string } }> }>(live('ai-supervisor.json'));
@@ -107,11 +107,8 @@ else if (!ask) say(`No AI engine available: ${todo.length} questions wait for th
 else {
   for (const b of todo) {
     if (Date.now() > deadline) { say(`Study time is up: ${todo.length - todo.indexOf(b)} questions wait for the next session`); break; }
-    // «باحث شاهين»: what open sources (Wikipedia) say about it, read and analysed, joins his library's references.
-    const found: Research | undefined = env.SHAM_WEB_RESEARCH === '0' ? undefined
-      : await research(fetch as never, b.q, b.lang, { userAgent: RESEARCH_USER_AGENT, timeoutMs: 20_000 }).catch(() => undefined);
-    if (found) researched++;
-    const prompt = studyPrompt(b, [referenceBlock(searchLibrary({ lessons: library, materials: [], memory }, b.q, b.lang), 1200), researchBlock(found, 1400)].filter(Boolean).join('\n'));
+    // External web findings are unreviewed candidates, not school material; study only from Shaheen's internal library.
+    const prompt = studyPrompt(b, referenceBlock(searchLibrary({ lessons: library, materials: [], memory }, b.q, b.lang), 1200));
     const started = Date.now();
     try {
       engineUsed = '';
@@ -131,9 +128,7 @@ else {
           continue;
         }
       }
-      if (rehearsal) say(`Lesson «${b.q.slice(0, 60)}» (${teacher}${found ? `, read ${found.sources.map((x) => x.title).join(' + ')}` : ''}): ${preview(lesson.answer)}`);
-      // Wikipedia's text is CC BY-SA: a lesson written from it names its articles.
-      if (found) lesson.answer += `\n\n_${b.lang === 'ar' ? 'مراجع' : 'Sources'}: ${found.sources.map((x) => `${b.lang === 'ar' ? 'ويكيبيديا' : 'Wikipedia'} «${x.title}»`).join('، ')}_`;
+      if (rehearsal) say(`Lesson «${b.q.slice(0, 60)}» (${teacher}): ${preview(lesson.answer)}`);
       if (engineUsed === 'self_hosted') { if (mode !== 'ai') mode = 'local'; } else mode = 'ai';
       let kept = 0;
       for (const q of [b.q, ...lesson.paraphrases]) if (remember(memory, { question: q, lang: b.lang, mode: 'auto', answer: lesson.answer, source: 'study' })) kept++;
@@ -150,7 +145,7 @@ else {
       break;
     }
   }
-  say(`Studied ${studied} new questions${studied ? ' (each kept with its other wordings)' : ''}; open sources found for ${researched}; ${reviewRejected} lessons rejected by the review`);
+  say(`Studied ${studied} new questions${studied ? ' (each kept with its other wordings)' : ''}; ${reviewRejected} lessons rejected by the review`);
 }
 // Rehearsal (branches): «باحث شاهين» tried live on a few everyday questions, so a change is checked on the real web.
 if (env.PUBLISH !== 'true' && env.SHAM_WEB_RESEARCH !== '0') {

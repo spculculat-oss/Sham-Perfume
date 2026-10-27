@@ -147,10 +147,11 @@ export function searchLibrary(src: LibrarySources, question: string, lang: strin
   ];
 }
 
-/** The line under every library answer: where it comes from, and whether the question was kept for study. */
+/** Keep internal retrieval details out of ordinary replies; only note when a knowledge gap was recorded. */
 export function libraryNote(lang: string, recorded: boolean): string {
-  if (lang === 'ar') return `\n\n_📚 من مكتبة شاهين — جمعت لك دي من معلوماتي ودروسي المحفوظة.${recorded ? ' سؤالك اتسجل عشان أذاكره وأرد عليه أحسن المرة الجاية.' : ''}_`;
-  return `\n\n_📚 From Shaheen’s library — gathered from his saved knowledge and lessons.${recorded ? ' Your question was noted so he studies it for next time.' : ''}_`;
+  if (!recorded) return '';
+  if (lang === 'ar') return ' سؤالك اتسجل عشان أراجعه وأرد عليك أحسن المرة الجاية.';
+  return ' I noted your question so I can review it and answer better next time.';
 }
 
 /**
@@ -170,12 +171,11 @@ export function libraryAnswer(src: LibrarySources, question: string, lang: strin
   const main = strongMaterial || (memory && memory.score >= 0.5 ? memory : lesson || memory || material);
   if (!main) return undefined;
   const ar = lang === 'ar';
-  const body = main.kind === 'memory'
-    ? `${ar ? 'أقرب سؤال جاوبته قبل كده' : 'The closest question I answered before'}: «${clip(main.title, 160)}»\n\n${main.text}`
-    : main.kind === 'lesson' ? `**${main.title}**\n\n${main.text}` : main.text;
+  const body = main.kind === 'memory' ? main.text
+    : main.kind === 'lesson' ? `**${main.title}**${String.fromCharCode(10).repeat(2)}${main.text}` : main.text;
   const more = refs.filter((r) => r !== main && r.kind !== 'memory').map((r) => r.title)
     .concat(refs.filter((r) => r !== main && r.kind === 'memory').map((r) => `«${clip(r.title, 90)}»`)).slice(0, 3);
-  const extra = more.length ? `\n\n${ar ? 'وعندي كمان عن' : 'I also know about'}: ${more.join(ar ? '، ' : ', ')}` : '';
+  const extra = more.length ? `${String.fromCharCode(10).repeat(2)}${ar ? 'ممكن كمان نتكلم عن' : 'I can also explain'}: ${more.join(ar ? '، ' : ', ')}` : '';
   return { answer: `${body}${extra}${libraryNote(lang, Boolean(options.recorded))}`, kind: main.kind, references: refs };
 }
 
