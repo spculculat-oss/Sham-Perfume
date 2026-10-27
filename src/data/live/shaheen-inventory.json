@@ -1,8 +1,8 @@
 {
  "version": 1,
- "updatedAt": "2026-10-27T12:44:35.155Z",
+ "updatedAt": "2026-10-27T18:44:28.972Z",
  "sources": {
-  "catalogAt": "2026-10-27T05:08:43.866Z",
+  "catalogAt": "2026-10-27T17:19:21.226Z",
   "total": 1212,
   "published": 1161,
   "liveStock": true,
@@ -51,6 +51,14 @@
    "reasonAr": "نفد"
   },
   {
+   "sku": "ARM-226",
+   "nameAr": "آيلاند بليس من أرماف",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
    "sku": "VOL-596",
    "nameAr": "أبب آفر ذا كلاودز من فولار للرجال",
    "brand": "Volare",
@@ -60,7 +68,7 @@
   },
   {
    "sku": "LAT-180",
-   "nameAr": "أثيري من لطافة",
+   "nameAr": "أثير من لطافة",
    "brand": "Lattafa",
    "priority": "normal",
    "units30": 0,
@@ -84,7 +92,7 @@
   },
   {
    "sku": "ARD-199",
-   "nameAr": "أرابيان نايت من أرض الزعفران",
+   "nameAr": "أرابيان نايت أرد الزعفران 100 مل",
    "brand": "Ard Al Zaafaran",
    "priority": "normal",
    "units30": 0,
@@ -475,14 +483,6 @@
    "reasonAr": "نفد"
   },
   {
-   "sku": "ARM-226",
-   "nameAr": "أيلاند بليس باي أرماف",
-   "brand": "Armaf",
-   "priority": "normal",
-   "units30": 0,
-   "reasonAr": "نفد"
-  },
-  {
    "sku": "MAI-834",
    "nameAr": "إثنيك عود من ميصون الحمراء",
    "brand": "Maison Alhambra",
@@ -500,7 +500,7 @@
   },
   {
    "sku": "LAT-266",
-   "nameAr": "إعجاز من لطافة",
+   "nameAr": "إعجاز من لطافة للرجال",
    "brand": "Lattafa",
    "priority": "normal",
    "units30": 0,
