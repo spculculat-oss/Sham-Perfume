@@ -3,10 +3,10 @@
  *
  * Three positions:
  *   off  — nothing in this process may reach an outside AI platform (below).
- *   auto — the owner's choice of 2026-10-22: «طول ما هما شغالين خليه يتعلم منهم ويعتمد عليهم، لو مش شغالين يعتمد ذاتي».
- *          While a platform answers, Shaheen uses it and keeps every good answer in his memory (and his school studies
- *          with it); the moment none works (no key, no credit, a limit, an outage) he answers on his own — his agent,
- *          designer, library and memory — with no error and no waiting on an engine known to be down.
+ *   auto — the owner's choice: use configured platforms while they work; external search results stay cited visitor
+ *          answers until reviewed and never enter school memory automatically. When no platform works (no key, no
+ *          credit, a limit, an outage), Shaheen answers on his own — his agent, designer, library and memory — without
+ *          an error or waiting on an engine already known to be down.
  *   on   — the platforms first; when they fail, his memory and library (the older behaviour).
  *
  * When it is off, nothing in this process may reach an outside AI platform: every hosted engine counts as not

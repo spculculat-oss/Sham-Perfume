@@ -99,6 +99,36 @@ test('upstream failures and invalid replies release the lock and are marked as e
   }
 });
 
+test('source links stay hidden in normal replies and are shown only after the visitor asks', async () => {
+  let calls = 0;
+  const store = createChatStore((async () => { calls++; return { reply: 'unexpected network answer' }; }) as typeof requestApi);
+  const sources = [{ title: 'Study', url: 'https://example.org/paper' }];
+  store.setMessages([
+    { id: 'user-1', role: 'user', text: 'What is incense?', timestamp: 'now' },
+    { id: 'bot-1', role: 'assistant', text: 'Incense is a fragrant material.', timestamp: 'now', sources },
+  ]);
+  const history = chatHistory(store.getSnapshot().messages);
+  assert.deepEqual(history.at(-1), { role: 'assistant', text: 'Incense is a fragrant material.', sources }, 'hidden metadata travels for a later request');
+  await store.send({ ...options, text: 'هات المصادر' });
+  assert.equal(calls, 0, 'saved citations need no new model call');
+  assert.match(store.getSnapshot().messages.at(-1)!.text, /\[Study\]\(https:\/\/example\.org\/paper\)/);
+});
+
+test('a source request never reuses citations from an older, unrelated answer', async () => {
+  let calls = 0;
+  const store = createChatStore((async () => { calls++; return { reply: 'مش لاقي روابط للرد اللي فات.' }; }) as typeof requestApi);
+  store.setMessages([
+    { id: 'user-old', role: 'user', text: 'Old question', timestamp: 'now' },
+    { id: 'bot-old', role: 'assistant', text: 'Old answer', timestamp: 'now', sources: [{ title: 'Old study', url: 'https://example.org/old' }] },
+    { id: 'user-new', role: 'user', text: 'New question', timestamp: 'now' },
+    { id: 'bot-new', role: 'assistant', text: 'New answer', timestamp: 'now' },
+  ]);
+  await store.send({ ...options, text: 'مصدر؟' });
+  assert.equal(calls, 1, 'without metadata on the immediate answer, let the server search that question');
+  assert.equal(store.getSnapshot().messages.at(-1)!.text.includes('example.org/old'), false);
+  assert.equal(store.getSnapshot().messages.at(-1)!.text.includes('Old study'), false);
+});
+
 test('history payloads stay within server limits without mutating stored messages', () => {
   const messages = Array.from({ length: 100 }, (_, i) => ({ ...message(String(i)), text: 'x'.repeat(1000) }));
   const history = chatHistory(messages);

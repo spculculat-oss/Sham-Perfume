@@ -16,7 +16,7 @@ import { localizeReply, needsTranslation, translationInstruction, TranslationCac
 import type { SupportedLanguage } from '../src/types/i18n';
 import { normalizeMediaBlocks } from '../src/utils/mediaBlock';
 import { stripOpeningGreeting } from '../src/utils/shaheenText';
-import { callEngine, engineStatuses, type EngineFailure } from './core/engines';
+import { callEngine, engineStatuses, type EngineFailure, type ExternalSearchSource } from './core/engines';
 import { EngineHealth, seedQuotaPauses } from './core/engineHealth';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { AnswerCache, GateBusyError, ProviderGate, VISITOR_ID, cacheKey, capacityConfig, normalizeQuestion, retryHintMs } from './core/capacity';
@@ -41,7 +41,8 @@ import bundledControls from '../src/data/owner/controls.json';
 import bundledQuota from '../src/data/live/ai-quota.json';
 import { platformsMode, platformsOff } from './core/selfReliance';
 import { buildLexicon, keyboardFix, understandQuestion, understoodNote, type Understanding } from '../src/utils/shaheenSpelling';
-import { RESEARCH_USER_AGENT, researchAnswer, type Research } from '../src/utils/webResearch';
+import { RESEARCH_USER_AGENT, research, researchAnswer, researchQueries, type Research } from '../src/utils/webResearch';
+import { appendRequestedSources, asksForSources, hideUnrequestedSources, isSourcesFollowUp, requestedSourcesReply, safeChatSources, type ChatSource } from '../src/utils/chatSources';
 import { questionIntents } from '../src/utils/shaheenTools';
 import { agentLexicon, expertGapReason, referralAnswer, runAgent, scienceDesk, understand, type AgentResult } from '../src/utils/shaheenAgent';
 import { RAW_MATERIALS_DATABASE } from '../src/data/rawMaterials';
@@ -55,7 +56,7 @@ import { SHAHEEN_ENGINES, SHAHEEN_MODES, SHAHEEN_MODE_ORDER, SHAHEEN_SITE_SETTIN
 
 export const PROVIDERS = SHAHEEN_ENGINES;
 export type Provider = ModelEngineId;
-export interface ChatTurn { role: 'user' | 'assistant'; text: string }
+export interface ChatTurn { role: 'user' | 'assistant'; text: string; sources?: ChatSource[] }
 export interface ChatRequest {
   message: string;
   model: Provider | ShaheenMode;
@@ -89,15 +90,23 @@ export function validateChatRequest(body: unknown): ChatRequest {
   if (!Array.isArray(conversationHistory) || conversationHistory.length > 24) {
     throw new ChatError(400, 'INVALID_HISTORY', 'History must contain at most 24 turns');
   }
-  let size = 0;
+  let size = 0; let sourceCount = 0;
   const history = conversationHistory.map((turn): ChatTurn => {
     if (!turn || (turn.role !== 'user' && turn.role !== 'assistant') || typeof turn.text !== 'string' ||
       !turn.text.trim() || turn.text.length > 4000) {
       throw new ChatError(400, 'INVALID_HISTORY', 'Invalid history turn');
     }
     size += turn.text.length;
+    let sources: ChatSource[] | undefined;
+    if (turn.sources !== undefined) {
+      const clean = safeChatSources(turn.sources);
+      if (turn.role !== 'assistant' || !clean?.length || (sourceCount += clean.length) > 5) {
+        throw new ChatError(400, 'INVALID_HISTORY', 'Invalid source metadata');
+      }
+      sources = clean;
+    }
     // «صاحب الموقع» O-03: a card/ID number said earlier in the chat never reaches an engine.
-    return { role: turn.role, text: maskSensitive(turn.text.trim()) };
+    return { role: turn.role, text: maskSensitive(turn.text.trim()), ...(sources ? { sources } : {}) };
   });
   if (size > 16000) throw new ChatError(400, 'INVALID_HISTORY', 'History exceeds 16000 characters');
   return { message: message.trim(), model: model as ChatRequest['model'], language: language as SupportedLanguage, conversationHistory: history };
@@ -154,6 +163,13 @@ export function isShoppingTurn(message: string, history: ChatTurn[] = []): boole
   return questionIntents(message).includes('store') || Boolean(saleMove(message)) || /\/p\/[a-z0-9-]+\.html/.test(last);
 }
 
+/** For a genuine knowledge lookup, use the configured live-search engine first, then retain normal failover. */
+export function researchEngineOrder(engines: readonly Provider[], shouldSearch: boolean): Provider[] {
+  if (!shouldSearch) return [...engines];
+  const search = engines.find((id) => id === 'perplexity');
+  return search ? [search, ...engines.filter((id) => id !== search)] : [...engines];
+}
+
 /** «اقرأ الزبون»: how this visitor should be spoken to, from his own words in this conversation. */
 export function shoppingBrief(message: string, history: ChatTurn[], language: SupportedLanguage): string {
   const said = [...history.filter((t) => t.role === 'user').map((t) => t.text), message];
@@ -186,6 +202,9 @@ export function systemInstruction(language: SupportedLanguage, extra = '', style
 لا تبدأ ردودك بالترحيب («أهلاً بك»، «مرحباً»، «يسعدني») أو بتعريف نفسك أو بذكر اسمك أو اسم المنصة؛ ادخل في الإجابة مباشرة. عرّف بنفسك فقط إذا سُئلت عن هويتك أو كانت رسالة المستخدم تحية. اسمك بالإنجليزية Master Shahin، وفي اللغات الأخرى ترجمة «الخبير شاهين» (وليس Al-Khabeer).
 أجب باللغة المطلوبة: ${languageName} (${language}). اتبع سياق الحوار وأجب عن السؤال مباشرة. إذا طلب المستخدم تصميم عطر وذكر اتجاهه أو مكوناته الرئيسية (مثل عود وورد) أو الحجم أو التركيز، فقدّم فوراً مقترحاً تجريبياً كاملاً بنسب واضحة مع سياج sham-formula، ثم اختم بسؤال أو سؤالين اختياريين لتحسينه؛ لا تؤجل التركيبة بأسئلة توضيحية. اسأل قبل التركيبة فقط إذا لم يذكر أي اتجاه عطري أو مكون، وإذا نقص الحجم أو التركيز فاستخدم قيمة شائعة (50 مل، EDP 20%) واذكر أنها قابلة للتعديل.
 لا تستخدم LaTeX أبداً: لا علامات $ ولا أوامر مثل \\frac أو \\times أو \\text. اكتب المعادلات نصاً عادياً بالرموز × و÷ و= و≈، مثل: كمية الكحول = 70 × 1000 ÷ 96 ≈ 729 مل.
+كن واضحاً وودوداً، واتعامل كخبير طبيعي في حوار متصل: افهم المقصود من الكلام والسياق، رد بالمصري البسيط لما تكون العربية هي اللغة، وادخل في الإجابة من غير مقدمات آلية أو تكرار السؤال. اسأل سؤال توضيح واحداً بس لما يلزم. حلل داخلياً، ولا تعرض سلسلة تفكيرك.
+قبل الرد افحص صلة الإجابة بالسؤال ومدى دعمها بمراجع شاهين الموثقة أو بمصادر البحث المتاحة؛ قارن المعلومات، واستبعد الخارج عن الموضوع أو المتعارض أو غير المدعوم. لو الدليل مش كفاية، قول إنك مش متأكد بدل ما تعرضه كحقيقة مدققة.
+ما تعرضش أسماء المصادر أو روابطها تلقائياً؛ أظهرها فقط لما المستخدم يطلبها صراحة، ولا تخترع مرجعاً أو رابطاً. عند طلب المصادر، اعرض الروابط التي وصلت فعلاً فقط ووضّح إن الرابط لا يعني اعتماداً من متخصص.
 كن واضحاً وودوداً. استخدم Markdown بسيطاً عند الحاجة: عناوين قصيرة بـ ###، نقاط، **عريض**، وجداول صغيرة للنِّسب. لا تدّع أنك إنسان أو طبيب أو أنك أجريت تجربة مخبرية أو استشرت محركات أخرى.
 لا تختلق مصادر أو شهادات IFRA أو نسب أمان عامة لكل المواد. السلامة تعتمد على المادة والتركيز النهائي وفئة المنتج وشهادة المورد؛ لا تضمن الأمان أو الثبات بالساعات.
 لا تصف علاجات أو جرعات للأطفال أو الحوامل أو مرضى الربو. وضّح أن تلك الأسئلة تحتاج مختصاً مؤهلاً. لا تنصح بابتلاع الزيوت أو بوضعها مركزة على الجلد.
@@ -242,7 +261,7 @@ export interface ExecuteOptions {
 /** Only the provider that actually answered is credited. Auto is failover, not a fake panel. */
 /** One answer: the reply, the visitor-facing mode and (server/admin side only) the engine that wrote it. */
 export interface ChatAnswer {
-  reply: string; mode: ChatRequest['model'];
+  reply: string; mode: ChatRequest['model']; sources?: ChatSource[];
   engine: { id: Provider; provider: Provider; name: string; badge: string; model: string; accentColor: string };
 }
 
@@ -256,9 +275,15 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   const requested = settings.allowVisitorChoice ? input.model : 'auto';
   if (requested === 'council') return executeCouncil(input, options, env, settings);
   const style = requested === 'fast' || requested === 'deep' ? requested : undefined;
-  const wanted = requested === 'auto' ? available
+  const shopping = isShoppingTurn(input.message, input.conversationHistory);
+  const shouldSearch = (requested === 'auto' || requested === 'fast' || requested === 'deep')
+    && !shopping && Boolean(researchQueries(input.message, input.language));
+  let wanted = requested === 'auto' ? available
     : style ? SHAHEEN_MODE_ORDER[style].filter((id) => available.includes(id))
       : available.filter((id) => id === requested);
+  // A suitable knowledge question gets the live-search engine first; every configured model (including self-hosted)
+  // remains in the chain as failover. Explicit provider choices are never reordered.
+  if (shouldSearch) wanted = researchEngineOrder(wanted, true);
   // The engines that work go first; a parked one waits at the end (still a last resort) until its time is up.
   const health = options.health;
   const candidates = health ? health.order(wanted) : wanted;
@@ -267,7 +292,6 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   const total = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 50000), ...(options.signal ? [options.signal] : [])]);
   // Questions about news get the real headlines Shaheen collected (every 12 h) instead of invented ones.
   // «علم البيع»: a buying conversation tells the engine how this visitor should be spoken to (his style, motive…).
-  const shopping = isShoppingTurn(input.message, input.conversationHistory);
   const instruction = systemInstruction(input.language, settings.instructions, style) + await newsContext(input.message, input.language, env).catch(() => '')
     + await supervisorGuidance('shaheen_chat', env).catch(() => '') + (shopping ? `\n${shoppingBrief(input.message, input.conversationHistory, input.language)}` : '');
   // «شاهين ابن الناس»: an upset, formal, older or foreign visitor is spoken to accordingly; a complaint is cleaned.
@@ -287,15 +311,26 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
     const useLite = lite && provider === 'gemini';
     const model = useLite ? liteModel(env) : settings.models[provider] || status.model;
     let refusal: { failure: EngineFailure; status: number; detail: string } | undefined;
+    let sources: ExternalSearchSource[] = [];
     try {
       const reply = await callEngine(provider, fullInstruction, turns, {
         env, fetch: options.fetch, signal, temperature: settings.temperature, model,
-        maxTokens: useLite ? Math.min(maxTokens, 1536) : maxTokens, maxChars: 32000, onFailure: (failure, httpStatus, detail) => { refusal = { failure, status: httpStatus, detail }; },
+        maxTokens: useLite ? Math.min(maxTokens, 1536) : maxTokens, maxChars: 32000,
+        onSources: (found) => { sources = found; },
+        onFailure: (failure, httpStatus, detail) => { refusal = { failure, status: httpStatus, detail }; },
       });
       if (signal.aborted) throw signal.reason;
       if (typeof reply === 'string' && reply.trim()) {
+        if (provider === 'perplexity' && (shouldSearch || asksForSources(input.message)) && !sources.length) {
+          health?.fail(provider, 'empty');
+          return { outcome: 'next' }; // No source links: don't present a live-search answer as checked.
+        }
         health?.ok(provider);
-        return { outcome: 'ok', value: { reply: complaint ? polishRelations(reply.trim()) : shopping ? polishSale(reply.trim()) : reply.trim(), mode: requested, engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
+        const polished = complaint ? polishRelations(reply.trim()) : shopping ? polishSale(reply.trim()) : reply.trim();
+        const citationCleaned = hideUnrequestedSources(polished);
+        const answer = asksForSources(input.message) ? appendRequestedSources(citationCleaned, sources, input.language)
+          : provider === 'perplexity' ? citationCleaned : polished;
+        return { outcome: 'ok', value: { reply: answer, mode: requested, ...(sources.length ? { sources } : {}), engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
           badge: ENGINE_INFO[provider].name, model, accentColor: ENGINE_INFO[provider].color } } };
       }
     } catch {
@@ -358,11 +393,14 @@ async function executeCouncil(input: ChatRequest, options: ExecuteOptions, env: 
 }
 
 /** What a visitor receives: the answer and the mode — never which engine or vendor produced it. */
-export function publicChatResult(result: { reply: string; mode?: string }, question = '') {
+export function publicChatResult(result: { reply: string; mode?: string; sources?: readonly ChatSource[] }, question = '') {
   const mode = (SHAHEEN_MODES as readonly string[]).includes(result.mode || '') ? result.mode! : 'auto';
   // The model sometimes labels the visual-aid block ```json or leaves it open: send one canonical block.
-  // A real question gets the answer straight away, not «أهلاً بك.» first.
-  return { reply: stripOpeningGreeting(normalizeMediaBlocks(result.reply), question), mode, engine: { id: mode, provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' } };
+  // A real question gets the answer straight away, not «أهلاً بك.» first. Source links stay metadata until requested.
+  const sources = result.sources ? safeChatSources(result.sources) : undefined;
+  const normalized = normalizeMediaBlocks(result.reply);
+  const visible = asksForSources(question) ? normalized : hideUnrequestedSources(normalized);
+  return { reply: stripOpeningGreeting(visible, question), mode, ...(sources?.length ? { sources } : {}), engine: { id: mode, provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' } };
 }
 
 export interface EngineProbe {
@@ -598,13 +636,15 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       if (useMemory && !shopping && (opening || ctx.followUp || understand(asked, input.language).subjects.length >= 2)) {
         const sources = await library().catch((): LibrarySources => ({ lessons: [], materials: [] }));
         agent = await runAgent(asked, input.language, {
-          sources, lexicon: agentLexicon(sources), research: (q, lang) => research(q, lang), willRecord: true,
+          sources, lexicon: agentLexicon(sources), research: (q, lang) => research(q, lang),
         });
         if (agent.refer && !isPersonal(asked) && !isTimeBound(asked)) {
           recorded = Boolean(await options.repo.recordGap({ question: agent.understanding.asked, source: 'no_answer', reason: expertGapReason(agent.expert.field) }).catch(() => undefined));
         }
         if (agent.answer && !res.destroyed) {
-          send(agent.answer, ctx.followUp ? 'context' : 'agent', { memory: 'agent', agent: { field: agent.expert.field, confidence: agent.confidence, sources: agent.used } });
+          const cited = agent.sources ? safeChatSources(agent.sources) : undefined;
+          send(agent.answer, ctx.followUp ? 'context' : 'agent', { memory: 'agent', agent: { field: agent.expert.field, confidence: agent.confidence, sources: agent.used },
+            ...(cited?.length ? { sources: cited } : {}) });
           return { done: true, agent, recorded };
         }
       }
@@ -631,6 +671,21 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       const own = switchMode === 'off' || (switchMode === 'auto' && !platformsReady(shaheen, env, health));
       const useMemory = Boolean(shaheen.enabled && (own || (memory && req.body?.memory !== false)));
       const mode = shaheen.allowVisitorChoice ? input.model : 'auto';
+      if (isSourcesFollowUp(input.message)) {
+        const previousAnswer = [...input.conversationHistory].reverse().find((turn) => turn.role === 'assistant');
+        let sources = previousAnswer?.sources;
+        if (!sources?.length) {
+          const previousQuestion = [...input.conversationHistory].reverse().find((turn) => turn.role === 'user')?.text;
+          if (previousQuestion && researchQueries(previousQuestion, input.language)) {
+            const found = await research(previousQuestion, input.language).catch(() => undefined);
+            sources = found?.sources;
+          }
+        }
+        const reply = requestedSourcesReply(sources || [], input.language);
+        if (!res.destroyed) res.json({ ...publicChatResult({ reply, mode, sources: sources || [] }, input.message), memory: 'sources' });
+        runtime?.record({ ms: Date.now() - started, status: 200 });
+        return;
+      }
       // «تطبيقات شاهين السريعة»: the same instant apps as the browser (for clients that did not run them).
       // A card/ID/IBAN number is answered here and never forwarded or kept, whatever the settings.
       const quick = hasSensitiveNumber(input.message) || offersCardDetails(input.message) || (shaheen.enabled && req.body?.memory !== false) ? quickAnswer(input.message, input.language) : undefined;
@@ -686,9 +741,10 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
       if (!res.destroyed) res.json(publicChatResult(result, input.message));
       runtime?.record({ ms: Date.now() - started, status: 200 });
-      // Every platform answer is kept for the day the packages run out — inside a conversation too: a follow-up is
-      // kept under the question as he understood it with what came before («طب وللصيف؟» → the whole question).
-      if (memory && mode !== 'council' && result.reply) {
+      // Other provider answers are kept for the day the packages run out — but live-search results are not
+      // automatically promoted into memory or the school: their linked sources are still unreviewed.
+      // Follow-ups are kept under the question as Shaheen understood it («طب وللصيف؟» → the whole question).
+      if (memory && mode !== 'council' && result.reply && result.engine.provider !== 'perplexity') {
         const asked = opening ? input.message : learnedQuestion(input.message, input.conversationHistory);
         if (asked) await memory.learn({ question: asked, lang: input.language, mode, answer: publicChatResult(result, input.message).reply }).catch(() => undefined);
       }
@@ -755,7 +811,8 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
           // agent already did, when it ran).
           const found2 = chatInput.agent ? undefined : await research(asked, input.language).catch(() => undefined);
           if (found2 && !res.destroyed) {
-            res.json({ ...publicChatResult({ reply: note + researchAnswer(found2, { recorded }), mode }, input.message), memory: 'research' });
+            res.json({ ...publicChatResult({ reply: note + researchAnswer(found2, { recorded }), mode }, input.message),
+              ...(safeChatSources(found2.sources)?.length ? { sources: safeChatSources(found2.sources) } : {}), memory: 'research' });
             runtime?.record(switchMode === 'off' ? { ms: Date.now() - started, status: 200 } : { ms: Date.now() - started, status: error.status, code: `${error.code}+RESEARCH` });
             return;
           }

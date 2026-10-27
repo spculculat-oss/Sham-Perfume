@@ -21,7 +21,7 @@ import { isPersonal, isTimeBound, meaningWords, normalizeQuestion, similarity, t
 import { lessonExcerpt, searchLibrary, topicWords, type LibraryLesson, type LibraryMaterial } from './shaheenLibrary';
 import { buildScienceIndex, scienceExact, scienceHits, type ScienceFieldWords, type ScienceIndex } from './scienceIndex';
 import { buildLexicon, understandQuestion, understoodNote, type Lexicon } from './shaheenSpelling';
-import { researchAnswer, type Research } from './webResearch';
+import { researchAnswer, type Research, type WebSource } from './webResearch';
 import { greetingKind, greetingReply } from './shaheenGreeting';
 import { coreSubjects, coverage, fitsIntent, intentOf, keySentence, near, reason, stem, STRICT_INTENT, type Intent } from './shaheenReasoning';
 import type { SupportedLanguage } from '../types/i18n';
@@ -323,6 +323,8 @@ export type Confidence = 'high' | 'medium' | 'low';
 export interface AgentResult {
   /** The visitor's answer; undefined when he has nothing solid (then `refer` says the expert will study it). */
   answer?: string;
+  /** Hidden chat metadata: the visitor sees these only after asking for references. */
+  sources?: WebSource[];
   confidence: Confidence;
   expert: SchoolExpert;
   understanding: AgentUnderstanding;
@@ -345,13 +347,12 @@ function body(e: Evidence): string {
   if (e.kind === 'material') return e.text;
   return `**${e.title}**\n\n${e.text}`;
 }
-/** The line under every agent answer: who answered and from what. */
-export function agentFooter(lang: string, expert: SchoolExpert, used: SourceKind[], refer: boolean): string {
-  const ar = lang === 'ar' || lang === 'fa';
-  const from = [...new Set(used)].map((k) => (ar ? SOURCE_AR[k] : SOURCE_EN[k])).join(ar ? '، ' : ', ');
-  const who = ar ? expert.nameAr : expert.nameEn;
-  const later = refer ? (ar ? ' وبعت سؤالك للخبير عشان يذاكره ويرد عليه أوفى المرة الجاية.' : ' Your question was sent to the expert to study for a fuller answer next time.') : '';
-  return ar ? `\n\n_🎓 جاوبك ${who} من مدرسة شاهين — المصدر: ${from}.${later}_` : `\n\n_🎓 Answered by Shaheen’s school (${who}) — from ${from}.${later}_`;
+/** Keep a natural reply; source and expert bookkeeping stays internal unless the visitor asks. */
+export function agentFooter(lang: string, _expert: SchoolExpert, _used: SourceKind[], refer: boolean): string {
+  if (!refer) return '';
+  return lang === 'ar' || lang === 'fa'
+    ? '\n\nالمعلومة دي محتاجة مراجعة أكتر قبل ما أأكدها.'
+    : '\n\nI need to double-check this before I can treat it as settled.';
 }
 /** Nothing solid: an honest answer, and the question goes to the field's expert. */
 export function referralAnswer(lang: string, expert: SchoolExpert, recorded: boolean): string {
@@ -475,7 +476,7 @@ export async function runAgent(question: string, lang: string, ctx: {
       const used = sides.map((s) => s!.kind);
       const expert = sides[0]!.field ? expertOf(sides[0]!.field) : p.expert;
       const text = u.parts.map((part, i) => `### ${part}\n${clip(sides[i]!.text, 900)}`).join('\n\n')
-        + `\n\n${ar ? '**الخلاصة:** ده عن الطرفين من مصادري؛ لو عايز مقارنة في نقطة معينة (الريحة، الثبات، الاستخدام، الأمان…) قولّي.' : '**In short:** here is each side from my sources; ask about a specific point to compare them on.'}`;
+        + `\n\n${ar ? '**الخلاصة:** ده ملخص الطرفين؛ لو عايز مقارنة في نقطة معينة (الريحة، الثبات، الاستخدام، الأمان…) قولّي.' : '**In short:** that is the comparison; tell me if you want a specific point (scent, longevity, use or safety).'}`;
       const refer = sides.some((s) => (s!.kind === 'memory' && s!.trust < 0.8) || confidenceOf(s) === 'medium');
       return { answer: u.note + text + agentFooter(lang, expert, used, refer), confidence: sides.every((s) => confidenceOf(s) === 'high') ? 'high' : 'medium', expert, understanding: u, used, refer, trace };
     }
@@ -490,7 +491,7 @@ export async function runAgent(question: string, lang: string, ctx: {
     trace.push(found ? `research: ${found.sources.length} open sources read` : 'research: nothing found');
     if (found) {
       const text = researchAnswer(found, { recorded: Boolean(ctx.willRecord) });
-      return { answer: u.note + text, confidence: 'medium', expert: p.expert, understanding: u, used: ['research'], refer: true, trace };
+      return { answer: u.note + text, sources: found.sources, confidence: 'medium', expert: p.expert, understanding: u, used: ['research'], refer: true, trace };
     }
   }
   if (!d.answer) { trace.push(`refer to ${p.expert.field} expert`); return { ...d, understanding: u, trace }; }

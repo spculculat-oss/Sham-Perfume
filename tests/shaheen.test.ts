@@ -1,14 +1,22 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { ChatError, executeChat, getChatModels, getPublicModes, publicChatResult, systemInstruction, validateChatRequest, type Provider } from '../server/shaheen';
+import { ChatError, executeChat, getChatModels, getPublicModes, publicChatResult, researchEngineOrder, systemInstruction, validateChatRequest, type Provider } from '../server/shaheen';
+import { asksForSources, isSourcesFollowUp } from '../src/utils/chatSources';
 import { defaultCouncil } from '../server/core/council';
 import { SHAHEEN_SITE_SETTINGS } from '../server/config/shaheen';
+import { PERPLEXITY_AGENT_URL } from '../server/core/engines';
 
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json' } });
 const keys = { GEMINI_API_KEY: 'test-gemini', DEEPSEEK_API_KEY: 'test-deepseek', OPENAI_API_KEY: 'test-openai', ANTHROPIC_API_KEY: 'test-claude' };
 
 test('chat validates and trims messages, model, language and history', () => {
   assert.deepEqual(validateChatRequest({ message: ' hi ' }), { message: 'hi', model: 'auto', language: 'ar', conversationHistory: [] });
+  assert.deepEqual(validateChatRequest({ message: 'sources?', conversationHistory: [
+    { role: 'assistant', text: 'An answer', sources: [{ title: 'Study', url: 'https://example.org/paper' }] },
+  ] }).conversationHistory[0]?.sources, [{ title: 'Study', url: 'https://example.org/paper' }]);
+  assert.throws(() => validateChatRequest({ message: 'sources?', conversationHistory: [
+    { role: 'assistant', text: 'An answer', sources: [{ title: 'local', url: 'https://127.0.0.1/' }] },
+  ] }), ChatError);
   for (const value of [null, [], {}, { message: ' ' }, { message: 12 }, { message: 'x'.repeat(4001) },
     { message: 'hi', model: 'unknown' }, { message: 'hi', language: 'xx' },
     { message: 'hi', conversationHistory: null }, { message: 'hi', conversationHistory: [null] },
@@ -63,6 +71,60 @@ test('auto failover changes attribution to the provider that succeeded', async (
       : json({ choices: [{ message: { content: 'Actual DeepSeek answer' } }] })) as typeof fetch });
   assert.equal(reply.engine.provider, 'deepseek');
   assert.equal(calls, 3, 'Gemini 503 → one look for another Gemini model (none here) → DeepSeek');
+});
+
+test('eligible knowledge questions put external web search first, then retain configured engine failover', async () => {
+  const engines = ['openai', 'perplexity', 'self_hosted'] as Provider[];
+  assert.deepEqual(researchEngineOrder(engines, true), ['perplexity', 'openai', 'self_hosted']);
+  assert.deepEqual(researchEngineOrder(engines, false), engines, 'ordinary answers retain the admin order');
+  assert.deepEqual(researchEngineOrder(['openai', 'self_hosted'], true), ['openai', 'self_hosted'], 'no search engine is invented');
+  assert.equal(isSourcesFollowUp('هات المصادر؟'), true);
+  assert.equal(isSourcesFollowUp('what are your sources?'), true);
+  assert.equal(asksForSources('هات مصادر عن البخور'), true);
+  assert.equal(asksForSources('ما مصادر الطاقة المتجددة؟'), false, 'topic sources are not citation requests');
+
+  const calls: string[] = [];
+  const fetch = (async (url: string | URL | Request) => {
+    calls.push(String(url));
+    if (String(url) === PERPLEXITY_AGENT_URL) return json({ output: [
+      { type: 'search_results', results: [{ title: 'مقال موثّق', url: 'https://example.org/paper' }] },
+      { type: 'message', content: [{ type: 'output_text', text: 'ملخص من البحث [مقال موثّق](https://example.org/paper) [1]' }] },
+    ] });
+    return json({ choices: [{ message: { content: 'إجابة' } }] });
+  }) as typeof globalThis.fetch;
+  const settings = { ...SHAHEEN_SITE_SETTINGS, engines: ['openai', 'perplexity'] as Provider[] };
+  const result = await executeChat({ message: 'ايه هو البخور؟', model: 'auto', language: 'ar', conversationHistory: [] },
+    { env: { OPENAI_API_KEY: 'test-openai', PERPLEXITY_API_KEY: 'test-perplexity' }, fetch, settings });
+  assert.equal(calls[0], PERPLEXITY_AGENT_URL);
+  assert.equal(result.engine.provider, 'perplexity');
+  assert.equal(result.reply, 'ملخص من البحث', 'source links stay out of an ordinary conversational answer');
+  assert.deepEqual(result.sources, [{ title: 'مقال موثّق', url: 'https://example.org/paper' }]);
+  const visible = publicChatResult(result);
+  assert.doesNotMatch(visible.reply, /example\.org|مقال موثّق/);
+  assert.deepEqual(visible.sources, result.sources, 'hidden source metadata survives for a later request');
+  assert.doesNotMatch(JSON.stringify(visible), /perplexity|openai|test-perplexity/i);
+  const requested = await executeChat({ message: 'هات مصادر عن البخور', model: 'auto', language: 'ar', conversationHistory: [] },
+    { env: { OPENAI_API_KEY: 'test-openai', PERPLEXITY_API_KEY: 'test-perplexity' }, fetch, settings });
+  assert.ok(requested.reply.includes('[مقال موثّق](https://example.org/paper)'));
+  assert.equal(requested.reply.split('https://example.org/paper').length - 1, 1, 'only the captured metadata link is shown');
+  assert.ok(requested.reply.includes('مش اعتماداً من متخصص'));
+});
+
+test('failed external search falls back to the configured internal model', async () => {
+  const calls: string[] = [];
+  const fetch = (async (url: string | URL | Request) => {
+    const target = String(url); calls.push(target);
+    if (target === PERPLEXITY_AGENT_URL || target.startsWith('https://api.openai.com/')) return json({ error: 'temporarily unavailable' }, 503);
+    if (target === 'http://127.0.0.1:11434/v1/chat/completions') return json({ choices: [{ message: { content: 'إجابة من النموذج الداخلي' } }] });
+    throw new Error(`unexpected request ${target}`);
+  }) as typeof globalThis.fetch;
+  const settings = { ...SHAHEEN_SITE_SETTINGS, engines: ['openai', 'perplexity', 'self_hosted'] as Provider[] };
+  const result = await executeChat({ message: 'ايه هو البخور؟', model: 'auto', language: 'ar', conversationHistory: [] }, {
+    env: { OPENAI_API_KEY: 'test-openai', PERPLEXITY_API_KEY: 'test-perplexity', SHAM_LLM_BASE_URL: 'http://127.0.0.1:11434/v1' }, fetch, settings,
+  });
+  assert.deepEqual(calls, [PERPLEXITY_AGENT_URL, 'https://api.openai.com/v1/chat/completions', 'http://127.0.0.1:11434/v1/chat/completions']);
+  assert.equal(result.engine.provider, 'self_hosted');
+  assert.equal(result.reply, 'إجابة من النموذج الداخلي');
 });
 
 test('explicit provider never silently impersonates another provider', async () => {
@@ -184,6 +246,15 @@ test('public modes and answers carry no engine, vendor or model names', async ()
   assert.equal(shown.mode, 'auto', 'legacy engine ids are shown as plain auto');
   assert.equal(shown.engine.provider, 'shaheen');
   assert.doesNotMatch(JSON.stringify(shown), VENDORS);
+  const ordinary = publicChatResult({ reply: `Answer [Study](https://example.org/paper)
+Sources: another page`, mode: 'auto' }, 'What is it?');
+  assert.equal(ordinary.reply, 'Answer');
+  const requested = publicChatResult({ reply: 'Sources: [Study](https://example.org/paper)', mode: 'auto' }, 'هات المصادر؟');
+  assert.ok(requested.reply.includes('https://example.org/paper'));
+  const visual = publicChatResult({ reply: `\`\`\`json
+{"image":"https://example.org/image.png"}
+\`\`\``, mode: 'auto' }, 'show an image');
+  assert.ok(visual.reply.includes('https://example.org/image.png'), 'media blocks keep their payload URLs');
 });
 
 test('council mode needs two working seats, then answers as one anonymous reply', async () => {

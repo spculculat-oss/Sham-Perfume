@@ -59,7 +59,7 @@ test('not just the old answer: the expert’s reviewed lesson wins over a visito
   assert.equal(r.expert.field, 'earth');
   assert.equal(r.confidence, 'high');
   assert.doesNotMatch(r.answer!.split('\n\n')[0], /إجابة قديمة/);
-  assert.match(r.answer!, /خبير علوم الأرض من مدرسة شاهين/);
+  assert.doesNotMatch(r.answer!, /خبير علوم الأرض من مدرسة شاهين|المصدر/);
   const ev = gather(understand('ليه بتحصل الزلازل؟', 'ar'), src(), 'ar');
   assert.ok(ev.some((e) => e.kind === 'memory'), 'the old answer was considered, as one source among others');
 });
@@ -103,7 +103,9 @@ test('safety: a personal treatment question gets the doctor, never a prescriptio
   assert.match(v.answer!, /بتفاصيل أكتر/);
   const hi = await runAgent('السلام عليكم', 'ar', { sources: src() });
   assert.match(hi.answer!, /وعليكم السلام/);
-  assert.match(agentFooter('ar', expertOf('earth'), ['expert'], true), /بعت سؤالك للخبير/);
+  assert.match(agentFooter('ar', expertOf('earth'), ['expert'], true), /محتاجة مراجعة/);
+  assert.doesNotMatch(agentFooter('ar', expertOf('earth'), ['expert'], true), /المصدر|المدرسة/);
+  assert.equal(agentFooter('ar', expertOf('earth'), ['expert'], false), '');
 });
 
 test('the school studies what the agent sent: in the expert’s field, reviewed by that field’s standards', () => {
@@ -142,7 +144,7 @@ test('the server (platforms closed): the agent answers from the school; nothing 
     const newton = await chat('ما هو قانون نيوتن التاني للحركة');
     assert.equal(newton.data.memory, 'agent', 'the physics expert has reviewed lessons now');
     assert.equal(newton.data.agent?.field, 'physics');
-    assert.match(newton.data.reply, /خبير الفيزياء/);
+    assert.doesNotMatch(newton.data.reply, /خبير الفيزياء|المصدر/);
     const physics = await chat('ايه هو مبدأ برنولي في الفيزياء وتطبيقاته');
     assert.equal(physics.status, 200);
     assert.equal(physics.data.memory, 'unknown');
