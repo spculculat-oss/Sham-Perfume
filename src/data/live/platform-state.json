@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-27T15:09:49.214Z",
+ "updatedAt": "2026-10-27T20:57:13.401Z",
  "active": true,
  "decisions": [
   {
@@ -481,39 +481,9 @@
   ]
  },
  "field": {
-  "maneuverAt": "2026-10-27T14:23:49.982Z",
-  "at": "2026-10-27T15:09:47.465Z",
+  "maneuverAt": "2026-10-27T20:13:55.047Z",
+  "at": "2026-10-27T20:57:11.911Z",
   "items": [
-   {
-    "id": "community:console",
-    "titleAr": "أخطاء في سجل المتصفح (1)",
-    "section": "community",
-    "sectionAr": "المجتمع",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "reliability",
-    "deptAr": "قسم الجودة والاعتماد على النفس",
-    "bot": "doctor",
-    "botAr": "طبيب شاهين (الصيانة)",
-    "reasonAr": "أخطاء في سجل المتصفح — شغل طبيب الموقع",
-    "action": "watch",
-    "seen": 1
-   },
-   {
-    "id": "community:asset-missing",
-    "titleAr": "ملفات أو صور مش موجودة (2)",
-    "section": "community",
-    "sectionAr": "المجتمع",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "reliability",
-    "deptAr": "قسم الجودة والاعتماد على النفس",
-    "bot": "deploy",
-    "botAr": "بناء ونشر الموقع",
-    "reasonAr": "ملفات ناقصة من النشر — شغل مسؤول النشر",
-    "action": "watch",
-    "seen": 1
-   },
    {
     "id": "alcohol:unnamed-button",
     "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
@@ -527,7 +497,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "community:unnamed-button",
@@ -542,7 +512,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «المجتمع» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "community:no-heading",
@@ -557,7 +527,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «المجتمع» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "concentration:unnamed-button",
@@ -572,7 +542,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «حاسبة التركيز» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "concentration:ai-idea:إضافةتلميحمرئييوضحالفرقب",
@@ -602,7 +572,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "cosmetics:unnamed-button",
@@ -617,7 +587,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "costing:unnamed-button",
@@ -632,7 +602,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «حاسبة التكلفة» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "guide:unnamed-button",
@@ -647,11 +617,11 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "home:slow",
-    "titleAr": "تسريع القسم (بيفتح في 7 ثواني)",
+    "titleAr": "تسريع القسم (بيفتح في 6 ثواني)",
     "section": "home",
     "sectionAr": "الرئيسية",
     "kind": "idea",
@@ -662,7 +632,7 @@
     "botAr": "طبيب شاهين (الصيانة)",
     "reasonAr": "البطء — شغل قسم الجودة",
     "action": "backlog",
-    "seen": 14
+    "seen": 15
    },
    {
     "id": "home:unnamed-button",
@@ -677,7 +647,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «الرئيسية» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "home:ai-idea:إضافةزرسريعللوصولالمباشر",
@@ -707,7 +677,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "maceration_simulator:unnamed-button",
@@ -722,7 +692,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «محاكي التخمير والنضج» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "master_ai:unnamed-button",
@@ -737,7 +707,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «الخبير شاهين» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "molecule_studio:unnamed-button",
@@ -752,7 +722,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "perfume_designers:unnamed-button",
@@ -767,7 +737,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "perfume_news:unnamed-button",
@@ -782,7 +752,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "perfumes:unnamed-button",
@@ -797,7 +767,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "productDetail:unnamed-button",
@@ -812,7 +782,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "pyramid:unnamed-button",
@@ -827,7 +797,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «حاسبة الهرم العطري» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "pyramid:ai-idea:توفيرأمثلةجاهزةللهرمالعط",
@@ -857,7 +827,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "shaheen_chat:ai-idea:إضافةاقتراحاتأسئلةسريعةل",
@@ -875,6 +845,21 @@
     "seen": 1
    },
    {
+    "id": "store:slow",
+    "titleAr": "تسريع القسم (بيفتح في 5 ثواني)",
+    "section": "store",
+    "sectionAr": "المتجر",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "reliability",
+    "deptAr": "قسم الجودة والاعتماد على النفس",
+    "bot": "doctor",
+    "botAr": "طبيب شاهين (الصيانة)",
+    "reasonAr": "البطء — شغل قسم الجودة",
+    "action": "backlog",
+    "seen": 1
+   },
+   {
     "id": "store:unnamed-button",
     "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
     "section": "store",
@@ -887,7 +872,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    },
    {
     "id": "store:ai-idea:تفعيلفلترسريعلأنواعالزجا",
@@ -917,7 +902,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 17
+    "seen": 18
    }
   ]
  }
