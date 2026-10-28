@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-28T07:07:31.829Z",
+ "updatedAt": "2026-10-28T08:59:06.631Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -2800,12 +2800,12 @@
    "foundBy": "brand-site",
    "foundWith": "Volare",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-28T08:59:06.631Z",
    "trust": {
     "score": 80,
     "verdict": "trusted",
-    "at": "2026-10-21T07:16:55.374Z",
+    "at": "2026-10-28T08:59:06.631Z",
     "checks": [
      {
       "id": "age",
@@ -2905,21 +2905,20 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "AED",
-   "rateToEgp": 14.8364,
+   "rateToEgp": 15.2737,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*volareperfumes\\.com/[^?#]+$",
    "sitemaps": [
     "https://volareperfumes.com/sitemap_agentic_discovery.xml",
     "https://volareperfumes.com/sitemap_products_1.xml?from=9893736186148&to=10424242667812",
     "https://volareperfumes.com/sitemap_pages_1.xml?from=140971344164&to=161011859748",
     "https://volareperfumes.com/sitemap_collections_1.xml?from=628052754724&to=650876092708",
-    "https://volareperfumes.com/sitemap_blogs_1.xml",
     "https://volareperfumes.com/ar/sitemap_products_1.xml?from=9893736186148&to=10424242667812",
     "https://volareperfumes.com/ar/sitemap_pages_1.xml?from=140971344164&to=161011859748",
     "https://volareperfumes.com/ar/sitemap_collections_1.xml?from=628052754724&to=650876092708",
     "https://volareperfumes.com/ar/sitemap_blogs_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 654
+   "productsEstimate": 653
   },
   {
    "id": "volareparfums-com",
@@ -7368,6 +7367,20 @@
  ],
  "runs": [
   {
+   "at": "2026-10-28T08:59:06.631Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ volareperfumes.com: CV 80/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ volareperfumes.com (CV 80/100): 653 perfumes, 4/6 pages read without AI, AED (1 = 15.2737 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-10-28T07:07:31.829Z",
    "mode": "self",
    "found": 0,
@@ -7707,17 +7720,6 @@
   },
   {
    "at": "2026-10-23T07:12:45.947Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-23T06:55:09.742Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
