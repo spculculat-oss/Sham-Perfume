@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "tutor",
- "updatedAt": "2026-10-28T04:18:05.949Z",
+ "updatedAt": "2026-10-28T05:19:46.757Z",
  "targets": [
   {
    "kind": "carrier",
@@ -594,7 +594,7 @@
    "question": "الشحن لـمصر بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1908",
+    "1902",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -617,7 +617,7 @@
    "question": "الشحن لـالسعودية بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1696",
+    "1691",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -629,7 +629,7 @@
    "question": "الشحن لـالإمارات بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1696",
+    "1691",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -641,7 +641,7 @@
    "question": "الشحن لـالكويت بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1590",
+    "1585",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -653,7 +653,7 @@
    "question": "الشحن لـقطر بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1590",
+    "1585",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -665,7 +665,7 @@
    "question": "الشحن لـالبحرين بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1590",
+    "1585",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -677,7 +677,7 @@
    "question": "الشحن لـعمان بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3172",
+    "3163",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -689,7 +689,7 @@
    "question": "الشحن لـالأردن بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1590",
+    "1585",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -712,7 +712,7 @@
    "question": "الشحن لـلبنان بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3365",
+    "3354",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -724,7 +724,7 @@
    "question": "الشحن لـالعراق بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3750",
+    "3739",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
