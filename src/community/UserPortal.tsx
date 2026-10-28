@@ -357,6 +357,8 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
 
   /* The Security Checkup (Google/Meta style): every recommendation below is a real gap in the account. */
   const { data: sessions, reload: reloadSessions } = useLoad(() => cx<SessionInfo[]>('/community/me/sessions'));
+  const { data: authConfig, loading: authConfigLoading, error: authConfigError } = useLoad(() => cx<{ whatsappOtp: boolean }>('/community/auth/config'));
+  const whatsappAvailable = authConfig?.whatsappOtp === true;
   const oldAccount = new Date(me.createdAt).getTime() < Date.now() - 365 * 86_400_000;
   const checks: { ok: boolean; label: [string, string] }[] = [
     { ok: Boolean(me.emailVerified), label: [me.emailVerified ? 'البريد الإلكتروني مؤكد' : 'أكّد بريدك الإلكتروني', me.emailVerified ? 'E-mail verified' : 'Verify your e-mail'] },
@@ -441,7 +443,7 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
   };
 
   /* Phone 2FA (WhatsApp/SMS) — optional, suggested like Google prompt */
-  const [phoneMethod, setPhoneMethod] = useState<'sms'|'whatsapp'>('whatsapp');
+  const [phoneMethod, setPhoneMethod] = useState<'sms'|'whatsapp'>('sms');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phonePw, setPhonePw] = useState('');
   const [phoneCode, setPhoneCode] = useState('');
@@ -451,7 +453,7 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
     try {
       const res = await cx<{ ok: boolean; method: string; phone: string }>('/community/me/2fa/phone/setup', { body: { phone: phoneNumber, method: phoneMethod, password: phonePw } });
       setPhoneStage('code');
-      toast(t('اتبع الكود على ' + (phoneMethod==='whatsapp'?'واتساب':'الموبايل') + ' ' + res.phone, `Code sent via ${res.method} to ${res.phone}`));
+      toast(t('طلبنا إرسال كود عبر ' + (phoneMethod==='whatsapp'?'واتساب':'SMS') + ' للرقم ' + res.phone, `Requested a ${res.method} code for ${res.phone}`));
     } catch (e) { toast(errorText(e, lang)); } finally { setBusy(''); }
   };
   const confirmPhone2fa = async () => {
@@ -460,6 +462,13 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
       await cx('/community/me/2fa/phone/confirm', { body: { code: phoneCode } });
       setPhoneStage('idle'); setPhoneNumber(''); setPhonePw(''); setPhoneCode('');
       await refreshMe(); toast(t('تم تفعيل التحقق بخطوتين عبر الهاتف ✅', 'Phone 2-step is on ✅'));
+    } catch (e) { toast(errorText(e, lang)); } finally { setBusy(''); }
+  };
+  const cancelPhoneSetup = async () => {
+    setBusy('phone-cancel');
+    try {
+      await cx('/community/me/2fa/phone/cancel', { body: { password: phonePw } });
+      setPhoneStage('idle'); setPhoneNumber(''); setPhonePw(''); setPhoneCode('');
     } catch (e) { toast(errorText(e, lang)); } finally { setBusy(''); }
   };
   const disablePhone2fa = async () => {
@@ -579,17 +588,25 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
 
       <Card className="p-5">
         <h3 className="mb-1 flex items-center gap-2 font-bold"><Smartphone className="h-4 w-4 text-emerald-600" />{t('التحقق بالهاتف (واتساب / SMS)', 'Phone verification (WhatsApp / SMS)')}</h3>
-        <p className="mb-3 text-xs text-stone-500">{t('مستوى حماية إضافي مقترح — زي جوجل: كود 6 أرقام يوصلك على واتساب أو SMS. مش إلزامي بس مقترح بشدة.', 'Extra protection — like Google: a 6-digit code to your WhatsApp or SMS. Optional but strongly suggested.')}</p>
+        <p className="mb-3 text-xs text-stone-500">{t(
+          authConfigLoading ? 'بنتحقق من إعداد واتساب على السيرفر…' : authConfigError ? 'مش قادرين نتحقق من إعداد واتساب دلوقتي؛ خيار واتساب مخفي لحد ما الحالة تتأكد.' : whatsappAvailable ? 'مستوى حماية إضافي اختياري — كود على واتساب أو SMS. مفتاح المرور أو تطبيق المصادقة أقوى.' : 'مستوى حماية إضافي اختياري عبر SMS. واتساب هيظهر بعد إعداد Meta على السيرفر؛ مفتاح المرور أو تطبيق المصادقة أقوى.',
+          authConfigLoading ? 'Checking WhatsApp settings on the server…' : authConfigError ? 'We could not check WhatsApp settings; the option stays hidden until availability can be confirmed.' : whatsappAvailable ? 'Optional extra protection by WhatsApp or SMS. A passkey or authenticator app is stronger.' : 'Optional extra protection by SMS. WhatsApp appears after Meta is configured on the server; a passkey or authenticator app is stronger.',
+        )}</p>
         {(me as any).phone2fa?.enabled ? (
-          <div className="flex items-center justify-between gap-3">
-            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">{t('مفعّل ✅ عبر', 'On ✅ via')} {(me as any).phone2fa?.method === 'whatsapp' ? 'WhatsApp' : 'SMS'}</span>
-            <Btn small variant="soft" busy={busy === 'phone-disable'} onClick={() => void disablePhone2fa()}>{t('إيقاف', 'Turn off')}</Btn>
-          </div>
+          <>
+            <div className="flex items-center justify-between gap-3">
+              <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">{t('مفعّل ✅ عبر', 'On ✅ via')} {(me as any).phone2fa?.method === 'whatsapp' ? 'WhatsApp' : 'SMS'}</span>
+              <Btn small variant="soft" busy={busy === 'phone-disable'} onClick={() => void disablePhone2fa()}>{t('إيقاف', 'Turn off')}</Btn>
+            </div>
+            {(me as any).phone2fa?.method === 'whatsapp' && !authConfigLoading && !whatsappAvailable && <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">{authConfigError
+              ? t('مش قادرين نتحقق من خدمة واتساب دلوقتي؛ كود الدخول ممكن ما يوصلش. كلم الإدارة أو استخدم مفتاح مرور/تطبيق المصادقة.', 'WhatsApp status could not be checked; sign-in codes may fail. Contact the administration or use a passkey/authenticator.')
+              : t('إعداد Meta لواتساب مش متاح على السيرفر دلوقتي؛ أكواد الدخول ممكن ما تتبعتش. كلم الإدارة أو استخدم مفتاح مرور/تطبيق المصادقة.', 'Meta WhatsApp settings are not available on the server, so sign-in codes may fail. Contact the administration or use a passkey/authenticator.')}</p>}
+          </>
         ) : phoneStage === 'code' ? (
           <div className="flex flex-wrap items-center gap-2">
             <input className={`${inputClass} w-32 text-center tracking-[0.35em]`} inputMode="numeric" maxLength={6} placeholder="••••••" value={phoneCode} onChange={(e) => setPhoneCode(e.target.value.replace(/\D/g, ''))} dir="ltr" />
             <Btn small busy={busy === 'phone-confirm'} disabled={phoneCode.length !== 6} onClick={() => void confirmPhone2fa()}>{t('تأكيد التفعيل', 'Confirm')}</Btn>
-            <Btn small variant="soft" onClick={() => setPhoneStage('idle')}>{t('رجوع', 'Back')}</Btn>
+            <Btn small variant="soft" busy={busy === 'phone-cancel'} onClick={() => void cancelPhoneSetup()}>{t('إلغاء', 'Cancel')}</Btn>
           </div>
         ) : (
           <div className="space-y-3">
@@ -597,11 +614,11 @@ function Security({ lang, me, toast, go }: { lang: Lang; me: Me; toast: (s: stri
               <p className="rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-900">{t('💡 مقترح: فعّل التحقق بخطوتين عبر واتساب/SMS لحماية أقوى — زي ما جوجل وآبل بيعملوا.', '💡 Suggested: turn on phone 2-step via WhatsApp/SMS for stronger protection — like Google and Apple do.')}</p>
             )}
             <div className="flex flex-wrap items-center gap-2">
-              <select className={`${inputClass} w-36`} value={phoneMethod} onChange={(e) => setPhoneMethod(e.target.value as any)}>
-                <option value="whatsapp">WhatsApp</option>
+              <select className={`${inputClass} w-36`} value={phoneMethod} onChange={(e) => setPhoneMethod(e.target.value as 'sms' | 'whatsapp')}>
+                {whatsappAvailable && <option value="whatsapp">WhatsApp</option>}
                 <option value="sms">SMS</option>
               </select>
-              <input className={`${inputClass} w-48`} placeholder={t('رقم الهاتف مع كود البلد', 'Phone with country code')} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} dir="ltr" />
+              <input className={`${inputClass} w-48`} type="tel" inputMode="tel" autoComplete="tel" placeholder="+201001234567" aria-label={t('رقم الهاتف بالصيغة الدولية', 'Phone number in international format')} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} dir="ltr" />
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <input className={`${inputClass} w-56`} type="password" placeholder={t('كلمة المرور للتأكيد', 'Password to confirm')} value={phonePw} onChange={(e) => setPhonePw(e.target.value)} dir="ltr" />

@@ -31,6 +31,7 @@ const SERVER_ERRORS: Record<string, string> = {
   COMMON_PASSWORD: 'err_password', INVALID_EMAIL: 'err_missing_fields',
   ACCOUNT_SUSPENDED: 'err_login_failed', RATE_LIMITED: 'err_login_failed',
   ACCOUNT_LOCKED: 'err_account_locked', EMAIL_UNAVAILABLE: 'err_email_unavailable',
+  WHATSAPP_UNAVAILABLE: 'err_whatsapp_unavailable', INVALID_PHONE: 'err_phone_invalid',
   CODE_LIMITED: 'err_code_limited', CODE_INVALID: 'err_code_invalid',
 };
 
@@ -93,6 +94,7 @@ export interface AuthResponse {
   /** Two-factor login: the password passed; the authenticator or phone code finishes it. */
   pendingToken?: string;
   method?: 'totp' | 'phone';
+  phoneMethod?: 'sms' | 'whatsapp';
   /** TOTP secret returned once at registration when enable2fa was chosen. */
   totpSecret?: string;
 }
@@ -117,7 +119,7 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
     }
     try {
       const result = await cx<AuthResult | PendingLogin>('/community/auth/login', { body: { email, password } });
-      if ('pending' in result) return { success: false, error: 'totp_required', pendingToken: result.pendingToken, method: (result as any).method || 'totp' };
+      if ('pending' in result) return { success: false, error: 'totp_required', pendingToken: result.pendingToken, method: result.method || 'totp', phoneMethod: result.phoneMethod };
       setSessionToken(result.token);
       const user = profileFromMember(result.me);
       localStorage.setItem(USER_AUTH_STORAGE_KEY, JSON.stringify(user));
@@ -181,7 +183,8 @@ export async function registerUser(
   password: string,
   craftLevel: CraftLevel = 'perfumer',
   regionId?: string,
-  enable2fa?: boolean
+  enable2fa?: boolean,
+  requireServer = false
 ): Promise<AuthResponse> {
   try {
     try {
@@ -192,6 +195,7 @@ export async function registerUser(
       return { success: true, user };
     } catch (error) {
       if (!serverUnavailable(error)) return { success: false, error: SERVER_ERRORS[(error as CommunityApiError).code] || 'err_register_failed' };
+      if (requireServer) return { success: false, error: 'err_server_required' };
     }
     const rawUsers = localStorage.getItem(REGISTERED_USERS_KEY);
     let users: Array<UserProfile & { passwordHash?: string; password?: string }> = rawUsers ? JSON.parse(rawUsers) : [];

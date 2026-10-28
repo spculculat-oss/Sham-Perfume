@@ -8,8 +8,10 @@ import type { Row, Sql } from './db';
 import { hashPassword, newId, newToken, tokenHash, verifyPassword, type Vault } from './crypto';
 import { checkCode, issueCode, type CodePurpose } from './codes';
 import { isCommonPassword } from './passwords';
+import { parsePhoneNumberFromString, type CountryCode } from 'libphonenumber-js/min';
 import { codeMail, sendAuthEmail } from './notify';
 import { newTotpSecret, otpauthUri, verifyTotp } from './totp';
+import { metaWhatsAppReady, sendMetaWhatsAppCode } from './whatsapp';
 import { cborDecode, coseToPublicKey, newChallenge, rpIdOf, verifyAssert, verifyCreate } from './webauthn';
 
 export interface Ctx { sql: Sql; vault: Vault; fx?: () => Promise<FxTable>; now?: () => Date; env?: Record<string, string | undefined> }
@@ -32,6 +34,11 @@ const auditEvent = (ctx: Ctx, actor: string, action: string, target = '', detail
 
 /** The environment for e-mail providers (tests pass an empty one, so no real e-mail can leak out). */
 const envOf = (ctx: Ctx) => ctx.env ?? process.env;
+
+/** Public capability only; never expose the Meta token, sender ID, template or Graph version. */
+export function authPublicConfig(env: Record<string, string | undefined> = process.env) {
+  return { whatsappOtp: metaWhatsAppReady(env) };
+}
 
 export class CommunityError extends Error {
   constructor(public status: number, public code: string, message = code) { super(message); }
@@ -188,7 +195,7 @@ export async function register(ctx: Ctx, input: RegisterInput, agent = '', ip = 
   return { ...(await startSession(ctx, id, agent, ip)), me: await me(ctx, id), ...(totpSecret ? { totpSecret } : {}) };
 }
 
-export interface LoginPending { pending: true; pendingToken: string; expiresIn: number; method?: 'totp' | 'phone' }
+export interface LoginPending { pending: true; pendingToken: string; expiresIn: number; method?: 'totp' | 'phone'; phoneMethod?: 'sms' | 'whatsapp' }
 export interface LoginSuccess { token: string; expiresAt: string; me: Awaited<ReturnType<typeof me>> }
 export type LoginOutcome = LoginPending | LoginSuccess;
 
@@ -220,11 +227,10 @@ export async function login(ctx: Ctx, input: { email?: unknown; password?: unkno
     const { token, hash } = newToken();
     await ctx.sql.query(`INSERT INTO pending_logins (token_hash, user_id, agent, ip, expires_at) VALUES ($1,$2,$3,$4,$5)`,
       [hash, row.id, clean(agent, 200), clean(ip, 64), new Date(Date.now() + PENDING_LOGIN_MS).toISOString()]);
-    if (row.phone_2fa_enabled) {
-      try { await sendPhoneCodeForUser(ctx, row.id); } catch {}
-    }
+    // The client explicitly requests the second-factor code after showing the correct channel UI.
     auditEvent(ctx, row.id, 'login_2fa_started');
-    return { pending: true, pendingToken: token, expiresIn: Math.round(PENDING_LOGIN_MS / 1000), method: row.phone_2fa_enabled ? 'phone' as const : 'totp' as const };
+    return { pending: true, pendingToken: token, expiresIn: Math.round(PENDING_LOGIN_MS / 1000), method: row.phone_2fa_enabled ? 'phone' as const : 'totp' as const,
+      ...(row.phone_2fa_enabled ? { phoneMethod: row.phone_2fa_method === 'whatsapp' ? 'whatsapp' as const : 'sms' as const } : {}) };
   }
   auditEvent(ctx, row.id, 'login_ok', '', `${clean(agent, 80)} ${ip}`.trim());
   return { ...(await startSession(ctx, row.id, agent, ip)), me: await me(ctx, row.id) };
@@ -270,6 +276,9 @@ export async function logout(ctx: Ctx, token: string, everywhere = false) {
 
 /** Everything the signed-in user may see about themself (their own private data decrypted). */
 export async function me(ctx: Ctx, userId: string) {
+  // Abandoned verification destinations are retained only until their one-time code expires.
+  await ctx.sql.query(`UPDATE users SET phone_2fa_pending_phone_enc = NULL, phone_2fa_pending_method = '', phone_2fa_pending_expires_at = NULL
+    WHERE id = $1 AND phone_2fa_pending_phone_enc IS NOT NULL AND (phone_2fa_pending_expires_at IS NULL OR phone_2fa_pending_expires_at <= now())`, [userId]);
   const [u] = await ctx.sql.query(`SELECT * FROM users WHERE id = $1`, [userId]);
   if (!u) fail(404, 'NOT_FOUND');
   const [m] = await ctx.sql.query(`SELECT slug, store_name, status, admin_note FROM merchants WHERE user_id = $1`, [userId]);
@@ -680,16 +689,15 @@ export async function loginWithGoogle(ctx: Ctx, input: { idToken?: unknown; acce
   const info = await verifyGoogleToken(token, env);
   if (!info) fail(401, 'OAUTH_INVALID', 'google');
   const userId = await oauthFindOrCreate(ctx, info!.email, info!.name, 'google', info!.subject, info!.picture);
-  const [u] = await ctx.sql.query(`SELECT totp_enabled, phone_2fa_enabled, status FROM users WHERE id = $1`, [userId]);
+  const [u] = await ctx.sql.query(`SELECT totp_enabled, phone_2fa_enabled, phone_2fa_method, status FROM users WHERE id = $1`, [userId]);
   if (u?.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
   if (u?.totp_enabled || u?.phone_2fa_enabled) {
     const { token: pending, hash } = newToken();
     await ctx.sql.query(`INSERT INTO pending_logins (token_hash, user_id, agent, ip, expires_at) VALUES ($1,$2,$3,$4,$5)`, [hash, userId, clean(agent, 200), clean(ip, 64), new Date(Date.now() + PENDING_LOGIN_MS).toISOString()]);
-    if (u?.phone_2fa_enabled) {
-      try { await sendPhoneCodeForUser(ctx, userId); } catch {}
-    }
+    // The client requests the one-time code after it knows the configured factor channel.
     auditEvent(ctx, userId, 'login_2fa_started', 'oauth_google');
-    return { pending: true, pendingToken: pending, expiresIn: Math.round(PENDING_LOGIN_MS / 1000), method: u?.phone_2fa_enabled ? 'phone' as const : 'totp' as const };
+    return { pending: true, pendingToken: pending, expiresIn: Math.round(PENDING_LOGIN_MS / 1000), method: u?.phone_2fa_enabled ? 'phone' as const : 'totp' as const,
+      ...(u?.phone_2fa_enabled ? { phoneMethod: u.phone_2fa_method === 'whatsapp' ? 'whatsapp' as const : 'sms' as const } : {}) };
   }
   auditEvent(ctx, userId, 'login_ok', '', 'oauth_google');
   return { ...(await startSession(ctx, userId, agent || 'oauth_google', ip)), me: await me(ctx, userId) };
@@ -703,89 +711,151 @@ export async function loginWithFacebook(ctx: Ctx, input: { accessToken?: unknown
   const info = await verifyFacebookToken(token, env);
   if (!info) fail(401, 'OAUTH_INVALID', 'facebook');
   const userId = await oauthFindOrCreate(ctx, info!.email, info!.name, 'facebook', info!.subject, info!.picture);
-  const [u] = await ctx.sql.query(`SELECT totp_enabled, phone_2fa_enabled, status FROM users WHERE id = $1`, [userId]);
+  const [u] = await ctx.sql.query(`SELECT totp_enabled, phone_2fa_enabled, phone_2fa_method, status FROM users WHERE id = $1`, [userId]);
   if (u?.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
   if (u?.totp_enabled || u?.phone_2fa_enabled) {
     const { token: pending, hash } = newToken();
     await ctx.sql.query(`INSERT INTO pending_logins (token_hash, user_id, agent, ip, expires_at) VALUES ($1,$2,$3,$4,$5)`, [hash, userId, clean(agent, 200), clean(ip, 64), new Date(Date.now() + PENDING_LOGIN_MS).toISOString()]);
-    if (u?.phone_2fa_enabled) {
-      try { await sendPhoneCodeForUser(ctx, userId); } catch {}
-    }
+    // The client requests the one-time code after it knows the configured factor channel.
     auditEvent(ctx, userId, 'login_2fa_started', 'oauth_facebook');
-    return { pending: true, pendingToken: pending, expiresIn: Math.round(PENDING_LOGIN_MS / 1000), method: u?.phone_2fa_enabled ? 'phone' as const : 'totp' as const };
+    return { pending: true, pendingToken: pending, expiresIn: Math.round(PENDING_LOGIN_MS / 1000), method: u?.phone_2fa_enabled ? 'phone' as const : 'totp' as const,
+      ...(u?.phone_2fa_enabled ? { phoneMethod: u.phone_2fa_method === 'whatsapp' ? 'whatsapp' as const : 'sms' as const } : {}) };
   }
   auditEvent(ctx, userId, 'login_ok', '', 'oauth_facebook');
   return { ...(await startSession(ctx, userId, agent || 'oauth_facebook', ip)), me: await me(ctx, userId) };
 }
 
 /* ---------------------------------- Phone 2FA (WhatsApp/SMS) ----------------------------------
- * Optional second factor via phone — suggested but not required (user choice, like Google prompt).
- * Code is sent via SMS/WhatsApp provider (Twilio, SHAM_SMS_WEBHOOK) or mock in tests.
+ * Optional second factor; a phone is not active until its one-time code is confirmed.
+ * WhatsApp uses Meta's approved template. SMS may use Twilio or a dedicated webhook.
  */
 
-async function sendPhoneCode(phone: string, code: string, method: string, env: Record<string, string | undefined>): Promise<{ delivered: boolean; error?: string }> {
-  const to = phone.replace(/\D/g, '').slice(-15);
-  if (!to) return { delivered: false, error: 'no phone' };
-  // Mock mode for tests/dev
-  if (env.SHAM_ALLOW_MOCK_SMS === '1' || env.SHAM_ALLOW_MOCK_OAUTH === '1') {
-    console.info(`[community] mock ${method} code ${code} to ${to}`);
-    return { delivered: true };
+async function sendPhoneCode(phone: string, code: string, method: string, env: Record<string, string | undefined>): Promise<{ delivered: boolean }> {
+  if (!/^\+[1-9]\d{7,14}$/.test(phone) || !/^\d{6}$/.test(code)) return { delivered: false };
+  // Tests only: never print or persist a code, phone number, or provider response.
+  if (env.NODE_ENV === 'test' && (env.SHAM_ALLOW_MOCK_SMS === '1' || env.SHAM_ALLOW_MOCK_OAUTH === '1')) return { delivered: true };
+
+  if (method === 'whatsapp') {
+    const result = await sendMetaWhatsAppCode(phone, code, env);
+    return { delivered: result.accepted };
   }
-  // Twilio SMS
+  if (method !== 'sms') return { delivered: false };
+
+  // Twilio SMS (not WhatsApp — channels are never silently substituted).
   if (env.TWILIO_ACCOUNT_SID?.trim() && env.TWILIO_AUTH_TOKEN?.trim() && env.TWILIO_FROM?.trim()) {
     try {
-      const url = `https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_ACCOUNT_SID}/Messages.json`;
-      const body = new URLSearchParams({ To: `+${to}`, From: env.TWILIO_FROM.trim(), Body: `شام للعطور — كود التحقق ${code} (صالح 5 دقائق)` });
-      const res = await fetch(url, { method: 'POST', headers: { Authorization: `Basic ${Buffer.from(`${env.TWILIO_ACCOUNT_SID}:${env.TWILIO_AUTH_TOKEN}`).toString('base64')}`, 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
-      if (res.ok) return { delivered: true };
-      return { delivered: false, error: await res.text() };
-    } catch (e) { return { delivered: false, error: String(e) }; }
+      const sid = env.TWILIO_ACCOUNT_SID.trim();
+      const url = `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`;
+      const body = new URLSearchParams({ To: phone, From: env.TWILIO_FROM.trim(), Body: `Sham Perfume — verification code ${code} (valid for 10 minutes)` });
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { Authorization: `Basic ${Buffer.from(`${sid}:${env.TWILIO_AUTH_TOKEN}`).toString('base64')}`, 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(), signal: AbortSignal.timeout(8_000),
+      });
+      return { delivered: res.ok };
+    } catch { return { delivered: false }; }
   }
-  // Generic webhook (SHAM_SMS_WEBHOOK_URL receives {to, code, method})
-  if (env.SHAM_SMS_WEBHOOK_URL?.trim() || env.SHAM_WEBHOOK_URL?.trim()) {
-    const url = (env.SHAM_SMS_WEBHOOK_URL || env.SHAM_WEBHOOK_URL)!.trim();
+
+  // A dedicated security-code webhook only; never send OTPs to the general store notification hook.
+  const webhook = env.SHAM_SMS_WEBHOOK_URL?.trim();
+  if (webhook) {
     try {
-      const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ to: `+${to}`, code, method, app: 'sham-perfume' }) });
-      if (res.ok) return { delivered: true };
-      return { delivered: false, error: await res.text() };
-    } catch (e) { return { delivered: false, error: String(e) }; }
+      const res = await fetch(webhook, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: phone, code, method: 'sms', app: 'sham-perfume' }), signal: AbortSignal.timeout(8_000),
+      });
+      return { delivered: res.ok };
+    } catch { return { delivered: false }; }
   }
-  return { delivered: false, error: 'no sms provider' };
+  return { delivered: false };
 }
 
 async function sendPhoneCodeForUser(ctx: Ctx, userId: string): Promise<void> {
-  const [u] = await ctx.sql.query(`SELECT phone_2fa_phone_enc, phone_2fa_method FROM users WHERE id = $1`, [userId]);
+  const [u] = await ctx.sql.query(`SELECT phone_2fa_phone_enc, phone_2fa_method, country FROM users WHERE id = $1`, [userId]);
   if (!u?.phone_2fa_phone_enc) fail(400, 'PHONE_NOT_SET');
-  const phone = ctx.vault.open(u.phone_2fa_phone_enc);
+  const phone = normalizeStoredPhone(ctx.vault.open(u.phone_2fa_phone_enc), u.country);
   const method = u.phone_2fa_method || 'sms';
+  if (method === 'whatsapp' && !metaWhatsAppReady(envOf(ctx))) fail(503, 'WHATSAPP_UNAVAILABLE');
   const code = await issueCode(ctx, userId, 'phone_2fa');
   const sent = await sendPhoneCode(phone, code, method, envOf(ctx));
-  if (!sent.delivered) fail(503, 'SMS_UNAVAILABLE');
+  if (!sent.delivered) fail(503, method === 'whatsapp' ? 'WHATSAPP_UNAVAILABLE' : 'SMS_UNAVAILABLE');
+}
+
+function normalizeE164(value: unknown): string {
+  let phone = clean(value, 40).replace(/[\s().-]/g, '');
+  if (phone.startsWith('00')) phone = `+${phone.slice(2)}`;
+  if (!/^\+[1-9]\d{7,14}$/.test(phone)) fail(400, 'INVALID_PHONE');
+  const parsed = parsePhoneNumberFromString(phone);
+  if (!parsed) return fail(400, 'INVALID_PHONE');
+  if (!parsed.isPossible() || !/^\+[1-9]\d{7,14}$/.test(parsed.number)) return fail(400, 'INVALID_PHONE');
+  return parsed.number;
+}
+
+/**
+ * Older verified phone factors predate strict E.164 input and may be stored as a country-code number
+ * without '+', or as a local number. Canonicalize only for delivery; never guess a country unless the
+ * account has a valid ISO region. This keeps previously verified factors usable without weakening new setup.
+ */
+function normalizeStoredPhone(value: string, country: unknown): string {
+  const raw = value.trim().replace(/[\s().-]/g, '');
+  if (!raw || !/^\+?\d+$/.test(raw)) fail(503, 'PHONE_FORMAT_UNSUPPORTED');
+  const region = isCountry(country) ? country as CountryCode : undefined;
+  const international = raw.startsWith('00') ? `+${raw.slice(2)}` : raw.startsWith('+') ? raw : `+${raw}`;
+  const parsedInternational = parsePhoneNumberFromString(international);
+  if (parsedInternational?.isPossible() && /^\+[1-9]\d{7,14}$/.test(parsedInternational.number)) return parsedInternational.number;
+  if (region) {
+    const parsedNational = parsePhoneNumberFromString(raw.replace(/\D/g, ''), region);
+    if (parsedNational?.isPossible() && /^\+[1-9]\d{7,14}$/.test(parsedNational.number)) return parsedNational.number;
+  }
+  return fail(503, 'PHONE_FORMAT_UNSUPPORTED');
 }
 
 export async function setupPhone2fa(ctx: Ctx, userId: string, input: { phone?: unknown; method?: unknown; password?: unknown }) {
   const [u] = await ctx.sql.query(`SELECT pass_hash FROM users WHERE id = $1`, [userId]);
   if (!u || !(await verifyPassword(String(input.password || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
-  const phone = clean(input.phone, 20).replace(/\s/g, '');
-  if (phone.replace(/\D/g, '').length < 8) fail(400, 'INVALID_PHONE');
+  const phone = normalizeE164(input.phone);
   const method = clean(input.method, 20).toLowerCase();
   if (!['sms', 'whatsapp'].includes(method)) fail(400, 'INVALID_METHOD');
-  try {
-    await ctx.sql.query(`UPDATE users SET phone_2fa_phone_enc = $1, phone_2fa_method = $2 WHERE id = $3`, [ctx.vault.seal(phone), method, userId]);
-  } catch {
-    await ctx.sql.query(`UPDATE users SET phone_2fa_phone_enc = $1 WHERE id = $2`, [ctx.vault.seal(phone), userId]).catch(() => {});
-  }
+  if (method === 'whatsapp' && !metaWhatsAppReady(envOf(ctx))) fail(503, 'WHATSAPP_UNAVAILABLE');
+
+  // Issue first, so a rate-limit rejection never changes the pending destination under a live code.
   const code = await issueCode(ctx, userId, 'phone_2fa');
+  // Keep the currently verified factor active while a replacement number is being checked.
+  const pendingExpiresAt = new Date(Date.now() + 10 * 60_000).toISOString();
+  await ctx.sql.query(`UPDATE users SET phone_2fa_pending_phone_enc = $1, phone_2fa_pending_method = $2, phone_2fa_pending_expires_at = $3 WHERE id = $4`, [ctx.vault.seal(phone), method, pendingExpiresAt, userId]);
   const sent = await sendPhoneCode(phone, code, method, envOf(ctx));
-  if (!sent.delivered) fail(503, 'SMS_UNAVAILABLE');
-  auditEvent(ctx, userId, 'phone_2fa_setup_started', method, phone.slice(-4));
+  if (!sent.delivered) {
+    await ctx.sql.query(`UPDATE users SET phone_2fa_pending_phone_enc = NULL, phone_2fa_pending_method = '', phone_2fa_pending_expires_at = NULL WHERE id = $1`, [userId]).catch(() => {});
+    fail(503, method === 'whatsapp' ? 'WHATSAPP_UNAVAILABLE' : 'SMS_UNAVAILABLE');
+  }
+  auditEvent(ctx, userId, 'phone_2fa_setup_started', method);
   return { ok: true, method, phone: phone.slice(0, 4) + '***' + phone.slice(-3) };
 }
 
 export async function confirmPhone2fa(ctx: Ctx, userId: string, code: unknown) {
+  const [u] = await ctx.sql.query(`SELECT phone_2fa_pending_phone_enc, phone_2fa_pending_method, phone_2fa_pending_expires_at FROM users WHERE id = $1`, [userId]);
+  if (!u?.phone_2fa_pending_phone_enc || !['sms', 'whatsapp'].includes(u.phone_2fa_pending_method || '')) fail(400, 'PHONE_SETUP_NOT_STARTED');
+  if (!u.phone_2fa_pending_expires_at || new Date(u.phone_2fa_pending_expires_at).getTime() <= Date.now()) {
+    await ctx.sql.query(`UPDATE users SET phone_2fa_pending_phone_enc = NULL, phone_2fa_pending_method = '', phone_2fa_pending_expires_at = NULL WHERE id = $1`, [userId]);
+    fail(400, 'CODE_INVALID');
+  }
   if (!(await checkCode(ctx, userId, 'phone_2fa', String(code || '')))) fail(400, 'CODE_INVALID');
-  await ctx.sql.query(`UPDATE users SET phone_2fa_enabled = true, phone_2fa_last = $1 WHERE id = $2`, [Date.now().toString(36), userId]);
+  await ctx.sql.query(
+    `UPDATE users SET phone_2fa_phone_enc = phone_2fa_pending_phone_enc, phone_2fa_method = phone_2fa_pending_method,
+     phone_2fa_pending_phone_enc = NULL, phone_2fa_pending_method = '', phone_2fa_pending_expires_at = NULL, phone_2fa_enabled = true, phone_2fa_last = $1 WHERE id = $2`,
+    [Date.now().toString(36), userId],
+  );
   auditEvent(ctx, userId, 'phone_2fa_enabled');
+  return { ok: true };
+}
+
+export async function cancelPhone2faSetup(ctx: Ctx, userId: string, password: unknown) {
+  const [u] = await ctx.sql.query(`SELECT pass_hash FROM users WHERE id = $1`, [userId]);
+  if (!u || !(await verifyPassword(String(password || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
+  // Clear only the unverified replacement; an already active factor remains untouched.
+  await ctx.sql.query(`UPDATE users SET phone_2fa_pending_phone_enc = NULL, phone_2fa_pending_method = '', phone_2fa_pending_expires_at = NULL WHERE id = $1`, [userId]);
+  await ctx.sql.query(`UPDATE auth_codes SET used_at = now() WHERE user_id = $1 AND purpose = 'phone_2fa' AND used_at IS NULL`, [userId]);
+  auditEvent(ctx, userId, 'phone_2fa_setup_cancelled');
   return { ok: true };
 }
 
@@ -795,7 +865,7 @@ export async function disablePhone2fa(ctx: Ctx, userId: string, password: unknow
   if (!(await verifyPassword(String(password || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
   // Require code if provided, otherwise just password (phone 2FA is second factor itself, password is enough to disable with re-auth)
   if (code && !(await checkCode(ctx, userId, 'phone_2fa', String(code)))) fail(400, 'CODE_INVALID');
-  await ctx.sql.query(`UPDATE users SET phone_2fa_enabled = false, phone_2fa_phone_enc = NULL, phone_2fa_method = '', phone_2fa_last = '' WHERE id = $1`, [userId]);
+  await ctx.sql.query(`UPDATE users SET phone_2fa_enabled = false, phone_2fa_phone_enc = NULL, phone_2fa_method = '', phone_2fa_last = '', phone_2fa_pending_phone_enc = NULL, phone_2fa_pending_method = '', phone_2fa_pending_expires_at = NULL WHERE id = $1`, [userId]);
   auditEvent(ctx, userId, 'phone_2fa_disabled');
   return { ok: true };
 }
