@@ -15,11 +15,12 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { pickSpecialist, SPECIALISTS } from '../../src/utils/shaheenSpecialists';
 import { isShaheenGraph, type ShaheenGraph } from '../../src/utils/shaheenGraph';
-import { convert, shippingCost, type FxTable, type ShippingCosts, type ShippingTable } from '../../src/utils/pricing';
+import { type FxTable, type ShippingCosts, type ShippingTable } from '../../src/utils/pricing';
 import { academyLessons } from '../shaheen-school/curriculum';
 import { collectEars, isEarsReport, type EarsEntry } from './ears';
 import { isExamReport, scoreExam, type ExamAttempt } from './exam';
 import { buildReflex, isReflexReport } from './reflex';
+import { reflexDestinations, tradeSpecialistId, type ShippingLanes, type TradeLanes } from './reflexFiles';
 import { buildStudyPlan, isStudyPlan } from './tutor';
 
 const env = process.env;
@@ -32,41 +33,16 @@ const iso = new Date(now).toISOString().slice(0, 10);
 const graph = read('src/data/live/shaheen-graph.json') as ShaheenGraph;
 if (!isShaheenGraph(graph)) { console.error('::error::شبكة العقل مش موجودة — شغّل سينابس الأول'); process.exit(1); }
 const immune = read('src/data/live/shaheen-immune.json') as { findings: { kind: string; severity: string; subject: string; whatAr: string; fixAr: string }[] };
-const trade = read('src/data/live/trade-lanes.json') as {
-  destinations: {
-    code: string; nameAr: string; promise: string;
-    costEgp: [number, number] | null; costExtraEgp?: number | null;
-    carrier: { id: string; nameAr: string; source?: string | null } | null;
-    customs: { verified: boolean; vatPercent: number | null; source?: string | null };
-  }[];
-  origins: { code: string; nameAr: string; products: number }[];
-};
-const lanes = read('src/data/shipping-lanes.json') as { carriers: { id: string; nameAr: string; dg: boolean | null; source?: string; checkedAt?: string }[] };
+const trade = read('src/data/live/trade-lanes.json') as TradeLanes;
+const lanes = read('src/data/shipping-lanes.json') as ShippingLanes;
 const costs = read('src/data/shipping-costs.json') as ShippingCosts;
 // نفس الجدول اللي الموقع بيحسب بيه: أسعار المناطق + تكلفة كل وجهة الحقيقية.
 const shipping: ShippingTable = { ...(read('src/data/shipping.json') as ShippingTable), costs };
 const fx = read('src/data/live/fx-rates.json') as FxTable;
 const memory = read('src/data/live/shaheen-memory.json') as { entries: { question: string; lang?: string; answer?: string }[] };
 const school = read('src/data/live/shaheen-school.json') as { pending?: { q: string; lang?: string }[] };
-const tradeSpecialistId = SPECIALISTS.find((s) => s.tracks.includes('commerce'))?.id || 'specialist_business';
 
-const carrierOf = (id: string | null | undefined) => (id ? lanes.carriers.find((c) => c.id === id) : undefined);
-const destinations = trade.destinations.map((d) => {
-  const row = costs.countries?.[d.code];
-  const carrier = carrierOf(d.carrier?.id);
-  return {
-    code: d.code, nameAr: d.nameAr,
-    costUsd: row ? Number(row.firstItem) : null,
-    extraUsd: row ? Number(row.extraItem) : null,
-    chargedEgp: row ? Math.round(convert(shippingCost(d.code, 1, shipping), shipping.currency, 'EGP', fx) * 100) / 100 : null,
-    carrierId: d.carrier?.id || null, carrierNameAr: d.carrier?.nameAr || null,
-    carrierSource: d.carrier?.source || carrier?.source || null,
-    carrierCheckedAt: carrier?.checkedAt || costs.checkedAt || null,
-    carrierDg: carrier?.dg ?? null,
-    customsVerified: Boolean(d.customs.verified), vatPercent: d.customs.vatPercent,
-    customsSource: d.customs.source || 'src/data/customs.json',
-  };
-});
+const destinations = reflexDestinations(trade, lanes, costs, shipping, fx);
 
 // ── 1) الآذان: اللي بيتسأل فعلاً ────────────────────────────────────────────────────────────────
 const entries: EarsEntry[] = [

@@ -26,6 +26,10 @@ export interface ReflexInput {
 }
 
 const money = (value: number) => Math.round(value * 100) / 100;
+/** The destination in English for the English answer («Shipping to Egypt», never «to مصر»). */
+const nameEn = (code: string, fallback: string) => {
+  try { return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || fallback; } catch { return fallback; }
+};
 
 export function buildReflex(input: ReflexInput): ReflexFile {
   const entries: ReflexEntry[] = [];
@@ -48,7 +52,7 @@ export function buildReflex(input: ReflexInput): ReflexFile {
         `المصدر: ${source} · ${date}`,
       ].join('\n');
       const answerEn = [
-        `Shipping for the first bottle to ${d.nameAr}: ${Math.round(inEgp(charged))} EGP.`,
+        `Shipping for the first bottle to ${nameEn(d.code, d.nameAr)}: ${Math.round(inEgp(charged))} EGP.`,
         `Built on the carrier's published cost (${Math.round(inEgp(real))} EGP) + a ${Math.round(inEgp(fee))} EGP handling margin — so the store's 50% stays net.`,
         d.customsVerified && d.vatPercent !== null ? `Customs: ${d.vatPercent}% VAT is added in your country.` : 'Customs: not verified yet — confirmed before payment.',
         'Perfume is UN1266 (flammable); the final price is confirmed before payment.',
@@ -76,7 +80,7 @@ export function buildReflex(input: ReflexInput): ReflexFile {
           `المصدر: src/data/shipping.json · ${date}`,
         ].join('\n'),
         answerEn: [
-          `Shipping for the first bottle to ${d.nameAr}: ${Math.round(inEgp(charged))} EGP (zone «${zone.name.en}»).`,
+          `Shipping for the first bottle to ${nameEn(d.code, d.nameAr)}: ${Math.round(inEgp(charged))} EGP (zone «${zone.name.en}»).`,
           'No published carrier rate covers this lane yet, so this is an estimate from the zone table — confirmed before payment.',
           d.customsVerified && d.vatPercent !== null ? `Customs: ${d.vatPercent}% VAT is added in your country.` : 'Customs: not verified yet — confirmed before payment.',
           'Perfume is UN1266 (flammable); the final price is confirmed before payment.',
@@ -96,7 +100,7 @@ export function buildReflex(input: ReflexInput): ReflexFile {
           'الرسوم الجمركية بتتحدد بالبند وبلد المنشأ، وبتتأكد قبل الدفع — مفيش رقم مخترع.',
           `المصدر: ${customsSource}`,
         ].join('\n'),
-        answerEn: `Customs for ${d.nameAr}: ${d.vatPercent}% VAT on the parcel, paid by the buyer on top of shipping. Duties depend on the item and the origin and are confirmed before payment.\nSource: ${customsSource}`,
+        answerEn: `Customs for ${nameEn(d.code, d.nameAr)}: ${d.vatPercent}% VAT on the parcel, paid by the buyer on top of shipping. Duties depend on the item and the origin and are confirmed before payment.\nSource: ${customsSource}`,
         source: customsSource, checkedAt: d.carrierCheckedAt || new Date(input.now).toISOString().slice(0, 10), specialistId: input.tradeSpecialistId,
       });
     }
