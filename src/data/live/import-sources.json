@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-27T18:54:26.964Z",
+ "updatedAt": "2026-10-28T01:10:11.638Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -656,12 +656,12 @@
    "foundBy": "brand-site",
    "foundWith": "Zimaya",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T00:55:57.475Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-28T01:10:11.638Z",
    "trust": {
     "score": 82,
     "verdict": "trusted",
-    "at": "2026-10-21T00:55:57.475Z",
+    "at": "2026-10-28T01:10:11.638Z",
     "checks": [
      {
       "id": "age",
@@ -762,12 +762,12 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "AED",
-   "rateToEgp": 14.8364,
+   "rateToEgp": 15.2737,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*zimayaperfumes\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://zimayaperfumes.com/sitemap_agentic_discovery.xml",
     "https://zimayaperfumes.com/sitemap_products_1.xml?from=7703824531526&to=8509335994438",
-    "https://zimayaperfumes.com/sitemap_pages_1.xml?from=95037456454&to=95037915206",
+    "https://zimayaperfumes.com/sitemap_pages_1.xml?from=95037685830&to=95037915206",
     "https://zimayaperfumes.com/sitemap_collections_1.xml?from=284715122758&to=314055458886",
     "https://zimayaperfumes.com/sitemap_blogs_1.xml",
     "https://zimayaperfumes.com/sitemap_articles_1.xml"
@@ -7368,6 +7368,19 @@
  ],
  "runs": [
   {
+   "at": "2026-10-28T01:10:11.638Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ zimayaperfumes.com: CV 82/100 [age,https,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ zimayaperfumes.com (CV 82/100): 106 perfumes, 3/6 pages read without AI, AED (1 = 15.2737 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-10-27T18:54:26.964Z",
    "mode": "self",
    "found": 0,
@@ -7703,17 +7716,6 @@
   },
   {
    "at": "2026-10-23T00:58:57.297Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T21:08:54.861Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
