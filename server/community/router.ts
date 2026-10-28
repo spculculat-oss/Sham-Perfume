@@ -178,6 +178,7 @@ export function createCommunityRouter(community: Community, options: { env?: Env
     if (!authLimiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many attempts, please wait a minute', code: 'RATE_LIMITED' }); return; }
     return handler(req, res);
   };
+  router.get('/community/auth/config', limitedAuth(open(async () => svc.authPublicConfig(env))));
   router.post('/community/auth/register', limitedAuth(open(async (ctx, req) => {
     const out = await svc.register(ctx, req.body || {}, agent(req), ip(req));
     // The platform's first official letter: every new member finds a welcome mail in «بريد شام».
@@ -220,6 +221,7 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   /* Phone 2FA (WhatsApp/SMS) — optional, suggested (Google prompt style) */
   router.post('/community/me/2fa/phone/setup', member(async (ctx, u, req) => svc.setupPhone2fa(ctx, u.id, req.body || {})));
   router.post('/community/me/2fa/phone/confirm', member(async (ctx, u, req) => svc.confirmPhone2fa(ctx, u.id, req.body?.code)));
+  router.post('/community/me/2fa/phone/cancel', member(async (ctx, u, req) => svc.cancelPhone2faSetup(ctx, u.id, req.body?.password)));
   router.post('/community/me/2fa/phone/disable', member(async (ctx, u, req) => svc.disablePhone2fa(ctx, u.id, req.body?.password, req.body?.code)));
   router.post('/community/auth/login/phone/request', limitedAuth(open((ctx, req) => svc.requestPhoneLoginCode(ctx, String(req.body?.pendingToken || '')))));
   router.post('/community/auth/login/phone/verify', limitedAuth(open((ctx, req) => svc.verifyPhoneLoginCode(ctx, req.body || {}))));
