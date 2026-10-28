@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-10-28T07:36:34.807Z",
- "nextUpdateAt": "2026-10-28T19:36:34.807Z",
+ "updatedAt": "2026-10-28T09:21:19.659Z",
+ "nextUpdateAt": "2026-10-28T21:21:19.659Z",
  "editor": "shaheen",
  "entries": {
   "LAT-052": {
@@ -10431,16 +10431,15 @@
   "LAT-276": {
    "sourceHash": "rong3z",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "أنسام جولد من لطافة برايد",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "أنغام جولد من لطافة برايد ماء عطر 100 مل",
    "nameEn": "Ansaam Gold by Lattafa Pride 100ml EDP",
-   "descriptionAr": "عطر نسائي أنيق يفيض بالجاذبية مع تولفة ساحرة من الكمثرى واليوسفي وقلب زهري وحلويات مبهجة. ترتكز قاعدته على الفانيليا والمسك لنفحات ناعمة.",
-   "descriptionEn": "Ansaam Gold by Lattafa Pride is an enchanting women's fragrance with luscious fruits, sweet candy notes, and a warm vanilla-musk dry-down.",
+   "descriptionAr": "عطر نسائي يفتتح بنوتات الكمثرى واليوسفي، ويستقر في القلب والقاعدة على مزيج من الورد والياسمين والتوت والمسك والفانيليا.",
+   "descriptionEn": "Ansaam Gold by Lattafa Pride opens with top notes of pear and mandarin, leading to a heart and base of rose, jasmine, raspberry, musk, and vanilla.",
    "gender": "women",
    "families": [
     "floral",
-    "fruity",
-    "gourmand"
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -10460,8 +10459,7 @@
    },
    "seasons": [
     "spring",
-    "autumn",
-    "all"
+    "summer"
    ],
    "occasions": [
     "daily",
@@ -10469,24 +10467,24 @@
    ],
    "tags": [
     "لطافة برايد",
-    "أنسام جولد",
     "عطر نسائي",
-    "عطر فانيليا",
-    "عطور حلوة"
-   ]
+    "أنغام جولد",
+    "Lattafa Pride",
+    "Ansaam Gold"
+   ],
+   "style": 2
   },
   "LAT-277": {
    "sourceHash": "1iku1wc",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "أجواد من لطافة",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "أجواد من لطافة ماء عطر 60 مل",
    "nameEn": "Ajwad by Lattafa EDP 60ml Unisex",
-   "descriptionAr": "عطر متوازن للجنسين يجمع بين الفواكه العصارية والزهور الناعمة مع قاعدة خشبية كريمية دافئة. يمنحك حضوراً أنيقاً وعصرياً يناسب الإطلالات اليومية والمسائية.",
-   "descriptionEn": "Ajwad by Lattafa is a smooth unisex fragrance that balances juicy fruits, airy florals, and a creamy woody base.",
+   "descriptionAr": "عطر محايد يجمع بين نوتات البرغموت والليتشي والفواكه، مع قلب من الياسمين والورد والقرفة، وقاعدة خشبية كريمية من خشب الأرز وخشب الصندل والعنبر والمسك والفانيليا.",
+   "descriptionEn": "Ajwad by Lattafa is a unisex fragrance combining bergamot, litchi, and fruity notes, with a heart of jasmine, rose, and cinnamon, over a creamy woody base of cedar, sandalwood, amber, musk, and vanilla.",
    "gender": "unisex",
    "families": [
     "fruity",
-    "floral",
     "woody"
    ],
    "notes": {
@@ -10519,22 +10517,22 @@
     "لطافة",
     "أجواد",
     "عطر للجنسين",
-    "عطور يومية",
-    "أخشاب وكريمي"
-   ]
+    "Lattafa",
+    "Ajwad"
+   ],
+   "style": 2
   },
   "LAT-278": {
    "sourceHash": "gicf0d",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "إكلير بانوفي من لطافة",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "إيكلير بانوفي من لطافة ماء عطر 100 مل",
    "nameEn": "Eclaire Banoffi by Lattafa 100ml EDP Unisex",
-   "descriptionAr": "عطر غورماند دافئ للجنسين يغمر حواسك بنكهات الكراميل والموز الشهية المتبلة بلمسات القرفة الناعمة. يستقر على قاعدة غنية من الفانيليا والمسك والعنبر.",
-   "descriptionEn": "Eclaire Banoffi by Lattafa is a delectable unisex gourmand fragrance featuring notes of banana, caramel, and warm spices over vanilla and musk.",
+   "descriptionAr": "عطر محايد يفتتح بنوتات القرفة والكراميل والموز، مع قلب من حبوب التونكا وجوزة الطيب والباتشولي، وقاعدة من العنبر والفانيليا والمسك.",
+   "descriptionEn": "Eclaire Banoffi by Lattafa opens with cinnamon, caramel, and banana, featuring a heart of tonka bean, nutmeg, and patchouli, resting on a base of amber, vanilla, and musk.",
    "gender": "unisex",
    "families": [
     "gourmand",
-    "spicy",
     "amber"
    ],
    "notes": {
@@ -10564,20 +10562,21 @@
    ],
    "tags": [
     "لطافة",
-    "إكلير بانوفي",
-    "عطر كراميل",
-    "عطر فانيليا",
-    "عطور غورماند"
-   ]
+    "إيكلير بانوفي",
+    "عطر للجنسين",
+    "Lattafa",
+    "Eclaire Banoffi"
+   ],
+   "style": 2
   },
   "LAT-279": {
    "sourceHash": "1jgsw4c",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "خلطة بليند من لطافة",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "خلطة بليند أوف لطافة ماء عطر 100 مل",
    "nameEn": "Khalta Blend Of Lattafa Eau De Parfum 100ml",
-   "descriptionAr": "عطر شرقي خشبي فاخر للجنسين يفتتح بالتوابل الدافئة والزعفران ليقودك إلى قلب غني بالورد والأخشاب الثمينة. تتميز قاعدته ببصمة عميقة من العود والعنبر والفانيليا.",
-   "descriptionEn": "Khalta Blend Of Lattafa is a rich oriental woody fragrance featuring warm spices, precious woods, oud, and amber.",
+   "descriptionAr": "عطر محايد يبدأ بنوتات التوابل الدافئة والقرفة والزعفران، ويمر بقلب من الورد والباتشولي والأخشاب، وينتهي بقاعدة من العنبر والعود والفانيليا والمسك.",
+   "descriptionEn": "Khalta Blend Of Lattafa opens with warm spices, cinnamon, and saffron, revealing a heart of rose, patchouli, and woods, with a dry down of amber, oud, vanilla, and musk.",
    "gender": "unisex",
    "families": [
     "oriental",
@@ -10586,21 +10585,14 @@
    ],
    "notes": {
     "top": [
-     "Warm Spices",
      "Cinnamon",
      "Saffron"
     ],
     "heart": [
      "Rose",
-     "Patchouli",
-     "Precious Woods"
+     "Patchouli"
     ],
-    "base": [
-     "Amber",
-     "Oud",
-     "Vanilla",
-     "Musk"
-    ]
+    "base": []
    },
    "seasons": [
     "winter",
@@ -10612,31 +10604,30 @@
    ],
    "tags": [
     "لطافة",
-    "خلطة بليند",
+    "خلطة لطافة",
     "عطر شرقي",
-    "عطر عود",
-    "عطور فاخرة"
-   ]
+    "Lattafa",
+    "Khalta Blend"
+   ],
+   "style": 2
   },
   "LAT-280": {
    "sourceHash": "1hguj2v",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "الفاس وينرز تروفي جولد من لطافة برايد",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "الأخص وينرز تروفي جولد من لطافة برايد ماء عطر 100 مل",
    "nameEn": "Al Khas Winners Trophy Gold 100ml by Lattafa Pride",
-   "descriptionAr": "عطر رجالي خشبي عطري ينبض بالفخامة مع افتتاحية منعشة من البرغموت والتوابل الوردية. يتطور إلى قلب أنيق من اللافندر والـخشب ليستقر على قاعدة غنية بالمسك والعنبر.",
-   "descriptionEn": "Al Khas Winners Trophy Gold by Lattafa Pride is a woody aromatic men's fragrance with a sophisticated spicy opening and a rich amber base.",
+   "descriptionAr": "عطر رجالي يفتتح بالبرغموت والفلفل الوردي والتوابل، مع قلب من اللافندر والجرانيوم وخشب الأرز، وقاعدة من العنبر والباتشولي الفتيفر والمسك.",
+   "descriptionEn": "Al Khas Winners Trophy Gold by Lattafa Pride opens with bergamot, pink pepper, and spices, featuring a heart of lavender, geranium, and cedarwood, over a base of amber, patchouli, vetiver, and musk.",
    "gender": "men",
    "families": [
     "woody",
-    "spicy",
-    "amber"
+    "spicy"
    ],
    "notes": {
     "top": [
      "Bergamot",
-     "Pink Pepper",
-     "Aromatic Spices"
+     "Pink Pepper"
     ],
     "heart": [
      "Lavender",
@@ -10651,44 +10642,38 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "spring",
     "all"
    ],
    "occasions": [
-    "work",
-    "evening"
+    "daily",
+    "work"
    ],
    "tags": [
     "لطافة برايد",
-    "وينرز تروفي",
+    "وينرز تروفي جولد",
     "عطر رجالي",
-    "عطر خشبي عطري",
-    "عطور فخمة"
-   ]
+    "Lattafa Pride",
+    "Winners Trophy Gold"
+   ],
+   "style": 2
   },
   "LAT-281": {
    "sourceHash": "1d5fzk6",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "عود الصحراء من لطافة",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "عود الصحراء من عطور لطافة ماء عطر 100 مل",
    "nameEn": "Oud Al Sahraa by Lattafa Perfumes – 100 ml Unisex",
-   "descriptionAr": "عطر شرقي دخاني للجنسين يحتفي بأصالة الأخشاب الراتنجية والعود الفاخر بلمسات ساحرة. يمنحك حضوراً عربياً أصيلاً ينطق بالفخامة والغموض.",
-   "descriptionEn": "Oud Al Sahraa by Lattafa Perfumes is an evocative unisex fragrance centered around resinous woods, rich oud, and smoky accords.",
+   "descriptionAr": "عود الصحراء من عطور لطافة - ماء عطر بحجم 100 مل للجنسين.",
+   "descriptionEn": "Oud Al Sahraa by Lattafa Perfumes – 100 ml Eau de Parfum (Unisex)",
    "gender": "unisex",
    "families": [
     "oud",
-    "woody",
-    "oriental"
+    "woody"
    ],
    "notes": {
     "top": [],
     "heart": [],
-    "base": [
-     "Resinous Woods",
-     "Oud",
-     "Smoke"
-    ]
+    "base": []
    },
    "seasons": [
     "winter",
@@ -10702,17 +10687,18 @@
     "لطافة",
     "عود الصحراء",
     "عطر عود",
-    "عطور دخانية",
-    "عطور شرقية"
-   ]
+    "Lattafa",
+    "Oud Al Sahraa"
+   ],
+   "style": 2
   },
   "LAT-282": {
    "sourceHash": "13ta65o",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "موسمام انتنس من لطافة",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "مصمم إنتنس من لطافة ماء عطر 100 مل",
    "nameEn": "Musamam Intense by Lattafa 100ml EDP",
-   "descriptionAr": "موسمام انتنس من لطافة — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionAr": "مصمم إنتنس من لطافة ماء عطر 100 مل — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
    "descriptionEn": "Musamam Intense by Lattafa 100ml EDP — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [],
@@ -10732,25 +10718,25 @@
    ],
    "tags": [
     "لطافة",
-    "موسمام انتنس",
+    "مصمم إنتنس",
     "عطر للجنسين",
-    "عطور شرقية",
-    "عطور مركزة"
-   ]
+    "Lattafa",
+    "Musamam Intense"
+   ],
+   "style": 2
   },
   "LAT-283": {
    "sourceHash": "1s7ov2n",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "ارت اوف وود من لطافة برايد",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "آرت أوف وود من لطافة برايد ماء عطر 100 مل",
    "nameEn": "Art of Wood by Lattafa Pride 100ml EDP",
-   "descriptionAr": "عطر زهري خشبي للجنسين يفتتح بالجريب فروت والبرغموت والفلفل الوردي، وقلبه من الباتشولي وخشب الأرز والورد، وقاعدته من نجيل الهند والفانيليا وطحلب البلوط.",
-   "descriptionEn": "Art of Wood by Lattafa Pride is a floral-woody unisex fragrance featuring bright citrus notes, a refined floral heart, and a warm vanilla vetiver base.",
+   "descriptionAr": "عطر محايد يفتتح بنوتات الجريب فروت والبرغموت والفلفل الوردي، مع قلب من الباتشولي وخشب الأرز والورد، وقاعدة من الفيتيفر والفانيليا وطحلب السنديان.",
+   "descriptionEn": "Art of Wood by Lattafa Pride opens with grapefruit, bergamoet, and pink pepper, featuring a heart of patchouli, cedarwood, and rose, with a base of vetiver, vanilla, and oakmoss.",
    "gender": "unisex",
    "families": [
-    "floral",
     "woody",
-    "fresh"
+    "floral"
    ],
    "notes": {
     "top": [
@@ -10770,8 +10756,7 @@
     ]
    },
    "seasons": [
-    "spring",
-    "summer"
+    "all"
    ],
    "occasions": [
     "daily",
@@ -10779,25 +10764,25 @@
    ],
    "tags": [
     "لطافة برايد",
-    "ارت اوف وود",
-    "عطر خشبي",
-    "عطور زهرية",
-    "عطر للجنسين"
-   ]
+    "آرت أوف وود",
+    "عطر للجنسين",
+    "Lattafa Pride",
+    "Art of Wood"
+   ],
+   "style": 2
   },
   "LAT-284": {
    "sourceHash": "15rfnf2",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "أطلس من لطافة",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "أطلس من لطافة ماء عطر 55 مل",
    "nameEn": "Atlas by Lattafa EDP 55 ml Men",
-   "descriptionAr": "عطر مائي خشبي جريء ومنعش يفتتح بنفحات بحرية ولسعة ملحية مع الليمون الحیوي. يستقر في القلب على نوتات السوسن وقاعدة غنية بالعنبر الرمادي وخشب الصندل.",
-   "descriptionEn": "Atlas by Lattafa is a bold aquatic-woody fragrance featuring crisp sea notes, iris, and a rich ambergris-sandalwood base.",
+   "descriptionAr": "عطر محايد يفتتح بنوتات بحرية وملح وليمون، مع قلب من السوسن والدايفانا، وقاعدة من العنبر الرمادي وخشب الصندل وطحلب السنديان.",
+   "descriptionEn": "Atlas by Lattafa opens with sea notes, salt, and lemon, with a heart of iris and davana, settling into a base of ambergris, sandalwood, and oakmoss.",
    "gender": "unisex",
    "families": [
     "aquatic",
-    "woody",
-    "fresh"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -10830,18 +10815,19 @@
     "لطافة",
     "أطلس",
     "عطر مائي",
-    "عطر منعش",
-    "عطور صيفية"
-   ]
+    "Lattafa",
+    "Atlas"
+   ],
+   "style": 2
   },
   "LAT-285": {
    "sourceHash": "jrqc8n",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "بديل العود (اود فور جلوري) من لطافة",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "بديع العود (عود فور جلوري) من لطافة ماء عطر 100 مل",
    "nameEn": "Badee Al Oud by Lattafa Oud for Glory 100ml EDP",
-   "descriptionAr": "عطر شرقي خشبي دخاني فاخر يجمع بين نفحات العود الأصيل والعنبر والباتشولي الساحر. يمنحك هالة عطرية طاغية بالفخامة والتميز.",
-   "descriptionEn": "Badee Al Oud (Oud for Glory) by Lattafa is a majestic oriental woody and smoky fragrance featuring prominent notes of oud, amber, and patchouli.",
+   "descriptionAr": "بديع العود (عود فور جلوري) من لطافة - ماء عطر بحجم 100 مل، يضم نفحات العود والعنبر والباتشولي والمسك وخشب الصندل.",
+   "descriptionEn": "Badee Al Oud (Oud for Glory) by Lattafa – 100 ml Eau de Parfum featuring key notes of oud, amber, patchouli, musk, and sandalwood.",
    "gender": "unisex",
    "families": [
     "oud",
@@ -10851,13 +10837,7 @@
    "notes": {
     "top": [],
     "heart": [],
-    "base": [
-     "Oud",
-     "Amber",
-     "Patchouli",
-     "Musk",
-     "Sandalwood"
-    ]
+    "base": []
    },
    "seasons": [
     "winter",
@@ -10869,25 +10849,25 @@
    ],
    "tags": [
     "لطافة",
-    "اود فور جلوري",
-    "بديل العود",
-    "عطر عود فخم",
-    "عطور شرقية"
-   ]
+    "بديع العود",
+    "عود فور جلوري",
+    "Lattafa",
+    "Badee Al Oud"
+   ],
+   "style": 2
   },
   "LAT-286": {
    "sourceHash": "1ddhrj",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "مهرا من لطافة",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "مهرا من لطافة ماء عطر 100 مل",
    "nameEn": "Mohra by Lattafa 100ml EDP",
-   "descriptionAr": "عطر شرقي عنبري دافئ وناعم يتميز بلمسات كريمية من التوابل الخفيفة والأخشاب الفاخرة. يمنحك رائحة مريحة ومميزة تناسب الاستخدام اليومي.",
-   "descriptionEn": "Mohra by Lattafa is a warm, sweet, and creamy oriental amber fragrance with soft spices and creamy woods.",
+   "descriptionAr": "عطر محايد يفتتح بنوتات حلوة وتوابل خفيفة، مع قلب من العنبر والأخشاب، وقاعدة من المسك والفانيليا والأخشاب الكريمية.",
+   "descriptionEn": "Mohra by Lattafa opens with sweet notes and soft spices, featuring a heart of amber and woody notes, over a base of musk, vanilla, and creamy woods.",
    "gender": "unisex",
    "families": [
-    "amber",
     "oriental",
-    "woody"
+    "amber"
    ],
    "notes": {
     "top": [
@@ -10905,34 +10885,34 @@
     ]
    },
    "seasons": [
-    "all",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
-    "work"
+    "evening"
    ],
    "tags": [
     "لطافة",
     "مهرا",
-    "عطر عنبر",
-    "عطور كريمية",
-    "عطر يومي"
-   ]
+    "عطر للجنسين",
+    "Lattafa",
+    "Mohra"
+   ],
+   "style": 2
   },
   "LAT-287": {
    "sourceHash": "1jdn2d2",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "آرت أوف يونيفيرس من لطافة برايد",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "آرت أوف يونيفيرس من لطافة برايد ماء عطر 100 مل",
    "nameEn": "Art of Universe by Lattafa Pride 100ml EDP",
-   "descriptionAr": "عطر شرقي خشبي دافئ يجمع بين التوابل الناعمة والأمبر القشدي والنفحات الدخانية. يمنحك حضوراً جريئاً وفاخراً يناسب الأوقات الخاصة.",
-   "descriptionEn": "Art of Universe is a warm, woody and oriental fragrance featuring soft spices, creamy amber, and a smoky-woody base.",
+   "descriptionAr": "عطر محايد يفتتح بنوتات التوابل، مع قلب من أخشاب العنبر والنوتات الصمغية، وقاعدة من الأخشاب المدخنة والجلد والعنبر والفانيليا.",
+   "descriptionEn": "Art of Universe by Lattafa Pride opens with spicy notes, a heart of amber woods and resinous notes, and a base of smoky woods, leather, amber, and vanilla.",
    "gender": "unisex",
    "families": [
     "oriental",
     "woody",
-    "spicy"
+    "leather"
    ],
    "notes": {
     "top": [
@@ -10959,25 +10939,25 @@
    ],
    "tags": [
     "لطافة برايد",
+    "آرت أوف يونيفيرس",
     "عطر شرقي",
-    "عود",
-    "عطور فاخرة",
-    "أرت أوف يونيفيرس"
-   ]
+    "Lattafa Pride",
+    "Art of Universe"
+   ],
+   "style": 2
   },
   "LAT-288": {
    "sourceHash": "t0bzzm",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "فخر بلاتين من لطافة",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "فخر بلاتين من عطور لطافة ماء عطر 100 مل للرجال",
    "nameEn": "Fakhar Platin by Lattafa Perfumes – 100 ml Men",
-   "descriptionAr": "عطر رجالي منعش وخشبي يبدأ بانتعاش البرغموت والفلفل الوردي ويستقر على قاعدة من خشب البالو سانتو والبخور. خيار مناسب للاستخدام اليومي والأوقات الحيوية.",
-   "descriptionEn": "Fakhar Platin by Lattafa is an aromatic, woody, and fruity men's fragrance featuring bergamot, lavender, and palo santo.",
+   "descriptionAr": "عطر رجالي يفتتح بنوتات البرغموت والفلفل الوردي والهيل، مع قلب من الزنجبيل واللافندر والجوافة، وقاعدة من خشب البالو سانتو والبخور وخشب الصندل.",
+   "descriptionEn": "Fakhar Platin by Lattafa Perfumes – 100 ml Eau de Parfum for men, featuring bergamot, pink pepper, cardamom, ginger, lavender, guava, palo santo, incense, and sandalwood.",
    "gender": "men",
    "families": [
     "woody",
-    "fresh",
-    "spicy"
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -10997,28 +10977,28 @@
     ]
    },
    "seasons": [
-    "spring",
-    "summer"
+    "all"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "فخر لطافة",
+    "لطافة",
+    "فخر بلاتين",
     "عطر رجالي",
-    "عطور منعشة",
-    "بلاتين",
-    "لطافة"
-   ]
+    "Lattafa",
+    "Fakhar Platin"
+   ],
+   "style": 2
   },
   "LAT-289": {
    "sourceHash": "38l2gg",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "سافير رويال من لطافة برايد",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "سافير رويال من لطافة برايد ماء عطر 100 مل",
    "nameEn": "Sapphire Royal by Lattafa Pride 100ml EDP",
-   "descriptionAr": "سافير رويال من لطافة برايد — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionAr": "سافير رويال من لطافة برايد ماء عطر 100 مل — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
    "descriptionEn": "Sapphire Royal by Lattafa Pride 100ml EDP — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [],
@@ -11040,23 +11020,23 @@
    "tags": [
     "لطافة برايد",
     "سافير رويال",
-    "عطور شرقية",
     "عطر للجنسين",
-    "لطافة"
-   ]
+    "Lattafa Pride",
+    "Sapphire Royal"
+   ],
+   "style": 2
   },
   "LAT-290": {
    "sourceHash": "zfg7hq",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "رائد لكس من لطافة",
-   "nameEn": "Raed Luxe by Lattafa 100ml EDP Unisex",
-   "descriptionAr": "عطر فواكهي خشبي منعش يمزج بين البطيخ والأناناس ونفحات التوابل الدافئة. يمنحك شعوراً بالحيوية والانتعاش.",
-   "descriptionEn": "Raed Luxe by Lattafa is a fruity, aromatic and unisex fragrance with watermelon, pineapple, and warm base notes.",
+   "nameEn": "Raed Luxe by Lattafa",
+   "descriptionAr": "عطر يجمع بين نفحات الفواكه المنعشة والأخشاب الدافئة مع لمسات عطرية وتوابل خفيفة.",
+   "descriptionEn": "A fragrance blending fresh fruity notes with warm woods, aromatic touches, and mild spices.",
    "gender": "unisex",
    "families": [
     "fruity",
-    "fresh",
     "woody"
    ],
    "notes": {
@@ -11083,32 +11063,35 @@
     ]
    },
    "seasons": [
+    "spring",
     "summer",
-    "spring"
+    "all"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "رائد لكس",
     "لطافة",
-    "عطر فواكهي",
-    "عطور للجنسين",
-    "عطر صيفي"
-   ]
+    "رائد لكس",
+    "عطر للجنسين",
+    "عطر فواكه وأخشاب",
+    "Raed Luxe"
+   ],
+   "style": 2
   },
   "LAT-291": {
    "sourceHash": "iwd87w",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "تشارم من لاموس لطافة",
-   "nameEn": "Charm 100ml EDP for Women by LaMuse Lattafa",
-   "descriptionAr": "عطر نسائي ساحر يتألق بباقة من الزهور الفواكهية المنعشة وقلب من الورد والياسمين. يترك انطباعاً ناعماً ورقيقاً.",
-   "descriptionEn": "Charm by LaMuse (Lattafa) is a women's fragrance featuring fruity top notes, a floral heart of roses and jasmine, and a soft amber base.",
+   "nameEn": "Charm by LaMuse Lattafa",
+   "descriptionAr": "عطر نسائي يمزج بين نفحات الفواكه والحمضيات مع قلوب زهرية ناعمة وقاعدة من المسك والأخشاب.",
+   "descriptionEn": "A women's fragrance blending fruity and citrus notes with soft floral hearts and a base of musk and woods.",
    "gender": "women",
    "families": [
     "floral",
+    "citrus",
     "fruity"
    ],
    "notes": {
@@ -11130,33 +11113,36 @@
    },
    "seasons": [
     "spring",
-    "summer"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
+    "work",
     "gift"
    ],
    "tags": [
-    "تشارم",
     "لاموس",
-    "لطافة",
+    "تشارم",
     "عطر نسائي",
-    "عطور زهرية"
-   ]
+    "عطر زهري",
+    "Charm Lattafa"
+   ],
+   "style": 2
   },
   "LAT-292": {
    "sourceHash": "1rb0wnb",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "أمير العود إنتنس من لطافة",
-   "nameEn": "Ameer Al Oudh Intense by Lattafa EDP 100ml",
-   "descriptionAr": "عطر شرقي غني يرتكز على روحيّات العود الفاخر ولمسات الفانيليا والسكر الحلوة. خيار دافئ ومميز للأمسيات والأجواء الباردة.",
-   "descriptionEn": "Ameer Al Oudh Intense by Lattafa is a deep unisex fragrance built around rich agarwood and sweet vanilla touches.",
+   "nameEn": "Ameer Al Oudh Intense by Lattafa",
+   "descriptionAr": "عطر يرتكز على خشب العود الغني مع لمسات سكرية ودافئة من الفانيليا والأخشاب.",
+   "descriptionEn": "A fragrance built around rich agarwood with sweet and warm touches of vanilla and woods.",
    "gender": "unisex",
    "families": [
     "oud",
     "oriental",
-    "gourmand"
+    "amber"
    ],
    "notes": {
     "top": [
@@ -11174,28 +11160,30 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "أمير العود",
     "لطافة",
-    "عطر عود",
-    "عطور شرقية",
-    "عطوري المفضلة"
-   ]
+    "أمير العود",
+    "عود",
+    "عطر شرقي",
+    "Ameer Al Oudh"
+   ],
+   "style": 2
   },
   "LAT-293": {
    "sourceHash": "4mb1uy",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "العتيق جولد من لطافة برايد",
-   "nameEn": "Al Areeq Gold by Lattafa Pride 100ml EDP",
+   "nameEn": "Al Areeq Gold by Lattafa Pride",
    "descriptionAr": "العتيق جولد من لطافة برايد — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
-   "descriptionEn": "Al Areeq Gold by Lattafa Pride 100ml EDP — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
+   "descriptionEn": "Al Areeq Gold by Lattafa Pride — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [
     "gourmand",
@@ -11217,21 +11205,22 @@
     "special"
    ],
    "tags": [
-    "العتيق جولد",
     "لطافة برايد",
+    "العتيق جولد",
     "عطر شرقي",
-    "فانيلا",
-    "عطور فاخرة"
-   ]
+    "Al Areeq Gold",
+    "عطر للجنسين"
+   ],
+   "style": 2
   },
   "LAT-294": {
    "sourceHash": "19lw868",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "فخر روز جولد من لطافة",
-   "nameEn": "Fakhar Rose Gold by Lattafa 100ml Women",
-   "descriptionAr": "عطر نسائي أنيق يجمع بين نفحات الورد والبرغموت وقلب من الياسمين والعنبر. يمنحك لمسة من الأنوثة الراقية في كل مناسبة.",
-   "descriptionEn": "Fakhar Rose Gold by Lattafa is a women's fragrance highlighting rose, bergamot, jasmine, and a warm vanilla base.",
+   "nameEn": "Fakhar Rose Gold by Lattafa",
+   "descriptionAr": "عطر نسائي يجمع بين عبير الورد والبرغموت والفواكه مع قلب زهري وقاعدة من الفانيليا والمسك.",
+   "descriptionEn": "A women's fragrance combining rose, bergamot, and fruits with a floral heart and a vanilla-musk base.",
    "gender": "women",
    "families": [
     "floral",
@@ -11256,29 +11245,31 @@
    },
    "seasons": [
     "spring",
-    "summer"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
-    "evening",
+    "work",
     "gift"
    ],
    "tags": [
-    "فخر روز جولد",
     "لطافة",
+    "فخر روز جولد",
     "عطر نسائي",
-    "عطور الورد",
-    "هدايا نسائية"
-   ]
+    "عطر ورد",
+    "Fakhar Rose Gold"
+   ],
+   "style": 2
   },
   "LAT-295": {
    "sourceHash": "1dk63hx",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "نشيط من لطافة",
-   "nameEn": "Nasheet by Lattafa Perfume 100ml EDP Unisex",
-   "descriptionAr": "عطر شرقي خشبي يجمع بين روعة الزعفران والبرغموت وقاعدة دافئة من المسك والفانيليا. يمنحك إحساساً بالفخامة والتميز في كل إطلالة.",
-   "descriptionEn": "Nasheet by Lattafa is an oriental, woody, and amber unisex fragrance featuring saffron, spices, and a smooth vanilla base.",
+   "nameEn": "Nasheet by Lattafa",
+   "descriptionAr": "عطر شرقي خشبي يجمع بين التوابل والزعفران مع لمسات العنبر والباتشولي والمسك.",
+   "descriptionEn": "An oriental woody fragrance combining spices and saffron with amber, patchouli, and musk touches.",
    "gender": "unisex",
    "families": [
     "oriental",
@@ -11304,33 +11295,35 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "نشيط لطافة",
+    "لطافة",
+    "نشيط",
     "عطر شرقي",
-    "عطور خشبية",
-    "عطوري",
-    "لطافة"
-   ]
+    "عطر خشبي",
+    "Nasheet"
+   ],
+   "style": 2
   },
   "LAT-296": {
    "sourceHash": "upsc22",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "لا كوليكشن 1886 من لطافة برايد",
-   "nameEn": "La Collection 1886 (Car) by Lattafa Pride 100ml EDP",
-   "descriptionAr": "عطر شرقي خشبي راقٍ يمزج بين التوابل الدافئة والأخشاب الجافة والعنبر الناعم. يعكس أناقة وجرأة فريدة لعشاق العطور الفاخرة.",
-   "descriptionEn": "La Collection 1886 by Lattafa Pride is a refined oriental-woody fragrance blending warm spices, smooth amber, and smoky woods.",
+   "nameEn": "La Collection 1886 by Lattafa Pride",
+   "descriptionAr": "عطر شرقي خشبي يمزج التوابل الدافئة والعنبر مع الأخشاب المدخنة والجلد والفانيليا.",
+   "descriptionEn": "An oriental woody fragrance blending warm spices and amber with smoky woods, leather, and vanilla.",
    "gender": "unisex",
    "families": [
     "oriental",
     "woody",
-    "spicy"
+    "amber"
    ],
    "notes": {
     "top": [
@@ -11348,28 +11341,30 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "لا كوليكشن",
     "لطافة برايد",
+    "لا كوليكشن 1886",
     "عطر شرقي",
-    "عطور خشبية",
-    "لطافة"
-   ]
+    "عطر خشبي",
+    "La Collection 1886"
+   ],
+   "style": 2
   },
   "LAT-297": {
    "sourceHash": "7yd0v0",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "فيلفت روز من لطافة",
-   "nameEn": "Velvet Rose by Lattafa 100ml Unisex 100ml",
-   "descriptionAr": "عطر يجمع بين عبير الورد الفاخر والباتشولي ولمسات العنبر والمسك الدافئة. خيار متوازن يضفي سحراً خاصاً على حضورك.",
-   "descriptionEn": "Velvet Rose by Lattafa is a floral, woody, and amber unisex fragrance built around rich rose, patchouli, and warm amber.",
+   "nameEn": "Velvet Rose by Lattafa",
+   "descriptionAr": "عطر يمزج بين عبير الورد والباتشولي مع لمسات دافئة من العنبر والمسك.",
+   "descriptionEn": "A fragrance blending rose and patchouli with warm touches of amber and musk.",
    "gender": "unisex",
    "families": [
     "floral",
@@ -11391,35 +11386,35 @@
     ]
    },
    "seasons": [
+    "spring",
     "autumn",
-    "winter",
-    "spring"
+    "all"
    ],
    "occasions": [
-    "evening",
-    "daily"
+    "daily",
+    "evening"
    ],
    "tags": [
-    "فيلفت روز",
     "لطافة",
-    "عطر الورد",
-    "عطور للجنسين",
-    "عطري"
-   ]
+    "فيلفت روز",
+    "عطر ورد",
+    "عطر للجنسين",
+    "Velvet Rose"
+   ],
+   "style": 2
   },
   "LAT-298": {
    "sourceHash": "1wy1nmc",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "إيمان من لطافة",
-   "nameEn": "Emaan by Lattafa 100ml EDP Perfume Unisex",
-   "descriptionAr": "عطر أنيق يمزج بين الزهور الناعمة والعنبر الدافئ والمسك الكريمي مع مقدمة منعشة من البرغموت والكمثرى. يعبر عن الرقي والهدوء.",
-   "descriptionEn": "Emaan by Lattafa is a refined unisex fragrance blending soft florals, warm amber, and creamy musk with a bright citrus opening.",
+   "nameEn": "Emaan by Lattafa",
+   "descriptionAr": "عطر يجمع بين النفحات المنعشة للبرغموت والكمثرى وقلب زهري وقاعدة دافئة من العنبر والفانيليا.",
+   "descriptionEn": "A fragrance combining fresh bergamot and pear with a floral heart and a warm amber-vanilla base.",
    "gender": "unisex",
    "families": [
     "floral",
-    "amber",
-    "fresh"
+    "amber"
    ],
    "notes": {
     "top": [
@@ -11449,26 +11444,26 @@
     "gift"
    ],
    "tags": [
-    "إيمان لطافة",
+    "لطافة",
+    "إيمان",
     "عطر للجنسين",
-    "عطور ناعمة",
-    "عطري",
-    "لطافة"
-   ]
+    "عطر زهري",
+    "Emaan Lattafa"
+   ],
+   "style": 2
   },
   "LAT-299": {
    "sourceHash": "jialr8",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "كينغ أوف أرابيا من لطافة برايد",
-   "nameEn": "King of Arabia by Lattafa Pride 100ml EDP",
-   "descriptionAr": "عطر رجالي يفتتح بالتوت والبرغموت، وقلبه من خشب الأرز والأوسمانثوس والسوسن، وقاعدته من الجلد والفانيليا والباتشولي.",
-   "descriptionEn": "King of Arabia by Lattafa Pride is an oriental vanilla men's fragrance featuring raspberry, cedarwood, and leather base notes.",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "كينج أوف أرابيا من لطافة برايد",
+   "nameEn": "King of Arabia by Lattafa Pride",
+   "descriptionAr": "عطر رجالي شرقي فانيلا يجمع بين التوت والبرغموت مع أخشاب الأرز وقاعدة من الجلد والفانيليا.",
+   "descriptionEn": "An oriental vanilla men's fragrance combining raspberry and bergamot with cedarwood and a leather-vanilla base.",
    "gender": "men",
    "families": [
     "oriental",
-    "woody",
-    "leather"
+    "amber"
    ],
    "notes": {
     "top": [
@@ -11488,32 +11483,34 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "كينغ أوف أرابيا",
     "لطافة برايد",
+    "كينج أوف أرابيا",
     "عطر رجالي",
-    "عطور شرقية",
-    "هدايا رجالية"
-   ]
+    "عطر شرقي",
+    "King of Arabia"
+   ],
+   "style": 2
   },
   "LAT-300": {
    "sourceHash": "1d4lq7o",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "فخر إكستريت من لطافة",
-   "nameEn": "Fakhar Extrait by Lattafa 100ml for Men",
-   "descriptionAr": "عطر رجالي قوي يجمع بين التوابل والحمضيات ونفحات الجلد والعنبر الفاخرة. يمنحك حضوراً واثقاً ومميزاً في كل الأوقات.",
-   "descriptionEn": "Fakhar Extrait by Lattafa is a spicy, citrus, and leather men's fragrance featuring grapefruit, cardamon, and rich amber.",
+   "nameEn": "Fakhar Extrait by Lattafa",
+   "descriptionAr": "عطر رجالي يجمع بين التوابل والحمضيات مع لمسات جلدية وعنبرية دافئة.",
+   "descriptionEn": "A men's fragrance combining spices and citrus with warm leather and amber touches.",
    "gender": "men",
    "families": [
     "spicy",
-    "leather",
+    "citrus",
     "amber"
    ],
    "notes": {
@@ -11537,29 +11534,29 @@
    "seasons": [
     "winter",
     "autumn",
-    "spring"
+    "all"
    ],
    "occasions": [
     "evening",
-    "special",
-    "work"
+    "special"
    ],
    "tags": [
-    "فخر إكستريت",
     "لطافة",
+    "فخر إكستريت",
     "عطر رجالي",
-    "عطور قوية",
-    "عطري"
-   ]
+    "عطر توابل",
+    "Fakhar Extrait"
+   ],
+   "style": 2
   },
   "LAT-301": {
    "sourceHash": "u6l0k2",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "لطافة بترا أو دو بارفان",
-   "nameEn": "Lattafa Petra Eau De Parfum 100 ml Unisex",
-   "descriptionAr": "عطر فاخر يمزج بين الغنى الشرقي والجاذبية الحديثة ليقدم لك تجربة عطريّة فريدة. يمنحك حضوراً أنيقاً وساحراً يناسب ذوقك الراقي في كل الأوقات.",
-   "descriptionEn": "Lattafa Petra is a luxurious unisex fragrance that blends oriental richness with modern sophistication, opening with rose and saffron, and drying down to vanilla and musk.",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "بترا من لطافة",
+   "nameEn": "Lattafa Petra",
+   "descriptionAr": "عطر يمزج بين الورد والزعفران مع قلب من العنبر والباتشولي وقاعدة من الفانيليا والمسك.",
+   "descriptionEn": "A fragrance blending rose and saffron with an amber-patchouli heart and a vanilla-musk base.",
    "gender": "unisex",
    "families": [
     "oriental",
@@ -11582,30 +11579,33 @@
    "seasons": [
     "winter",
     "autumn",
-    "spring"
+    "all"
    ],
    "occasions": [
-    "daily",
-    "evening"
+    "evening",
+    "special"
    ],
    "tags": [
-    "لطافة بترا",
-    "عطر يونيسكس",
-    "عطور شرقية",
+    "لطافة",
+    "بترا",
+    "عطر شرقي",
+    "عطر للجنسين",
     "Lattafa Petra"
-   ]
+   ],
+   "style": 2
   },
   "LAT-302": {
    "sourceHash": "1xdw7a6",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "عجائب دبي بورتريت من لطافة",
-   "nameEn": "Ajayeb Dubai Portrait by Lattafa EDP 100ml",
-   "descriptionAr": "عطر ينبض بالحيوية والانتعاش مع توليفة فريدة من الفواكه الاستوائية والأخشاب العميقة. يضفي لمسة ساحرة ومميزة على إطلالتك اليومية والخاصة.",
-   "descriptionEn": "Ajayeb Dubai Portrait by Lattafa is a fruity, tropical, and woody unisex fragrance featuring notes of mango, orange, and oud.",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "عجائب دبي برترات من لطافة",
+   "nameEn": "Ajayeb Dubai Portrait by Lattafa",
+   "descriptionAr": "عطر يجمع بين نفحات الفواكه الاستوائية والمانجو مع الأخشاب والعود والمسك.",
+   "descriptionEn": "A fragrance combining tropical fruits and mango with woods, oud, and musk.",
    "gender": "unisex",
    "families": [
     "fruity",
+    "woody",
     "oud"
    ],
    "notes": {
@@ -11627,27 +11627,30 @@
    },
    "seasons": [
     "summer",
-    "spring"
+    "spring",
+    "all"
    ],
    "occasions": [
     "daily",
-    "work"
+    "evening"
    ],
    "tags": [
-    "عجائب دبي",
-    "عطر استوائي",
     "لطافة",
-    "Ajayeb Dubai"
-   ]
+    "عجائب دبي",
+    "عطر فواكه",
+    "عض عود",
+    "Ajayeb Dubai Portrait"
+   ],
+   "style": 2
   },
   "LAT-303": {
    "sourceHash": "1iztljz",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "حياة الملكي من لطافة للرجال",
-   "nameEn": "Hayaati Al Maleky by Lattafa – 100 ml for Men",
-   "descriptionAr": "عطر رجالي جريء يجمع بين التوابل الدافئة والأخشاب الفاخرة ليمنحك حضوراً قوياً وجذاباً. يعكس هذا العطر أناقة الرجل العصري وثقته بنفسه.",
-   "descriptionEn": "Hayaati Al Maleky by Lattafa is a woody and spicy men's fragrance featuring cardamom, cinnamon, and cedarwood.",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "حياة الملكي من لطافة",
+   "nameEn": "Hayaati Al Maleky by Lattafa",
+   "descriptionAr": "عطر رجالي خشبي وتوابل يجمع بين الهيل والفلفل الأسود والجريب فروت مع قاعدة خشبية وعنبرية.",
+   "descriptionEn": "A woody spicy men's fragrance combining cardamom, black pepper, and grapefruit with a woody-amber base.",
    "gender": "men",
    "families": [
     "woody",
@@ -11673,32 +11676,35 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
-    "evening",
-    "special"
+    "daily",
+    "work",
+    "evening"
    ],
    "tags": [
+    "لطافة",
     "حياة الملكي",
     "عطر رجالي",
-    "عطور توابل",
+    "عطر توابل وخشب",
     "Hayaati Al Maleky"
-   ]
+   ],
+   "style": 2
   },
   "LAT-304": {
    "sourceHash": "1ocqoqa",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "ليام جري من لطافة",
-   "nameEn": "Liam Grey by Lattafa 100ml EDP",
-   "descriptionAr": "عطر منعش ونظيف يتميز بتركيبة عصرية تجمع بين الحمضيات والأخشاب الناعمة. خيار مناسب للاستخدام اليومي يمنحك شعوراً بالجاذبية والأناقة الهادئة.",
-   "descriptionEn": "Liam Grey by Lattafa is a fresh, clean, and modern unisex fragrance with citrus, soft spices, and a woody amber base.",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "ليام غراي من لطافة",
+   "nameEn": "Liam Grey by Lattafa",
+   "descriptionAr": "عطر يجمع بين نفحات الحمضيات المنعشة والأخشاب الدافئة. يتميز بتركيبة عطرية متوازنة تناسب الاستخدام اليومي.",
+   "descriptionEn": "An eau de parfum featuring fresh citrus notes balanced with soft aromatic touches and woody amber.",
    "gender": "unisex",
    "families": [
     "fresh",
-    "woody",
-    "amber"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -11716,8 +11722,6 @@
     ]
    },
    "seasons": [
-    "spring",
-    "summer",
     "all"
    ],
    "occasions": [
@@ -11725,24 +11729,24 @@
     "work"
    ],
    "tags": [
-    "ليام جري",
-    "عطر منعش",
-    "لطافة",
-    "Liam Grey"
-   ]
+    "Liam Grey",
+    "Lattafa",
+    "عطر لطافة",
+    "ليام غراي"
+   ],
+   "style": 2
   },
   "LAT-305": {
    "sourceHash": "gkmms",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "إكلير بيستاش من لطافة",
-   "nameEn": "Eclaire Pistache by Lattafa 100ml EDP Unisex",
-   "descriptionAr": "عطر غورماند لذيذ يجمع بين نوتات الفستق الكريمي والكراميل والفانيليا الدافئة. يضفي لمسة من الدفء والجاذبية الحلوة على يومك.",
-   "descriptionEn": "Eclaire Pistache by Lattafa is a delicious gourmand fragrance featuring pistachio, whipped cream, hazelnut, and caramel over vanilla and amber.",
+   "nameEn": "Eclaire Pistache by Lattafa",
+   "descriptionAr": "عطر يبرز نوتات الفستق والكريمة المخفوقة مع قاعدة غنية بالفانيليا والعنبر. تصميم عطري هادئ ومتوازن.",
+   "descriptionEn": "An eau de parfum highlighting pistachio and whipped cream with a warm base of vanilla and amber.",
    "gender": "unisex",
    "families": [
-    "gourmand",
-    "amber"
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -11768,23 +11772,25 @@
     "evening"
    ],
    "tags": [
+    "Eclaire Pistache",
+    "Lattafa",
     "إكلير بيستاش",
-    "عطر فستق",
-    "غورماند",
-    "Eclaire Pistache"
-   ]
+    "عطر الفستق"
+   ],
+   "style": 2
   },
   "LAT-306": {
    "sourceHash": "1djqf7n",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "رمز سيلفر من لطافة للرجال",
-   "nameEn": "Ramz Silver by Lattafa 100ml EDP for Men",
-   "descriptionAr": "عطر رجالي يجمع ببراعة بين الانتعاش الفاكهي والنفحات الخشبية الدافئة. يمنحك طابعاً مميزاً يعكس ثقتك وحيويتك.",
-   "descriptionEn": "Ramz Silver by Lattafa is a fruity, aromatic, and woody men's fragrance with pear, mint, lavender, and vanilla.",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "رامز سيلفر من لطافة",
+   "nameEn": "Ramz Silver by Lattafa",
+   "descriptionAr": "عطر رجالي يجمع بين الفواكه المنعشة والنوتات العطرية العشبية مع قاعدة من الفانيليا والمسك.",
+   "descriptionEn": "A men's eau de parfum combining fruity and aromatic notes with a base of vanilla, amber, and musk.",
    "gender": "men",
    "families": [
     "fruity",
+    "fresh",
     "woody"
    ],
    "notes": {
@@ -11814,20 +11820,21 @@
     "work"
    ],
    "tags": [
-    "رمز سيلفر",
-    "عطر رجالي",
-    "لطافة",
-    "Ramz Silver"
-   ]
+    "Ramz Silver",
+    "Lattafa",
+    "رامز سيلفر",
+    "عطر رجالي"
+   ],
+   "style": 2
   },
   "LAT-307": {
    "sourceHash": "w118as",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "مايار من لطافة للنساء",
-   "nameEn": "Mayar by Lattafa EDP 100ml Woman",
-   "descriptionAr": "عطر نسائي مبهج ينبض بنوتات التوت البري المنعش وأزهار البرتقال الجذابة. يعبر عن الأنوثة المشرقة ويضفي بهجة على أوقاتك.",
-   "descriptionEn": "Mayar by Lattafa is a vibrant women's fragrance combining raspberry and orange blossom with jasmine and vanilla.",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "مايار من لطافة",
+   "nameEn": "Mayar by Lattafa",
+   "descriptionAr": "عطر نسائي يرتكز على افتتاحية من التوت وزهر البرتقال مع قلب من الياسمين والفانيليا.",
+   "descriptionEn": "A women's eau de parfum featuring top notes of raspberry and orange blossom with a floral and vanilla heart.",
    "gender": "women",
    "families": [
     "fruity",
@@ -11853,23 +11860,24 @@
    ],
    "occasions": [
     "daily",
-    "gift"
+    "work"
    ],
    "tags": [
+    "Mayar",
+    "Lattafa",
     "مايار",
-    "عطر نسائي",
-    "توت بري",
-    "Mayar Lattafa"
-   ]
+    "عطر نسائي"
+   ],
+   "style": 2
   },
   "LAT-308": {
    "sourceHash": "v9e732",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "هايا من لطافة للنساء",
-   "nameEn": "Haya by Lattafa Perfumes – 100 ml for Women",
-   "descriptionAr": "عطر نسائي فاخر يمزج بين الفواكه الشهية والزهور الرقيقة مع قاعدة خشبية دافئة. يمنحك إطلالة مليئة بالجاذبية والسحر العصري.",
-   "descriptionEn": "Haya by Lattafa is a fruity, floral, and woody women's fragrance with champagne, strawberry, gardenia, and sandalwood.",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "هايا من لطافة",
+   "nameEn": "Haya by Lattafa",
+   "descriptionAr": "عطر نسائي يمزج بين الفواكه والزهور مع لمسات دافئة من خشب الصندل والعنبر.",
+   "descriptionEn": "A women's eau de parfum blending fruity and floral accords with a warm woody base.",
    "gender": "women",
    "families": [
     "fruity",
@@ -11897,34 +11905,33 @@
    },
    "seasons": [
     "spring",
-    "summer",
-    "all"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "evening",
-    "special"
+    "gift"
    ],
    "tags": [
+    "Haya",
+    "Lattafa",
     "هايا",
-    "عطر نسائي",
-    "لطافة",
-    "Haya Lattafa"
-   ]
+    "عطر نسائي لطافة"
+   ],
+   "style": 2
   },
   "LAT-309": {
    "sourceHash": "k7oqjq",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "ريف روز من فورف لطافة",
-   "nameEn": "Reve Rose VURV By Lattafa 100ml EDP",
-   "descriptionAr": "عطر رقيق يجمع بين نفحات الأزهار الناعمة والمسك الأنيق ليمنحك شعوراً بالنقاء والنعومة. خيار رائع لإطلالة هادئة ومميزة.",
-   "descriptionEn": "Reve Rose by Vurv (Lattafa) is a floral, woody, and musk fragrance featuring iris, rose, and white cedar flowers.",
+   "nameEn": "Reve Rose VURV By Lattafa",
+   "descriptionAr": "عطر يجمع بين نفحات السوسن والورد مع زهور الأرز الأبيض وقاعدة من المسك.",
+   "descriptionEn": "An eau de parfum featuring iris and rose combined with white cedar flowers and a musk base.",
    "gender": "unisex",
    "families": [
     "floral",
-    "musk",
-    "woody"
+    "woody",
+    "musk"
    ],
    "notes": {
     "top": [
@@ -11947,25 +11954,25 @@
     "work"
    ],
    "tags": [
-    "ريف روز",
-    "عطر ورد",
-    "فورف",
-    "Reve Rose"
-   ]
+    "Reve Rose",
+    "Vurv",
+    "Lattafa",
+    "ريف روز"
+   ],
+   "style": 2
   },
   "LAT-310": {
    "sourceHash": "1jd8e6a",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "حياة فلورنس من لطافة للنساء",
-   "nameEn": "Hayaati Florence by Lattafa 100ml EDP Women",
-   "descriptionAr": "عطر نسائي يأسر الحواس بمزيج منعش من الفواكه والزهور الناعمة مع قاعدة حلوة دافئة. يضفي لمسة من الأناقة والجاذبية الفورية على يومك.",
-   "descriptionEn": "Hayaati Florence by Lattafa is a charming women's fragrance featuring top notes of lychee and grapefruit, leading to a heart of rose and peach, over a sweet base of vanilla and pralines.",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "حياتي فلورنس من لطافة",
+   "nameEn": "Hayaati Florence by Lattafa",
+   "descriptionAr": "عطر نسائي يضم افتتاحية من الفواكه المنعشة وقلب من الورد والخوخ مع قاعدة من الفانيليا والعنبر.",
+   "descriptionEn": "A women's eau de parfum with fresh fruit top notes, a floral-fruity heart, and a praline-vanilla base.",
    "gender": "women",
    "families": [
     "fruity",
-    "floral",
-    "gourmand"
+    "floral"
    ],
    "notes": {
     "top": [
@@ -11990,28 +11997,29 @@
    ],
    "occasions": [
     "daily",
-    "evening"
+    "work"
    ],
    "tags": [
-    "حياة فلورنس",
-    "عطر نسائي",
-    "لطافة",
-    "Hayaati Florence"
-   ]
+    "Hayaati Florence",
+    "Lattafa",
+    "حياتي فلورنس",
+    "عطر نسائي"
+   ],
+   "style": 2
   },
   "LAT-311": {
    "sourceHash": "18gn75a",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "حياة جولد إلكسير من لطافة",
-   "nameEn": "Hayaati Gold Elixir by Lattafa 100ml Unisex",
-   "descriptionAr": "عطر استثنائي يجمع بين الحمضيات المنعشة والجلود الفاخرة مع لمسات غورماند دافئة. يمنحك حضوراً فخماً وجذاباً يليق بكل المناسبات.",
-   "descriptionEn": "Hayaati Gold Elixir by Lattafa is a complex unisex fragrance blending citrus, leather, gourmand, and woody notes.",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "حياتي جولد إكسير من لطافة",
+   "nameEn": "Hayaati Gold Elixir by Lattafa",
+   "descriptionAr": "عطر يجمع بين الحمضيات والجلود مع لمسات خشبية وعنبرية دافئة.",
+   "descriptionEn": "An eau de parfum featuring a blend of citrus, leather, and gourmand notes over a woody amber base.",
    "gender": "unisex",
    "families": [
     "citrus",
     "leather",
-    "gourmand"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -12032,33 +12040,33 @@
     ]
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "حياة جولد إلكسير",
-    "عطر فخم",
-    "لطافة",
-    "Hayaati Gold Elixir"
-   ]
+    "Hayaati Gold Elixir",
+    "Lattafa",
+    "حياتي جولد إكسير",
+    "عطر للجنسين"
+   ],
+   "style": 2
   },
   "LAT-312": {
    "sourceHash": "e3rn3c",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "ليان من لطافة للنساء",
-   "nameEn": "Layaan by Lattafa Perfume 75ml EDP",
-   "descriptionAr": "عطر نسائي مضيء يعبر عن النعومة والثقة والأنوثة الخالدة بباقة زهرية ساحرة. يترك أثراً رقيقاً ومستمراً يرافقك بكل إشراقة يومية.",
-   "descriptionEn": "Layaan by Lattafa is a luminous women's fragrance opening with pear and mandarin, blossoming into a rich floral heart of gardenia, jasmine, and muguet, grounded by cedarwood and musk.",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "ليان من لطافة",
+   "nameEn": "Layaan by Lattafa",
+   "descriptionAr": "عطر نسائي يبدأ بنفحات الكمثرى واليوسفي، يليه قلب زهري من الغاردينيا والياسمين، وينتهي بقاعدة من خشب الأرز والمسك.",
+   "descriptionEn": "A women's eau de parfum opening with pear and mandarin, leading to a gardenia and jasmine heart, resting on cedarwood and musk.",
    "gender": "women",
    "families": [
     "floral",
-    "fruity",
-    "woody"
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -12081,25 +12089,25 @@
     "work"
    ],
    "tags": [
+    "Layaan",
+    "Lattafa",
     "ليان",
-    "عطر نسائي",
-    "لطافة برايد",
-    "Layaan Lattafa"
-   ]
+    "عطر نسائي"
+   ],
+   "style": 2
   },
   "LAT-313": {
    "sourceHash": "1lu5n8h",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "عشق الشيوخ جولد من لطافة برايد",
-   "nameEn": "Ishq Al Shuyukh Gold by Lattafa Pride 100ml EDP",
-   "descriptionAr": "عطر فاخر ينضح بالدفء والحلاوة بفضل العنبر الكريمي والأخشاب الناعمة والتوابل الخفيفة. يعكس هذا العطر الراقي أناقة لا مثيل لها.",
-   "descriptionEn": "Ishq Al Shuyukh Gold by Lattafa Pride is a premium oriental amber fragrance featuring sweet notes, creamy amber, and smooth woods.",
+   "nameEn": "Ishq Al Shuyukh Gold by Lattafa Pride",
+   "descriptionAr": "عطر من خط لطافة برايد يتميز بنفحات دافئة من العنبر والأخشاب الكريمية مع لمسات حلوة وتوابل خفيفة.",
+   "descriptionEn": "An eau de parfum featuring warm sweet notes, soft spices, amber, and creamy woods.",
    "gender": "unisex",
    "families": [
     "amber",
-    "oriental",
-    "gourmand"
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -12125,25 +12133,25 @@
     "special"
    ],
    "tags": [
+    "Ishq Al Shuyukh Gold",
+    "Lattafa Pride",
     "عشق الشيوخ جولد",
-    "لطافة برايد",
-    "عطر فخم",
-    "Ishq Al Shuyukh Gold"
-   ]
+    "لطافة برايد"
+   ],
+   "style": 2
   },
   "LAT-314": {
    "sourceHash": "oofc2s",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "عشق الشيوخ سيلفر من لطافة برايد",
-   "nameEn": "Ishq Al Shuyukh Silver by Lattafa Pride 100ml EDP",
-   "descriptionAr": "عطر عصري وأنيق يجمع بين انتعاش الحمضيات والأخشاب العطرية والعنبر الناعم. خيار متميز للاستخدام اليومي يضفي طابعاً من الحيوية والجاذبية.",
-   "descriptionEn": "Ishq Al Shuyukh Silver by Lattafa Pride is a modern fresh woody fragrance featuring citrus, aromatic notes, amber woods, and vanilla.",
+   "nameEn": "Ishq Al Shuyukh Silver by Lattafa Pride",
+   "descriptionAr": "عطر خشبي منعش يحتوي على الحمضيات والتوابل الخفيفة مع قاعدة من المسك والأخشاب والفانيليا.",
+   "descriptionEn": "A fresh woody eau de parfum with citrus, light spices, aromatic notes, and an amber-wood base.",
    "gender": "unisex",
    "families": [
     "fresh",
-    "woody",
-    "amber"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -12162,28 +12170,28 @@
    },
    "seasons": [
     "spring",
-    "summer",
-    "all"
+    "summer"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
+    "Ishq Al Shuyukh Silver",
+    "Lattafa Pride",
     "عشق الشيوخ سيلفر",
-    "لطافة برايد",
-    "عطر عصري",
-    "Ishq Al Shuyukh Silver"
-   ]
+    "لطافة برايد"
+   ],
+   "style": 2
   },
   "LAT-315": {
    "sourceHash": "ft4yuv",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
    "nameAr": "بيزا من لطافة برايد",
-   "nameEn": "Pisa by Lattafa Pride 100ml EDP",
-   "descriptionAr": "عطر حمضي خشبي يفتتح بالبرغموت واليوسفي والليمون، وقلبه من خشب الأرز، وقاعدته من خشب الصندل والعنبر.",
-   "descriptionEn": "Pisa by Lattafa Pride – 100ml Eau de Parfum",
+   "nameEn": "Pisa by Lattafa Pride",
+   "descriptionAr": "عطر يرتكز على افتتاحية حمضية من البرغموت واليوسفي والليمون مع قاعدة من خشب الصندل والعنبر.",
+   "descriptionEn": "An eau de parfum featuring citrus top notes of bergamot, mandarin, and lemon, with a cedar and sandalwood-amber base.",
    "gender": "unisex",
    "families": [
     "citrus",
@@ -12204,28 +12212,29 @@
     ]
    },
    "seasons": [
-    "all"
+    "spring",
+    "summer"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
+    "Pisa",
+    "Lattafa Pride",
     "بيزا",
-    "لطافة برايد",
-    "عطر للجنسين",
-    "أخشاب",
-    "حمضيات"
-   ]
+    "عطر لطافة"
+   ],
+   "style": 2
   },
   "LAT-316": {
    "sourceHash": "m33v45",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "أوبولينت ريد من لطافة",
-   "nameEn": "Opulent Red by Lattafa 100ml Unisex",
-   "descriptionAr": "عطر غني ومميز يمزج بين الفواكه والزهور مع لمسات عميقة من الأخشاب والعنبر. يمنحك حضوراً جذاباً ومناسباً لكل الأوقات.",
-   "descriptionEn": "Opulent Red by Lattafa Perfumes – 100 ml Eau de Parfum (Unisex)",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "أوبيولنت ريد من لطافة",
+   "nameEn": "Opulent Red by Lattafa",
+   "descriptionAr": "عطر يجمع بين الفواكه والزهور والتوابل مع قاعدة غنية بالعود والأخشاب والعنبر.",
+   "descriptionEn": "An eau de parfum blending fruity, floral, and spicy notes with a complex base of oud, amber, and woods.",
    "gender": "unisex",
    "families": [
     "fruity",
@@ -12257,29 +12266,29 @@
     ]
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "أوبولينت ريد",
-    "لطافة",
-    "عطر فواكه",
-    "عنبر",
-    "عطر للجنسين"
-   ]
+    "Opulent Red",
+    "Lattafa",
+    "أوبيولنت ريد",
+    "عطر لطافة"
+   ],
+   "style": 2
   },
   "LAT-317": {
    "sourceHash": "1o5d9tu",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T03:02:01.636Z",
-   "nameAr": "خالص بيور عود من لطافة",
-   "nameEn": "Khalis Pure Oudi by Lattafa EDP 100ml",
-   "descriptionAr": "عطر شرقي خشبي دافئ يجمع بين أصالة العود والتوابل الفاخرة. خيار مناسب للأمسيات والأجواء الباردة.",
-   "descriptionEn": "Khalis Pure Oudi by Lattafa – Eau de Parfum 100ml",
+   "updatedAt": "2026-10-28T09:21:19.659Z",
+   "nameAr": "خالص بيور عودي من لطافة",
+   "nameEn": "Khalis Pure Oudi by Lattafa",
+   "descriptionAr": "عطر شرقي خشبي يبدأ بالعود والقرفة وجوزة الطيب، ويمر بقلب من الياسمين وخشب الصندل، وينتهي بقاعدة دافئة من العنبر والفانيليا والمسك.",
+   "descriptionEn": "An oriental-woody fragrance opening with warm cinnamon, oud, and nutmeg, moving to jasmine and sandalwood, with an amber and vanilla base.",
    "gender": "unisex",
    "families": [
     "oud",
@@ -12307,20 +12316,20 @@
     ]
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "بيور عود",
-    "خالص عود",
-    "لطافة",
-    "عطر شرقي",
-    "عود"
-   ]
+    "Khalis Pure Oudi",
+    "Lattafa",
+    "خالص بيور عودي",
+    "عطر عود"
+   ],
+   "style": 2
   },
   "LAT-318": {
    "sourceHash": "d22uw1",
