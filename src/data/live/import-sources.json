@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-28T01:10:11.638Z",
+ "updatedAt": "2026-10-28T07:07:31.829Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -1680,12 +1680,12 @@
    "foundBy": "brand-site",
    "foundWith": "Armaf",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T06:55:49.085Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-28T07:07:31.829Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-10-21T06:55:49.085Z",
+    "at": "2026-10-28T07:07:31.829Z",
     "checks": [
      {
       "id": "age",
@@ -1786,18 +1786,18 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 54.4889,
+   "rateToEgp": 56.0948,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*armaf\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://armaf.com/sitemap_agentic_discovery.xml",
-    "https://armaf.com/sitemap_products_1.xml?from=9284842357035&to=15424824443179",
-    "https://armaf.com/sitemap_pages_1.xml?from=135551123755&to=167363936555",
-    "https://armaf.com/sitemap_collections_1.xml?from=473743032619&to=535168385323",
+    "https://armaf.com/sitemap_products_1.xml?from=9284842357035&to=15465902080299",
+    "https://armaf.com/sitemap_pages_1.xml?from=135552237867&to=167363936555",
+    "https://armaf.com/sitemap_collections_1.xml?from=473743032619&to=535786619179",
     "https://armaf.com/sitemap_blogs_1.xml",
     "https://armaf.com/sitemap_articles_1.xml"
    ],
-   "via": "generic",
-   "productsEstimate": 494
+   "via": "json-ld",
+   "productsEstimate": 500
   },
   {
    "id": "armafperfumes-com",
@@ -7368,6 +7368,19 @@
  ],
  "runs": [
   {
+   "at": "2026-10-28T07:07:31.829Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ armaf.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ armaf.com (CV 90/100): 500 perfumes, 4/6 pages read without AI, USD (1 = 56.0948 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-10-28T01:10:11.638Z",
    "mode": "self",
    "found": 0,
@@ -7705,17 +7718,6 @@
   },
   {
    "at": "2026-10-23T06:55:09.742Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-23T00:58:57.297Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
