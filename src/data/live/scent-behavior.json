@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "scent-behavior",
- "updatedAt": "2026-10-27T04:48:20.976Z",
+ "updatedAt": "2026-10-28T04:57:57.611Z",
  "signals": {
   "read": true,
   "noteAr": "العدّاد الحي مقروء من السيرفر (أعداد مجهولة فقط: خامات ونوع تركيز، من غير أي بيانات شخصية).",
@@ -15,7 +15,7 @@
   {
    "tag": "woody",
    "nameAr": "خشبي",
-   "share": 18.3
+   "share": 18.4
   },
   {
    "tag": "floral",
@@ -25,22 +25,22 @@
   {
    "tag": "oriental",
    "nameAr": "شرقي",
-   "share": 10.6
+   "share": 11
   },
   {
    "tag": "amber",
    "nameAr": "عنبري",
-   "share": 10.4
+   "share": 10.2
   },
   {
    "tag": "fresh",
    "nameAr": "منعش",
-   "share": 9
+   "share": 9.1
   },
   {
    "tag": "fruity",
    "nameAr": "فاكهي",
-   "share": 8.5
+   "share": 8.4
   },
   {
    "tag": "spicy",
@@ -50,17 +50,17 @@
   {
    "tag": "gourmand",
    "nameAr": "جورماند",
-   "share": 5.7
+   "share": 5.6
   },
   {
    "tag": "citrus",
    "nameAr": "حمضي",
-   "share": 4.7
+   "share": 4.6
   },
   {
    "tag": "oud",
    "nameAr": "عود",
-   "share": 4.1
+   "share": 3.9
   },
   {
    "tag": "musk",
@@ -92,7 +92,7 @@
    "nameEn": "Boswellia Sacra (Royal Green Hojari Frankincense Oil)",
    "family": "راتنجي بخوري حمضي منعش متبل",
    "category": "صموغ وبخور ملكي",
-   "score": 9,
+   "score": 9.1,
    "reasonAr": "من العائلات اللي عليها طلب (منعش)"
   }
  ],
@@ -100,13 +100,13 @@
   {
    "family": "amber",
    "nameAr": "عنبري",
-   "products": 328,
+   "products": 321,
    "bankMaterials": 6
   },
   {
    "family": "leather",
    "nameAr": "جلدي",
-   "products": 53,
+   "products": 54,
    "bankMaterials": 7
   },
   {
@@ -118,55 +118,55 @@
   {
    "family": "musk",
    "nameAr": "مسكي",
-   "products": 112,
+   "products": 111,
    "bankMaterials": 10
   },
   {
    "family": "woody",
    "nameAr": "خشبي",
-   "products": 580,
+   "products": 579,
    "bankMaterials": 12
   },
   {
    "family": "oriental",
    "nameAr": "شرقي",
-   "products": 336,
+   "products": 346,
    "bankMaterials": 12
   },
   {
    "family": "oud",
    "nameAr": "عود",
-   "products": 129,
+   "products": 123,
    "bankMaterials": 12
   },
   {
    "family": "fruity",
    "nameAr": "فاكهي",
-   "products": 269,
+   "products": 265,
    "bankMaterials": 14
   },
   {
    "family": "gourmand",
    "nameAr": "جورماند",
-   "products": 180,
+   "products": 175,
    "bankMaterials": 14
   },
   {
    "family": "floral",
    "nameAr": "زهري",
-   "products": 402,
+   "products": 400,
    "bankMaterials": 15
   },
   {
    "family": "spicy",
    "nameAr": "توابل",
-   "products": 263,
+   "products": 260,
    "bankMaterials": 17
   },
   {
    "family": "citrus",
    "nameAr": "حمضي",
-   "products": 148,
+   "products": 146,
    "bankMaterials": 22
   },
   {
@@ -178,7 +178,7 @@
   {
    "family": "fresh",
    "nameAr": "منعش",
-   "products": 284,
+   "products": 286,
    "bankMaterials": 27
   }
  ],
