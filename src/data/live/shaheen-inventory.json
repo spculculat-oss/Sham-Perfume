@@ -1,8 +1,8 @@
 {
  "version": 1,
- "updatedAt": "2026-10-28T06:51:50.756Z",
+ "updatedAt": "2026-10-28T12:52:49.583Z",
  "sources": {
-  "catalogAt": "2026-10-28T05:16:36.971Z",
+  "catalogAt": "2026-10-28T12:25:06.300Z",
   "total": 1212,
   "published": 1161,
   "liveStock": true,
@@ -44,7 +44,7 @@
   },
   {
    "sku": "LAT-287",
-   "nameAr": "آرت أوف يونيفيرس من لطافة برايد",
+   "nameAr": "آرت أوف يونيفيرس من لطافة برايد ماء عطر 100 مل",
    "brand": "Lattafa Pride",
    "priority": "normal",
    "units30": 0,
@@ -324,7 +324,7 @@
   },
   {
    "sku": "LAT-276",
-   "nameAr": "أنسام جولد من لطافة برايد",
+   "nameAr": "أنغام جولد من لطافة برايد ماء عطر 100 مل",
    "brand": "Lattafa Pride",
    "priority": "normal",
    "units30": 0,
@@ -371,17 +371,17 @@
    "reasonAr": "نفد"
   },
   {
-   "sku": "LAT-316",
-   "nameAr": "أوبولينت ريد من لطافة",
-   "brand": "Lattafa",
+   "sku": "MAI-631",
+   "nameAr": "أوبولينس ليذر من ميسون ألهامبرا للجنسين",
+   "brand": "Maison Alhambra",
    "priority": "normal",
    "units30": 0,
    "reasonAr": "نفد"
   },
   {
-   "sku": "MAI-631",
-   "nameAr": "أوبولينس ليذر من ميسون ألهامبرا للجنسين",
-   "brand": "Maison Alhambra",
+   "sku": "LAT-316",
+   "nameAr": "أوبيولنت ريد من لطافة",
+   "brand": "Lattafa",
    "priority": "normal",
    "units30": 0,
    "reasonAr": "نفد"
