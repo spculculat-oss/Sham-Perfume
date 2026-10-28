@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "catalog-review",
- "updatedAt": "2026-10-27T07:08:24.712Z",
+ "updatedAt": "2026-10-28T07:20:37.607Z",
  "counts": {
   "products": 1212,
   "onSale": 1161,
@@ -24,103 +24,103 @@
   {
    "sku": "GRA-217",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-221",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-386",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-426",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-545",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-566",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-579",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-590",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-591",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-593",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-594",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-597",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-807",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-809",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-817",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-837",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   },
   {
    "sku": "GRA-889",
    "price": 750,
-   "shippingEgp": 844.05,
+   "shippingEgp": 841.42,
    "sellable": false
   }
  ],
@@ -166,57 +166,57 @@
    {
     "id": "egypt",
     "nameAr": "مصر",
-    "shippingEgp": 844.05,
-    "safeOrderEgp": 5064.3,
+    "shippingEgp": 841.42,
+    "safeOrderEgp": 5048.52,
     "productsAbove": 218
    },
    {
     "id": "gulf",
     "nameAr": "دول الخليج",
-    "shippingEgp": 787.78,
-    "safeOrderEgp": 4726.68,
-    "productsAbove": 269
+    "shippingEgp": 785.33,
+    "safeOrderEgp": 4711.98,
+    "productsAbove": 271
    },
    {
     "id": "arab",
     "nameAr": "باقي الدول العربية",
-    "shippingEgp": 1012.86,
-    "safeOrderEgp": 6077.16,
+    "shippingEgp": 1009.71,
+    "safeOrderEgp": 6058.26,
     "productsAbove": 64
    },
    {
     "id": "southeast_asia",
     "nameAr": "جنوب شرق آسيا",
-    "shippingEgp": 337.62,
-    "safeOrderEgp": 2025.72,
+    "shippingEgp": 336.57,
+    "safeOrderEgp": 2019.42,
     "productsAbove": 1031
    },
    {
     "id": "europe",
     "nameAr": "أوروبا",
-    "shippingEgp": 1237.94,
-    "safeOrderEgp": 7427.64,
+    "shippingEgp": 1234.09,
+    "safeOrderEgp": 7404.54,
     "productsAbove": 4
    },
    {
     "id": "north_america",
     "nameAr": "أمريكا الشمالية",
-    "shippingEgp": 1406.75,
-    "safeOrderEgp": 8440.5,
+    "shippingEgp": 1402.37,
+    "safeOrderEgp": 8414.22,
     "productsAbove": 0
    },
    {
     "id": "world",
     "nameAr": "باقي دول العالم",
-    "shippingEgp": 1575.56,
-    "safeOrderEgp": 9453.36,
+    "shippingEgp": 1570.66,
+    "safeOrderEgp": 9423.96,
     "productsAbove": 0
    }
   ]
  },
  "score": 69,
  "notes": [
-  "17 منتج سعره أقل من تكلفة توصيله لنفس البلد (844.05 EGP) — كل بيعة بتخسر، وكلهم خلص مخزونهم دلوقتي.",
+  "17 منتج سعره أقل من تكلفة توصيله لنفس البلد (841.42 EGP) — كل بيعة بتخسر، وكلهم خلص مخزونهم دلوقتي.",
   "1161 منتج اسمه العربي مكتوب بحروف لاتينية بس.",
   "1161 منتج وصفه العربي هو الجملة العامة — مش وصف حقيقي.",
   "376 منتج من 1161 نفد مخزونه (32%).",
@@ -225,7 +225,7 @@
  ],
  "planAr": [
   "17 منتج تحت تكلفة الشحن (أرخصهم 750 EGP، 0 معروض للبيع) — يتأكد السعر أو يتوقف العرض.",
-  "لو عايز شحن مجاني يبقى الطلب 5064.3 EGP على الأقل في مصر (الشحن 844.05 = سُدس الطلب) — 218 منتج بيوصل الرقم ده لوحده."
+  "لو عايز شحن مجاني يبقى الطلب 5048.52 EGP على الأقل في مصر (الشحن 841.42 = سُدس الطلب) — 218 منتج بيوصل الرقم ده لوحده."
  ],
  "summaryAr": "مراجعة المنتجات: 1161 منتج معروض (1161 بسعر) — 17 محتاج قرار من صاحب المتجر، 0 اسم تالف، 376 نفد مخزونه."
 }
