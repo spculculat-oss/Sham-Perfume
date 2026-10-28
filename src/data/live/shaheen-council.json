@@ -1619,9 +1619,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-28T08:56:24.651Z",
    "meeting": "2026-10-28",
-   "status": "open",
+   "status": "dropped",
    "issue": 396,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/396"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/396",
+   "closedAt": "2026-10-28T09:11:59Z"
   },
   {
    "id": "2026-10-28-3-تحسين-تنسيق-الاتجاه-RTL-",
