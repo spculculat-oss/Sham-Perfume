@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-28T12:03:41.564Z",
+ "updatedAt": "2026-10-28T13:24:20.208Z",
  "active": true,
  "decisions": [
   {
@@ -524,7 +524,7 @@
  },
  "field": {
   "maneuverAt": "2026-10-28T08:22:52.219Z",
-  "at": "2026-10-28T12:03:38.933Z",
+  "at": "2026-10-28T13:24:17.499Z",
   "items": [
    {
     "id": "alcohol:unnamed-button",
