@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-27T15:29:22.382Z",
+ "updatedAt": "2026-10-28T04:05:33.502Z",
  "entries": [
   {
    "id": "reflex-ship-EG",
@@ -10,7 +10,7 @@
    "lang": "ar",
    "question": "الشحن لـمصر بكام؟",
    "answerAr": "الشحن لأول زجاجة لـمصر: 1908 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1735 ج.م) + هامش تجهيز 173 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: ضريبة 14% بتتضاف في بلدك والعميل بيتحملها.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to مصر: 1908 EGP.\nBuilt on the carrier's published cost (1735 EGP) + a 173 EGP handling margin — so the store's 50% stays net.\nCustoms: 14% VAT is added in your country.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Egypt: 1908 EGP.\nBuilt on the carrier's published cost (1735 EGP) + a 173 EGP handling margin — so the store's 50% stays net.\nCustoms: 14% VAT is added in your country.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -23,7 +23,7 @@
    "lang": "ar",
    "question": "جمارك مصر كام؟",
    "answerAr": "جمارك مصر: ضريبة قيمة مضافة 14% على الطرد، والعميل بيتحملها فوق سعر الشحن.\nالرسوم الجمركية بتتحدد بالبند وبلد المنشأ، وبتتأكد قبل الدفع — مفيش رقم مخترع.\nالمصدر: src/data/customs.json",
-   "answerEn": "Customs for مصر: 14% VAT on the parcel, paid by the buyer on top of shipping. Duties depend on the item and the origin and are confirmed before payment.\nSource: src/data/customs.json",
+   "answerEn": "Customs for Egypt: 14% VAT on the parcel, paid by the buyer on top of shipping. Duties depend on the item and the origin and are confirmed before payment.\nSource: src/data/customs.json",
    "source": "src/data/customs.json",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -36,7 +36,7 @@
    "lang": "ar",
    "question": "الشحن لـالسعودية بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالسعودية: 1696 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1542 ج.م) + هامش تجهيز 154 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to السعودية: 1696 EGP.\nBuilt on the carrier's published cost (1542 EGP) + a 154 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Saudi Arabia: 1696 EGP.\nBuilt on the carrier's published cost (1542 EGP) + a 154 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -49,7 +49,7 @@
    "lang": "ar",
    "question": "الشحن لـالإمارات بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالإمارات: 1696 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1542 ج.م) + هامش تجهيز 154 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to الإمارات: 1696 EGP.\nBuilt on the carrier's published cost (1542 EGP) + a 154 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to United Arab Emirates: 1696 EGP.\nBuilt on the carrier's published cost (1542 EGP) + a 154 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -62,7 +62,7 @@
    "lang": "ar",
    "question": "الشحن لـالكويت بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالكويت: 1590 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1446 ج.م) + هامش تجهيز 145 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to الكويت: 1590 EGP.\nBuilt on the carrier's published cost (1446 EGP) + a 145 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Kuwait: 1590 EGP.\nBuilt on the carrier's published cost (1446 EGP) + a 145 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -75,7 +75,7 @@
    "lang": "ar",
    "question": "الشحن لـقطر بكام؟",
    "answerAr": "الشحن لأول زجاجة لـقطر: 1590 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1446 ج.م) + هامش تجهيز 145 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to قطر: 1590 EGP.\nBuilt on the carrier's published cost (1446 EGP) + a 145 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Qatar: 1590 EGP.\nBuilt on the carrier's published cost (1446 EGP) + a 145 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -88,7 +88,7 @@
    "lang": "ar",
    "question": "الشحن لـالبحرين بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالبحرين: 1590 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1446 ج.م) + هامش تجهيز 145 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to البحرين: 1590 EGP.\nBuilt on the carrier's published cost (1446 EGP) + a 145 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Bahrain: 1590 EGP.\nBuilt on the carrier's published cost (1446 EGP) + a 145 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -101,7 +101,7 @@
    "lang": "ar",
    "question": "الشحن لـعمان بكام؟",
    "answerAr": "الشحن لأول زجاجة لـعمان: 3172 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2891 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to عمان: 3172 EGP.\nBuilt on the carrier's published cost (2891 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Oman: 3172 EGP.\nBuilt on the carrier's published cost (2891 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -114,7 +114,7 @@
    "lang": "ar",
    "question": "الشحن لـالأردن بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالأردن: 1590 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1446 ج.م) + هامش تجهيز 145 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: ضريبة 16% بتتضاف في بلدك والعميل بيتحملها.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to الأردن: 1590 EGP.\nBuilt on the carrier's published cost (1446 EGP) + a 145 EGP handling margin — so the store's 50% stays net.\nCustoms: 16% VAT is added in your country.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Jordan: 1590 EGP.\nBuilt on the carrier's published cost (1446 EGP) + a 145 EGP handling margin — so the store's 50% stays net.\nCustoms: 16% VAT is added in your country.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -127,7 +127,7 @@
    "lang": "ar",
    "question": "جمارك الأردن كام؟",
    "answerAr": "جمارك الأردن: ضريبة قيمة مضافة 16% على الطرد، والعميل بيتحملها فوق سعر الشحن.\nالرسوم الجمركية بتتحدد بالبند وبلد المنشأ، وبتتأكد قبل الدفع — مفيش رقم مخترع.\nالمصدر: src/data/customs.json",
-   "answerEn": "Customs for الأردن: 16% VAT on the parcel, paid by the buyer on top of shipping. Duties depend on the item and the origin and are confirmed before payment.\nSource: src/data/customs.json",
+   "answerEn": "Customs for Jordan: 16% VAT on the parcel, paid by the buyer on top of shipping. Duties depend on the item and the origin and are confirmed before payment.\nSource: src/data/customs.json",
    "source": "src/data/customs.json",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -140,7 +140,7 @@
    "lang": "ar",
    "question": "الشحن لـلبنان بكام؟",
    "answerAr": "الشحن لأول زجاجة لـلبنان: 3365 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3084 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to لبنان: 3365 EGP.\nBuilt on the carrier's published cost (3084 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Lebanon: 3365 EGP.\nBuilt on the carrier's published cost (3084 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -153,7 +153,7 @@
    "lang": "ar",
    "question": "الشحن لـالعراق بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالعراق: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to العراق: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Iraq: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -166,7 +166,7 @@
    "lang": "ar",
    "question": "الشحن لـسوريا بكام؟",
    "answerAr": "الشحن لأول زجاجة لـسوريا: 3269 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2987 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to سوريا: 3269 EGP.\nBuilt on the carrier's published cost (2987 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Syria: 3269 EGP.\nBuilt on the carrier's published cost (2987 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -179,7 +179,7 @@
    "lang": "ar",
    "question": "الشحن لـفلسطين بكام؟",
    "answerAr": "الشحن لأول زجاجة لـفلسطين: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to فلسطين: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Palestinian Territories: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -192,7 +192,7 @@
    "lang": "ar",
    "question": "الشحن لـاليمن بكام؟",
    "answerAr": "الشحن لأول زجاجة لـاليمن: 3308 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3026 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to اليمن: 3308 EGP.\nBuilt on the carrier's published cost (3026 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Yemen: 3308 EGP.\nBuilt on the carrier's published cost (3026 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -205,7 +205,7 @@
    "lang": "ar",
    "question": "الشحن لـليبيا بكام؟",
    "answerAr": "الشحن لأول زجاجة لـليبيا: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to ليبيا: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Libya: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -218,7 +218,7 @@
    "lang": "ar",
    "question": "الشحن لـتونس بكام؟",
    "answerAr": "الشحن لأول زجاجة لـتونس: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to تونس: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Tunisia: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -231,7 +231,7 @@
    "lang": "ar",
    "question": "الشحن لـالجزائر بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالجزائر: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to الجزائر: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Algeria: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -244,7 +244,7 @@
    "lang": "ar",
    "question": "الشحن لـالمغرب بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالمغرب: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to المغرب: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Morocco: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -257,7 +257,7 @@
    "lang": "ar",
    "question": "الشحن لـالسودان بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالسودان: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to السودان: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Sudan: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -270,7 +270,7 @@
    "lang": "ar",
    "question": "الشحن لـموريتانيا بكام؟",
    "answerAr": "الشحن لأول زجاجة لـموريتانيا: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to موريتانيا: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Mauritania: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -283,7 +283,7 @@
    "lang": "ar",
    "question": "الشحن لـالصومال بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالصومال: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to الصومال: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Somalia: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -296,7 +296,7 @@
    "lang": "ar",
    "question": "الشحن لـجيبوتي بكام؟",
    "answerAr": "الشحن لأول زجاجة لـجيبوتي: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to جيبوتي: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Djibouti: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -309,7 +309,7 @@
    "lang": "ar",
    "question": "الشحن لـجزر القمر بكام؟",
    "answerAr": "الشحن لأول زجاجة لـجزر القمر: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to جزر القمر: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Comoros: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -321,10 +321,10 @@
    "code": "MY",
    "lang": "ar",
    "question": "الشحن لـماليزيا بكام؟",
-   "answerAr": "الشحن لأول زجاجة لـماليزيا: 338 ج.م (سعر منطقة «جنوب شرق آسيا»).\nالمسار ده لسه من غير تعريفة شركة منشورة، فالرقم تقديري من جدول المناطق وبيتأكد قبل الدفع — مفيش رقم شركة مخترع.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالعطر UN1266 (سائل قابل للاشتعال) — القبول على المسار بيتأكد قبل الدفع.\nالمصدر: src/data/shipping.json · 2026-10-27",
-   "answerEn": "Shipping for the first bottle to ماليزيا: 338 EGP (zone «Southeast Asia»).\nNo published carrier rate covers this lane yet, so this is an estimate from the zone table — confirmed before payment.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: src/data/shipping.json · 2026-10-27",
+   "answerAr": "الشحن لأول زجاجة لـماليزيا: 338 ج.م (سعر منطقة «جنوب شرق آسيا»).\nالمسار ده لسه من غير تعريفة شركة منشورة، فالرقم تقديري من جدول المناطق وبيتأكد قبل الدفع — مفيش رقم شركة مخترع.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالعطر UN1266 (سائل قابل للاشتعال) — القبول على المسار بيتأكد قبل الدفع.\nالمصدر: src/data/shipping.json · 2026-10-28",
+   "answerEn": "Shipping for the first bottle to Malaysia: 338 EGP (zone «Southeast Asia»).\nNo published carrier rate covers this lane yet, so this is an estimate from the zone table — confirmed before payment.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: src/data/shipping.json · 2026-10-28",
    "source": "src/data/shipping.json",
-   "checkedAt": "2026-10-27",
+   "checkedAt": "2026-10-28",
    "specialistId": "specialist_business"
   },
   {
@@ -335,7 +335,7 @@
    "lang": "ar",
    "question": "الشحن لـسنغافورة بكام؟",
    "answerAr": "الشحن لأول زجاجة لـسنغافورة: 848 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (771 ج.م) + هامش تجهيز 77 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to سنغافورة: 848 EGP.\nBuilt on the carrier's published cost (771 EGP) + a 77 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Singapore: 848 EGP.\nBuilt on the carrier's published cost (771 EGP) + a 77 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -348,7 +348,7 @@
    "lang": "ar",
    "question": "الشحن لـBN بكام؟",
    "answerAr": "الشحن لأول زجاجة لـBN: 912 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (829 ج.م) + هامش تجهيز 83 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to BN: 912 EGP.\nBuilt on the carrier's published cost (829 EGP) + a 83 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Brunei: 912 EGP.\nBuilt on the carrier's published cost (829 EGP) + a 83 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -361,7 +361,7 @@
    "lang": "ar",
    "question": "الشحن لـإندونيسيا بكام؟",
    "answerAr": "الشحن لأول زجاجة لـإندونيسيا: 954 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (867 ج.م) + هامش تجهيز 87 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to إندونيسيا: 954 EGP.\nBuilt on the carrier's published cost (867 EGP) + a 87 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Indonesia: 954 EGP.\nBuilt on the carrier's published cost (867 EGP) + a 87 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -374,7 +374,7 @@
    "lang": "ar",
    "question": "الشحن لـتايلاند بكام؟",
    "answerAr": "الشحن لأول زجاجة لـتايلاند: 954 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (867 ج.م) + هامش تجهيز 87 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to تايلاند: 954 EGP.\nBuilt on the carrier's published cost (867 EGP) + a 87 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Thailand: 954 EGP.\nBuilt on the carrier's published cost (867 EGP) + a 87 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -387,7 +387,7 @@
    "lang": "ar",
    "question": "الشحن لـالفلبين بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالفلبين: 1166 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1060 ج.م) + هامش تجهيز 106 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to الفلبين: 1166 EGP.\nBuilt on the carrier's published cost (1060 EGP) + a 106 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Philippines: 1166 EGP.\nBuilt on the carrier's published cost (1060 EGP) + a 106 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -400,7 +400,7 @@
    "lang": "ar",
    "question": "الشحن لـفيتنام بكام؟",
    "answerAr": "الشحن لأول زجاجة لـفيتنام: 1060 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (964 ج.م) + هامش تجهيز 96 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to فيتنام: 1060 EGP.\nBuilt on the carrier's published cost (964 EGP) + a 96 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Vietnam: 1060 EGP.\nBuilt on the carrier's published cost (964 EGP) + a 96 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -413,7 +413,7 @@
    "lang": "ar",
    "question": "الشحن لـKH بكام؟",
    "answerAr": "الشحن لأول زجاجة لـKH: 1102 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1002 ج.م) + هامش تجهيز 100 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to KH: 1102 EGP.\nBuilt on the carrier's published cost (1002 EGP) + a 100 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Cambodia: 1102 EGP.\nBuilt on the carrier's published cost (1002 EGP) + a 100 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -426,7 +426,7 @@
    "lang": "ar",
    "question": "الشحن لـLA بكام؟",
    "answerAr": "الشحن لأول زجاجة لـLA: 1102 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1002 ج.م) + هامش تجهيز 100 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to LA: 1102 EGP.\nBuilt on the carrier's published cost (1002 EGP) + a 100 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Laos: 1102 EGP.\nBuilt on the carrier's published cost (1002 EGP) + a 100 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -439,7 +439,7 @@
    "lang": "ar",
    "question": "الشحن لـميانمار بكام؟",
    "answerAr": "الشحن لأول زجاجة لـميانمار: 1696 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1542 ج.م) + هامش تجهيز 154 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to ميانمار: 1696 EGP.\nBuilt on the carrier's published cost (1542 EGP) + a 154 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Myanmar (Burma): 1696 EGP.\nBuilt on the carrier's published cost (1542 EGP) + a 154 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -452,7 +452,7 @@
    "lang": "ar",
    "question": "الشحن لـبريطانيا بكام؟",
    "answerAr": "الشحن لأول زجاجة لـبريطانيا: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to بريطانيا: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to United Kingdom: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -465,7 +465,7 @@
    "lang": "ar",
    "question": "الشحن لـIE بكام؟",
    "answerAr": "الشحن لأول زجاجة لـIE: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to IE: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Ireland: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -478,7 +478,7 @@
    "lang": "ar",
    "question": "الشحن لـFR بكام؟",
    "answerAr": "الشحن لأول زجاجة لـFR: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to FR: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to France: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -491,7 +491,7 @@
    "lang": "ar",
    "question": "الشحن لـDE بكام؟",
    "answerAr": "الشحن لأول زجاجة لـDE: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to DE: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Germany: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -504,7 +504,7 @@
    "lang": "ar",
    "question": "الشحن لـIT بكام؟",
    "answerAr": "الشحن لأول زجاجة لـIT: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to IT: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Italy: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -517,7 +517,7 @@
    "lang": "ar",
    "question": "الشحن لـES بكام؟",
    "answerAr": "الشحن لأول زجاجة لـES: 2438 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2216 ج.م) + هامش تجهيز 222 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to ES: 2438 EGP.\nBuilt on the carrier's published cost (2216 EGP) + a 222 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Spain: 2438 EGP.\nBuilt on the carrier's published cost (2216 EGP) + a 222 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -530,7 +530,7 @@
    "lang": "ar",
    "question": "الشحن لـPT بكام؟",
    "answerAr": "الشحن لأول زجاجة لـPT: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to PT: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Portugal: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -543,7 +543,7 @@
    "lang": "ar",
    "question": "الشحن لـNL بكام؟",
    "answerAr": "الشحن لأول زجاجة لـNL: 2332 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2120 ج.م) + هامش تجهيز 212 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to NL: 2332 EGP.\nBuilt on the carrier's published cost (2120 EGP) + a 212 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Netherlands: 2332 EGP.\nBuilt on the carrier's published cost (2120 EGP) + a 212 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -556,7 +556,7 @@
    "lang": "ar",
    "question": "الشحن لـBE بكام؟",
    "answerAr": "الشحن لأول زجاجة لـBE: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to BE: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Belgium: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -569,7 +569,7 @@
    "lang": "ar",
    "question": "الشحن لـLU بكام؟",
    "answerAr": "الشحن لأول زجاجة لـLU: 3053 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2775 ج.م) + هامش تجهيز 277 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to LU: 3053 EGP.\nBuilt on the carrier's published cost (2775 EGP) + a 277 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Luxembourg: 3053 EGP.\nBuilt on the carrier's published cost (2775 EGP) + a 277 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -582,7 +582,7 @@
    "lang": "ar",
    "question": "الشحن لـAT بكام؟",
    "answerAr": "الشحن لأول زجاجة لـAT: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to AT: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Austria: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -595,7 +595,7 @@
    "lang": "ar",
    "question": "الشحن لـسويسرا بكام؟",
    "answerAr": "الشحن لأول زجاجة لـسويسرا: 2756 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2506 ج.م) + هامش تجهيز 250 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to سويسرا: 2756 EGP.\nBuilt on the carrier's published cost (2506 EGP) + a 250 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Switzerland: 2756 EGP.\nBuilt on the carrier's published cost (2506 EGP) + a 250 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -608,7 +608,7 @@
    "lang": "ar",
    "question": "الشحن لـSE بكام؟",
    "answerAr": "الشحن لأول زجاجة لـSE: 2756 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2506 ج.م) + هامش تجهيز 250 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to SE: 2756 EGP.\nBuilt on the carrier's published cost (2506 EGP) + a 250 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Sweden: 2756 EGP.\nBuilt on the carrier's published cost (2506 EGP) + a 250 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -621,7 +621,7 @@
    "lang": "ar",
    "question": "الشحن لـالنرويج بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالنرويج: 2544 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2313 ج.م) + هامش تجهيز 231 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to النرويج: 2544 EGP.\nBuilt on the carrier's published cost (2313 EGP) + a 231 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Norway: 2544 EGP.\nBuilt on the carrier's published cost (2313 EGP) + a 231 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -634,7 +634,7 @@
    "lang": "ar",
    "question": "الشحن لـDK بكام؟",
    "answerAr": "الشحن لأول زجاجة لـDK: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to DK: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Denmark: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -647,7 +647,7 @@
    "lang": "ar",
    "question": "الشحن لـFI بكام؟",
    "answerAr": "الشحن لأول زجاجة لـFI: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to FI: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Finland: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -660,7 +660,7 @@
    "lang": "ar",
    "question": "الشحن لـIS بكام؟",
    "answerAr": "الشحن لأول زجاجة لـIS: 2608 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2371 ج.م) + هامش تجهيز 237 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to IS: 2608 EGP.\nBuilt on the carrier's published cost (2371 EGP) + a 237 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Iceland: 2608 EGP.\nBuilt on the carrier's published cost (2371 EGP) + a 237 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -673,7 +673,7 @@
    "lang": "ar",
    "question": "الشحن لـPL بكام؟",
    "answerAr": "الشحن لأول زجاجة لـPL: 3365 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3084 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to PL: 3365 EGP.\nBuilt on the carrier's published cost (3084 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Poland: 3365 EGP.\nBuilt on the carrier's published cost (3084 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -686,7 +686,7 @@
    "lang": "ar",
    "question": "الشحن لـCZ بكام؟",
    "answerAr": "الشحن لأول زجاجة لـCZ: 3308 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3026 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to CZ: 3308 EGP.\nBuilt on the carrier's published cost (3026 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Czechia: 3308 EGP.\nBuilt on the carrier's published cost (3026 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -699,7 +699,7 @@
    "lang": "ar",
    "question": "الشحن لـSK بكام؟",
    "answerAr": "الشحن لأول زجاجة لـSK: 3308 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3026 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to SK: 3308 EGP.\nBuilt on the carrier's published cost (3026 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Slovakia: 3308 EGP.\nBuilt on the carrier's published cost (3026 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -712,7 +712,7 @@
    "lang": "ar",
    "question": "الشحن لـHU بكام؟",
    "answerAr": "الشحن لأول زجاجة لـHU: 3365 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3084 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to HU: 3365 EGP.\nBuilt on the carrier's published cost (3084 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Hungary: 3365 EGP.\nBuilt on the carrier's published cost (3084 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -725,7 +725,7 @@
    "lang": "ar",
    "question": "الشحن لـRO بكام؟",
    "answerAr": "الشحن لأول زجاجة لـRO: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to RO: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Romania: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -738,7 +738,7 @@
    "lang": "ar",
    "question": "الشحن لـBG بكام؟",
    "answerAr": "الشحن لأول زجاجة لـBG: 3308 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3026 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to BG: 3308 EGP.\nBuilt on the carrier's published cost (3026 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Bulgaria: 3308 EGP.\nBuilt on the carrier's published cost (3026 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -751,7 +751,7 @@
    "lang": "ar",
    "question": "الشحن لـGR بكام؟",
    "answerAr": "الشحن لأول زجاجة لـGR: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to GR: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Greece: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -764,7 +764,7 @@
    "lang": "ar",
    "question": "الشحن لـHR بكام؟",
    "answerAr": "الشحن لأول زجاجة لـHR: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to HR: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Croatia: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -777,7 +777,7 @@
    "lang": "ar",
    "question": "الشحن لـSI بكام؟",
    "answerAr": "الشحن لأول زجاجة لـSI: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to SI: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Slovenia: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -790,7 +790,7 @@
    "lang": "ar",
    "question": "الشحن لـRS بكام؟",
    "answerAr": "الشحن لأول زجاجة لـRS: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to RS: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Serbia: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -803,7 +803,7 @@
    "lang": "ar",
    "question": "الشحن لـBA بكام؟",
    "answerAr": "الشحن لأول زجاجة لـBA: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to BA: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Bosnia & Herzegovina: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -816,7 +816,7 @@
    "lang": "ar",
    "question": "الشحن لـME بكام؟",
    "answerAr": "الشحن لأول زجاجة لـME: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to ME: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Montenegro: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -829,7 +829,7 @@
    "lang": "ar",
    "question": "الشحن لـMK بكام؟",
    "answerAr": "الشحن لأول زجاجة لـMK: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to MK: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to North Macedonia: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -842,7 +842,7 @@
    "lang": "ar",
    "question": "الشحن لـAL بكام؟",
    "answerAr": "الشحن لأول زجاجة لـAL: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to AL: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Albania: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -855,7 +855,7 @@
    "lang": "ar",
    "question": "الشحن لـEE بكام؟",
    "answerAr": "الشحن لأول زجاجة لـEE: 3308 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3026 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to EE: 3308 EGP.\nBuilt on the carrier's published cost (3026 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Estonia: 3308 EGP.\nBuilt on the carrier's published cost (3026 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -868,7 +868,7 @@
    "lang": "ar",
    "question": "الشحن لـLV بكام؟",
    "answerAr": "الشحن لأول زجاجة لـLV: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to LV: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Latvia: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -881,7 +881,7 @@
    "lang": "ar",
    "question": "الشحن لـLT بكام؟",
    "answerAr": "الشحن لأول زجاجة لـLT: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to LT: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Lithuania: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -894,7 +894,7 @@
    "lang": "ar",
    "question": "الشحن لـCY بكام؟",
    "answerAr": "الشحن لأول زجاجة لـCY: 3308 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3026 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to CY: 3308 EGP.\nBuilt on the carrier's published cost (3026 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Cyprus: 3308 EGP.\nBuilt on the carrier's published cost (3026 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -907,7 +907,7 @@
    "lang": "ar",
    "question": "الشحن لـMT بكام؟",
    "answerAr": "الشحن لأول زجاجة لـMT: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to MT: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Malta: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -920,7 +920,7 @@
    "lang": "ar",
    "question": "الشحن لـأوكرانيا بكام؟",
    "answerAr": "الشحن لأول زجاجة لـأوكرانيا: 3269 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2987 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to أوكرانيا: 3269 EGP.\nBuilt on the carrier's published cost (2987 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Ukraine: 3269 EGP.\nBuilt on the carrier's published cost (2987 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -933,7 +933,7 @@
    "lang": "ar",
    "question": "الشحن لـMD بكام؟",
    "answerAr": "الشحن لأول زجاجة لـMD: 3750 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (3469 ج.م) + هامش تجهيز 281 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to MD: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Moldova: 3750 EGP.\nBuilt on the carrier's published cost (3469 EGP) + a 281 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -946,7 +946,7 @@
    "lang": "ar",
    "question": "الشحن لـتركيا بكام؟",
    "answerAr": "الشحن لأول زجاجة لـتركيا: 1484 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1349 ج.م) + هامش تجهيز 135 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to تركيا: 1484 EGP.\nBuilt on the carrier's published cost (1349 EGP) + a 135 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Türkiye: 1484 EGP.\nBuilt on the carrier's published cost (1349 EGP) + a 135 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -959,7 +959,7 @@
    "lang": "ar",
    "question": "الشحن لـأمريكا بكام؟",
    "answerAr": "الشحن لأول زجاجة لـأمريكا: 2120 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1927 ج.م) + هامش تجهيز 193 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: ضريبة 0% بتتضاف في بلدك والعميل بيتحملها.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to أمريكا: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: 0% VAT is added in your country.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to United States: 2120 EGP.\nBuilt on the carrier's published cost (1927 EGP) + a 193 EGP handling margin — so the store's 50% stays net.\nCustoms: 0% VAT is added in your country.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -972,7 +972,7 @@
    "lang": "ar",
    "question": "جمارك أمريكا كام؟",
    "answerAr": "جمارك أمريكا: ضريبة قيمة مضافة 0% على الطرد، والعميل بيتحملها فوق سعر الشحن.\nالرسوم الجمركية بتتحدد بالبند وبلد المنشأ، وبتتأكد قبل الدفع — مفيش رقم مخترع.\nالمصدر: src/data/customs.json",
-   "answerEn": "Customs for أمريكا: 0% VAT on the parcel, paid by the buyer on top of shipping. Duties depend on the item and the origin and are confirmed before payment.\nSource: src/data/customs.json",
+   "answerEn": "Customs for United States: 0% VAT on the parcel, paid by the buyer on top of shipping. Duties depend on the item and the origin and are confirmed before payment.\nSource: src/data/customs.json",
    "source": "src/data/customs.json",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -985,7 +985,7 @@
    "lang": "ar",
    "question": "الشحن لـكندا بكام؟",
    "answerAr": "الشحن لأول زجاجة لـكندا: 2332 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2120 ج.م) + هامش تجهيز 212 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to كندا: 2332 EGP.\nBuilt on the carrier's published cost (2120 EGP) + a 212 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Canada: 2332 EGP.\nBuilt on the carrier's published cost (2120 EGP) + a 212 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
@@ -998,7 +998,7 @@
    "lang": "ar",
    "question": "الشحن لـالمكسيك بكام؟",
    "answerAr": "الشحن لأول زجاجة لـالمكسيك: 2905 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (2641 ج.م) + هامش تجهيز 264 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to المكسيك: 2905 EGP.\nBuilt on the carrier's published cost (2641 EGP) + a 264 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Mexico: 2905 EGP.\nBuilt on the carrier's published cost (2641 EGP) + a 264 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
