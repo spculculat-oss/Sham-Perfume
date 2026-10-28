@@ -1,7 +1,7 @@
 {
- "updatedAt": "2026-10-27T20:13:55.047Z",
+ "updatedAt": "2026-10-28T02:20:12.264Z",
  "run": {
-  "ms": 96001,
+  "ms": 81491,
   "browser": true,
   "pages": 20,
   "drills": 21,
@@ -15,15 +15,15 @@
    "status": "ok",
    "errors": 0,
    "ideas": 2,
-   "loadMs": 6067
+   "loadMs": 5553
   },
   {
    "id": "store",
    "titleAr": "المتجر",
    "status": "ok",
    "errors": 0,
-   "ideas": 2,
-   "loadMs": 5004
+   "ideas": 1,
+   "loadMs": 4642
   },
   {
    "id": "perfumes",
@@ -31,7 +31,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3601
+   "loadMs": 3199
   },
   {
    "id": "cosmetics",
@@ -39,7 +39,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3377
+   "loadMs": 2947
   },
   {
    "id": "productDetail",
@@ -47,7 +47,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3406
+   "loadMs": 3048
   },
   {
    "id": "concentration",
@@ -55,7 +55,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3502
+   "loadMs": 3090
   },
   {
    "id": "pyramid",
@@ -63,7 +63,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3787
+   "loadMs": 3182
   },
   {
    "id": "costing",
@@ -71,7 +71,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3469
+   "loadMs": 3072
   },
   {
    "id": "guide",
@@ -79,7 +79,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3411
+   "loadMs": 3004
   },
   {
    "id": "alcohol",
@@ -87,7 +87,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3330
+   "loadMs": 2904
   },
   {
    "id": "maceration_simulator",
@@ -95,7 +95,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3377
+   "loadMs": 2962
   },
   {
    "id": "master_ai",
@@ -103,7 +103,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3369
+   "loadMs": 2947
   },
   {
    "id": "perfume_news",
@@ -111,7 +111,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3443
+   "loadMs": 3096
   },
   {
    "id": "raw_materials",
@@ -119,7 +119,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3450
+   "loadMs": 3031
   },
   {
    "id": "world_perfumes",
@@ -127,7 +127,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3737
+   "loadMs": 3291
   },
   {
    "id": "perfume_designers",
@@ -135,7 +135,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3503
+   "loadMs": 2993
   },
   {
    "id": "cosmetic_designers",
@@ -143,7 +143,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3417
+   "loadMs": 2928
   },
   {
    "id": "molecule_studio",
@@ -151,7 +151,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3807
+   "loadMs": 3213
   },
   {
    "id": "library",
@@ -159,7 +159,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 1,
-   "loadMs": 3293
+   "loadMs": 2939
   },
   {
    "id": "community",
@@ -167,7 +167,7 @@
    "status": "ok",
    "errors": 0,
    "ideas": 2,
-   "loadMs": 2754
+   "loadMs": 2688
   },
   {
    "id": "shaheen_chat",
@@ -191,8 +191,8 @@
    "sectionAr": "الكحول في العطور",
    "examinerAr": "د. هند العلوم",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "community:unnamed-button",
@@ -207,8 +207,8 @@
    "sectionAr": "المجتمع",
    "examinerAr": "أ. مريم المجتمع",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "community:no-heading",
@@ -223,8 +223,8 @@
    "sectionAr": "المجتمع",
    "examinerAr": "أ. مريم المجتمع",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "concentration:unnamed-button",
@@ -239,8 +239,8 @@
    "sectionAr": "حاسبة التركيز",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "concentration:ai-idea:إضافةتلميحمرئييوضحالفرقب",
@@ -272,8 +272,8 @@
    "sectionAr": "قسم المصممين — تجميل",
    "examinerAr": "د. سلمى الحياة",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "cosmetics:unnamed-button",
@@ -288,8 +288,8 @@
    "sectionAr": "قسم مستحضرات التجميل",
    "examinerAr": "د. سلمى الحياة",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "costing:unnamed-button",
@@ -304,8 +304,8 @@
    "sectionAr": "حاسبة التكلفة",
    "examinerAr": "أ. طارق التجارة",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "guide:unnamed-button",
@@ -320,8 +320,8 @@
    "sectionAr": "دليل صناعة العطور",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "home:slow",
@@ -336,8 +336,8 @@
    "sectionAr": "الرئيسية",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-24T08:03:56.689Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 15
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 16
   },
   {
    "id": "home:unnamed-button",
@@ -352,8 +352,8 @@
    "sectionAr": "الرئيسية",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "home:ai-idea:إضافةزرسريعللوصولالمباشر",
@@ -385,8 +385,8 @@
    "sectionAr": "مكتبة شاهين",
    "examinerAr": "أ. مريم المجتمع",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "maceration_simulator:unnamed-button",
@@ -401,8 +401,8 @@
    "sectionAr": "محاكي التخمير والنضج",
    "examinerAr": "د. هند العلوم",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "master_ai:unnamed-button",
@@ -417,8 +417,8 @@
    "sectionAr": "الخبير شاهين",
    "examinerAr": "م. عمر الحاسوب",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "molecule_studio:unnamed-button",
@@ -433,8 +433,8 @@
    "sectionAr": "استوديو الجزيئات",
    "examinerAr": "د. هند العلوم",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "perfume_designers:unnamed-button",
@@ -449,8 +449,8 @@
    "sectionAr": "قسم المصممين — عطور",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "perfume_news:unnamed-button",
@@ -465,8 +465,8 @@
    "sectionAr": "أخبار العطور",
    "examinerAr": "أ. مريم المجتمع",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "perfumes:unnamed-button",
@@ -481,8 +481,8 @@
    "sectionAr": "قسم العطور",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "productDetail:unnamed-button",
@@ -497,8 +497,8 @@
    "sectionAr": "صفحة المنتج",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "pyramid:unnamed-button",
@@ -513,8 +513,8 @@
    "sectionAr": "حاسبة الهرم العطري",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "pyramid:ai-idea:توفيرأمثلةجاهزةللهرمالعط",
@@ -546,8 +546,8 @@
    "sectionAr": "المواد الخام",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "shaheen_chat:ai-idea:إضافةاقتراحاتأسئلةسريعةل",
@@ -567,22 +567,6 @@
    "seen": 1
   },
   {
-   "id": "store:slow",
-   "kind": "idea",
-   "code": "slow",
-   "section": "store",
-   "titleAr": "تسريع القسم (بيفتح في 5 ثواني)",
-   "severity": "low",
-   "sources": [
-    "browser"
-   ],
-   "sectionAr": "المتجر",
-   "examinerAr": "د. ليان العطور",
-   "firstSeen": "2026-10-27T20:13:55.047Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 1
-  },
-  {
    "id": "store:unnamed-button",
    "kind": "idea",
    "code": "unnamed-button",
@@ -595,8 +579,8 @@
    "sectionAr": "المتجر",
    "examinerAr": "د. ليان العطور",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   },
   {
    "id": "store:ai-idea:تفعيلفلترسريعلأنواعالزجا",
@@ -628,11 +612,17 @@
    "sectionAr": "عطور العالم",
    "examinerAr": "أ. مريم المجتمع",
    "firstSeen": "2026-10-23T14:16:34.941Z",
-   "lastSeen": "2026-10-27T20:13:55.047Z",
-   "seen": 18
+   "lastSeen": "2026-10-28T02:20:12.264Z",
+   "seen": 19
   }
  ],
  "resolved": [
+  {
+   "id": "store:slow",
+   "titleAr": "تسريع القسم (بيفتح في 5 ثواني)",
+   "section": "store",
+   "at": "2026-10-28T02:20:12.264Z"
+  },
   {
    "id": "community:asset-missing",
    "titleAr": "ملفات أو صور مش موجودة (2)",
@@ -804,12 +794,6 @@
   {
    "id": "shaheen_chat:group-gifts:0:expect",
    "titleAr": "«10 هدايا لزمايلي» مابتتفهمش كطلب هدايا جماعي",
-   "section": "shaheen_chat",
-   "at": "2026-10-24T02:09:30.903Z"
-  },
-  {
-   "id": "shaheen_chat:refund-sealed:0:expect",
-   "titleAr": "استرجاع منتج سليم: بيعتذر عن حاجة محصلتش",
    "section": "shaheen_chat",
    "at": "2026-10-24T02:09:30.903Z"
   }
