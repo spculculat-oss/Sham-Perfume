@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-28T08:59:06.631Z",
+ "updatedAt": "2026-10-28T13:06:47.580Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -3055,12 +3055,12 @@
    "foundBy": "brand-site",
    "foundWith": "Shama",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-28T13:06:47.580Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-10-21T10:34:54.765Z",
+    "at": "2026-10-28T13:06:47.580Z",
     "checks": [
      {
       "id": "age",
@@ -3160,18 +3160,18 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "INR",
-   "rateToEgp": 0.5743,
+   "rateToEgp": 0.5894,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*shamaperfumes\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://shamaperfumes.com/sitemap_agentic_discovery.xml",
-    "https://shamaperfumes.com/sitemap_products_1.xml?from=7592610988171&to=10362128007307",
+    "https://shamaperfumes.com/sitemap_products_1.xml?from=7592610988171&to=10377216753803",
     "https://shamaperfumes.com/sitemap_pages_1.xml?from=108600000651&to=111503736971",
-    "https://shamaperfumes.com/sitemap_collections_1.xml?from=294751240331&to=317437411467",
+    "https://shamaperfumes.com/sitemap_collections_1.xml?from=294751240331&to=491756028043",
     "https://shamaperfumes.com/sitemap_blogs_1.xml",
     "https://shamaperfumes.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 488
+   "productsEstimate": 490
   },
   {
    "id": "shamaparfums-com",
@@ -3925,18 +3925,18 @@
   {
    "id": "osmaperfumes-com",
    "host": "osmaperfumes.com",
-   "name": "عطور اوسما Osma Perfumes",
+   "name": "OSMA Perfumes",
    "base": "https://sa.osmaperfumes.com",
    "status": "active",
    "foundBy": "brand-site",
    "foundWith": "Osma",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-28T13:06:47.580Z",
    "trust": {
     "score": 68,
     "verdict": "trusted",
-    "at": "2026-10-21T10:34:54.765Z",
+    "at": "2026-10-28T13:06:47.580Z",
     "checks": [
      {
       "id": "age",
@@ -4033,17 +4033,18 @@
     "registeredAt": "2022-11-21T11:19:29.000Z"
    },
    "region": "arab",
-   "sampleOk": 3,
+   "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "SAR",
-   "rateToEgp": 14.5298,
+   "rateToEgp": 14.9581,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*osmaperfumes\\.com/en/(?:[^?#]*/)?p\\d+/?$",
    "sitemaps": [
-    "https://osmaperfumes.com/ar/sitemap-1.xml",
-    "https://osmaperfumes.com/ar/sitemap-2.xml"
+    "https://osmaperfumes.com/en/sitemap-1.xml",
+    "https://osmaperfumes.com/en/sitemap-2.xml",
+    "https://osmaperfumes.com/en/blog-1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 18
+   "productsEstimate": 92
   },
   {
    "id": "osmaparfums-com",
@@ -5059,12 +5060,12 @@
    "foundBy": "brand-site",
    "foundWith": "Rue Broca",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-28T13:06:47.580Z",
    "trust": {
     "score": 74,
     "verdict": "trusted",
-    "at": "2026-10-21T12:18:06.563Z",
+    "at": "2026-10-28T13:06:47.580Z",
     "checks": [
      {
       "id": "age",
@@ -5163,12 +5164,12 @@
    "sampleOk": 7,
    "sampleTotal": 7,
    "currency": "AED",
-   "rateToEgp": 14.8364,
+   "rateToEgp": 15.2737,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*ruebrocaparfums\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://ruebrocaparfums.com/sitemap_agentic_discovery.xml",
     "https://ruebrocaparfums.com/sitemap_products_1.xml?from=9043205456112&to=9868843483376",
-    "https://ruebrocaparfums.com/sitemap_pages_1.xml?from=138719527152&to=146412699888",
+    "https://ruebrocaparfums.com/sitemap_pages_1.xml?from=138720084208&to=138720215280",
     "https://ruebrocaparfums.com/sitemap_collections_1.xml?from=444714647792&to=481870315760",
     "https://ruebrocaparfums.com/sitemap_blogs_1.xml",
     "https://ruebrocaparfums.com/sitemap_articles_1.xml"
@@ -5185,12 +5186,12 @@
    "foundBy": "brand-site",
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-28T13:06:47.580Z",
    "trust": {
     "score": 96,
     "verdict": "trusted",
-    "at": "2026-10-21T12:18:06.563Z",
+    "at": "2026-10-28T13:06:47.580Z",
     "checks": [
      {
       "id": "age",
@@ -5290,7 +5291,7 @@
    "sampleOk": 4,
    "sampleTotal": 7,
    "currency": "AED",
-   "rateToEgp": 14.8364,
+   "rateToEgp": 15.2737,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*khadlaj-perfumes\\.com/[^?#]+$",
    "sitemaps": [
     "https://khadlaj-perfumes.com/sitemap_agentic_discovery.xml",
@@ -5306,7 +5307,7 @@
     "https://khadlaj-perfumes.com/ar/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 1112
+   "productsEstimate": 1116
   },
   {
    "id": "khadlajperfumes-com",
@@ -5317,12 +5318,12 @@
    "foundBy": "brand-site",
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-28T13:06:47.580Z",
    "trust": {
     "score": 96,
     "verdict": "trusted",
-    "at": "2026-10-21T12:18:06.563Z",
+    "at": "2026-10-28T13:06:47.580Z",
     "checks": [
      {
       "id": "age",
@@ -5422,7 +5423,7 @@
    "sampleOk": 4,
    "sampleTotal": 7,
    "currency": "AED",
-   "rateToEgp": 14.8364,
+   "rateToEgp": 15.2737,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*khadlaj-perfumes\\.com/[^?#]+$",
    "sitemaps": [
     "https://khadlaj-perfumes.com/sitemap_agentic_discovery.xml",
@@ -5438,7 +5439,7 @@
     "https://khadlaj-perfumes.com/ar/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 1112
+   "productsEstimate": 1116
   },
   {
    "id": "khadlajparfums-com",
@@ -7367,6 +7368,27 @@
  ],
  "runs": [
   {
+   "at": "2026-10-28T13:06:47.580Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 5,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ shamaperfumes.com: CV 83/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,authentic] on Shopify",
+    "✓ shamaperfumes.com (CV 83/100): 490 perfumes, 4/6 pages read without AI, INR (1 = 0.5894 EGP) — still good",
+    "  ↳ osmaperfumes.com: CV 68/100 [age,https,identity,returns,shipping,privacy,terms,platform,authentic] on Salla",
+    "✓ osmaperfumes.com (CV 68/100): 92 perfumes, 4/6 pages read without AI, SAR (1 = 14.9581 EGP) — still good",
+    "  ↳ ruebrocaparfums.com: CV 74/100 [age,https,identity,returns,privacy,platform,social,authentic] on Shopify",
+    "✓ ruebrocaparfums.com (CV 74/100): 44 perfumes, 7/7 pages read without AI, AED (1 = 15.2737 EGP) — still good",
+    "  ↳ khadlaj.com: CV 96/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ khadlaj.com (CV 96/100): 1116 perfumes, 4/7 pages read without AI, AED (1 = 15.2737 EGP) — still good",
+    "  ↳ khadlajperfumes.com: CV 96/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ khadlajperfumes.com (CV 96/100): 1116 perfumes, 4/7 pages read without AI, AED (1 = 15.2737 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-10-28T08:59:06.631Z",
    "mode": "self",
    "found": 0,
@@ -7709,17 +7731,6 @@
   },
   {
    "at": "2026-10-23T07:42:46.642Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-23T07:12:45.947Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
