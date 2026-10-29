@@ -1,29 +1,57 @@
 {
  "version": 1,
- "updatedAt": "2026-10-28T15:51:08.408Z",
- "nextUpdateAt": "2026-10-29T03:51:08.408Z",
+ "updatedAt": "2026-10-29T03:44:36.613Z",
+ "nextUpdateAt": "2026-10-29T15:44:36.613Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تشهد نشرة العطور اليوم إطلاقات بارزة وتوسعات عالمية تشمل ابتكارات دور الأزياء وعطور الشتاء الدافئة، إلى جانب تحركات السوق ودخول العود الأسامي سوق دبي، مع تسليط الضوء على تصريحات صناع العطور حول الحرية والإرث الفني.",
-  "en": "Today's fragrance digest highlights major launches and global expansions including fashion house creations and cozy winter scents, alongside market movements such as Assam agarwood entering Dubai, and insights from master perfumers on creative freedom."
+  "ar": "تشهد الساحة العطرية حراكاً لافتاً بتوسّع تصدير خشب العود الهندي نحو دبي وتنافس استثماري عالمي حول دور النيش مثل Parfums de Marly. كما تبرز إطلاقات جديدة مميزة من دور كبرى مثل Hermès وBurberry مع استمرار إقبال دور التجميل الاستهلاكية كـ Dove على توظيف روائحها الأيقونية في صورة عطور رسمية. ويعكس زخم المعارض والابتكارات في غراس وشنغهاي تحولاً مستمراً نحو تجارب حسية ومعايير تصنيع أكثر تطوراً وتنوعاً.",
+  "en": "The fragrance arena is marked by strategic shifts, including Assam's agarwood expansion into Dubai and high-profile private equity interest in niche house Parfums de Marly. Concurrently, major launches from Hermès and Burberry Prorsum highlight luxury creativity, while Dove bottles its iconic functional scent. Global exhibitions in Shanghai and developments in Grasse underscore continuous olfactive innovation and experiential retail."
  },
  "sources": [
   {
    "name": "Now Smell This",
-   "count": 5
+   "count": 7
+  },
+  {
+   "name": "Premium Beauty News",
+   "count": 3
   },
   {
    "name": "Vietnam.vn",
    "count": 3
   },
   {
-   "name": "Premium Beauty News",
+   "name": "WWD",
    "count": 2
   },
   {
+   "name": "Social News XYZ",
+   "count": 1
+  },
+  {
+   "name": "Zonebourse",
+   "count": 1
+  },
+  {
+   "name": "Numéro Magazine",
+   "count": 1
+  },
+  {
+   "name": "Cosmetics Business",
+   "count": 1
+  },
+  {
+   "name": "WeRSM",
+   "count": 1
+  },
+  {
    "name": "25H",
-   "count": 2
+   "count": 1
+  },
+  {
+   "name": "The Chalkboard Mag",
+   "count": 1
   },
   {
    "name": "Paris Select Book",
@@ -31,10 +59,6 @@
   },
   {
    "name": "Cosmopolitan",
-   "count": 1
-  },
-  {
-   "name": "Social News XYZ",
    "count": 1
   },
   {
@@ -60,45 +84,317 @@
   {
    "name": "Layalina Privee",
    "count": 1
-  },
-  {
-   "name": "وزارة الشباب والثقافة والتواصل",
-   "count": 1
-  },
-  {
-   "name": "FashionNetwork - The World's Fashion Business News",
-   "count": 1
-  },
-  {
-   "name": "Sophianet",
-   "count": 1
-  },
-  {
-   "name": "Le 360 Arabe",
-   "count": 1
-  },
-  {
-   "name": "Allure",
-   "count": 1
-  },
-  {
-   "name": "MR Magazine",
-   "count": 1
-  },
-  {
-   "name": "Press Pass LA",
-   "count": 1
-  },
-  {
-   "name": "الأيام البحرينية",
-   "count": 1
-  },
-  {
-   "name": "BeautyMatter",
-   "count": 1
   }
  ],
  "items": [
+  {
+   "id": "nhbf2af",
+   "url": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxOeHVxc1pmbElqMWdPZlFXcjlybVZuR3BoU2dlOE1LQmNTdFp4RVhYV2dFdlRnLXZvb202X0VZcWJPd0FKa3Y4R21qQ2V0VFpyTGd4TjFhLXg0MmxvbHRPVS1vLUdaV3ZObndkWEczQXZNTEtRU21UZGlSRURwNFBoeHozVjdhbjJqNXNGazNzOXRZT1BXZHBMSUZuMEVUQjdkc1M3cmx5WnFGTG9rOWg5MUZSMkxEU09iMjFici1zOTRhd1lXYkE4SUtmRUFHMzFmTTIyOXVCTjhiTmNiVEYxX2stcUZ0QmFFWExxUDlwek1SSkxEbE5zaENOZ2ltQ3cwY2YtQWxzbDhBbDN4VzdZdmUyUndrekpxVkZ4Vm1JSjlBVmQ2d2kxVGRoZlYtSXl4SWd1YXhaUkxmWGvSAbsCQVVfeXFMTnh1cXNaZmxJajFnT2ZRV3I5cm1WbkdwaFNnZThNS0JjU3RaeEVYWFdnRXZUZy12b29tNl9FWXFiT3dBSmt2OEdtakNldFRackxneE4xYS14NDJsb2x0T1Utby1HWld2Tm53ZFhHM0F2TUxLUVNtVGRpUkVEcDRQaHh6M1Y3YW4yajVzRmszczl0WU9QV2RwTElGbjBFVEI3ZHNTN3JseVpxRkxvazloOTFGUjJMRFNPYjIxYnItczk0YXdZV2JBOElLZkVBRzMxZk0yMjl1Qk44Yk5jYlRGMV9rLXFGdEJhRVhMcVA5cHpNUkpMRGxOc2hDTmdpbUN3MGNmLUFsc2w4QWwzeFc3WXZlMlJ3a3pKcVZGeFZtSUo5QVZkNndpMVRkaGZWLUl5eElndWF4WlJMZlhr?oc=5",
+   "source": "Social News XYZ",
+   "publishedAt": "2026-10-28T11:51:55.000Z",
+   "original": "Assam: Agarwood enters Dubai market; CM Sarma highlights export push",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 5,
+   "title": {
+    "ar": "خشب العود من آسام يدخل أسواق دبي بدعم رسمي للتصدير",
+    "en": "Assam Agarwood Enters Dubai Market with Official Export Push"
+   },
+   "summary": {
+    "ar": "أعلن رئيس وزراء ولاية آسام الهندية عن دخول خشب العود من الولاية رسمياً إلى سوق دبي، مؤكداً تكثيف جهود دعم تصدير هذه المادة العطرية الثمينة.",
+    "en": "Assam's Chief Minister highlighted an export drive as agarwood sourced from the Indian state officially enters the Dubai trade market."
+   },
+   "note": {
+    "ar": "خطوة بالغة الأهمية لسلاسل إمداد خشب ودهن العود، فمنطقة آسام تعد الموطن الأصلي لأجود أشجار الأكوي Modern Aquilaria، والربط المباشر مع دبي يعزز توفر المواد الخام النقية لمصممي العطور الشرقية.",
+    "en": "A vital development for natural oud sourcing; direct trade links between Assam and Dubai help secure authentic raw materials for perfumers."
+   }
+  },
+  {
+   "id": "n1cuq8ln",
+   "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxQWFVRWDIycTFqeENEWTlUREdESlFmNTdhMERNSm55WGVMcGt3VG5PR0RTN3QxS0pUdWhfd25nUkxLZDRqdzdVWWV2V2E5b3lDNWRuSTBtX0hpWEFEdmZfS2N0NkkybFFPeldjS1VDa0hNZl9VRE9KcmpEUWpuN1FVVWVtdllsWmRtRVhjczhoYVZRVDJfb3YxMnVyaWxCZFdCWGE3LUtTNVdoaEVmSVRHa1JEUkNabTFybWlMZktPZU9kd19VWUFaNVVDbm10RVVCVWhjeXoxZl93cUptVmttNHl5QzM?oc=5",
+   "source": "Zonebourse",
+   "publishedAt": "2026-10-28T11:24:07.000Z",
+   "original": "CVC, Cinven et Puig s’intéressent au parfumeur de luxe Parfums de Marly, selon des sources",
+   "lang": "fr",
+   "category": "market",
+   "importance": 5,
+   "title": {
+    "ar": "صناديق استثمار ومجموعة Puig تترقب الاستحواذ على دار Parfums de Marly",
+    "en": "CVC, Cinven, and Puig Eye Luxury Perfumer Parfums de Marly"
+   },
+   "summary": {
+    "ar": "أفادت مصادر مطلعة باهتمام مجموعات استثمارية كبرى وصانعة العطور الإسبانية Puig بفرص الاستحواذ على دار عطور النيش الفاخرة Parfums de Marly.",
+    "en": "Sources report that major private equity firms alongside Spanish group Puig are eyeing potential interest in niche luxury house Parfums de Marly."
+   },
+   "note": {
+    "ar": "إقبال المجموعات العالمية الضخمة على دور النيش يؤكد القيمة السوقية الهائلة لقطاع العطور الراقية، لكنه يضع دائماً تحدي الحفاظ على التميز الحرفي وعدم الانجراف نحو التجارة الجماهيرية.",
+    "en": "Large conglomerates courting niche houses proves the high value of independent luxury, though preserving formula integrity remains a key concern."
+   }
+  },
+  {
+   "id": "ntrbhzm",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNVXlmSmJHZ0FZX210Mm5LY0hjbENkX0JleXVfWFd6Z0Jtb3NLVnhDb3puNXhoZ3AzS0wwZDA3M0xDNnlGSUFXNk1ZWUVUVDZtdHFoem53VlloLUxuc05qVTdoY3VmUzZ5WDd3dklvQnVHbXJDMV9OdkhrVF83VHlwTUxna2d4YkRTRC13UHloSlBCRGxTNzB1ZTFxdFlRQWtVOW5RZXBYS2tpYnpCYXZJ?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-27T16:03:58.000Z",
+   "original": "EXCLUSIVE: The Burberry Prorsum Collection of Fragrance Debuts",
+   "lang": "en",
+   "category": "launch",
+   "importance": 5,
+   "title": {
+    "ar": "دار Burberry تكشف حصرياً عن مجموعة عطور Burberry Prorsum",
+    "en": "Burberry Debuts the Burberry Prorsum Fragrance Collection"
+   },
+   "summary": {
+    "ar": "أطلقت الدار البريطانية تشكيلتها الفاخرة الجديدة Burberry Prorsum لتجسد خط الأزياء الرفيع في صيغ عطرية جديدة.",
+    "en": "British fashion house Burberry has introduced its new high-end Burberry Prorsum fragrance collection."
+   },
+   "note": {
+    "ar": "عودة اسم Prorsum يمثل توجهاً واضحاً من الماركة نحو قطاع المجموعات الخاصة (Private Collections) لمنافسة رواد النيش والخطوط الحصرية.",
+    "en": "Reviving the Prorsum name signals a concerted push into the ultra-luxury private blend tier to rival high niche offerings."
+   }
+  },
+  {
+   "id": "n1lwiqrw",
+   "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9BM1MtQk0tekN3bEFIWGpuUldNLXdWdm9XQTRGa2JLQXNNem94TjZnVDdyczN0bXJTZTBVNGxxbHE0a29mR0Fua3pxa0E3STFQc2o5YVZIaEo2ZUFPeXRHWm0yQWRtWU9HSUVJOVlyTHV1WnI0X2tRRTIzVDJiUkE?oc=5",
+   "source": "Numéro Magazine",
+   "publishedAt": "2026-10-27T17:43:15.000Z",
+   "original": "Parfum : Ginseng Biloba, les racines du temps selon Hermès",
+   "lang": "fr",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "دار Hermès تقدم عطر Ginseng Biloba مستلهمة عمق الجذور العطرية",
+    "en": "Hermès Unveils Ginseng Biloba Fragrance"
+   },
+   "summary": {
+    "ar": "كشفت دار هيرميس عن عطرها الجديد Ginseng Biloba، لتركز في تركيبته على استكشاف خفايا الطبيعة وأثر جذور النباتات ونبات الجينسنغ.",
+    "en": "Hermès introduces Ginseng Biloba, an olfactive exploration into herbal roots and botanicals."
+   },
+   "note": {
+    "ar": "استخدام نوتات غير تقليدية كالجينسنغ والجنكة يعكس رغبة المصممين في ابتكار أبعاد ترابية وعشبية جديدة بعيداً عن التوليفات النمطية المكررة.",
+    "en": "Exploring non-traditional notes like ginseng highlights the industry shift toward unconventional, grounding botanical profiles."
+   }
+  },
+  {
+   "id": "n10djdzc",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNQWI2WlJzRHdQcjlKcTB5QmFzaERsbEE2RHFhTE5XWFlqLWpsVlBTYzd0bk5hZ2hVQTAzMmZCMEstMUU5YWlIOXBuWUlsUFRadzhpR1hjVnVHdmZJVl9IYzcxRDZiUTFfQnJnMGFoYjliWS1GUmR5Q0RCRnRLcm12R096UnR5b0VTZGtSY0R6RDY?oc=5",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-29T00:49:34.000Z",
+   "original": "CPL Aromas explored “Another Way” in contemporary perfumery at Notes Shanghai 2026AW",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "شركة CPL Aromas تستعرض آفاقاً جديدة للعطارة المعاصرة في معرض Notes Shanghai",
+    "en": "CPL Aromas Explores Contemporary Directions at Notes Shanghai 2026AW"
+   },
+   "summary": {
+    "ar": "شاركت بيت تركيب العطور العالمي CPL Aromas برؤيتها المبتكرة لمستقبل صناعة العطور خلال فعاليات معرض Notes في شنغهاي لخريف وشتاء 2026.",
+    "en": "Fragrance house CPL Aromas presented progressive contemporary perfumery concepts at the Notes Shanghai 2026AW showcase."
+   },
+   "note": {
+    "ar": "بيوت التصنيع الكبرى تركز بشكل متزايد على السوق الآسيوي، مما ينعكس على ابتكار جزيئات ونوتات خفيفة وأنيقة تتناسب مع الذائقة الصاعدة هناك.",
+    "en": "Major fragrance composition houses are tailoring modern aroma-chemicals and formulations to expanding Asian market sensibilities."
+   }
+  },
+  {
+   "id": "n1i1fiie",
+   "url": "https://nstperfume.com/2026/10/27/parfums-de-marly-crecy-new-fragrance/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-27T16:24:05.000Z",
+   "original": "Parfums de Marly Crecy ~ new fragrance",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "دار Parfums de Marly تطلق عطر Crécy بتركيز Extrait de Parfum",
+    "en": "Parfums de Marly Launches Crécy Extrait de Parfum"
+   },
+   "summary": {
+    "ar": "طرحت دار Parfums de Marly عطرها الزهري الخشبي الجديد Crécy بتركيز مستخلص عطري كثيف يبرز الطابع الفاخر.",
+    "en": "French niche house Parfums de Marly introduced Crécy, a new woody floral fragrance in Extrait de Parfum concentration."
+   },
+   "note": {
+    "ar": "الإصدار بتركيز Extrait de Parfum يلبي طلب الهواة على الثبات والفوحان العالي، ويمنح المكونات الزهرية عمقاً خشبياً رصيناً.",
+    "en": "Extrait concentration answers consumer demand for performance, providing a heavier woody backbone to floral accords."
+   }
+  },
+  {
+   "id": "n1uxlfz9",
+   "url": "https://nstperfume.com/2026/10/28/atelier-cologne-oolang-clair-obscur-new-fragrance/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-28T17:49:05.000Z",
+   "original": "Atelier Cologne Oolang Clair-Obscur ~ new fragrance",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "دار Atelier Cologne تطلق عطر Oolang Clair-Obscur ضمن مجموعتها النادرة",
+    "en": "Atelier Cologne Launches Oolang Clair-Obscur in Collection Rare"
+   },
+   "summary": {
+    "ar": "أعلنت Atelier Cologne عن إطلاق عطر محايد للجنسين باسم Oolang Clair-Obscur كتطور جديد لخط عطور الشاي الشهير لديها.",
+    "en": "Atelier Cologne has launched unisex fragrance Oolang Clair-Obscur as part of its Collection Rare."
+   },
+   "note": {
+    "ar": "تقنية التضاد بين الضوء والظل (Clair-Obscur) في نوتات شاي الأولونغ تكشف عن أسلوب جديد في موازنة الانتعاش مع التوابل والأخشاب الدخانية.",
+    "en": "The chiaroscuro concept applied to oolong tea reflects nuanced perfumery that balances crisp transparency with smokier undertones."
+   }
+  },
+  {
+   "id": "npkgfbw",
+   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9ROTZMRk1YRTRRQTJwdU5wUlFaNWdBVmN6WGx6N0tZQnBnc3Q4N3FSc21sSjdXZWxJMldSbW5Ma0V2bTdlQnl5YjRhSUZva0U0YXNnUjVuQkRWREJaS2dGbHpjbUFqQzZrZE9z?oc=5",
+   "source": "WeRSM",
+   "publishedAt": "2026-10-29T00:05:00.000Z",
+   "original": "Dove Bottled Its Iconic Beauty Bar Scent",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "علامة Dove تحوّل رائحة صابونها الشهيرة إلى عطر مستقل",
+    "en": "Dove Bottles Its Iconic Beauty Bar Scent into a Fragrance"
+   },
+   "summary": {
+    "ar": "قدمت ماركة العناية Dove عطراً معبأً يحاكي تماماً رائحة قالب الصابون الأيقوني الخاص بها وسط إقبال لافت وقوائم انتظار.",
+    "en": "Dove has officially launched a standalone fragrance capturing the recognizable scent profile of its signature Beauty Bar."
+   },
+   "note": {
+    "ar": "هذا التوجه يثبت قوة الارتباط النفسي برائحة النظافة اليومية (Clean/Soap Scent)، وكيف يمكن للروائح الوظيفية أن تفرض نفسها كعطور شخصية مرغوبة.",
+    "en": "Demonstrates the rising commercial demand for comforting 'clean' scents, transitioning functional soap notes into personal fine fragrance."
+   }
+  },
+  {
+   "id": "n385un9",
+   "url": "https://nstperfume.com/2026/10/27/pierre-guillaume-10-2-sphinxyness-new-fragrance/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-27T17:05:31.000Z",
+   "original": "Pierre Guillaume 10.2 Sphinxyness ~ new fragrance",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "المصمم Pierre Guillaume يطلق العطر الجديد 10.2 Sphinxyness",
+    "en": "Pierre Guillaume Introduces 10.2 Sphinxyness"
+   },
+   "summary": {
+    "ar": "أضاف صانع العطور الفرنسي المستقل Pierre Guillaume ابتكاراً جديداً إلى خطه العطري حمل اسم 10.2 Sphinxyness.",
+    "en": "French niche perfumer Pierre Guillaume has launched his latest creation titled 10.2 Sphinxyness."
+   },
+   "note": {
+    "ar": "أعمال غيوم المستقلة تتميز دائماً بتوظيف أكوردات غير تقليدية ودراسة دقيقة لتطور الرائحة على البشرة، وهو ما يهم كل من يصمم عطره الخاص بنفسه.",
+    "en": "Pierre Guillaume's independent releases provide valuable inspiration for perfume designers studying skin evolution and unique accord structures."
+   }
+  },
+  {
+   "id": "n4uo7zk",
+   "url": "https://news.google.com/rss/articles/CBMiugJBVV95cUxOa01MT2U5UzJuZlRtV2ZEQm9XdkxVNVdXQy13YXJQdGJ1WVZmSzZ5R0Jkbjd2ZUJZMUN6aHpWOXJUYmV3SGQ0VmZqcllkb2I3OGpBbTlKeUUtT1p3NklqNE9obi0xbW5ITWI1eW1xYzZIdkMyTVcwOHBRUlRCT3NfMUg4Z0pHT0ZJd19mY2JRRTFrcVB3RWxpR1pCWFlQZ3I5SmxOVWdVcGhmZTJkcEVIRVNpMllXN2M4YXFEMnFmSUd5WWJNc0VlWHE0bUNGMUxMcjNXWl91MDJRWjN6RDAtWHkwV01ydUkzYVo0Z1ZoWWx2Qm5HS05IUE1FZzlLX0pzejdWbUJScmdseVRBSURtcVV4bHpXYlNRblFjenR0bC1QVGlCMDV3TzhmVUlZODNBYzB6ZmNmZ0l3QQ?oc=5",
+   "source": "25H",
+   "publishedAt": "2026-10-27T19:22:54.000Z",
+   "original": "Kajal V” ينضم إلى بوابة Kajal Immersive Scent Society المخصصة لعشاق العطور النادرة",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "دار Kajal تطلق عطر Kajal V عبر مجتمعها المخصص لعشاق العطور",
+    "en": "Kajal Introduces 'Kajal V' to Its Immersive Scent Society"
+   },
+   "summary": {
+    "ar": "أعلنت دار العطور الشرقية Kajal عن إضافة عطرها الجديد Kajal V لرواد مجتمع Kajal Immersive Scent Society المخصص لمحبي القطع العطرية النادرة.",
+    "en": "Niche brand Kajal has added Kajal V to its Immersive Scent Society platform dedicated to rare fragrance collectors."
+   },
+   "note": {
+    "ar": "تخصيص العطور لمجتمعات حصرية يعزز تجربة التذوق العطري التشاركي، ويمنح مقتني العطور مساحة لتقدير التفاصيل الفنية والتوليفات المتفردة.",
+    "en": "Engaging dedicated consumer communities around rare launches fosters deeper appreciation for niche artisanal craftsmanship."
+   }
+  },
+  {
+   "id": "n1ozuztx",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOSU1lS0lFbGdEOWd1bHQ2SnZubnRoVzhsM3lqYkw0dWY4VUNpRUlGRmRjMVhhSlRfUnRJRWdwM25OU0ZBYnZua1htZzVuM0VWLTlxTld6akRiQlNqSXVmWkdrSVB1MS1KNTlXS0VqY2FjSGFweldUSFVfYUVYcXJFSUlNSWViYVp6YzBMUGRyZzFHeXdGbDg1WXNwaWxZNmZoN0xQTGZ3UTg5QjI5dUpJUHF5NWVKZw?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-28T09:58:32.000Z",
+   "original": "For Guerlain Descendant Patricia de Nicolaï, Perfume Isn’t Just About Legacy — It’s About Freedom",
+   "lang": "en",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "العطارة Patricia de Nicolaï: صناعة العطور ليست إرثاً فحسب بل حرية إبداعية",
+    "en": "Patricia de Nicolaï on Perfumery: Heritage Transformed into Creative Freedom"
+   },
+   "summary": {
+    "ar": "أكدت خبيرة العطور سليلة عائلة جيرلان Patricia de Nicolaï في حديث صحفي أن مهنة العطارة بالنسبة لها تمثل الاستقلال والحرية الفنية وتجاوز قيود الأسماء التاريخية.",
+    "en": "Guerlain descendant and master perfumer Patricia de Nicolaï reflected on approaching perfumery as artistic freedom rather than mere heritage."
+   },
+   "note": {
+    "ar": "شهادة ملهمة لكل مبتدئ؛ فالموهبة والابتكار الشخصي في المختبر هما الأساس لإنتاج بصمة عطرية حقيقية تتجاوز سطوة الانتماء للمدارس القديمة.",
+    "en": "An inspiring perspective emphasizing that true perfumery relies on creative independence and lab mastery over brand lineage."
+   }
+  },
+  {
+   "id": "nszgdw0",
+   "url": "https://nstperfume.com/2026/10/28/vilhelm-parfumerie-machiavelli-new-fragrance/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-28T17:19:20.000Z",
+   "original": "Vilhelm Parfumerie Machiavelli ~ new fragrance",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "دار Vilhelm Parfumerie تعلن عن عطر Machiavelli الجديد",
+    "en": "Vilhelm Parfumerie to Introduce New Fragrance Machiavelli"
+   },
+   "summary": {
+    "ar": "كشفت Vilhelm Parfumerie عن نيتها إطلاق عطر Machiavelli ضمن مجموعتها التي أعيد تسميتها لتصبح The Hannibal Collection.",
+    "en": "Vilhelm Parfumerie announced Machiavelli, joining the newly renamed Hannibal Collection."
+   },
+   "note": {
+    "ar": "الاستناد إلى شخصيات تاريخية وفلسفية يعكس فن بناء السردية القصصية (Storytelling) التي تمنح النوتات العطرية بعداً فكرياً ودرامياً أثناء الارتداء.",
+    "en": "Drawing on historical figures showcases how olfactory storytelling gives dramatic context and depth to perfume compositions."
+   }
+  },
+  {
+   "id": "nj68tpb",
+   "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBSOXhDQXM4c0Y5OEpFQWgxQ0pfSWptU2NSeldpZ3k5M0xBeG1YeGhrMjJDdUhXMlF1VllhWUF1OXNUanV1dlVidzNlVzVyMm44YmpJcFhQWlB2QW0wRlZ6VlNsanI?oc=5",
+   "source": "The Chalkboard Mag",
+   "publishedAt": "2026-10-29T01:11:09.000Z",
+   "original": "Why Perfume Can Cause Headaches? Octavia Morgan Explains",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "دراسة أسباب الصداع الناجم عن بعض المركبات العطرية وكيفية تجنبه",
+    "en": "Octavia Morgan Discusses Causes of Perfume-Induced Headaches"
+   },
+   "summary": {
+    "ar": "تناول تقرير تحليلي العوامل البيولوجية والمركبات الكيميائية ومثبتات الروائح التي قد تسبب الصداع لدى بعض مستخدمي العطور وسبل تفاديها.",
+    "en": "A report outlines why certain fragrance compounds trigger headaches in sensitive users and how conscious formulation can mitigate this."
+   },
+   "note": {
+    "ar": "معرفة هذه المؤثرات أمر جوهري لمصممي العطور في منصتنا؛ فالالتزام بمعايير IFRA وضبط نسب بعض المواد التخليقية والمذيبات يضمن أمان وراحة المستهلك.",
+    "en": "Crucial knowledge for perfume formulators: adhering to safety thresholds prevents olfactory fatigue and adverse reactions."
+   }
+  },
+  {
+   "id": "n19j3e3j",
+   "url": "https://www.premiumbeautynews.com/fr/ex-nihilo-investit-le-bon-marche,28429",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-28T17:46:29.000Z",
+   "original": "Ex Nihilo investit Le Bon Marché Rive Gauche avec un pop-up d'avant fêtes",
+   "lang": "en",
+   "category": "events",
+   "importance": 2,
+   "title": {
+    "ar": "دار Ex Nihilo تفتتح مساحة تجربة عطرية حصرية في متجر Le Bon Marché بباريس",
+    "en": "Ex Nihilo Unveils Pop-Up Experience at Le Bon Marché in Paris"
+   },
+   "summary": {
+    "ar": "أقامت دار العطور الفاخرة Ex Nihilo مساحة مؤقتة تحت القبة الرئيسية لمتجر Le Bon Marché لعرض ابتكاراتها وتجاربها الشمية الخاصة بموسم الأعياد.",
+    "en": "Haute perfumery brand Ex Nihilo launched a curated pop-up at Paris's Le Bon Marché featuring its signature olfactive universe."
+   },
+   "note": {
+    "ar": "المتاجر التفاعلية المؤقتة تتيح للمستهلكين تذوق المواد الخام بشكل منفرد واكتشاف كيفية بناء الهيكل الهرمي للعطر على أرض الواقع.",
+    "en": "Interactive pop-ups allow consumers to experience individual raw notes and understand structural perfume composition first-hand."
+   }
+  },
   {
    "id": "nbc65gr",
    "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxQTUU5UTE0UXQza1V5QzY5cldvb1NUbUxHLUJRa3dySUVhQy1FanV2RUlYV25pak80dHM0Z1g1TUhPalJIOHYwM2h6Wkp1dEkzMXk3bkxSR1RwMExma0dFU1hlOWZCNzBINnFFTWdfamVUQ195SER0VDFONlo4VS02aDlxVTFMTzQ5TzB4RVYzZjJtVFA5SDRSc1JmUm5WQ2wwVVRKTDZlbUROazk4WFNXSlFWeXlTcGNqMkNLQktkaFYxQjdpOWlVX3pERXJEU2lpR2pCNmp4Q0tlSlhQVnVJN0RwLUM4VTZaSVh6TThR?oc=5",
@@ -207,28 +503,6 @@
    "note": {
     "ar": "يعكس هذا الاتجاه رغبة المستهلكين في البحث عن روائح النظافة والبساطة المألوفة.",
     "en": "Reflects the growing consumer appetite for clean, nostalgic, and comforting everyday scents."
-   }
-  },
-  {
-   "id": "n1fhpzub",
-   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPNnNoa29Pdkg3NTNYRDZDUGh2SnRjNmJiZVRfMC1ta1JnM3VXdGk3VXlycmZQTjNLa3ZFZ1ZoQzAxQW5RclUtdm04Z3VaR19zNDRNUWU0cGxlV1k4OXYtQ0Y2NlpGSGYzUDFaUC0wNjdoRVRhUDhkbG9LSi16R2hjU0ZPMk5oUEF1bGREd1F4RXRiTDRBYnZLZnpfSE9aZWp0Rk1RLWdpVnfSAagBQVVfeXFMTzZzaGtvT3ZINzUzWEQ2Q1Bodkp0YzZiYmVUXzAtbWtSZzN1V3RpN1V5cnJmUE4zS2t2RWdWaEMwMUFuUXJVLXZtOGd1WkdfczQ0TVFlNHBsZVdZODl2LUNGNjZaRkhmM1AxWlAtMDY3aEVUYVA4ZGxvS0otekdoY1NGTzJOaFBBdWxkRHdReEV0Ykw0QWJ2S2Z6X0hPWmVqdEZNUS1naVZ3?oc=5",
-   "source": "Social News XYZ",
-   "publishedAt": "2026-10-28T11:53:11.000Z",
-   "original": "Assam: Agarwood enters Dubai market; CM Sarma highlights export push",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Pierre Guillaume تطرح عطرها الجديد 10.2 Sphinxyness",
-    "en": "Pierre Guillaume 10.2 Sphinxyness ~ new fragrance"
-   },
-   "summary": {
-    "ar": "أعلنت دار العطور المستقلة Pierre Guillaume عن إطلاق عطرها الجديد المبتكر تحت اسم 10.2 Sphinxyness.",
-    "en": "French niche line Pierre Guillaume has launched a new fragrance, 10.2 Sphinxyness."
-   },
-   "note": {
-    "ar": "تقدم الدار دائماً تركيبات غير تقليدية تستحق المتابعة لمن يحبون استكشاف العطور النيويش الفنية.",
-    "en": "A great addition for fans of niche perfumery looking for distinctive and unconventional formulations."
    }
   },
   {
@@ -364,28 +638,6 @@
    }
   },
   {
-   "id": "n1i1fiie",
-   "url": "https://nstperfume.com/2026/10/27/parfums-de-marly-crecy-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-27T16:24:05.000Z",
-   "original": "Parfums de Marly Crecy ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 5,
-   "title": {
-    "ar": "إطلاق عطر Crécy الجديد بتركيز Extrait de Parfum من Parfums de Marly",
-    "en": "Parfums de Marly Introduces New Fragrance Crécy"
-   },
-   "summary": {
-    "ar": "أعلنت دار العطور الفرنسية المستقلة Parfums de Marly عن إطلاق عطرها الجديد Crécy، وهو عطر خشبي زهري يأتي بتركيز Extrait de Parfum الفاخر.",
-    "en": "French niche line Parfums de Marly has introduced Crécy, a new woody floral fragrance in Extrait de Parfum concentration."
-   },
-   "note": {
-    "ar": "يُعد هذا الإطلاق إضافة قوية لعشاق التركيزات المركزة والثابتة، ويمثل خياراً ممتازاً لمحبي العطور الخشبية المزججة بلمحات زهرية.",
-    "en": "This high-concentration release appeals to fans of long-lasting, rich woody-floral scent profiles."
-   }
-  },
-  {
    "id": "ngeg83a",
    "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOaHNXNHpvcDhHV21VUU9nWFc3b2s5Z0lYbENncGtzSTI0RGg4eGdoY3pkeHBGX2ttelVEZF94RlppR01Ici1JcUNTMTlqMWRXbDFKYW9VcHJJc2NWZkpIemY1SFQ3TW5LUTlHWkdRTFpVdlVPNUhFZ2ZDLWpUcjB3R0FMUmdhamJ3cFcxakxDbDFLQVQwVmhFbTAyZEQzUWNpWGRiQXBEbnRTSVBaN2loemRUbGtnRDI5?oc=5",
    "source": "Global Cosmetics News",
@@ -427,28 +679,6 @@
    "note": {
     "ar": "تستمر دار Memo في تقديم تجارب عطرية تأخذ المستخدمين في رحلات حسية فريدة، وهذا الإصدار يستحق التجربة لمحبي العطور المركبة.",
     "en": "A great addition for collectors who follow Memo's journey-inspired narrative."
-   }
-  },
-  {
-   "id": "n385un9",
-   "url": "https://nstperfume.com/2026/10/27/pierre-guillaume-10-2-sphinxyness-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-27T17:05:31.000Z",
-   "original": "Pierre Guillaume 10.2 Sphinxyness ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Pierre Guillaume تطلق عطر 10.2 Sphinxyness الجديد",
-    "en": "Pierre Guillaume Launches 10.2 Sphinxyness"
-   },
-   "summary": {
-    "ar": "وسعت الدار الفرنسية المستقلة Pierre Guillaume مجموعتها بإطلاق عطر جديد تحمل اسم 10.2 Sphinxyness بتركيبة مميزة.",
-    "en": "French niche line Pierre Guillaume has launched a new fragrance, 10.2 Sphinxyness, expanding its artistic catalog."
-   },
-   "note": {
-    "ar": "عطور بيير غيوم تتميز دائماً بالجرأة الفنية والابتكار الخارجي، وهو خيار رائع لمن يبحث عن النيوتش الحقيقي غير التقليدي.",
-    "en": "A must-try for indie fragrance enthusiasts interested in unconventional artistic compositions."
    }
   },
   {
@@ -515,224 +745,6 @@
    "note": {
     "ar": "هذا الاستثمار الضخم في المواد الطبيعية يعزز مستقبل صناعة العطور المستدامة ويضمن توفير أجود المكونات لصناع العطور حول العالم.",
     "en": "A significant milestone for sustainable natural ingredients sourcing in the global perfume capital."
-   }
-  },
-  {
-   "id": "nkty9hn",
-   "url": "https://news.google.com/rss/articles/CBMixgJBVV95cUxPdU5wODFhZVc4YldRQXQtMUJ5bmxBb3JwVW1xYmRzdGZJZTczUUdLelh5NUlyTHR1WWp1amdzLUJDVFRoMFJid09DSkh3cE1hM2dneXFOVm9kMnduS3VYMXFTSDZJTUxrWjhEOHBwWmhZMjUtQ2N4cEdJOE15RWJnVkhwXzJ5V05NMWNxMWFhbU93NDlFaUdPS1QzOEFVMnN1RmdpOUwtV1RfcjV2UFQ5QUdOeVpwS1dleVV1UFIxcjd1MnlOMWFVTlY5T2I5Y04tX0xlTUZTekQ5QlBmWFNBVGNpZFZabTR2bzZza0swSmRyeHQzOHpVU2JiNFBZeGtjZmVTSGVIYTJ3UjVFNzBLQ0hWNDVkNnJHU1VEMDFPbDY1cmhiTlc4dndTMjRFeDlzRDhYRUdZcWQyTjFKWVVsVzJNdHJBdw?oc=5",
-   "source": "وزارة الشباب والثقافة والتواصل",
-   "publishedAt": "2026-10-27T11:21:42.000Z",
-   "original": "بــــلاغ الدورة 27 للمهرجان الدولي للعود بتطوان تحت شعار: المتوسط… الثقافات الثلاث",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "انطلاق الدورة 27 للمهرجان الدولي للعود بتطوان تحت شعار «المتوسط… الثقافات الثلاث»",
-    "en": "Tetouan International Oud Festival Launches Its 27th Edition"
-   },
-   "summary": {
-    "ar": "تحتضن مدينة تطوان المغربية فعاليات الدورة السابعة والعشرين للمهرجان الدولي للعود بمشاركة واسعة من أبرز الموسيقيين والعازفين الدوليين.",
-    "en": "The 27th International Oud Festival in Tetouan, Morocco, has kicked off under the theme of Mediterranean cultural dialogue."
-   },
-   "note": {
-    "ar": "يحتفي هذا الحدث الثقافي بآلة العود التي تقترن ثقافياً وفلسفياً بعالم العطور والشرق الأصيل.",
-    "en": "A cultural celebration honoring the oud instrument, deeply tied to oriental heritage and sensory arts."
-   }
-  },
-  {
-   "id": "n34wtex",
-   "url": "https://news.google.com/rss/articles/CBMingJBVV95cUxQZmZmanNQcTJLa3AtR0puR2ZaTW9yazV5OGY4OEtEd18xSHBuMTBkVlVCTzczUWx2Z0tNdkQyOUFXNDBzaUlFUDVUbzJQQ3pmcGJwdWpHTlFGdFlycENlYldIQmxSaTdVLVVCWTBhaVFSNUM3WnByd25ReDg0eExtVlVnX21WazZyV0FDTm1IM2hXRUNNRHBsRWtCMDdrdmU0U1NhR2E0OFpNUzlCZlRsa2xLbWVLTHFEelZDN0J2TGdValZNRUs4V2U3aFZtVlZmZE1vZFo1UFdSbWN1WGlHRjRTLTlwQUNDYmFKTy1UM2RldXlUZjMxNDVPeEVsZnRoeXNLU3hoOE96aEd4RUd4VjRReVA3OEJRckNXREF3?oc=5",
-   "source": "25H",
-   "publishedAt": "2026-10-27T02:22:58.000Z",
-   "original": "جديد من EX NIHILO: عطر DEMON DANCER بتركيبة مُركّزة",
-   "lang": "ar",
-   "category": "launch",
-   "importance": 3,
-   "title": {
-    "ar": "EX NIHILO تطلق عطر DEMON DANCER بتركيبة مُركّزة",
-    "en": "EX NIHILO Launches Concentrated Fragrance DEMON DANCER"
-   },
-   "summary": {
-    "ar": "أعلنت دار العطور النيويش EX NIHILO عن طرح عطرها الجديد DEMON DANCER بتركيبة غنية ومُركّزة تلبي تطلعات عشاق العطور القوية.",
-    "en": "EX NIHILO has expanded its lineup with the concentrated edition fragrance, DEMON DANCER."
-   },
-   "note": {
-    "ar": "إصدار يلبي طلب السوق المتزايد على التركيزات العالية ذات الأثر العطري الطاغي والثبات المرتفع.",
-    "en": "Caters to the high-demand segment for potent, high-sillage niche compositions."
-   }
-  },
-  {
-   "id": "nz6myp4",
-   "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxOd2YzdlUtcXpsaWlReU0yQUhVbGZqSEMzN3htbWV2YzVPaGEyUEc4a1JtRWt1YkhLcDZ4NGlpUzlfbTN2TEpZNm1uckpLT2l2cFEyc3lvRklrN0wtazBzbWh0bmNXN2RaaTNzdExwcmR2SVhfazl1MlJKMzlXUEppTVFPNlNMM3RvRFMzcmVQYXNsaFppSExENmE5Mkd2bTMtVzUzYjF6NjFRb2lMbDBlYXV3aEQ0U3pFMXVJMU9zNjRMblJKaXpMWEtULXBCMUp1UlE?oc=5",
-   "source": "FashionNetwork - The World's Fashion Business News",
-   "publishedAt": "2026-10-26T23:51:58.000Z",
-   "original": "Bdk marks 10th anniversary at crossroads of perfumery and fashion with Collection Studio",
-   "lang": "en",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "دار Bdk تحتفل بذكرها العاشرة عبر إطلاق Collection Studio",
-    "en": "Bdk Marks 10th Anniversary with Collection Studio"
-   },
-   "summary": {
-    "ar": "احتفلت دار العطور المستقلة Bdk بمرور عشر سنوات على تأسيسها من خلال تسليط الضوء على تقاطع صناعة العطور مع عالم الأزياء عبر Collection Studio.",
-    "en": "French indie house Bdk is celebrating its 10th anniversary at the crossroads of perfumery and fashion."
-   },
-   "note": {
-    "ar": "قصص النجاح للدار المستقلة توضح نمو قطاع العطور المستقلة وقدرته على منافسة الدور الكبرى بإبداعات أصيلة.",
-    "en": "Demonstrates the successful growth and creative independence of modern niche perfume houses."
-   }
-  },
-  {
-   "id": "n1n4mtdc",
-   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxONVZkbjhGcHpRQVNnRDZaSTI5TWlmNlBBdmUwR3czU1dYSlV6S1RHaFpqTTBIdmN6ZVdBak4wLUREd1RUWGlHSkVRMHVUV1owVHZFUlBuckxtZnh6ZFg4UHowS1R3Ql9iZ3BiOTR3VVgtYUJKQjNLOWdVVW0zNmFwU3dJeEpzRmM3UGtlb3lrNGltZUVfejFtYUxlMzVLZVl3dUxr?oc=5",
-   "source": "Sophianet",
-   "publishedAt": "2026-10-27T06:58:09.000Z",
-   "original": "Grasse : Cosmetic Valley rejoint la Chaire Patrimoine Arômes, Parfums et Cosmétiques",
-   "lang": "fr",
-   "category": "regulation",
-   "importance": 3,
-   "title": {
-    "ar": "Cosmetic Valley تنضم إلى كرسي التراث والأرواح والعطور في غراس",
-    "en": "Cosmetic Valley Joins Grasse Heritage and Perfumery Chair"
-   },
-   "summary": {
-    "ar": "انضمت منظمة Cosmetic Valley رسمياً إلى كرسي التراث الخاص بالأرواح والعطور ومستحضرات التجميل في مدينة غراس الفرنسية لتعزيز الأبحاث الأكاديمية.",
-    "en": "Cosmetic Valley has joined the Heritage, Aromas, Perfumes and Cosmetics Chair in Grasse to support academic research."
-   },
-   "note": {
-    "ar": "هذه الشراكات الأكاديمية تضمن حماية تراث صناعة العطور وتطوير معايير الجودة والابتكار المستقبلي.",
-    "en": "Strengthens academic backing and preservation of traditional perfumery heritage and standards."
-   }
-  },
-  {
-   "id": "n4uo7zk",
-   "url": "https://news.google.com/rss/articles/CBMiugJBVV95cUxOa01MT2U5UzJuZlRtV2ZEQm9XdkxVNVdXQy13YXJQdGJ1WVZmSzZ5R0Jkbjd2ZUJZMUN6aHpWOXJUYmV3SGQ0VmZqcllkb2I3OGpBbTlKeUUtT1p3NklqNE9obi0xbW5ITWI1eW1xYzZIdkMyTVcwOHBRUlRCT3NfMUg4Z0pHT0ZJd19mY2JRRTFrcVB3RWxpR1pCWFlQZ3I5SmxOVWdVcGhmZTJkcEVIRVNpMllXN2M4YXFEMnFmSUd5WWJNc0VlWHE0bUNGMUxMcjNXWl91MDJRWjN6RDAtWHkwV01ydUkzYVo0Z1ZoWWx2Qm5HS05IUE1FZzlLX0pzejdWbUJScmdseVRBSURtcVV4bHpXYlNRblFjenR0bC1QVGlCMDV3TzhmVUlZODNBYzB6ZmNmZ0l3QQ?oc=5",
-   "source": "25H",
-   "publishedAt": "2026-10-27T19:22:54.000Z",
-   "original": "Kajal V” ينضم إلى بوابة Kajal Immersive Scent Society المخصصة لعشاق العطور النادرة",
-   "lang": "ar",
-   "category": "market",
-   "importance": 3,
-   "title": {
-    "ar": "انضمام عطر «Kajal V» إلى بوابة Kajal Immersive Scent Society",
-    "en": "Kajal V Joins Kajal Immersive Scent Society"
-   },
-   "summary": {
-    "ar": "أعلنت مجموعة Kajal عن انضمام عطرها الجديد «Kajal V» إلى منصتها الحصرية المخصصة لعشاق العطور النادرة والمحدودة الإصدار.",
-    "en": "Kajal has added 'Kajal V' to its immersive scent society portal dedicated to rare fragrance enthusiasts."
-   },
-   "note": {
-    "ar": "يعكس هذا الأسلوب التسويقي اهتمام الدور بإنشاء مجتمعات خاصة وحصرية لعملائها الأكثر شغفاً بالعطور النادرة.",
-    "en": "Reflects the trend of building exclusive communities around rare and collectible fragrance releases."
-   }
-  },
-  {
-   "id": "ng6oa7j",
-   "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE50RTNnc0ZaMXJBQm53bjFpblFUaE5aQXlXQ3J5eXBkTm1tNXhBTTZlZ2dPUkIwVTBJZ192SmFDUzg1b3k4NEVrRDJBc3MyRzlsR1RRMW5QbzY5ZTZPaU5xeEZnTVNNQQ?oc=5",
-   "source": "Le 360 Arabe",
-   "publishedAt": "2026-10-27T22:35:26.000Z",
-   "original": "الفنان مارسيل خليفة يفتتح مهرجان العود بتطوان",
-   "lang": "ar",
-   "category": "events",
-   "importance": 2,
-   "title": {
-    "ar": "الفنان مارسيل خليفة يفتتح مهرجان العود بتطوان",
-    "en": "الفنان مارسيل خليفة يفتتح مهرجان العود بتطوان"
-   },
-   "summary": {
-    "ar": "الفنان مارسيل خليفة يفتتح مهرجان العود بتطوان",
-    "en": "الفنان مارسيل خليفة يفتتح مهرجان العود بتطوان"
-   }
-  },
-  {
-   "id": "nld1t2k",
-   "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1PY3U4a2dDb3I5eUVpZG5tVzA5T3R0OGhDSzgwWW9wU1FwQlJxY1RtMGxWYjR3WjBuQlNaTlZmNW1XVFpWbWZCZnFHeDlvcUo3VXpqb1JtYXhZTC02WFNNenpWVkJtUnE1?oc=5",
-   "source": "Allure",
-   "publishedAt": "2026-10-27T22:30:00.000Z",
-   "original": "The Top Winter Fragrance Trends of 2026 Smell Like Comfort",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "The Top Winter Fragrance Trends of 2026 Smell Like Comfort",
-    "en": "The Top Winter Fragrance Trends of 2026 Smell Like Comfort"
-   },
-   "summary": {
-    "ar": "The Top Winter Fragrance Trends of 2026 Smell Like Comfort",
-    "en": "The Top Winter Fragrance Trends of 2026 Smell Like Comfort"
-   }
-  },
-  {
-   "id": "ng4dvzr",
-   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPMkYtWkZrQ180MXl2VEdlUnlKUkY5Y2FYX05laDEteVN2bmpjVDlkdVpUNUlrUmdCenlHZWpRY2s2Yk9CQVlONF83N0d6aDI4SVZXQi16cWZMQVczRldoamowRmkzbW1QVlpFeHRiYkcwM3d3UUYzTzRQczYzb2xFVXAtMzNDVHli?oc=5",
-   "source": "MR Magazine",
-   "publishedAt": "2026-10-27T21:57:55.000Z",
-   "original": "ITA INTRODUCES AURA | PRESENTING 30 LUXURY ITALIAN FRAGRANCES ATOP OF ONE WTC",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "ITA INTRODUCES AURA | PRESENTING 30 LUXURY ITALIAN FRAGRANCES ATOP OF ONE WTC",
-    "en": "ITA INTRODUCES AURA | PRESENTING 30 LUXURY ITALIAN FRAGRANCES ATOP OF ONE WTC"
-   },
-   "summary": {
-    "ar": "ITA INTRODUCES AURA | PRESENTING 30 LUXURY ITALIAN FRAGRANCES ATOP OF ONE WTC",
-    "en": "ITA INTRODUCES AURA | PRESENTING 30 LUXURY ITALIAN FRAGRANCES ATOP OF ONE WTC"
-   }
-  },
-  {
-   "id": "n1kq8kbv",
-   "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOaWVvREF2TXVtdUF6UmhfaW9lQ0RHUlV6UzVxaDk0MkZ0bHZSdmhEekJaNjNnNFdYQTlsaGJVc1VLNTk2WUg4RFh4Zmp6WkFwQ3pGUDVmQTc1YUkwdlE3SThnazZrNm1fa1V1VnA4NDBzYWZWZkNYR1JCaVFoNXZsYWVQV3pMR2M5TDV2ejVudHJHc1loMmE1a1VqZW1meXpUbzdVd1lFdmRxUDl3SDRLeEFPRHJwb2hsX084cThLREVwdzFaNV9QYXJ3?oc=5",
-   "source": "Press Pass LA",
-   "publishedAt": "2026-10-27T21:46:11.000Z",
-   "original": "Tabitha and Chance Brown Sell Fragrance Through Disaster in the Comedy Series \"At Least You Smell Good\"",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Tabitha and Chance Brown Sell Fragrance Through Disaster in the Comedy Series \"At Least You Smell Good\"",
-    "en": "Tabitha and Chance Brown Sell Fragrance Through Disaster in the Comedy Series \"At Least You Smell Good\""
-   },
-   "summary": {
-    "ar": "Tabitha and Chance Brown Sell Fragrance Through Disaster in the Comedy Series \"At Least You Smell Good\"",
-    "en": "Tabitha and Chance Brown Sell Fragrance Through Disaster in the Comedy Series \"At Least You Smell Good\""
-   }
-  },
-  {
-   "id": "n1uaqxwn",
-   "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1xbUU5bVM0TXV0RGE5a3BUVHFPdGE1OHJnWW05UWp4dDFqY1RRM1R6RWs4UDJfMEh4Sm51UHdRcG9CX21MbFhFZHZSNEo2aDluWW0wRzdPeC0yRXNCNGJ3TkNZcEtwUdIBbEFVX3lxTE4wdFJxUTFzZUlqLVlwdTY3V0lGdnB1NjNhVC1WTDEycXVZSVhVVENIeGtFbmVyR0Q5Y2NvVzBlZ1hEOHVWdDd3Rk5nVi1HV2RYTmVuQ1pVbldJNTU2ckw4LUZsR3lFcUdjZFVDcw?oc=5",
-   "source": "الأيام البحرينية",
-   "publishedAt": "2026-10-27T20:26:15.000Z",
-   "original": "بقيادة المايسترو مجد جريده.. فرقة موسيقية ضخمة ترافق فضل شاكر في عودته بعد 14 عامًا من الغياب بالرياض",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "بقيادة المايسترو مجد جريده.. فرقة موسيقية ضخمة ترافق فضل شاكر في عودته بعد 14 عامًا من الغياب بالرياض",
-    "en": "بقيادة المايسترو مجد جريده.. فرقة موسيقية ضخمة ترافق فضل شاكر في عودته بعد 14 عامًا من الغياب بالرياض"
-   },
-   "summary": {
-    "ar": "بقيادة المايسترو مجد جريده.. فرقة موسيقية ضخمة ترافق فضل شاكر في عودته بعد 14 عامًا من الغياب بالرياض",
-    "en": "بقيادة المايسترو مجد جريده.. فرقة موسيقية ضخمة ترافق فضل شاكر في عودته بعد 14 عامًا من الغياب بالرياض"
-   }
-  },
-  {
-   "id": "n1gxd0gj",
-   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNNjUtZndkUXNWMFZUckVuTGs5Y2RkR3BsWkhBcDdtSUVKSmRsQmlsVTJoeEw2S3VLMjBOWnNKX01IZEJhZ01sdDdBc09WYVBPRWtiQWRweERmZjZGd1htZGNLcHZna0R3RGZ4XzFLaGJ4NERmUGlwWWkwd1hMbmprdTd3?oc=5",
-   "source": "BeautyMatter",
-   "publishedAt": "2026-10-27T20:22:43.000Z",
-   "original": "How Luckyscent and Scent Bar Pioneered Niche Fragrance Retail and Are Scaling for Growth",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "How Luckyscent and Scent Bar Pioneered Niche Fragrance Retail and Are Scaling for Growth",
-    "en": "How Luckyscent and Scent Bar Pioneered Niche Fragrance Retail and Are Scaling for Growth"
-   },
-   "summary": {
-    "ar": "How Luckyscent and Scent Bar Pioneered Niche Fragrance Retail and Are Scaling for Growth",
-    "en": "How Luckyscent and Scent Bar Pioneered Niche Fragrance Retail and Are Scaling for Growth"
    }
   }
  ]
