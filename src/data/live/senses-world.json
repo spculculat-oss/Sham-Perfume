@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "senses_world",
- "updatedAt": "2026-10-29T12:58:44.473Z",
+ "updatedAt": "2026-10-29T18:54:30.297Z",
  "score": 70,
  "counts": {
   "ok": 1,
@@ -28,7 +28,7 @@
     "note": "لم تُجلب الصفحة"
    },
    "source": "https://www.dhl.com/my-en/home/our-divisions/express.html",
-   "checkedAt": "2026-10-29T12:58:44.473Z"
+   "checkedAt": "2026-10-29T18:54:30.297Z"
   },
   {
    "carrierId": "fedex_my",
@@ -48,7 +48,7 @@
     "note": "الصفحة فُتحت (200)"
    },
    "source": "https://www.fedex.com/en-my/home.html",
-   "checkedAt": "2026-10-29T12:58:44.473Z"
+   "checkedAt": "2026-10-29T18:54:30.297Z"
   },
   {
    "carrierId": "aramex_my",
@@ -68,7 +68,7 @@
     "note": "الصفحة فُتحت (403)"
    },
    "source": "https://www.aramex.com/my/en",
-   "checkedAt": "2026-10-29T12:58:44.473Z"
+   "checkedAt": "2026-10-29T18:54:30.297Z"
   },
   {
    "carrierId": "ninja_van_my",
@@ -88,7 +88,7 @@
     "note": "الصفحة فُتحت (200)"
    },
    "source": "https://www.ninjavan.co/en-my",
-   "checkedAt": "2026-10-29T12:58:44.473Z"
+   "checkedAt": "2026-10-29T18:54:30.297Z"
   },
   {
    "carrierId": "jnt_my",
@@ -108,7 +108,7 @@
     "note": "الصفحة فُتحت (200)"
    },
    "source": "https://www.jtexpress.my",
-   "checkedAt": "2026-10-29T12:58:44.473Z"
+   "checkedAt": "2026-10-29T18:54:30.297Z"
   },
   {
    "carrierId": "aramex_ae",
@@ -128,7 +128,7 @@
     "note": "الصفحة فُتحت (403)"
    },
    "source": "https://www.aramex.com/ae/en",
-   "checkedAt": "2026-10-29T12:58:44.473Z"
+   "checkedAt": "2026-10-29T18:54:30.297Z"
   }
  ],
  "carriers": {
