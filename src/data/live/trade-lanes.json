@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "trade-lanes",
- "updatedAt": "2026-10-28T06:21:25.859Z",
+ "updatedAt": "2026-10-29T06:23:25.772Z",
  "modes": {
   "platform_ships": {
    "nameAr": "المنصة بتشحن (وساطة)",
@@ -89,31 +89,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1728.57,
-     2016.66
+     1734.2,
+     2023.24
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1901.34,
-   "zoneChargedEgp": 841.42,
+   "chargedEgp": 1907.61,
+   "zoneChargedEgp": 841.79,
    "costEgp": [
-    1728.57,
-    2016.66
+    1734.2,
+    2023.24
    ],
-   "surplusEgp": 172.77,
-   "netEgp": 1363.83,
+   "surplusEgp": 173.41,
+   "netEgp": 1364.47,
    "orderVerdict": "profit",
-   "keptPercent": 114.51,
+   "keptPercent": 114.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1728.57,
-    2016.66
+    1734.2,
+    2023.24
    ],
-   "costExtraEgp": 288.09,
-   "proposedChargedEgp": 1901.34,
-   "proposedMarginEgp": 172.77,
+   "costExtraEgp": 289.03,
+   "proposedChargedEgp": 1907.61,
+   "proposedMarginEgp": 173.41,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -155,31 +155,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1536.5,
-     2016.66
+     1541.51,
+     2023.24
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1690.2,
-   "zoneChargedEgp": 785.33,
+   "chargedEgp": 1695.84,
+   "zoneChargedEgp": 785.67,
    "costEgp": [
-    1536.5,
-    2016.66
+    1541.51,
+    2023.24
    ],
-   "surplusEgp": 153.7,
-   "netEgp": 1344.76,
+   "surplusEgp": 154.33,
+   "netEgp": 1345.39,
    "orderVerdict": "profit",
-   "keptPercent": 112.9,
+   "keptPercent": 112.96,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1536.5,
-    2016.66
+    1541.51,
+    2023.24
    ],
-   "costExtraEgp": 480.16,
-   "proposedChargedEgp": 1690.2,
-   "proposedMarginEgp": 153.7,
+   "costExtraEgp": 481.72,
+   "proposedChargedEgp": 1695.84,
+   "proposedMarginEgp": 154.33,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -218,31 +218,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1536.5,
-     1920.63
+     1541.51,
+     1926.89
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1690.2,
-   "zoneChargedEgp": 785.33,
+   "chargedEgp": 1695.84,
+   "zoneChargedEgp": 785.67,
    "costEgp": [
-    1536.5,
-    1920.63
+    1541.51,
+    1926.89
    ],
-   "surplusEgp": 153.7,
-   "netEgp": 1344.76,
+   "surplusEgp": 154.33,
+   "netEgp": 1345.39,
    "orderVerdict": "profit",
-   "keptPercent": 112.9,
+   "keptPercent": 112.96,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1536.5,
-    1920.63
+    1541.51,
+    1926.89
    ],
-   "costExtraEgp": 384.13,
-   "proposedChargedEgp": 1690.2,
-   "proposedMarginEgp": 153.7,
+   "costExtraEgp": 385.38,
+   "proposedChargedEgp": 1695.84,
+   "proposedMarginEgp": 154.33,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -281,31 +281,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1440.47,
-     1824.6
+     1445.17,
+     1830.55
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1584.63,
-   "zoneChargedEgp": 785.33,
+   "chargedEgp": 1589.96,
+   "zoneChargedEgp": 785.67,
    "costEgp": [
-    1440.47,
-    1824.6
+    1445.17,
+    1830.55
    ],
-   "surplusEgp": 144.16,
-   "netEgp": 1335.22,
+   "surplusEgp": 144.79,
+   "netEgp": 1335.85,
    "orderVerdict": "profit",
-   "keptPercent": 112.1,
+   "keptPercent": 112.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1440.47,
-    1824.6
+    1445.17,
+    1830.55
    ],
-   "costExtraEgp": 384.13,
-   "proposedChargedEgp": 1584.63,
-   "proposedMarginEgp": 144.16,
+   "costExtraEgp": 385.38,
+   "proposedChargedEgp": 1589.96,
+   "proposedMarginEgp": 144.79,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -344,31 +344,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1440.47,
-     1824.6
+     1445.17,
+     1830.55
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1584.63,
-   "zoneChargedEgp": 785.33,
+   "chargedEgp": 1589.96,
+   "zoneChargedEgp": 785.67,
    "costEgp": [
-    1440.47,
-    1824.6
+    1445.17,
+    1830.55
    ],
-   "surplusEgp": 144.16,
-   "netEgp": 1335.22,
+   "surplusEgp": 144.79,
+   "netEgp": 1335.85,
    "orderVerdict": "profit",
-   "keptPercent": 112.1,
+   "keptPercent": 112.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1440.47,
-    1824.6
+    1445.17,
+    1830.55
    ],
-   "costExtraEgp": 384.13,
-   "proposedChargedEgp": 1584.63,
-   "proposedMarginEgp": 144.16,
+   "costExtraEgp": 385.38,
+   "proposedChargedEgp": 1589.96,
+   "proposedMarginEgp": 144.79,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -407,31 +407,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1440.47,
-     1824.6
+     1445.17,
+     1830.55
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1584.63,
-   "zoneChargedEgp": 785.33,
+   "chargedEgp": 1589.96,
+   "zoneChargedEgp": 785.67,
    "costEgp": [
-    1440.47,
-    1824.6
+    1445.17,
+    1830.55
    ],
-   "surplusEgp": 144.16,
-   "netEgp": 1335.22,
+   "surplusEgp": 144.79,
+   "netEgp": 1335.85,
    "orderVerdict": "profit",
-   "keptPercent": 112.1,
+   "keptPercent": 112.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1440.47,
-    1824.6
+    1445.17,
+    1830.55
    ],
-   "costExtraEgp": 384.13,
-   "proposedChargedEgp": 1584.63,
-   "proposedMarginEgp": 144.16,
+   "costExtraEgp": 385.38,
+   "proposedChargedEgp": 1589.96,
+   "proposedMarginEgp": 144.79,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -470,31 +470,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2880.94,
-     3649.2
+     2890.34,
+     3661.1
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3161.41,
-   "zoneChargedEgp": 785.33,
+   "chargedEgp": 3170.94,
+   "zoneChargedEgp": 785.67,
    "costEgp": [
-    2880.94,
-    3649.2
+    2890.34,
+    3661.1
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    2880.94,
-    3649.2
+    2890.34,
+    3661.1
    ],
-   "costExtraEgp": 768.25,
-   "proposedChargedEgp": 3161.41,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 770.76,
+   "proposedChargedEgp": 3170.94,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -533,31 +533,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1440.47,
-     1824.6
+     1445.17,
+     1830.55
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1584.63,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 1589.96,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    1440.47,
-    1824.6
+    1445.17,
+    1830.55
    ],
-   "surplusEgp": 144.16,
-   "netEgp": 1335.22,
+   "surplusEgp": 144.79,
+   "netEgp": 1335.85,
    "orderVerdict": "profit",
-   "keptPercent": 112.1,
+   "keptPercent": 112.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1440.47,
-    1824.6
+    1445.17,
+    1830.55
    ],
-   "costExtraEgp": 384.13,
-   "proposedChargedEgp": 1584.63,
-   "proposedMarginEgp": 144.16,
+   "costExtraEgp": 385.38,
+   "proposedChargedEgp": 1589.96,
+   "proposedMarginEgp": 144.79,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -596,31 +596,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3073.01,
-     3841.26
+     3083.03,
+     3853.78
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3353.48,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3363.63,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    3073.01,
-    3841.26
+    3083.03,
+    3853.78
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3073.01,
-    3841.26
+    3083.03,
+    3853.78
    ],
-   "costExtraEgp": 768.25,
-   "proposedChargedEgp": 3353.48,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 770.76,
+   "proposedChargedEgp": 3363.63,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -659,31 +659,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -722,31 +722,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2976.98,
-     3745.23
+     2986.68,
+     3757.44
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3257.45,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3267.28,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    2976.98,
-    3745.23
+    2986.68,
+    3757.44
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    2976.98,
-    3745.23
+    2986.68,
+    3757.44
    ],
-   "costExtraEgp": 768.25,
-   "proposedChargedEgp": 3257.45,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 770.76,
+   "proposedChargedEgp": 3267.28,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -785,31 +785,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -848,31 +848,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3015.39,
-     3783.64
+     3025.22,
+     3795.98
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3295.86,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3305.82,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    3015.39,
-    3783.64
+    3025.22,
+    3795.98
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3015.39,
-    3783.64
+    3025.22,
+    3795.98
    ],
-   "costExtraEgp": 768.25,
-   "proposedChargedEgp": 3295.86,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 770.76,
+   "proposedChargedEgp": 3305.82,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -911,31 +911,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -974,31 +974,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2496.82
+     1926.89,
+     2504.96
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    1920.63,
-    2496.82
+    1926.89,
+    2504.96
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2496.82
+    1926.89,
+    2504.96
    ],
-   "costExtraEgp": 576.19,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 578.07,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1037,31 +1037,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1100,31 +1100,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4321.42
+     3468.41,
+     4335.51
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    3457.13,
-    4321.42
+    3468.41,
+    4335.51
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4321.42
+    3468.41,
+    4335.51
    ],
-   "costExtraEgp": 864.28,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 867.1,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1163,31 +1163,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1226,31 +1226,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1289,31 +1289,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1352,31 +1352,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1415,31 +1415,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1009.71,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1010.14,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1482,8 +1482,8 @@
     "source": "https://www.jtexpress.my/"
    },
    "alternative": null,
-   "chargedEgp": 336.57,
-   "zoneChargedEgp": 336.57,
+   "chargedEgp": 336.71,
+   "zoneChargedEgp": 336.71,
    "costEgp": null,
    "surplusEgp": null,
    "netEgp": null,
@@ -1532,31 +1532,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     768.25,
-     864.28
+     770.76,
+     867.1
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 845.1,
-   "zoneChargedEgp": 336.57,
+   "chargedEgp": 847.64,
+   "zoneChargedEgp": 336.71,
    "costEgp": [
-    768.25,
-    864.28
+    770.76,
+    867.1
    ],
-   "surplusEgp": 76.85,
-   "netEgp": 1267.91,
+   "surplusEgp": 76.88,
+   "netEgp": 1267.94,
    "orderVerdict": "profit",
    "keptPercent": 106.45,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    768.25,
-    864.28
+    770.76,
+    867.1
    ],
-   "costExtraEgp": 96.03,
-   "proposedChargedEgp": 845.1,
-   "proposedMarginEgp": 76.85,
+   "costExtraEgp": 96.34,
+   "proposedChargedEgp": 847.64,
+   "proposedMarginEgp": 76.88,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1595,31 +1595,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     825.87,
-     941.11
+     828.56,
+     944.18
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 908.33,
-   "zoneChargedEgp": 336.57,
+   "chargedEgp": 911.62,
+   "zoneChargedEgp": 336.71,
    "costEgp": [
-    825.87,
-    941.11
+    828.56,
+    944.18
    ],
-   "surplusEgp": 82.46,
-   "netEgp": 1273.52,
+   "surplusEgp": 83.06,
+   "netEgp": 1274.12,
    "orderVerdict": "profit",
-   "keptPercent": 106.92,
+   "keptPercent": 106.97,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    825.87,
-    941.11
+    828.56,
+    944.18
    ],
-   "costExtraEgp": 115.24,
-   "proposedChargedEgp": 908.33,
-   "proposedMarginEgp": 82.46,
+   "costExtraEgp": 115.61,
+   "proposedChargedEgp": 911.62,
+   "proposedMarginEgp": 83.06,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1658,31 +1658,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     864.28,
-     979.52
+     867.1,
+     982.72
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 950.67,
-   "zoneChargedEgp": 336.57,
+   "chargedEgp": 954.08,
+   "zoneChargedEgp": 336.71,
    "costEgp": [
-    864.28,
-    979.52
+    867.1,
+    982.72
    ],
-   "surplusEgp": 86.39,
-   "netEgp": 1277.45,
+   "surplusEgp": 86.98,
+   "netEgp": 1278.04,
    "orderVerdict": "profit",
-   "keptPercent": 107.25,
+   "keptPercent": 107.3,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    864.28,
-    979.52
+    867.1,
+    982.72
    ],
-   "costExtraEgp": 115.24,
-   "proposedChargedEgp": 950.67,
-   "proposedMarginEgp": 86.39,
+   "costExtraEgp": 115.61,
+   "proposedChargedEgp": 954.08,
+   "proposedMarginEgp": 86.98,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1721,31 +1721,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     864.28,
-     979.52
+     867.1,
+     982.72
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 950.67,
-   "zoneChargedEgp": 336.57,
+   "chargedEgp": 954.08,
+   "zoneChargedEgp": 336.71,
    "costEgp": [
-    864.28,
-    979.52
+    867.1,
+    982.72
    ],
-   "surplusEgp": 86.39,
-   "netEgp": 1277.45,
+   "surplusEgp": 86.98,
+   "netEgp": 1278.04,
    "orderVerdict": "profit",
-   "keptPercent": 107.25,
+   "keptPercent": 107.3,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    864.28,
-    979.52
+    867.1,
+    982.72
    ],
-   "costExtraEgp": 115.24,
-   "proposedChargedEgp": 950.67,
-   "proposedMarginEgp": 86.39,
+   "costExtraEgp": 115.61,
+   "proposedChargedEgp": 954.08,
+   "proposedMarginEgp": 86.98,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1784,31 +1784,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1056.35,
-     1210
+     1059.79,
+     1213.94
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1161.81,
-   "zoneChargedEgp": 336.57,
+   "chargedEgp": 1165.85,
+   "zoneChargedEgp": 336.71,
    "costEgp": [
-    1056.35,
-    1210
+    1059.79,
+    1213.94
    ],
-   "surplusEgp": 105.46,
-   "netEgp": 1296.52,
+   "surplusEgp": 106.06,
+   "netEgp": 1297.12,
    "orderVerdict": "profit",
-   "keptPercent": 108.85,
+   "keptPercent": 108.9,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1056.35,
-    1210
+    1059.79,
+    1213.94
    ],
-   "costExtraEgp": 153.65,
-   "proposedChargedEgp": 1161.81,
-   "proposedMarginEgp": 105.46,
+   "costExtraEgp": 154.15,
+   "proposedChargedEgp": 1165.85,
+   "proposedMarginEgp": 106.06,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1847,31 +1847,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     960.31,
-     1075.55
+     963.45,
+     1079.06
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1056.23,
-   "zoneChargedEgp": 336.57,
+   "chargedEgp": 1059.97,
+   "zoneChargedEgp": 336.71,
    "costEgp": [
-    960.31,
-    1075.55
+    963.45,
+    1079.06
    ],
-   "surplusEgp": 95.92,
-   "netEgp": 1286.98,
+   "surplusEgp": 96.52,
+   "netEgp": 1287.58,
    "orderVerdict": "profit",
-   "keptPercent": 108.05,
+   "keptPercent": 108.1,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    960.31,
-    1075.55
+    963.45,
+    1079.06
    ],
-   "costExtraEgp": 115.24,
-   "proposedChargedEgp": 1056.23,
-   "proposedMarginEgp": 95.92,
+   "costExtraEgp": 115.61,
+   "proposedChargedEgp": 1059.97,
+   "proposedMarginEgp": 96.52,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1910,31 +1910,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     998.73,
-     1113.97
+     1001.98,
+     1117.6
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1098.58,
-   "zoneChargedEgp": 336.57,
+   "chargedEgp": 1102.43,
+   "zoneChargedEgp": 336.71,
    "costEgp": [
-    998.73,
-    1113.97
+    1001.98,
+    1117.6
    ],
-   "surplusEgp": 99.85,
-   "netEgp": 1290.91,
+   "surplusEgp": 100.45,
+   "netEgp": 1291.51,
    "orderVerdict": "profit",
-   "keptPercent": 108.38,
+   "keptPercent": 108.43,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    998.73,
-    1113.97
+    1001.98,
+    1117.6
    ],
-   "costExtraEgp": 115.24,
-   "proposedChargedEgp": 1098.58,
-   "proposedMarginEgp": 99.85,
+   "costExtraEgp": 115.61,
+   "proposedChargedEgp": 1102.43,
+   "proposedMarginEgp": 100.45,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -1973,31 +1973,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     998.73,
-     1152.38
+     1001.98,
+     1156.14
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1098.58,
-   "zoneChargedEgp": 336.57,
+   "chargedEgp": 1102.43,
+   "zoneChargedEgp": 336.71,
    "costEgp": [
-    998.73,
-    1152.38
+    1001.98,
+    1156.14
    ],
-   "surplusEgp": 99.85,
-   "netEgp": 1290.91,
+   "surplusEgp": 100.45,
+   "netEgp": 1291.51,
    "orderVerdict": "profit",
-   "keptPercent": 108.38,
+   "keptPercent": 108.43,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    998.73,
-    1152.38
+    1001.98,
+    1156.14
    ],
-   "costExtraEgp": 153.65,
-   "proposedChargedEgp": 1098.58,
-   "proposedMarginEgp": 99.85,
+   "costExtraEgp": 154.15,
+   "proposedChargedEgp": 1102.43,
+   "proposedMarginEgp": 100.45,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2036,31 +2036,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1536.5,
-     1920.63
+     1541.51,
+     1926.89
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1690.2,
-   "zoneChargedEgp": 336.57,
+   "chargedEgp": 1695.84,
+   "zoneChargedEgp": 336.71,
    "costEgp": [
-    1536.5,
-    1920.63
+    1541.51,
+    1926.89
    ],
-   "surplusEgp": 153.7,
-   "netEgp": 1344.76,
+   "surplusEgp": 154.33,
+   "netEgp": 1345.39,
    "orderVerdict": "profit",
-   "keptPercent": 112.9,
+   "keptPercent": 112.96,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1536.5,
-    1920.63
+    1541.51,
+    1926.89
    ],
-   "costExtraEgp": 384.13,
-   "proposedChargedEgp": 1690.2,
-   "proposedMarginEgp": 153.7,
+   "costExtraEgp": 385.38,
+   "proposedChargedEgp": 1695.84,
+   "proposedMarginEgp": 154.33,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2099,31 +2099,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2208.72
+     1926.89,
+     2215.93
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "costExtraEgp": 288.09,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 289.03,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2162,31 +2162,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2208.72
+     1926.89,
+     2215.93
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "costExtraEgp": 288.09,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 289.03,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2225,31 +2225,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2208.72
+     1926.89,
+     2215.93
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "costExtraEgp": 288.09,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 289.03,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2288,31 +2288,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2285.55
+     1926.89,
+     2293
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    1920.63,
-    2285.55
+    1926.89,
+    2293
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2285.55
+    1926.89,
+    2293
    ],
-   "costExtraEgp": 364.92,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 366.11,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2351,31 +2351,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2208.72
+     1926.89,
+     2215.93
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "costExtraEgp": 288.09,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 289.03,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2414,31 +2414,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2208.72,
-     2496.82
+     2215.93,
+     2504.96
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2429.73,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2437.6,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    2208.72,
-    2496.82
+    2215.93,
+    2504.96
    ],
-   "surplusEgp": 221.01,
-   "netEgp": 1412.07,
+   "surplusEgp": 221.67,
+   "netEgp": 1412.73,
    "orderVerdict": "profit",
-   "keptPercent": 118.56,
+   "keptPercent": 118.61,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    2208.72,
-    2496.82
+    2215.93,
+    2504.96
    ],
-   "costExtraEgp": 288.09,
-   "proposedChargedEgp": 2429.73,
-   "proposedMarginEgp": 221.01,
+   "costExtraEgp": 289.03,
+   "proposedChargedEgp": 2437.6,
+   "proposedMarginEgp": 221.67,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2477,31 +2477,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2208.72
+     1926.89,
+     2215.93
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "costExtraEgp": 288.09,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 289.03,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2540,31 +2540,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2112.69,
-     2554.44
+     2119.58,
+     2562.77
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2324.17,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2331.71,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    2112.69,
-    2554.44
+    2119.58,
+    2562.77
    ],
-   "surplusEgp": 211.48,
-   "netEgp": 1402.54,
+   "surplusEgp": 212.13,
+   "netEgp": 1403.19,
    "orderVerdict": "profit",
-   "keptPercent": 117.76,
+   "keptPercent": 117.81,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    2112.69,
-    2554.44
+    2119.58,
+    2562.77
    ],
-   "costExtraEgp": 441.74,
-   "proposedChargedEgp": 2324.17,
-   "proposedMarginEgp": 211.48,
+   "costExtraEgp": 443.19,
+   "proposedChargedEgp": 2331.71,
+   "proposedMarginEgp": 212.13,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2603,31 +2603,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2208.72
+     1926.89,
+     2215.93
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "costExtraEgp": 288.09,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 289.03,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2666,31 +2666,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2765.71,
-     3188.25
+     2774.72,
+     3198.64
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3042.26,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3051.95,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    2765.71,
-    3188.25
+    2774.72,
+    3198.64
    ],
-   "surplusEgp": 276.55,
-   "netEgp": 1467.61,
+   "surplusEgp": 277.23,
+   "netEgp": 1468.29,
    "orderVerdict": "profit",
-   "keptPercent": 123.22,
+   "keptPercent": 123.28,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    2765.71,
-    3188.25
+    2774.72,
+    3198.64
    ],
-   "costExtraEgp": 422.54,
-   "proposedChargedEgp": 3042.26,
-   "proposedMarginEgp": 276.55,
+   "costExtraEgp": 423.92,
+   "proposedChargedEgp": 3051.95,
+   "proposedMarginEgp": 277.23,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2729,31 +2729,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2496.82
+     1926.89,
+     2504.96
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    1920.63,
-    2496.82
+    1926.89,
+    2504.96
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2496.82
+    1926.89,
+    2504.96
    ],
-   "costExtraEgp": 576.19,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 578.07,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2792,31 +2792,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2496.82,
-     3073.01
+     2504.96,
+     3083.03
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2746.44,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2755.25,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    2496.82,
-    3073.01
+    2504.96,
+    3083.03
    ],
-   "surplusEgp": 249.62,
-   "netEgp": 1440.68,
+   "surplusEgp": 250.29,
+   "netEgp": 1441.35,
    "orderVerdict": "profit",
-   "keptPercent": 120.96,
+   "keptPercent": 121.01,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    2496.82,
-    3073.01
+    2504.96,
+    3083.03
    ],
-   "costExtraEgp": 576.19,
-   "proposedChargedEgp": 2746.44,
-   "proposedMarginEgp": 249.62,
+   "costExtraEgp": 578.07,
+   "proposedChargedEgp": 2755.25,
+   "proposedMarginEgp": 250.29,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2855,31 +2855,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2496.82,
-     3073.01
+     2504.96,
+     3083.03
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2746.44,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2755.25,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    2496.82,
-    3073.01
+    2504.96,
+    3083.03
    ],
-   "surplusEgp": 249.62,
-   "netEgp": 1440.68,
+   "surplusEgp": 250.29,
+   "netEgp": 1441.35,
    "orderVerdict": "profit",
-   "keptPercent": 120.96,
+   "keptPercent": 121.01,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    2496.82,
-    3073.01
+    2504.96,
+    3083.03
    ],
-   "costExtraEgp": 576.19,
-   "proposedChargedEgp": 2746.44,
-   "proposedMarginEgp": 249.62,
+   "costExtraEgp": 578.07,
+   "proposedChargedEgp": 2755.25,
+   "proposedMarginEgp": 250.29,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2918,31 +2918,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2304.76,
-     2784.91
+     2312.27,
+     2793.99
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2535.31,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2543.48,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    2304.76,
-    2784.91
+    2312.27,
+    2793.99
    ],
-   "surplusEgp": 230.55,
-   "netEgp": 1421.61,
+   "surplusEgp": 231.21,
+   "netEgp": 1422.27,
    "orderVerdict": "profit",
-   "keptPercent": 119.36,
+   "keptPercent": 119.41,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    2304.76,
-    2784.91
+    2312.27,
+    2793.99
    ],
-   "costExtraEgp": 480.16,
-   "proposedChargedEgp": 2535.31,
-   "proposedMarginEgp": 230.55,
+   "costExtraEgp": 481.72,
+   "proposedChargedEgp": 2543.48,
+   "proposedMarginEgp": 231.21,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -2981,31 +2981,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2208.72
+     1926.89,
+     2215.93
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "costExtraEgp": 288.09,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 289.03,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3044,31 +3044,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2208.72
+     1926.89,
+     2215.93
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2208.72
+    1926.89,
+    2215.93
    ],
-   "costExtraEgp": 288.09,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 289.03,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3107,31 +3107,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2362.37,
-     2746.5
+     2370.08,
+     2755.46
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2598.53,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2606.9,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    2362.37,
-    2746.5
+    2370.08,
+    2755.46
    ],
-   "surplusEgp": 236.16,
-   "netEgp": 1427.22,
+   "surplusEgp": 236.82,
+   "netEgp": 1427.88,
    "orderVerdict": "profit",
-   "keptPercent": 119.83,
+   "keptPercent": 119.88,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    2362.37,
-    2746.5
+    2370.08,
+    2755.46
    ],
-   "costExtraEgp": 384.13,
-   "proposedChargedEgp": 2598.53,
-   "proposedMarginEgp": 236.16,
+   "costExtraEgp": 385.38,
+   "proposedChargedEgp": 2606.9,
+   "proposedMarginEgp": 236.82,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3170,31 +3170,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3073.01,
-     3841.26
+     3083.03,
+     3853.78
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3353.48,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3363.63,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3073.01,
-    3841.26
+    3083.03,
+    3853.78
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3073.01,
-    3841.26
+    3083.03,
+    3853.78
    ],
-   "costExtraEgp": 768.25,
-   "proposedChargedEgp": 3353.48,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 770.76,
+   "proposedChargedEgp": 3363.63,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3233,31 +3233,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3015.39,
-     3783.64
+     3025.22,
+     3795.98
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3295.86,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3305.82,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3015.39,
-    3783.64
+    3025.22,
+    3795.98
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3015.39,
-    3783.64
+    3025.22,
+    3795.98
    ],
-   "costExtraEgp": 768.25,
-   "proposedChargedEgp": 3295.86,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 770.76,
+   "proposedChargedEgp": 3305.82,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3296,31 +3296,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3015.39,
-     3783.64
+     3025.22,
+     3795.98
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3295.86,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3305.82,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3015.39,
-    3783.64
+    3025.22,
+    3795.98
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3015.39,
-    3783.64
+    3025.22,
+    3795.98
    ],
-   "costExtraEgp": 768.25,
-   "proposedChargedEgp": 3295.86,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 770.76,
+   "proposedChargedEgp": 3305.82,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3359,31 +3359,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3073.01,
-     3764.43
+     3083.03,
+     3776.71
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3353.48,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3363.63,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3073.01,
-    3764.43
+    3083.03,
+    3776.71
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3073.01,
-    3764.43
+    3083.03,
+    3776.71
    ],
-   "costExtraEgp": 691.43,
-   "proposedChargedEgp": 3353.48,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 693.68,
+   "proposedChargedEgp": 3363.63,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3422,31 +3422,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3485,31 +3485,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3015.39,
-     3783.64
+     3025.22,
+     3795.98
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3295.86,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3305.82,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3015.39,
-    3783.64
+    3025.22,
+    3795.98
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3015.39,
-    3783.64
+    3025.22,
+    3795.98
    ],
-   "costExtraEgp": 768.25,
-   "proposedChargedEgp": 3295.86,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 770.76,
+   "proposedChargedEgp": 3305.82,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3548,31 +3548,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2304.76
+     1926.89,
+     2312.27
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    1920.63,
-    2304.76
+    1926.89,
+    2312.27
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2304.76
+    1926.89,
+    2312.27
    ],
-   "costExtraEgp": 384.13,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 385.38,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3611,31 +3611,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3674,31 +3674,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3737,31 +3737,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3800,31 +3800,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3863,31 +3863,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3926,31 +3926,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -3989,31 +3989,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -4052,31 +4052,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3015.39,
-     3783.64
+     3025.22,
+     3795.98
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3295.86,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3305.82,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3015.39,
-    3783.64
+    3025.22,
+    3795.98
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3015.39,
-    3783.64
+    3025.22,
+    3795.98
    ],
-   "costExtraEgp": 768.25,
-   "proposedChargedEgp": 3295.86,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 770.76,
+   "proposedChargedEgp": 3305.82,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -4115,31 +4115,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -4178,31 +4178,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -4241,31 +4241,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3015.39,
-     3783.64
+     3025.22,
+     3795.98
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3295.86,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3305.82,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3015.39,
-    3783.64
+    3025.22,
+    3795.98
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3015.39,
-    3783.64
+    3025.22,
+    3795.98
    ],
-   "costExtraEgp": 768.25,
-   "proposedChargedEgp": 3295.86,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 770.76,
+   "proposedChargedEgp": 3305.82,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -4304,31 +4304,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -4367,31 +4367,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2976.98,
-     3745.23
+     2986.68,
+     3757.44
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3257.45,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3267.28,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    2976.98,
-    3745.23
+    2986.68,
+    3757.44
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    2976.98,
-    3745.23
+    2986.68,
+    3757.44
    ],
-   "costExtraEgp": 768.25,
-   "proposedChargedEgp": 3257.45,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 770.76,
+   "proposedChargedEgp": 3267.28,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -4430,31 +4430,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     3457.13,
-     4513.48
+     3468.41,
+     4528.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 3737.6,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 3749.01,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "surplusEgp": 280.47,
-   "netEgp": 1471.53,
+   "surplusEgp": 280.6,
+   "netEgp": 1471.66,
    "orderVerdict": "profit",
-   "keptPercent": 123.55,
+   "keptPercent": 123.56,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    3457.13,
-    4513.48
+    3468.41,
+    4528.2
    ],
-   "costExtraEgp": 1056.35,
-   "proposedChargedEgp": 3737.6,
-   "proposedMarginEgp": 280.47,
+   "costExtraEgp": 1059.79,
+   "proposedChargedEgp": 3749.01,
+   "proposedMarginEgp": 280.6,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -4493,31 +4493,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1344.44,
-     1728.57
+     1348.82,
+     1734.2
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 1479.07,
-   "zoneChargedEgp": 1234.09,
+   "chargedEgp": 1483.51,
+   "zoneChargedEgp": 1234.62,
    "costEgp": [
-    1344.44,
-    1728.57
+    1348.82,
+    1734.2
    ],
-   "surplusEgp": 134.63,
-   "netEgp": 1325.69,
+   "surplusEgp": 134.69,
+   "netEgp": 1325.75,
    "orderVerdict": "profit",
-   "keptPercent": 111.3,
+   "keptPercent": 111.31,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1344.44,
-    1728.57
+    1348.82,
+    1734.2
    ],
-   "costExtraEgp": 384.13,
-   "proposedChargedEgp": 1479.07,
-   "proposedMarginEgp": 134.63,
+   "costExtraEgp": 385.38,
+   "proposedChargedEgp": 1483.51,
+   "proposedMarginEgp": 134.69,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -4556,31 +4556,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     1920.63,
-     2304.76
+     1926.89,
+     2312.27
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2112.47,
-   "zoneChargedEgp": 1402.37,
+   "chargedEgp": 2119.38,
+   "zoneChargedEgp": 1402.98,
    "costEgp": [
-    1920.63,
-    2304.76
+    1926.89,
+    2312.27
    ],
-   "surplusEgp": 191.84,
-   "netEgp": 1382.9,
+   "surplusEgp": 192.49,
+   "netEgp": 1383.55,
    "orderVerdict": "profit",
-   "keptPercent": 116.11,
+   "keptPercent": 116.16,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    1920.63,
-    2304.76
+    1926.89,
+    2312.27
    ],
-   "costExtraEgp": 384.13,
-   "proposedChargedEgp": 2112.47,
-   "proposedMarginEgp": 191.84,
+   "costExtraEgp": 385.38,
+   "proposedChargedEgp": 2119.38,
+   "proposedMarginEgp": 192.49,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -4619,31 +4619,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2112.69,
-     2535.23
+     2119.58,
+     2543.5
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2324.17,
-   "zoneChargedEgp": 1402.37,
+   "chargedEgp": 2331.71,
+   "zoneChargedEgp": 1402.98,
    "costEgp": [
-    2112.69,
-    2535.23
+    2119.58,
+    2543.5
    ],
-   "surplusEgp": 211.48,
-   "netEgp": 1402.54,
+   "surplusEgp": 212.13,
+   "netEgp": 1403.19,
    "orderVerdict": "profit",
-   "keptPercent": 117.76,
+   "keptPercent": 117.81,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    2112.69,
-    2535.23
+    2119.58,
+    2543.5
    ],
-   "costExtraEgp": 422.54,
-   "proposedChargedEgp": 2324.17,
-   "proposedMarginEgp": 211.48,
+   "costExtraEgp": 423.92,
+   "proposedChargedEgp": 2331.71,
+   "proposedMarginEgp": 212.13,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -4682,31 +4682,31 @@
     "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
     "speedAr": "3–4 أيام لأغلب الوجهات",
     "priceEgp": [
-     2631.26,
-     3207.45
+     2639.84,
+     3217.91
     ],
     "dg": null,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
    },
    "alternative": null,
-   "chargedEgp": 2894.34,
-   "zoneChargedEgp": 1402.37,
+   "chargedEgp": 2903.6,
+   "zoneChargedEgp": 1402.98,
    "costEgp": [
-    2631.26,
-    3207.45
+    2639.84,
+    3217.91
    ],
-   "surplusEgp": 263.08,
-   "netEgp": 1454.14,
+   "surplusEgp": 263.76,
+   "netEgp": 1454.82,
    "orderVerdict": "profit",
-   "keptPercent": 122.09,
+   "keptPercent": 122.14,
    "marginEatenEgp": 0,
    "requiredShippingEgp": [
-    2631.26,
-    3207.45
+    2639.84,
+    3217.91
    ],
-   "costExtraEgp": 576.19,
-   "proposedChargedEgp": 2894.34,
-   "proposedMarginEgp": 263.08,
+   "costExtraEgp": 578.07,
+   "proposedChargedEgp": 2903.6,
+   "proposedMarginEgp": 263.76,
    "promise": "we_ship",
    "costVerdict": "ok",
    "customs": {
@@ -4785,22 +4785,22 @@
    {
     "currency": "MYR",
     "rateUsed": 13.081,
-    "rateToday": 13.7188,
-    "driftPercent": 4.9,
+    "rateToday": 13.7635,
+    "driftPercent": 5.2,
     "products": 1063,
-    "stateAr": "تكلفة الشراء بقت أغلى 4.9% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي"
+    "stateAr": "تكلفة الشراء بقت أغلى 5.2% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي"
    },
    {
     "currency": "AED",
     "rateUsed": 14.5568,
-    "rateToday": 15.2743,
-    "driftPercent": 4.9,
+    "rateToday": 15.2809,
+    "driftPercent": 5,
     "products": 98,
-    "stateAr": "تكلفة الشراء بقت أغلى 4.9% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي"
+    "stateAr": "تكلفة الشراء بقت أغلى 5% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي"
    }
   ],
-  "egpPerUsd": 56.094824,
-  "at": "2026-10-28T00:02:31Z"
+  "egpPerUsd": 56.119018,
+  "at": "2026-10-29T00:02:31Z"
  },
  "gaps": [
   {
@@ -4825,12 +4825,12 @@
   },
   {
    "kindAr": "سعر الصرف",
-   "whatAr": "1063 منتج سعره مبني على 13.081 ج.م/MYR، وسعر النهاردة 13.7188 (فرق +4.9%)",
+   "whatAr": "1063 منتج سعره مبني على 13.081 ج.م/MYR، وسعر النهاردة 13.7635 (فرق +5.2%)",
    "fixAr": "إعادة تسعير المنتجات دي على سعر الصرف الحالي — أو شرح إن التكلفة تغيّرت"
   },
   {
    "kindAr": "سعر الصرف",
-   "whatAr": "98 منتج سعره مبني على 14.5568 ج.م/AED، وسعر النهاردة 15.2743 (فرق +4.9%)",
+   "whatAr": "98 منتج سعره مبني على 14.5568 ج.م/AED، وسعر النهاردة 15.2809 (فرق +5%)",
    "fixAr": "إعادة تسعير المنتجات دي على سعر الصرف الحالي — أو شرح إن التكلفة تغيّرت"
   },
   {
@@ -5251,7 +5251,7 @@
     {
      "code": "TR",
      "nameAr": "تركيا",
-     "requiredFirstItem": 24
+     "requiredFirstItem": 25
     }
    ]
   },
@@ -5263,7 +5263,7 @@
    "currentFirstItem": 25,
    "covered": 3,
    "typicalRequiredFirstItem": 38,
-   "maxRequiredFirstItem": 47,
+   "maxRequiredFirstItem": 48,
    "drivenByAr": "المكسيك",
    "destinations": [
     {
@@ -5279,34 +5279,34 @@
     {
      "code": "MX",
      "nameAr": "المكسيك",
-     "requiredFirstItem": 47
+     "requiredFirstItem": 48
     }
    ]
   }
  ],
  "money": {
   "profitPerBottleEgp": 1191.06,
-  "averageChargedEgp": 2649.17,
+  "averageChargedEgp": 2657.46,
   "pricedDestinations": 73,
   "overChargedDestinations": 0,
   "lossDestinations": 0,
   "orderLossDestinations": 0,
-  "bestNetEgp": 1471.53,
-  "worstNetEgp": 1267.91,
+  "bestNetEgp": 1471.66,
+  "worstNetEgp": 1267.94,
   "keptWholeDestinations": 73,
   "marginEatenDestinations": 0,
   "costBasedDestinations": 73,
   "uncoveredDestinations": 1,
-  "medianShippingMarginEgp": 249.62
+  "medianShippingMarginEgp": 250.29
  },
  "score": 85,
  "notes": [
   "مكسب الزجاجة (٥٠٪) 1191.06 ج.م — والـ٥٠٪ بتفضل كاملة في 73 وجهة بس من 73.",
-  "سعر الصرف: 1063 منتج سعره مبني على 13.081 ج.م/MYR وسعر النهاردة 13.7188 — تكلفة الشراء بقت أغلى 4.9% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي.",
-  "سعر الصرف: 98 منتج سعره مبني على 14.5568 ج.م/AED وسعر النهاردة 15.2743 — تكلفة الشراء بقت أغلى 4.9% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي."
+  "سعر الصرف: 1063 منتج سعره مبني على 13.081 ج.م/MYR وسعر النهاردة 13.7635 — تكلفة الشراء بقت أغلى 5.2% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي.",
+  "سعر الصرف: 98 منتج سعره مبني على 14.5568 ج.م/AED وسعر النهاردة 15.2809 — تكلفة الشراء بقت أغلى 5% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي."
  ],
  "planAr": [
-  "لو إحنا اللي بنشحن، أرخص المسارات: سنغافورة بـ768.25–864.28 ج.م، BN بـ825.87–941.11 ج.م، إندونيسيا بـ864.28–979.52 ج.م.",
+  "لو إحنا اللي بنشحن، أرخص المسارات: سنغافورة بـ770.76–867.1 ج.م، BN بـ828.56–944.18 ج.م، إندونيسيا بـ867.1–982.72 ج.م.",
   "الشحن بقى بيتحصّل بتكلفته الحقيقية + هامش تجهيز صغير (الجدول تحت) — فالـ٥٠٪ تفضل صافية ومش متحمّلة على الهامش. الزجاجة = أول ٥٠٠ جم، والزجاجة الزيادة بسعر شريحتها.",
   "الأسعار القديمة في 6 منطقة كانت أقل من التكلفة الحقيقية: مصر كان بياخد 15 والمتوسط الحقيقي 31 USD، دول الخليج كان بياخد 14 والمتوسط الحقيقي 28 USD، باقي الدول العربية كان بياخد 18 والمتوسط الحقيقي 62 USD، جنوب شرق آسيا كان بياخد 6 والمتوسط الحقيقي 18 USD، أوروبا كان بياخد 22 والمتوسط الحقيقي 54 USD، أمريكا الشمالية كان بياخد 25 والمتوسط الحقيقي 38 USD — التسعير الجديد بيحصّل التكلفة + الهامش.",
   "1 وجهة مفيش لها تعريفة شحن منشورة (ماليزيا) — بتاخد سعر منطقتها، ومافيش وعد إنه يغطي التكلفة.",
