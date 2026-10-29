@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "scent-behavior",
- "updatedAt": "2026-10-28T04:57:57.611Z",
+ "updatedAt": "2026-10-29T04:59:09.237Z",
  "signals": {
   "read": true,
   "noteAr": "العدّاد الحي مقروء من السيرفر (أعداد مجهولة فقط: خامات ونوع تركيز، من غير أي بيانات شخصية).",
@@ -35,27 +35,27 @@
   {
    "tag": "fresh",
    "nameAr": "منعش",
-   "share": 9.1
+   "share": 9
   },
   {
    "tag": "fruity",
    "nameAr": "فاكهي",
-   "share": 8.4
+   "share": 8.5
   },
   {
    "tag": "spicy",
    "nameAr": "توابل",
-   "share": 8.3
+   "share": 8.2
   },
   {
    "tag": "gourmand",
    "nameAr": "جورماند",
-   "share": 5.6
+   "share": 5.4
   },
   {
    "tag": "citrus",
    "nameAr": "حمضي",
-   "share": 4.6
+   "share": 4.7
   },
   {
    "tag": "oud",
@@ -70,7 +70,7 @@
   {
    "tag": "aquatic",
    "nameAr": "مائي",
-   "share": 1.7
+   "share": 1.8
   },
   {
    "tag": "leather",
@@ -92,7 +92,7 @@
    "nameEn": "Boswellia Sacra (Royal Green Hojari Frankincense Oil)",
    "family": "راتنجي بخوري حمضي منعش متبل",
    "category": "صموغ وبخور ملكي",
-   "score": 9.1,
+   "score": 9,
    "reasonAr": "من العائلات اللي عليها طلب (منعش)"
   }
  ],
@@ -100,13 +100,13 @@
   {
    "family": "amber",
    "nameAr": "عنبري",
-   "products": 321,
+   "products": 320,
    "bankMaterials": 6
   },
   {
    "family": "leather",
    "nameAr": "جلدي",
-   "products": 54,
+   "products": 53,
    "bankMaterials": 7
   },
   {
@@ -124,13 +124,13 @@
   {
    "family": "woody",
    "nameAr": "خشبي",
-   "products": 579,
+   "products": 578,
    "bankMaterials": 12
   },
   {
    "family": "oriental",
    "nameAr": "شرقي",
-   "products": 346,
+   "products": 345,
    "bankMaterials": 12
   },
   {
@@ -142,31 +142,31 @@
   {
    "family": "fruity",
    "nameAr": "فاكهي",
-   "products": 265,
+   "products": 266,
    "bankMaterials": 14
   },
   {
    "family": "gourmand",
    "nameAr": "جورماند",
-   "products": 175,
+   "products": 170,
    "bankMaterials": 14
   },
   {
    "family": "floral",
    "nameAr": "زهري",
-   "products": 400,
+   "products": 399,
    "bankMaterials": 15
   },
   {
    "family": "spicy",
    "nameAr": "توابل",
-   "products": 260,
+   "products": 256,
    "bankMaterials": 17
   },
   {
    "family": "citrus",
    "nameAr": "حمضي",
-   "products": 146,
+   "products": 148,
    "bankMaterials": 22
   },
   {
@@ -178,7 +178,7 @@
   {
    "family": "fresh",
    "nameAr": "منعش",
-   "products": 286,
+   "products": 282,
    "bankMaterials": 27
   }
  ],
