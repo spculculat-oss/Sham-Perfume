@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "carrier-scout",
- "updatedAt": "2026-10-28T18:56:33.604Z",
+ "updatedAt": "2026-10-29T01:02:32.947Z",
  "rules": {
   "staleDays": 120,
   "handlingPercent": 10,
