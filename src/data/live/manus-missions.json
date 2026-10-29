@@ -1,8 +1,14 @@
 {
  "version": 1,
- "updatedAt": "2026-10-29T06:59:10.121Z",
+ "updatedAt": "2026-10-29T10:15:29.382Z",
  "verified": [],
  "runs": [
+  {
+   "at": "2026-10-29T10:15:29.382Z",
+   "mission": "verify",
+   "credits": 43,
+   "status": "done"
+  },
   {
    "at": "2026-10-29T06:59:10.121Z",
    "mission": "tour",
@@ -236,46 +242,46 @@
   "credits": 79
  },
  "verify": {
-  "at": "2026-10-19T10:02:58.105Z",
-  "summaryAr": "التحقق أظهر أن الإصلاحات لم تُثبت بشكل واضح على الموقع الحي حتى الآن، وبعض المهام تبقى غير قابلة للتوثيق من الواجهة العامة. قد يحتاج الأمر فحصًا إضافيًا في سجلات المستودع وآليات التكامل الآلي للتأكد من الانتهاء.",
+  "at": "2026-10-29T10:15:29.382Z",
+  "summaryAr": "الخلاصة: لا يمكن إثبات الإصلاح بشكل قاطع للمهمات المذكورة أعلاه من الواجهة الحية في معظم الحالات، بينما تبقى الحاجة واضحة لفحص إضافي على مستوى RTL/التوجيه والوظائف الإدارية قبل الحكم النهائي على جميع النقاط.",
   "checks": [
    {
-    "id": "2026-10-18-1-إصلاح-فجوات-السيو-التقني",
-    "title": "إصلاح فجوات السيو التقني وهيكل صفحات الموقع",
+    "id": "2026-10-20-1-إصلاح-أعطال-الأدوات-والت",
+    "title": "إصلاح أعطال الأدوات والتشغيل والتحقق منها",
+    "verdict": "cannot_tell",
+    "evidenceAr": "الحالة الحية: تغذية مباشرة مستمرة؛ ماستر شاهين AI؛ أخبار العطور في العالم.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/168"
+   },
+   {
+    "id": "2026-10-22-4-إصلاح-عطل-أمين-شاهين-الإ",
+    "title": "إصلاح عطل: أمين شاهين — الإدارة المالية",
+    "verdict": "cannot_tell",
+    "evidenceAr": "لا يظهر في الواجهة العامة سجل تشغيل أو تقارير لوحة مالية؛ توجد فقط عناصر مثل \"Sales Analytics\" و\"Sham Bank\" و\"My cards\".",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/221"
+   },
+   {
+    "id": "2026-10-23-2-توحيد-واجهة-المتجر-بالعر",
+    "title": "توحيد واجهة المتجر بالعربية وتثبيت اتجاه العرض (RTL)",
     "verdict": "not_fixed",
-    "evidenceAr": "على صفحة المنتج Oud Mood 30ml by Lattafa EDP Unisex: H1 واحد، وجود canonical يطابق رابط الصفحة، ووصف meta ظاهر؛ لكن الوصف مكرر مرتين في قسم Description.",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/132"
+    "evidenceAr": "الواجهة الإنجليزية وتوجيهات RTL غير مُطبقة؛ lang: en و dir: ltr؛ وجود عناصر مثل All Men Women Unisex وShop بالعربية غير ظاهر بشكل RTL.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/273"
    },
    {
-    "id": "2026-10-18-3-تنقية-بيانات-كتالوج-المت",
-    "title": "تنقية بيانات كتالوج المتجر ومعالجة الملاحظات",
+    "id": "2026-10-23-4-إصلاح-عطل-فحص-شاهين-على-",
+    "title": "إصلاح عطل فحص شاهين على الموقع الحي",
     "verdict": "cannot_tell",
-    "evidenceAr": "لا أستطيع إثبات مراجعة 601 منتجاً أو مطابقة قاعدة التسعير اعتماداً على الصفحات العامة؛ العينة التي فحصتها للمنتج لا توضح هذا الجانب.",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/133"
+    "evidenceAr": "شاشة العرض تحتوي على \"Master Shahin AI\" و\"Start a chat with Shahin\" لكن لا دليل واضح على إصلاح فحص Shahin على الموقع الحي.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/274"
    },
    {
-    "id": "2026-10-18-4-تشغيل-مستورد-شاهين-لفحص-",
-    "title": "تشغيل مستورد شاهين لفحص واعتماد المتاجر الجديدة",
+    "id": "2026-10-24-1-إصلاح-خطوة-checkout-في-ر",
+    "title": "إصلاح خطوة «checkout» في رحلة الشراء",
     "verdict": "cannot_tell",
-    "evidenceAr": "لا يمكن التحقق من اعتماد المتاجر أو تشغيل المستورد من الواجهة العامة؛ لا يوجد سجل ظاهر يشير إلى حالة التشغيل.",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/134"
-   },
-   {
-    "id": "2026-10-19-1-إصلاح-عطل-كش-اف-المصادر",
-    "title": "إصلاح عطل: كشّاف المصادر",
-    "verdict": "cannot_tell",
-    "evidenceAr": "لا يمكن إثبات وجود إصلاح من صفحة live؛ لا يظهر سجل تشغيل أو نتائج إصلاح واضحة.",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/146"
-   },
-   {
-    "id": "2026-10-19-2-إصلاح-عطل-مستورد-شاهين-م",
-    "title": "إصلاح عطل: مستورد شاهين + مراجع الصفحات",
-    "verdict": "cannot_tell",
-    "evidenceAr": "لا يوجد دليل على إعادة تشغيل المستورد أو مراجعة الصفحات من الصفحات العامة؛ السجل المطلوب غير ظاهر.",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/147"
+    "evidenceAr": "زر Continue order ظاهر في درج السلة وواجهة الدفع قبل الدخول؛ المحاولة أظهرت وجود خيار متابعة الطلب لكن لم يتضح تماماً إكمال تجربة الدفع عبر الهاتف.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/318"
    }
   ],
-  "taskId": "YRUDQSiicw4NN6EkmF9iQB",
-  "credits": 10
+  "taskId": "X98i8qpYcTGfZM5jqpocfR",
+  "credits": 43
  }
 }
