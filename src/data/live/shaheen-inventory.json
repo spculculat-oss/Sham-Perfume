@@ -1,8 +1,8 @@
 {
  "version": 1,
- "updatedAt": "2026-10-30T00:54:22.846Z",
+ "updatedAt": "2026-10-30T06:53:39.634Z",
  "sources": {
-  "catalogAt": "2026-10-29T05:18:16.180Z",
+  "catalogAt": "2026-10-30T05:17:50.394Z",
   "total": 1212,
   "published": 1161,
   "liveStock": true,
@@ -46,6 +46,14 @@
    "sku": "LAT-287",
    "nameAr": "آرت أوف يونيفيرس من لطافة برايد ماء عطر 100 مل",
    "brand": "Lattafa Pride",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "MAI-342",
+   "nameAr": "آي تي من ميزون الحمراء 100 مل ماء عطر رجالي",
+   "brand": "Maison Alhambra",
    "priority": "normal",
    "units30": 0,
    "reasonAr": "نفد"
@@ -212,7 +220,7 @@
   },
   {
    "sku": "MAI-380",
-   "nameAr": "أفانت روبي أو دو بارفان 100 مل من مايسون أهلامبرا",
+   "nameAr": "أفانت روبي",
    "brand": "Maison Alhambra",
    "priority": "normal",
    "units30": 0,
@@ -237,14 +245,6 @@
   {
    "sku": "AFN-532",
    "nameAr": "أفنان رير باشن",
-   "brand": "Afnan",
-   "priority": "normal",
-   "units30": 0,
-   "reasonAr": "نفد"
-  },
-  {
-   "sku": "AFN-413",
-   "nameAr": "أفنان سوبريماسي نوار",
    "brand": "Afnan",
    "priority": "normal",
    "units30": 0,
