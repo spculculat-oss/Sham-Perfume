@@ -1,6 +1,7 @@
 import type { CountryPulse } from '../../src/utils/insightsPulse';
 import type { FinanceOrder, FinanceSession, FinanceEntry, FinanceAttempt, FinanceIssue, PaymentRegistration, FinanceReport, FinanceReview, FinanceRun, CollectionAccount, DirectPayment, Payable, Budget, BankAudit } from '../finance/types';
 import type { ShamHolder, ShamImport, ShamLock, ShamPosting } from '../../src/bank/shamLedger';
+import type { SaleSettlement } from '../../src/bank/worldFirstRail';
 /**
  * Sham Core — shared domain types.
  * Every entity is owned by Sham's own storage; no provider ever owns business data.
@@ -316,6 +317,8 @@ export interface Collections {
   shamPostings: ShamPosting;
   shamImports: ShamImport;
   shamLocks: ShamLock;
+  /** Queued WorldFirst settlement behind Sham Bank. Never a sent transfer, and never an account number. */
+  shamSettlement: SaleSettlement;
   services: ServiceDef;
   products: Product;
   knowledge: KnowledgeDoc;

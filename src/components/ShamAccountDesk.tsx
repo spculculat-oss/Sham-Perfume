@@ -20,6 +20,7 @@ import {
 } from '../bank/shamAccount';
 import { PLATFORM_HOLDER, formatShamAccount, parseShamAccount, shamAccountNumber, statementLines, type ActivityRow } from '../bank/shamLedger';
 import { bookErrorCode, newBookKey, openShamSession, previewConvert, type DeskAccount, type ShamSession } from '../bank/shamDeskApi';
+import { WorldFirstRailCard } from './WorldFirstRailCard';
 
 type Pane = 'home' | 'receive' | 'pay' | 'activity' | 'withdraw' | 'convert' | 'card' | 'guard';
 
@@ -252,7 +253,8 @@ export function ShamAccountDesk({
               <p className="mt-1 font-mono text-sm" dir="ltr">{view ? formatShamAccount(view.accountNumber) : '—'}</p>
               <p className="mt-1 text-xs text-stone-500">{t('أعطِ هذا الرقم لمن سيحوّل إليك من حساب شام. ليس رقم استقبال خارجي.', 'Give this number to someone sending from a Sham account. It is not an external receiving number.')}</p>
             </div>
-            <p className="text-xs text-stone-500">{t('مسارات البنوك الخارجية لم تُصدر. لا يظهر آيبان ولا رقم حساب بنك.', 'External bank rails are not issued. No IBAN and no outside account number is shown.')}</p>
+            <p className="text-xs text-stone-500">{t('مسارات البنوك الخارجية لم تُصدر. لا يظهر آيبان ولا رقم حساب بنك. شريك الاستقبال في الخلفية لم يُصدر تفاصيله، ولم يُرسل إليه شيء.', 'External bank rails are not issued. No IBAN and no outside account number is shown. The receiving partner behind the bank has not issued details, and nothing has been sent.')}</p>
+            {customerId.toLowerCase() === 'owner' && <WorldFirstRailCard ar={ar} />}
             {RECEIVING_RAILS.map((rail) => <RailRow key={rail.id} rail={rail} ar={ar} onAsk={() => run(async () => { requestAccountAction(customerId, { kind: 'receiving', currency: rail.currency, detail: rail.networkEn }); reloadLists(); setNotice(t('طُلب إصدار التفاصيل. لم يُنشأ رقم خارجي.', 'Issuance was requested. No external number was created.')); })} />)}
           </div>
         )}
