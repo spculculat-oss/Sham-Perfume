@@ -2,372 +2,372 @@
  "version": 1,
  "currency": "USD",
  "source": "تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد",
- "checkedAt": "2026-10-29",
+ "checkedAt": "2026-10-30",
  "noteAr": "تكلفة الشحن الحقيقية لأول زجاجة (أول ٥٠٠ جم) لكل وجهة، بالدولار، من تعريفة منشورة. الملف ده بيتولّد من تقرير الشحن — متعدّلوش بإيدك؛ عدّل الهامش في shipping.json والشركات في shipping-lanes.json.",
  "countries": {
   "EG": {
-   "firstItem": 30.9,
-   "extraItem": 5.15,
+   "firstItem": 31.04,
+   "extraItem": 5.17,
    "carrier": "poslaju_intl"
   },
   "SA": {
-   "firstItem": 27.47,
-   "extraItem": 8.58,
+   "firstItem": 27.59,
+   "extraItem": 8.62,
    "carrier": "poslaju_intl"
   },
   "AE": {
-   "firstItem": 27.47,
-   "extraItem": 6.87,
+   "firstItem": 27.59,
+   "extraItem": 6.9,
    "carrier": "poslaju_intl"
   },
   "KW": {
-   "firstItem": 25.75,
-   "extraItem": 6.87,
+   "firstItem": 25.86,
+   "extraItem": 6.9,
    "carrier": "poslaju_intl"
   },
   "QA": {
-   "firstItem": 25.75,
-   "extraItem": 6.87,
+   "firstItem": 25.86,
+   "extraItem": 6.9,
    "carrier": "poslaju_intl"
   },
   "BH": {
-   "firstItem": 25.75,
-   "extraItem": 6.87,
+   "firstItem": 25.86,
+   "extraItem": 6.9,
    "carrier": "poslaju_intl"
   },
   "OM": {
-   "firstItem": 51.5,
-   "extraItem": 13.73,
+   "firstItem": 51.73,
+   "extraItem": 13.79,
    "carrier": "poslaju_intl"
   },
   "JO": {
-   "firstItem": 25.75,
-   "extraItem": 6.87,
+   "firstItem": 25.86,
+   "extraItem": 6.9,
    "carrier": "poslaju_intl"
   },
   "LB": {
-   "firstItem": 54.94,
-   "extraItem": 13.73,
+   "firstItem": 55.18,
+   "extraItem": 13.79,
    "carrier": "poslaju_intl"
   },
   "IQ": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "SY": {
-   "firstItem": 53.22,
-   "extraItem": 13.73,
+   "firstItem": 53.45,
+   "extraItem": 13.79,
    "carrier": "poslaju_intl"
   },
   "PS": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "YE": {
-   "firstItem": 53.91,
-   "extraItem": 13.73,
+   "firstItem": 54.14,
+   "extraItem": 13.79,
    "carrier": "poslaju_intl"
   },
   "LY": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "TN": {
-   "firstItem": 34.34,
-   "extraItem": 10.3,
+   "firstItem": 34.49,
+   "extraItem": 10.35,
    "carrier": "poslaju_intl"
   },
   "DZ": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "MA": {
-   "firstItem": 61.8,
-   "extraItem": 15.45,
+   "firstItem": 62.08,
+   "extraItem": 15.52,
    "carrier": "poslaju_intl"
   },
   "SD": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "MR": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "SO": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "DJ": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "KM": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "SG": {
-   "firstItem": 13.73,
+   "firstItem": 13.79,
    "extraItem": 1.72,
    "carrier": "poslaju_intl"
   },
   "BN": {
-   "firstItem": 14.76,
-   "extraItem": 2.06,
+   "firstItem": 14.83,
+   "extraItem": 2.07,
    "carrier": "poslaju_intl"
   },
   "ID": {
-   "firstItem": 15.45,
-   "extraItem": 2.06,
+   "firstItem": 15.52,
+   "extraItem": 2.07,
    "carrier": "poslaju_intl"
   },
   "TH": {
-   "firstItem": 15.45,
-   "extraItem": 2.06,
+   "firstItem": 15.52,
+   "extraItem": 2.07,
    "carrier": "poslaju_intl"
   },
   "PH": {
-   "firstItem": 18.88,
-   "extraItem": 2.75,
+   "firstItem": 18.97,
+   "extraItem": 2.76,
    "carrier": "poslaju_intl"
   },
   "VN": {
-   "firstItem": 17.17,
-   "extraItem": 2.06,
+   "firstItem": 17.24,
+   "extraItem": 2.07,
    "carrier": "poslaju_intl"
   },
   "KH": {
-   "firstItem": 17.85,
-   "extraItem": 2.06,
+   "firstItem": 17.93,
+   "extraItem": 2.07,
    "carrier": "poslaju_intl"
   },
   "LA": {
-   "firstItem": 17.85,
-   "extraItem": 2.75,
+   "firstItem": 17.93,
+   "extraItem": 2.76,
    "carrier": "poslaju_intl"
   },
   "MM": {
-   "firstItem": 27.47,
-   "extraItem": 6.87,
+   "firstItem": 27.59,
+   "extraItem": 6.9,
    "carrier": "poslaju_intl"
   },
   "GB": {
-   "firstItem": 34.34,
-   "extraItem": 5.15,
+   "firstItem": 34.49,
+   "extraItem": 5.17,
    "carrier": "poslaju_intl"
   },
   "IE": {
-   "firstItem": 34.34,
-   "extraItem": 5.15,
+   "firstItem": 34.49,
+   "extraItem": 5.17,
    "carrier": "poslaju_intl"
   },
   "FR": {
-   "firstItem": 34.34,
-   "extraItem": 5.15,
+   "firstItem": 34.49,
+   "extraItem": 5.17,
    "carrier": "poslaju_intl"
   },
   "DE": {
-   "firstItem": 34.34,
-   "extraItem": 6.52,
+   "firstItem": 34.49,
+   "extraItem": 6.55,
    "carrier": "poslaju_intl"
   },
   "IT": {
-   "firstItem": 34.34,
-   "extraItem": 5.15,
+   "firstItem": 34.49,
+   "extraItem": 5.17,
    "carrier": "poslaju_intl"
   },
   "ES": {
-   "firstItem": 39.49,
-   "extraItem": 5.15,
+   "firstItem": 39.66,
+   "extraItem": 5.17,
    "carrier": "poslaju_intl"
   },
   "PT": {
-   "firstItem": 34.34,
-   "extraItem": 5.15,
+   "firstItem": 34.49,
+   "extraItem": 5.17,
    "carrier": "poslaju_intl"
   },
   "NL": {
-   "firstItem": 37.77,
-   "extraItem": 7.9,
+   "firstItem": 37.94,
+   "extraItem": 7.93,
    "carrier": "poslaju_intl"
   },
   "BE": {
-   "firstItem": 34.34,
-   "extraItem": 5.15,
+   "firstItem": 34.49,
+   "extraItem": 5.17,
    "carrier": "poslaju_intl"
   },
   "LU": {
-   "firstItem": 49.44,
-   "extraItem": 7.55,
+   "firstItem": 49.66,
+   "extraItem": 7.59,
    "carrier": "poslaju_intl"
   },
   "AT": {
-   "firstItem": 34.34,
-   "extraItem": 10.3,
+   "firstItem": 34.49,
+   "extraItem": 10.35,
    "carrier": "poslaju_intl"
   },
   "CH": {
-   "firstItem": 44.64,
-   "extraItem": 10.3,
+   "firstItem": 44.83,
+   "extraItem": 10.35,
    "carrier": "poslaju_intl"
   },
   "SE": {
-   "firstItem": 44.64,
-   "extraItem": 10.3,
+   "firstItem": 44.83,
+   "extraItem": 10.35,
    "carrier": "poslaju_intl"
   },
   "NO": {
-   "firstItem": 41.2,
-   "extraItem": 8.58,
+   "firstItem": 41.38,
+   "extraItem": 8.62,
    "carrier": "poslaju_intl"
   },
   "DK": {
-   "firstItem": 34.34,
-   "extraItem": 5.15,
+   "firstItem": 34.49,
+   "extraItem": 5.17,
    "carrier": "poslaju_intl"
   },
   "FI": {
-   "firstItem": 34.34,
-   "extraItem": 5.15,
+   "firstItem": 34.49,
+   "extraItem": 5.17,
    "carrier": "poslaju_intl"
   },
   "IS": {
-   "firstItem": 42.23,
-   "extraItem": 6.87,
+   "firstItem": 42.42,
+   "extraItem": 6.9,
    "carrier": "poslaju_intl"
   },
   "PL": {
-   "firstItem": 54.94,
-   "extraItem": 13.73,
+   "firstItem": 55.18,
+   "extraItem": 13.79,
    "carrier": "poslaju_intl"
   },
   "CZ": {
-   "firstItem": 53.91,
-   "extraItem": 13.73,
+   "firstItem": 54.14,
+   "extraItem": 13.79,
    "carrier": "poslaju_intl"
   },
   "SK": {
-   "firstItem": 53.91,
-   "extraItem": 13.73,
+   "firstItem": 54.14,
+   "extraItem": 13.79,
    "carrier": "poslaju_intl"
   },
   "HU": {
-   "firstItem": 54.94,
-   "extraItem": 12.36,
+   "firstItem": 55.18,
+   "extraItem": 12.42,
    "carrier": "poslaju_intl"
   },
   "RO": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "BG": {
-   "firstItem": 53.91,
-   "extraItem": 13.73,
+   "firstItem": 54.14,
+   "extraItem": 13.79,
    "carrier": "poslaju_intl"
   },
   "GR": {
-   "firstItem": 34.34,
-   "extraItem": 6.87,
+   "firstItem": 34.49,
+   "extraItem": 6.9,
    "carrier": "poslaju_intl"
   },
   "HR": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "SI": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "RS": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "BA": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "ME": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "MK": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "AL": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "EE": {
-   "firstItem": 53.91,
-   "extraItem": 13.73,
+   "firstItem": 54.14,
+   "extraItem": 13.79,
    "carrier": "poslaju_intl"
   },
   "LV": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "LT": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "CY": {
-   "firstItem": 53.91,
-   "extraItem": 13.73,
+   "firstItem": 54.14,
+   "extraItem": 13.79,
    "carrier": "poslaju_intl"
   },
   "MT": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "UA": {
-   "firstItem": 53.22,
-   "extraItem": 13.73,
+   "firstItem": 53.45,
+   "extraItem": 13.79,
    "carrier": "poslaju_intl"
   },
   "MD": {
-   "firstItem": 61.8,
-   "extraItem": 18.88,
+   "firstItem": 62.08,
+   "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
   "TR": {
-   "firstItem": 24.03,
-   "extraItem": 6.87,
+   "firstItem": 24.14,
+   "extraItem": 6.9,
    "carrier": "poslaju_intl"
   },
   "US": {
-   "firstItem": 34.34,
-   "extraItem": 6.87,
+   "firstItem": 34.49,
+   "extraItem": 6.9,
    "carrier": "poslaju_intl"
   },
   "CA": {
-   "firstItem": 37.77,
-   "extraItem": 7.55,
+   "firstItem": 37.94,
+   "extraItem": 7.59,
    "carrier": "poslaju_intl"
   },
   "MX": {
-   "firstItem": 47.04,
-   "extraItem": 10.3,
+   "firstItem": 47.25,
+   "extraItem": 10.35,
    "carrier": "poslaju_intl"
   }
  }
