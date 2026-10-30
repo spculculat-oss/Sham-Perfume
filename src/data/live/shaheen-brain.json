@@ -1,36 +1,36 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T23:48:48.316Z",
- "exams": [],
+ "updatedAt": "2026-10-30T04:08:32.415Z",
  "dataset": {
-  "builtAt": "2026-10-23T23:48:48.150Z",
-  "train": 4284,
-  "eval": 191,
+  "builtAt": "2026-10-30T04:08:32.171Z",
+  "train": 4433,
+  "eval": 198,
   "bySource": {
-   "memory": 4360,
-   "lessons": 20,
+   "memory": 4514,
+   "lessons": 22,
    "lab": 53,
    "relations": 42
   },
   "byLang": {
-   "ar": 4437,
-   "en": 38
+   "ar": 4591,
+   "en": 40
   },
   "dropped": {
    "personal": 0,
-   "price": 3,
+   "price": 6,
    "vendor": 0,
    "short": 0,
    "long": 0,
-   "duplicate": 6
+   "duplicate": 4
   },
   "sha256": {
-   "train": "1fb30a7de1a4c528deb6078983e8059fce56f3535732001a7fbefbd6a329f4b8",
-   "eval": "8b64f7b5a8502748ace12ed5dcf6693e85d02bb1502fda0ee0809ae05cac8db6"
+   "train": "194fb42bdcea3ad8b7d4037465c11c5979d5164079d03685af5021dd13188d55",
+   "eval": "ff76b2fed6810ec132d4b7e3bd692b5b59061652c047325aa9406d1cfae41cce"
   },
   "files": {
    "train": "https://github.com/spculculat-oss/Sham-Perfume/releases/download/shaheen-brain-data/shaheen-train.jsonl",
    "eval": "https://github.com/spculculat-oss/Sham-Perfume/releases/download/shaheen-brain-data/shaheen-eval.jsonl"
   }
- }
+ },
+ "exams": []
 }
