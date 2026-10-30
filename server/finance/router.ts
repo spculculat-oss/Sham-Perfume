@@ -10,6 +10,7 @@ import { createSalesRouter } from '../sales/router';
 import { BUNDLED_FX, isFxTable, type FxTable } from '../../src/utils/pricing';
 import { PLATFORM_HOLDER } from '../../src/bank/shamLedger';
 import { ShamBooks, readMoneyBody } from './shamBooks';
+import { WorldFirstRail } from './worldFirstRail';
 import { loadLive } from '../core/liveData';
 import type { PeriodKind } from './types';
 
@@ -93,9 +94,12 @@ export function createFinanceRouter(finance: FinanceService, bank?: BankService,
       const rates: FxTable = await loadLive('fx-rates.json', bundled, isFxTable, finance.env, fetch).catch(() => bundled);
       res.json(await books.convert(PLATFORM_HOLDER, body, rates));
     }));
+    const settlement = new WorldFirstRail(finance.store, () => new Date().toISOString(), finance.env);
+    router.get('/bank/sham/settlement', wrap(async (_req, res) => { res.json(await settlement.snapshot()); }));
+    router.post('/bank/sham/settlement', wrap(async (req, res) => { res.status(201).json(await settlement.queue(req.body)); }));
   }
   router.get('/export', wrap(async (_req, res) => {
-    const collections = ['financeOrders', 'financeSessions', 'financeEntries', 'financeReports', 'financeReviews', 'financeIssues', 'financeRuns', 'paymentRegistrations', 'bankAccounts', 'bankDirect', 'bankPayables', 'bankBudgets', 'bankAudit', 'shamHolders', 'shamPostings', 'shamImports', 'salesDeals', 'salesTargets', 'salesStudy', 'salesAudit'] as const;
+    const collections = ['financeOrders', 'financeSessions', 'financeEntries', 'financeReports', 'financeReviews', 'financeIssues', 'financeRuns', 'paymentRegistrations', 'bankAccounts', 'bankDirect', 'bankPayables', 'bankBudgets', 'bankAudit', 'shamHolders', 'shamPostings', 'shamImports', 'shamSettlement', 'salesDeals', 'salesTargets', 'salesStudy', 'salesAudit'] as const;
     const data: Record<string, unknown> = { exportedAt: new Date().toISOString(), version: 1 };
     for (const c of collections) data[c] = await finance.store.list(c);
     res.setHeader('Content-Disposition', 'attachment; filename="sham-finance-private.json"'); res.json(data);
