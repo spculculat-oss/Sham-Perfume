@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "carrier-scout",
- "updatedAt": "2026-10-30T01:04:24.202Z",
+ "updatedAt": "2026-10-30T07:03:23.297Z",
  "rules": {
   "staleDays": 120,
   "handlingPercent": 10,
@@ -14,7 +14,7 @@
    {
     "code": "MY",
     "nameAr": "ماليزيا",
-    "zoneFirstItemEgp": 336.71
+    "zoneFirstItemEgp": 336.25
    }
   ]
  },
@@ -107,7 +107,7 @@
    "kind": "no_rate",
    "level": "warn",
    "subject": "MY",
-   "whatAr": "ماليزيا: مفيش تعريفة شحن منشورة — بتاخد سعر المنطقة (336.71 ج.م) ومافيش وعد إنه يغطي التكلفة",
+   "whatAr": "ماليزيا: مفيش تعريفة شحن منشورة — بتاخد سعر المنطقة (336.25 ج.م) ومافيش وعد إنه يغطي التكلفة",
    "fixAr": "أضف الشركة وتعريفتها بمصدرها وتاريخها في src/data/shipping-lanes.json"
   },
   {
