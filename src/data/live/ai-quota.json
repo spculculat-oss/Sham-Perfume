@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-30T01:37:46.327Z",
+ "updatedAt": "2026-10-30T08:27:29.199Z",
  "engines": {
   "deepseek": {
    "pausedUntil": "2026-10-21T08:05:00.000Z",
@@ -10,18 +10,12 @@
    "pausedUntil": "2026-10-30T08:05:00.000Z",
    "reason": "no_credit",
    "key": "2c42a25f"
-  },
-  "gemini": {
-   "pausedUntil": "2026-10-30T08:05:00.000Z",
-   "reason": "chat_reserve",
-   "detail": "bots used 10/10 today",
-   "key": "7e5fee0d"
   }
  },
  "used": {
-  "day": "2026-10-29",
+  "day": "2026-10-30",
   "counts": {
-   "gemini": 10
+   "gemini": 1
   }
  }
 }
