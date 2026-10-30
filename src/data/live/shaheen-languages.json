@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-30T09:54:20.950Z",
+  "updatedAt": "2026-10-30T09:58:02.644Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -29,7 +29,7 @@
   "translationCoverage": 10.3,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-10-30T09:54:21.382Z",
+    "at": "2026-10-30T09:58:03.081Z",
     "status": "quota",
     "remaining": 273068,
     "covered": 3690,
@@ -173,12 +173,12 @@
       "ms|store|da6e74b4db": 1,
       "nl|store|33d567a338": 1,
       "mk|ui|beba921696": 1,
-      "mk|store|9e9f0d3e3a": 1,
-      "mk|store|bf97abc1ef": 1
+      "mk|store|bf97abc1ef": 1,
+      "bs|store|6ba808f8dd": 1
     }
   },
   "design": {
-    "at": "2026-10-30T09:54:20.950Z",
+    "at": "2026-10-30T09:58:02.644Z",
     "auditAt": "2026-10-28T05:51:34.802Z",
     "auditScore": 58,
     "priorityLanguages": [
