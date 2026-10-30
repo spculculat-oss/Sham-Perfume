@@ -1,12 +1,12 @@
 {
  "version": 1,
  "agent": "senses_world",
- "updatedAt": "2026-10-30T12:58:33.790Z",
- "score": 70,
+ "updatedAt": "2026-10-30T18:50:29.310Z",
+ "score": 90,
  "counts": {
-  "ok": 1,
+  "ok": 2,
   "note": 0,
-  "warn": 2,
+  "warn": 1,
   "fail": 0
  },
  "probes": [
@@ -28,7 +28,7 @@
     "note": "لم تُجلب الصفحة"
    },
    "source": "https://www.dhl.com/my-en/home/our-divisions/express.html",
-   "checkedAt": "2026-10-30T12:58:33.790Z"
+   "checkedAt": "2026-10-30T18:50:29.310Z"
   },
   {
    "carrierId": "fedex_my",
@@ -48,7 +48,7 @@
     "note": "الصفحة فُتحت (200)"
    },
    "source": "https://www.fedex.com/en-my/home.html",
-   "checkedAt": "2026-10-30T12:58:33.790Z"
+   "checkedAt": "2026-10-30T18:50:29.310Z"
   },
   {
    "carrierId": "aramex_my",
@@ -60,15 +60,15 @@
     "note": "robots.txt تم جلبها (200)"
    },
    "page": {
-    "fetched": false,
-    "status": 403,
-    "mentionsDangerousGoods": false,
+    "fetched": true,
+    "status": 200,
+    "mentionsDangerousGoods": true,
     "mentionsPerfume": false,
-    "mentionsPrice": false,
-    "note": "الصفحة فُتحت (403)"
+    "mentionsPrice": true,
+    "note": "الصفحة فُتحت (200)"
    },
    "source": "https://www.aramex.com/my/en",
-   "checkedAt": "2026-10-30T12:58:33.790Z"
+   "checkedAt": "2026-10-30T18:50:29.310Z"
   },
   {
    "carrierId": "ninja_van_my",
@@ -88,7 +88,7 @@
     "note": "الصفحة فُتحت (200)"
    },
    "source": "https://www.ninjavan.co/en-my",
-   "checkedAt": "2026-10-30T12:58:33.790Z"
+   "checkedAt": "2026-10-30T18:50:29.310Z"
   },
   {
    "carrierId": "jnt_my",
@@ -108,7 +108,7 @@
     "note": "الصفحة فُتحت (200)"
    },
    "source": "https://www.jtexpress.my",
-   "checkedAt": "2026-10-30T12:58:33.790Z"
+   "checkedAt": "2026-10-30T18:50:29.310Z"
   },
   {
    "carrierId": "aramex_ae",
@@ -120,27 +120,26 @@
     "note": "robots.txt تم جلبها (200)"
    },
    "page": {
-    "fetched": false,
-    "status": 403,
-    "mentionsDangerousGoods": false,
+    "fetched": true,
+    "status": 200,
+    "mentionsDangerousGoods": true,
     "mentionsPerfume": false,
-    "mentionsPrice": false,
-    "note": "الصفحة فُتحت (403)"
+    "mentionsPrice": true,
+    "note": "الصفحة فُتحت (200)"
    },
    "source": "https://www.aramex.com/ae/en",
-   "checkedAt": "2026-10-30T12:58:33.790Z"
+   "checkedAt": "2026-10-30T18:50:29.310Z"
   }
  ],
  "carriers": {
   "total": 6,
-  "reachable": 3,
-  "dgMentioned": 0,
-  "priceMentioned": 2,
+  "reachable": 5,
+  "dgMentioned": 2,
+  "priceMentioned": 4,
   "noSource": 0
  },
- "summaryAr": "حسّاسات العالم: قرأت 3 من 6 صفحة شركة،0 تذكر مواد خطر",
+ "summaryAr": "حسّاسات العالم: قرأت 5 من 6 صفحة شركة،2 تذكر مواد خطر",
  "planAr": [
-  "بعض صفحات الشركات ما فتحتش — راجع الروابط",
-  "مفيش شركة ذكرت قبول مواد خطر — تأكد قبل شحن جوي للعطور"
+  "بعض صفحات الشركات ما فتحتش — راجع الروابط"
  ]
 }
