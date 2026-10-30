@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "scent-behavior",
- "updatedAt": "2026-10-29T04:59:09.237Z",
+ "updatedAt": "2026-10-30T04:59:16.823Z",
  "signals": {
   "read": true,
   "noteAr": "العدّاد الحي مقروء من السيرفر (أعداد مجهولة فقط: خامات ونوع تركيز، من غير أي بيانات شخصية).",
@@ -15,7 +15,7 @@
   {
    "tag": "woody",
    "nameAr": "خشبي",
-   "share": 18.4
+   "share": 18.6
   },
   {
    "tag": "floral",
@@ -25,12 +25,12 @@
   {
    "tag": "oriental",
    "nameAr": "شرقي",
-   "share": 11
+   "share": 11.1
   },
   {
    "tag": "amber",
    "nameAr": "عنبري",
-   "share": 10.2
+   "share": 10.1
   },
   {
    "tag": "fresh",
@@ -40,7 +40,7 @@
   {
    "tag": "fruity",
    "nameAr": "فاكهي",
-   "share": 8.5
+   "share": 8.3
   },
   {
    "tag": "spicy",
@@ -50,12 +50,12 @@
   {
    "tag": "gourmand",
    "nameAr": "جورماند",
-   "share": 5.4
+   "share": 5.5
   },
   {
    "tag": "citrus",
    "nameAr": "حمضي",
-   "share": 4.7
+   "share": 4.6
   },
   {
    "tag": "oud",
@@ -65,12 +65,12 @@
   {
    "tag": "musk",
    "nameAr": "مسكي",
-   "share": 3.5
+   "share": 3.7
   },
   {
    "tag": "aquatic",
    "nameAr": "مائي",
-   "share": 1.8
+   "share": 1.9
   },
   {
    "tag": "leather",
@@ -80,7 +80,7 @@
   {
    "tag": "powdery",
    "nameAr": "بودري",
-   "share": 0.9
+   "share": 0.8
   }
  ],
  "unused": [],
@@ -100,7 +100,7 @@
   {
    "family": "amber",
    "nameAr": "عنبري",
-   "products": 320,
+   "products": 316,
    "bankMaterials": 6
   },
   {
@@ -112,19 +112,19 @@
   {
    "family": "powdery",
    "nameAr": "بودري",
-   "products": 29,
+   "products": 26,
    "bankMaterials": 7
   },
   {
    "family": "musk",
    "nameAr": "مسكي",
-   "products": 111,
+   "products": 115,
    "bankMaterials": 10
   },
   {
    "family": "woody",
    "nameAr": "خشبي",
-   "products": 578,
+   "products": 581,
    "bankMaterials": 12
   },
   {
@@ -136,25 +136,25 @@
   {
    "family": "oud",
    "nameAr": "عود",
-   "products": 123,
+   "products": 121,
    "bankMaterials": 12
   },
   {
    "family": "fruity",
    "nameAr": "فاكهي",
-   "products": 266,
+   "products": 258,
    "bankMaterials": 14
   },
   {
    "family": "gourmand",
    "nameAr": "جورماند",
-   "products": 170,
+   "products": 171,
    "bankMaterials": 14
   },
   {
    "family": "floral",
    "nameAr": "زهري",
-   "products": 399,
+   "products": 398,
    "bankMaterials": 15
   },
   {
@@ -166,19 +166,19 @@
   {
    "family": "citrus",
    "nameAr": "حمضي",
-   "products": 148,
+   "products": 144,
    "bankMaterials": 22
   },
   {
    "family": "aquatic",
    "nameAr": "مائي",
-   "products": 55,
+   "products": 58,
    "bankMaterials": 22
   },
   {
    "family": "fresh",
    "nameAr": "منعش",
-   "products": 282,
+   "products": 280,
    "bankMaterials": 27
   }
  ],
