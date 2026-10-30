@@ -1,7 +1,35 @@
 {
- "updatedAt": "2026-10-30T19:13:00.916Z",
+ "updatedAt": "2026-10-30T20:00:57.885Z",
  "active": true,
  "decisions": [
+  {
+   "at": "2026-10-30T20:00:55.413Z",
+   "number": 416,
+   "kind": "task",
+   "title": "إصلاح عطل: مجلس شاهين (الاجتماع اليومي)",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/416"
+  },
+  {
+   "at": "2026-10-30T20:00:57.619Z",
+   "number": 417,
+   "kind": "task",
+   "title": "إصلاح عطل: جولة الزائر والمستشار الميداني",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/417"
+  },
   {
    "at": "2026-10-30T09:14:08.882Z",
    "number": 410,
@@ -533,34 +561,6 @@
     "veto": 0
    },
    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/293"
-  },
-  {
-   "at": "2026-10-23T14:59:53.970Z",
-   "number": 288,
-   "kind": "task",
-   "title": "[قسم الجودة والاعتماد على النفس] طلبات للسيرفر فشلت (1)",
-   "outcome": "approved",
-   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
-   "tally": {
-    "approve": 5,
-    "refuse": 0,
-    "veto": 0
-   },
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/288"
-  },
-  {
-   "at": "2026-10-23T14:59:54.477Z",
-   "number": 289,
-   "kind": "task",
-   "title": "[قسم تجربة الزائر والتصميم واللغات] سؤال علمي وسط الشراء اتردّ عليه بقايمة عطور بدل الإجابة",
-   "outcome": "approved",
-   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
-   "tally": {
-    "approve": 5,
-    "refuse": 0,
-    "veto": 0
-   },
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/289"
   }
  ],
  "supervision": {
@@ -580,7 +580,7 @@
  },
  "field": {
   "maneuverAt": "2026-10-30T14:29:42.419Z",
-  "at": "2026-10-30T19:12:58.115Z",
+  "at": "2026-10-30T20:00:51.856Z",
   "items": [
    {
     "id": "alcohol:unnamed-button",
