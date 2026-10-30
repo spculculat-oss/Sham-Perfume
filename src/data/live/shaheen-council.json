@@ -1,7 +1,126 @@
 {
  "version": 1,
- "updatedAt": "2026-10-28T08:56:24.651Z",
+ "updatedAt": "2026-10-30T19:13:19.545Z",
  "meetings": [
+  {
+   "date": "2026-10-30",
+   "at": "2026-10-30T19:13:19.545Z",
+   "mode": "self",
+   "summaryAr": "السكرتير (مشرف شاهين) أدار الاجتماع بالنيابة عن شاهين (مفيش محرك ذكاء اصطناعي متاح، ضغط: 5 ملاحظة عاجلة، ضغط: 4 روبوت فيهم عطل)، من تقارير الأدوات: 11 ملاحظة، منها 5 عاجلة. القرارات: إصلاح خطوة «checkout» في رحلة الشراء، إعادة فتح: توحيد واجهة المتجر بالعربية وتثبيت اتجاه العرض (RTL)، إصلاح عطل: مجلس شاهين (الاجتماع اليومي)، إصلاح عطل: جولة الزائر والمستشار الميداني، إصلاح عطل: المُجرِّب (معمل شاهين)، مراجعة النصوص الإنجليزي اللي لقاها قسم التصميم.",
+   "decisions": [
+    {
+     "title": "إصلاح خطوة «checkout» في رحلة الشراء",
+     "detail": "الوكيل الخلفي جرّب الموقع الحي من الموبايل الصبح: الانتقال إلى Checkout ولكن لم يتم الدفع أو إدخال بيانات؛ صفحة الدفع لم تنفصل كصفحة مستقلة، وبقي التصفح ضمن واجهة المتجر. (src/data/live/manus-missions.json → tour).",
+     "area": "experience",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-10-30-1-إصلاح-خطوة-checkout-في-ر",
+     "status": "skipped",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "موجودة كمهمة #318"
+    },
+    {
+     "title": "إعادة فتح: توحيد واجهة المتجر بالعربية وتثبيت اتجاه العرض (RTL)",
+     "detail": "المراجع الخارجي فحص الموقع الحي ولقاها لسه: الواجهة الإنجليزية وتوجيهات RTL غير مُطبقة؛ lang: en و dir: ltr؛ وجود عناصر مثل All Men Women Unisex وShop بالعربية غير ظاهر بشكل RTL. (المهمة القديمة: https://github.com/spculculat-oss/Sham-Perfume/issues/273).",
+     "area": "reliability",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-10-30-2-إعادة-فتح-توحيد-واجهة-ال",
+     "status": "skipped",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "موجودة كمهمة #273"
+    },
+    {
+     "title": "إصلاح عطل: مجلس شاهين (الاجتماع اليومي)",
+     "detail": "الفحص الشامل قبل الاجتماع:\n- آخر تشغيل فشل\n- التقرير متأخر (58 ساعة، المفروض كل 24)\n- 1 مهمة تطوير مفتوحة من أكتر من أسبوع\nالإصلاح المقترح:\n- أصلح سبب الفشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)\n- إعادة تشغيل الروبوت\n- اكتب «نفذ مهام شاهين» في الشات مع وكيل البرمجة\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/41029976264",
+     "area": "ai-tools",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-10-30-3-إصلاح-عطل-مجلس-شاهين-الا",
+     "status": "queued",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "مهمة لوكيل البرمجة"
+    },
+    {
+     "title": "إصلاح عطل: جولة الزائر والمستشار الميداني",
+     "detail": "الفحص الشامل قبل الاجتماع:\n- جولة الزائر: خطوات واقعة — checkout: الانتقال إلى Checkout ولكن لم يتم الدفع أو إدخال بيانات؛ صفحة الدفع لم تنفصل كصف\nالإصلاح المقترح:\n- إصلاح الخطوة قبل أي تطوير تاني\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/41022228985",
+     "area": "experience",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-10-30-4-إصلاح-عطل-جولة-الزائر-وا",
+     "status": "queued",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "مهمة لوكيل البرمجة"
+    },
+    {
+     "title": "إصلاح عطل: المُجرِّب (معمل شاهين)",
+     "detail": "الفحص الشامل قبل الاجتماع:\n- آخر تشغيل فشل\n- التقرير متأخر (54 ساعة، المفروض كل 24)\nالإصلاح المقترح:\n- أصلح سبب الفشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)\n- إعادة تشغيل الروبوت\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/41018266977",
+     "area": "reliability",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-10-30-5-إصلاح-عطل-الم-جر-ب-معمل-",
+     "status": "skipped",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "موجودة كمهمة #319"
+    },
+    {
+     "title": "مراجعة النصوص الإنجليزي اللي لقاها قسم التصميم",
+     "detail": "تدقيق التصميم (manus-audit.json) شاف النصوص دي بالإنجليزي على الموقع، ووكيل اللغات لقاها في: «Cosmetics» src/legal/jurisdictions.ts:198، «Cosmetics» src/legal/jurisdictions.ts:428، «Cosmetics» src/legal/jurisdictions.ts:569. المترجم الذكي بيغطي اللغات الناقصة تلقائياً؛ لو النص ظاهر بالإنجليزي في العربي أو في لغة أساسية، صحّح القاموس في نفس السطر.",
+     "area": "experience",
+     "priority": "medium",
+     "kind": "task",
+     "id": "2026-10-30-6-مراجعة-النصوص-الإنجليزي-",
+     "status": "skipped",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "موجودة كمهمة #348"
+    }
+   ],
+   "toolGoals": {},
+   "seats": [
+    {
+     "seat": "manager",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "store",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "content",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "experience",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "reliability",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "field",
+     "ok": false,
+     "text": ""
+    }
+   ],
+   "chair": "secretary",
+   "deputyReasons": [
+    "مفيش محرك ذكاء اصطناعي متاح",
+    "ضغط: 5 ملاحظة عاجلة",
+    "ضغط: 4 روبوت فيهم عطل"
+   ]
+  },
   {
    "date": "2026-10-28",
    "at": "2026-10-28T08:56:24.651Z",
@@ -1606,9 +1725,10 @@
    "needsApproval": true,
    "createdAt": "2026-10-28T08:56:24.651Z",
    "meeting": "2026-10-28",
-   "status": "open",
+   "status": "done",
    "issue": 395,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/395"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/395",
+   "closedAt": "2026-10-30T09:54:04Z"
   },
   {
    "id": "2026-10-28-2-تصحيح-وتحسين-بيانات-المن",
@@ -1633,9 +1753,36 @@
    "needsApproval": true,
    "createdAt": "2026-10-28T08:56:24.651Z",
    "meeting": "2026-10-28",
-   "status": "open",
+   "status": "done",
    "issue": 397,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/397"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/397",
+   "closedAt": "2026-10-30T09:54:02Z"
+  },
+  {
+   "id": "2026-10-30-3-إصلاح-عطل-مجلس-شاهين-الا",
+   "title": "إصلاح عطل: مجلس شاهين (الاجتماع اليومي)",
+   "detail": "الفحص الشامل قبل الاجتماع:\n- آخر تشغيل فشل\n- التقرير متأخر (58 ساعة، المفروض كل 24)\n- 1 مهمة تطوير مفتوحة من أكتر من أسبوع\nالإصلاح المقترح:\n- أصلح سبب الفشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)\n- إعادة تشغيل الروبوت\n- اكتب «نفذ مهام شاهين» في الشات مع وكيل البرمجة\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/41029976264",
+   "area": "ai-tools",
+   "priority": "high",
+   "needsApproval": true,
+   "createdAt": "2026-10-30T19:13:19.545Z",
+   "meeting": "2026-10-30",
+   "status": "open",
+   "issue": 416,
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/416"
+  },
+  {
+   "id": "2026-10-30-4-إصلاح-عطل-جولة-الزائر-وا",
+   "title": "إصلاح عطل: جولة الزائر والمستشار الميداني",
+   "detail": "الفحص الشامل قبل الاجتماع:\n- جولة الزائر: خطوات واقعة — checkout: الانتقال إلى Checkout ولكن لم يتم الدفع أو إدخال بيانات؛ صفحة الدفع لم تنفصل كصف\nالإصلاح المقترح:\n- إصلاح الخطوة قبل أي تطوير تاني\nسجل آخر تشغيل: https://github.com/spculculat-oss/Sham-Perfume/actions/runs/41022228985",
+   "area": "experience",
+   "priority": "high",
+   "needsApproval": true,
+   "createdAt": "2026-10-30T19:13:19.545Z",
+   "meeting": "2026-10-30",
+   "status": "open",
+   "issue": 417,
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/417"
   }
  ],
  "toolGoals": {
@@ -1728,6 +1875,23 @@
  ],
  "seeds": [],
  "delegations": [
+  {
+   "date": "2026-10-30",
+   "at": "2026-10-30T19:13:19.545Z",
+   "reasons": [
+    "مفيش محرك ذكاء اصطناعي متاح",
+    "ضغط: 5 ملاحظة عاجلة",
+    "ضغط: 4 روبوت فيهم عطل"
+   ],
+   "decisions": [
+    "إصلاح خطوة «checkout» في رحلة الشراء (موجودة كمهمة #318)",
+    "إعادة فتح: توحيد واجهة المتجر بالعربية وتثبيت اتجاه العرض (RTL) (موجودة كمهمة #273)",
+    "إصلاح عطل: مجلس شاهين (الاجتماع اليومي) (مهمة لوكيل البرمجة)",
+    "إصلاح عطل: جولة الزائر والمستشار الميداني (مهمة لوكيل البرمجة)",
+    "إصلاح عطل: المُجرِّب (معمل شاهين) (موجودة كمهمة #319)",
+    "مراجعة النصوص الإنجليزي اللي لقاها قسم التصميم (موجودة كمهمة #348)"
+   ]
+  },
   {
    "date": "2026-10-28",
    "at": "2026-10-28T08:56:24.651Z",
