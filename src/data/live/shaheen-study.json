@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "tutor",
- "updatedAt": "2026-10-30T05:22:15.949Z",
+ "updatedAt": "2026-10-30T09:54:19.239Z",
  "targets": [
   {
    "kind": "carrier",
@@ -10,14 +10,6 @@
    "whyAr": "«بوس لاجو الدولي (بريد ماليزيا)»: لسه مش مؤكد إنها بتقبل العطور (UN1266) — وهي اللي بتحمل 73 وجهة",
    "specialistId": "specialist_business",
    "priority": 95
-  },
-  {
-   "kind": "destination",
-   "id": "destination:MY",
-   "labelAr": "ماليزيا",
-   "whyAr": "ماليزيا: مفيش تعريفة شحن منشورة — سعرها منطقة، ومفيش وعد إنه يغطي التكلفة",
-   "specialistId": "specialist_business",
-   "priority": 90
   },
   {
    "kind": "destination",
@@ -594,7 +586,7 @@
    "question": "الشحن لـمصر بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1905",
+    "1913",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -617,7 +609,7 @@
    "question": "الشحن لـالسعودية بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1694",
+    "1701",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -629,7 +621,7 @@
    "question": "الشحن لـالإمارات بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1694",
+    "1701",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -641,7 +633,7 @@
    "question": "الشحن لـالكويت بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1588",
+    "1594",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -653,7 +645,7 @@
    "question": "الشحن لـقطر بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1588",
+    "1594",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -665,7 +657,7 @@
    "question": "الشحن لـالبحرين بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1588",
+    "1594",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -677,7 +669,7 @@
    "question": "الشحن لـعمان بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3166",
+    "3179",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -689,7 +681,7 @@
    "question": "الشحن لـالأردن بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1588",
+    "1594",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -712,7 +704,7 @@
    "question": "الشحن لـلبنان بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3359",
+    "3373",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -724,7 +716,7 @@
    "question": "الشحن لـالعراق بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3744",
+    "3759",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -732,7 +724,7 @@
    "targetId": "destination:IQ"
   },
   {
-   "id": "q-recall-specialist_science-80",
+   "id": "q-recall-specialist_science-81",
    "question": "ايه هي قوانين نيوتن التلاتة للحركة؟",
    "kind": "rule",
    "expected": [
@@ -744,7 +736,7 @@
    "targetId": "specialist:specialist_science"
   },
   {
-   "id": "q-recall-specialist_scents-81",
+   "id": "q-recall-specialist_scents-82",
    "question": "اشرحلي طريقة استخدام العطر",
    "kind": "rule",
    "expected": [
@@ -756,7 +748,7 @@
    "targetId": "specialist:specialist_scents"
   },
   {
-   "id": "q-recall-specialist_tech-82",
+   "id": "q-recall-specialist_tech-83",
    "question": "ازاي ابدا اتعلم برمجة؟",
    "kind": "rule",
    "expected": [
@@ -768,7 +760,7 @@
    "targetId": "specialist:specialist_tech"
   },
   {
-   "id": "q-recall-specialist_culture-83",
+   "id": "q-recall-specialist_culture-84",
    "question": "ايه هي المغالطة المنطقية؟",
    "kind": "rule",
    "expected": [
@@ -780,7 +772,7 @@
    "targetId": "specialist:specialist_culture"
   },
   {
-   "id": "q-recall-specialist_security-84",
+   "id": "q-recall-specialist_security-85",
    "question": "ايه هو التشفير؟",
    "kind": "rule",
    "expected": [
@@ -792,7 +784,7 @@
    "targetId": "specialist:specialist_security"
   },
   {
-   "id": "q-recall-specialist_business-85",
+   "id": "q-recall-specialist_business-86",
    "question": "ايه دور اتفاقيات التجارة الحرة في الجمارك؟",
    "kind": "rule",
    "expected": [
@@ -807,13 +799,13 @@
  "covered": {
   "destinations": 74,
   "explained": 74,
-  "priced": 73,
+  "priced": 74,
   "verifiedCustoms": 3
  },
- "summaryAr": "المعلم: 73 حلقة ضعيفة اتحولت لخطة دراسة · 18 سؤال امتحان بإجابات موثّقة",
+ "summaryAr": "المعلم: 72 حلقة ضعيفة اتحولت لخطة دراسة · 18 سؤال امتحان بإجابات موثّقة",
  "planAr": [
-  "73 حلقة ضعيفة في العقل، أهمها: بوس لاجو الدولي (بريد ماليزيا)، ماليزيا، الإمارات، AL، AT — كل واحدة بقت مهمة دراسة لمتخصصها.",
+  "72 حلقة ضعيفة في العقل، أهمها: بوس لاجو الدولي (بريد ماليزيا)، الإمارات، AL، AT، BA — كل واحدة بقت مهمة دراسة لمتخصصها.",
   "18 سؤال امتحان جاهز، إجابته مكتوبة في الملفات نفسها — الممتحن بيصحح عليها من غير أي تخمين.",
-  "العمق: 74 من 74 وجهة ليها درس بيشرحها · 73 بسعر شحن منشور · 3 بجمارك مؤكدة."
+  "العمق: 74 من 74 وجهة ليها درس بيشرحها · 74 بسعر شحن منشور · 3 بجمارك مؤكدة."
  ]
 }
