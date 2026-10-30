@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-28T21:42:51.015Z",
+  "updatedAt": "2026-10-30T09:54:20.950Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -20,71 +20,79 @@
   ],
   "score": 54,
   "notes": [
-    "الترجمة مش مكتملة: 10.1% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 273313 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط والأخبار الأساسية بس هي اللي مكتملة.",
+    "الترجمة مش مكتملة: 10.3% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 273068 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط والأخبار الأساسية بس هي اللي مكتملة.",
     "تقليل صارم للغة إلى عربي/إنجليزي في 2 موضع — راجع إن كان المقصود زوج بيانات {ar,en} أم لغة واجهة.",
-    "المترجم الذكي: 273313 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3255 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
-    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Cosmetics» src/App.tsx:85، «Cosmetics» src/App.tsx:1011، «Cosmetics» src/components/CosmeticsHub.tsx:13.",
+    "المترجم الذكي: 273068 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3690 — النهارده اتترجم 435 (الباقة خلصت — هيكمل بعد التجديد).",
+    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Cosmetics» src/legal/jurisdictions.ts:198، «Cosmetics» src/legal/jurisdictions.ts:428، «Cosmetics» src/legal/jurisdictions.ts:569.",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: mk، bs، sd."
   ],
-  "translationCoverage": 10.1,
+  "translationCoverage": 10.3,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-10-28T21:42:51.419Z",
+    "at": "2026-10-30T09:54:21.382Z",
     "status": "quota",
-    "remaining": 273313,
-    "covered": 3255,
-    "total": 304290,
+    "remaining": 273068,
+    "covered": 3690,
+    "total": 304486,
     "fullyTranslated": 0,
     "remainingByTier": {
-      "1": 16154,
-      "2": 187823,
+      "1": 15719,
+      "2": 188013,
       "3": 69336
     },
     "worstLanguages": [
       {
         "lang": "my",
-        "remaining": 2938
+        "remaining": 2940
       },
       {
         "lang": "dz",
-        "remaining": 2938
+        "remaining": 2940
       },
       {
         "lang": "cs",
-        "remaining": 2936
+        "remaining": 2938
       },
       {
         "lang": "ur",
-        "remaining": 2936
+        "remaining": 2938
       },
       {
         "lang": "am",
-        "remaining": 2936
+        "remaining": 2938
       },
       {
         "lang": "ha",
-        "remaining": 2936
+        "remaining": 2938
       },
       {
         "lang": "yo",
-        "remaining": 2936
+        "remaining": 2938
       },
       {
         "lang": "zu",
-        "remaining": 2936
+        "remaining": 2938
       }
     ],
     "run": {
-      "calls": 1,
-      "translated": 0,
-      "rejected": 0,
-      "droppedByReview": 0,
-      "reviewed": false,
-      "engines": [],
-      "languages": [],
-      "resumeAt": "2026-10-29T08:05:00.000Z"
+      "calls": 10,
+      "translated": 435,
+      "rejected": 3,
+      "droppedByReview": 3,
+      "reviewed": true,
+      "engines": [
+        "gemini",
+        "gemini (review)"
+      ],
+      "languages": [
+        "mk",
+        "bs"
+      ],
+      "resumeAt": "2026-10-31T08:05:00.000Z"
     },
-    "rejectReasons": {},
+    "rejectReasons": {
+      "review": 3
+    },
     "rejectCounts": {
       "is|ui|e10dbc6c3b": 2,
       "fr|ui|e10dbc6c3b": 2,
@@ -163,11 +171,14 @@
       "ms|store|098afc863f": 1,
       "ms|store|9719cfbcbc": 1,
       "ms|store|da6e74b4db": 1,
-      "nl|store|33d567a338": 1
+      "nl|store|33d567a338": 1,
+      "mk|ui|beba921696": 1,
+      "mk|store|9e9f0d3e3a": 1,
+      "mk|store|bf97abc1ef": 1
     }
   },
   "design": {
-    "at": "2026-10-28T21:42:51.015Z",
+    "at": "2026-10-30T09:54:20.950Z",
     "auditAt": "2026-10-28T05:51:34.802Z",
     "auditScore": 58,
     "priorityLanguages": [
@@ -178,18 +189,18 @@
     "located": [
       {
         "phrase": "Cosmetics",
-        "file": "src/App.tsx",
-        "line": 85
+        "file": "src/legal/jurisdictions.ts",
+        "line": 198
       },
       {
         "phrase": "Cosmetics",
-        "file": "src/App.tsx",
-        "line": 1011
+        "file": "src/legal/jurisdictions.ts",
+        "line": 428
       },
       {
         "phrase": "Cosmetics",
-        "file": "src/components/CosmeticsHub.tsx",
-        "line": 13
+        "file": "src/legal/jurisdictions.ts",
+        "line": 569
       }
     ],
     "unlocated": [
