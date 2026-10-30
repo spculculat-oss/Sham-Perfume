@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-30T07:33:34.871Z",
+ "updatedAt": "2026-10-30T09:54:19.317Z",
  "nodes": [
   {
    "id": "brand:Afnan",
@@ -199,6 +199,12 @@
    "kind": "brand",
    "labelAr": "Zimaya",
    "ref": "src/data/products.json"
+  },
+  {
+   "id": "carrier:pos_malaysia",
+   "kind": "carrier",
+   "labelAr": "بريد ماليزيا",
+   "ref": "src/data/shipping-lanes.json"
   },
   {
    "id": "carrier:poslaju_intl",
@@ -18679,6 +18685,17 @@
  ],
  "edges": [
   {
+   "from": "carrier:pos_malaysia",
+   "to": "destination:MY",
+   "relation": "carried_by",
+   "weight": 2.71,
+   "unit": "USD",
+   "source": "https://sellershipment.com/ecommerce-shipping-cost/pos-laju-rate/ + https://jomjual.my/blog/jt-vs-pos-laju-vs-ninja-van-vs-dhl-perbandingan-kadar-penghantaran-malaysia-2026",
+   "checkedAt": "2026-10-30",
+   "confidence": 1,
+   "noteAr": "أول ٥٠٠ جم 2.71 دولار + 2.46 لكل ٥٠٠ جم زيادة"
+  },
+  {
    "from": "carrier:poslaju_intl",
    "to": "destination:AE",
    "relation": "carried_by",
@@ -24096,6 +24113,14 @@
    "relation": "teaches",
    "source": "scripts/shaheen-school/curriculum.ts",
    "confidence": 1
+  },
+  {
+   "from": "lesson:com-trade-dg",
+   "to": "carrier:pos_malaysia",
+   "relation": "applies_to",
+   "source": "scripts/shaheen-school/curriculum.ts",
+   "confidence": 0.6,
+   "noteAr": "الدرس بيربط بقبول العطور (UN1266) عند الشركة"
   },
   {
    "from": "lesson:com-trade-dg",
@@ -54480,11 +54505,11 @@
   }
  ],
  "stats": {
-  "nodes": 2481,
-  "edges": 4994,
+  "nodes": 2482,
+  "edges": 4996,
   "byKind": {
    "brand": 33,
-   "carrier": 1,
+   "carrier": 2,
    "customs": 74,
    "destination": 74,
    "lesson": 1038,
@@ -54496,11 +54521,11 @@
    "topic": 63
   },
   "byRelation": {
-   "carried_by": 73,
+   "carried_by": 74,
    "cleared_by": 74,
    "in_topic": 1038,
    "teaches": 1038,
-   "applies_to": 311,
+   "applies_to": 312,
    "delivers_to": 74,
    "brand_of": 1161,
    "supplied_by": 1161,
@@ -54572,14 +54597,14 @@
   ]
  },
  "score": {
-  "total": 99,
-  "coverage": 24,
+  "total": 100,
+  "coverage": 25,
   "lessons": 20,
   "catalogue": 15,
   "freshness": 10,
   "connectivity": 5,
   "depth": 25,
-  "whyAr": "أضعف حلقات العقل: 1 وجهة من غير سعر شحن موثّق · 0 درس مش موصول بمتخصصه · 0 منتج مش موصول بمورده · 0 حافة عالمية قديمة أو بلا تاريخ"
+  "whyAr": "أضعف حلقات العقل: 0 وجهة من غير سعر شحن موثّق · 0 درس مش موصول بمتخصصه · 0 منتج مش موصول بمورده · 0 حافة عالمية قديمة أو بلا تاريخ"
  },
- "summaryAr": "عقل شاهين: 2481 عقدة و4994 حافة (99/100). منتج 1161 · درس 1038 · وجهة 74 · شركة شحن 1 · جمارك 74 · مورد 3 · ماركة 33 · موضوع 63 · متخصص 10."
+ "summaryAr": "عقل شاهين: 2482 عقدة و4996 حافة (100/100). منتج 1161 · درس 1038 · وجهة 74 · شركة شحن 2 · جمارك 74 · مورد 3 · ماركة 33 · موضوع 63 · متخصص 10."
 }
