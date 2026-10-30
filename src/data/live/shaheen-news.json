@@ -1,12 +1,12 @@
 {
  "version": 1,
- "updatedAt": "2026-10-29T03:44:36.613Z",
- "nextUpdateAt": "2026-10-29T15:44:36.613Z",
+ "updatedAt": "2026-10-30T03:45:24.355Z",
+ "nextUpdateAt": "2026-10-30T15:45:24.355Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تشهد الساحة العطرية حراكاً لافتاً بتوسّع تصدير خشب العود الهندي نحو دبي وتنافس استثماري عالمي حول دور النيش مثل Parfums de Marly. كما تبرز إطلاقات جديدة مميزة من دور كبرى مثل Hermès وBurberry مع استمرار إقبال دور التجميل الاستهلاكية كـ Dove على توظيف روائحها الأيقونية في صورة عطور رسمية. ويعكس زخم المعارض والابتكارات في غراس وشنغهاي تحولاً مستمراً نحو تجارب حسية ومعايير تصنيع أكثر تطوراً وتنوعاً.",
-  "en": "The fragrance arena is marked by strategic shifts, including Assam's agarwood expansion into Dubai and high-profile private equity interest in niche house Parfums de Marly. Concurrently, major launches from Hermès and Burberry Prorsum highlight luxury creativity, while Dove bottles its iconic functional scent. Global exhibitions in Shanghai and developments in Grasse underscore continuous olfactive innovation and experiential retail."
+  "ar": "تشهد صناعة العطور صفقات استثمارية وخططاً توسعية كبرى تتصدرها أنباء بيع دار Parfums de Marly وطموحات مجموعة Puig لعام 2032. تزامناً مع ذلك، أطلقت دور عالمية مثل Burberry مجموعات فاخرة جديدة، وتواصل عطور النيش والابتكارات العطرية في الشرق الأوسط نموها المتسارع. كما تبرز المعارض الإقليمية وتطبيقات تجزئة العطور دور الثقافة والتقنية في إعادة تشكيل تفضيلات المستهلكين.",
+  "en": "The fragrance industry is witnessing major business moves, led by Advent's potential sale of Parfums de Marly and Puig's ambitious 2032 growth roadmap. Concurrently, luxury fashion houses like Burberry launched high-end collections, while niche scents and Middle Eastern perfumery continue to shape global trends. Regional expos and mobile decant retail tech further underscore the intersection of culture and digital fragrance discovery."
  },
  "sources": [
   {
@@ -14,16 +14,48 @@
    "count": 7
   },
   {
-   "name": "Premium Beauty News",
-   "count": 3
-  },
-  {
-   "name": "Vietnam.vn",
-   "count": 3
-  },
-  {
    "name": "WWD",
+   "count": 3
+  },
+  {
+   "name": "Cosmetics Business",
    "count": 2
+  },
+  {
+   "name": "Premium Beauty News",
+   "count": 2
+  },
+  {
+   "name": "AKM.RU",
+   "count": 1
+  },
+  {
+   "name": "Khaleej Times",
+   "count": 1
+  },
+  {
+   "name": "openPR.com",
+   "count": 1
+  },
+  {
+   "name": "The National Law Review",
+   "count": 1
+  },
+  {
+   "name": "العيون الآن",
+   "count": 1
+  },
+  {
+   "name": "L'Usine Nouvelle",
+   "count": 1
+  },
+  {
+   "name": "جـريـدة الوطن",
+   "count": 1
+  },
+  {
+   "name": "Gala",
+   "count": 1
   },
   {
    "name": "Social News XYZ",
@@ -35,10 +67,6 @@
   },
   {
    "name": "Numéro Magazine",
-   "count": 1
-  },
-  {
-   "name": "Cosmetics Business",
    "count": 1
   },
   {
@@ -60,33 +88,339 @@
   {
    "name": "Cosmopolitan",
    "count": 1
-  },
-  {
-   "name": "IMAGE.ie",
-   "count": 1
-  },
-  {
-   "name": "مجلة سيدتي",
-   "count": 1
-  },
-  {
-   "name": "صحيفة درة الالكترونية",
-   "count": 1
-  },
-  {
-   "name": "صحيفة الكأس الرياضية",
-   "count": 1
-  },
-  {
-   "name": "Global Cosmetics News",
-   "count": 1
-  },
-  {
-   "name": "Layalina Privee",
-   "count": 1
   }
  ],
  "items": [
+  {
+   "id": "nehnuwi",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQUmVMaEZ6Uzh4bWV0TzV3Tk5kcmtKeHZEVjJ5YWJ4WDVXaEpsT3NSODFNZFJMSG5DSDBMQkJsbTE3ZG9IbmJIMzFPaDJiSVhQRTFYOEJGcDVSN0lnZjZuUV9XT25RQW1zTHdSQWdtVzRVdmRNY2J2Q2VFU0o2R3FieXFVVkh6VlExVTI5WUNfd1pjSzNKNHc?oc=5",
+   "source": "AKM.RU",
+   "publishedAt": "2026-10-29T22:59:31.000Z",
+   "original": "Advent may sell French brand Parfums de Marly for $2.23 billion",
+   "lang": "en",
+   "category": "market",
+   "importance": 5,
+   "title": {
+    "ar": "صندوق Advent يدرس بيع دار Parfums de Marly بقيمة تقارب 2.23 مليار دولار",
+    "en": "Advent may sell French brand Parfums de Marly for $2.23 billion"
+   },
+   "summary": {
+    "ar": "تدرس شركة الاستثمار المالي Advent International بيع دار العطور الفرنسية الفاخرة Parfums de Marly في صفقة قد تصل قيمتها إلى 2.23 مليار دولار. تعكس هذه الخطوة الاهتمام الاستثماري الهائل بقطاع عطور النيش الراقية.",
+    "en": "Private equity firm Advent International is considering the sale of French luxury fragrance house Parfums de Marly for an estimated valuation of $2.23 billion, reflecting strong investor appetite for niche perfumery."
+   },
+   "note": {
+    "ar": "هذه الصفقات الضخمة توضح كيف تحولت عطور النيش من صناعة نخبوية محدودة إلى ركيزة استثمارية رئيسية تجذب كبرى الصناديق العالمية.",
+    "en": "هذه الصفقات الضخمة توضح كيف تحولت عطور النيش من صناعة نخبوية محدودة إلى ركيزة استثمارية رئيسية تجذب كبرى الصناديق العالمية."
+   }
+  },
+  {
+   "id": "n1yle0x9",
+   "url": "https://cosmeticsbusiness.com/puig-plans-to-become-an-eight-billion-plus-beauty-company",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-29T12:22:00.000Z",
+   "original": "Puig CEO unveils plan to become an €8 billion-plus beauty company by 2032",
+   "lang": "en",
+   "category": "market",
+   "importance": 5,
+   "title": {
+    "ar": "مجموعة Puig تكشف عن خطة استراتيجية لتجاوز 8 مليارات يورو بحلول 2032",
+    "en": "Puig CEO unveils plan to become an €8 billion-plus beauty company by 2032"
+   },
+   "summary": {
+    "ar": "أعلن الرئيس التنفيذي لمجموعة Puig عن رؤية 2032 الرامية لتخطي إيرادات 8 مليارات يورو سنوياً عبر تعزيز محفظة عطور البرستيج والنيش بجانب مستحضرات العناية والتجميل.",
+    "en": "Puig CEO Jose Manuel Albesa outlined the 'Vision 2032' plan to exceed €8 billion in net revenues, doubling down on prestige and niche fragrances alongside dermocosmetics."
+   },
+   "note": {
+    "ar": "تركيز المجموعات الكبرى على مضاعفة حصتها في عطور النيش يؤكد أن المستهلك أصبح يبحث عن التفرد والجودة العالية أكثر من العطور التجارية المألوفة.",
+    "en": "تركيز المجموعات الكبرى على مضاعفة حصتها في عطور النيش يؤكد أن المستهلك أصبح يبحث عن التفرد والجودة العالية أكثر من العطور التجارية المألوفة."
+   }
+  },
+  {
+   "id": "nnw0phn",
+   "url": "https://nstperfume.com/2026/10/29/burberry-prorsum-collection-new-perfumes/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-29T14:34:23.000Z",
+   "original": "Burberry Prorsum Collection ~ new perfumes",
+   "lang": "en",
+   "category": "launch",
+   "importance": 4,
+   "title": {
+    "ar": "دار Burberry تطلق مجموعة العطور الفاخرة Prorsum Collection",
+    "en": "Burberry launches the Prorsum Collection with eight luxury fragrances"
+   },
+   "summary": {
+    "ar": "طرحت دار الأزياء البريطانية Burberry تشكيلة عطور جديدة راقية تضم ثمانية إصدارات من بينها Cashmere Embrace وGarden Rain وKnight.",
+    "en": "Burberry has launched the Prorsum Collection, introducing eight new luxury perfumes including Cashmere Embrace, Garden Rain, and Knight."
+   },
+   "note": {
+    "ar": "تحرص الدور التقليدية على تقديم خطوط حصرية (Private Collections) لمنافسة دور النيش وتلبية أذواق الباحثين عن نوتات خامات متميزة كالكشمير والأقمشة الفاخرة.",
+    "en": "تحرص الدور التقليدية على تقديم خطوط حصرية (Private Collections) لمنافسة دور النيش وتلبية أذواق الباحثين عن نوتات خامات متميزة كالكشمير والأقمشة الفاخرة."
+   }
+  },
+  {
+   "id": "n10xkocb",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQRXB0YnVtU29HdnhybjMwbWh3c2o5MFdUUWhZRndwOVA4RFhac0Zodnhob3BkeEdxcXFaTkVKbzJmZE9hRXZKMHFCQWxSZ1dSTG9fQ3FsU2ZVRHlrLWZHbTdYZmRMeUxzZXp3UjhaengyVTJoUUxIS0Mzb2IxQzhSbXpFOXdzQWo4WWVtMnh5bDRLdDNzckRxS0ZaVXJwdG04SnJfbzUwaW9uRXQ1SkdtVw?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-30T01:00:46.000Z",
+   "original": "Tricia Butler Named Board Chair of The Fragrance Foundation",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "تعيين تريشيا باتلر رئيسة لمجلس إدارة The Fragrance Foundation",
+    "en": "Tricia Butler Named Board Chair of The Fragrance Foundation"
+   },
+   "summary": {
+    "ar": "أعلنت منظمة The Fragrance Foundation تعيين تريشيا باتلر في منصب رئيس مجلس الإدارة لقيادة جهود المنظمة الداعمة لقطاع العطور عالمياً.",
+    "en": "The Fragrance Foundation announced the appointment of Tricia Butler as its new Board Chair to lead the organization's initiatives across the fragrance industry."
+   },
+   "note": {
+    "ar": "التغيرات القيادية في المؤسسات العطرية الكبرى تسهم في صياغة برامج التدريب ودعم المواهب وتوسيع معايير الاستدامة والشفافية.",
+    "en": "التغيرات القيادية في المؤسسات العطرية الكبرى تسهم في صياغة برامج التدريب ودعم المواهب وتوسيع معايير الاستدامة والشفافية."
+   }
+  },
+  {
+   "id": "n1tikky6",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQem5aUXIyQ3ZNODdjTGNFZlpOTmZOZi1NNmdNQkR0SlVuNmgxQ1JhMUtNNUp6WEdBYVNObzZ1NTZ0RkZTZlhfQlo0UlozekN1UDM1cjY5R0wxbnhEbnpwcmh5TDgzN2hqbGxfSVFhVmVoUXh6UnV0U09URjBkb3A5SHFBSFJBRmlPZTYtZncxWHh5b0VGWkkzQ3RXWWdCV1J0TWxaNzFnNFXSAbABQVVfeXFMUHVhOWtLZVh2eVhrdXVaWThaU1FfNGd1OElGTERjMEoyZjFLRVVxRVhaUm1GVW52Tmx3UHhhbW5mU2V1TjFTWm9uSnotMmRUaXF2TkdWV1B0R0xVVWNCUEhTUi1iOHdXS3llejNndXQ4ZmRfd09UMVZvZnVRUlBhN1UxSk0yMkJ6VHF6Z19tS0o3ZlpVb1FwU2Q5ZF9jdVYtNThiZzhXVnU3ZVNHdWZjQ2I?oc=5",
+   "source": "Khaleej Times",
+   "publishedAt": "2026-10-29T07:00:00.000Z",
+   "original": "How the Middle East is reshaping global fragrance",
+   "lang": "en",
+   "category": "culture",
+   "importance": 4,
+   "title": {
+    "ar": "الشرق الأوسط يواصل إعادة رسم ملامح وخريطة صناعة العطور العالمية",
+    "en": "How the Middle East is reshaping global fragrance"
+   },
+   "summary": {
+    "ar": "يسلط التقرير الضوء على التأثير العميق لتقاليد العطور الشرقية، واستخدام خامات كالعود والبخور والورد، على اتجاهات الدور الغربية الكبرى وصيغ العطور الحديثة.",
+    "en": "The report highlights how Middle Eastern perfumery traditions, ingredients, and olfactory culture continue to deeply influence global perfume trends and Western brands."
+   },
+   "note": {
+    "ar": "ثقافة التعطير والطبقات العطرية (Layering) في منطقتنا تحولت إلى مصدر إلهام عالمي ومعيار للأداء القوي والثبات.",
+    "en": "ثقافة التعطير والطبقات العطرية (Layering) في منطقتنا تحولت إلى مصدر إلهام عالمي ومعيار للأداء القوي والثبات."
+   }
+  },
+  {
+   "id": "n15yykly",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPa2MtQXExVElDekhSeDB3eXlJV1NiaUlCaDc5Z0xYSkI5S0tNYzR1NnhHcl9iblNWY0hQdE96RlhyY1NTTWRLekp6ckFEMklhNExyaWtOLXpESzV0bWtLUWdYbjVWXzlUSTFtVktId2JpbW1PUFFGQ1g1NE9PZG1yUkxHLWdudEtCdVl6VVBHWGliRk10Vi1GZzlCbjV4OXM?oc=5",
+   "source": "openPR.com",
+   "publishedAt": "2026-10-29T07:20:29.000Z",
+   "original": "Niche Perfume Market to Reach USD 6.52 Billion by 2033 at 11.1%",
+   "lang": "en",
+   "category": "market",
+   "importance": 4,
+   "title": {
+    "ar": "توقعات ببلوغ سوق عطور النيش 6.52 مليار دولار بحلول عام 2033",
+    "en": "Niche Perfume Market to Reach USD 6.52 Billion by 2033"
+   },
+   "summary": {
+    "ar": "تشير دراسة سوقية حديثة إلى أن قطاع عطور النيش يسير نحو تحقيق معدل نمو سنوي مركب يبلغ 11.1% ليصل حجمه إلى 6.52 مليار دولار بحلول 2033.",
+    "en": "Market analysis projects the niche perfume sector will expand at a 11.1% CAGR, reaching an estimated $6.52 billion by 2033."
+   },
+   "note": {
+    "ar": "النمو المتسارع لعطور النيش يعكس ابتعاد الجمهور عن المنتجات الجماهيرية وتفضيلهم للتركيبات الفريدة والمكونات النادرة.",
+    "en": "النمو المتسارع لعطور النيش يعكس ابتعاد الجمهور عن المنتجات الجماهيرية وتفضيلهم للتركيبات الفريدة والمكونات النادرة."
+   }
+  },
+  {
+   "id": "n10djdzc",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNQWI2WlJzRHdQcjlKcTB5QmFzaERsbEE2RHFhTE5XWFlqLWpsVlBTYzd0bk5hZ2hVQTAzMmZCMEstMUU5YWlIOXBuWUlsUFRadzhpR1hjVnVHdmZJVl9IYzcxRDZiUTFfQnJnMGFoYjliWS1GUmR5Q0RCRnRLcm12R096UnR5b0VTZGtSY0R6RDY?oc=5",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-10-29T00:49:34.000Z",
+   "original": "CPL Aromas explored “Another Way” in contemporary perfumery at Notes Shanghai 2026AW",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 3,
+   "title": {
+    "ar": "دار CPL Aromas تستعرض آفاقاً معاصرة في صناعة العطور بمعرض شنغهاي",
+    "en": "CPL Aromas explored “Another Way” in contemporary perfumery at Notes Shanghai"
+   },
+   "summary": {
+    "ar": "شاركت شركة بيوت النكهات والعطور CPL Aromas في فعاليات معرض Notes Shanghai لتقديم مقاربات عطرية جديدة تجمع بين الابتكار التقني والخامات المستدامة.",
+    "en": "Fragrance house CPL Aromas showcased alternative contemporary perfumery concepts emphasizing sustainability and raw material innovation at Notes Shanghai."
+   },
+   "note": {
+    "ar": "معارض المكونات العطرية توفر نظرة مبكرة على التقنيات الجديدة وجزيئات الرائحة التي ستعتمدها كبرى الدور في إصداراتها القادمة.",
+    "en": "معارض المكونات العطرية توفر نظرة مبكرة على التقنيات الجديدة وجزيئات الرائحة التي ستعتمدها كبرى الدور في إصداراتها القادمة."
+   }
+  },
+  {
+   "id": "n3ocq9b",
+   "url": "https://nstperfume.com/2026/10/29/the-daily-lemming-1969/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-29T14:47:31.000Z",
+   "original": "The daily lemming",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "دار L'Occitane تطلق عطرين لموسم الأعياد بنفحات خشبية وحلوة",
+    "en": "L'Occitane launches holiday limited edition fragrances: Veillée Pralinée and Nuit en Pinède"
+   },
+   "summary": {
+    "ar": "طرحت L'Occitane عطري Veillée Pralinée القائم على اللوز المحلى وخشب الصندل، وNuit en Pinède بنفحات غابات الصنوبر الشتوية.",
+    "en": "L'Occitane introduced two limited holiday releases: Veillée Pralinée blending praline and sandalwood, and Nuit en Pinède featuring crisp pine notes."
+   },
+   "note": {
+    "ar": "العطور الشتوية الغورماند الممزوجة بالأخشاب الدافئة مثل الصندل تقدم خياراً كلاسيكياً مريحاً لأجواء الطقس البارد.",
+    "en": "العطور الشتوية الغورماند الممزوجة بالأخشاب الدافئة مثل الصندل تقدم خياراً كلاسيكياً مريحاً لأجواء الطقس البارد."
+   }
+  },
+  {
+   "id": "ncgt08y",
+   "url": "https://www.premiumbeautynews.com/en/brazil-brings-six-ingredient,28430",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-10-28T18:11:34.000Z",
+   "original": "Brazil brings six ingredient suppliers to In cosmetics Asia 2026",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 3,
+   "title": {
+    "ar": "ست شركات برازيلية لمكونات الجمال والعطور تشارك في معرض In-Cosmetics Asia",
+    "en": "Brazil brings six ingredient suppliers to In-cosmetics Asia 2026"
+   },
+   "summary": {
+    "ar": "تنظم البرازيل مشاركة ست شركات متخصصة في الخامات الطبيعية والمكونات التجميلية في معرض in-cosmetics Asia ببانكوك لتعزيز وصول منتجاتها إلى السوق الآسيوي.",
+    "en": "Six Brazilian ingredient companies specializing in raw personal care materials are set to participate in the in-cosmetics Asia expo in Bangkok."
+   },
+   "note": {
+    "ar": "التنوع الحيوي لأمريكا الجنوبية يعد رافداً غنياً بمستخلصات الزيوت العطرية والمكونات الطبيعية المبتكرة لمصممي العطور.",
+    "en": "التنوع الحيوي لأمريكا الجنوبية يعد رافداً غنياً بمستخلصات الزيوت العطرية والمكونات الطبيعية المبتكرة لمصممي العطور."
+   }
+  },
+  {
+   "id": "njatxv3",
+   "url": "https://nstperfume.com/2026/10/29/scent-bar-dallas/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-29T13:33:59.000Z",
+   "original": "Scent Bar Dallas",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "متجر Luckyscent يفتتح فرعاً جديداً لعطور النيش في دالاس",
+    "en": "Luckyscent on track to open Scent Bar Dallas in Design District"
+   },
+   "summary": {
+    "ar": "أعلنت منصة Luckyscent المتخصصة في عطور النيش اعتزامها افتتاح متجر Scent Bar في حي التصميم بمدينة دالاس لتوسيع تجربة الشراء الحية.",
+    "en": "Niche fragrance retailer Luckyscent confirmed plans to open a new 'Scent Bar Dallas' brick-and-mortar boutique in the local Design District."
+   },
+   "note": {
+    "ar": "المتاجر الملموسة المتخصصة في عطور النيش تتيح للمستهلكين تجربة المكونات قبل الشراء واكتشاف دور مستقلة نادراً ما تتاح في المتاجر الكبرى.",
+    "en": "المتاجر الملموسة المتخصصة في عطور النيش تتيح للمستهلكين تجربة المكونات قبل الشراء واكتشاف دور مستقلة نادراً ما تتاح في المتاجر الكبرى."
+   }
+  },
+  {
+   "id": "n1ey0dd",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQODM1bjVHYmtDVmtOMjZhOU9OcjdGRnVXTmRLZFAtUVZtcVlZZDdPcGhkeTVRWVZkdmhmcmRIVWoySUd6T29VZGJ2OVFJQUpGdWJjWVpadEMweURyREdVbVl4X2ZSUUZpakdwN3dZeXhzX3dFOTg5V2xNWThQblFJb1RpTUNMNDZXeE5JUXV1X1dKWnFLTVVVWVRtUG5OM0hFNUh0Rg?oc=5",
+   "source": "The National Law Review",
+   "publishedAt": "2026-10-29T14:04:01.000Z",
+   "original": "Scento Launches Perfume App on iPhone and Android With 1,000+ Fragrances",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "منصة Scento تطلق تطبيقاً ذكياً يضم أكثر من 1000 عطر",
+    "en": "Scento Launches Perfume App on iOS and Android With 1,000+ Fragrances"
+   },
+   "summary": {
+    "ar": "أطلقت Scento تطبيقاً مخصصاً للهواتف يتيح للمستخدمين استكشاف واختيار عينات العطور الأصلية (Decants) من بين تشكيلة واسعة تتجاوز ألف عطر.",
+    "en": "Fragrance sampling platform Scento launched dedicated mobile apps offering access to over 1,000 scents through decant sizing."
+   },
+   "note": {
+    "ar": "ثقافة اقتناء العينات والتجربة المصغرة (Decants) تساعد عشاق العطور على تجربة خامات ونوتات متعددة بتكلفة معقولة قبل الالتزام بالزجاجة الكاملة.",
+    "en": "ثقافة اقتناء العينات والتجربة المصغرة (Decants) تساعد عشاق العطور على تجربة خامات ونوتات متعددة بتكلفة معقولة قبل الالتزام بالزجاجة الكاملة."
+   }
+  },
+  {
+   "id": "n101p6q5",
+   "url": "https://news.google.com/rss/articles/CBMitAJBVV95cUxPVmVwLW1QLXE5b0FDLU5xQmY0aHRsVnRMaFV0RTdSOGNUTks3ZW5kT3JldDdRNGlWZkFtcWdUN3hsRU9lOWFCM3NRRU1HLS05VHZtMF8xRDZIVV9ieGp6YU9UYWZqd1dsZmw5N2hYRi1Xa2w1eTZYaElvMUNpZGpWSlB5RWZ2V3ZMekxiVVZieHhzYi1URGJqVjdMc2V2ZGVYYmZPVGsyWE5ucWxTRFdOakVtSVFjYk42Q0p0TWF0cmZLOEpQOFFuYkVEcTBaSTJlYmJTWUtFZjFUSkg5LWJXLTJhSDBaTDNFMWdLVjVWYWtEYXpvZGpHZXIwZVI0LXctV0VqZFJPcWdQNzFKa08wZkgzX2U3UVg5UHQwMlB4eDZhZUZvVEFwRUlqbFNyM2NhME45VA?oc=5",
+   "source": "العيون الآن",
+   "publishedAt": "2026-10-29T13:30:15.000Z",
+   "original": "العيون...جمعية ''مدينتي'' تفتتح الدورة الثانية لمعرض العطور بتكريم كفاءات نسائية وتعزيز ثقافة الاعتراف",
+   "lang": "ar",
+   "category": "events",
+   "importance": 3,
+   "title": {
+    "ar": "افتتاح الدورة الثانية لمعرض العطور بمدينة العيون",
+    "en": "Second Edition of the Perfume Fair opens in Laayoune"
+   },
+   "summary": {
+    "ar": "شهدت مدينة العيون افتتاح فعاليات معرض العطور في نسخته الثانية بتنظيم جمعية 'مدينتي' للتعريف بالمنتجات العطرية وتكريم الكفاءات النسائية في المجال.",
+    "en": "The second edition of the Perfume Fair opened in Laayoune, organized by the 'Madinati' association to showcase fragrances and honor local talent."
+   },
+   "note": {
+    "ar": "الفعاليات والمعارض المحلية في العالم العربي تعزز ثقافة العطور الحرفية وتدعم رواد الأعمال وأصحاب العلامات الصاعدة.",
+    "en": "الفعاليات والمعارض المحلية في العالم العربي تعزز ثقافة العطور الحرفية وتدعم رواد الأعمال وأصحاب العلامات الصاعدة."
+   }
+  },
+  {
+   "id": "nagrm30",
+   "url": "https://news.google.com/rss/articles/CBMimAJBVV95cUxOLUszOXUwbU9EUW1UXzZTLTRndjI2aWRuQXBZY05hRHVnUGtiTjlxRWYtTjFWbjAtdGp0SGFsek1ORnVjLXY4R2wyUldZUWpGNG44OGo4aFlZZktmazJsd25vTkRkdldvd1lRSGl3ZlhydVhjUkhsc3VydDRoaTlGSmpCbDZsNk5NZEhCUXhMQnZuamVFdnNKQ1dPaDRPS3UyZnAwVi1fRERGVUtIemdKRXNCZXdpOFRLVUtTWmJyeko5elFtSUUtcUVESkFPRXZlT0lUZHYxYkZXSzJ2blpQT1c4aUIxMGFDZU9mTU96bDFlZnUtemNDczVJenVCcENvdVRkWlpyWUROWTdVSlZiS0JQd0RwSjFh?oc=5",
+   "source": "L'Usine Nouvelle",
+   "publishedAt": "2026-10-29T08:30:00.000Z",
+   "original": "Senteurs inédites, nouveaux formats, éco-conception... En Provence, l’innovation dynamise la parfumerie",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "الابتكار والتصميم البيئي يقودان ديناميكية صناعة العطور في بروفانس",
+    "en": "Novel scents and eco-design drive perfume innovation in Provence"
+   },
+   "summary": {
+    "ar": "تشهد منطقة بروفانس الفرنسية حراكاً صناعياً يركز على الابتكار في استخلاص الروائح وابتكار عبوات صديقة للبيئة تماشياً مع متطلبات الاستدامة الحديثة.",
+    "en": "In Provence, perfumers and producers are revitalizing fragrance development through novel accords, alternative formats, and eco-friendly packaging."
+   },
+   "note": {
+    "ar": "معايير الاستدامة أصبحت عاملاً حاسماً في تصميم عبوات العطور ومواد التغليف وطرق استخلاص الزيوت النباتية.",
+    "en": "معايير الاستدامة أصبحت عاملاً حاسماً في تصميم عبوات العطور ومواد التغليف وطرق استخلاص الزيوت النباتية."
+   }
+  },
+  {
+   "id": "n6v3g8w",
+   "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE1Pb201d2QzMC1fR2lQUlNYbHdvRWtHcmdQeGhZZVRSdEc1VUMwdWNiNGlYdFY5ZHlDRklYOHB5LXc2aFViVGc5c0EyNHlCSFM4WDB5emVPMDdLbU5pa19TeTRyangxMS13dkpRNk9iQjlzQ09hMGNBajU1Vjg?oc=5",
+   "source": "جـريـدة الوطن",
+   "publishedAt": "2026-10-28T18:19:00.000Z",
+   "original": "معرض العطور يواصل استقطاب آلاف الزوار",
+   "lang": "ar",
+   "category": "events",
+   "importance": 3,
+   "title": {
+    "ar": "معرض العطور يستقطب آلاف الزوار والمهتمين بالصناعة",
+    "en": "Perfume Exhibition continues to attract thousands of visitors"
+   },
+   "summary": {
+    "ar": "واصل معرض العطور استقطاب إقبال واسع من الجمهور والمهتمين بصناعة العطور والشركات العارضة في المنطقة لعرض أحدث الابتكارات العطرية.",
+    "en": "The regional perfume exhibition continues to draw thousands of enthusiasts and industry professionals exploring the latest olfactory creations."
+   },
+   "note": {
+    "ar": "الإقبال الكثيف على معارض العطور يعكس شغف الجمهور العربي باقتناء أحدث التوليفات والعود والخلطات الحصرية.",
+    "en": "الإقبال الكثيف على معارض العطور يعكس شغف الجمهور العربي باقتناء أحدث التوليفات والعود والخلطات الحصرية."
+   }
+  },
+  {
+   "id": "n1nufsbl",
+   "url": "https://news.google.com/rss/articles/CBMihAJBVV95cUxQUFYzczFBOFNtSXRIR1hlY1d4czVobU5YT0dyNGpkLXVQNkV3cWd3LTRydEpLTlZUdFFSTzAyZXpfYnR5TG9OaVVnbktHRU9HUkx6YUNib3RGZEdWU2M5ZXE5YzRQVjdXSnRtSVZ4SVJva1VJcExTZzdmZ2MxWjhrbkRDcXIxZnRFaVc0dk1BVjhfYmQ2OHRMVlNyWHUtaUQyejlyMmJ3LW5LeENoVWpJRUFoU2Z6aDU1UnlJbWktdVJvMHhNb3BOYXJYaS1OU1ZURWxqY1RPcnNkMnc4TGk0cHZqNzdXUVZ1NjFtX0JKYUYxTnp2NGRhTTFRWGhwM0Q3WHRCQQ?oc=5",
+   "source": "Gala",
+   "publishedAt": "2026-10-29T15:52:44.000Z",
+   "original": "Heavy Cream de Phlur, Crème Brûlante de Fascent… pourquoi les parfums inspirés de desserts gourmands sont-ils si populaires ?",
+   "lang": "fr",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "تصاعد شعبية العطور المستوحاة من الحلويات والحلل الغورماند الفاخرة",
+    "en": "Gourmand dessert-inspired fragrances surge in popularity"
+   },
+   "summary": {
+    "ar": "يحلل التقرير أسباب الإقبال المتزايد على العطور التي تستحضر نوتات الحلويات والكريمة والروائح الغورماند، مثل إصدارات Phlur وFascent.",
+    "en": "A feature detailing why gourmand perfumes inspired by creamy desserts are dominating consumer preferences and indie brand launches."
+   },
+   "note": {
+    "ar": "العطور الغورماند تمنح مرتديها شعوراً بالدفء والراحة النفسية، وصياغتها تتطلب موازنة السكر مع النوتات الخشبية والراتنجية لتجنب الإفراط.",
+    "en": "العطور الغورماند تمنح مرتديها شعوراً بالدفء والراحة النفسية، وصياغتها تتطلب موازنة السكر مع النوتات الخشبية والراتنجية لتجنب الإفراط."
+   }
+  },
   {
    "id": "nhbf2af",
    "url": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxOeHVxc1pmbElqMWdPZlFXcjlybVZuR3BoU2dlOE1LQmNTdFp4RVhYV2dFdlRnLXZvb202X0VZcWJPd0FKa3Y4R21qQ2V0VFpyTGd4TjFhLXg0MmxvbHRPVS1vLUdaV3ZObndkWEczQXZNTEtRU21UZGlSRURwNFBoeHozVjdhbjJqNXNGazNzOXRZT1BXZHBMSUZuMEVUQjdkc1M3cmx5WnFGTG9rOWg5MUZSMkxEU09iMjFici1zOTRhd1lXYkE4SUtmRUFHMzFmTTIyOXVCTjhiTmNiVEYxX2stcUZ0QmFFWExxUDlwek1SSkxEbE5zaENOZ2ltQ3cwY2YtQWxzbDhBbDN4VzdZdmUyUndrekpxVkZ4Vm1JSjlBVmQ2d2kxVGRoZlYtSXl4SWd1YXhaUkxmWGvSAbsCQVVfeXFMTnh1cXNaZmxJajFnT2ZRV3I5cm1WbkdwaFNnZThNS0JjU3RaeEVYWFdnRXZUZy12b29tNl9FWXFiT3dBSmt2OEdtakNldFRackxneE4xYS14NDJsb2x0T1Utby1HWld2Tm53ZFhHM0F2TUxLUVNtVGRpUkVEcDRQaHh6M1Y3YW4yajVzRmszczl0WU9QV2RwTElGbjBFVEI3ZHNTN3JseVpxRkxvazloOTFGUjJMRFNPYjIxYnItczk0YXdZV2JBOElLZkVBRzMxZk0yMjl1Qk44Yk5jYlRGMV9rLXFGdEJhRVhMcVA5cHpNUkpMRGxOc2hDTmdpbUN3MGNmLUFsc2w4QWwzeFc3WXZlMlJ3a3pKcVZGeFZtSUo5QVZkNndpMVRkaGZWLUl5eElndWF4WlJMZlhr?oc=5",
@@ -173,28 +507,6 @@
    "note": {
     "ar": "استخدام نوتات غير تقليدية كالجينسنغ والجنكة يعكس رغبة المصممين في ابتكار أبعاد ترابية وعشبية جديدة بعيداً عن التوليفات النمطية المكررة.",
     "en": "Exploring non-traditional notes like ginseng highlights the industry shift toward unconventional, grounding botanical profiles."
-   }
-  },
-  {
-   "id": "n10djdzc",
-   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNQWI2WlJzRHdQcjlKcTB5QmFzaERsbEE2RHFhTE5XWFlqLWpsVlBTYzd0bk5hZ2hVQTAzMmZCMEstMUU5YWlIOXBuWUlsUFRadzhpR1hjVnVHdmZJVl9IYzcxRDZiUTFfQnJnMGFoYjliWS1GUmR5Q0RCRnRLcm12R096UnR5b0VTZGtSY0R6RDY?oc=5",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-10-29T00:49:34.000Z",
-   "original": "CPL Aromas explored “Another Way” in contemporary perfumery at Notes Shanghai 2026AW",
-   "lang": "en",
-   "category": "industry",
-   "importance": 4,
-   "title": {
-    "ar": "شركة CPL Aromas تستعرض آفاقاً جديدة للعطارة المعاصرة في معرض Notes Shanghai",
-    "en": "CPL Aromas Explores Contemporary Directions at Notes Shanghai 2026AW"
-   },
-   "summary": {
-    "ar": "شاركت بيت تركيب العطور العالمي CPL Aromas برؤيتها المبتكرة لمستقبل صناعة العطور خلال فعاليات معرض Notes في شنغهاي لخريف وشتاء 2026.",
-    "en": "Fragrance house CPL Aromas presented progressive contemporary perfumery concepts at the Notes Shanghai 2026AW showcase."
-   },
-   "note": {
-    "ar": "بيوت التصنيع الكبرى تركز بشكل متزايد على السوق الآسيوي، مما ينعكس على ابتكار جزيئات ونوتات خفيفة وأنيقة تتناسب مع الذائقة الصاعدة هناك.",
-    "en": "Major fragrance composition houses are tailoring modern aroma-chemicals and formulations to expanding Asian market sensibilities."
    }
   },
   {
@@ -437,314 +749,6 @@
    "note": {
     "ar": "تركيز العطر العالي يجعله خياراً ممتازاً لمحبي الثبات الفائق والأداء القوي في فصل الشتاء.",
     "en": "High concentration makes this an excellent choice for those seeking superior longevity and performance."
-   }
-  },
-  {
-   "id": "n1cqmia4",
-   "url": "https://nstperfume.com/2026/10/28/wednesday-scent-of-the-day-10-28-2/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-28T14:23:07.000Z",
-   "original": "Wednesday scent of the day 10/28",
-   "lang": "en",
-   "category": "market",
-   "importance": 5,
-   "title": {
-    "ar": "دخول العود الأسامي من ولاية أسام الهندية إلى سوق دبي",
-    "en": "Assam: Agarwood enters Dubai market; CM Sarma highlights export push"
-   },
-   "summary": {
-    "ar": "شهد سوق دبي دخول خشب العود القادم من ولاية أسام الهندية، في خطوة سلط رئيس وزراء الولاية الضوء عليها لدعم الصادرات.",
-    "en": "Agarwood from Assam has entered the Dubai market, with the state's Chief Minister highlighting the ongoing export push."
-   },
-   "note": {
-    "ar": "خبر مهم جداً لعشاق العود الطبيعي، حيث يعزز تدفق أجود أنواع المواد الخام نحو مركز العطور العالمي في دبي.",
-    "en": "Crucial for natural oud enthusiasts as it boosts the flow of premium raw materials to Dubai's perfume hub."
-   }
-  },
-  {
-   "id": "n3x8oid",
-   "url": "https://nstperfume.com/2026/10/28/airy-and-modern-without-being-clinical/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-28T13:45:13.000Z",
-   "original": "Airy and modern without being clinical",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Shalini Parfum تطلق عطر Vanille Rêve بالتعاون مع العطار موريس روجيل",
-    "en": "Vanille Reve by Shalini Parfum launched in collaboration with Maurice Roucel"
-   },
-   "summary": {
-    "ar": "فاز عطر Vanille Rêve كالسادس في سلسلة التعاونات المستمرة بين المديرة الإبداعية شاليني كومار والعطار العالمي موريس روجيل.",
-    "en": "Vanille Rêve marks the sixth perfume in an ongoing collaboration between Creative Director Shalini Kumar and master perfumer Maurice Roucel."
-   },
-   "note": {
-    "ar": "تعاون يجمع بين الرؤية الفنية والخبرة العطرية العميقة، وهو محط اهتمام عشاق عطور الفانيليا النادرة.",
-    "en": "A collaboration uniting artistic vision and deep perfumery expertise, highly anticipated by vanilla lovers."
-   }
-  },
-  {
-   "id": "ndrnog9",
-   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQNDJhOHVoX2k4MUc0cVFrRENZaTY4NDItX3U5TEplY2lsQko4U0FyVkFTbklOa0Fkdy13MkxPS0d6Z2Z4SkN2ZFZnUVdXdVozb216Z2ZpV3hibF9acGJ2anVCbnB4THhYNzlldmNySG1ETFNFRHhhbEg4YVlWZ21tRVNQM3h5cXdZLXB1Vm9sX2R2VkczclRN?oc=5",
-   "source": "Vietnam.vn",
-   "publishedAt": "2026-10-28T12:34:21.000Z",
-   "original": "نظمت بلدية تشاو كوي حفلاً لتقديم البخور تخليداً لذكرى الجنرال الشهير ها خاك تشونغ.",
-   "lang": "ar",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Dove تقتحم سوق العطور الفاخرة بإطلاق عطر محدود الإصدار مستوحى من رائحة صابونها الشهير",
-    "en": "Dove enters fine fragrance market with limited-edition direct-to-consumer launch"
-   },
-   "summary": {
-    "ar": "أطلقت علامة Dove عطراً جديداً محدود الإصدار يجسد رائحة صابونها الأيقوني النظيف، مما خلق طلباً واسعاً وقائمة انتظار.",
-    "en": "Dove has launched a limited-edition fine fragrance capturing the scent of its iconic soap, generating high demand and waiting lists."
-   },
-   "note": {
-    "ar": "يعكس هذا الاتجاه رغبة المستهلكين في البحث عن روائح النظافة والبساطة المألوفة.",
-    "en": "Reflects the growing consumer appetite for clean, nostalgic, and comforting everyday scents."
-   }
-  },
-  {
-   "id": "nygd938",
-   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPaGRFMjdpX0VwZTRBdzNtMzN0bDZ0Y3JGRXI1V1BtM1ltMWxwUkx6WmxmQ0Zyc1JUWFhJeTN1RGNpSnlxV0FaUDZDR1FfeVMxbUlsSGg3b3Nqc3kwYmswYUFiSlQzQVA1OTN2YzM1WmhVZU9OV3p0RmE3WXY3a3hVc182RlhZSDZsZnktZUF1Q3dnMzBIS21uY1VpbzExb0VLNHRJMDRXU2NLNmR1aVRMb2phNDg0Qm5rZHdZ?oc=5",
-   "source": "Vietnam.vn",
-   "publishedAt": "2026-10-28T11:38:45.000Z",
-   "original": "قدمت نائبة سكرتير لجنة الحزب الإقليمية، كاو ثي هوا آن، البخور لإحياء ذكرى الشخصية الشهيرة لونغ فان تشان.",
-   "lang": "ar",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Memo Paris توسع مجموعتها بإطلاق عطر Cosmos الجديد",
-    "en": "Memo Paris Cosmos ~ new fragrance"
-   },
-   "summary": {
-    "ar": "أضافت دار العطور الفرنسية Memo عطراً جديداً إلى محفظتها يحمل اسم Cosmos.",
-    "en": "French niche line Memo has launched Cosmos, a new fragrance to its collection."
-   },
-   "note": {
-    "ar": "عطور Memo تتميز بطابع السفر والرحلات، مما يجعل هذا الإطلاق محط انتباه الباحثين عن العطور الشرقية والرحالية.",
-    "en": "Memo's travel-inspired DNA makes this new release exciting for adventure and exotic scent seekers."
-   }
-  },
-  {
-   "id": "n1pt1th3",
-   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOVGZfYWo1czZIM1huMVpKTENDeXpwRktkcFNXSmplWmYtMmQ4TGdDYzdwSkVHQ1FPUTZweHA0Vk95eFlJMHBtNjRnTXN4c2Ryejk4N3Z0ZzBpaFVha3lWb25pSnl1X094RVo5NjlOSUYwQmlkX2RNelU0TmI3QlB4ZmRWbUpKZzRfY3pzbzI4S3lCZzRaTlpzS3p5amZMNDByTnV0X3pQaENpTVo0dHJQSmt3?oc=5",
-   "source": "IMAGE.ie",
-   "publishedAt": "2026-10-28T11:32:50.000Z",
-   "original": "Irish beauty brand The Burren Perfumery reimagines one of its core fragrances",
-   "lang": "en",
-   "category": "industry",
-   "importance": 4,
-   "title": {
-    "ar": "باتريسيا دي نيكولاي: العطور ليست مجرد إرث بل حرية إبداعية",
-    "en": "For Guerlain Descendant Patricia de Nicolaï, Perfume Isn’t Just About Legacy — It’s About Freedom"
-   },
-   "summary": {
-    "ar": "أكدت صانعة العطور باتريسيا دي نيكولاي سحيلة عائلة جيرلان أن صناعة العطور تتجاوز حدود الإرث العائلي لتكون مساحة للحرية.",
-    "en": "Patricia de Nicolaï emphasizes that perfumery is fundamentally about creative freedom rather than just family legacy."
-   },
-   "note": {
-    "ar": "درس قيم لكل من يصمم عطره الخاص حول أهمية التحرر الإبداعي وتجاوز القوالب الجاهزة.",
-    "en": "Valuable insight for indie perfumers on prioritizing creative freedom over rigid traditions."
-   }
-  },
-  {
-   "id": "nblpvli",
-   "url": "https://news.google.com/rss/articles/CBMi2wNBVV95cUxPR1RXYU42NFQ1NFFFaE9xVFloSVByb0pwaG8tRnhkcmtSeDhZZW5tQ3FzZ2h4cGc4aEpNeUdoVXdWaG5hMi1XdHljbjhIUnJtd3NBY0FnSWQwaGNJbWl2cHgtcFJhLUJMckdvZ0dfTElVd0ZMb2pCVkw2SE56YXhHSlhjc05seTJYSlJkZGxncEhSVDYwN2RSN3h3cHNydDU4MlBtN19jNEs5YUdiVzVLQm12SloyaENzb1p4Sktmc3FraUZNY2ctSmlLZmlFQl9yMEFocGlOYnRyVU9DREVYaWdhODY0SzZmWDNpVWZXX2tFRXBkb0MtOEZwa09WdVhNZGxnOGRGeXlEODctZ0pvamdBNlZEMk5Od2h4bTFnSFR5Tm9Ea2RXQmNiYUxmczh1TkdaYWJOTzJDeFBGc3RWOXg2ZTRRa1pTR2RnVXBadVBmbmp3MlBIay1IRkJFX3FWUGc2XzVYdTk1aEhTY2VNa2Z3UVNnYUYtWm1TQVBXMmg4Q05zdmpJcncwZHVBaUZUMUt6d2JsYWZsQ2RkRFhSanNnTnpJZDFkVDVwUTZVUWljU2JOUnhXcE1GR1NLalRjUWFYNzB5SDBqS25TTkxZOVZtdlhTMHZjc3BZ?oc=5",
-   "source": "مجلة سيدتي",
-   "publishedAt": "2026-10-28T11:11:26.000Z",
-   "original": "في ثاني حفلات موسم الرياض.. جلسة مع أخطبوط العود عبادي الجوهر وناتاشا بهذا الموعد",
-   "lang": "ar",
-   "category": "market",
-   "importance": 3,
-   "title": {
-    "ar": "معرض العطور في الكويت يعود بخيارات أقوسع وقاعات جديدة",
-    "en": "Perfume Exhibition in Kuwait returns with more options and a new hall"
-   },
-   "summary": {
-    "ar": "افتتح معرض العطور فعالياته في الكويت متضمناً خيارات واسعة وقاعة جديدة لاستيعاب العلامات التجارية المتنوعة.",
-    "en": "The perfume exhibition in Kuwait opened with expanded options and a new hall to accommodate diverse brands."
-   },
-   "note": {
-    "ar": "يعكس المعرض ازدهار سوق العطور الخليجي وحجم الإقبال الجماهيري على الفعاليات المتخصصة.",
-    "en": "Reflects the booming GCC perfume market and high public engagement with specialized exhibitions."
-   }
-  },
-  {
-   "id": "n1fr686b",
-   "url": "https://news.google.com/rss/articles/CBMiO0FVX3lxTFBDVUNTOWFsX3FPWjFLVmI4T0xDZWNGV2JDUldZWGxqd2V6OE1VcGNnU25tSkQyMEJpTjE0?oc=5",
-   "source": "صحيفة درة الالكترونية",
-   "publishedAt": "2026-10-28T10:49:49.000Z",
-   "original": "روتانا برعاية هيئة الترفيه تفتتح اول الحفلات الخليجية في \"موسم الرياض7” بجلسة فنية مع أخطبوط العود عبادي الجوهر",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "موسم الرياض يجمع أخطبوط العود عبادي الجوهر وناتاشا في أولى الأمسيات",
-    "en": "Riyadh Season opens concerts with oud master Abadi Al Johar and Natasha"
-   },
-   "summary": {
-    "ar": "انطلقت فعاليات وحفلات موسم الرياض الفنية بجلسة طربية يحييها فنان العود الشهير عبادي الجوهر والفنانة ناتاشا.",
-    "en": "Riyadh Season kicked off its concerts featuring oud master Abadi Al Johar and artist Natasha."
-   },
-   "note": {
-    "ar": "ارتباط وثيق بين ثقافة العود الموسيقية وعالم العطور الشرقية الأصيلة في الفعاليات الكبرى.",
-    "en": "Connects the cultural appreciation of the oud instrument with the broader heritage of oriental perfumery."
-   }
-  },
-  {
-   "id": "n1qq8y5b",
-   "url": "https://news.google.com/rss/articles/CBMiP0FVX3lxTE5SS3NTcFZaSU5vYzVSNVZEZG1zN3pnd1hfRkZvX0xfRFo3cjU5bU9FUzlTUTRQMkczVmNTekdVaw?oc=5",
-   "source": "صحيفة الكأس الرياضية",
-   "publishedAt": "2026-10-28T10:44:51.000Z",
-   "original": "روتانا تجمع «أخطبوط العود» وناتاشا في أمسية طربية بقيادة المايسترو أمير عبدالمجيد",
-   "lang": "ar",
-   "category": "industry",
-   "importance": 3,
-   "title": {
-    "ar": "Cosmetic Valley تنضم إلى كرسي التراث للعطور ومستحضرات التجميل في غراس",
-    "en": "Grasse: Cosmetic Valley joins the Heritage Chair for Aromas, Perfumes and Cosmetics"
-   },
-   "summary": {
-    "ar": "انضمت منظمة Cosmetic Valley رسمياً إلى كرسي التراث الخاص بالأرومة، العطور، ومستحضرات التجميل في مدينة غراس الفرنسية.",
-    "en": "Cosmetic Valley has officially joined the Heritage Chair for Aromas, Perfumes, and Cosmetics in Grasse, France."
-   },
-   "note": {
-    "ar": "خطوة تعزز البحث العلمي والأكاديمي في تاريخ وتطوير صناعة العطور الفرنسية والعالمية.",
-    "en": "Strengthens academic and scientific research in the history and development of French and global perfumery."
-   }
-  },
-  {
-   "id": "nah7huv",
-   "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQci1hOXNmWTZVZk1nZzN0WHVxZmVWWnpWQ0RXajE3NjZYRWJnb0Y5SWJmSmFHbnhibVlsTEZVS1MzUXVoU3UzcGRXVWo2SndKYUlZLURRSzEya2xBTlN2dTNiWmpnSmZSejA3SWhCYllxWktIekZGMm9uY0JoTmxwRnEtM29jSTlEQTctSUw5QW5xWnNrMi1FdXBYb2NGTjhMMWZoNXBZVkM3UE5KendEbnJVb1dsSlVJejlSa3U3UHNrcGpybE95aEZKakxUaFlGbnc?oc=5",
-   "source": "Vietnam.vn",
-   "publishedAt": "2026-10-28T10:39:07.000Z",
-   "original": "قام رئيس اللجنة الشعبية الإقليمية دو هو هوي بتقديم البخور لإحياء ذكرى الشخصية الشهيرة لونغ فان تشانه، وأشرف على أعمال ترميم الموقع التاريخي.",
-   "lang": "ar",
-   "category": "market",
-   "importance": 3,
-   "title": {
-    "ar": "OMANLUXURY تتألق بفوز عطر NASAJ بجائزة LSA Beauty Awards 2026",
-    "en": "LSA Beauty Awards 2026: Most Luxe Floral Fragrance OMANLUXURY NASAJ"
-   },
-   "summary": {
-    "ar": "حصد عطر NASAJ من دار OMANLUXURY جائزة أفضل عطر زهري فاخر ضمن جوائز LSA لجمال لعام 2026.",
-    "en": "OMANLUXURY's NASAJ won the Most Luxe Floral Fragrance award at the LSA Beauty Awards 2026."
-   },
-   "note": {
-    "ar": "إنجاز إقليمي يبرز جودة العطور العربية الفاخرة وقدرتها على المنافسة عالمياً في فئة الزهور.",
-    "en": "A regional achievement highlighting the high quality of luxury Arab perfumes competing globally."
-   }
-  },
-  {
-   "id": "ngeg83a",
-   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOaHNXNHpvcDhHV21VUU9nWFc3b2s5Z0lYbENncGtzSTI0RGg4eGdoY3pkeHBGX2ttelVEZF94RlppR01Ici1JcUNTMTlqMWRXbDFKYW9VcHJJc2NWZkpIemY1SFQ3TW5LUTlHWkdRTFpVdlVPNUhFZ2ZDLWpUcjB3R0FMUmdhamJ3cFcxakxDbDFLQVQwVmhFbTAyZEQzUWNpWGRiQXBEbnRTSVBaN2loemRUbGtnRDI5?oc=5",
-   "source": "Global Cosmetics News",
-   "publishedAt": "2026-10-27T06:00:30.000Z",
-   "original": "Dove Enters Fine Fragrance Market with Limited-Edition Direct-to-Consumer Launch",
-   "lang": "en",
-   "category": "industry",
-   "importance": 5,
-   "title": {
-    "ar": "علامة Dove تدخل سوق العطور الفاخرة بإطلاق محدود المدى",
-    "en": "Dove Enters Fine Fragrance Market with Limited-Edition Launch"
-   },
-   "summary": {
-    "ar": "دخلت علامة العناية الشخصية الشهيرة Dove رسمياً قطاع العطور الفاخرة من خلال إطلاق عطر جديد مستوحى مباشرة من رائحة صابونها الكلاسيكي وبإصدار مباشر للمستهلكين.",
-    "en": "Dove has entered the fine fragrance market with a limited-edition direct-to-consumer launch that smells just like its classic soap."
-   },
-   "note": {
-    "ar": "يعكس هذا التوجه رغبة العلامات التجارية الكبرى في الاستفادة من الحنين العطري (Nostalgia) وتقديم تجارب عطرية بسيطة ومألوفة.",
-    "en": "Shows how mass-market giants leverage nostalgic, clean scent profiles to capture fragrance enthusiasts."
-   }
-  },
-  {
-   "id": "ni8wqo3",
-   "url": "https://nstperfume.com/2026/10/27/memo-paris-cosmos-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-27T15:45:11.000Z",
-   "original": "Memo Paris Cosmos ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Memo Paris تطلق عطرها الجديد Cosmos",
-    "en": "Memo Paris Launches New Fragrance Cosmos"
-   },
-   "summary": {
-    "ar": "أطلقت الدار الفرنسية النيويش Memo Paris عطراً جديداً يحمل اسم Cosmos ضمن تشكيلتها العطرية المستوحاة من الأسفار والطبيعة.",
-    "en": "French niche line Memo has launched Cosmos, a new fragrance inspired by its signature travel-themed storytelling."
-   },
-   "note": {
-    "ar": "تستمر دار Memo في تقديم تجارب عطرية تأخذ المستخدمين في رحلات حسية فريدة، وهذا الإصدار يستحق التجربة لمحبي العطور المركبة.",
-    "en": "A great addition for collectors who follow Memo's journey-inspired narrative."
-   }
-  },
-  {
-   "id": "n8lyh57",
-   "url": "https://news.google.com/rss/articles/CBMizAJBVV95cUxQTFJ5ZS1acmN5NFgyRkx6Qmo5Z3FPVFRNRDN4T3Y5RXZ3NzY0WkhLNnRReGxobzRkS0FXZ3kwakw5YVNoM2VaVHhsa1RoOEVHekZ3OFpSTzdYNjNVQU1pbXVTUHBDSUlqOU5oMk9XRWZuUkJlX0lGTHNpYms5U0F2cnNUNlFnbkt5aGZSOWRwNzNGVFREaEFsZTNjNHo3RkppX2x3bV9sLUYzRFVIaV94WjZ2dk1pcUFHclJGcVBwSDNlTEJIMG5tbkNSSG15RXhKbWJhS29uZ29vNHZpOFFlOEZFUUlXbEcwZWFfZzQ0djZsa0hJYUZDNzhGLVNxT1JzdUlwVHZVT1o4elFLbHkyUF84U2VsZWVLR3ZUM01qWVRwZnZqdmprYy1RYWdjSTFEbVMwbmRLbVV0a2t2b2RUNWc3eDhySVVJbU1vLQ?oc=5",
-   "source": "Layalina Privee",
-   "publishedAt": "2026-10-27T08:44:21.000Z",
-   "original": "Guerlain تعيد ابتكار L’Heure Bleue: عطر جديد يحتفي بجمال الأنوثة وسحر الساعة الزرقاء",
-   "lang": "ar",
-   "category": "launch",
-   "importance": 4,
-   "title": {
-    "ar": "Guerlain تعيد ابتكار عطر L’Heure Bleue الكلاسيكي",
-    "en": "Guerlain Reimagines L’Heure Bleue"
-   },
-   "summary": {
-    "ar": "أقدمت دار Guerlain العريقة على إعادة ابتكار وتقديم تفسير جديد لعطرها الأيقوني L’Heure Bleue احتفاءً بجمال الأنوثة وسحر الوقت.",
-    "en": "Guerlain has reimagined its iconic L’Heure Bleue, celebrating the magic of twilight and timeless femininity."
-   },
-   "note": {
-    "ar": "إعادة إحياء الأيقونات الكلاسيكية تمنح الجيل الجديد فرصة لاكتشاف تاريخ العطور العريقة بلمسات معاصرة متوازنة.",
-    "en": "A brilliant bridge between historical perfumery heritage and modern formulation standards."
-   }
-  },
-  {
-   "id": "n1eip1ck",
-   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQbVJtcVZFMjhjMTdHSVRVNGI2Wk5fR3hfYTJPSk9PZWItQlpZZk9QMU1EWXhnejRfREhyd25WZE1jTHBEdjBFakF5ZW5tMjZfUEFVSVY0TmdhcFhMV2JLZVY0a1pJLXhzeWVkc2x5RkJiYTVOMzhGT0FVZlQ2Y2FLNA?oc=5",
-   "source": "Premium Beauty News",
-   "publishedAt": "2026-10-27T07:49:33.000Z",
-   "original": "Noel Deyzel’s account suspension reignites debate over fragrance dupes",
-   "lang": "en",
-   "category": "market",
-   "importance": 4,
-   "title": {
-    "ar": "جدل حول العطور البديلة (Dupes) عقب تعليق حساب المؤثر Noel Deyzel",
-    "en": "Noel Deyzel’s Account Suspension Reignites Fragrance Dupes Debate"
-   },
-   "summary": {
-    "ar": "أثار تعليق ثم استعادة حسابات المؤثر الشهير Noel Deyzel نقاشاً واسعاً في قطاع التجميل حول الحدود الفاصلة بين الترويج للعطور البديلة واقتصاد العطور الفاخرة.",
-    "en": "The temporary suspension and restoration of influencer Noel Deyzel's accounts have reignited industry debate over budget-friendly fragrance alternatives."
-   },
-   "note": {
-    "ar": "يسلط هذا الجدل الضوء على التحديات التي تواجهها دور العطور الكبرى أمام انتشار ثقافة العطور البديلة واقتصادياتها على منصات التواصل.",
-    "en": "Highlights the ongoing tension between luxury houses and the booming market of affordable alternatives."
-   }
-  },
-  {
-   "id": "n1dhklfz",
-   "url": "https://www.premiumbeautynews.com/en/from-field-to-fragrance-givaudan-s,28413",
-   "source": "Premium Beauty News",
-   "publishedAt": "2026-10-26T16:39:16.000Z",
-   "original": "From field to fragrance: Givaudan's House of Naturals is taking shape in Grasse",
-   "lang": "en",
-   "category": "ingredients",
-   "importance": 4,
-   "title": {
-    "ar": "Givaudan تبدأ إنشاء مركز الابتكار والمواد الطبيعية House of Naturals في غراس",
-    "en": "Givaudan's House of Naturals Takes Shape in Grasse"
-   },
-   "summary": {
-    "ar": "تستعد شركة Givaudan العالمية لافتتاح مركز تميز جديد متخصص في ابتكار وإنتاج المواد الخام الطبيعية في مدينة غراس الفرنسية بحلول أوائل عام 2028.",
-    "en": "Givaudan is developing a 2.7-hectare Center of Excellence dedicated to natural raw materials innovation in Grasse, set to open in 2028."
-   },
-   "note": {
-    "ar": "هذا الاستثمار الضخم في المواد الطبيعية يعزز مستقبل صناعة العطور المستدامة ويضمن توفير أجود المكونات لصناع العطور حول العالم.",
-    "en": "A significant milestone for sustainable natural ingredients sourcing in the global perfume capital."
    }
   }
  ]
