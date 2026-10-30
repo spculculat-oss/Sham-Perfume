@@ -1691,7 +1691,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
       {cartOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end" onClick={() => setCartOpen(false)}>
           <aside
-            className="w-full max-w-sm h-full bg-white p-5 flex flex-col overflow-y-auto shadow-2xl"
+            className={`w-full ${step === 'form' ? 'sm:max-w-lg' : 'max-w-sm'} h-full bg-white p-5 flex flex-col overflow-y-auto shadow-2xl transition-[max-width]`}
             role="dialog" aria-modal="true" aria-label={directPurchase ? L.buyNow : L.cart}
             onClick={(e) => e.stopPropagation()}
             data-testid="store-cart"
@@ -1710,6 +1710,26 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                 <X className="w-5 h-5" />
               </button>
             </div>
+
+            {/* #411: the order has its own clear path — 1) the basket, 2) delivery and payment — shown as steps, and the
+                delivery/payment step gets a wider page of its own (the store's suggestions never appear there). */}
+            {summary.lines.length > 0 && (
+              <ol className="flex items-center gap-2 pt-3 text-[11px] font-bold" data-testid="checkout-steps" aria-label={currentLang === 'ar' ? 'خطوات الطلب' : 'Order steps'}>
+                {[
+                  { id: 'cart', label: currentLang === 'ar' ? 'السلة' : 'Basket' },
+                  { id: 'form', label: currentLang === 'ar' ? 'التوصيل والدفع' : 'Delivery & payment' },
+                ].map((s, i) => (
+                  <li key={s.id} className="flex items-center gap-2 min-w-0" aria-current={step === s.id ? 'step' : undefined}>
+                    {i > 0 && <span className="w-6 h-px bg-stone-300 shrink-0" aria-hidden="true" />}
+                    <button type="button" disabled={s.id === 'form' || paying} onClick={() => setStep('cart')}
+                      className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 ${step === s.id ? 'bg-emerald-700 text-white' : 'bg-stone-100 text-stone-600'} ${s.id === 'cart' && step === 'form' ? 'cursor-pointer hover:bg-stone-200' : ''}`}>
+                      <span className="font-mono-numbers">{storeNumber(i + 1, currentLang)}</span>
+                      <span className="truncate">{s.label}</span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            )}
 
             {visibleDirect.length > 0 && (
               <div className="space-y-2 my-3" data-testid="direct-orders">

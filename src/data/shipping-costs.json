@@ -115,6 +115,11 @@
    "extraItem": 18.97,
    "carrier": "poslaju_intl"
   },
+  "MY": {
+   "firstItem": 2.71,
+   "extraItem": 2.46,
+   "carrier": "pos_malaysia"
+  },
   "SG": {
    "firstItem": 13.79,
    "extraItem": 1.72,

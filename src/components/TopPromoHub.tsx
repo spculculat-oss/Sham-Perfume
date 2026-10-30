@@ -85,6 +85,15 @@ const REEL_PARTICLES = Array.from({ length: 18 }, (_, i) => ({
   alpha: 0.35 + ((i * 3) % 5) / 10,
 }));
 
+/** #410: the currency chip in the visitor's language («ج.م» in Arabic), the ISO code only as a fallback. */
+function currencyLabel(code: string, lang: SupportedLanguage): string {
+  if (!isRTL(lang)) return code; // «EGP» / «USD» read naturally in Latin scripts; «$» alone would be ambiguous
+  try {
+    const part = new Intl.NumberFormat(lang, { style: 'currency', currency: code, currencyDisplay: 'symbol' }).formatToParts(0).find((p) => p.type === 'currency');
+    return (part?.value || code).replace(/[\u200f\u200e\u061c]/g, '').replace(/\.$/, '');
+  } catch { return code; }
+}
+
 export const TopPromoHub: React.FC<TopPromoHubProps> = ({
   currentLang = 'ar',
   onViewStore,
@@ -535,7 +544,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                     {/* Device Country indicator inside product box */}
                     <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-amber-500/30 bg-black/40 px-2 py-0.5 text-[10px] text-stone-300">
                       <span>{countryMeta.flag}</span>
-                      <span className="font-mono text-amber-400 font-bold">{money.currency}</span>
+                      <span className="font-mono text-amber-400 font-bold">{currencyLabel(money.currency, currentLang)}</span>
                     </span>
                   </div>
 
@@ -854,7 +863,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-950/60 px-2 py-0.5 text-[11px] text-amber-200">
               <span>{countryMeta.flag}</span>
-              <span className="font-mono text-amber-400 font-bold">{money.currency}</span>
+              <span className="font-mono text-amber-400 font-bold">{currencyLabel(money.currency, currentLang)}</span>
             </span>
             <button
               type="button"

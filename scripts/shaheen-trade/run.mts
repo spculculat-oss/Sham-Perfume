@@ -8,6 +8,7 @@
  * and the council. It arranges nothing and promises nothing on its own.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
+import { rebuildReflexFromFiles } from '../shaheen-mind/reflexFiles';
 import { convert, handlingFee, shippingCost, type FxTable, type ShippingCosts, type ShippingTable } from '../../src/utils/pricing';
 import { reviewTrade, type Carrier, type CustomsCountry, type Platform, type TradeAgreement } from './review';
 
@@ -84,6 +85,9 @@ for (const d of report.destinations) {
   };
 }
 writeFileSync(new URL('../../src/data/shipping-costs.json', import.meta.url), `${JSON.stringify(costs, null, 1)}\n`);
+// The instant answers («الشحن لمصر بكام؟») quote this table in EGP — rebuild them in the same run, or main goes red
+// for every bot until the mind runs again (2026-10-30: the trade bot's 06:22 table broke ten workflows).
+console.log(`instant answers rebuilt from the new carrier-cost table: ${rebuildReflexFromFiles()}`);
 
 // ── «الـ50% تفضل صافية»: الشحن بسعره الحقيقي + هامش التجهيز، محسوب بمحرك السعر نفسه ──────────────────
 // الأرقام دي هي اللي الزائر هيشوفها بعد التعديل، مش حساب في تقرير لوحده.

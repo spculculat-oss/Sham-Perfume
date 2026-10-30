@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "trade-lanes",
- "updatedAt": "2026-10-30T06:22:58.267Z",
+ "updatedAt": "2026-10-30T09:38:25.858Z",
  "modes": {
   "platform_ships": {
    "nameAr": "المنصة بتشحن (وساطة)",
@@ -1474,28 +1474,37 @@
    ],
    "becauseAr": "العميل في نفس بلد المنصة (MY) — شحن محلي",
    "carrier": {
-    "id": "jt_my",
-    "nameAr": "جي آند تي ماليزيا",
-    "speedAr": "1–3 أيام",
-    "priceEgp": null,
+    "id": "pos_malaysia",
+    "nameAr": "بريد ماليزيا",
+    "speedAr": "2–5 أيام",
+    "priceEgp": [
+     151.85,
+     289.9
+    ],
     "dg": null,
-    "source": "https://www.jtexpress.my/"
+    "source": "https://sellershipment.com/ecommerce-shipping-cost/pos-laju-rate/ + https://jomjual.my/blog/jt-vs-pos-laju-vs-ninja-van-vs-dhl-perbandingan-kadar-penghantaran-malaysia-2026"
    },
    "alternative": null,
-   "chargedEgp": 336.25,
+   "chargedEgp": 166.98,
    "zoneChargedEgp": 336.25,
-   "costEgp": null,
-   "surplusEgp": null,
-   "netEgp": null,
-   "orderVerdict": "unknown",
-   "keptPercent": null,
-   "marginEatenEgp": null,
-   "requiredShippingEgp": null,
-   "costExtraEgp": null,
-   "proposedChargedEgp": null,
-   "proposedMarginEgp": null,
+   "costEgp": [
+    151.85,
+    289.9
+   ],
+   "surplusEgp": 15.13,
+   "netEgp": 1206.19,
+   "orderVerdict": "profit",
+   "keptPercent": 101.27,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    151.85,
+    289.9
+   ],
+   "costExtraEgp": 138.05,
+   "proposedChargedEgp": 166.98,
+   "proposedMarginEgp": 15.13,
    "promise": "we_ship",
-   "costVerdict": "unknown",
+   "costVerdict": "ok",
    "customs": {
     "verified": false,
     "deMinimis": null,
@@ -4738,9 +4747,12 @@
     "broker"
    ],
    "localCarrier": {
-    "id": "jt_my",
-    "nameAr": "جي آند تي ماليزيا",
-    "priceEgp": null
+    "id": "pos_malaysia",
+    "nameAr": "بريد ماليزيا",
+    "priceEgp": [
+     151.85,
+     289.9
+    ]
    }
   },
   {
@@ -4815,7 +4827,7 @@
   },
   {
    "kindAr": "شركات محلية",
-   "whatAr": "البضاعة في ماليزيا (1063 منتج)، الإمارات (98 منتج) ومفيش سعر شحن محلي منشور فيها — يعني مفيش سعر توصيل جوّه البلد دي",
+   "whatAr": "البضاعة في الإمارات (98 منتج) ومفيش سعر شحن محلي منشور فيها — يعني مفيش سعر توصيل جوّه البلد دي",
    "fixAr": "يتسجل سعر منشور لشركة محلية في كل بلد فيها بضاعة، وإلا التوصيل الداخلي يبقى «يتأكد»"
   },
   {
@@ -4995,11 +5007,16 @@
    "currency": "USD",
    "countries": 10,
    "currentFirstItem": 6,
-   "covered": 9,
+   "covered": 10,
    "typicalRequiredFirstItem": 18,
    "maxRequiredFirstItem": 28,
    "drivenByAr": "ميانمار",
    "destinations": [
+    {
+     "code": "MY",
+     "nameAr": "ماليزيا",
+     "requiredFirstItem": 3
+    },
     {
      "code": "SG",
      "nameAr": "سنغافورة",
@@ -5286,33 +5303,32 @@
  ],
  "money": {
   "profitPerBottleEgp": 1191.06,
-  "averageChargedEgp": 2664.89,
-  "pricedDestinations": 73,
+  "averageChargedEgp": 2662.6,
+  "pricedDestinations": 74,
   "overChargedDestinations": 0,
   "lossDestinations": 0,
   "orderLossDestinations": 0,
   "bestNetEgp": 1471.27,
-  "worstNetEgp": 1268.4,
-  "keptWholeDestinations": 73,
+  "worstNetEgp": 1206.19,
+  "keptWholeDestinations": 74,
   "marginEatenDestinations": 0,
-  "costBasedDestinations": 73,
-  "uncoveredDestinations": 1,
+  "costBasedDestinations": 74,
+  "uncoveredDestinations": 0,
   "medianShippingMarginEgp": 251.07
  },
  "score": 85,
  "notes": [
-  "مكسب الزجاجة (٥٠٪) 1191.06 ج.م — والـ٥٠٪ بتفضل كاملة في 73 وجهة بس من 73.",
+  "مكسب الزجاجة (٥٠٪) 1191.06 ج.م — والـ٥٠٪ بتفضل كاملة في 74 وجهة بس من 74.",
   "سعر الصرف: 1063 منتج سعره مبني على 13.081 ج.م/MYR وسعر النهاردة 13.805 — تكلفة الشراء بقت أغلى 5.5% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي.",
   "سعر الصرف: 98 منتج سعره مبني على 14.5568 ج.م/AED وسعر النهاردة 15.2599 — تكلفة الشراء بقت أغلى 4.8% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي."
  ],
  "planAr": [
-  "لو إحنا اللي بنشحن، أرخص المسارات: سنغافورة بـ773.08–869.71 ج.م، BN بـ831.06–947.02 ج.م، إندونيسيا بـ869.71–985.68 ج.م.",
+  "لو إحنا اللي بنشحن، أرخص المسارات: ماليزيا بـ151.85–289.9 ج.م، سنغافورة بـ773.08–869.71 ج.م، BN بـ831.06–947.02 ج.م.",
   "الشحن بقى بيتحصّل بتكلفته الحقيقية + هامش تجهيز صغير (الجدول تحت) — فالـ٥٠٪ تفضل صافية ومش متحمّلة على الهامش. الزجاجة = أول ٥٠٠ جم، والزجاجة الزيادة بسعر شريحتها.",
   "الأسعار القديمة في 6 منطقة كانت أقل من التكلفة الحقيقية: مصر كان بياخد 15 والمتوسط الحقيقي 32 USD، دول الخليج كان بياخد 14 والمتوسط الحقيقي 28 USD، باقي الدول العربية كان بياخد 18 والمتوسط الحقيقي 63 USD، جنوب شرق آسيا كان بياخد 6 والمتوسط الحقيقي 18 USD، أوروبا كان بياخد 22 والمتوسط الحقيقي 54 USD، أمريكا الشمالية كان بياخد 25 والمتوسط الحقيقي 38 USD — التسعير الجديد بيحصّل التكلفة + الهامش.",
-  "1 وجهة مفيش لها تعريفة شحن منشورة (ماليزيا) — بتاخد سعر منطقتها، ومافيش وعد إنه يغطي التكلفة.",
   "5 شركة دولية: تأكد قبول العطور (UN1266) قبل أي بيع دولي — الرفض بعد البيع = إلغاء وسمعة.",
   "98 منتج من منصات بتشحن بنفسها — الوساطة بس، والتأكد إن المنصة بترجع وتتعوض لو حصلت مشكلة.",
-  "البضاعة في: ماليزيا — 1063 منتج (مفيش سعر محلي منشور)، الإمارات — 98 منتج (مفيش سعر محلي منشور)، مصر — 51 منتج (محلي: بوستة 30–55 ج.م)."
+  "البضاعة في: ماليزيا — 1063 منتج (محلي: بريد ماليزيا 151.85–289.9 ج.م)، الإمارات — 98 منتج (مفيش سعر محلي منشور)، مصر — 51 منتج (محلي: بوستة 30–55 ج.م)."
  ],
- "summaryAr": "الشحن والتجارة: 74 وجهة — 74 وجهة ممرها معروف، 30 دولة بجمارك متأكد منها، 73 وجهة بسعر شحن مقارن · البضاعة في MY، AE، EG · 2 عملة سعر صرفها قديم."
+ "summaryAr": "الشحن والتجارة: 74 وجهة — 74 وجهة ممرها معروف، 30 دولة بجمارك متأكد منها، 74 وجهة بسعر شحن مقارن · البضاعة في MY، AE، EG · 2 عملة سعر صرفها قديم."
 }

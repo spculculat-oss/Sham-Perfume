@@ -130,7 +130,7 @@ export interface TradeLanesFile {
 }
 
 export async function liveTradeLanes(env: Env = process.env, request: typeof fetch = fetch): Promise<TradeLanesFile | undefined> {
-  const file = await load('trade-lanes.json', bundledTrade as TradeLanesFile, (d): d is TradeLanesFile => Boolean(d && typeof d === 'object' && typeof (d as TradeLanesFile).updatedAt === 'string' && Array.isArray((d as TradeLanesFile).destinations)), env, request);
+  const file = await load('trade-lanes.json', bundledTrade as unknown as TradeLanesFile, (d): d is TradeLanesFile => Boolean(d && typeof d === 'object' && typeof (d as TradeLanesFile).updatedAt === 'string' && Array.isArray((d as TradeLanesFile).destinations)), env, request);
   return file;
 }
 
