@@ -141,16 +141,22 @@ export function isVisibleEnglishLine(line: string, phrase: string): boolean {
   if (/\ben\s*:\s*['"`]/.test(line)) return false; // the English copy of an inline {ar, en, …} dictionary
   const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const lower = phrase.toLowerCase();
+  // A whole word only: «Cosmetics» inside `CosmeticsHub` / './components/CosmeticsHub' is code, not copy
+  // (seen live 2026-10-28: three «English text» reports that were an import path and a component name).
+  // Case as quoted: the audit saw «Cosmetics» on the screen; 'cosmetics' / "cosmetics-hub" are ids and test ids.
+  const word = new RegExp(`(?<![A-Za-z0-9_-])${escaped}(?![A-Za-z0-9_-])`);
+  if (!word.test(line)) return false;
   // 1) The phrase as a string literal: UI copy — unless the literal is a translation key (L('placeholder'), T('…')).
   for (const m of line.matchAll(/(['"`])((?:\\.|(?!\1).)*)\1/g)) {
-    if (!m[2].toLowerCase().includes(lower)) continue;
+    if (!m[2].toLowerCase().includes(lower) || !word.test(m[2])) continue;
+    if (/^\.{0,2}\/|^[\w@.-]+\/[\w./-]*$/.test(m[2])) continue; // a module path or URL part, not a label
     const before = line.slice(0, m.index ?? 0);
     if (/(?:\bL|\bT|\bloc|\btx)\(\s*$/.test(before)) continue; // a key, not the label
     if (/^\s*:/.test(line.slice((m.index ?? 0) + m[0].length))) continue; // an object key (`'placeholder': {`), not copy
     return true;
   }
   // 2) The phrase as JSX text on the screen: <h2>Live Sync</h2>.
-  return new RegExp(`>[^<>{}]*${escaped}[^<>{}]*<`, 'i').test(line);
+  return new RegExp(`>[^<>{}]*(?<![A-Za-z0-9_])${escaped}(?![A-Za-z0-9_])[^<>{}]*<`, 'i').test(line);
 }
 
 /** Where those phrases live in the visitor code (file:line), so the fix is one click away. */

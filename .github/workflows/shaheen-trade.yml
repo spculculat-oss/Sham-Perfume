@@ -79,7 +79,7 @@ jobs:
       - name: Write the trade report
         run: node --import tsx scripts/shaheen-trade/run.mts
       - name: Behaviour tests
-        run: node --import tsx --test tests/tradeLanes.test.ts
+        run: node --import tsx --import ./tests/register-assets.mjs --test tests/tradeLanes.test.ts tests/shaheenMindLoop.test.ts tests/shippingNet.test.ts
       - name: Publish on main
         if: env.PUBLISH == 'true'
         env:
@@ -90,4 +90,5 @@ jobs:
           node scripts/ci/publish.mjs "شاهين: الشحن والتجارة الدولية $(date -u +%Y-%m-%dT%H:%MZ)" \
             src/data/live/trade-lanes.json \
             src/data/shipping-costs.json \
+            src/data/live/shaheen-reflex.json \
             || { echo "::error::Could not push the trade report and its carrier-cost table"; exit 1; }

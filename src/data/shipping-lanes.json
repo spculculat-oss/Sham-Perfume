@@ -326,9 +326,18 @@
    "cod": null,
    "priceBandEgp": null,
    "speedAr": "2–5 أيام",
-   "noteAr": "أوسع تغطية للقرى والمناطق البعيدة في ماليزيا. أسعارها على حسب الوزن — مش مسجلة هنا.",
-   "source": "https://www.pos.com.my/",
-   "checkedAt": "2026-10-25"
+   "noteAr": "أوسع تغطية للقرى والمناطق البعيدة في ماليزيا. السعر المسجّل هو أعلى سعر شباك منشور لأول كيلو (من شبه الجزيرة لصباح وسرواك: 11 رينجت)، وكل زجاجة زيادة محسوبة بسعر الكيلو الإضافي لشرق ماليزيا (10 رينجت) — يعني الرقم بيغطي أبعد ولاية.",
+   "source": "https://sellershipment.com/ecommerce-shipping-cost/pos-laju-rate/ + https://jomjual.my/blog/jt-vs-pos-laju-vs-ninja-van-vs-dhl-perbandingan-kadar-penghantaran-malaysia-2026",
+   "checkedAt": "2026-10-30",
+   "perCountryBand": {
+    "currency": "MYR",
+    "rates": {
+     "MY": [
+      11,
+      10
+     ]
+    }
+   }
   },
   {
    "id": "aramex_ae",

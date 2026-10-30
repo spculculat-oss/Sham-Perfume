@@ -22,6 +22,9 @@ const S: Record<string, LText> = {
   },
   accept_all: { ar: 'قبول الكل', en: 'Accept All', fr: 'Tout accepter', es: 'Aceptar todo', de: 'Alle akzeptieren' },
   reject_all: { ar: 'رفض غير الضروري', en: 'Reject Non-Essential', fr: 'Refuser', es: 'Rechazar', de: 'Ablehnen' },
+  // #410: the footer used to mix Arabic and English in every language.
+  record_note: { ar: 'موافقتك محفوظة بتاريخها ووقتها (اللائحة الأوروبية للخصوصية GDPR، المادة 6)', en: 'Your choice is recorded with its date and time (ePrivacy + GDPR Art. 6)', fr: 'Votre choix est enregistré avec sa date et son heure (ePrivacy + RGPD art. 6)', es: 'Tu elección se registra con fecha y hora (ePrivacy + RGPD art. 6)', de: 'Ihre Wahl wird mit Datum und Uhrzeit gespeichert (ePrivacy + DSGVO Art. 6)' },
+  no_trackers: { ar: 'بدون أي تتبع خارجي', en: 'Zero third-party trackers', fr: 'Aucun traceur tiers', es: 'Sin rastreadores de terceros', de: 'Keine Tracker von Dritten' },
   customize: { ar: 'تخصيص', en: 'Customize', fr: 'Personnaliser', es: 'Personalizar', de: 'Anpassen' },
   save: { ar: 'حفظ اختياري', en: 'Save Preferences', fr: 'Enregistrer', es: 'Guardar', de: 'Speichern' },
   essential: { ar: 'ضروري (دائمًا نشط)', en: 'Essential (always on)', fr: 'Essentiel', es: 'Esencial', de: 'Essentiell' },
@@ -150,8 +153,8 @@ export const CookieConsent: React.FC<{ currentLang?: SupportedLanguage; onOpenPo
           </div>
         </div>
         <div className="px-4 py-2 bg-stone-50 border-t border-stone-200 text-[11px] text-stone-500 flex items-center justify-between">
-          <span>ePrivacy + GDPR Art.6 — سجل الموافقة يُحفظ مع timestamp</span>
-          <span className="hidden sm:inline text-[10px]">Zero Trackers · لا تتبع خارجي</span>
+          <span>{L('record_note')}</span>
+          <span className="hidden sm:inline text-[10px]">{L('no_trackers')}</span>
         </div>
       </div>
     </div>
