@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "ears",
- "updatedAt": "2026-10-30T09:54:19.239Z",
+ "updatedAt": "2026-10-31T05:19:32.969Z",
  "total": 400,
  "answered": 400,
  "pending": 0,
@@ -112,12 +112,12 @@
   "اشرحلي طريقة استخدام العطر",
   "Suggest a warm oriental perfume formula for winter with percentages",
   "Suggest a fresh citrus perfume formula for summer with percentages",
-  "احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
-  "What fixative works best for a citrus cologne, and at what percentage?",
   "كم يوم أعتق عطر فيه مسك وعنبر وعود؟",
+  "اقترح نوتات لعطر صيفي منعش للرجال",
+  "ايه الفرق بين EDP و EDT و Parfum في نسبة الزيت والثبات؟",
   "عايز أخفف كحول 96% إلى 80% وأعمل منه 500 مل، أحط كام مية؟",
   "صمم لي عطر شرقي بالعود والورد 50 مل تركيز EDP",
-  "ايه هو الفرق بين الثبات والفوحان وكيفية تحسينهما"
+  "ايه أفضل خلطة شتوية دافية؟"
  ],
  "summaryAr": "الآذان: 400 سؤال حقيقي اتقرا (400 اتجاوب و0 لسه) · 0 اتشال للخصوصية · أعلى طلب عند د. ليان العطور",
  "planAr": [

@@ -1,8 +1,16 @@
 {
  "version": 1,
  "agent": "tutor",
- "updatedAt": "2026-10-30T09:54:19.239Z",
+ "updatedAt": "2026-10-31T05:19:32.969Z",
  "targets": [
+  {
+   "kind": "carrier",
+   "id": "carrier:pos_malaysia",
+   "labelAr": "بريد ماليزيا",
+   "whyAr": "«بريد ماليزيا»: لسه مش مؤكد إنها بتقبل العطور (UN1266) — وهي اللي بتحمل 1 وجهة",
+   "specialistId": "specialist_business",
+   "priority": 95
+  },
   {
    "kind": "carrier",
    "id": "carrier:poslaju_intl",
@@ -609,7 +617,7 @@
    "question": "الشحن لـالسعودية بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1701",
+    "1700",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -621,7 +629,7 @@
    "question": "الشحن لـالإمارات بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1701",
+    "1700",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -669,7 +677,7 @@
    "question": "الشحن لـعمان بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3179",
+    "3178",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -704,7 +712,7 @@
    "question": "الشحن لـلبنان بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3373",
+    "3372",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -716,7 +724,7 @@
    "question": "الشحن لـالعراق بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3759",
+    "3758",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -724,7 +732,7 @@
    "targetId": "destination:IQ"
   },
   {
-   "id": "q-recall-specialist_science-81",
+   "id": "q-recall-specialist_science-82",
    "question": "ايه هي قوانين نيوتن التلاتة للحركة؟",
    "kind": "rule",
    "expected": [
@@ -736,7 +744,7 @@
    "targetId": "specialist:specialist_science"
   },
   {
-   "id": "q-recall-specialist_scents-82",
+   "id": "q-recall-specialist_scents-83",
    "question": "اشرحلي طريقة استخدام العطر",
    "kind": "rule",
    "expected": [
@@ -748,7 +756,7 @@
    "targetId": "specialist:specialist_scents"
   },
   {
-   "id": "q-recall-specialist_tech-83",
+   "id": "q-recall-specialist_tech-84",
    "question": "ازاي ابدا اتعلم برمجة؟",
    "kind": "rule",
    "expected": [
@@ -760,7 +768,7 @@
    "targetId": "specialist:specialist_tech"
   },
   {
-   "id": "q-recall-specialist_culture-84",
+   "id": "q-recall-specialist_culture-85",
    "question": "ايه هي المغالطة المنطقية؟",
    "kind": "rule",
    "expected": [
@@ -772,7 +780,7 @@
    "targetId": "specialist:specialist_culture"
   },
   {
-   "id": "q-recall-specialist_security-85",
+   "id": "q-recall-specialist_security-86",
    "question": "ايه هو التشفير؟",
    "kind": "rule",
    "expected": [
@@ -784,7 +792,7 @@
    "targetId": "specialist:specialist_security"
   },
   {
-   "id": "q-recall-specialist_business-86",
+   "id": "q-recall-specialist_business-87",
    "question": "ايه دور اتفاقيات التجارة الحرة في الجمارك؟",
    "kind": "rule",
    "expected": [
@@ -802,9 +810,9 @@
   "priced": 74,
   "verifiedCustoms": 3
  },
- "summaryAr": "المعلم: 72 حلقة ضعيفة اتحولت لخطة دراسة · 18 سؤال امتحان بإجابات موثّقة",
+ "summaryAr": "المعلم: 73 حلقة ضعيفة اتحولت لخطة دراسة · 18 سؤال امتحان بإجابات موثّقة",
  "planAr": [
-  "72 حلقة ضعيفة في العقل، أهمها: بوس لاجو الدولي (بريد ماليزيا)، الإمارات، AL، AT، BA — كل واحدة بقت مهمة دراسة لمتخصصها.",
+  "73 حلقة ضعيفة في العقل، أهمها: بريد ماليزيا، بوس لاجو الدولي (بريد ماليزيا)، الإمارات، AL، AT — كل واحدة بقت مهمة دراسة لمتخصصها.",
   "18 سؤال امتحان جاهز، إجابته مكتوبة في الملفات نفسها — الممتحن بيصحح عليها من غير أي تخمين.",
   "العمق: 74 من 74 وجهة ليها درس بيشرحها · 74 بسعر شحن منشور · 3 بجمارك مؤكدة."
  ]
