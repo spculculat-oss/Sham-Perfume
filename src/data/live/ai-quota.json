@@ -1,22 +1,16 @@
 {
- "updatedAt": "2026-10-30T10:00:41.146Z",
+ "updatedAt": "2026-10-31T08:54:34.515Z",
  "engines": {
   "openai": {
-   "pausedUntil": "2026-10-31T08:05:00.000Z",
+   "pausedUntil": "2026-11-01T08:05:00.000Z",
    "reason": "no_credit",
    "key": "2c42a25f"
-  },
-  "gemini": {
-   "pausedUntil": "2026-10-31T08:05:00.000Z",
-   "reason": "chat_reserve",
-   "detail": "bots used 10/10 today",
-   "key": "7e5fee0d"
   }
  },
  "used": {
-  "day": "2026-10-30",
+  "day": "2026-10-31",
   "counts": {
-   "gemini": 10
+   "gemini": 6
   }
  }
 }
