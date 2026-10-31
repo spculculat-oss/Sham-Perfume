@@ -1,9 +1,9 @@
 {
  "version": 1,
- "updatedAt": "2026-10-31T03:41:48.185Z",
- "nextUpdateAt": "2026-10-31T15:41:48.185Z",
+ "updatedAt": "2026-10-31T15:33:45.827Z",
+ "nextUpdateAt": "2026-11-01T03:33:45.827Z",
  "intervalHours": 12,
- "editor": "shaheen",
+ "editor": "feeds",
  "digest": {
   "ar": "تشهد صناعة العطور حراكاً استثمارياً كبيراً بإعلان مجموعة Puig خطتها للوصول إلى إيرادات تتجاوز 8 مليارات يورو مع التركيز على عطور النيش والفاخرة، بجانب نجاح قياسي لطرح صكوك شركة البخور الذكي في السوق المالي. كما تتسارع وتيرة الإطلاقات الفاخرة مع تقديم Burberry لمجموعتها الحصرية Prorsum وتوسّع دار ديور في ابتكارات الياسمين. وتواصل الفعاليات الدولية الاستعداد لمعارضها الكبرى وفي مقدمتها Esxence لعطور النيش الفنية والتحالفات الأكاديمية الصناعية في غراس.",
   "en": "The fragrance industry witnesses robust momentum with Puig announcing its Vision 2032 strategy targeting over €8 billion driven by niche perfumes, alongside the strong oversubscription of Smart Incense sukuk in financial markets. Luxury launches accelerate with Burberry debuting its Prorsum Collection and Dior reinventing its jasmine profile. Meanwhile, global fragrance hubs gear up for major gatherings including Esxence and new academic-industrial research alliances in Grasse."
@@ -14,15 +14,79 @@
    "count": 3
   },
   {
+   "name": "Grazia",
+   "count": 2
+  },
+  {
+   "name": "Daily Beirut",
+   "count": 2
+  },
+  {
+   "name": "WWD",
+   "count": 2
+  },
+  {
+   "name": "NDTV Profit",
+   "count": 1
+  },
+  {
+   "name": "Marie Claire UK",
+   "count": 1
+  },
+  {
+   "name": "Marie Claire",
+   "count": 1
+  },
+  {
+   "name": "The Assam Tribune",
+   "count": 1
+  },
+  {
+   "name": "Tuko News",
+   "count": 1
+  },
+  {
+   "name": "تحت المجهر",
+   "count": 1
+  },
+  {
+   "name": "The Economic Times",
+   "count": 1
+  },
+  {
+   "name": "Wales Online",
+   "count": 1
+  },
+  {
+   "name": "كيفاش",
+   "count": 1
+  },
+  {
+   "name": "Presse Agence",
+   "count": 1
+  },
+  {
+   "name": "South China Morning Post",
+   "count": 1
+  },
+  {
+   "name": "The Mirror",
+   "count": 1
+  },
+  {
+   "name": "Fox News",
+   "count": 1
+  },
+  {
+   "name": "Yahoo! Finance Canada",
+   "count": 1
+  },
+  {
    "name": "Cosmetics Business",
    "count": 1
   },
   {
    "name": "ارقام : اخبار ومعلومات سوق الأسهم السعودي - تاسي",
-   "count": 1
-  },
-  {
-   "name": "WWD",
    "count": 1
   },
   {
@@ -42,87 +106,371 @@
    "count": 1
   },
   {
-   "name": "Grazia",
-   "count": 1
-  },
-  {
    "name": "PR Newswire",
-   "count": 1
-  },
-  {
-   "name": "العيون الآن",
-   "count": 1
-  },
-  {
-   "name": "Premium Beauty News",
-   "count": 1
-  },
-  {
-   "name": "The Star, Kenya",
-   "count": 1
-  },
-  {
-   "name": "Marie Claire UK",
-   "count": 1
-  },
-  {
-   "name": "Cosmopolitan.fr",
-   "count": 1
-  },
-  {
-   "name": "anfaspress.com",
-   "count": 1
-  },
-  {
-   "name": "Febrayer",
-   "count": 1
-  },
-  {
-   "name": "Wales Online",
-   "count": 1
-  },
-  {
-   "name": "جريدة تنوير.م",
-   "count": 1
-  },
-  {
-   "name": "Daily Front Row",
-   "count": 1
-  },
-  {
-   "name": "Trend Hunter",
-   "count": 1
-  },
-  {
-   "name": "The Mercury",
-   "count": 1
-  },
-  {
-   "name": "The Business of Fashion",
-   "count": 1
-  },
-  {
-   "name": "Northampton Chronicle and Echo",
-   "count": 1
-  },
-  {
-   "name": "TheIndustry.beauty",
-   "count": 1
-  },
-  {
-   "name": "Biz Today",
-   "count": 1
-  },
-  {
-   "name": "جريدة العدد الاول",
-   "count": 1
-  },
-  {
-   "name": "Elfann",
    "count": 1
   }
  ],
  "items": [
+  {
+   "id": "n1qydjdc",
+   "url": "https://nstperfume.com/2026/10/31/lazy-3-day-weekend-poll-fall-back-2026/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-10-31T14:27:46.000Z",
+   "original": "Lazy 3-day weekend poll ~ Fall Back, 2026",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Lazy 3-day weekend poll ~ Fall Back, 2026",
+    "en": "Lazy 3-day weekend poll ~ Fall Back, 2026"
+   },
+   "summary": {
+    "ar": "If it's Saturday, happy Halloween! If it's Sunday, rabbit, rabbit, rabbit (🐇🐇🐇)! Welcome to November, plus, happy Day of the Dead , plus, a little reminder: if you live in a daylight savings zone, don't forget to change your clocks! That means it's time for our tenth annual Fall Back poll. As always, answer as many or as few as you like, or just talk about something else. If it's spring where you live, adjust the questions accordingly. 1. What's the fragrance you'd most like to add to your co",
+    "en": "If it's Saturday, happy Halloween! If it's Sunday, rabbit, rabbit, rabbit (🐇🐇🐇)! Welcome to November, plus, happy Day of the Dead , plus, a little reminder: if you live in a daylight savings zone, don't forget to change your clocks! That means it's time for our tenth annual Fall Back poll. As always, answer as many or as few as you like, or just talk about something else. If it's spring where you live, adjust the questions accordingly. 1. What's the fragrance you'd most like to add to your co"
+   }
+  },
+  {
+   "id": "n1390v5e",
+   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOUFNQMjB2cS1wby1CTzhCOUFHNEtaemRHU2JsVklqVXVabWRFSFN3cDNYRjhxMkhwN3Q0VjFkVm9SSnVLUWw5N1hnSXJXTTdValVMS2lVV3J3RnJtNnZjaG12Q3ZpOUZGWHd6SzBhOTdTRE9TYnBxSzFLVmM1NDR4ZGJLZTVMMUtvN2dQSzIyeVVGUjVZVGhOc3hmUGgyMXVBZXJBTHlWLUczYTF6X0RWZVd4aG5yOU44OTRtUEUtM0F2dW9Mc0xZaFVaSUFGV0HSAdcBQVVfeXFMTWJQYlkyY1FINDJFSmRMSVQ4U3hDV2EtZ29Zc1pxdWtCOFpsZkludzRTTkx5TVVUdWc1c3JwNG40WlVReFJVZkRSeUg4R1dIbTJlTVdkY0U0VjdOMjRERjBYWF9hQk5CLVZVTXU0RHNldldHZ2FsWWE0UldaYnRMSXhJVmNGRDlzMDE4a2pMdXpoSnp0bG5wYnY4dHJqeWFMM1RYQmQzODI5RjNxS1cxYmYyTGg2WVdiU2RlT1dWZjdKQ3JQdW5obUl5UjFGdGVqQVBqcGRpd3M?oc=5",
+   "source": "NDTV Profit",
+   "publishedAt": "2026-10-31T12:19:29.000Z",
+   "original": "Perfume Launch On Mount Everest! Kenz De Rasasi's Hawas Frost To Make Its Debut On On Nov 2",
+   "lang": "en",
+   "category": "launch",
+   "importance": 2,
+   "title": {
+    "ar": "Perfume Launch On Mount Everest! Kenz De Rasasi's Hawas Frost To Make Its Debut On On Nov 2",
+    "en": "Perfume Launch On Mount Everest! Kenz De Rasasi's Hawas Frost To Make Its Debut On On Nov 2"
+   },
+   "summary": {
+    "ar": "Perfume Launch On Mount Everest! Kenz De Rasasi's Hawas Frost To Make Its Debut On On Nov 2",
+    "en": "Perfume Launch On Mount Everest! Kenz De Rasasi's Hawas Frost To Make Its Debut On On Nov 2"
+   }
+  },
+  {
+   "id": "n101r5uw",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQVlBtTTJjc3NGNVItcGtmM1dTWEF6RGFrUHZfRU5PWUFZcGU5R1A4bUVzUFJwb3BZTGNDUFRqM2NxNXp5QmI1Y01BNklma2Y0NmQwdV9CR3p5OGtGeGJQTlZPcEM5WlVZTGg5bE9vQ2FfVlg4RXp4Mjk2V3l6b0liZm5Vd1lMMjVBclJ5SndMMjZmUkRpVS1v?oc=5",
+   "source": "Marie Claire UK",
+   "publishedAt": "2026-10-31T12:00:00.000Z",
+   "original": "The Beauty Digest: JLaw’s Haircare Launch & Burberry’s Exquisite Perfumes",
+   "lang": "en",
+   "category": "launch",
+   "importance": 2,
+   "title": {
+    "ar": "The Beauty Digest: JLaw’s Haircare Launch & Burberry’s Exquisite Perfumes",
+    "en": "The Beauty Digest: JLaw’s Haircare Launch & Burberry’s Exquisite Perfumes"
+   },
+   "summary": {
+    "ar": "The Beauty Digest: JLaw’s Haircare Launch & Burberry’s Exquisite Perfumes",
+    "en": "The Beauty Digest: JLaw’s Haircare Launch & Burberry’s Exquisite Perfumes"
+   }
+  },
+  {
+   "id": "nx455pg",
+   "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE43ZWIxdWRLM20tam05aWRqRnUxZmRWcVhaMTE2cm9hdFYtdzN3b182RFRYNFdtbjZlMkRXeGpyTWRyTHN6V0lVZXhVSEt4WXd3UHd1WUQ2b1pBbnlGalVwc1BRSklQNEdFOEZ1S3Z0em53cnVpTjFCZXpFWnRYdHc?oc=5",
+   "source": "Marie Claire",
+   "publishedAt": "2026-10-31T12:00:00.000Z",
+   "original": "For a Subtle Scent, May I Suggest an EDT?",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "For a Subtle Scent, May I Suggest an EDT?",
+    "en": "For a Subtle Scent, May I Suggest an EDT?"
+   },
+   "summary": {
+    "ar": "For a Subtle Scent, May I Suggest an EDT?",
+    "en": "For a Subtle Scent, May I Suggest an EDT?"
+   }
+  },
+  {
+   "id": "nm9l78g",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQM29GTE0yZTNRVFJlejRxQ1VlUkctRE53Z2VsTjhudy1jaXBEWndSU0VqNnlFM0VldU01bjBmbkxfd3hxRUxNMXNwaXVaanlTRk1uTnJVaEpnWFVUTHNwZThveE5yTHdiM1QtVFliVW83anlBWnlRS3U4bURRakU5ZEhaQVdJTkd6SDNEUE94d1lwUV9wTzNDeWNwSlA4UjhTVU5TYkw1bFBzMDVBZXduMTZKdVFWRWRWcEHSAb8BQVVfeXFMT2tlMHY5Mk12LTZVcG1IbFE2QjVxOGNtMXV1TWRyMC1NN0VObzFvV09FbWlXYmZaVTl6WVdXVUFRSmROc0h1UGhIdFVNZnZCT0Z3Z1Y5ZDFEMC1RczVHY0JtYy1vRXlOTXFhMnNNSkE5VXpidXZzZlZMSFJiOWJydFliSlNRN2QtTDQ3VnNhamNBRVluS25EckZkd0NaU2VSX29EbzlZd2Z3dzczdTduVHJpWjdHaFpCeUJvR1BhMzQ?oc=5",
+   "source": "The Assam Tribune",
+   "publishedAt": "2026-10-31T11:52:17.000Z",
+   "original": "Centre approves Guwahati airport as export hub for Assam’s agarwood chips, oil",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 2,
+   "title": {
+    "ar": "Centre approves Guwahati airport as export hub for Assam’s agarwood chips, oil",
+    "en": "Centre approves Guwahati airport as export hub for Assam’s agarwood chips, oil"
+   },
+   "summary": {
+    "ar": "Centre approves Guwahati airport as export hub for Assam’s agarwood chips, oil",
+    "en": "Centre approves Guwahati airport as export hub for Assam’s agarwood chips, oil"
+   }
+  },
+  {
+   "id": "nx07zuh",
+   "url": "https://news.google.com/rss/articles/CBMihwJBVV95cUxNYlpSc2FsdUhpWUtPLTM0VzYyQTJvZzBzV2JCV1dENHdZRHZINFV6U2xQRFV5eTh6Mk16MC1Ic2dTVi1nT2FCejRfQkZkZ2g2WEE2bW5NSXJ0dXo0QU5LT1pmdERLUTBnZVMtSUw5MldrQVRTM1laNmNpTXFlN1BrVk9rZmp1VkpUa2dKbHZxbmI3TFdTSFl5NFZ1Z3Qxd3pLSFhfRkMxSUprU205ZWY0MlBOdlVlYkVkUHhxbVZ3RlJhTzV1QVQyRk04ekVnQUl3dWZjZ25TeWxfbTdfbU41LUl6YTNjMGRLLWVFZkFYMVZJZHdkNlVkLWpqRE95SXFMMzBWdkdTSQ?oc=5",
+   "source": "Grazia",
+   "publishedAt": "2026-10-31T09:05:18.000Z",
+   "original": "\"Son odeur tenait des jours entiers\" : les internautes pleurent tous ce parfum culte des années 1990 devenu très difficile à trouver",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "\"Son odeur tenait des jours entiers\" : les internautes pleurent tous ce parfum culte des années 1990 devenu très difficile à trouver",
+    "en": "\"Son odeur tenait des jours entiers\" : les internautes pleurent tous ce parfum culte des années 1990 devenu très difficile à trouver"
+   },
+   "summary": {
+    "ar": "\"Son odeur tenait des jours entiers\" : les internautes pleurent tous ce parfum culte des années 1990 devenu très difficile à trouver",
+    "en": "\"Son odeur tenait des jours entiers\" : les internautes pleurent tous ce parfum culte des années 1990 devenu très difficile à trouver"
+   }
+  },
+  {
+   "id": "ny0x5wj",
+   "url": "https://news.google.com/rss/articles/CBMinARBVV95cUxPOTJ2SURQZ0tfZi14b1MyaHoxbUJtaWVMRFE2aUp1QS1fQ0VxR3VPa0J0anphVnZEVnpWZ055cVowVk95allvTXFzUWF4MHpWUW5uU0l4RWY0RjNNclVaTlNpaUxzRk5iRWk2NFZ6U0NnTk5GeFB5Q3Z1djAyVTc0VW8xTWNTX0FVc1hCX0FGSndBdkdwWGs4QVF4RU1ONVBUZWZGX2paNjhZdHV5UVc0S2lqRVdyMlBELUlTU2hCck5yNjRTMXdGQUpDRW1RQXFuMk5JU3N0ekkxazNXN0R3Vng2dW44MlhONmx0RUpHZ2VpMnBDSmc3dUxNbFBVenZDeGNYMEtBdE4xaVlUb2Y3bGpTNEIwbWVHcmxpTkhyMHlYSDcxUUVfSUlwN0UwZVVOZjF6TmhZX0hZSy1GNVpMQmlaLXNYOFhrSU9DZzJzbjlObTU4bmt2V3ZoekRiTnBEVzBzc3pJQWFiRTVHSTh3Tkxoc3JObzFGMG1iTEgzUkhTa0FCRi1HcGZUZEZ0U19nb0o2MGtvQjgtNVVlS2dMd2lkSzhUNVFRcXh2V0tsV0hGcHB0TFZuV0c5dDhvN0lsMHVJQV9vdks5Vk5xa2dvcjAzNVRxcHc5X1MxRURWUHVWYk5fNFN2djI2aXNaR3lVd2VHbWNibmprMVM4YndWWi1ZdE5fRzF3dUp2WUJ4T1d5MlhqRjF2cEdteE0?oc=5",
+   "source": "Daily Beirut",
+   "publishedAt": "2026-10-31T08:57:28.000Z",
+   "original": "تيت ماكري ترتدي فستان ألابيا عتيقًا لإطلاق عطر TATE 01 · دايلي بيروت",
+   "lang": "ar",
+   "category": "launch",
+   "importance": 2,
+   "title": {
+    "ar": "تيت ماكري ترتدي فستان ألابيا عتيقًا لإطلاق عطر TATE 01 · دايلي بيروت",
+    "en": "تيت ماكري ترتدي فستان ألابيا عتيقًا لإطلاق عطر TATE 01 · دايلي بيروت"
+   },
+   "summary": {
+    "ar": "تيت ماكري ترتدي فستان ألابيا عتيقًا لإطلاق عطر TATE 01 · دايلي بيروت",
+    "en": "تيت ماكري ترتدي فستان ألابيا عتيقًا لإطلاق عطر TATE 01 · دايلي بيروت"
+   }
+  },
+  {
+   "id": "ngnd35j",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOblNybV95X2FvZXJ1RzNMN0NqaU9TcG1OdnVrUkRPRkZGY1hMVkdITGwxQ0ZMZkRuVzlGRmhxd19QbWVWdnZGZ1lxdUxzbmRhVS1FZ0pJQ1FYNFh4V0FyY1ZqNC1JLVo2dEUtdUx0OTMySzFSVTdKc1NwV252YWd1R2g0aVdhbkJDM3FDZmZHSHVZdHVISUgxSA?oc=5",
+   "source": "Daily Beirut",
+   "publishedAt": "2026-10-31T08:57:12.000Z",
+   "original": "Tate McRae Wears Vintage Alaïa Gown for Perfume",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Tate McRae Wears Vintage Alaïa Gown for Perfume",
+    "en": "Tate McRae Wears Vintage Alaïa Gown for Perfume"
+   },
+   "summary": {
+    "ar": "Tate McRae Wears Vintage Alaïa Gown for Perfume",
+    "en": "Tate McRae Wears Vintage Alaïa Gown for Perfume"
+   }
+  },
+  {
+   "id": "n11opcm8",
+   "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPSVk5NzZlQlhMdENrd0ozeUFYRER4aGpNeTRjNXlGdE5MYWYxZ0dvaXhUVFhxQU9VLVEzTHlQRXcwdmtIYzVxRHNGVUp4dnZLd1lJYWoxeFhQbXZ5Qmh3TTFaRmFGSkY3VUNab244bVZidjNCSVAzMHllRkdLUEktYkx6OWNSWnFUYnR4VlJoWTc4UmpZb1VITDdYYmRXamN2WGdmd0lHaGNJd2d4WmlLUU5DTlk3ZGtPWS1Ha2RPX2JSSHNFU1IyQ0Rid2N3NHoyWXc?oc=5",
+   "source": "Tuko News",
+   "publishedAt": "2026-10-31T08:56:02.000Z",
+   "original": "Eyeing global market: Wara Fragrance gets international recognition in Malaysia",
+   "lang": "en",
+   "category": "market",
+   "importance": 2,
+   "title": {
+    "ar": "Eyeing global market: Wara Fragrance gets international recognition in Malaysia",
+    "en": "Eyeing global market: Wara Fragrance gets international recognition in Malaysia"
+   },
+   "summary": {
+    "ar": "Eyeing global market: Wara Fragrance gets international recognition in Malaysia",
+    "en": "Eyeing global market: Wara Fragrance gets international recognition in Malaysia"
+   }
+  },
+  {
+   "id": "n17h2a1y",
+   "url": "https://news.google.com/rss/articles/CBMigAVBVV95cUxPYS1sTE5neVhDb0NPQl81bHd2YmhzeTNkSjNIRmZkeHlVRnNpZ0w3TmxoVlpRT05uMzJzajBRdG9PUktfOVZ0NkFxRklCQXpOVW5Bem9PMDNfXy15OUFoRjI3eU80NnRSM0ZkOTdwdUZJMTdRX3k2TW96dVFpRWFuZjM4VG5DdDA5UFoyMW5rWEVsdjZxMzBQUDlwVmJRU1dGVEV5ckx6RFZkc1ZsZXgzR0FhVklGODRtSWpib0Z2NmZPZ0xHVVloQkdfcHBvOEkxQUI5QWtPSXZXR1MwNkxoRmQ1YkE2V1J4WEV0Qms3QUJmMml1WUhpY2NGeTZjOEFlUW54bUFjbmNSUlktemNUSWg1UEg0eDd0T1otSzQ5ZS1iWXluZjRtVVFiMGszbGN3bU91VjVMMWttWTc0b2toVjB5cmlEb0gtQ2VESFExblpxRG05MHc4SEZxMTRURkdkdVFvUVVKdlJfdjBMTjVtMUs5SHJNWVlFSnF5Z0JVLTBvejYyVzVFVXpYOVIzVE5nMm1wNWhONTE4OWNfd1pxdm9KRm9VNVdld1FNQWM5b0JhRWkwc0FmTDhlMU5jZ05TY2F1MGg4VXhwUDlKd3FiTjN6VWlMMHZkQnFFQzd4ODJDV1NuRzB0SkwybHR4X0g4MXdBTDM2ckE2R3hGQ044cW00UXJnU2VnOUxBZnJKelZrc0pyaHA3RHQ4Qzl3VnNCX3ZvNDNTa3BIajJwc3pFcTJrVGN0MEUyMjZvenlNNzBFTW9CeXpYNUlVNnV4Z2ZzSFdmelBqQlhBY2Jfd19ubEtOLWRLWFUxeHYtV2hWTnhMNHphdU5GZ3BEUUVOa3lx?oc=5",
+   "source": "تحت المجهر",
+   "publishedAt": "2026-10-31T08:08:00.000Z",
+   "original": "ورود جورية تحتضن شوارع اللاذقية.. مستر حمزه سامر حمزه عندما يسبق دفء الذهب العطر",
+   "lang": "ar",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "ورود جورية تحتضن شوارع اللاذقية.. مستر حمزه سامر حمزه عندما يسبق دفء الذهب العطر",
+    "en": "ورود جورية تحتضن شوارع اللاذقية.. مستر حمزه سامر حمزه عندما يسبق دفء الذهب العطر"
+   },
+   "summary": {
+    "ar": "ورود جورية تحتضن شوارع اللاذقية.. مستر حمزه سامر حمزه عندما يسبق دفء الذهب العطر",
+    "en": "ورود جورية تحتضن شوارع اللاذقية.. مستر حمزه سامر حمزه عندما يسبق دفء الذهب العطر"
+   }
+  },
+  {
+   "id": "nt45v5e",
+   "url": "https://news.google.com/rss/articles/CBMixAJBVV95cUxOZFpJOTIxYWN1cW1iN2ZfSnJBeXptcXcxYTNwb0puSUtNTWw4LV9NbV9KZ3lfaXNNQ0FHRV9IOWY1U19hazl3VVV1M1AxaWJVQWRHZzJ0M0UxUFBMbEk2bV9EejdUaUlORmxVNTVxai1rV1o3bWpVQ2Z6dFhzdXA1NUV4aEdfMXM0cGNwYW42ZmNRdmdxMHU2N2Q4WE1nOHAxQVZIUUxpZllQY1JPSU5rUm1jTk9uamRsbW5felc3XzFtMTlGNm1jazRvRjRkSWY3dldXN0Vfbm5NVHlpOUpHTnlKazNyeTBtbmtOT2NKemlmZlZwNnJnYkxWYVdhSEpvWXJpR2VZM3NNdkFsT0xZSjl2OU80MDFTeXlRZS1mSTU4MGdzSndFNFBKRnVGV2lmUlVkNTZ6MFhPS3hDTmxjVzdhSnbSAcoCQVVfeXFMUFVlM3M1aVdzSjFNNFpDd2VoSzRJU09ZYlQ4Q0lxTVQ3SE9QbjJoTndJZU9uaEtwdVllLUpnbFBwZGhyVkpxNUV0aHU1blh0azlHZ3JHUnhrWXVaTVNnNXVVcS1wVmV3M1RNZ05VN0RFSElDdDZkMktSN3JzSlprTlg0MkhUX0ZUZDdCcmd3c3dIWXBVajZKaDVjV3J6d2tzNUEzb005MGsyYzIxNVowYzBBQXQ4LXBXZ2R5V0hlYTBuelNfX2JjUy1uX2ZKMlViNU1uNThLT3hVTXlwOFoySVBnci1fRUlpaGxLc2xteUUyNWc4QlJFMnc4eEVNYXJUN2pwZEFHaFJvWkt6YWZUWUJrSmV2cWFvb29zb3NFODE1b3dUZ0szNWM3bTJSOGRHanVhcFp4YVh3OFZfZ1A3VHpENnBvcGZMUHVR?oc=5",
+   "source": "The Economic Times",
+   "publishedAt": "2026-10-31T07:15:26.000Z",
+   "original": "Piyush Goyal says Assam's fragrant gold gets global gateway! Centre approves Guwahati airport as export po",
+   "lang": "en",
+   "category": "events",
+   "importance": 2,
+   "title": {
+    "ar": "Piyush Goyal says Assam's fragrant gold gets global gateway! Centre approves Guwahati airport as export po",
+    "en": "Piyush Goyal says Assam's fragrant gold gets global gateway! Centre approves Guwahati airport as export po"
+   },
+   "summary": {
+    "ar": "Piyush Goyal says Assam's fragrant gold gets global gateway! Centre approves Guwahati airport as export po",
+    "en": "Piyush Goyal says Assam's fragrant gold gets global gateway! Centre approves Guwahati airport as export po"
+   }
+  },
+  {
+   "id": "n1ak8ba9",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPMXpmRUZFUGFjbWdSRDFyNXlCMEVPQmlaVDgxd3lsV2pVOHZqSDNZejZ2V2xfMzRmU0xuZXVKNE1DckJORTN6ZkxPR2h5RFE4aGNiM0tGT2Z4VXFmVHctcVBzU3Mxdi1MMFhCaUk4RnhJZmpaZFRiUGEybG1jY2lRU1dPbGNrT3VzVXlocHhkMNIBlAFBVV95cUxOXzlQOWdhX1RPS3h0RnJTaFVkY2FkcWdkWXJjX2s5TjFlV3hqYl9LekhSSEVCMmh0MmtBWmNSejZqaFdLWDdQVGxUSlVyZ1JMbGV4aWFHQzRCMkhEb3ZkcHY2cmUzZEVkM3dFM2gyWWdKNEFQTWtRNW00ODBoSkI3bUF5bVNXSWszOW1SQUt5S1czaFAt?oc=5",
+   "source": "Wales Online",
+   "publishedAt": "2026-10-31T07:15:00.000Z",
+   "original": "'I found a gorgeous autumn scent inside £9 beauty box with products worth £95'",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "'I found a gorgeous autumn scent inside £9 beauty box with products worth £95'",
+    "en": "'I found a gorgeous autumn scent inside £9 beauty box with products worth £95'"
+   },
+   "summary": {
+    "ar": "'I found a gorgeous autumn scent inside £9 beauty box with products worth £95'",
+    "en": "'I found a gorgeous autumn scent inside £9 beauty box with products worth £95'"
+   }
+  },
+  {
+   "id": "n1urilgt",
+   "url": "https://news.google.com/rss/articles/CBMivwJBVV95cUxOYjR3TnRHbk5mRHp4MlczNDgtMk5LNDYyeEtuR1RSWnVncFB2eTVjdGQybWZVSWg1VUpyRTltT3FvemhTcC1FR3dsRmJoS1J0cjFoeGdKX1hOcVFsODRBcmx6RXJFbUJIeUM1NjJLcmxSV1NSUE5aVGV3Uko0Z2JEV3JDanVJb25JdXdKWkExTy1aVTVmOEYtX3VFOVJ5R3JmS19IZmFEdE1Oai1aXzhTUG05R09vTWZrV2hYX0JpaGFPdVRuREtOQlZlS1A4bkoyNVdHRTBIZnlDYy1NX2NJZnVUVWtEeElrdkpwT0pzQllaOVE1b25DTWFpTGZYZUt5ZFNtMWtwTkhSN2FHWUFhNmZoSUdTeGJFNHNMVkY1cUV6SndwTkN6Z1RFbUdHZjROS0hnT3dDM3RzZVg0Z0tN?oc=5",
+   "source": "كيفاش",
+   "publishedAt": "2026-10-31T05:44:09.000Z",
+   "original": "بمشاركة مارسيل خليفة.. تطوان تحتضن فعاليات المهرجان الدولي للعود",
+   "lang": "ar",
+   "category": "events",
+   "importance": 2,
+   "title": {
+    "ar": "بمشاركة مارسيل خليفة.. تطوان تحتضن فعاليات المهرجان الدولي للعود",
+    "en": "بمشاركة مارسيل خليفة.. تطوان تحتضن فعاليات المهرجان الدولي للعود"
+   },
+   "summary": {
+    "ar": "بمشاركة مارسيل خليفة.. تطوان تحتضن فعاليات المهرجان الدولي للعود",
+    "en": "بمشاركة مارسيل خليفة.. تطوان تحتضن فعاليات المهرجان الدولي للعود"
+   }
+  },
+  {
+   "id": "n1ocjvyx",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQdTZ1SUJ5VHVWS3dMbzQ4SVliYm1IWE1veHNVMDlBcmdpNzB1VnZ6SFluLVV0VTNDaG41NThxSTlvajBqcWozVDY5eHpacndaVnFXOEVWTGthczdNMnE1dEFWWVhWM29tRUJCT1JteUtVQXBuZjB0ekdDdEZmZHlrdXNtaGRkQjJyenhxdV9hbm5DcERIclRDRHduMTVXS010ckZDMjFR?oc=5",
+   "source": "Presse Agence",
+   "publishedAt": "2026-10-31T05:00:00.000Z",
+   "original": "PARIS : Parfumerie - Cadence, une nouvelle fragrance inspirée de l'île de La Réunion",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "PARIS : Parfumerie - Cadence, une nouvelle fragrance inspirée de l'île de La Réunion",
+    "en": "PARIS : Parfumerie - Cadence, une nouvelle fragrance inspirée de l'île de La Réunion"
+   },
+   "summary": {
+    "ar": "PARIS : Parfumerie - Cadence, une nouvelle fragrance inspirée de l'île de La Réunion",
+    "en": "PARIS : Parfumerie - Cadence, une nouvelle fragrance inspirée de l'île de La Réunion"
+   }
+  },
+  {
+   "id": "nxp927w",
+   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQVXpVZGJUWDkxZVR1WTk5UEQ3aXJ1Z3ozWk5OZlZrSFFLYkt4dE5BYjR3bDdPaFZ4TWZwWWRfeVhYamc3UU9zTkZUUDlDVERsUHlpWkNrNXhIQ3hkT2xjWWVMc3VVSEd0U3dsMzFoTmx1ZVMwQjNuc2NQMFRTWGFIdTY2dEZmUXZGU2k0emt4R25LMWp6Ny1zMGdhaFpCMERwV2pGeWNmTXRRcXBLbTZWbFEtbUdQYnZwbmNwdnF4WjM1cjhmRmljNdIByAFBVV95cUxQVXpVZGJUWDkxZVR1WTk5UEQ3aXJ1Z3ozWk5OZlZrSFFLYkt4dE5BYjR3bDdPaFZ4TWZwWWRfeVhYamc3UU9zTkZUUDlDVERsUHlpWkNrNXhIQ3hkT2xjWWVMc3VVSEd0U3dsMzFoTmx1ZVMwQjNuc2NQMFRTWGFIdTY2dEZmUXZGU2k0emt4R25LMWp6Ny1zMGdhaFpCMERwV2pGeWNmTXRRcXBLbTZWbFEtbUdQYnZwbmNwdnF4WjM1cjhmRmljNQ?oc=5",
+   "source": "South China Morning Post",
+   "publishedAt": "2026-10-31T04:45:07.000Z",
+   "original": "Why GLP-1 users’ impact on food-inspired fragrance market is nothing to sniff at",
+   "lang": "en",
+   "category": "market",
+   "importance": 2,
+   "title": {
+    "ar": "Why GLP-1 users’ impact on food-inspired fragrance market is nothing to sniff at",
+    "en": "Why GLP-1 users’ impact on food-inspired fragrance market is nothing to sniff at"
+   },
+   "summary": {
+    "ar": "Why GLP-1 users’ impact on food-inspired fragrance market is nothing to sniff at",
+    "en": "Why GLP-1 users’ impact on food-inspired fragrance market is nothing to sniff at"
+   }
+  },
+  {
+   "id": "n1ivvyw3",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNSy1pNEk1OHNJcGxOdmNMVjllSGJiNnZyNmp4eFc5bWZ6UE1IS3lBTmhjdmZwVFg0NmU3ZEU1b0dRTWFRdjhzSmRSSkRjek9HUV9rbUxuSWoxNmtGazg4YmowUmU2U0czUHRtZVJxTXRWZGtrc0hsemItbGx0V1RqVTBKZnYxbFlMdFZEdDM3UzRicmxL0gGUAUFVX3lxTE1LLWk0STU4c0lwbE52Y0xWOWVIYmI2dnI2anh4VzltZnpQTUhLeUFOaGN2ZnBUWDQ2ZTdkRTVvR1FNYVF2OHNKZFJKRGN6T0dRX2ttTG5JajE2a0ZrODhiajBSZTZTRzNQdG1lUnFNdFZka2tzSGx6Yi1sbHRXVGpVMEpmdjFsWUx0VkR0MzdTNGJybEs?oc=5",
+   "source": "The Mirror",
+   "publishedAt": "2026-10-31T03:42:00.000Z",
+   "original": "7 stocking fillers sure to impress her from fashion accessories to fragrance",
+   "lang": "en",
+   "category": "market",
+   "importance": 2,
+   "title": {
+    "ar": "7 stocking fillers sure to impress her from fashion accessories to fragrance",
+    "en": "7 stocking fillers sure to impress her from fashion accessories to fragrance"
+   },
+   "summary": {
+    "ar": "7 stocking fillers sure to impress her from fashion accessories to fragrance",
+    "en": "7 stocking fillers sure to impress her from fashion accessories to fragrance"
+   }
+  },
+  {
+   "id": "n1df19q9",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQYjVFS0tqbmZ0a09GdFZEbDNNTHhWdE9veXMwdkNjR1pMamJ5aFMtcWRUWU8tVEU0YVlFUUdJejFtRE84dnpQUENRYU1FRXZRTExnU241aVlnZ3lsTmVZTEgtdnZoSUtMR0I0UEx2WTNyY3VpY05VVkZIOE11OVd4VVh1bmw5bUpWTE5TTGtvT0FxcklldUpqdWJOTzdnaDdtS3N0dmJ4TWFkaXcxeld3SUdscGZmUQ?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-10-31T01:59:33.000Z",
+   "original": "Scentbird Is Leading the Charge In Personalized Fragrance",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Scentbird Is Leading the Charge In Personalized Fragrance",
+    "en": "Scentbird Is Leading the Charge In Personalized Fragrance"
+   },
+   "summary": {
+    "ar": "Scentbird Is Leading the Charge In Personalized Fragrance",
+    "en": "Scentbird Is Leading the Charge In Personalized Fragrance"
+   }
+  },
+  {
+   "id": "nm986iq",
+   "url": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxNUHJFSXdyOE9JbG44NjNJZUZ0N29fbFFPb2p0TFhCNS1UaHpscXNzQmFpamNBUVoxdzFJOXJKQ2pRYkFXcnF1U2sxVVktdDlJOTdPWEdwd24yVlhzOGwxaTN0SkdkcmVzR0xTSUczMGdsNmoxMGdGR0sxcW5GZ2k4QWliVkxmT0xzZjNubjlJakYzYmJubER4SEFWdUJTMGJsNEdlcTFRTEoyWXR6ejNVeE9UNExGM1NDTENpMUZkRFIxdGZKa0dSN0JleHZTUzZmLVNjMGxyaTI2Qm1nVnpFQjNuZVFickxpZUdYYzlfV0c3YmZnNHFNQmFzMHJqQWc?oc=5",
+   "source": "Grazia",
+   "publishedAt": "2026-10-30T22:35:26.000Z",
+   "original": "Créé en 1870, ce parfum Guerlain au flacon gravé se revend plus de 45.000 euros : \"un record mondial\" pour les collectionneurs",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Créé en 1870, ce parfum Guerlain au flacon gravé se revend plus de 45.000 euros : \"un record mondial\" pour les collectionneurs",
+    "en": "Créé en 1870, ce parfum Guerlain au flacon gravé se revend plus de 45.000 euros : \"un record mondial\" pour les collectionneurs"
+   },
+   "summary": {
+    "ar": "Créé en 1870, ce parfum Guerlain au flacon gravé se revend plus de 45.000 euros : \"un record mondial\" pour les collectionneurs",
+    "en": "Créé en 1870, ce parfum Guerlain au flacon gravé se revend plus de 45.000 euros : \"un record mondial\" pour les collectionneurs"
+   }
+  },
+  {
+   "id": "n1marqpb",
+   "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5tU0paVkZQM1hGdjQyc0pTdzA5emE5UHlXckx2MEZYdEpoVTY0bmctVklCMEVRbmFuSVdDdE9NZW8yWklmT2R5RGZOd1FxQ0EzbUJRSm13?oc=5",
+   "source": "Fox News",
+   "publishedAt": "2026-10-30T22:22:09.000Z",
+   "original": "Brittany Aldean honors late grandmother with launch of luxury fragrance brand VADA",
+   "lang": "en",
+   "category": "launch",
+   "importance": 2,
+   "title": {
+    "ar": "Brittany Aldean honors late grandmother with launch of luxury fragrance brand VADA",
+    "en": "Brittany Aldean honors late grandmother with launch of luxury fragrance brand VADA"
+   },
+   "summary": {
+    "ar": "Brittany Aldean honors late grandmother with launch of luxury fragrance brand VADA",
+    "en": "Brittany Aldean honors late grandmother with launch of luxury fragrance brand VADA"
+   }
+  },
+  {
+   "id": "nof6ry5",
+   "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9aNDlzNlBzS3JueFg4eWdXLXFtc2IyNDRUZ053dTF0aGNuNnVzWGg0bUdhUFViTWp4VS05bEItQ0dKTVJCbjJjcFNna1F5X3pw?oc=5",
+   "source": "Yahoo! Finance Canada",
+   "publishedAt": "2026-10-30T19:57:33.000Z",
+   "original": "International Flavors & Fragrances Inc. (IFF) Stock Price, News, Quote & History",
+   "lang": "en",
+   "category": "market",
+   "importance": 2,
+   "title": {
+    "ar": "International Flavors & Fragrances Inc. (IFF) Stock Price, News, Quote & History",
+    "en": "International Flavors & Fragrances Inc. (IFF) Stock Price, News, Quote & History"
+   },
+   "summary": {
+    "ar": "International Flavors & Fragrances Inc. (IFF) Stock Price, News, Quote & History",
+    "en": "International Flavors & Fragrances Inc. (IFF) Stock Price, News, Quote & History"
+   }
+  },
   {
    "id": "n1yle0x9",
    "url": "https://cosmeticsbusiness.com/puig-plans-to-become-an-eight-billion-plus-beauty-company",
@@ -322,28 +670,6 @@
    }
   },
   {
-   "id": "nm986iq",
-   "url": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxNUHJFSXdyOE9JbG44NjNJZUZ0N29fbFFPb2p0TFhCNS1UaHpscXNzQmFpamNBUVoxdzFJOXJKQ2pRYkFXcnF1U2sxVVktdDlJOTdPWEdwd24yVlhzOGwxaTN0SkdkcmVzR0xTSUczMGdsNmoxMGdGR0sxcW5GZ2k4QWliVkxmT0xzZjNubjlJakYzYmJubER4SEFWdUJTMGJsNEdlcTFRTEoyWXR6ejNVeE9UNExGM1NDTENpMUZkRFIxdGZKa0dSN0JleHZTUzZmLVNjMGxyaTI2Qm1nVnpFQjNuZVFickxpZUdYYzlfV0c3YmZnNHFNQmFzMHJqQWc?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-10-30T22:35:26.000Z",
-   "original": "Créé en 1870, ce parfum Guerlain au flacon gravé se revend plus de 45.000 euros : \"un record mondial\" pour les collectionneurs",
-   "lang": "fr",
-   "category": "culture",
-   "importance": 3,
-   "title": {
-    "ar": "زجاجة عطر تاريخية من دار Guerlain تعود لعام 1870 تباع برقم قياسي يتجاوز 45 ألف يورو",
-    "en": "Historical 1870 Guerlain engraved bottle fetches over €45,000 at auction"
-   },
-   "summary": {
-    "ar": "حققت زجاجة عطر نادرة ومحفورة صُنعت عام 1870 لصالح دار Guerlain رقماً قياسياً لدى هواة جمع المقتنيات، حيث بيعت بمبلغ تجاوز 45 ألف يورو.",
-    "en": "A rare engraved 1870 Guerlain flacon set a record for vintage fragrance collectors, reselling for over €45,000."
-   },
-   "note": {
-    "ar": "تاريخ تصميم القوارير يثبت أن الزجاجة الفاخرة ليست مجرد وعاء، بل جزء لا يتجزأ من قيمة العطر وتراثه المادي عبر الأجيال.",
-    "en": "تاريخ تصميم القوارير يثبت أن الزجاجة الفاخرة ليست مجرد وعاء، بل جزء لا يتجزأ من قيمة العطر وتراثه المادي عبر الأجيال."
-   }
-  },
-  {
    "id": "n7jvgcp",
    "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxOYjZlRlhKbXlPMU9PX0dRS3U2bmpDdlN0cklnVm5aWVhVTi1mZVlxRGowUnJrRUU1dTJsRldlVVc2ck14S1JEVWZrSS04Y20zRjdsQ3NoM0pUX1VRWXlhakI5UC16dlFpUWVwRXo2Z2NXbklGMVhnbTJhb1BqaHplM205cnh0aEJsUFpYSWJGQVcxTnVudjBTX25rNU1RVDc5bV91dWV1b05nUkFLbk1LX0c3TXF1V1gxVTRBTDZneVpyM01PamlRVXM1TnM4WWJvLTZnSEpuM2NhTzZJaWRVMUpLbmloaHREMlJBQnotaEM3SU41c2c?oc=5",
    "source": "PR Newswire",
@@ -363,364 +689,6 @@
    "note": {
     "ar": "تستمر موضة عطور الغورماند (الحلوى والفانيليا) في تصدر اهتمامات جيل الشباب، حيث تحول النوتات الصالحة للأكل إلى بصمات شخصية جذابة.",
     "en": "تستمر موضة عطور الغورماند (الحلوى والفانيليا) في تصدر اهتمامات جيل الشباب، حيث تحول النوتات الصالحة للأكل إلى بصمات شخصية جذابة."
-   }
-  },
-  {
-   "id": "n101p6q5",
-   "url": "https://news.google.com/rss/articles/CBMitAJBVV95cUxPVmVwLW1QLXE5b0FDLU5xQmY0aHRsVnRMaFV0RTdSOGNUTks3ZW5kT3JldDdRNGlWZkFtcWdUN3hsRU9lOWFCM3NRRU1HLS05VHZtMF8xRDZIVV9ieGp6YU9UYWZqd1dsZmw5N2hYRi1Xa2w1eTZYaElvMUNpZGpWSlB5RWZ2V3ZMekxiVVZieHhzYi1URGJqVjdMc2V2ZGVYYmZPVGsyWE5ucWxTRFdOakVtSVFjYk42Q0p0TWF0cmZLOEpQOFFuYkVEcTBaSTJlYmJTWUtFZjFUSkg5LWJXLTJhSDBaTDNFMWdLVjVWYWtEYXpvZGpHZXIwZVI0LXctV0VqZFJPcWdQNzFKa08wZkgzX2U3UVg5UHQwMlB4eDZhZUZvVEFwRUlqbFNyM2NhME45VA?oc=5",
-   "source": "العيون الآن",
-   "publishedAt": "2026-10-29T13:30:15.000Z",
-   "original": "العيون...جمعية ''مدينتي'' تفتتح الدورة الثانية لمعرض العطور بتكريم كفاءات نسائية وتعزيز ثقافة الاعتراف",
-   "lang": "ar",
-   "category": "events",
-   "importance": 3,
-   "title": {
-    "ar": "مدينة العيون تحتضن الدورة الثانية لمعرض العطور بتكريم كفاءات نسائية",
-    "en": "Laayoune hosts the second edition of the Perfume Exhibition"
-   },
-   "summary": {
-    "ar": "افتتحت جمعية «مدينتي» في مدينة العيون الدورة الثانية لمعرض العطور المخصص للاحتفاء بصناع العطور وتكريم الكفاءات والتعريف بالثقافة العطرية المحلية.",
-    "en": "The Madeenati association opened the second edition of the Perfume Exhibition in Laayoune, celebrating perfume talents and cultural craftsmanship."
-   },
-   "note": {
-    "ar": "المعارض الإقليمية تعزز ثقافة العطور في الوطن العربي وتفتح المجال أمام الحرفيين المحليين للاندماج في السوق التجاري الواسع.",
-    "en": "المعارض الإقليمية تعزز ثقافة العطور في الوطن العربي وتفتح المجال أمام الحرفيين المحليين للاندماج في السوق التجاري الواسع."
-   }
-  },
-  {
-   "id": "n146wril",
-   "url": "https://www.premiumbeautynews.com/en/tate-mcrae-launches-namesake,28438",
-   "source": "Premium Beauty News",
-   "publishedAt": "2026-10-30T08:44:32.000Z",
-   "original": "Tate McRae launches namesake fragrance brand in partnership with Scent Beauty",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "الفنانة تيت ماكراي تدخل عالم العطور بإطلاق علامتها الخاصة بالتعاون مع Scent Beauty",
-    "en": "Tate McRae enters fragrance market launching Tate 01 with Scent Beauty"
-   },
-   "summary": {
-    "ar": "أعلنت الفنانة الكندية Tate McRae عن إطلاق علامتها العطرية الخاصة وطرح أول عطورها Tate 01 بالشراكة مع شركة Scent Beauty المتخصصة في عطور المشاهير.",
-    "en": "Canadian artist Tate McRae entered the fragrance space with her debut scent Tate 01, created in partnership with Scent Beauty."
-   },
-   "note": {
-    "ar": "دخول جيل جديد من الفنانين إلى عالم صناعة العطور يعيد تشكيل تسويق الروائح الشبابية الموجهة لمستهلكي التجزئة الحديثة.",
-    "en": "دخول جيل جديد من الفنانين إلى عالم صناعة العطور يعيد تشكيل تسويق الروائح الشبابية الموجهة لمستهلكي التجزئة الحديثة."
-   }
-  },
-  {
-   "id": "n1kyilke",
-   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQS3Z5RTVLRjA3cUpDUDRTMEw2NUxvam9oN0RydGJ2cGpOZ2JkZURjak52YUw1TVFfN0VVRWRRTnN6Wmp6UWwwMTQ2amJmNTdZeGV5Q1l0OGp4NjlmME9lak04aEtkMGZPYmtZTWw2ZEU1VG1DT3dmR1hSVEk4cVdNZ3AtM3dlVXh4eEtvTkNHZXA2VnNQNDlGczJmQy1TbFpMN2Y0RkhWR0RZZE5RRWY5ZVZHdGVtZw?oc=5",
-   "source": "The Star, Kenya",
-   "publishedAt": "2026-10-30T13:52:00.000Z",
-   "original": "Kenyan fragrance brand Wara wins East Africa award in Malaysia",
-   "lang": "en",
-   "category": "market",
-   "importance": 2,
-   "title": {
-    "ar": "علامة العطور الكينية Wara تتوج بجائزة علامة العام لشرق إفريقيا",
-    "en": "Kenyan fragrance house Wara wins East Africa Brand of the Year"
-   },
-   "summary": {
-    "ar": "حصدت العلامة التجارية الكينية Wara جائزة علامة العام لشرق إفريقيا خلال قمة أقيمت في ماليزيا، تقديراً لتوسعها الإقليمي وتميز منتجاتها العطرية.",
-    "en": "Kenyan fragrance house Wara was recognized as East Africa Brand of the Year during an international summit held in Malaysia."
-   },
-   "note": {
-    "ar": "بروز دور عطور مستقلة من القارة الإفريقية يعكس تنوع مصادر الإلهام العطري وازدياد الاهتمام العالمي بالثقافات الشمية المحلية.",
-    "en": "بروز دور عطور مستقلة من القارة الإفريقية يعكس تنوع مصادر الإلهام العطري وازدياد الاهتمام العالمي بالثقافات الشمية المحلية."
-   }
-  },
-  {
-   "id": "n1cwn3ba",
-   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5oUklyTlNXVjdZSG9CUE1IMnBwQjZodkdXRUVKSXlxMGU4V2owRFdwMnJNbjZpei10V1JCcUVLVmRaeXQ5WUZrbkVBYUxoZ0NzSXJ0MElmakt3MGdDNVdxaV96UkpwcGpSSlhOdkJB?oc=5",
-   "source": "Marie Claire UK",
-   "publishedAt": "2026-10-30T16:30:00.000Z",
-   "original": "If You Can't Smell Your Own Perfume After an Hour or Two, This Could Be Why",
-   "lang": "en",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "دراسة علمية توضح أسباب تلاشي إحساس مرتدي العطر برائحته بعد ساعات قليلة",
-    "en": "Sensory explanation reveals why wearers stop smelling their own fragrance"
-   },
-   "summary": {
-    "ar": "تناول تقرير متخصص ظاهرة «التكيف الشمي» (Nose Blindness) التي تجعل الشخص غير قادر على شم عطره بعد ساعة أو ساعتين رغم بقائه واضحاً للمحيطين به.",
-    "en": "A beauty report explored the mechanism of olfactory fatigue, explaining why individuals stop detecting their own fragrance shortly after application."
-   },
-   "note": {
-    "ar": "التكيف الشمي أمر طبيعي لحماية حاسة الشم؛ لذا لا يُنصح أبداً بزيادة الرش عشوائياً بل بتغيير مواضع التطبيق أو استخدام تركيزات متوازنة.",
-    "en": "التكيف الشمي أمر طبيعي لحماية حاسة الشم؛ لذا لا يُنصح أبداً بزيادة الرش عشوائياً بل بتغيير مواضع التطبيق أو استخدام تركيزات متوازنة."
-   }
-  },
-  {
-   "id": "npj5zuq",
-   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQYTFhZl8wdXg3S0FDalhwZzFnbDVXY0o5dW1VMXFLc3Z0V3d6ZzhMb1daWlZla2VWU0NCdXluSjlIak83ZFdiaGp1Q0JOMFJCbm92bThqcDlIaFRxZ2NWUDdrUHMweHdLYlZXYUx5ZEl5alNCUmMzRzFpN3lZZERwVG9iVnR3S2FydkprY1ZWV3RPRlRuT25LbnBqc3J6RlpLR3ltclZ3NkhSbmdUemtXanhQejcwcXo4WjZBaldiV3RVZXpEdlE?oc=5",
-   "source": "Cosmopolitan.fr",
-   "publishedAt": "2026-10-30T15:27:00.000Z",
-   "original": "Kilian Paris : cette maison de parfums française a séduit Rihanna et Beyoncé, voici pourquoi",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Kilian Paris : cette maison de parfums française a séduit Rihanna et Beyoncé, voici pourquoi",
-    "en": "Kilian Paris : cette maison de parfums française a séduit Rihanna et Beyoncé, voici pourquoi"
-   },
-   "summary": {
-    "ar": "Kilian Paris : cette maison de parfums française a séduit Rihanna et Beyoncé, voici pourquoi",
-    "en": "Kilian Paris : cette maison de parfums française a séduit Rihanna et Beyoncé, voici pourquoi"
-   }
-  },
-  {
-   "id": "n18zp2k8",
-   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9rbUtoUUYyaTlUOWN0Zk9yOXB5cjRLZmdjbDM2aEpTYTBLYXpwV2QtODRNSTdpVFZTOTg3V2dIWmhabHlqd183b3RuZjE3am1CZlVuVFpYVURBa29PZW5zaWtyWWFpaVZST1JJ?oc=5",
-   "source": "anfaspress.com",
-   "publishedAt": "2026-10-30T15:03:05.000Z",
-   "original": "تطوان.. مارسيل خليفة يعيد جماهير الدورة 27 لمهرجان العود إلى الزمن الجميل للموسيقى",
-   "lang": "ar",
-   "category": "events",
-   "importance": 2,
-   "title": {
-    "ar": "تطوان.. مارسيل خليفة يعيد جماهير الدورة 27 لمهرجان العود إلى الزمن الجميل للموسيقى",
-    "en": "تطوان.. مارسيل خليفة يعيد جماهير الدورة 27 لمهرجان العود إلى الزمن الجميل للموسيقى"
-   },
-   "summary": {
-    "ar": "تطوان.. مارسيل خليفة يعيد جماهير الدورة 27 لمهرجان العود إلى الزمن الجميل للموسيقى",
-    "en": "تطوان.. مارسيل خليفة يعيد جماهير الدورة 27 لمهرجان العود إلى الزمن الجميل للموسيقى"
-   }
-  },
-  {
-   "id": "n11losd2",
-   "url": "https://news.google.com/rss/articles/CBMiSEFVX3lxTFBaNUVmcTQ5aFgyXzlIUmN3RzVpWVFKQnNrZjNJcFV0ZDRHc0Uxd0RuS2kxZ1JBdDI3LV9UMVJOd0JUOG1XV2lNWg?oc=5",
-   "source": "Febrayer",
-   "publishedAt": "2026-10-30T15:02:10.000Z",
-   "original": "مهرجان العود الدولي بتطوان يحتفي برواد الموسيقى ويكرم سهيل السرغيني وخولة بنزيان",
-   "lang": "ar",
-   "category": "events",
-   "importance": 2,
-   "title": {
-    "ar": "مهرجان العود الدولي بتطوان يحتفي برواد الموسيقى ويكرم سهيل السرغيني وخولة بنزيان",
-    "en": "مهرجان العود الدولي بتطوان يحتفي برواد الموسيقى ويكرم سهيل السرغيني وخولة بنزيان"
-   },
-   "summary": {
-    "ar": "مهرجان العود الدولي بتطوان يحتفي برواد الموسيقى ويكرم سهيل السرغيني وخولة بنزيان",
-    "en": "مهرجان العود الدولي بتطوان يحتفي برواد الموسيقى ويكرم سهيل السرغيني وخولة بنزيان"
-   }
-  },
-  {
-   "id": "nkbqm1e",
-   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNcTFWZWdSMFNCeFk1VzI1YVIyUXZMeGt2b3B3LXpkVGRYYnh2OTJRZ2l3b001MWhwN010R0IzLXhEZnc5dFVFVzh0dmtoNjZHdDFXck5VSUFFQmE0R1kzV3V3bnpFei1VOTR4ZlNfbWN6UGcyUHYzQ1VsUGw0Vk5NQzR0TkY3Mi0yZFZnRW8za3NjLUHSAZgBQVVfeXFMTTNGMDVrdC1HS3V0Um1XTFJ0Ni1pa0hHd0ZJSkZ6YVdET1RldnExNGJ1dDZybVBUT29lRy0yci0yUlViMUhrMndkUERPT0lpeDRXMWtfYlRKUUlQY1Mxc25Tck95R05OVlQ3NTVGN29RMXRWQ2hiMDNVQ3hpUnVoc3pzNi0wWmFXeDFyTENUR1FaLXdFZ2ROeFY?oc=5",
-   "source": "Wales Online",
-   "publishedAt": "2026-10-30T14:55:00.000Z",
-   "original": "Boots £90 perfume advent calendar worth £356 is still in stock with 14 scents",
-   "lang": "en",
-   "category": "market",
-   "importance": 2,
-   "title": {
-    "ar": "Boots £90 perfume advent calendar worth £356 is still in stock with 14 scents",
-    "en": "Boots £90 perfume advent calendar worth £356 is still in stock with 14 scents"
-   },
-   "summary": {
-    "ar": "Boots £90 perfume advent calendar worth £356 is still in stock with 14 scents",
-    "en": "Boots £90 perfume advent calendar worth £356 is still in stock with 14 scents"
-   }
-  },
-  {
-   "id": "nutxbdq",
-   "url": "https://news.google.com/rss/articles/CBMiywJBVV95cUxNOHRZYUo1RVF6NFNqTTlNUkw4emFGNGhITXZzV1FIZkNrSHJrU3NqN2lXQ1lTbUxEMWg5Q3o5eFJyak9ybDE1X3NfeUkwZl8tLVU3ejFyX2U2YjMtNlJDOUhERnptTmZOamxBcWdJdk1uYlN5cm95ckQ0bUxrMlJ1QkdnOEFGX3d2cXpaWmlTOHdQZVBHWThyM0JTUFZqMW93Nk9icDF1cFowUDFNNE4ybFBmNnlyeVdzMjAyMWQxaGMtekpUTldIeHZYbEtmWExrWGFSVjZaM3BqOGRiRExVN0puTzdseTI1ZldLeUxrbjRCcVBkRHI0V2hJNlBKRi1sNGJpMkJ0N002dllhSHVTLWd3Y1NpekpCeTdybGtTeXRwbWNsYzhpdGJUOXFRVjBIVXVtUE5lWFNaRE8ydW80SmV3NGxQajN0dlAw?oc=5",
-   "source": "جريدة تنوير.م",
-   "publishedAt": "2026-10-30T14:06:34.000Z",
-   "original": "جسور النغم والإنسانية.. مارسيل خليفة يفتتح الدورة 27 للمهرجان الدولي للعود بتطوان بحفل استثنائي",
-   "lang": "ar",
-   "category": "events",
-   "importance": 2,
-   "title": {
-    "ar": "جسور النغم والإنسانية.. مارسيل خليفة يفتتح الدورة 27 للمهرجان الدولي للعود بتطوان بحفل استثنائي",
-    "en": "جسور النغم والإنسانية.. مارسيل خليفة يفتتح الدورة 27 للمهرجان الدولي للعود بتطوان بحفل استثنائي"
-   },
-   "summary": {
-    "ar": "جسور النغم والإنسانية.. مارسيل خليفة يفتتح الدورة 27 للمهرجان الدولي للعود بتطوان بحفل استثنائي",
-    "en": "جسور النغم والإنسانية.. مارسيل خليفة يفتتح الدورة 27 للمهرجان الدولي للعود بتطوان بحفل استثنائي"
-   }
-  },
-  {
-   "id": "n18c1gf0",
-   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQYzdrMjRkUW5sN0d4VGw5Mmc1S3AzUi1vNm9zU3ctdDdsR1owUV9jZGNfV3U5ZVhmbmo2b3dCeEVwVVRVMUtuSE1aWk5NTkMtWnFXZFR1R0VVRHNERHE2M0NWS1RjLW5RcVBrNmRJVGdnd0lqZGgxUmlMa2hZcEZna0VScnZQNmdjSVB0LWF2ZFYzOGR6ZWY1WmpmenpZV2lyY2hVTlozNnl5TzJJQUNF?oc=5",
-   "source": "Daily Front Row",
-   "publishedAt": "2026-10-30T13:43:15.000Z",
-   "original": "Guerlain Brings Parisian Glamour To NYC For A Star-Studded Fragrance Celebration",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Guerlain Brings Parisian Glamour To NYC For A Star-Studded Fragrance Celebration",
-    "en": "Guerlain Brings Parisian Glamour To NYC For A Star-Studded Fragrance Celebration"
-   },
-   "summary": {
-    "ar": "Guerlain Brings Parisian Glamour To NYC For A Star-Studded Fragrance Celebration",
-    "en": "Guerlain Brings Parisian Glamour To NYC For A Star-Studded Fragrance Celebration"
-   }
-  },
-  {
-   "id": "n115x0fl",
-   "url": "https://nstperfume.com/2026/10/30/friday-scent-of-the-day-10-30-2/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-10-30T13:36:57.000Z",
-   "original": "Friday scent of the day 10/30",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Friday scent of the day 10/30",
-    "en": "Friday scent of the day 10/30"
-   },
-   "summary": {
-    "ar": "It's Friday and National Candy Corn Day . Birthdays: Christopher Wren , John Adams , Clifford Brown , Louis Malle , Grace Slick . RIP Patrick Stewart . Our community project for today: celebrate the start of Halloween weekend by wearing a fragrance that you like, but that isn't quite \"you\"...so it works as a costume, so to speak. What fragrance did you pick? As always, do chime in with your scent of the day even if you’re not participating in the community project. Me: points for sure, in Chanel",
-    "en": "It's Friday and National Candy Corn Day . Birthdays: Christopher Wren , John Adams , Clifford Brown , Louis Malle , Grace Slick . RIP Patrick Stewart . Our community project for today: celebrate the start of Halloween weekend by wearing a fragrance that you like, but that isn't quite \"you\"...so it works as a costume, so to speak. What fragrance did you pick? As always, do chime in with your scent of the day even if you’re not participating in the community project. Me: points for sure, in Chanel"
-   }
-  },
-  {
-   "id": "n1sov3bw",
-   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5oUFJ0WTA1VV9XdXlFRFRZRTI1SlJNd1RUcHIwYU5vOWhBalFWU3BuTUtsa0JDTTlaWlF5SUVSUllHVUVHLUc2emUzWWVlWjV5YjBqNHhlSnlYcW0wM01tNDlFTjdaSTA?oc=5",
-   "source": "Trend Hunter",
-   "publishedAt": "2026-10-30T13:12:49.000Z",
-   "original": "Amber Floral Fragrances: Estée Lauder’s Glimmer Eau de Parfum Combines Warmth…",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Amber Floral Fragrances: Estée Lauder’s Glimmer Eau de Parfum Combines Warmth…",
-    "en": "Amber Floral Fragrances: Estée Lauder’s Glimmer Eau de Parfum Combines Warmth…"
-   },
-   "summary": {
-    "ar": "Amber Floral Fragrances: Estée Lauder’s Glimmer Eau de Parfum Combines Warmth…",
-    "en": "Amber Floral Fragrances: Estée Lauder’s Glimmer Eau de Parfum Combines Warmth…"
-   }
-  },
-  {
-   "id": "nrkvfjp",
-   "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPQkVEcklNeHRIYlN0cXJ3TWpvRzJrOVV0WE4zQ3gwc3VnNVdWTVp0WVF5R29lMlBHUENicmtMb1oxTkZXS1VRS3JBNHN4b1FpbnJvZnExMXl1bDVuTGg2Y25SdmZNUXVXSnV6VjV1MXRIOUkzSlNlVzhJQ0FLbG1YQU4zSm5UN09KOU9DNzNWaXZZSGp3TjNKOGtYYXFSZkRNR2tGMG9TZG1ZdW0wYl8yaE83RDZrcWRTdkswa0RNaENuRGROWHhPWFJuaFdKS3ZJQVJac1Zn?oc=5",
-   "source": "The Mercury",
-   "publishedAt": "2026-10-30T13:04:06.000Z",
-   "original": "Meet the makers putting Tassie on the world perfume map",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Meet the makers putting Tassie on the world perfume map",
-    "en": "Meet the makers putting Tassie on the world perfume map"
-   },
-   "summary": {
-    "ar": "Meet the makers putting Tassie on the world perfume map",
-    "en": "Meet the makers putting Tassie on the world perfume map"
-   }
-  },
-  {
-   "id": "n61s3sz",
-   "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1zSWJhSjVTclpvbGM0bnNVNnpqeVF5U1g2SW9CdlJpSU9LTVZoZE15c25lY1VYOFBiV0ZYYXlzREgyUDhzb3MzdnkzNF9BdWJCMllOMUpTNWtRMGZ2WWRWN2FqZGh0RTdITnRqMUsxTWlFRi0tbV9PX0ZfTEZEaUk?oc=5",
-   "source": "The Business of Fashion",
-   "publishedAt": "2026-10-30T13:00:00.000Z",
-   "original": "How Niche Perfumers Tap Subculture",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "How Niche Perfumers Tap Subculture",
-    "en": "How Niche Perfumers Tap Subculture"
-   },
-   "summary": {
-    "ar": "How Niche Perfumers Tap Subculture",
-    "en": "How Niche Perfumers Tap Subculture"
-   }
-  },
-  {
-   "id": "n1hggddg",
-   "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxPYmpidk1ZWnZlUlhOSnduWGlzV3hoNG83djNTOEdaeEtYZmdyNDBiRTM2MkNaeF8ya0lZNi1mekdnbUt4SjR2Yk1xbGFfbXRIYnJEZEM0Q3dRZDdBMklPeUEwM29OZFFqMjg3NExJbnozLWJOOU5CamVhU0M0c0swUVV4WTYteWVGZVVhTFlHZ2VIMWQyMEhuODRfN3loc25NQXIwdF9iaENjZXctOVRtNm9kQk0zc1JpbVhPNFNrX1h5a2F4aWFMdzI1ck9HYmhiQmY1OUtKWXI4c1dJY044RHhUcw?oc=5",
-   "source": "Northampton Chronicle and Echo",
-   "publishedAt": "2026-10-30T12:31:00.000Z",
-   "original": "Artisan perfume brand founder encourages Northampton community to come and make bespoke fragrance",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Artisan perfume brand founder encourages Northampton community to come and make bespoke fragrance",
-    "en": "Artisan perfume brand founder encourages Northampton community to come and make bespoke fragrance"
-   },
-   "summary": {
-    "ar": "Artisan perfume brand founder encourages Northampton community to come and make bespoke fragrance",
-    "en": "Artisan perfume brand founder encourages Northampton community to come and make bespoke fragrance"
-   }
-  },
-  {
-   "id": "nx82b89",
-   "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1pMm54TVBwdGkzNFRBNzJaYUxLc1BEVUJ5YnN0bWdIS0xwSjdBSy01WkU0ZW9SZnh5NE9qczJxMXJEa3hGUWo5bG12TklXOWI5SUxwY0lBU0dMbmUySjkzSzFGZUxrUQ?oc=5",
-   "source": "TheIndustry.beauty",
-   "publishedAt": "2026-10-30T11:21:26.000Z",
-   "original": "Puig targets €8bn sales by 2032 with fragrance-led growth",
-   "lang": "en",
-   "category": "market",
-   "importance": 2,
-   "title": {
-    "ar": "Puig targets €8bn sales by 2032 with fragrance-led growth",
-    "en": "Puig targets €8bn sales by 2032 with fragrance-led growth"
-   },
-   "summary": {
-    "ar": "Puig targets €8bn sales by 2032 with fragrance-led growth",
-    "en": "Puig targets €8bn sales by 2032 with fragrance-led growth"
-   }
-  },
-  {
-   "id": "n137riom",
-   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQSmFUR1JKdVZIRnE3RG1takQ1RFdIWFplSmd2TTYtc1ZVZ0JERUJubVdsdnRObENHT0hSOHA3MFRjUHc5ZURweEVOSmFHdjJNUFRySXdMYlA4MEF6Rk1ZakhFalgyOXN0SGxRc0xfSFZHRTlDc0QtbUNZZGY4bW1oeTJoWmZ4WTQ4dFZpTnl4Ym9rWVRZTGxWMmNvbFpMVkt6TUEzYlI0ZFZ4UjkxNTZSbjEzaGpPbkZMY25EZQ?oc=5",
-   "source": "Biz Today",
-   "publishedAt": "2026-10-30T10:31:19.000Z",
-   "original": "Karachi to Host International Fragrance Show on November 4; Free Entry for Visitors",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Karachi to Host International Fragrance Show on November 4; Free Entry for Visitors",
-    "en": "Karachi to Host International Fragrance Show on November 4; Free Entry for Visitors"
-   },
-   "summary": {
-    "ar": "Karachi to Host International Fragrance Show on November 4; Free Entry for Visitors",
-    "en": "Karachi to Host International Fragrance Show on November 4; Free Entry for Visitors"
-   }
-  },
-  {
-   "id": "n12yp4es",
-   "url": "https://news.google.com/rss/articles/CBMi2gJBVV95cUxNRnBfd0pzd0NJaEREbjMwNWc1YnR3VERidVgxVF9HNDRNS0xPeDgzMlJWUHdNV3F6b3VKNXMxTFJoa3JMZFdoZlp0anc4ZXRqaHY4b1F3cWlTUVdfYkRKdTFUUkljbVdwcXh3VndIX0NsZEVhaU5QcDh3UW1aTUJpVkJES3FXejVBTXoyUmV1V3l2amx5SVZjdUVPY2FNWXlzS25JcDM5QmZQX0R3U1lzanJYQ1RCeGUzTmRiMVJVejEwLWNwQTBpaHlRSXBiT2NiNmg5VlJWRG9CdXNuM2tFemxyZjVNNGYyV2k1RkUtbmRFTGFjWG91UXJzaklsODJiYXdQalVWb2Iwa0p3c0tTbm1oSE5iVDI0RTI0VUk1cjlfSEJoU3Y3NG5GZVlCVThFWC0yaWVsTXRuQllmcUk4ZTdXQUp2N2hNOFF2bTdlaFVxMDFCRXd3RzhB?oc=5",
-   "source": "جريدة العدد الاول",
-   "publishedAt": "2026-10-30T10:14:03.000Z",
-   "original": "مارسيل خليفة يفتتح مهرجان العود الدولي بتطوان وسط حضور حاشد",
-   "lang": "ar",
-   "category": "events",
-   "importance": 2,
-   "title": {
-    "ar": "مارسيل خليفة يفتتح مهرجان العود الدولي بتطوان وسط حضور حاشد",
-    "en": "مارسيل خليفة يفتتح مهرجان العود الدولي بتطوان وسط حضور حاشد"
-   },
-   "summary": {
-    "ar": "مارسيل خليفة يفتتح مهرجان العود الدولي بتطوان وسط حضور حاشد",
-    "en": "مارسيل خليفة يفتتح مهرجان العود الدولي بتطوان وسط حضور حاشد"
-   }
-  },
-  {
-   "id": "nfoz34z",
-   "url": "https://news.google.com/rss/articles/CBMiuANBVV95cUxPZnFOOVk4NU81eGVISVdYTHU1S213dkZ0Y0FabUc1WU5pdlBFMkxNa1RHYnJ4QW95cDlNWmxtVkxpTGxZOVd2bW5XbUMwWFhFS1BNTFFzWXZhaXhISGVKZEtOTkdRTUoyQldEUzRlQVZfQmUtN282YmphcUxKM3hYazA0cVphSk9VUG5nX3VGZFpQb0FHTFJVbTB1NjRCZkpEeVZmQVZvc2tnZW1nQkFSUGVGQi0tZXIzVHVsSVB1S0dwVjNaLUU4MGpGdE9QRXAtdS03dUo2LVlYdUh2TTVWd0tUT0pmaTB4a0hJazlhcFl2MDdGb0phYU1mNGRydnQxRUNHS0phc0hjNWFYYnRTODlTSlBqWW5mSFdhbHVhZG01aW5YazZHX3pXQU42amstSkhCMG5WRGNQb3BpUEdrNlAwbGtfV2R5M1k1WWFtR0VRTm1fWTZ5SmtGYndXZXNNbHJrZHNNN0tFWnR5M0h5ZU1wcGttS1RUVnNSS20xVDAtdmZVc1BtNEpFcTZacnJaRDVKbG01bTJ4MVFVTDV2bTNPVm5Ibk9TNmZQbW5ZZ1NMQ2NQdUMxdQ?oc=5",
-   "source": "Elfann",
-   "publishedAt": "2026-10-30T10:03:03.000Z",
-   "original": "مارسيل خليفة يشعل افتتاح مهرجان العود في المغرب بحضور جماهيري حاشد",
-   "lang": "ar",
-   "category": "events",
-   "importance": 2,
-   "title": {
-    "ar": "مارسيل خليفة يشعل افتتاح مهرجان العود في المغرب بحضور جماهيري حاشد",
-    "en": "مارسيل خليفة يشعل افتتاح مهرجان العود في المغرب بحضور جماهيري حاشد"
-   },
-   "summary": {
-    "ar": "مارسيل خليفة يشعل افتتاح مهرجان العود في المغرب بحضور جماهيري حاشد",
-    "en": "مارسيل خليفة يشعل افتتاح مهرجان العود في المغرب بحضور جماهيري حاشد"
    }
   }
  ]
