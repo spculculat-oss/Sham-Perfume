@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-31T04:12:27.217Z",
+ "updatedAt": "2026-10-31T07:26:55.796Z",
  "nodes": [
   {
    "id": "brand:Afnan",
@@ -18699,342 +18699,342 @@
    "from": "carrier:poslaju_intl",
    "to": "destination:AE",
    "relation": "carried_by",
-   "weight": 27.6,
+   "weight": 27.61,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 27.6 دولار + 6.9 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 27.61 دولار + 6.9 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:AL",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:AT",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 10.35 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 10.35 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:BA",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:BE",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 5.17 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 5.18 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:BG",
    "relation": "carried_by",
-   "weight": 54.16,
+   "weight": 54.18,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 54.16 دولار + 13.8 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 54.18 دولار + 13.8 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:BH",
    "relation": "carried_by",
-   "weight": 25.87,
+   "weight": 25.88,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 25.87 دولار + 6.9 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 25.88 دولار + 6.9 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:BN",
    "relation": "carried_by",
-   "weight": 14.83,
+   "weight": 14.84,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 14.83 دولار + 2.07 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 14.84 دولار + 2.07 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:CA",
    "relation": "carried_by",
-   "weight": 37.94,
+   "weight": 37.96,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 37.94 دولار + 7.59 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 37.96 دولار + 7.59 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:CH",
    "relation": "carried_by",
-   "weight": 44.84,
+   "weight": 44.86,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 44.84 دولار + 10.35 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 44.86 دولار + 10.35 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:CY",
    "relation": "carried_by",
-   "weight": 54.16,
+   "weight": 54.18,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 54.16 دولار + 13.8 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 54.18 دولار + 13.8 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:CZ",
    "relation": "carried_by",
-   "weight": 54.16,
+   "weight": 54.18,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 54.16 دولار + 13.8 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 54.18 دولار + 13.8 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:DE",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 6.55 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 6.56 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:DJ",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:DK",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 5.17 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 5.18 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:DZ",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:EE",
    "relation": "carried_by",
-   "weight": 54.16,
+   "weight": 54.18,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 54.16 دولار + 13.8 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 54.18 دولار + 13.8 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:EG",
    "relation": "carried_by",
-   "weight": 31.05,
+   "weight": 31.06,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 31.05 دولار + 5.17 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 31.06 دولار + 5.18 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:ES",
    "relation": "carried_by",
-   "weight": 39.67,
+   "weight": 39.68,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 39.67 دولار + 5.17 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 39.68 دولار + 5.18 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:FI",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 5.17 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 5.18 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:FR",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 5.17 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 5.18 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:GB",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 5.17 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 5.18 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:GR",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 6.9 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 6.9 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:HR",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:HU",
    "relation": "carried_by",
-   "weight": 55.19,
+   "weight": 55.21,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 55.19 دولار + 12.42 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 55.21 دولار + 12.42 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:ID",
    "relation": "carried_by",
-   "weight": 15.52,
+   "weight": 15.53,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 15.52 دولار + 2.07 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 15.53 دولار + 2.07 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:IE",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 5.17 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 5.18 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:IQ",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:IS",
    "relation": "carried_by",
-   "weight": 42.43,
+   "weight": 42.44,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 42.43 دولار + 6.9 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 42.44 دولار + 6.9 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:IT",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 5.17 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 5.18 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:JO",
    "relation": "carried_by",
-   "weight": 25.87,
+   "weight": 25.88,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 25.87 دولار + 6.9 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 25.88 دولار + 6.9 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
@@ -19051,23 +19051,23 @@
    "from": "carrier:poslaju_intl",
    "to": "destination:KM",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:KW",
    "relation": "carried_by",
-   "weight": 25.87,
+   "weight": 25.88,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 25.87 دولار + 6.9 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 25.88 دولار + 6.9 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
@@ -19084,287 +19084,287 @@
    "from": "carrier:poslaju_intl",
    "to": "destination:LB",
    "relation": "carried_by",
-   "weight": 55.19,
+   "weight": 55.21,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 55.19 دولار + 13.8 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 55.21 دولار + 13.8 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:LT",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:LU",
    "relation": "carried_by",
-   "weight": 49.67,
+   "weight": 49.69,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 49.67 دولار + 7.59 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 49.69 دولار + 7.59 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:LV",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:LY",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:MA",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 15.52 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 15.53 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:MD",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:ME",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:MK",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:MM",
    "relation": "carried_by",
-   "weight": 27.6,
+   "weight": 27.61,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 27.6 دولار + 6.9 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 27.61 دولار + 6.9 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:MR",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:MT",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:MX",
    "relation": "carried_by",
-   "weight": 47.26,
+   "weight": 47.28,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 47.26 دولار + 10.35 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 47.28 دولار + 10.35 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:NL",
    "relation": "carried_by",
-   "weight": 37.94,
+   "weight": 37.96,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 37.94 دولار + 7.93 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 37.96 دولار + 7.94 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:NO",
    "relation": "carried_by",
-   "weight": 41.39,
+   "weight": 41.41,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 41.39 دولار + 8.62 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 41.41 دولار + 8.63 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:OM",
    "relation": "carried_by",
-   "weight": 51.74,
+   "weight": 51.76,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 51.74 دولار + 13.8 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 51.76 دولار + 13.8 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:PH",
    "relation": "carried_by",
-   "weight": 18.97,
+   "weight": 18.98,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 18.97 دولار + 2.76 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 18.98 دولار + 2.76 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:PL",
    "relation": "carried_by",
-   "weight": 55.19,
+   "weight": 55.21,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 55.19 دولار + 13.8 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 55.21 دولار + 13.8 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:PS",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:PT",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 5.17 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 5.18 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:QA",
    "relation": "carried_by",
-   "weight": 25.87,
+   "weight": 25.88,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 25.87 دولار + 6.9 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 25.88 دولار + 6.9 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:RO",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:RS",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:SA",
    "relation": "carried_by",
-   "weight": 27.6,
+   "weight": 27.61,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 27.6 دولار + 8.62 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 27.61 دولار + 8.63 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:SD",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:SE",
    "relation": "carried_by",
-   "weight": 44.84,
+   "weight": 44.86,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 44.84 دولار + 10.35 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 44.86 دولار + 10.35 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
@@ -19375,106 +19375,106 @@
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 13.8 دولار + 1.72 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 13.8 دولار + 1.73 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:SI",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:SK",
    "relation": "carried_by",
-   "weight": 54.16,
+   "weight": 54.18,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 54.16 دولار + 13.8 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 54.18 دولار + 13.8 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:SO",
    "relation": "carried_by",
-   "weight": 62.09,
+   "weight": 62.11,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 62.09 دولار + 18.97 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 62.11 دولار + 18.98 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:SY",
    "relation": "carried_by",
-   "weight": 53.47,
+   "weight": 53.49,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 53.47 دولار + 13.8 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 53.49 دولار + 13.8 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:TH",
    "relation": "carried_by",
-   "weight": 15.52,
+   "weight": 15.53,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 15.52 دولار + 2.07 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 15.53 دولار + 2.07 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:TN",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 10.35 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 10.35 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:TR",
    "relation": "carried_by",
-   "weight": 24.15,
+   "weight": 24.16,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 24.15 دولار + 6.9 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 24.16 دولار + 6.9 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:UA",
    "relation": "carried_by",
-   "weight": 53.47,
+   "weight": 53.49,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 53.47 دولار + 13.8 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 53.49 دولار + 13.8 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
    "to": "destination:US",
    "relation": "carried_by",
-   "weight": 34.5,
+   "weight": 34.51,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 34.5 دولار + 6.9 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 34.51 دولار + 6.9 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "carrier:poslaju_intl",
@@ -19491,12 +19491,12 @@
    "from": "carrier:poslaju_intl",
    "to": "destination:YE",
    "relation": "carried_by",
-   "weight": 54.16,
+   "weight": 54.18,
    "unit": "USD",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "confidence": 1,
-   "noteAr": "أول ٥٠٠ جم 54.16 دولار + 13.8 لكل ٥٠٠ جم زيادة"
+   "noteAr": "أول ٥٠٠ جم 54.18 دولار + 13.8 لكل ٥٠٠ جم زيادة"
   },
   {
    "from": "destination:AE",
