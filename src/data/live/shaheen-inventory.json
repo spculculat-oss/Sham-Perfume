@@ -1,8 +1,8 @@
 {
  "version": 1,
- "updatedAt": "2026-10-31T06:49:50.718Z",
+ "updatedAt": "2026-10-31T12:46:39.421Z",
  "sources": {
-  "catalogAt": "2026-10-31T05:16:16.220Z",
+  "catalogAt": "2026-10-31T11:06:39.480Z",
   "total": 1212,
   "published": 1161,
   "liveStock": true,
@@ -173,6 +173,14 @@
   {
    "sku": "ARM-547",
    "nameAr": "أرماف كلوب دي نويت أيكونيك",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-434",
+   "nameAr": "أرماف كلوب دي نويت مان للرجال",
    "brand": "Armaf",
    "priority": "normal",
    "units30": 0,
@@ -356,7 +364,7 @@
   },
   {
    "sku": "MAI-464",
-   "nameAr": "أوبرا نوار من ميزون الحمراء",
+   "nameAr": "أوبرا نوار من ميسون ألهامبرا",
    "brand": "Maison Alhambra",
    "priority": "normal",
    "units30": 0,
@@ -476,7 +484,7 @@
   },
   {
    "sku": "ZIM-443",
-   "nameAr": "أيقونة من زيمايا",
+   "nameAr": "أيكون باي زيمايا",
    "brand": "Zimaya",
    "priority": "normal",
    "units30": 0,
@@ -502,14 +510,6 @@
    "sku": "LAT-266",
    "nameAr": "إعجاز من لطافة للرجال",
    "brand": "Lattafa",
-   "priority": "normal",
-   "units30": 0,
-   "reasonAr": "نفد"
-  },
-  {
-   "sku": "MAI-512",
-   "nameAr": "إكسكلوسيف توباكو من ميزون الحمراء",
-   "brand": "Maison Alhambra",
    "priority": "normal",
    "units30": 0,
    "reasonAr": "نفد"
