@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-10-30T21:40:47.705Z",
+  "updatedAt": "2026-10-31T09:45:43.533Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -23,13 +23,13 @@
     "الترجمة مش مكتملة: 10.3% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 273068 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط والأخبار الأساسية بس هي اللي مكتملة.",
     "تقليل صارم للغة إلى عربي/إنجليزي في 2 موضع — راجع إن كان المقصود زوج بيانات {ar,en} أم لغة واجهة.",
     "المترجم الذكي: 273068 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3690 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
-    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Cosmetics» src/legal/jurisdictions.ts:198، «Cosmetics» src/legal/jurisdictions.ts:428، «Cosmetics» src/legal/jurisdictions.ts:569.",
-    "لغات بلّغ عنها قسم التصميم بتتترجم الأول: mk، bs، sd."
+    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Payment methods» src/bank/ProductPayMethods.tsx:58، «Payment methods» src/bank/ProductPayMethods.tsx:59، «Payment methods» src/components/Storefront.tsx:1314، «All perfume news» src/components/HomeHub.tsx:335، «direction» src/bank/shamLedger.ts:459، «direction» src/bank/worldPay.ts:125.",
+    "لغات بلّغ عنها قسم التصميم بتتترجم الأول: mk، be، fa."
   ],
   "translationCoverage": 10.3,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-10-30T21:40:48.013Z",
+    "at": "2026-10-31T09:45:44.252Z",
     "status": "quota",
     "remaining": 273068,
     "covered": 3690,
@@ -82,7 +82,7 @@
       "reviewed": false,
       "engines": [],
       "languages": [],
-      "resumeAt": "2026-10-31T08:05:00.000Z"
+      "resumeAt": "2026-11-01T08:05:00.000Z"
     },
     "rejectReasons": {},
     "rejectCounts": {
@@ -170,36 +170,58 @@
     }
   },
   "design": {
-    "at": "2026-10-30T21:40:47.705Z",
-    "auditAt": "2026-10-28T05:51:34.802Z",
-    "auditScore": 58,
+    "at": "2026-10-31T09:45:43.533Z",
+    "auditAt": "2026-10-31T05:49:00.921Z",
+    "auditScore": 62,
     "priorityLanguages": [
       "mk",
-      "bs",
-      "sd"
+      "be",
+      "fa"
     ],
     "located": [
       {
-        "phrase": "Cosmetics",
-        "file": "src/legal/jurisdictions.ts",
-        "line": 198
+        "phrase": "Payment methods",
+        "file": "src/bank/ProductPayMethods.tsx",
+        "line": 58
       },
       {
-        "phrase": "Cosmetics",
-        "file": "src/legal/jurisdictions.ts",
-        "line": 428
+        "phrase": "Payment methods",
+        "file": "src/bank/ProductPayMethods.tsx",
+        "line": 59
       },
       {
-        "phrase": "Cosmetics",
-        "file": "src/legal/jurisdictions.ts",
-        "line": 569
+        "phrase": "Payment methods",
+        "file": "src/components/Storefront.tsx",
+        "line": 1314
+      },
+      {
+        "phrase": "All perfume news",
+        "file": "src/components/HomeHub.tsx",
+        "line": 335
+      },
+      {
+        "phrase": "direction",
+        "file": "src/bank/shamLedger.ts",
+        "line": 459
+      },
+      {
+        "phrase": "direction",
+        "file": "src/bank/worldPay.ts",
+        "line": 125
+      },
+      {
+        "phrase": "direction",
+        "file": "src/utils/ownerDesk.ts",
+        "line": 197
       }
     ],
     "unlocated": [
       "SCENT STUDIO",
       "Live Sync",
       "Enter Portal",
-      "descriptive content"
+      "World News",
+      "Design Studio",
+      "Cosmetics Business"
     ],
     "physicalDirection": {
       "total": 300,
