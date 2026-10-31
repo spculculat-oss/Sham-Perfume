@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-31T16:19:46.604Z",
+ "updatedAt": "2026-10-31T17:08:48.020Z",
  "entries": [
   {
    "id": "ar|auto|ايه هي قوانين نيوتن التلاتة للحركة",
@@ -23,26 +23,6 @@
    "hits": 1,
    "source": "study",
    "lastUsed": "2026-10-22T11:05:06.645Z"
-  },
-  {
-   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
-   "question": "What fixative works best for a citrus cologne, and at what percentage?",
-   "lang": "en",
-   "style": "auto",
-   "answer": "For a citrus cologne, fixatives that extend the fleeting top notes without muddying the bright, clean character work best. Materials like **Ambroxan** (for a clean, modern ambergris touch), **Iso E Super** (for subtle woody diffusion and longevity), or **Ethylene Brassylate** (a smooth, clean musk) are ideal choices.\n\nSince colognes have lighter structures, the fixative is typically kept low to maintain the sparkling citrus opening. A common guideline is to use the fixative at **1% to 3%** of the total formula, integrated into a standard 50 ml bottle at an Eau de Cologne (EDC) concentration of 5%.\n\nHere is an experimental 50 ml citrus cologne formula using Ambroxan as the fixative, set at an EDC concentration of 5% with 78% alcohol:\n\n| Component | Percentage (%) | Amount for 50 ml Bottle |\n|:--- |:--- |:--- |\n| Citrus Essential Oils & Accords (Lemon, Bergamot, Orange) | 4.00% | 2.00 ml |\n| Ambroxan (Fixative) | 1.00% | 0.50 ml |\n| Alcohol (96%) | 78.00% | 40.63 ml |\n| Distilled Water | 17.00% | 6.87 ml |\n| **Total** | **100.00%** | **50.00 ml** |\n\n*Note: The remaining alcohol calculation uses a standard dilution formula (e.g., Target Volume × Target Percentage ÷ Source Percentage).*\n\n```sham-formula\n{\"title\":\"Citrus Cologne with Ambroxan\",\"author\":\"شاهين — مقترح تجريبي\",\"concentrationPercent\":5,\"concentrationType\":\"edc\",\"bottleVolumeMl\":50,\"alcoholPercentage\":96,\"waterPercent\":17,\"fixativePercent\":1,\"macerationDays\":21,\"summary\":\"مقترح تجريبي لعون كولونيا حمضيات مع أمبروكسان كمثبت\",\"pyramidNotes\":[{\"id\":\"note-1\",\"nameAr\":\"برغموت\",\"nameEn\":\"Bergamot\",\"category\":\"top\",\"percentageOfOil\":40},{\"id\":\"note-2\",\"nameAr\":\"ليمون\",\"nameEn\":\"Lemon\",\"category\":\"top\",\"percentageOfOil\":40},{\"id\":\"note-3\",\"nameAr\":\"أمبروكسان\",\"nameEn\":\"Ambroxan\",\"category\":\"base\",\"percentageOfOil\":20}]}\n```\n\n```sham-tool\n{\"tools\":[{\"tool\":\"concentration\",\"bottleVolumeMl\":50,\"concentrationPercent\":5,\"concentrationType\":\"edc\",\"alcoholPercentage\":96,\"waterPercent\":17,\"fixativePercent\":1},{\"tool\":\"maceration\",\"macerationDays\":21}]}\n```\n\nWould you prefer a musky fixative like Ethylene Brassylate instead of Ambroxan for this blend?",
-   "at": "2026-10-31T15:39:12.342Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
-   "id": "ar|auto|ليه العطر بيختفي بسرعة علي جلدي؟ وازود الثبات ازاي",
-   "question": "ليه العطر بيختفي بسرعة على جلدي؟ وأزود الثبات ازاي؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "العطر بيختفي بسرعة على الجلد لأسباب بسيطة جداً، وأهمها إن الجلد الجاف بيشرب الزيت العطري ويخليه يطير بسرعة، أو إن تركيز العطر خفيف، أو إن رشه كان على أماكن نبض ضعيفة.\n\nعشان تزود الثبات وتخلي العطر يعيش معاك أطول، جرب الخطوات دي:\n\n1. **رطب جلدك الأول:** حط كريم مرطب خالي من الروائح أو نقطة فازلين خفيفة على مكان الرش قبل العطر؛ الجلد المرطب بيحتفظ بريحة العطر فترة أطول بكتير.\n2. **رش في أماكن النبض:** زي الرقبة، ومعصم الإيد، وخلف الودان، لأن الحرارة في المناطق دي بتساعد العطر يفوح بهدوء وثبات.\n3. **رش على الهدوم:** الأنسجة والهدوم (خصوصاً القطن والصوف) بتمسك في الريحة أكتر بكتير من الجلد.\n4. **بلاش فرك:** بعد ما ترش العطر على معصمك، اوعى تفرك إيديك ببعض لأن الفرك بيسخن الجلد ويكسر جزيئات العطر ويخليه يطير أسرع.\n\nجرب ترطب جلدك كويس قبل البخة الجاية، وحاسس إن المشكلة دي بتظهر معاك أكتر مع عطور معينة ولا كل العطور؟",
-   "at": "2026-10-31T15:39:12.342Z",
-   "hits": 0,
-   "source": "chat"
   },
   {
    "id": "ar|auto|ايه هي تصميم تركيبة شتوية شرقية",
@@ -83,6 +63,26 @@
    "at": "2026-10-31T16:19:46.600Z",
    "hits": 0,
    "source": "study"
+  },
+  {
+   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
+   "question": "What fixative works best for a citrus cologne, and at what percentage?",
+   "lang": "en",
+   "style": "auto",
+   "answer": "For a citrus cologne, fixatives that extend the fleeting top notes without muddying the bright, clean character work best. Materials like **Ambroxan** (for a clean, modern ambergris touch), **Iso E Super** (for subtle woody diffusion and longevity), or **Ethylene Brassylate** (a smooth, clean musk) are ideal choices.\n\nSince colognes have lighter structures, the fixative is typically kept low to maintain the sparkling citrus opening. A common guideline is to use the fixative at **1% to 3%** of the total formula, integrated into a standard 50 ml bottle at an Eau de Cologne (EDC) concentration of 5%.\n\nHere is an experimental 50 ml citrus cologne formula using Ambroxan as the fixative, set at an EDC concentration of 5% with 78% alcohol:\n\n| Component | Percentage (%) | Amount for 50 ml Bottle |\n|:--- |:--- |:--- |\n| Citrus Essential Oils & Accords (Lemon, Bergamot, Orange) | 4.00% | 2.00 ml |\n| Ambroxan (Fixative) | 1.00% | 0.50 ml |\n| Alcohol (96%) | 78.00% | 40.63 ml |\n| Distilled Water | 17.00% | 6.87 ml |\n| **Total** | **100.00%** | **50.00 ml** |\n\n*Note: The remaining alcohol calculation uses a standard dilution formula (e.g., Target Volume × Target Percentage ÷ Source Percentage).*\n\n```sham-formula\n{\"title\":\"Citrus Cologne with Ambroxan\",\"author\":\"شاهين — مقترح تجريبي\",\"concentrationPercent\":5,\"concentrationType\":\"edc\",\"bottleVolumeMl\":50,\"alcoholPercentage\":96,\"waterPercent\":17,\"fixativePercent\":1,\"macerationDays\":21,\"summary\":\"مقترح تجريبي لعون كولونيا حمضيات مع أمبروكسان كمثبت\",\"pyramidNotes\":[{\"id\":\"note-1\",\"nameAr\":\"برغموت\",\"nameEn\":\"Bergamot\",\"category\":\"top\",\"percentageOfOil\":40},{\"id\":\"note-2\",\"nameAr\":\"ليمون\",\"nameEn\":\"Lemon\",\"category\":\"top\",\"percentageOfOil\":40},{\"id\":\"note-3\",\"nameAr\":\"أمبروكسان\",\"nameEn\":\"Ambroxan\",\"category\":\"base\",\"percentageOfOil\":20}]}\n```\n\n```sham-tool\n{\"tools\":[{\"tool\":\"concentration\",\"bottleVolumeMl\":50,\"concentrationPercent\":5,\"concentrationType\":\"edc\",\"alcoholPercentage\":96,\"waterPercent\":17,\"fixativePercent\":1},{\"tool\":\"maceration\",\"macerationDays\":21}]}\n```\n\nWould you prefer a musky fixative like Ethylene Brassylate instead of Ambroxan for this blend?",
+   "at": "2026-10-31T15:39:12.342Z",
+   "hits": 0,
+   "source": "chat"
+  },
+  {
+   "id": "ar|auto|ليه العطر بيختفي بسرعة علي جلدي؟ وازود الثبات ازاي",
+   "question": "ليه العطر بيختفي بسرعة على جلدي؟ وأزود الثبات ازاي؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "العطر بيختفي بسرعة على الجلد لأسباب بسيطة جداً، وأهمها إن الجلد الجاف بيشرب الزيت العطري ويخليه يطير بسرعة، أو إن تركيز العطر خفيف، أو إن رشه كان على أماكن نبض ضعيفة.\n\nعشان تزود الثبات وتخلي العطر يعيش معاك أطول، جرب الخطوات دي:\n\n1. **رطب جلدك الأول:** حط كريم مرطب خالي من الروائح أو نقطة فازلين خفيفة على مكان الرش قبل العطر؛ الجلد المرطب بيحتفظ بريحة العطر فترة أطول بكتير.\n2. **رش في أماكن النبض:** زي الرقبة، ومعصم الإيد، وخلف الودان، لأن الحرارة في المناطق دي بتساعد العطر يفوح بهدوء وثبات.\n3. **رش على الهدوم:** الأنسجة والهدوم (خصوصاً القطن والصوف) بتمسك في الريحة أكتر بكتير من الجلد.\n4. **بلاش فرك:** بعد ما ترش العطر على معصمك، اوعى تفرك إيديك ببعض لأن الفرك بيسخن الجلد ويكسر جزيئات العطر ويخليه يطير أسرع.\n\nجرب ترطب جلدك كويس قبل البخة الجاية، وحاسس إن المشكلة دي بتظهر معاك أكتر مع عطور معينة ولا كل العطور؟",
+   "at": "2026-10-31T15:39:12.342Z",
+   "hits": 0,
+   "source": "chat"
   },
   {
    "id": "ar|auto|كم يوم اعتق عطر فيه مسك وعنبر وعود",
