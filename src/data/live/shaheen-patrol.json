@@ -1,9 +1,9 @@
 {
  "version": 1,
- "updatedAt": "2026-10-31T09:24:27.793Z",
- "publishedAt": "2026-10-31T09:24:27.793Z",
- "signature": "1pdesbc",
- "summaryAr": "وردية المتجر والأسعار 09:24 UTC: 8 اختبار عملي (7 سليم)، 21 مشكلة مفتوحة — 0 بتتصلح آلياً، 19 عند شاهين، 0 مهمة تطوير، 2 محتاجة قرارك؛ 11 مراجعة خبير (10 اتقبلت، 1 اترفضت)؛ 0 اتصلحت من آخر دورية.",
+ "updatedAt": "2026-10-31T10:20:45.966Z",
+ "publishedAt": "2026-10-31T10:20:45.966Z",
+ "signature": "1st4qcq",
+ "summaryAr": "وردية المحتوى وتجربة الزائر 10:20 UTC: 7 اختبار عملي (7 سليم)، 21 مشكلة مفتوحة — 0 بتتصلح آلياً، 19 عند شاهين، 0 مهمة تطوير، 2 محتاجة قرارك؛ 7 مراجعة خبير (7 اتقبلت، 0 اترفضت)؛ 0 اتصلحت من آخر دورية.",
  "health": 88,
  "bots": [
   {
@@ -16,7 +16,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-31T09:00:43Z",
-   "lastRunAt": "2026-10-31T09:00:43Z",
+   "lastRunAt": "2026-10-31T09:59:33Z",
    "lastRunOk": true
   },
   {
@@ -24,7 +24,7 @@
    "status": "fail",
    "problems": 1,
    "reviewed": "2026-10-31T07:09:06Z",
-   "lastRunAt": "2026-10-31T07:09:06Z",
+   "lastRunAt": "2026-10-31T10:01:28Z",
    "lastRunOk": true
   },
   {
@@ -77,7 +77,7 @@
    "status": "warn",
    "problems": 1,
    "reviewed": "2026-10-31T07:38:48Z",
-   "lastRunAt": "2026-10-31T08:29:09Z",
+   "lastRunAt": "2026-10-31T09:24:49Z",
    "lastRunOk": true
   },
   {
@@ -174,8 +174,8 @@
    "id": "synapse",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-31T07:27:02Z",
-   "lastRunAt": "2026-10-31T07:27:02Z",
+   "reviewed": "2026-10-31T10:06:44Z",
+   "lastRunAt": "2026-10-31T10:06:44Z",
    "lastRunOk": true
   },
   {
@@ -183,7 +183,7 @@
    "status": "ok",
    "problems": 1,
    "reviewed": "2026-10-31T07:27:02Z",
-   "lastRunAt": "2026-10-31T07:27:02Z",
+   "lastRunAt": "2026-10-31T10:06:44Z",
    "lastRunOk": true
   },
   {
@@ -283,7 +283,7 @@
    "id": "teacher",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-31T07:05:39Z",
+   "reviewed": "2026-10-31T09:02:01Z",
    "lastRunAt": "2026-10-31T09:02:01Z",
    "lastRunOk": true
   },
@@ -311,8 +311,8 @@
    "id": "languages",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-30T21:42:21Z",
-   "lastRunAt": "2026-10-30T21:42:21Z",
+   "reviewed": "2026-10-31T09:47:47Z",
+   "lastRunAt": "2026-10-31T09:47:47Z",
    "lastRunOk": true
   },
   {
@@ -320,7 +320,7 @@
    "status": "warn",
    "problems": 3,
    "reviewed": "2026-10-30T10:24:45Z",
-   "lastRunAt": "2026-10-30T10:24:45Z",
+   "lastRunAt": "2026-10-31T10:14:19Z",
    "lastRunOk": true
   },
   {
@@ -335,7 +335,7 @@
    "id": "design_audit",
    "status": "warn",
    "problems": 1,
-   "reviewed": "2026-10-31T07:21:52Z",
+   "reviewed": "2026-10-31T07:41:30Z",
    "lastRunAt": "2026-10-31T07:41:30Z",
    "lastRunOk": true
   },
@@ -348,7 +348,7 @@
    "id": "visitor_tour",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-31T07:21:52Z",
+   "reviewed": "2026-10-31T07:41:30Z",
    "lastRunAt": "2026-10-31T07:41:30Z",
    "lastRunOk": true
   },
@@ -377,7 +377,7 @@
    "id": "school",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-31T07:05:39Z",
+   "reviewed": "2026-10-31T09:02:01Z",
    "lastRunAt": "2026-10-31T09:02:01Z",
    "lastRunOk": true
   },
@@ -385,8 +385,8 @@
    "id": "academy",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-10-31T06:25:58Z",
-   "lastRunAt": "2026-10-31T08:34:03Z",
+   "reviewed": "2026-10-31T09:29:21Z",
+   "lastRunAt": "2026-10-31T09:29:21Z",
    "lastRunOk": true
   },
   {
@@ -410,7 +410,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-31T08:18:49Z",
-   "lastRunAt": "2026-10-31T09:00:43Z",
+   "lastRunAt": "2026-10-31T09:44:41Z",
    "lastRunOk": true
   },
   {
@@ -450,7 +450,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-31T07:51:10Z",
-   "lastRunAt": "2026-10-31T08:42:50Z",
+   "lastRunAt": "2026-10-31T09:38:27Z",
    "lastRunOk": true
   },
   {
@@ -463,7 +463,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-10-31T07:47:08Z",
-   "lastRunAt": "2026-10-31T09:22:05Z",
+   "lastRunAt": "2026-10-31T09:52:04Z",
    "lastRunOk": true
   },
   {
@@ -554,7 +554,7 @@
    "failed": 0,
    "level": "ok",
    "noteAr": "251 دولة: عملة واحدة في كل مكان",
-   "at": "2026-10-31T09:24:27.793Z",
+   "at": "2026-10-31T10:20:45.966Z",
    "nameAr": "عملة كل دولة",
    "nameEn": "Currency of every country"
   },
@@ -574,7 +574,7 @@
    "failed": 0,
    "level": "ok",
    "noteAr": "100 لغة كاملة النصوص الأساسية",
-   "at": "2026-10-31T07:38:39.190Z",
+   "at": "2026-10-31T10:20:45.966Z",
    "nameAr": "نصوص المتجر في كل اللغات",
    "nameEn": "Store texts in every language"
   },
@@ -583,8 +583,8 @@
    "level": "ok",
    "checked": 30,
    "failed": 0,
-   "noteAr": "30 خبر، آخر تحديث من 4 ساعة",
-   "at": "2026-10-31T07:38:39.190Z",
+   "noteAr": "30 خبر، آخر تحديث من 7 ساعة",
+   "at": "2026-10-31T10:20:45.966Z",
    "nameAr": "ملف النشرة",
    "nameEn": "News bulletin file"
   },
@@ -594,7 +594,7 @@
    "checked": 2,
    "failed": 0,
    "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا",
-   "at": "2026-10-31T09:24:27.793Z",
+   "at": "2026-10-31T10:20:45.966Z",
    "nameAr": "الموقع الأساسي يفتح",
    "nameEn": "Main site opens"
   },
@@ -605,7 +605,7 @@
    "failed": 0,
    "deep": true,
    "noteAr": "10 صفحة منتج فتحت بنفس سعر الكتالوج + جدول العملات موجود",
-   "at": "2026-10-31T09:24:27.793Z",
+   "at": "2026-10-31T10:20:45.966Z",
    "nameAr": "صفحات المنتجات على الموقع",
    "nameEn": "Product pages on the site"
   },
@@ -626,7 +626,7 @@
    "checked": 1161,
    "failed": 0,
    "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161",
-   "at": "2026-10-31T08:28:57.154Z",
+   "at": "2026-10-31T10:20:45.966Z",
    "nameAr": "خريطة الموقع لمحركات البحث",
    "nameEn": "Sitemap for search engines"
   },
@@ -646,7 +646,7 @@
    "checked": 6,
    "failed": 0,
    "noteAr": "النشرة على الموقع فيها 6 خبر",
-   "at": "2026-10-31T08:28:57.154Z",
+   "at": "2026-10-31T10:20:45.966Z",
    "nameAr": "النشرة على الموقع الحي",
    "nameEn": "News on the live site"
   },
@@ -663,6 +663,78 @@
   }
  ],
  "open": [
+  {
+   "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
+   "bot": "design_audit",
+   "source": "self",
+   "shift": 1,
+   "level": "warn",
+   "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 62/100 (5 ملاحظة)",
+   "since": "2026-10-21T01:24:02.602Z",
+   "lastSeen": "2026-10-31T10:20:45.966Z",
+   "status": "waiting_shaheen",
+   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
+   "tries": [],
+   "team": [
+    {
+     "bot": "design_audit",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "languages",
+     "roleAr": "5 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
+    },
+    {
+     "bot": "design_expert",
+     "roleAr": "1 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
+    }
+   ],
+   "shaheen": {
+    "at": "2026-10-30T10:31:00.282Z",
+    "by": "playbook",
+    "diagnosisAr": "مشكلة في أرقام الأداة نفسها محتاجة تطوير.",
+    "stepsAr": [
+     "تتحول لمهمة تطوير لو استمرت"
+    ],
+    "needsCode": true
+   }
+  },
+  {
+   "key": "design_expert:تقييم خبير التصميم متعدد التخصصات: #",
+   "bot": "design_expert",
+   "source": "self",
+   "shift": 1,
+   "level": "warn",
+   "textAr": "خبير التصميم متعدد التخصصات: تقييم خبير التصميم متعدد التخصصات: 0/10",
+   "since": "2026-10-31T04:27:01.923Z",
+   "lastSeen": "2026-10-31T10:20:45.966Z",
+   "status": "waiting_shaheen",
+   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
+   "tries": [],
+   "team": [
+    {
+     "bot": "design_expert",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "design_audit",
+     "roleAr": "1 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
+    },
+    {
+     "bot": "council",
+     "roleAr": "تصميم شاهين يحتاج مراجعة — 0/10، 1 ملاحظة جودة؛ راجع التوجيه والمنهج قبل الدورة التالية"
+    }
+   ],
+   "shaheen": {
+    "at": "2026-10-31T04:27:01.923Z",
+    "by": "playbook",
+    "diagnosisAr": "مشكلة في أرقام الأداة نفسها محتاجة تطوير.",
+    "stepsAr": [
+     "تتحول لمهمة تطوير لو استمرت"
+    ],
+    "needsCode": true
+   }
+  },
   {
    "key": "census:التقرير متأخر جداً (# ساعة، المفروض كل #)",
    "bot": "census",
@@ -1134,78 +1206,6 @@
     ],
     "needsCode": true
    }
-  },
-  {
-   "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
-   "bot": "design_audit",
-   "source": "self",
-   "shift": 1,
-   "level": "warn",
-   "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 62/100 (5 ملاحظة)",
-   "since": "2026-10-21T01:24:02.602Z",
-   "lastSeen": "2026-10-31T07:38:39.190Z",
-   "status": "waiting_shaheen",
-   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
-   "tries": [],
-   "team": [
-    {
-     "bot": "design_audit",
-     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
-    },
-    {
-     "bot": "languages",
-     "roleAr": "5 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
-    },
-    {
-     "bot": "design_expert",
-     "roleAr": "1 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
-    }
-   ],
-   "shaheen": {
-    "at": "2026-10-30T10:31:00.282Z",
-    "by": "playbook",
-    "diagnosisAr": "مشكلة في أرقام الأداة نفسها محتاجة تطوير.",
-    "stepsAr": [
-     "تتحول لمهمة تطوير لو استمرت"
-    ],
-    "needsCode": true
-   }
-  },
-  {
-   "key": "design_expert:تقييم خبير التصميم متعدد التخصصات: #",
-   "bot": "design_expert",
-   "source": "self",
-   "shift": 1,
-   "level": "warn",
-   "textAr": "خبير التصميم متعدد التخصصات: تقييم خبير التصميم متعدد التخصصات: 0/10",
-   "since": "2026-10-31T04:27:01.923Z",
-   "lastSeen": "2026-10-31T07:38:39.190Z",
-   "status": "waiting_shaheen",
-   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
-   "tries": [],
-   "team": [
-    {
-     "bot": "design_expert",
-     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
-    },
-    {
-     "bot": "design_audit",
-     "roleAr": "1 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
-    },
-    {
-     "bot": "council",
-     "roleAr": "تصميم شاهين يحتاج مراجعة — 0/10، 1 ملاحظة جودة؛ راجع التوجيه والمنهج قبل الدورة التالية"
-    }
-   ],
-   "shaheen": {
-    "at": "2026-10-31T04:27:01.923Z",
-    "by": "playbook",
-    "diagnosisAr": "مشكلة في أرقام الأداة نفسها محتاجة تطوير.",
-    "stepsAr": [
-     "تتحول لمهمة تطوير لو استمرت"
-    ],
-    "needsCode": true
-   }
   }
  ],
  "resolved": [
@@ -1531,6 +1531,182 @@
   }
  ],
  "reviews": [
+  {
+   "bot": "synapse",
+   "reviewerAr": "خبير فحص سينابس — شبكة عقل شاهين",
+   "reviewerEn": "Synapse — the mind graph reviewer",
+   "runAt": "2026-10-31T10:06:44Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.2 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "teacher",
+   "reviewerAr": "خبير فحص دروس المعلم المحلي",
+   "reviewerEn": "Local lessons reviewer",
+   "runAt": "2026-10-31T09:02:01Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.9 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "languages",
+   "reviewerAr": "خبير فحص اللغات",
+   "reviewerEn": "Languages reviewer",
+   "runAt": "2026-10-31T09:47:47Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.6 ساعة"
+    },
+    {
+     "nameAr": "نصوص المتجر في كل اللغات",
+     "level": "ok",
+     "noteAr": "100 لغة كاملة النصوص الأساسية (100 اختبار)"
+    },
+    {
+     "nameAr": "عملة كل دولة",
+     "level": "ok",
+     "noteAr": "251 دولة: عملة واحدة في كل مكان (251 اختبار)"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "design_audit",
+   "reviewerAr": "خبير فحص التصميم واللغات",
+   "reviewerEn": "Design & languages reviewer",
+   "runAt": "2026-10-31T07:41:30Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 4.5 ساعة"
+    },
+    {
+     "nameAr": "نصوص المتجر في كل اللغات",
+     "level": "ok",
+     "noteAr": "100 لغة كاملة النصوص الأساسية (100 اختبار)"
+    },
+    {
+     "nameAr": "الموقع الأساسي يفتح",
+     "level": "ok",
+     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "visitor_tour",
+   "reviewerAr": "خبير فحص رحلة الشراء",
+   "reviewerEn": "Purchase journey reviewer",
+   "runAt": "2026-10-31T07:41:30Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 3.4 ساعة"
+    },
+    {
+     "nameAr": "عملة كل دولة",
+     "level": "ok",
+     "noteAr": "251 دولة: عملة واحدة في كل مكان (251 اختبار)"
+    },
+    {
+     "nameAr": "صفحات المنتجات على الموقع",
+     "level": "ok",
+     "noteAr": "10 صفحة منتج فتحت بنفس سعر الكتالوج + جدول العملات موجود (11 اختبار)",
+     "deep": true
+    },
+    {
+     "nameAr": "الموقع الأساسي يفتح",
+     "level": "ok",
+     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "school",
+   "reviewerAr": "خبير فحص المذاكرة",
+   "reviewerEn": "School reviewer",
+   "runAt": "2026-10-31T09:02:01Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.9 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "academy",
+   "reviewerAr": "خبير فحص أكاديمية شاهين (المدرسة على مدار الساعة)",
+   "reviewerEn": "Shaheen's academy (school around the clock) reviewer",
+   "runAt": "2026-10-31T09:29:21Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.9 ساعة"
+    }
+   ],
+   "defects": []
+  },
   {
    "bot": "state",
    "reviewerAr": "خبير فحص دولة المنصة (أعلى سلطة بعد صاحب الموقع)",
@@ -2066,156 +2242,6 @@
     }
    ],
    "defects": []
-  },
-  {
-   "bot": "tutor",
-   "reviewerAr": "خبير فحص المعلم — الحلقات الضعيفة تبقى خطة دراسة",
-   "reviewerEn": "Tutor — weak links become a study plan reviewer",
-   "runAt": "2026-10-31T05:19:54Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 2.3 ساعة"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "reflex",
-   "reviewerAr": "خبير فحص الانعكاس — إجابات فورية بلا محرك",
-   "reviewerEn": "Reflex — instant answers without an engine reviewer",
-   "runAt": "2026-10-31T05:19:54Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 1.3 ساعة"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "ears",
-   "reviewerAr": "خبير فحص الآذان — اللي بيتسأل فعلاً",
-   "reviewerEn": "Ears — what the platform is really asked reviewer",
-   "runAt": "2026-10-31T05:19:54Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 2.3 ساعة"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "weaver",
-   "reviewerAr": "خبير فحص الناسج — الربط بين العقل والبيانات",
-   "reviewerEn": "Weaver — linking mind to data reviewer",
-   "runAt": "2026-10-31T06:14:54Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 1.4 ساعة"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "seo",
-   "reviewerAr": "خبير فحص الظهور في البحث",
-   "reviewerEn": "Search reviewer",
-   "runAt": "2026-10-31T07:22:10Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 0.4 ساعة"
-    },
-    {
-     "nameAr": "خريطة الموقع لمحركات البحث",
-     "level": "ok",
-     "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161 (1161 اختبار)"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "teacher",
-   "reviewerAr": "خبير فحص دروس المعلم المحلي",
-   "reviewerEn": "Local lessons reviewer",
-   "runAt": "2026-10-31T07:05:39Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 0.6 ساعة"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "scent_behavior",
-   "reviewerAr": "خبير فحص روبوت سلوك الزائر العطري",
-   "reviewerEn": "Visitor scent-behaviour robot reviewer",
-   "runAt": "2026-10-31T04:56:35Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 2.7 ساعة"
-    }
-   ],
-   "defects": []
   }
  ],
  "reviewedRuns": {
@@ -2237,15 +2263,15 @@
   "secretary": "2026-10-31T03:52:26Z",
   "news": "2026-10-31T03:52:26Z",
   "seo": "2026-10-31T07:22:10Z",
-  "languages": "2026-10-30T21:42:21Z",
-  "design_audit": "2026-10-31T07:21:52Z",
-  "visitor_tour": "2026-10-31T07:21:52Z",
-  "school": "2026-10-31T07:05:39Z",
+  "languages": "2026-10-31T09:47:47Z",
+  "design_audit": "2026-10-31T07:41:30Z",
+  "visitor_tour": "2026-10-31T07:41:30Z",
+  "school": "2026-10-31T09:02:01Z",
   "patrol": "2026-10-31T07:38:48Z",
-  "teacher": "2026-10-31T07:05:39Z",
+  "teacher": "2026-10-31T09:02:01Z",
   "owner_desk": "2026-10-28T15:20:13Z",
   "state": "2026-10-31T09:00:43Z",
-  "academy": "2026-10-31T06:25:58Z",
+  "academy": "2026-10-31T09:29:21Z",
   "maneuver": "2026-10-31T08:25:11Z",
   "lab": "2026-10-31T07:04:17Z",
   "inventory": "2026-10-31T06:49:57Z",
@@ -2260,7 +2286,7 @@
   "trade_lanes": "2026-10-31T06:22:50Z",
   "immune": "2026-10-31T07:27:02Z",
   "carriers": "2026-10-31T06:57:27Z",
-  "synapse": "2026-10-31T07:27:02Z",
+  "synapse": "2026-10-31T10:06:44Z",
   "tutor": "2026-10-31T05:19:54Z",
   "reflex": "2026-10-31T05:19:54Z",
   "ears": "2026-10-31T05:19:54Z",
@@ -2271,16 +2297,6 @@
   "weaver": "2026-10-31T06:14:54Z"
  },
  "reruns": [
-  {
-   "at": "2026-10-29T09:33:48.247Z",
-   "workflow": "shaheen-import.yml",
-   "key": "importer:آخر تشغيل فشل"
-  },
-  {
-   "at": "2026-10-29T09:33:48.247Z",
-   "workflow": "shaheen-service.yml",
-   "key": "census:آخر تشغيل فشل"
-  },
   {
    "at": "2026-10-29T10:29:55.729Z",
    "workflow": "shaheen-languages.yml",
@@ -2399,6 +2415,42 @@
  ],
  "teams": [
   {
+   "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
+   "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 62/100 (5 ملاحظة)",
+   "parts": [
+    {
+     "bot": "design_audit",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "languages",
+     "roleAr": "5 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
+    },
+    {
+     "bot": "design_expert",
+     "roleAr": "1 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
+    }
+   ]
+  },
+  {
+   "key": "design_expert:تقييم خبير التصميم متعدد التخصصات: #",
+   "textAr": "خبير التصميم متعدد التخصصات: تقييم خبير التصميم متعدد التخصصات: 0/10",
+   "parts": [
+    {
+     "bot": "design_expert",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "design_audit",
+     "roleAr": "1 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
+    },
+    {
+     "bot": "council",
+     "roleAr": "تصميم شاهين يحتاج مراجعة — 0/10، 1 ملاحظة جودة؛ راجع التوجيه والمنهج قبل الدورة التالية"
+    }
+   ]
+  },
+  {
    "key": "finance:الإدارة المالية تحتاج مراجعة خاصة",
    "textAr": "أمين شاهين — الإدارة المالية: الإدارة المالية تحتاج مراجعة خاصة",
    "parts": [
@@ -2453,51 +2505,15 @@
      "roleAr": "الإدارة المالية تحتاج مراجعة في اللوحة الخاصة؛ لا مبالغ أو بيانات طلبات في التقرير العام"
     }
    ]
-  },
-  {
-   "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
-   "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 62/100 (5 ملاحظة)",
-   "parts": [
-    {
-     "bot": "design_audit",
-     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
-    },
-    {
-     "bot": "languages",
-     "roleAr": "5 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
-    },
-    {
-     "bot": "design_expert",
-     "roleAr": "1 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
-    }
-   ]
-  },
-  {
-   "key": "design_expert:تقييم خبير التصميم متعدد التخصصات: #",
-   "textAr": "خبير التصميم متعدد التخصصات: تقييم خبير التصميم متعدد التخصصات: 0/10",
-   "parts": [
-    {
-     "bot": "design_expert",
-     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
-    },
-    {
-     "bot": "design_audit",
-     "roleAr": "1 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
-    },
-    {
-     "bot": "council",
-     "roleAr": "تصميم شاهين يحتاج مراجعة — 0/10، 1 ملاحظة جودة؛ راجع التوجيه والمنهج قبل الدورة التالية"
-    }
-   ]
   }
  ],
  "shift": {
-  "index": 0,
-  "nameAr": "وردية المتجر والأسعار",
-  "nameEn": "Store & pricing shift",
+  "index": 1,
+  "nameAr": "وردية المحتوى وتجربة الزائر",
+  "nameEn": "Content & visitor shift",
   "next": [
    "2026-10-31T12:00:00.000Z",
-   "2026-10-31T10:00:00.000Z",
+   "2026-10-31T13:00:00.000Z",
    "2026-10-31T11:00:00.000Z"
   ]
  },
