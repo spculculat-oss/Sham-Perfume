@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "carrier-scout",
- "updatedAt": "2026-10-30T18:53:22.121Z",
+ "updatedAt": "2026-10-31T01:03:21.858Z",
  "rules": {
   "staleDays": 120,
   "handlingPercent": 10,
@@ -194,13 +194,9 @@
   {
    "id": "aramex_my",
    "url": "https://www.aramex.com/my/en",
-   "status": 200,
-   "reached": true,
-   "signals": [
-    "المواد الخطرة مذكورة في الصفحة",
-    "فيه أسعار/آلة حساب على الصفحة",
-    "فيه صفحة/بند تتبع"
-   ],
+   "status": 403,
+   "reached": false,
+   "signals": [],
    "noteAr": "قراية صفحة الشركة نفسها — الأرقام مش بتتقرا آلياً، بتتسجل بإيد بمصدرها وتاريخها"
   },
   {
