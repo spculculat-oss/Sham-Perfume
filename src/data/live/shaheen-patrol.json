@@ -1,10 +1,10 @@
 {
  "version": 1,
- "updatedAt": "2026-11-01T15:20:07.147Z",
- "publishedAt": "2026-11-01T15:20:07.147Z",
- "signature": "1cz45uh",
- "summaryAr": "وردية المتجر والأسعار 15:20 UTC: 8 اختبار عملي (7 سليم)، 20 مشكلة مفتوحة — 0 بتتصلح آلياً، 16 عند شاهين، 1 مهمة تطوير، 3 محتاجة قرارك؛ 10 مراجعة خبير (9 اتقبلت، 1 اترفضت)؛ 0 اتصلحت من آخر دورية.",
- "health": 90,
+ "updatedAt": "2026-11-01T16:20:18.525Z",
+ "publishedAt": "2026-11-01T16:20:18.525Z",
+ "signature": "1mq8i00",
+ "summaryAr": "وردية المحتوى وتجربة الزائر 16:20 UTC: 4 اختبار عملي (4 سليم)، 21 مشكلة مفتوحة — 1 بتتصلح آلياً، 16 عند شاهين، 1 مهمة تطوير، 3 محتاجة قرارك؛ 3 مراجعة خبير (2 اتقبلت، 1 اترفضت)؛ 0 اتصلحت من آخر دورية.",
+ "health": 84,
  "bots": [
   {
    "id": "librarian",
@@ -16,7 +16,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-11-01T14:58:10Z",
-   "lastRunAt": "2026-11-01T14:58:10Z",
+   "lastRunAt": "2026-11-01T15:55:33Z",
    "lastRunOk": true
   },
   {
@@ -50,11 +50,14 @@
   },
   {
    "id": "secretary",
-   "status": "ok",
-   "problems": 0,
+   "status": "fail",
+   "problems": 1,
    "reviewed": "2026-11-01T03:54:10Z",
-   "lastRunAt": "2026-11-01T03:54:10Z",
-   "lastRunOk": true
+   "lastRunAt": "2026-11-01T15:38:00Z",
+   "lastRunOk": false,
+   "cause": [
+    "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)"
+   ]
   },
   {
    "id": "precheck",
@@ -77,7 +80,7 @@
    "status": "warn",
    "problems": 1,
    "reviewed": "2026-11-01T13:34:10Z",
-   "lastRunAt": "2026-11-01T14:23:45Z",
+   "lastRunAt": "2026-11-01T15:20:16Z",
    "lastRunOk": true
   },
   {
@@ -132,11 +135,14 @@
   },
   {
    "id": "catalog",
-   "status": "ok",
-   "problems": 0,
+   "status": "fail",
+   "problems": 1,
    "reviewed": "2026-11-01T03:54:10Z",
-   "lastRunAt": "2026-11-01T03:54:10Z",
-   "lastRunOk": true
+   "lastRunAt": "2026-11-01T15:38:00Z",
+   "lastRunOk": false,
+   "cause": [
+    "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)"
+   ]
   },
   {
    "id": "inventory",
@@ -174,8 +180,8 @@
    "id": "synapse",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-11-01T13:21:56Z",
-   "lastRunAt": "2026-11-01T13:21:56Z",
+   "reviewed": "2026-11-01T15:59:58Z",
+   "lastRunAt": "2026-11-01T15:59:58Z",
    "lastRunOk": true
   },
   {
@@ -183,7 +189,7 @@
    "status": "ok",
    "problems": 1,
    "reviewed": "2026-11-01T13:21:56Z",
-   "lastRunAt": "2026-11-01T13:21:56Z",
+   "lastRunAt": "2026-11-01T15:59:58Z",
    "lastRunOk": true
   },
   {
@@ -265,11 +271,14 @@
   },
   {
    "id": "news",
-   "status": "ok",
-   "problems": 0,
-   "reviewed": "2026-11-01T03:54:10Z",
-   "lastRunAt": "2026-11-01T03:54:10Z",
-   "lastRunOk": true
+   "status": "fail",
+   "problems": 1,
+   "reviewed": "2026-11-01T15:38:00Z",
+   "lastRunAt": "2026-11-01T15:38:00Z",
+   "lastRunOk": false,
+   "cause": [
+    "اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)"
+   ]
   },
   {
    "id": "seo",
@@ -385,8 +394,8 @@
    "id": "academy",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-11-01T12:23:59Z",
-   "lastRunAt": "2026-11-01T14:29:16Z",
+   "reviewed": "2026-11-01T15:22:16Z",
+   "lastRunAt": "2026-11-01T15:22:16Z",
    "lastRunOk": true
   },
   {
@@ -410,7 +419,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-11-01T14:01:00Z",
-   "lastRunAt": "2026-11-01T14:42:45Z",
+   "lastRunAt": "2026-11-01T16:04:08Z",
    "lastRunOk": true
   },
   {
@@ -450,7 +459,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-11-01T13:45:47Z",
-   "lastRunAt": "2026-11-01T15:13:19Z",
+   "lastRunAt": "2026-11-01T16:07:54Z",
    "lastRunOk": true
   },
   {
@@ -463,7 +472,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-11-01T13:43:13Z",
-   "lastRunAt": "2026-11-01T15:15:11Z",
+   "lastRunAt": "2026-11-01T15:42:21Z",
    "lastRunOk": true
   },
   {
@@ -574,7 +583,7 @@
    "failed": 0,
    "level": "ok",
    "noteAr": "100 لغة كاملة النصوص الأساسية",
-   "at": "2026-11-01T13:34:02.092Z",
+   "at": "2026-11-01T16:20:18.525Z",
    "nameAr": "نصوص المتجر في كل اللغات",
    "nameEn": "Store texts in every language"
   },
@@ -583,8 +592,8 @@
    "level": "ok",
    "checked": 30,
    "failed": 0,
-   "noteAr": "30 خبر، آخر تحديث من 10 ساعة",
-   "at": "2026-11-01T13:34:02.092Z",
+   "noteAr": "30 خبر، آخر تحديث من 13 ساعة",
+   "at": "2026-11-01T16:20:18.525Z",
    "nameAr": "ملف النشرة",
    "nameEn": "News bulletin file"
   },
@@ -626,7 +635,7 @@
    "checked": 1161,
    "failed": 0,
    "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161",
-   "at": "2026-11-01T14:23:36.973Z",
+   "at": "2026-11-01T16:20:18.525Z",
    "nameAr": "خريطة الموقع لمحركات البحث",
    "nameEn": "Sitemap for search engines"
   },
@@ -646,7 +655,7 @@
    "checked": 6,
    "failed": 0,
    "noteAr": "النشرة على الموقع فيها 6 خبر",
-   "at": "2026-11-01T13:34:02.092Z",
+   "at": "2026-11-01T16:20:18.525Z",
    "nameAr": "النشرة على الموقع الحي",
    "nameEn": "News on the live site"
   },
@@ -663,6 +672,63 @@
   }
  ],
  "open": [
+  {
+   "key": "news:آخر تشغيل فشل",
+   "bot": "news",
+   "source": "self",
+   "shift": 1,
+   "level": "fail",
+   "textAr": "نشرة الأخبار ودروس المساعد: آخر تشغيل فشل",
+   "since": "2026-11-01T16:20:18.525Z",
+   "lastSeen": "2026-11-01T16:20:18.525Z",
+   "status": "fixing",
+   "nextAr": "اتصلح آلياً: shaheen-news.yml اتشغل تاني (محاولة 1/2) — الدورية الجاية تتأكد بالتجربة",
+   "tries": [
+    {
+     "at": "2026-11-01T16:20:18.525Z",
+     "workflow": "shaheen-news.yml"
+    }
+   ],
+   "rejectedBy": [
+    "news"
+   ]
+  },
+  {
+   "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
+   "bot": "design_audit",
+   "source": "self",
+   "shift": 1,
+   "level": "warn",
+   "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 62/100 (5 ملاحظة)",
+   "since": "2026-10-21T01:24:02.602Z",
+   "lastSeen": "2026-11-01T16:20:18.525Z",
+   "status": "waiting_shaheen",
+   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
+   "tries": [],
+   "team": [
+    {
+     "bot": "design_audit",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "languages",
+     "roleAr": "5 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
+    },
+    {
+     "bot": "design_expert",
+     "roleAr": "1 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
+    }
+   ],
+   "shaheen": {
+    "at": "2026-10-30T10:31:00.282Z",
+    "by": "playbook",
+    "diagnosisAr": "مشكلة في أرقام الأداة نفسها محتاجة تطوير.",
+    "stepsAr": [
+     "تتحول لمهمة تطوير لو استمرت"
+    ],
+    "needsCode": true
+   }
+  },
   {
    "key": "census:التقرير متأخر جداً (# ساعة، المفروض كل #)",
    "bot": "census",
@@ -1097,42 +1163,6 @@
      "roleAr": "2 محرك متوقف — السكرتير جاهز ينوب عن شاهين"
     }
    ]
-  },
-  {
-   "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
-   "bot": "design_audit",
-   "source": "self",
-   "shift": 1,
-   "level": "warn",
-   "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 62/100 (5 ملاحظة)",
-   "since": "2026-10-21T01:24:02.602Z",
-   "lastSeen": "2026-11-01T13:34:02.092Z",
-   "status": "waiting_shaheen",
-   "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
-   "tries": [],
-   "team": [
-    {
-     "bot": "design_audit",
-     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
-    },
-    {
-     "bot": "languages",
-     "roleAr": "5 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
-    },
-    {
-     "bot": "design_expert",
-     "roleAr": "1 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
-    }
-   ],
-   "shaheen": {
-    "at": "2026-10-30T10:31:00.282Z",
-    "by": "playbook",
-    "diagnosisAr": "مشكلة في أرقام الأداة نفسها محتاجة تطوير.",
-    "stepsAr": [
-     "تتحول لمهمة تطوير لو استمرت"
-    ],
-    "needsCode": true
-   }
   }
  ],
  "resolved": [
@@ -1458,6 +1488,79 @@
   }
  ],
  "reviews": [
+  {
+   "bot": "synapse",
+   "reviewerAr": "خبير فحص سينابس — شبكة عقل شاهين",
+   "reviewerEn": "Synapse — the mind graph reviewer",
+   "runAt": "2026-11-01T15:59:58Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.3 ساعة"
+    }
+   ],
+   "defects": []
+  },
+  {
+   "bot": "news",
+   "reviewerAr": "خبير فحص النشرة",
+   "reviewerEn": "News reviewer",
+   "runAt": "2026-11-01T15:38:00Z",
+   "verdict": "rejected",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "fail",
+     "noteAr": "failure"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "warn",
+     "noteAr": "من 12.5 ساعة"
+    },
+    {
+     "nameAr": "ملف النشرة",
+     "level": "ok",
+     "noteAr": "30 خبر، آخر تحديث من 13 ساعة (30 اختبار)"
+    },
+    {
+     "nameAr": "النشرة على الموقع الحي",
+     "level": "ok",
+     "noteAr": "النشرة على الموقع فيها 6 خبر (6 اختبار)"
+    }
+   ],
+   "defects": [
+    "التشغيل فشل: اختبارات الجودة رفضت النتيجة قبل النشر (الحماية منعت نشر حاجة مكسورة)",
+    "آخر تشغيل فشل"
+   ]
+  },
+  {
+   "bot": "academy",
+   "reviewerAr": "خبير فحص أكاديمية شاهين (المدرسة على مدار الساعة)",
+   "reviewerEn": "Shaheen's academy (school around the clock) reviewer",
+   "runAt": "2026-11-01T15:22:16Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 1 ساعة"
+    }
+   ],
+   "defects": []
+  },
   {
    "bot": "state",
    "reviewerAr": "خبير فحص دولة المنصة (أعلى سلطة بعد صاحب الموقع)",
@@ -2123,73 +2226,6 @@
     }
    ],
    "defects": []
-  },
-  {
-   "bot": "product_pages",
-   "reviewerAr": "خبير فحص صفحات المنتجات",
-   "reviewerEn": "Product pages reviewer",
-   "runAt": "2026-11-01T09:28:17Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "صفحات المنتجات على الموقع",
-     "level": "ok",
-     "noteAr": "10 صفحة منتج فتحت بنفس سعر الكتالوج + جدول العملات موجود (11 اختبار)",
-     "deep": true
-    },
-    {
-     "nameAr": "صور المنتجات تفتح",
-     "level": "ok",
-     "noteAr": "25 صورة فتحت (25 اختبار)",
-     "deep": true
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "council",
-   "reviewerAr": "خبير فحص قرارات الاجتماع",
-   "reviewerEn": "Meeting decisions reviewer",
-   "runAt": "2026-11-01T09:59:53Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 2.4 ساعة"
-    }
-   ],
-   "defects": []
-  },
-  {
-   "bot": "patrol",
-   "reviewerAr": "خبير فحص الدورية بالتناوب (فحص وإصلاح ومراجعة خبير)",
-   "reviewerEn": "Rotating patrol (check, fix, expert review) reviewer",
-   "runAt": "2026-11-01T10:24:00Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 0.9 ساعة"
-    }
-   ],
-   "defects": []
   }
  ],
  "reviewedRuns": {
@@ -2209,7 +2245,7 @@
   "catalog": "2026-11-01T03:54:10Z",
   "product_pages": "2026-11-01T09:28:17Z",
   "secretary": "2026-11-01T03:54:10Z",
-  "news": "2026-11-01T03:54:10Z",
+  "news": "2026-11-01T15:38:00Z",
   "seo": "2026-11-01T13:15:15Z",
   "languages": "2026-11-01T09:51:43Z",
   "design_audit": "2026-11-01T07:45:37Z",
@@ -2219,7 +2255,7 @@
   "teacher": "2026-11-01T13:04:28Z",
   "owner_desk": "2026-10-28T15:20:13Z",
   "state": "2026-11-01T14:58:10Z",
-  "academy": "2026-11-01T12:23:59Z",
+  "academy": "2026-11-01T15:22:16Z",
   "maneuver": "2026-11-01T14:16:40Z",
   "lab": "2026-11-01T07:13:06Z",
   "inventory": "2026-11-01T12:48:51Z",
@@ -2234,7 +2270,7 @@
   "trade_lanes": "2026-11-01T06:25:18Z",
   "immune": "2026-11-01T13:21:56Z",
   "carriers": "2026-11-01T12:55:50Z",
-  "synapse": "2026-11-01T13:21:56Z",
+  "synapse": "2026-11-01T15:59:58Z",
   "tutor": "2026-11-01T05:26:49Z",
   "reflex": "2026-11-01T05:26:49Z",
   "ears": "2026-11-01T05:26:49Z",
@@ -2249,9 +2285,32 @@
    "at": "2026-10-31T12:20:21.126Z",
    "workflow": "pages.yml",
    "key": "probe:product_pages"
+  },
+  {
+   "at": "2026-11-01T16:20:18.525Z",
+   "workflow": "shaheen-news.yml",
+   "key": "news:آخر تشغيل فشل"
   }
  ],
  "teams": [
+  {
+   "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
+   "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 62/100 (5 ملاحظة)",
+   "parts": [
+    {
+     "bot": "design_audit",
+     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
+    },
+    {
+     "bot": "languages",
+     "roleAr": "5 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
+    },
+    {
+     "bot": "design_expert",
+     "roleAr": "1 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
+    }
+   ]
+  },
   {
    "key": "finance:الإدارة المالية تحتاج مراجعة خاصة",
    "textAr": "أمين شاهين — الإدارة المالية: الإدارة المالية تحتاج مراجعة خاصة",
@@ -2293,33 +2352,15 @@
      "roleAr": "2 محرك متوقف — السكرتير جاهز ينوب عن شاهين"
     }
    ]
-  },
-  {
-   "key": "design_audit:تقييم التصميم واللغات # (# ملاحظة)",
-   "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 62/100 (5 ملاحظة)",
-   "parts": [
-    {
-     "bot": "design_audit",
-     "roleAr": "صاحب المشكلة — يصلح الجزء بتاعه"
-    },
-    {
-     "bot": "languages",
-     "roleAr": "5 ملاحظة تصميم وترجمة — وكيل اللغات يقيسها في فحصه"
-    },
-    {
-     "bot": "design_expert",
-     "roleAr": "1 ملاحظة تصميم مرئية — خبير التصميم يراعيها في التصورات الجديدة"
-    }
-   ]
   }
  ],
  "shift": {
-  "index": 0,
-  "nameAr": "وردية المتجر والأسعار",
-  "nameEn": "Store & pricing shift",
+  "index": 1,
+  "nameAr": "وردية المحتوى وتجربة الزائر",
+  "nameEn": "Content & visitor shift",
   "next": [
    "2026-11-01T18:00:00.000Z",
-   "2026-11-01T16:00:00.000Z",
+   "2026-11-01T19:00:00.000Z",
    "2026-11-01T17:00:00.000Z"
   ]
  },
