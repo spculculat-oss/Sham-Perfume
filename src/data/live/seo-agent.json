@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-01T07:25:47.367Z",
-  "nextRunAt": "2026-11-01T13:25:47.367Z",
+  "updatedAt": "2026-11-01T13:13:04.504Z",
+  "nextRunAt": "2026-11-01T19:13:04.504Z",
   "intervalHours": 6,
   "identity": {
     "nameAr": "منارة شاهين",
@@ -13,8 +13,8 @@
   "trust": {
     "level": "autonomous",
     "since": "2026-10-22T05:49:45.279Z",
-    "cycles": 60,
-    "cyclesAtLevel": 39,
+    "cycles": 61,
+    "cyclesAtLevel": 40,
     "noteAr": "اعتمد على نفسه: 20 درساً، 4 دورات بتوجيه، فحص 85+، 8.5/10 من شاهين، وسجل بلا انحدار."
   },
   "curriculum": {
@@ -45,18 +45,6 @@
       "seo-24"
     ],
     "notes": [
-      {
-        "id": "seo-01",
-        "titleAr": "كيف يزحف Googlebot ويصل إلى صفحاتك",
-        "at": "2026-10-18T11:40:26.662Z",
-        "takeaway": "يتعين على منصة «صمم عطرك مع شام» تسهيل وصول محرك البحث إلى صفحات الأدوات الثابتة والصفحة الرئيسية عبر ضبط ملف robots.txt ليشير إلى خريطة الموقع، مع تحديث الروابط الداخلية ووضع وسوم الأوصاف والبيانات الأساسية لضمان زحف دقيق وفهرسة صحيحة.",
-        "checklist": [
-          "تحديث ملف robots.txt ليسمح بالوصول إلى الصفحات المهمة ويشير بوضوح إلى رابط خريطة الموقع (sitemap.xml).",
-          "التحقق من أن جميع صفحات الأدوات الـ12 والصفحة الرئيسية تُرجع حالة الاستجابة السليمة (200) وخالية من موانع الزحف.",
-          "مراجعة الروابط الداخلية للتأكد من إمكانية الوصول إلى كل صفحة أدوات مباشرة من الصفحة الرئيسية أو الخريطة.",
-          "إضافة وسوم الـ Canonical وتجنب الروابط المكررة أو معاملات البحث الزائدة لضمان عدم إهدار ميزانية الزحف."
-        ]
-      },
       {
         "id": "seo-02",
         "titleAr": "خريطة الموقع والفهرسة السريعة",
@@ -776,12 +764,24 @@
           "راجع الروابط الداخلية: كل صفحة مهمة يجب أن تصل إليها من الصفحة الرئيسية أو خريطة الموقع.",
           "تجنب صفحات مكررة أو نصوص لا نهائية أو معاملات بحث قابلة للفهرسة."
         ]
+      },
+      {
+        "id": "seo-01",
+        "titleAr": "كيف يزحف Googlebot ويصل إلى صفحاتك",
+        "at": "2026-11-01T13:13:04.504Z",
+        "takeaway": "خريطة شام ثابتة: الصفحة الرئيسية + صفحات الأدوات الثابتة + صفحات المنتجات + صفحة المتجر. ملف robots يسمح بها ويشير إلى خريطة الموقع.",
+        "checklist": [
+          "اختبر robots.txt: لا يمنع الصفحات المهمة ولا يمنع ملفات الموقع أو الصور.",
+          "تأكد أن صفحات الأدوات والمنتجات تُخدم بحالة 200 وليست معتمدة على JavaScript فقط.",
+          "راجع الروابط الداخلية: كل صفحة مهمة يجب أن تصل إليها من الصفحة الرئيسية أو خريطة الموقع.",
+          "تجنب صفحات مكررة أو نصوص لا نهائية أو معاملات بحث قابلة للفهرسة."
+        ]
       }
     ],
     "completedAt": "2026-10-22T19:03:10.360Z"
   },
   "audit": {
-    "at": "2026-11-01T07:25:47.367Z",
+    "at": "2026-11-01T13:13:04.504Z",
     "score": 100,
     "bySeverity": {
       "critical": 0,
@@ -1208,6 +1208,13 @@
     },
     {
       "at": "2026-11-01T07:25:47.367Z",
+      "score": 100,
+      "applied": 0,
+      "shaheen": 10,
+      "level": "autonomous"
+    },
+    {
+      "at": "2026-11-01T13:13:04.504Z",
       "score": 100,
       "applied": 0,
       "shaheen": 10,
@@ -1696,10 +1703,18 @@
       "urls": 200,
       "ok": true,
       "detail": "قبلت المحركات الدفع السريع."
+    },
+    {
+      "engine": "IndexNow (Bing, Yandex, Naver, Seznam, Yep)",
+      "method": "indexnow",
+      "at": "2026-11-01T13:13:04.504Z",
+      "urls": 200,
+      "ok": true,
+      "detail": "قبلت المحركات الدفع السريع."
     }
   ],
   "submissionBook": {
-    "lastIndexNowAt": "2026-11-01T07:25:47.367Z",
+    "lastIndexNowAt": "2026-11-01T13:13:04.504Z",
     "urls": [
       "https://spculculat-oss.github.io/Sham-Perfume/p/jreve-body-spray-woman-for-her-200ml-386.html",
       "https://spculculat-oss.github.io/Sham-Perfume/p/deep-black-sport-x-volare-100ml-387.html",
@@ -2304,16 +2319,17 @@
     ]
   },
   "coach": {
-    "at": "2026-11-01T01:30:03.593Z",
+    "at": "2026-11-01T13:13:04.504Z",
     "score": 10,
     "strengths": [
-      "الالتزام التام بالتقييم الكامل بنسبة 100/100 عبر الدورات الخمس الأخيرة.",
-      "خلو السجل تماماً من أي ملاحظات حرجة أو كبيرة أو صغيرة في الفحص.",
-      "فهم دقيق لآليات زحف محركات البحث وفهرسة الصفحات دون إخلال بالقواعد."
+      "الالتزام التام بالقواعد البيضاء لفهرسة محركات البحث",
+      "دقة عالية وثبات مستمر في تقييمات الفحص عند 100/100 لعدة دورات متتالية",
+      "إتقان فهم آلية زحف محركات البحث دون تزييف أو ادعاءات",
+      "التنفيذ الدقيق لتعليمات المنصة والالتزام بالسرية التامة"
     ],
     "issues": [],
     "readyForAutonomy": true,
-    "note": "أداء مستقر وممتاز يستوفي كافة شروط الاعتماد والثبات."
+    "note": "أداء ممتاز وثبات استثنائي في تحقيق معايير الجودة والالتزام الكامل بتوجيهات المنصة."
   },
   "coachHistory": [
     {
@@ -2595,6 +2611,11 @@
       "at": "2026-11-01T01:30:03.593Z",
       "score": 10,
       "readyForAutonomy": true
+    },
+    {
+      "at": "2026-11-01T13:13:04.504Z",
+      "score": 10,
+      "readyForAutonomy": true
     }
   ],
   "mediaReport": {
@@ -2615,7 +2636,7 @@
   },
   "engines": {
     "aiAvailable": true,
-    "studies": 60,
+    "studies": 61,
     "failures": []
   },
   "searchEngines": [
@@ -2623,63 +2644,63 @@
       "id": "google",
       "nameAr": "Google",
       "status": "ready",
-      "at": "2026-11-01T07:25:47.367Z",
+      "at": "2026-11-01T13:13:04.504Z",
       "detail": "خريطة + خلاصة معلنتان في robots.txt — الوصول لا يحتاج حساباً."
     },
     {
       "id": "bing",
       "nameAr": "Bing",
       "status": "submitted",
-      "at": "2026-11-01T07:25:47.367Z",
+      "at": "2026-11-01T13:13:04.504Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yandex",
       "nameAr": "Yandex",
       "status": "submitted",
-      "at": "2026-11-01T07:25:47.367Z",
+      "at": "2026-11-01T13:13:04.504Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "naver",
       "nameAr": "Naver",
       "status": "submitted",
-      "at": "2026-11-01T07:25:47.367Z",
+      "at": "2026-11-01T13:13:04.504Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "seznam",
       "nameAr": "Seznam",
       "status": "submitted",
-      "at": "2026-11-01T07:25:47.367Z",
+      "at": "2026-11-01T13:13:04.504Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yep",
       "nameAr": "Yep",
       "status": "submitted",
-      "at": "2026-11-01T07:25:47.367Z",
+      "at": "2026-11-01T13:13:04.504Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "duckduckgo",
       "nameAr": "DuckDuckGo",
       "status": "submitted",
-      "at": "2026-11-01T07:25:47.367Z",
+      "at": "2026-11-01T13:13:04.504Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "ecosia",
       "nameAr": "Ecosia",
       "status": "submitted",
-      "at": "2026-11-01T07:25:47.367Z",
+      "at": "2026-11-01T13:13:04.504Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yahoo",
       "nameAr": "Yahoo",
       "status": "submitted",
-      "at": "2026-11-01T07:25:47.367Z",
+      "at": "2026-11-01T13:13:04.504Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
@@ -2696,7 +2717,7 @@
       "id": "copilot",
       "nameAr": "Microsoft Copilot",
       "status": "submitted",
-      "at": "2026-11-01T07:25:47.367Z",
+      "at": "2026-11-01T13:13:04.504Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
@@ -2724,7 +2745,7 @@
       ]
     },
     "crawl": {
-      "at": "2026-11-01T07:25:47.838Z",
+      "at": "2026-11-01T13:13:05.130Z",
       "ua": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
       "checked": 3,
       "ok": 3,
@@ -2754,25 +2775,34 @@
       "ok": false,
       "url": "https://spculculat-oss.github.io/Sham-Perfume/",
       "status": 429,
+      "detail": "تعذّر القياس: Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'pagespeedonline.googleapis.com' for consumer 'project_number:583797351490'.",
       "scores": {},
-      "detail": "تعذّر القياس: Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'pagespeedonline.googleapis.com' for consumer 'project_number:583797351490'."
+      "vitals": {}
     }
   },
-  "nextActions": [],
-  "runs": [
+  "nextActions": [
     {
-      "at": "2026-10-18T11:40:26.662Z",
-      "trigger": "schedule",
-      "auditScore": 1,
-      "findings": 31,
-      "applied": 0,
-      "lessonId": "seo-01",
-      "submitted": 0,
-      "notes": [
-        "إرسال دوري لأهم الصفحات عبر IndexNow."
-      ],
-      "ms": 7254
+      "textAr": "المحافظة على تحديث ملف خريطة الموقع (sitemap.xml) بانتظام لضمان سهولة وسرعة زحف محركات البحث للصفحات الجديدة.",
+      "area": "content",
+      "severity": "minor"
     },
+    {
+      "textAr": "مراجعة العناوين والأوصاف الوصفية في الصفحات الثابتة للتأكد من دقتها وملاءمتها لنتائج البحث دون حشو.",
+      "area": "titles",
+      "severity": "minor"
+    },
+    {
+      "textAr": "التحقق من صحة البيانات المنظمة (Structured Data) لتسهيل فهم محتوى الموقع وظهوره بشكل ممتاز في نتائج البحث.",
+      "area": "schema",
+      "severity": "minor"
+    },
+    {
+      "textAr": "مراقبة سرعة تحميل الصفحات وأدائها الفني باستمرار لضمان تجربة مستخدم سلسة وصديقة لمحركات البحث.",
+      "area": "content",
+      "severity": "minor"
+    }
+  ],
+  "runs": [
     {
       "at": "2026-10-18T12:08:48.653Z",
       "trigger": "schedule",
@@ -3425,6 +3455,17 @@
       "submitted": 200,
       "notes": [],
       "ms": 362515
+    },
+    {
+      "at": "2026-11-01T13:13:04.504Z",
+      "trigger": "schedule",
+      "auditScore": 100,
+      "findings": 0,
+      "applied": 0,
+      "lessonId": "seo-01",
+      "submitted": 200,
+      "notes": [],
+      "ms": 5721
     }
   ],
   "notes": [
