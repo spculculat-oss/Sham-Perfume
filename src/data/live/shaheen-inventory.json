@@ -1,8 +1,8 @@
 {
  "version": 1,
- "updatedAt": "2026-11-01T06:54:56.470Z",
+ "updatedAt": "2026-11-01T12:48:44.573Z",
  "sources": {
-  "catalogAt": "2026-11-01T05:20:36.398Z",
+  "catalogAt": "2026-11-01T11:10:09.363Z",
   "total": 1212,
   "published": 1161,
   "liveStock": true,
@@ -155,8 +155,24 @@
    "reasonAr": "نفد"
   },
   {
+   "sku": "ARM-483",
+   "nameAr": "أرماف تري نوي للرجال",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
    "sku": "ARM-629",
    "nameAr": "أرماف عود أوديسي للرجال",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "ARM-480",
+   "nameAr": "أرماف كلوب دي نوي إنتنس إصدار خاص للرجال",
    "brand": "Armaf",
    "priority": "normal",
    "units30": 0,
@@ -494,22 +510,6 @@
    "sku": "MAI-834",
    "nameAr": "إثنيك عود من ميصون الحمراء",
    "brand": "Maison Alhambra",
-   "priority": "normal",
-   "units30": 0,
-   "reasonAr": "نفد"
-  },
-  {
-   "sku": "GRA-579",
-   "nameAr": "إستنكت نوار ديودرنت بخاخ للجسم 200 مل للجنسين",
-   "brand": "Grandeur",
-   "priority": "normal",
-   "units30": 0,
-   "reasonAr": "نفد"
-  },
-  {
-   "sku": "LAT-266",
-   "nameAr": "إعجاز من لطافة للرجال",
-   "brand": "Lattafa",
    "priority": "normal",
    "units30": 0,
    "reasonAr": "نفد"
