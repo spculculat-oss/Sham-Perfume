@@ -1,9 +1,15 @@
 {
  "version": 1,
- "updatedAt": "2026-11-01T01:50:57.510Z",
+ "updatedAt": "2026-11-01T02:36:50.936Z",
  "total": 129,
  "waiting": 0,
  "runs": [
+  {
+   "at": "2026-11-01T02:36:50.936Z",
+   "mode": "open",
+   "asked": 0,
+   "kept": 0
+  },
   {
    "at": "2026-11-01T01:50:57.510Z",
    "mode": "open",
@@ -282,12 +288,6 @@
   },
   {
    "at": "2026-10-29T06:26:46.802Z",
-   "mode": "leftover",
-   "asked": 0,
-   "kept": 0
-  },
-  {
-   "at": "2026-10-29T05:29:18.220Z",
    "mode": "leftover",
    "asked": 0,
    "kept": 0
