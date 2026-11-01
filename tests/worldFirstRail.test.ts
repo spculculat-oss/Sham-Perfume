@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import { MemoryStore } from '../server/core/store';
 import { WorldFirstRail } from '../server/finance/worldFirstRail';
 import {
+  WORLDFIRST_WALLETS,
   prepareSaleSettlement,
   transmissionAllowed,
   worldFirstApiConfigured,
@@ -28,6 +29,22 @@ test('a sale splits into receipt, purchase and profit, and nothing is sent', () 
   ]);
   assert.equal(transmissionAllowed(), false);
   assert.equal(JSON.stringify(item).includes('iban'), false);
+});
+
+test('the WorldFirst screen currencies stay at zero and are not a Sham balance', () => {
+  assert.deepEqual(WORLDFIRST_WALLETS.map((row) => row.currency), ['AUD', 'HKD', 'SGD', 'JPY', 'EUR', 'GBP', 'CAD', 'USD', 'NZD', 'CNH']);
+  for (const row of WORLDFIRST_WALLETS) {
+    assert.equal(Number(row.available), 0);
+    assert.equal(Number(row.pending), 0);
+  }
+  const snap = worldFirstSnapshot(false, 0);
+  assert.equal(snap.balancesLive, false);
+  assert.equal(snap.reportedTotalUsd, '0.00');
+  assert.equal(snap.wallets.length, 10);
+  assert.throws(() => prepareSaleSettlement({ saleId: 'sale-egp1', currency: 'EGP', customerPaidMinor: 150, merchantCostMinor: 100, at: '2026-10-26T00:00:00Z' }), /INVALID_CURRENCY/);
+  assert.throws(() => prepareSaleSettlement({ saleId: 'sale-cny1', currency: 'CNY', customerPaidMinor: 150, merchantCostMinor: 100, at: '2026-10-26T00:00:00Z' }), /INVALID_CURRENCY/);
+  const offshore = prepareSaleSettlement({ saleId: 'sale-cnh1', currency: 'CNH', customerPaidMinor: 15_000, merchantCostMinor: 10_000, at: '2026-10-26T00:00:00Z' });
+  assert.equal(offshore.sent, false);
 });
 
 test('WorldFirst acceptance does not issue receiving details or open sending', () => {

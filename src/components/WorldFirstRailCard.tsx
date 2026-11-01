@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AdminApiError, adminRequest, send } from '../admin/adminApi';
-import { ACCOUNT_CURRENCIES } from '../bank/shamAccount';
 import { major } from '../finance/money';
-import { worldFirstSnapshot, type SaleSettlement, type WorldFirstSnapshot } from '../bank/worldFirstRail';
+import { WORLDFIRST_WALLETS, worldFirstSnapshot, type SaleSettlement, type WorldFirstSnapshot } from '../bank/worldFirstRail';
 
 /**
  * Owner-only view of the institution behind Sham Bank.
@@ -60,6 +59,18 @@ export function WorldFirstRailCard({ ar }: { ar: boolean }) {
         <p className="text-sm font-bold">{t('تسوية الخلفية', 'Background settlement')}</p>
         <p className="mt-1 text-xs leading-5 text-stone-300">{t('بنك شام هو البنك الظاهر. وورلد فيرست يستقبل في الخلفية ثمن البيع، وتكلفة الشراء من التاجر، وربح المنصة. القبول الذي أبلغت به ليس تأكيداً من وورلد فيرست.', 'Sham Bank is the bank people see. WorldFirst is behind it for the sale receipt, the merchant purchase, and the platform profit. The acceptance you reported is not a confirmation from WorldFirst.')}</p>
       </div>
+      <div data-testid="worldfirst-wallets">
+        <p className="text-xs text-stone-400">{t('عملات الشاشة: الإجمالي التقديري 0.00 دولار. الصفر مش رصيد شام، وCNH يوان خارجي مش يوان صيني محلي.', 'Screen currencies: estimated total 0.00 USD. Zero is not a Sham balance, and CNH is offshore yuan, not onshore CNY.')}</p>
+        <ul className="mt-2 grid grid-cols-2 gap-2 text-xs sm:grid-cols-5">
+          {WORLDFIRST_WALLETS.map((row) => (
+            <li key={row.currency} className="rounded-xl bg-white/10 px-2 py-2">
+              <p className="font-bold" dir="ltr">{row.currency}</p>
+              <p dir="ltr">{t('متاح', 'Available')} {row.available}</p>
+              <p className="text-stone-400" dir="ltr">{t('معلّق', 'Pending')} {row.pending}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
       <dl className="grid gap-2 text-xs sm:grid-cols-2">
         <div className="rounded-xl bg-white/10 px-3 py-2"><dt className="text-stone-400">{t('الحساب', 'Account')}</dt><dd className="font-bold">{t('أُبلغ بالقبول · غير مؤكد من الواجهة', 'Reported accepted · not confirmed by the API')}</dd></div>
         <div className="rounded-xl bg-white/10 px-3 py-2"><dt className="text-stone-400">{t('تفاصيل الاستقبال', 'Receiving details')}</dt><dd className="font-bold">{t('لم تُصدر', 'Not issued')}</dd></div>
@@ -68,7 +79,7 @@ export function WorldFirstRailCard({ ar }: { ar: boolean }) {
       </dl>
       <form className="grid gap-2 sm:grid-cols-2" onSubmit={(e) => void queue(e)}>
         <label className="text-xs sm:col-span-2">{t('مرجع العملية', 'Sale reference')}<input value={saleId} onChange={(e) => setSaleId(e.target.value)} className="mt-1 w-full rounded-xl border border-white/20 bg-transparent px-3 py-2 text-sm" dir="ltr" data-testid="worldfirst-sale" /></label>
-        <label className="text-xs">{t('العملة', 'Currency')}<select value={currency} onChange={(e) => setCurrency(e.target.value)} className="mt-1 w-full rounded-xl border border-white/20 bg-stone-950 px-3 py-2 text-sm">{ACCOUNT_CURRENCIES.map((code) => <option key={code}>{code}</option>)}</select></label>
+        <label className="text-xs">{t('العملة', 'Currency')}<select value={currency} onChange={(e) => setCurrency(e.target.value)} className="mt-1 w-full rounded-xl border border-white/20 bg-stone-950 px-3 py-2 text-sm">{WORLDFIRST_WALLETS.map((row) => <option key={row.currency}>{row.currency}</option>)}</select></label>
         <label className="text-xs">{t('ما دفعه العميل', 'Customer paid')}<input value={paid} onChange={(e) => setPaid(e.target.value)} className="mt-1 w-full rounded-xl border border-white/20 bg-transparent px-3 py-2 text-sm" dir="ltr" inputMode="decimal" /></label>
         <label className="text-xs">{t('تكلفة التاجر', 'Merchant cost')}<input value={cost} onChange={(e) => setCost(e.target.value)} className="mt-1 w-full rounded-xl border border-white/20 bg-transparent px-3 py-2 text-sm" dir="ltr" inputMode="decimal" /></label>
         <label className="text-xs">{t('الشحن', 'Shipping')}<input value={shipping} onChange={(e) => setShipping(e.target.value)} className="mt-1 w-full rounded-xl border border-white/20 bg-transparent px-3 py-2 text-sm" dir="ltr" inputMode="decimal" /></label>
