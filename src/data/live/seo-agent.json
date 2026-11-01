@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-01T01:30:03.593Z",
-  "nextRunAt": "2026-11-01T07:30:03.593Z",
+  "updatedAt": "2026-11-01T07:25:47.367Z",
+  "nextRunAt": "2026-11-01T13:25:47.367Z",
   "intervalHours": 6,
   "identity": {
     "nameAr": "منارة شاهين",
@@ -13,8 +13,8 @@
   "trust": {
     "level": "autonomous",
     "since": "2026-10-22T05:49:45.279Z",
-    "cycles": 59,
-    "cyclesAtLevel": 38,
+    "cycles": 60,
+    "cyclesAtLevel": 39,
     "noteAr": "اعتمد على نفسه: 20 درساً، 4 دورات بتوجيه، فحص 85+، 8.5/10 من شاهين، وسجل بلا انحدار."
   },
   "curriculum": {
@@ -764,12 +764,24 @@
           "مراجعة الروابط الداخلية في الصفحة الرئيسية لضمان وجود مسارات واضحة ومباشرة تؤدي إلى صفحات الأدوات والمنتجات لتسهيل الاكتشاف والزحف.",
           "التأكد من أن صفحات الأدوات والمنتجات تُخدّم مباشرة بحالة استجابة سليمة (200) ولا تعتمد كلياً على نصوص جافا سكريبت المخفية عن الفهرسة."
         ]
+      },
+      {
+        "id": "seo-01",
+        "titleAr": "كيف يزحف Googlebot ويصل إلى صفحاتك",
+        "at": "2026-11-01T07:25:47.367Z",
+        "takeaway": "خريطة شام ثابتة: الصفحة الرئيسية + صفحات الأدوات الثابتة + صفحات المنتجات + صفحة المتجر. ملف robots يسمح بها ويشير إلى خريطة الموقع.",
+        "checklist": [
+          "اختبر robots.txt: لا يمنع الصفحات المهمة ولا يمنع ملفات الموقع أو الصور.",
+          "تأكد أن صفحات الأدوات والمنتجات تُخدم بحالة 200 وليست معتمدة على JavaScript فقط.",
+          "راجع الروابط الداخلية: كل صفحة مهمة يجب أن تصل إليها من الصفحة الرئيسية أو خريطة الموقع.",
+          "تجنب صفحات مكررة أو نصوص لا نهائية أو معاملات بحث قابلة للفهرسة."
+        ]
       }
     ],
     "completedAt": "2026-10-22T19:03:10.360Z"
   },
   "audit": {
-    "at": "2026-11-01T01:30:03.593Z",
+    "at": "2026-11-01T07:25:47.367Z",
     "score": 100,
     "bySeverity": {
       "critical": 0,
@@ -1189,6 +1201,13 @@
     },
     {
       "at": "2026-11-01T01:30:03.593Z",
+      "score": 100,
+      "applied": 0,
+      "shaheen": 10,
+      "level": "autonomous"
+    },
+    {
+      "at": "2026-11-01T07:25:47.367Z",
       "score": 100,
       "applied": 0,
       "shaheen": 10,
@@ -1669,10 +1688,18 @@
       "urls": 200,
       "ok": true,
       "detail": "قبلت المحركات الدفع السريع."
+    },
+    {
+      "engine": "IndexNow (Bing, Yandex, Naver, Seznam, Yep)",
+      "method": "indexnow",
+      "at": "2026-11-01T07:25:47.367Z",
+      "urls": 200,
+      "ok": true,
+      "detail": "قبلت المحركات الدفع السريع."
     }
   ],
   "submissionBook": {
-    "lastIndexNowAt": "2026-11-01T01:30:03.593Z",
+    "lastIndexNowAt": "2026-11-01T07:25:47.367Z",
     "urls": [
       "https://spculculat-oss.github.io/Sham-Perfume/p/jreve-body-spray-woman-for-her-200ml-386.html",
       "https://spculculat-oss.github.io/Sham-Perfume/p/deep-black-sport-x-volare-100ml-387.html",
@@ -2588,7 +2615,7 @@
   },
   "engines": {
     "aiAvailable": true,
-    "studies": 59,
+    "studies": 60,
     "failures": []
   },
   "searchEngines": [
@@ -2596,63 +2623,63 @@
       "id": "google",
       "nameAr": "Google",
       "status": "ready",
-      "at": "2026-11-01T01:30:03.593Z",
+      "at": "2026-11-01T07:25:47.367Z",
       "detail": "خريطة + خلاصة معلنتان في robots.txt — الوصول لا يحتاج حساباً."
     },
     {
       "id": "bing",
       "nameAr": "Bing",
       "status": "submitted",
-      "at": "2026-11-01T01:30:03.593Z",
+      "at": "2026-11-01T07:25:47.367Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yandex",
       "nameAr": "Yandex",
       "status": "submitted",
-      "at": "2026-11-01T01:30:03.593Z",
+      "at": "2026-11-01T07:25:47.367Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "naver",
       "nameAr": "Naver",
       "status": "submitted",
-      "at": "2026-11-01T01:30:03.593Z",
+      "at": "2026-11-01T07:25:47.367Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "seznam",
       "nameAr": "Seznam",
       "status": "submitted",
-      "at": "2026-11-01T01:30:03.593Z",
+      "at": "2026-11-01T07:25:47.367Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yep",
       "nameAr": "Yep",
       "status": "submitted",
-      "at": "2026-11-01T01:30:03.593Z",
+      "at": "2026-11-01T07:25:47.367Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "duckduckgo",
       "nameAr": "DuckDuckGo",
       "status": "submitted",
-      "at": "2026-11-01T01:30:03.593Z",
+      "at": "2026-11-01T07:25:47.367Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "ecosia",
       "nameAr": "Ecosia",
       "status": "submitted",
-      "at": "2026-11-01T01:30:03.593Z",
+      "at": "2026-11-01T07:25:47.367Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
       "id": "yahoo",
       "nameAr": "Yahoo",
       "status": "submitted",
-      "at": "2026-11-01T01:30:03.593Z",
+      "at": "2026-11-01T07:25:47.367Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
@@ -2669,7 +2696,7 @@
       "id": "copilot",
       "nameAr": "Microsoft Copilot",
       "status": "submitted",
-      "at": "2026-11-01T01:30:03.593Z",
+      "at": "2026-11-01T07:25:47.367Z",
       "detail": "IndexNow: 200 رابطاً"
     },
     {
@@ -2697,7 +2724,7 @@
       ]
     },
     "crawl": {
-      "at": "2026-11-01T01:30:04.250Z",
+      "at": "2026-11-01T07:25:47.838Z",
       "ua": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
       "checked": 3,
       "ok": 3,
@@ -2723,37 +2750,15 @@
       ]
     },
     "pageSpeed": {
-      "at": "2026-10-31T07:20:27.238Z",
+      "at": "2026-11-01T07:31:49.774Z",
       "ok": false,
       "url": "https://spculculat-oss.github.io/Sham-Perfume/",
       "status": 429,
-      "detail": "تعذّر القياس: Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'pagespeedonline.googleapis.com' for consumer 'project_number:583797351490'.",
       "scores": {},
-      "vitals": {}
+      "detail": "تعذّر القياس: Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'pagespeedonline.googleapis.com' for consumer 'project_number:583797351490'."
     }
   },
-  "nextActions": [
-    {
-      "textAr": "التحقق من تحديث خريطة الموقع (sitemap.xml) بانتظام لضمان سهولة وصول زاحف المحركات لجميع الصفحات الثابتة والجديدة.",
-      "area": "content",
-      "severity": "minor"
-    },
-    {
-      "textAr": "مراجعة توحيد وسوسمة البيانات المنظمة (Structured Data) في صفحات الأدوات لضمان قراءتها بسلاسة من محركات البحث.",
-      "area": "schema",
-      "severity": "minor"
-    },
-    {
-      "textAr": "مراقبة أداء سرعة التحميل للصفحات الأساسية للحفاظ على تجربة مستخدم مثالية وزحف فعال.",
-      "area": "performance",
-      "severity": "minor"
-    },
-    {
-      "textAr": "الاستمرار في تقديم محتوى تعليمي نصي واضح ومرتبط بفن وتصميم العطور لتعزيز الظهور العضوي السليم.",
-      "area": "content",
-      "severity": "minor"
-    }
-  ],
+  "nextActions": [],
   "runs": [
     {
       "at": "2026-10-18T11:40:26.662Z",
@@ -3409,6 +3414,17 @@
       "submitted": 200,
       "notes": [],
       "ms": 9499
+    },
+    {
+      "at": "2026-11-01T07:25:47.367Z",
+      "trigger": "schedule",
+      "auditScore": 100,
+      "findings": 0,
+      "applied": 0,
+      "lessonId": "seo-01",
+      "submitted": 200,
+      "notes": [],
+      "ms": 362515
     }
   ],
   "notes": [
