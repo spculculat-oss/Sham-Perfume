@@ -63,10 +63,10 @@ export interface WorldFirstSnapshot {
   transmission: 'blocked';
   blockReason: 'RECEIVING_NOT_ISSUED';
   queued: number;
-  /** Owner's screen, not a provider feed. */
-  balancesLive: false;
+  /** False until a signed WorldFirst reply is accepted. The screen zeros are not a live feed. */
+  balancesLive: boolean;
   reportedTotalUsd: '0.00';
-  wallets: typeof WORLDFIRST_WALLETS;
+  wallets: readonly { currency: WorldFirstCurrency; available: string; pending: string }[];
 }
 
 const SALE_ID = /^[A-Za-z0-9_-]{8,40}$/;

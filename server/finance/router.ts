@@ -11,6 +11,7 @@ import { BUNDLED_FX, isFxTable, type FxTable } from '../../src/utils/pricing';
 import { PLATFORM_HOLDER } from '../../src/bank/shamLedger';
 import { ShamBooks, readMoneyBody } from './shamBooks';
 import { WorldFirstRail } from './worldFirstRail';
+import { inquireWorldFirst } from './worldFirstInquiry';
 import { loadLive } from '../core/liveData';
 import type { PeriodKind } from './types';
 
@@ -95,8 +96,15 @@ export function createFinanceRouter(finance: FinanceService, bank?: BankService,
       res.json(await books.convert(PLATFORM_HOLDER, body, rates));
     }));
     const settlement = new WorldFirstRail(finance.store, () => new Date().toISOString(), finance.env);
+    const inquiryLimiter = new RateLimiter(6, 10 * 60_000);
     router.get('/bank/sham/settlement', wrap(async (_req, res) => { res.json(await settlement.snapshot()); }));
     router.post('/bank/sham/settlement', wrap(async (req, res) => { res.status(201).json(await settlement.queue(req.body)); }));
+    router.post('/bank/sham/settlement/inquire', wrap(async (req, res) => {
+      if (!inquiryLimiter.allow(clientKey(req))) throw new ValidationError('RATE_LIMITED', 'انتظر قبل إعادة قراءة الرصيد.', 429);
+      const snap = await settlement.snapshot();
+      const inquiry = await inquireWorldFirst(finance.env);
+      res.json({ ...inquiry, queued: snap.queued, items: snap.items, sendsExternal: false, receiving: 'not_issued', transmission: 'blocked' });
+    }));
   }
   router.get('/export', wrap(async (_req, res) => {
     const collections = ['financeOrders', 'financeSessions', 'financeEntries', 'financeReports', 'financeReviews', 'financeIssues', 'financeRuns', 'paymentRegistrations', 'bankAccounts', 'bankDirect', 'bankPayables', 'bankBudgets', 'bankAudit', 'shamHolders', 'shamPostings', 'shamImports', 'shamSettlement', 'salesDeals', 'salesTargets', 'salesStudy', 'salesAudit'] as const;
