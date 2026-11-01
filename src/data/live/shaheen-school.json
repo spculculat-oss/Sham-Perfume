@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-11-01T12:59:26.095Z",
+ "updatedAt": "2026-11-01T13:33:50.772Z",
  "reliance": {
   "score": 100,
-  "covered": 1351,
-  "total": 1351,
-  "fromMemory": 1351,
+  "covered": 1350,
+  "total": 1350,
+  "fromMemory": 1350,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1330,
-    "total": 1330
+    "covered": 1329,
+    "total": 1329
    },
    "en": {
     "covered": 21,
@@ -21,6 +21,12 @@
  "studiedTotal": 142,
  "selfTaughtTotal": 1082,
  "history": [
+  {
+   "at": "2026-11-01T13:33:50.772Z",
+   "score": 100,
+   "studied": 0,
+   "mode": "self"
+  },
   {
    "at": "2026-11-01T12:59:26.095Z",
    "score": 100,
@@ -374,12 +380,6 @@
    "score": 100,
    "studied": 0,
    "mode": "self"
-  },
-  {
-   "at": "2026-10-30T11:20:53.250Z",
-   "score": 100,
-   "studied": 0,
-   "mode": "self"
   }
  ],
  "lastStudied": [
@@ -512,7 +512,7 @@
  },
  "localTaughtTotal": 85,
  "spelling": {
-  "at": "2026-11-01T12:59:26.095Z",
+  "at": "2026-11-01T13:33:50.772Z",
   "tried": 745,
   "understood": 703,
   "score": 94,
@@ -528,7 +528,7 @@
   }
  },
  "practice": {
-  "at": "2026-11-01T12:59:26.095Z",
+  "at": "2026-11-01T13:33:50.772Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -627,8 +627,8 @@
  },
  "tracks": {
   "perfume": {
-   "covered": 185,
-   "total": 185,
+   "covered": 184,
+   "total": 184,
    "score": 100
   },
   "prog_langs": {
@@ -848,7 +848,7 @@
   }
  },
  "tools": {
-  "at": "2026-11-01T12:59:26.095Z",
+  "at": "2026-11-01T13:33:50.772Z",
   "items": [
    {
     "id": "finance_agent",
@@ -1013,14 +1013,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-11-01T12:59:26.095Z",
+  "at": "2026-11-01T13:33:50.772Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-11-01T18:59:26.095Z"
+    "next": "2026-11-01T19:33:50.772Z"
    },
    {
     "id": "site-care",
@@ -1032,7 +1032,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-11-02T00:59:26.095Z"
+    "next": "2026-11-02T01:33:50.772Z"
    }
   ]
  }
