@@ -4,9 +4,9 @@
  */
 import { ValidationError } from '../core/repository';
 import type { Store } from '../core/store';
-import { isAccountCurrency } from '../../src/bank/shamAccount';
 import { toMinor } from '../../src/finance/money';
 import {
+  isWorldFirstCurrency,
   prepareSaleSettlement,
   worldFirstApiConfigured,
   worldFirstSnapshot,
@@ -33,7 +33,7 @@ export class WorldFirstRail {
       throw new ValidationError('SECRET', 'لا يُقبل رقم حساب أو إشارة إرسال من المتصفح.');
     }
     const currency = String(raw.currency || '').toUpperCase();
-    if (!isAccountCurrency(currency)) throw new ValidationError('INVALID_CURRENCY', 'هذه العملة ليست من أرصدة الحساب.');
+    if (!isWorldFirstCurrency(currency)) throw new ValidationError('INVALID_CURRENCY', 'وورلد فيرست لم يفتح هذه العملة. المفتوحة: AUD وHKD وSGD وJPY وEUR وGBP وCAD وUSD وNZD وCNH.');
     let item: SaleSettlement;
     try {
       item = prepareSaleSettlement({
@@ -47,7 +47,7 @@ export class WorldFirstRail {
     } catch (error) {
       const code = error instanceof Error ? error.message : '';
       if (code === 'INVALID_SALE') throw new ValidationError('INVALID_SALE', 'مرجع العملية من ٨ إلى ٤٠ حرفاً، بلا مسافات.');
-      if (code === 'INVALID_CURRENCY') throw new ValidationError('INVALID_CURRENCY', 'هذه العملة ليست من أرصدة الحساب.');
+      if (code === 'INVALID_CURRENCY') throw new ValidationError('INVALID_CURRENCY', 'وورلد فيرست لم يفتح هذه العملة. المفتوحة: AUD وHKD وSGD وJPY وEUR وGBP وCAD وUSD وNZD وCNH.');
       throw new ValidationError('INVALID_AMOUNT', 'مبالغ العملية غير صالحة. تكلفة التاجر والشحن لا تتجاوز ما دفعه العميل.');
     }
     const existing = await this.store.get('shamSettlement', item.id);

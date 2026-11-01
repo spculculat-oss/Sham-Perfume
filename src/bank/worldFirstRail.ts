@@ -5,6 +5,28 @@
  * Receiving details are not invented, and a queued instruction is never marked sent.
  */
 
+/**
+ * Currencies WorldFirst showed on the accepted account screen.
+ * Every figure is the zero the owner saw. It is not a live balance and not Sham's money.
+ */
+export const WORLDFIRST_WALLETS = [
+  { currency: 'AUD', available: '0.00', pending: '0.00' },
+  { currency: 'HKD', available: '0.00', pending: '0.00' },
+  { currency: 'SGD', available: '0.00', pending: '0.00' },
+  { currency: 'JPY', available: '0', pending: '0' },
+  { currency: 'EUR', available: '0.00', pending: '0.00' },
+  { currency: 'GBP', available: '0.00', pending: '0.00' },
+  { currency: 'CAD', available: '0.00', pending: '0.00' },
+  { currency: 'USD', available: '0.00', pending: '0.00' },
+  { currency: 'NZD', available: '0.00', pending: '0.00' },
+  { currency: 'CNH', available: '0.00', pending: '0.00' },
+] as const;
+export type WorldFirstCurrency = typeof WORLDFIRST_WALLETS[number]['currency'];
+
+export function isWorldFirstCurrency(value: string): value is WorldFirstCurrency {
+  return WORLDFIRST_WALLETS.some((row) => row.currency === value);
+}
+
 export type SettlementKind = 'sale_receipt' | 'merchant_purchase' | 'platform_profit';
 
 export interface SettlementLeg {
@@ -41,6 +63,10 @@ export interface WorldFirstSnapshot {
   transmission: 'blocked';
   blockReason: 'RECEIVING_NOT_ISSUED';
   queued: number;
+  /** Owner's screen, not a provider feed. */
+  balancesLive: false;
+  reportedTotalUsd: '0.00';
+  wallets: typeof WORLDFIRST_WALLETS;
 }
 
 const SALE_ID = /^[A-Za-z0-9_-]{8,40}$/;
@@ -62,6 +88,9 @@ export function worldFirstSnapshot(apiKeysPresent: boolean, queued: number): Wor
     transmission: 'blocked',
     blockReason: 'RECEIVING_NOT_ISSUED',
     queued,
+    balancesLive: false,
+    reportedTotalUsd: '0.00',
+    wallets: WORLDFIRST_WALLETS,
   };
 }
 
@@ -80,7 +109,7 @@ export function prepareSaleSettlement(input: {
 }): SaleSettlement {
   const id = input.saleId.trim();
   if (!SALE_ID.test(id)) throw new Error('INVALID_SALE');
-  if (!/^[A-Z]{3}$/.test(input.currency)) throw new Error('INVALID_CURRENCY');
+  if (!isWorldFirstCurrency(input.currency)) throw new Error('INVALID_CURRENCY');
   const paid = input.customerPaidMinor;
   const cost = input.merchantCostMinor;
   const shipping = input.shippingMinor ?? 0;
