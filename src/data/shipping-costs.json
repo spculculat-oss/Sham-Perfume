@@ -2,7 +2,7 @@
  "version": 1,
  "currency": "USD",
  "source": "تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد",
- "checkedAt": "2026-10-31",
+ "checkedAt": "2026-11-01",
  "noteAr": "تكلفة الشحن الحقيقية لأول زجاجة (أول ٥٠٠ جم) لكل وجهة، بالدولار، من تعريفة منشورة. الملف ده بيتولّد من تقرير الشحن — متعدّلوش بإيدك؛ عدّل الهامش في shipping.json والشركات في shipping-lanes.json.",
  "countries": {
   "EG": {
@@ -356,7 +356,7 @@
    "carrier": "poslaju_intl"
   },
   "TR": {
-   "firstItem": 24.16,
+   "firstItem": 24.15,
    "extraItem": 6.9,
    "carrier": "poslaju_intl"
   },
@@ -371,7 +371,7 @@
    "carrier": "poslaju_intl"
   },
   "MX": {
-   "firstItem": 47.28,
+   "firstItem": 47.27,
    "extraItem": 10.35,
    "carrier": "poslaju_intl"
   }

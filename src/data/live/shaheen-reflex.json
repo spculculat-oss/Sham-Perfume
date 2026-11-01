@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-01T05:26:25.491Z",
+ "updatedAt": "2026-11-01T06:25:12.322Z",
  "entries": [
   {
    "id": "reflex-ship-EG",
@@ -945,8 +945,8 @@
    "code": "TR",
    "lang": "ar",
    "question": "الشحن لـتركيا بكام؟",
-   "answerAr": "الشحن لأول زجاجة لـتركيا: 1489 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1354 ج.م) + هامش تجهيز 136 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
-   "answerEn": "Shipping for the first bottle to Türkiye: 1489 EGP.\nBuilt on the carrier's published cost (1354 EGP) + a 136 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerAr": "الشحن لأول زجاجة لـتركيا: 1489 ج.م.\nالرقم مبني على تكلفة الشركة المنشورة (1353 ج.م) + هامش تجهيز 136 ج.م — يعني مكسب المتجر 50% بيفضل صافي.\nالجمارك: مش متأكدين من رقمها — بتتأكد قبل الدفع.\nالشركة: بوس لاجو الدولي (بريد ماليزيا) — العطر UN1266 (سائل قابل للاشتعال)، والسعر النهائي بيتأكد قبل الدفع.\nالمصدر: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
+   "answerEn": "Shipping for the first bottle to Türkiye: 1489 EGP.\nBuilt on the carrier's published cost (1353 EGP) + a 136 EGP handling margin — so the store's 50% stays net.\nCustoms: not verified yet — confirmed before payment.\nPerfume is UN1266 (flammable); the final price is confirmed before payment.\nSource: https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf · 2026-10-25",
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
    "checkedAt": "2026-10-25",
    "specialistId": "specialist_business"
