@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-02T13:20:05.829Z",
+ "updatedAt": "2026-11-02T19:05:47.429Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -4747,12 +4747,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-26T13:22:04.307Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T19:05:47.429Z",
    "trust": {
     "score": 76,
     "verdict": "trusted",
-    "at": "2026-10-26T13:22:04.307Z",
+    "at": "2026-11-02T19:05:47.429Z",
     "checks": [
      {
       "id": "age",
@@ -4849,20 +4849,20 @@
     "registeredAt": "2024-01-27T01:58:31.000Z"
    },
    "region": "americas",
-   "sampleOk": 9,
-   "sampleTotal": 9,
+   "sampleOk": 4,
+   "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 55.6767,
+   "rateToEgp": 55.9607,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*lattafa-usa\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.lattafa-usa.com/sitemap_agentic_discovery.xml",
-    "https://www.lattafa-usa.com/sitemap_products_1.xml?from=9055147655391&to=15422183669983",
+    "https://www.lattafa-usa.com/sitemap_products_1.xml?from=9055147655391&to=15482339819743",
     "https://www.lattafa-usa.com/sitemap_pages_1.xml?from=119600185567&to=129349484767",
     "https://www.lattafa-usa.com/sitemap_collections_1.xml?from=470062858463&to=482683486431",
     "https://www.lattafa-usa.com/sitemap_blogs_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 283
+   "productsEstimate": 284
   },
   {
    "id": "douglas-de",
@@ -4908,12 +4908,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-26T13:22:04.307Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T19:05:47.429Z",
    "trust": {
-    "score": 77,
+    "score": 79,
     "verdict": "trusted",
-    "at": "2026-10-26T13:22:04.307Z",
+    "at": "2026-11-02T19:05:47.429Z",
     "checks": [
      {
       "id": "age",
@@ -4933,18 +4933,18 @@
      {
       "id": "contact",
       "label": "بيانات التواصل",
-      "ok": false,
-      "points": 4,
+      "ok": true,
+      "points": 6,
       "max": 10,
-      "detail": "بريد"
+      "detail": "صفحة تواصل + بريد"
      },
      {
       "id": "identity",
       "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
-      "ok": null,
+      "ok": false,
       "points": 5,
       "max": 15,
-      "detail": "الموقع يمنع قراءة الصفحة آلياً"
+      "detail": "عنوان"
      },
      {
       "id": "returns",
@@ -5013,18 +5013,18 @@
    "sampleOk": 9,
    "sampleTotal": 9,
    "currency": "USD",
-   "rateToEgp": 55.6767,
+   "rateToEgp": 55.9607,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*aedes\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.aedes.com/sitemap_agentic_discovery.xml",
     "https://www.aedes.com/sitemap_products_1.xml?from=457680521&to=7701880340559",
-    "https://www.aedes.com/sitemap_products_2.xml?from=7701945516111&to=15474186649679",
+    "https://www.aedes.com/sitemap_products_2.xml?from=7701945516111&to=15493921931343",
     "https://www.aedes.com/sitemap_pages_1.xml?from=21279921&to=117377073231",
-    "https://www.aedes.com/sitemap_collections_1.xml?from=30872249&to=492521095247",
+    "https://www.aedes.com/sitemap_collections_1.xml?from=30872249&to=493411500111",
     "https://www.aedes.com/sitemap_blogs_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 1249
+   "productsEstimate": 1250
   },
   {
    "id": "ruebroca-com",
@@ -5463,12 +5463,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-26T18:58:34.073Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T19:05:47.429Z",
    "trust": {
     "score": 86,
     "verdict": "trusted",
-    "at": "2026-10-26T18:58:34.073Z",
+    "at": "2026-11-02T19:05:47.429Z",
     "checks": [
      {
       "id": "age",
@@ -5567,15 +5567,15 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "EUR",
-   "rateToEgp": 62.1481,
+   "rateToEgp": 62.2688,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*ausliebezumduft\\.de/products/[^?#]+$",
    "sitemaps": [
     "https://www.ausliebezumduft.de/sitemap_agentic_discovery.xml",
-    "https://www.ausliebezumduft.de/sitemap_products_1.xml?from=10143100928346&to=10143500632410",
-    "https://www.ausliebezumduft.de/sitemap_products_2.xml?from=10143500927322&to=10145456816474",
-    "https://www.ausliebezumduft.de/sitemap_products_3.xml?from=10145456914778&to=10145980547418",
-    "https://www.ausliebezumduft.de/sitemap_products_4.xml?from=10145980645722&to=10243173253466",
-    "https://www.ausliebezumduft.de/sitemap_products_5.xml?from=10243173286234&to=11050163339610",
+    "https://www.ausliebezumduft.de/sitemap_products_1.xml?from=10143100928346&to=10143501746522",
+    "https://www.ausliebezumduft.de/sitemap_products_2.xml?from=10143502336346&to=10145457275226",
+    "https://www.ausliebezumduft.de/sitemap_products_3.xml?from=10145457307994&to=10145981301082",
+    "https://www.ausliebezumduft.de/sitemap_products_4.xml?from=10145981432154&to=10243185049946",
+    "https://www.ausliebezumduft.de/sitemap_products_5.xml?from=10243185082714&to=11056210641242",
     "https://www.ausliebezumduft.de/sitemap_pages_1.xml?from=138209788250&to=161118781786",
     "https://www.ausliebezumduft.de/sitemap_collections_1.xml?from=639574507866&to=646039667034",
     "https://www.ausliebezumduft.de/sitemap_collections_2.xml?from=646039699802&to=680812872026",
@@ -5583,7 +5583,7 @@
     "https://www.ausliebezumduft.de/sitemap_articles_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 4967
+   "productsEstimate": 4956
   },
   {
    "id": "osswaldnyc-com",
@@ -5593,12 +5593,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-26T18:58:34.073Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T19:05:47.429Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-10-26T18:58:34.073Z",
+    "at": "2026-11-02T19:05:47.429Z",
     "checks": [
      {
       "id": "age",
@@ -5698,18 +5698,19 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 55.6767,
+   "rateToEgp": 55.9607,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*osswaldnyc\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.osswaldnyc.com/sitemap_agentic_discovery.xml",
-    "https://www.osswaldnyc.com/sitemap_products_1.xml?from=131027455&to=10362358595803",
+    "https://www.osswaldnyc.com/sitemap_products_1.xml?from=131027455&to=10345840378075",
+    "https://www.osswaldnyc.com/sitemap_products_2.xml?from=10362358595803&to=10376229814491",
     "https://www.osswaldnyc.com/sitemap_pages_1.xml?from=125059140&to=126722638043",
-    "https://www.osswaldnyc.com/sitemap_collections_1.xml?from=9704145&to=541483368667",
+    "https://www.osswaldnyc.com/sitemap_collections_1.xml?from=9704145&to=544761610459",
     "https://www.osswaldnyc.com/sitemap_blogs_1.xml",
     "https://www.osswaldnyc.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 1000
+   "productsEstimate": 1012
   },
   {
    "id": "niche-beauty-com",
@@ -7369,6 +7370,25 @@
  ],
  "runs": [
   {
+   "at": "2026-11-02T19:05:47.429Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 4,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ lattafa-usa.com: CV 76/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ lattafa-usa.com (CV 76/100): 284 perfumes, 4/6 pages read without AI, USD (1 = 55.9607 EGP) — still good",
+    "  ↳ aedes.com: CV 79/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✓ aedes.com (CV 79/100): 1250 perfumes, 9/9 pages read without AI, USD (1 = 55.9607 EGP) — still good",
+    "  ↳ ausliebezumduft.de: CV 86/100 [https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ ausliebezumduft.de (CV 86/100): 4956 perfumes, 3/6 pages read without AI, EUR (1 = 62.2688 EGP) — still good",
+    "  ↳ osswaldnyc.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✓ osswaldnyc.com (CV 83/100): 1012 perfumes, 3/6 pages read without AI, USD (1 = 55.9607 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-11-02T13:20:05.829Z",
    "mode": "self",
    "found": 0,
@@ -7726,19 +7746,6 @@
     "✓ lattafa-usa.com (CV 76/100): 283 perfumes, 9/9 pages read without AI, USD (1 = 55.6767 EGP) — still good",
     "  ↳ aedes.com: CV 77/100 [age,https,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
     "✓ aedes.com (CV 77/100): 1249 perfumes, 9/9 pages read without AI, USD (1 = 55.6767 EGP) — still good"
-   ]
-  },
-  {
-   "at": "2026-10-26T07:00:01.807Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 1,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "  ↳ scentsplit.com: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ scentsplit.com (CV 84/100): 9996 perfumes, 5/6 pages read without AI, USD (1 = 55.6767 EGP) — still good"
    ]
   }
  ]
