@@ -1,8 +1,8 @@
 {
  "version": 1,
- "updatedAt": "2026-11-02T07:23:15.386Z",
+ "updatedAt": "2026-11-02T13:02:57.613Z",
  "sources": {
-  "catalogAt": "2026-11-02T05:30:57.582Z",
+  "catalogAt": "2026-11-02T12:42:04.672Z",
   "total": 1212,
   "published": 1161,
   "liveStock": true,
@@ -38,6 +38,14 @@
    "sku": "AFN-870",
    "nameAr": "9 صباحاً بور فيم من أفنان",
    "brand": "Afnan",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "RUE-530",
+   "nameAr": "آر يو سيريس هيم من رو بروكا",
+   "brand": "Rue Broca",
    "priority": "normal",
    "units30": 0,
    "reasonAr": "نفد"
@@ -261,14 +269,6 @@
   {
    "sku": "AFN-576",
    "nameAr": "أفنان 9 إيه إم",
-   "brand": "Afnan",
-   "priority": "normal",
-   "units30": 0,
-   "reasonAr": "نفد"
-  },
-  {
-   "sku": "AFN-532",
-   "nameAr": "أفنان رير باشن",
    "brand": "Afnan",
    "priority": "normal",
    "units30": 0,
