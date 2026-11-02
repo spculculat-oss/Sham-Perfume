@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "scent-behavior",
- "updatedAt": "2026-11-01T05:00:41.125Z",
+ "updatedAt": "2026-11-02T05:15:06.303Z",
  "signals": {
   "read": true,
   "noteAr": "العدّاد الحي مقروء من السيرفر (أعداد مجهولة فقط: خامات ونوع تركيز، من غير أي بيانات شخصية).",
@@ -30,7 +30,7 @@
   {
    "tag": "amber",
    "nameAr": "عنبري",
-   "share": 10.2
+   "share": 10.1
   },
   {
    "tag": "fresh",
@@ -100,19 +100,19 @@
   {
    "family": "amber",
    "nameAr": "عنبري",
-   "products": 316,
+   "products": 314,
    "bankMaterials": 6
   },
   {
    "family": "leather",
    "nameAr": "جلدي",
-   "products": 53,
+   "products": 54,
    "bankMaterials": 7
   },
   {
    "family": "powdery",
    "nameAr": "بودري",
-   "products": 25,
+   "products": 26,
    "bankMaterials": 7
   },
   {
@@ -130,19 +130,19 @@
   {
    "family": "oriental",
    "nameAr": "شرقي",
-   "products": 341,
+   "products": 343,
    "bankMaterials": 12
   },
   {
    "family": "oud",
    "nameAr": "عود",
-   "products": 119,
+   "products": 118,
    "bankMaterials": 12
   },
   {
    "family": "fruity",
    "nameAr": "فاكهي",
-   "products": 256,
+   "products": 257,
    "bankMaterials": 14
   },
   {
@@ -154,19 +154,19 @@
   {
    "family": "floral",
    "nameAr": "زهري",
-   "products": 398,
+   "products": 399,
    "bankMaterials": 15
   },
   {
    "family": "spicy",
    "nameAr": "توابل",
-   "products": 258,
+   "products": 260,
    "bankMaterials": 17
   },
   {
    "family": "citrus",
    "nameAr": "حمضي",
-   "products": 143,
+   "products": 142,
    "bankMaterials": 22
   },
   {
@@ -178,7 +178,7 @@
   {
    "family": "fresh",
    "nameAr": "منعش",
-   "products": 277,
+   "products": 276,
    "bankMaterials": 27
   }
  ],
