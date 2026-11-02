@@ -1,7 +1,21 @@
 {
- "updatedAt": "2026-11-02T07:51:48.367Z",
+ "updatedAt": "2026-11-02T09:28:42.816Z",
  "active": true,
  "decisions": [
+  {
+   "at": "2026-11-02T09:28:42.493Z",
+   "number": 427,
+   "kind": "task",
+   "title": "تعريب النصوص الإنجليزية المتبقية في الواجهة",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/427"
+  },
   {
    "at": "2026-11-01T09:06:37.450Z",
    "number": 422,
@@ -547,20 +561,6 @@
     "veto": 0
    },
    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/295"
-  },
-  {
-   "at": "2026-10-23T16:58:38.207Z",
-   "number": 296,
-   "kind": "task",
-   "title": "[قسم المتجر والاستيراد] بعد نصيحة الهدية «رشحلي» بيسأل من الأول وينسى المستلم والمناسبة",
-   "outcome": "approved",
-   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
-   "tally": {
-    "approve": 5,
-    "refuse": 0,
-    "veto": 0
-   },
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/296"
   }
  ],
  "supervision": {
@@ -579,8 +579,8 @@
   ]
  },
  "field": {
-  "maneuverAt": "2026-11-02T02:27:32.482Z",
-  "at": "2026-11-02T07:51:45.581Z",
+  "maneuverAt": "2026-11-02T08:42:24.774Z",
+  "at": "2026-11-02T09:28:38.989Z",
   "items": [
    {
     "id": "alcohol:unnamed-button",
@@ -595,7 +595,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "community:unnamed-button",
@@ -610,7 +610,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «المجتمع» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "community:no-heading",
@@ -625,7 +625,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «المجتمع» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "concentration:unnamed-button",
@@ -640,11 +640,11 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «حاسبة التركيز» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
-    "id": "concentration:ai-idea:زرلإعادةضبطحقولالحاسبةوت",
-    "titleAr": "زر لإعادة ضبط حقول الحاسبة وتفريغ القيم بنقرة واحدة",
+    "id": "concentration:ai-idea:إضافةأمثلةشائعةجاهزةللتر",
+    "titleAr": "إضافة أمثلة شائعة جاهزة للتركيزات (مثل EDP وEDT) للاختيار السريع",
     "section": "concentration",
     "sectionAr": "حاسبة التركيز",
     "kind": "idea",
@@ -670,7 +670,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "cosmetics:unnamed-button",
@@ -685,7 +685,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "costing:unnamed-button",
@@ -700,7 +700,22 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «حاسبة التكلفة» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
+   },
+   {
+    "id": "costing:ai-idea:خيارتصديرملخصتسعيرالزجاج",
+    "titleAr": "خيار تصدير ملخص تسعير الزجاجة كصورة أو نص جاهز للمشاركة",
+    "section": "costing",
+    "sectionAr": "حاسبة التكلفة",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "قسم «حاسبة التكلفة» تبعه",
+    "action": "backlog",
+    "seen": 1
    },
    {
     "id": "guide:unnamed-button",
@@ -715,7 +730,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "home:slow",
@@ -730,7 +745,7 @@
     "botAr": "طبيب شاهين (الصيانة)",
     "reasonAr": "البطء — شغل قسم الجودة",
     "action": "backlog",
-    "seen": 36
+    "seen": 37
    },
    {
     "id": "home:unnamed-button",
@@ -745,7 +760,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «الرئيسية» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "library:unnamed-button",
@@ -760,7 +775,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "maceration_simulator:unnamed-button",
@@ -775,11 +790,11 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «محاكي التخمير والنضج» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
-    "id": "maceration_simulator:ai-idea:مؤشرزمنيمرئييوضحمراحلتطو",
-    "titleAr": "مؤشر زمني مرئي يوضح مراحل تطور الرائحة أثناء فترة التعتيق",
+    "id": "maceration_simulator:ai-idea:تنبيهزمنيوتلميحاتلحفظزجا",
+    "titleAr": "تنبيه زمني وتلميحات لحفظ زجاجة العطر أثناء فترة التعتيق",
     "section": "maceration_simulator",
     "sectionAr": "محاكي التخمير والنضج",
     "kind": "idea",
@@ -805,7 +820,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «الخبير شاهين» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "molecule_studio:unnamed-button",
@@ -820,7 +835,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "perfume_designers:unnamed-button",
@@ -835,7 +850,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "perfume_news:unnamed-button",
@@ -850,7 +865,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "perfumes:unnamed-button",
@@ -865,7 +880,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "productDetail:unnamed-button",
@@ -880,7 +895,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
     "id": "pyramid:unnamed-button",
@@ -895,22 +910,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "قسم «حاسبة الهرم العطري» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
-   },
-   {
-    "id": "pyramid:ai-idea:ميزةتصديرأونسختركيبةالهر",
-    "titleAr": "ميزة تصدير أو نسخ تركيبة الهرم العطري كنص منظم أو صورة",
-    "section": "pyramid",
-    "sectionAr": "حاسبة الهرم العطري",
-    "kind": "idea",
-    "severity": "low",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "design_expert",
-    "botAr": "خبير التصميم متعدد التخصصات",
-    "reasonAr": "قسم «حاسبة الهرم العطري» تبعه",
-    "action": "backlog",
-    "seen": 1
+    "seen": 40
    },
    {
     "id": "raw_materials:unnamed-button",
@@ -925,11 +925,11 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
-    "id": "shaheen_chat:ai-idea:اقتراحاتأسئلةجاهزةلبدءال",
-    "titleAr": "اقتراحات أسئلة جاهزة لبدء المحادثة حول تركيب العطور",
+    "id": "shaheen_chat:ai-idea:اقتراحاتأسئلةسريعةجاهزةع",
+    "titleAr": "اقتراحات أسئلة سريعة جاهزة عند فتح المحادثة للبدء فورًا",
     "section": "shaheen_chat",
     "sectionAr": "شات الخبير شاهين",
     "kind": "idea",
@@ -955,11 +955,11 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    },
    {
-    "id": "store:ai-idea:تصفيةسريعةللمنتجاتحسبفئة",
-    "titleAr": "تصفية سريعة للمنتجات حسب فئة الاستخدام ونوع المادة الخام",
+    "id": "store:ai-idea:تصفيةالمنتجاتحسبنوعالماد",
+    "titleAr": "تصفية المنتجات حسب نوع المادة الخام والتصنيف الهرمي",
     "section": "store",
     "sectionAr": "المتجر",
     "kind": "idea",
@@ -985,7 +985,7 @@
     "botAr": "خبير التصميم متعدد التخصصات",
     "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
     "action": "backlog",
-    "seen": 39
+    "seen": 40
    }
   ]
  }
