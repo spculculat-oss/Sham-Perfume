@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-01T18:53:55.489Z",
+ "updatedAt": "2026-11-02T01:17:41.428Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -2311,12 +2311,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-26T01:06:45.971Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T01:17:41.428Z",
    "trust": {
     "score": 84,
     "verdict": "trusted",
-    "at": "2026-10-26T01:06:45.971Z",
+    "at": "2026-11-02T01:17:41.428Z",
     "checks": [
      {
       "id": "age",
@@ -2416,13 +2416,13 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "GBP",
-   "rateToEgp": 74.4081,
+   "rateToEgp": 74.9879,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*pacoperfumerias\\.co\\.uk/[^?#]+\\.html?$",
    "sitemaps": [
     "https://www.pacoperfumerias.co.uk/sitemap.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 6327
+   "productsEstimate": 6333
   },
   {
    "id": "nose-shop-jp",
@@ -3425,15 +3425,15 @@
    "host": "perfumania.com",
    "name": "Perfumania",
    "base": "https://perfumania.com",
-   "status": "active",
+   "status": "paused",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-26T01:06:45.971Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T01:17:41.428Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-10-26T01:06:45.971Z",
+    "at": "2026-11-02T01:17:41.428Z",
     "checks": [
      {
       "id": "age",
@@ -3461,10 +3461,10 @@
      {
       "id": "identity",
       "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
-      "ok": null,
+      "ok": false,
       "points": 5,
       "max": 15,
-      "detail": "الموقع يمنع قراءة الصفحة آلياً"
+      "detail": "عنوان"
      },
      {
       "id": "returns",
@@ -3530,8 +3530,8 @@
     "registeredAt": "1996-05-28T04:00:00.000Z"
    },
    "region": "americas",
-   "sampleOk": 4,
-   "sampleTotal": 6,
+   "sampleOk": 0,
+   "sampleTotal": 1,
    "currency": "USD",
    "rateToEgp": 55.6767,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*perfumania\\.com/products/[^?#]+$",
@@ -3548,7 +3548,8 @@
     "https://perfumania.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 4402
+   "productsEstimate": 4402,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)"
   },
   {
    "id": "escentual-com",
@@ -7368,6 +7369,21 @@
  ],
  "runs": [
   {
+   "at": "2026-11-02T01:17:41.428Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 2,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ perfumeprice.co.uk: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
+    "✓ perfumeprice.co.uk (CV 84/100): 6333 perfumes, 3/6 pages read without AI, GBP (1 = 74.9879 EGP) — still good",
+    "  ↳ perfumania.com: CV 90/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✗ perfumania.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)"
+   ]
+  },
+  {
    "at": "2026-11-01T18:53:55.489Z",
    "mode": "self",
    "found": 0,
@@ -7726,19 +7742,6 @@
    "rejected": 0,
    "notes": [
     "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-25T18:44:59.276Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 1,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "  ↳ niceonesa.com: CV 80/100 [age,https,contact,identity,returns,privacy,terms,payment,social]",
-    "✓ niceonesa.com (CV 80/100): 72+ (by browsing) perfumes, 4/6 pages read without AI, SAR (1 = 14.7418 EGP) — still good"
    ]
   }
  ]
