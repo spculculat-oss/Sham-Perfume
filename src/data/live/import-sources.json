@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-02T09:26:31.737Z",
+ "updatedAt": "2026-11-02T13:20:05.829Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7369,6 +7369,17 @@
  ],
  "runs": [
   {
+   "at": "2026-11-02T13:20:05.829Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-11-02T09:26:31.737Z",
    "mode": "self",
    "found": 0,
@@ -7728,23 +7739,6 @@
     "0 new stores found this run (own methods, no AI)",
     "  ↳ scentsplit.com: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
     "✓ scentsplit.com (CV 84/100): 9996 perfumes, 5/6 pages read without AI, USD (1 = 55.6767 EGP) — still good"
-   ]
-  },
-  {
-   "at": "2026-10-26T01:06:45.971Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 3,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "  ↳ perfumeprice.co.uk: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
-    "✓ perfumeprice.co.uk (CV 84/100): 6327 perfumes, 3/6 pages read without AI, GBP (1 = 74.4081 EGP) — still good",
-    "  ↳ perfumania.com: CV 90/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ perfumania.com (CV 90/100): 4402 perfumes, 4/6 pages read without AI, USD (1 = 55.6767 EGP) — still good",
-    "  ↳ escentual.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ escentual.com: أغلب منتجاته ليست عطوراً (56%)"
    ]
   }
  ]

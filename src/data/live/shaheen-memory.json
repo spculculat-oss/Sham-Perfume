@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-02T12:43:40.126Z",
+ "updatedAt": "2026-11-02T13:21:40.496Z",
  "entries": [
   {
    "id": "ar|auto|ايه هي قوانين نيوتن التلاتة للحركة",
@@ -30,7 +30,7 @@
    "lang": "ar",
    "style": "auto",
    "answer": "تركيبة شتوية شرقية — المقدمة: زعفران 10%، فلفل وردي 8%، برغموت 7%؛ القلب: عنبر 18%، ورد 12%؛ القاعدة: عود 20%، فانيليا 15%، باتشولي 10%. المجموع 100%، وتُجرَّب العينة الصغيرة قبل الإنتاج وتُعتَّق ثم تُقيَّم ثباتها.",
-   "at": "2026-11-02T12:40:55.525Z",
+   "at": "2026-11-02T13:21:40.495Z",
    "hits": 0,
    "source": "study"
   },
@@ -40,7 +40,7 @@
    "lang": "ar",
    "style": "auto",
    "answer": "تركيبة صيفية حمضية — المقدمة: برغموت 22%، ليمون 18%، نيرولي 10%؛ القلب: لافندر 16%، شاي أبيض 14%؛ القاعدة: مسك أبيض 12%، خشب الأرز 8%. المجموع 100%، وتُجرَّب العينة الصغيرة قبل الإنتاج وتُعتَّق ثم تُقيَّم ثباتها.",
-   "at": "2026-11-02T12:40:55.524Z",
+   "at": "2026-11-02T13:21:40.495Z",
    "hits": 0,
    "source": "study"
   },
@@ -50,7 +50,7 @@
    "lang": "en",
    "style": "auto",
    "answer": "warm oriental winter formula: top saffron 10%, pink pepper 8%, bergamot 7%; heart amber 18%, rose 12%; base oud 20%, vanilla 15%, patchouli 10%. Total 100%. Test a small sample first, macerate, then evaluate the lasting before any production batch.",
-   "at": "2026-11-02T12:40:55.524Z",
+   "at": "2026-11-02T13:21:40.495Z",
    "hits": 0,
    "source": "study"
   },
@@ -60,9 +60,39 @@
    "lang": "en",
    "style": "auto",
    "answer": "fresh citrus summer formula: top bergamot 22%, lemon 18%, neroli 10%; heart lavender 16%, white tea 14%; base white musk 12%, cedarwood 8%. Total 100%. Test a small sample first, macerate, then evaluate the lasting before any production batch.",
-   "at": "2026-11-02T12:40:55.522Z",
+   "at": "2026-11-02T13:21:40.494Z",
    "hits": 0,
    "source": "study"
+  },
+  {
+   "id": "ar|auto|ايه افضل خلطة شتوية دافية",
+   "question": "ايه أفضل خلطة شتوية دافية؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "أفضل خلطة شتوية دافية بتجمع بين فخامة العود ودفء الفانيليا مع لمسة خشبية ناعمة تدي حضور قوي وثبات عالي في الجو البارد.\n\n### مقترح تركيبة شتوية (عطر مركز - 50 مل)\n\nالنسب دي محسوبة لزجاجة حجمها 50 مل بتركيز 20 بالمئة، والبااقي كحول عطور نقي:\n\n| المكون العطري | التصنيف | النسبة من الزيت | الكمية بالمل |\n|:--- |:--- |:--- |:--- |\n| **دهن العود الهندي** | قاعدة العطر | 40% | 4 مل |\n| **خشب الصندل** | قاعدة العطر | 25% | 2.5 مل |\n| **فانيليا بوربون** | قلب العطر | 20% | 2 مل |\n| **القرفة والبهارات** | قمة العطر | 15% | 1.5 مل |\n\n*الكمية الإجمالية للزيوت العطرية = 10 مل، وتُكمل الزجاجة بـ 40 مل من الكحول النقي (96%) لتصل للتركيز المطلوب.*\n\nالتركيبة دي تجريبية ومحتاجة تتساق في زجاجة محكمة وتتعتق مدة لا تقل عن 3 أسابيع عشان المكونات تندمج وتاخد طابعها الشتوي الغني.\n\nتحب نعدل في نسبة الفانيليا عشان تكون أهدأ، ولا نخلي العود هو الطاغي بشكل أكبر؟",
+   "at": "2026-11-02T12:43:40.126Z",
+   "hits": 0,
+   "source": "chat"
+  },
+  {
+   "id": "ar|auto|احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
+   "question": "احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "### حساب تكلفة 100 زجاجة عطر\n\nعلشان نحسب التكلفة الإجمالية بدقة لـ 100 زجاجة، هنحسب أولاً احتياجات الزجاجة الواحدة وبعدين نضرب في 100.\n\n### 1. حساب الزجاجة الواحدة (حجم 50 مل - تركيز 20%)\n* **كمية الزيت العطري (20%):** 50 مل × 20 ÷ 100 = 10 مل\n* **كمية الكحول (80%):** 50 مل × 80 ÷ 100 = 40 مل\n\n### 2. حساب تكلفة المكونات للزجاجة الواحدة\n* **تكلفة الزيت:** 10 مل × ‏0.05 US$ = ‏0.54 US$\n* **تكلفة الكحول:** 40 مل × ‏0 US$ = ‏0.14 US$\n* **إجمالي تكلفة المكونات للزجاجة الواحدة:** 30 + 8 = ‏0.68 US$\n\n### 3. إجمالي التكلفة لـ 100 زجاجة\n* **التكلفة الإجمالية للمكونات:** ‏0.68 US$ × 100 زجاجة = ‏68 US$\n\nالتكلفة دي بتشمل الزيت والكحول فقط، وتحتاج تضيف ليها سعر الزجاجات والعبوات والإكسسوارات لو مش محسوبة. هل تحب نساعدك في حساب تكلفة العبوات أو تسعير العطر للبيع؟",
+   "at": "2026-11-02T12:43:40.126Z",
+   "hits": 0,
+   "source": "chat"
+  },
+  {
+   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
+   "question": "What fixative works best for a citrus cologne, and at what percentage?",
+   "lang": "en",
+   "style": "auto",
+   "answer": "For a fresh citrus cologne, the best fixatives are materials that anchor volatile top notes without weighing down the breezy, sparkling character of the citrus. **Ambroxan** and **Iso E Super** work exceptionally well because they add modern radiance and longevity while blending seamlessly with citrus oils like bergamot, lemon, and mandarin. Natural resinous options like benzoin or labdanum can feel too heavy, unless used in microscopic traces.\n\nHere is an experimental 50 ml formula for a citrus cologne with a 15 percent concentration (Eau de Cologne/Eau de Toilette style), using Ambroxan as the primary fixative:\n\n### Citrus Cologne Experimental Formula (50 ml, 15 percent Concentration)\n\n| Component | Percentage of Oil | Volume / Amount |\n| --- | --- | --- |\n| Bergamot Essential Oil | 45.00 percent | 3.38 ml |\n| Lemon Essential Oil | 25.00 percent | 1.88 ml |\n| Petitgrain Essential Oil | 10.00 percent | 0.75 ml |\n| Neroli Essential Oil | 5.00 percent | 0.38 ml |\n| Iso E Super (Modifier/Fixative) | 10.00 percent | 0.75 ml |\n| Ambroxan (Core Fixative) | 5.00 percent | 0.38 ml |\n| **Total Oil Blend** | **100.00 percent** | **7.50 ml** |\n\n*Note: Total bottle volume is 50 ml at 15 percent concentration (7.5 ml oil, 42.5 ml alcohol at 96 percent). Fixatives make up 15 percent of the total oil concentrate here.*\n\n```sham-formula\n{\n  \"title\": \"Citrus Cologne with Ambroxan\",\n  \"author\": \"شاهين — مقترح تجريبي\",\n  \"concentrationPercent\": 15,\n  \"concentrationType\": \"edc\",\n  \"bottleVolumeMl\": 50,\n  \"alcoholPercentage\": 96,\n  \"waterPercent\": 0,\n  \"fixativePercent\": 0,\n  \"macerationDays\": 21,\n  \"summary\": \"مقترح تجريبي لعون حمضيات مع إبروزان وإيزو إي سوبر للثبات\",\n  \"pyramidNotes\": [\n    {\n      \"id\": \"note-1\",\n      \"nameAr\": \"زيت البرغموت الأساسي\",\n      \"nameEn\": \"Bergamot Essential Oil\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 45\n    },\n    {\n      \"id\": \"note-2\",\n      \"nameAr\": \"زيت الليمون الأساسي\",\n      \"nameEn\": \"Lemon Essential Oil\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 25\n    },\n    {\n      \"id\": \"note-3\",\n      \"nameAr\": \"زيت البتيغراين\",\n      \"nameEn\": \"Petitgrain Essential Oil\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 10\n    },\n    {\n      \"id\": \"note-4\",\n      \"nameAr\": \"زيت النيرولي\",\n      \"nameEn\": \"Neroli Essential Oil\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 5\n    },\n    {\n      \"id\": \"note-5\",\n      \"nameAr\": \"إيزو إي سوبر\",\n      \"nameEn\": \"Iso E Super\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 10\n    },\n    {\n      \"id\": \"note-6\",\n      \"nameAr\": \"إبروزان\",\n      \"nameEn\": \"Ambroxan\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 5\n    }\n  ]\n}\n```\n\n```sham-tool\n{\n  \"tools\": [\n    {\n      \"tool\": \"concentration\",\n      \"bottleVolumeMl\": 50,\n      \"concentrationPercent\": 15,\n      \"concentrationType\": \"edc\",\n      \"alcoholPercentage\": 96,\n      \"waterPercent\": 0,\n      \"fixativePercent\": 0\n    },\n    {\n      \"tool\": \"maceration\",\n      \"macerationDays\": 21\n    }\n  ]\n}\n```\n\nWould you like to adjust the ratio of the fixatives or swap one of them for a woody note like cedarwood?",
+   "at": "2026-11-02T12:43:40.126Z",
+   "hits": 0,
+   "source": "chat"
   },
   {
    "id": "ar|auto|ليه العطر بيختفي بسرعة علي جلدي؟ وازود الثبات ازاي",
@@ -153,36 +183,6 @@
    "at": "2026-11-01T03:51:41.550Z",
    "hits": 0,
    "source": "probe"
-  },
-  {
-   "id": "ar|auto|ايه افضل خلطة شتوية دافية",
-   "question": "ايه أفضل خلطة شتوية دافية؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "أفضل خلطة شتوية دافية بتجمع بين فخامة العود ودفء الفانيليا مع لمسة خشبية ناعمة تدي حضور قوي وثبات عالي في الجو البارد.\n\n### مقترح تركيبة شتوية (عطر مركز - 50 مل)\n\nالنسب دي محسوبة لزجاجة حجمها 50 مل بتركيز 20 بالمئة، والبااقي كحول عطور نقي:\n\n| المكون العطري | التصنيف | النسبة من الزيت | الكمية بالمل |\n|:--- |:--- |:--- |:--- |\n| **دهن العود الهندي** | قاعدة العطر | 40% | 4 مل |\n| **خشب الصندل** | قاعدة العطر | 25% | 2.5 مل |\n| **فانيليا بوربون** | قلب العطر | 20% | 2 مل |\n| **القرفة والبهارات** | قمة العطر | 15% | 1.5 مل |\n\n*الكمية الإجمالية للزيوت العطرية = 10 مل، وتُكمل الزجاجة بـ 40 مل من الكحول النقي (96%) لتصل للتركيز المطلوب.*\n\nالتركيبة دي تجريبية ومحتاجة تتساق في زجاجة محكمة وتتعتق مدة لا تقل عن 3 أسابيع عشان المكونات تندمج وتاخد طابعها الشتوي الغني.\n\nتحب نعدل في نسبة الفانيليا عشان تكون أهدأ، ولا نخلي العود هو الطاغي بشكل أكبر؟",
-   "at": "2026-11-02T12:43:40.126Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
-   "id": "ar|auto|احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
-   "question": "احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "### حساب تكلفة 100 زجاجة عطر\n\nعلشان نحسب التكلفة الإجمالية بدقة لـ 100 زجاجة، هنحسب أولاً احتياجات الزجاجة الواحدة وبعدين نضرب في 100.\n\n### 1. حساب الزجاجة الواحدة (حجم 50 مل - تركيز 20%)\n* **كمية الزيت العطري (20%):** 50 مل × 20 ÷ 100 = 10 مل\n* **كمية الكحول (80%):** 50 مل × 80 ÷ 100 = 40 مل\n\n### 2. حساب تكلفة المكونات للزجاجة الواحدة\n* **تكلفة الزيت:** 10 مل × ‏0.05 US$ = ‏0.54 US$\n* **تكلفة الكحول:** 40 مل × ‏0 US$ = ‏0.14 US$\n* **إجمالي تكلفة المكونات للزجاجة الواحدة:** 30 + 8 = ‏0.68 US$\n\n### 3. إجمالي التكلفة لـ 100 زجاجة\n* **التكلفة الإجمالية للمكونات:** ‏0.68 US$ × 100 زجاجة = ‏68 US$\n\nالتكلفة دي بتشمل الزيت والكحول فقط، وتحتاج تضيف ليها سعر الزجاجات والعبوات والإكسسوارات لو مش محسوبة. هل تحب نساعدك في حساب تكلفة العبوات أو تسعير العطر للبيع؟",
-   "at": "2026-11-02T12:43:40.126Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
-   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
-   "question": "What fixative works best for a citrus cologne, and at what percentage?",
-   "lang": "en",
-   "style": "auto",
-   "answer": "For a fresh citrus cologne, the best fixatives are materials that anchor volatile top notes without weighing down the breezy, sparkling character of the citrus. **Ambroxan** and **Iso E Super** work exceptionally well because they add modern radiance and longevity while blending seamlessly with citrus oils like bergamot, lemon, and mandarin. Natural resinous options like benzoin or labdanum can feel too heavy, unless used in microscopic traces.\n\nHere is an experimental 50 ml formula for a citrus cologne with a 15 percent concentration (Eau de Cologne/Eau de Toilette style), using Ambroxan as the primary fixative:\n\n### Citrus Cologne Experimental Formula (50 ml, 15 percent Concentration)\n\n| Component | Percentage of Oil | Volume / Amount |\n| --- | --- | --- |\n| Bergamot Essential Oil | 45.00 percent | 3.38 ml |\n| Lemon Essential Oil | 25.00 percent | 1.88 ml |\n| Petitgrain Essential Oil | 10.00 percent | 0.75 ml |\n| Neroli Essential Oil | 5.00 percent | 0.38 ml |\n| Iso E Super (Modifier/Fixative) | 10.00 percent | 0.75 ml |\n| Ambroxan (Core Fixative) | 5.00 percent | 0.38 ml |\n| **Total Oil Blend** | **100.00 percent** | **7.50 ml** |\n\n*Note: Total bottle volume is 50 ml at 15 percent concentration (7.5 ml oil, 42.5 ml alcohol at 96 percent). Fixatives make up 15 percent of the total oil concentrate here.*\n\n```sham-formula\n{\n  \"title\": \"Citrus Cologne with Ambroxan\",\n  \"author\": \"شاهين — مقترح تجريبي\",\n  \"concentrationPercent\": 15,\n  \"concentrationType\": \"edc\",\n  \"bottleVolumeMl\": 50,\n  \"alcoholPercentage\": 96,\n  \"waterPercent\": 0,\n  \"fixativePercent\": 0,\n  \"macerationDays\": 21,\n  \"summary\": \"مقترح تجريبي لعون حمضيات مع إبروزان وإيزو إي سوبر للثبات\",\n  \"pyramidNotes\": [\n    {\n      \"id\": \"note-1\",\n      \"nameAr\": \"زيت البرغموت الأساسي\",\n      \"nameEn\": \"Bergamot Essential Oil\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 45\n    },\n    {\n      \"id\": \"note-2\",\n      \"nameAr\": \"زيت الليمون الأساسي\",\n      \"nameEn\": \"Lemon Essential Oil\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 25\n    },\n    {\n      \"id\": \"note-3\",\n      \"nameAr\": \"زيت البتيغراين\",\n      \"nameEn\": \"Petitgrain Essential Oil\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 10\n    },\n    {\n      \"id\": \"note-4\",\n      \"nameAr\": \"زيت النيرولي\",\n      \"nameEn\": \"Neroli Essential Oil\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 5\n    },\n    {\n      \"id\": \"note-5\",\n      \"nameAr\": \"إيزو إي سوبر\",\n      \"nameEn\": \"Iso E Super\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 10\n    },\n    {\n      \"id\": \"note-6\",\n      \"nameAr\": \"إبروزان\",\n      \"nameEn\": \"Ambroxan\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 5\n    }\n  ]\n}\n```\n\n```sham-tool\n{\n  \"tools\": [\n    {\n      \"tool\": \"concentration\",\n      \"bottleVolumeMl\": 50,\n      \"concentrationPercent\": 15,\n      \"concentrationType\": \"edc\",\n      \"alcoholPercentage\": 96,\n      \"waterPercent\": 0,\n      \"fixativePercent\": 0\n    },\n    {\n      \"tool\": \"maceration\",\n      \"macerationDays\": 21\n    }\n  ]\n}\n```\n\nWould you like to adjust the ratio of the fixatives or swap one of them for a woody note like cedarwood?",
-   "at": "2026-11-02T12:43:40.126Z",
-   "hits": 0,
-   "source": "chat"
   },
   {
    "id": "ar|auto|ايه هو الفرق بين الثبات والفوحان وكيفية تحسينهما",
