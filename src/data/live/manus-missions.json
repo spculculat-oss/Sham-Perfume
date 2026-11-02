@@ -1,8 +1,14 @@
 {
  "version": 1,
- "updatedAt": "2026-11-02T07:28:55.159Z",
+ "updatedAt": "2026-11-02T10:26:46.359Z",
  "verified": [],
  "runs": [
+  {
+   "at": "2026-11-02T10:26:46.359Z",
+   "mission": "verify",
+   "credits": 29,
+   "status": "done"
+  },
   {
    "at": "2026-11-02T07:28:55.159Z",
    "mission": "tour",
@@ -257,46 +263,32 @@
   "credits": 102
  },
  "verify": {
-  "at": "2026-10-29T10:15:29.382Z",
-  "summaryAr": "الخلاصة: لا يمكن إثبات الإصلاح بشكل قاطع للمهمات المذكورة أعلاه من الواجهة الحية في معظم الحالات، بينما تبقى الحاجة واضحة لفحص إضافي على مستوى RTL/التوجيه والوظائف الإدارية قبل الحكم النهائي على جميع النقاط.",
+  "at": "2026-11-02T10:26:46.359Z",
+  "summaryAr": "التقييم العام يشير إلى أن تنسيق RTL وتوحيد اللغة غير محققين بشكل كامل. كما أن التحقق من تطابق السعر النهائي عبر المسار الكامل (المنتج-السلة-الدفع) يبقى غير ثابت ويحتاج فحصاً إضافياً من صفحة الدفع. كما أن ثمة ازدواج لغوي مستمر وتفاوت في عرض النصوص بين سطح المكتب والهاتف.",
   "checks": [
    {
-    "id": "2026-10-20-1-إصلاح-أعطال-الأدوات-والت",
-    "title": "إصلاح أعطال الأدوات والتشغيل والتحقق منها",
-    "verdict": "cannot_tell",
-    "evidenceAr": "الحالة الحية: تغذية مباشرة مستمرة؛ ماستر شاهين AI؛ أخبار العطور في العالم.",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/168"
-   },
-   {
-    "id": "2026-10-22-4-إصلاح-عطل-أمين-شاهين-الإ",
-    "title": "إصلاح عطل: أمين شاهين — الإدارة المالية",
-    "verdict": "cannot_tell",
-    "evidenceAr": "لا يظهر في الواجهة العامة سجل تشغيل أو تقارير لوحة مالية؛ توجد فقط عناصر مثل \"Sales Analytics\" و\"Sham Bank\" و\"My cards\".",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/221"
-   },
-   {
-    "id": "2026-10-23-2-توحيد-واجهة-المتجر-بالعر",
-    "title": "توحيد واجهة المتجر بالعربية وتثبيت اتجاه العرض (RTL)",
+    "id": "2026-10-25-2-تنسيق-RTL-وتوحيد-اللغة-ا",
+    "title": "تنسيق RTL وتوحيد اللغة العربية",
     "verdict": "not_fixed",
-    "evidenceAr": "الواجهة الإنجليزية وتوجيهات RTL غير مُطبقة؛ lang: en و dir: ltr؛ وجود عناصر مثل All Men Women Unisex وShop بالعربية غير ظاهر بشكل RTL.",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/273"
+    "evidenceAr": "الصفحة الرئيسية والمتجر وصفحات المنتج تعرض خليطاً واضحاً من العربية والإنجليزية. النصوص الإنجليزية مألوفة في قوائم التنقل مثل \"Home\" و\"Perfumes\" و\"Shop\"، كما يظهر في محتوى الهاتف. عند التصفح بعرض 390px يظهر نصوص باللغة الإنجليزية مثل \"All languages — open the list and search (100)\". التخطيط RTL لم يُطبق بشكل واضح في هذه الصفحات.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/346"
    },
    {
-    "id": "2026-10-23-4-إصلاح-عطل-فحص-شاهين-على-",
-    "title": "إصلاح عطل فحص شاهين على الموقع الحي",
+    "id": "2026-10-28-1-إصلاح-عرض-محتوى-السلة-وت",
+    "title": "إصلاح عرض محتوى السلة وتوحيد السعر النهائي للمنتج",
     "verdict": "cannot_tell",
-    "evidenceAr": "شاشة العرض تحتوي على \"Master Shahin AI\" و\"Start a chat with Shahin\" لكن لا دليل واضح على إصلاح فحص Shahin على الموقع الحي.",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/274"
+    "evidenceAr": "في صفحة المنتج Hawas Chrome For Him by Rasasi 100ml EDP يظهر السعر المحلي كـ SGD 115. ثم يظهر زر Add to Cart وIn cart (2) ثم Sign in to pay، مع وجود رسالة الدفع فقط عند محاولة الدخول إلى صفحة الدفع. وجود \"Product page (to share)\" في عناصر الصفحة يعزز أنه لم يتم تثبيت نظام موحّد للسلة والدفع بعد. لا توجد أداة تؤكد السعر النهائي للسلة دون تسجيل الدخول.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/395"
    },
    {
-    "id": "2026-10-24-1-إصلاح-خطوة-checkout-في-ر",
-    "title": "إصلاح خطوة «checkout» في رحلة الشراء",
-    "verdict": "cannot_tell",
-    "evidenceAr": "زر Continue order ظاهر في درج السلة وواجهة الدفع قبل الدخول؛ المحاولة أظهرت وجود خيار متابعة الطلب لكن لم يتضح تماماً إكمال تجربة الدفع عبر الهاتف.",
-    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/318"
+    "id": "2026-10-28-3-تحسين-تنسيق-الاتجاه-RTL-",
+    "title": "تحسين تنسيق الاتجاه (RTL) والتباين اللغوي في واجهات الموقع",
+    "verdict": "not_fixed",
+    "evidenceAr": "صفحة المنتج Hawas Chrome For Him by Rasasi 100ml EDP تُظهر العنوان بالإنجليزية كما في النص: \"Hawas Chrome For Him by Rasasi 100ml EDP\"، مع وجود سعر SGD 115. في العرض المحمول يظهر عنصر In cart (2) وSign in to pay، وهو ما يدل على استمرار وجود تجربة غربية/إنجليزية مع وجود عناوين عربية قليلة. كذلك يظهر تنسيق المحتوى مع فواصل ولغات متداخلة على الهاتف.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/397"
    }
   ],
-  "taskId": "X98i8qpYcTGfZM5jqpocfR",
-  "credits": 43
+  "taskId": "RRyPsN7ipMrZM8G8bsZhZc",
+  "credits": 29
  }
 }
