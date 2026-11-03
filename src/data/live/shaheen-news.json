@@ -1,14 +1,26 @@
 {
  "version": 1,
- "updatedAt": "2026-11-03T03:50:27.856Z",
- "nextUpdateAt": "2026-11-03T15:50:27.856Z",
+ "updatedAt": "2026-11-03T15:48:39.276Z",
+ "nextUpdateAt": "2026-11-04T03:48:39.276Z",
  "intervalHours": 12,
  "editor": "shaheen",
  "digest": {
-  "ar": "تستعرض نشرة اليوم النمو الملحوظ لقطاع العطور ودعم إيرادات شركات كبرى مثل إستيه لودر، مع إطلاقات إبداعية جديدة في عالم النيش والعطور المستدامة، بالإضافة إلى فعاليات ثقافية ومهرجانات دولية تحتفي بالعود والتراث العطري.",
-  "en": "Today's digest highlights the notable growth of the fragrance sector driving major revenues for companies like Estée Lauder, creative new niche and sustainable releases, alongside cultural events and international festivals celebrating oud and fragrance heritage."
+  "ar": "تسلط نشرة اليوم الضوء على قفزة مبيعات عطور استي لودر ونتائجها المالية القوية، وتوسع دور العطور الكبرى مثل Creed وCoty، إضافة إلى تعزيز مراكز الابتكار والمواد الخام في قطاع العطور العالمي.",
+  "en": "Today's digest highlights Estée Lauder's strong fragrance-driven financial growth, major expansions by houses like Creed and Coty, and new developments in global perfumery innovation and ingredients."
  },
  "sources": [
+  {
+   "name": "Premium Beauty News",
+   "count": 2
+  },
+  {
+   "name": "BeautyNewsDaily",
+   "count": 2
+  },
+  {
+   "name": "Cosmetics Business",
+   "count": 2
+  },
   {
    "name": "CaFleureBon",
    "count": 2
@@ -18,11 +30,35 @@
    "count": 2
   },
   {
-   "name": "auroradesio.it",
-   "count": 2
+   "name": "WWD",
+   "count": 1
   },
   {
-   "name": "WWD",
+   "name": "موقع ليالينا",
+   "count": 1
+  },
+  {
+   "name": "Oui Speak Fashion (OSF)",
+   "count": 1
+  },
+  {
+   "name": "openPR.com",
+   "count": 1
+  },
+  {
+   "name": "Beauty Independent",
+   "count": 1
+  },
+  {
+   "name": "كيفاش",
+   "count": 1
+  },
+  {
+   "name": "لحظات نيوز",
+   "count": 1
+  },
+  {
+   "name": "Hindustan Times",
    "count": 1
   },
   {
@@ -31,10 +67,6 @@
   },
   {
    "name": "The Impression",
-   "count": 1
-  },
-  {
-   "name": "BeautyNewsDaily",
    "count": 1
   },
   {
@@ -58,11 +90,11 @@
    "count": 1
   },
   {
-   "name": "Cosmetics Business",
+   "name": "The Business of Fashion",
    "count": 1
   },
   {
-   "name": "The Business of Fashion",
+   "name": "auroradesio.it",
    "count": 1
   },
   {
@@ -75,46 +107,6 @@
   },
   {
    "name": "tv78",
-   "count": 1
-  },
-  {
-   "name": "The New York Times",
-   "count": 1
-  },
-  {
-   "name": "EIN News",
-   "count": 1
-  },
-  {
-   "name": "Arabian Business",
-   "count": 1
-  },
-  {
-   "name": "openPR.com",
-   "count": 1
-  },
-  {
-   "name": "www.grazia.fr",
-   "count": 1
-  },
-  {
-   "name": "Totally The Bomb",
-   "count": 1
-  },
-  {
-   "name": "Journal du Luxe",
-   "count": 1
-  },
-  {
-   "name": "L'Officiel FRANCE",
-   "count": 1
-  },
-  {
-   "name": "IndexBox",
-   "count": 1
-  },
-  {
-   "name": "Inside Retail Asia",
    "count": 1
   }
  ],
@@ -129,16 +121,258 @@
    "category": "market",
    "importance": 5,
    "title": {
-    "ar": "إستيه لودر ترفع توقعاتها المالية لعام 2027 بفضل نمو قطاع العطور",
+    "ar": "استي لودر ترفع توقعاتها المالية لعام 2027 بفضل نمو مبيعات العطور",
     "en": "Estée Lauder Raises FY 2027 Outlook as Q1 Sales Rise to $3.7B, Driven by Fragrance Growth"
    },
    "summary": {
-    "ar": "سجلت مبيعات الربع الأول لشركة إستيه لودر ارتفاعاً ليصل إلى 3.7 مليار دولار مدفوعة بنمو قوي في قطاع العطور، مما دفع الشركة لرفع توقعاتها المالية.",
-    "en": "Estée Lauder reported Q1 sales rising to $3.7B driven by fragrance growth, prompting the company to raise its FY 2027 outlook."
+    "ar": "سجلت شركة Estée Lauder نمواً ملحوظاً في مبيعات الربع الأول لتبلغ 3.7 مليار دولار مدفوعة بقوة الطلب في قطاع العطور، مما دفعها لرفع توقعاتها المالية لعام 2027.",
+    "en": "Estée Lauder posted strong Q1 sales reaching $3.7B driven by robust fragrance demand, prompting the company to raise its fiscal 2027 outlook."
    },
    "note": {
-    "ar": "يعكس هذا الخبر القوة التجارية المستمرة لقطاع العطور عالمياً وتأثيره المباشر على الاقتصاد الكلي لشركات التجميل الكبرى.",
-    "en": "This reflects the ongoing commercial strength of the global fragrance sector and its direct impact on major beauty conglomerates."
+    "ar": "يعكس هذا الخبر قوة قطاع العطور كمنقذ ومحرك رئيسي للنمو حتى بالنسبة للشركات الكبرى التي تواجه تحديات في قطاعات أخرى.",
+    "en": "This highlights fragrance as a major resilient growth driver for multinational beauty corporations."
+   }
+  },
+  {
+   "id": "n14i10n4",
+   "url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxPbUVpQ0RLS21WaWZGWGc0c3k4dUlPT1NhZHdCckJSVkZkUFViR3JiTVVWdU94MVNIYVJpQ2EtQ0RBWlU1NDlfZFFHMnpiYmptX3k2Z2l3VE45Y3FmSzhlZkE4S2IxdGNvNEJqT0xLQXhLbG95cHo3dHdtZHlQNVpTR01qM3BtTnNvMGhERDIzMFpkZDNUQmxNd0RQUjZPT2JKaWNHeFNEZkJUc251eV8yaFl1Q2dBWDF0Rnd2STFsbnRWTFVDR3JoMjFnelJKQ01PRlZfM25vVWhxNEJrUW11RDJJSGZsN24yM29sczUzcjFvaE1O0gH6AUFVX3lxTE16OHdqTjN5NnFWckJxendrbVlLX3dPU0F6MzY4VEw1bVdPVS1weUFhc3NWd3FyeXpRWE9kYl9CZ1RfcndoNDdheHMzc0VyNnhKOUtHNUdkZnB3eEVrMGpfYkhrT3ZqTGVLdHRBWnlINHYxX0laQ3NhT1RJaTNPZW90a1JDMXFrRFNQTVdHX0lRdVFTWHpYbXN6cTdCRnpBVkZ6SHhBTlN0d081MFo0V1d4QzZLQlVNOTVXcEFSNnNEYkJCR1Rlb3ZpQWM0cTg1UlQ3MkJ2VEVWNTduTVdfMjJvR0VjN3lwQkQ5R1I3MTZFVHlmWTZidUdUdmc?oc=5",
+   "source": "موقع ليالينا",
+   "publishedAt": "2026-11-03T13:07:47.000Z",
+   "original": "THE HOUSE OF CREED تطلق عطرها الجديد IRIS DEBONAIR",
+   "lang": "ar",
+   "category": "launch",
+   "importance": 5,
+   "title": {
+    "ar": "دار THE HOUSE OF CREED تطلق عطرها الجديد IRIS DEBONAIR",
+    "en": "THE HOUSE OF CREED Launches New Fragrance IRIS DEBONAIR"
+   },
+   "summary": {
+    "ar": "أعلنت دار العطور العريقة THE HOUSE OF CREED عن إطلاق عطرها الجديد تحت اسم IRIS DEBONAIR ضمن مجموعتها الفاخرة.",
+    "en": "The heritage perfume house THE HOUSE OF CREED has announced the launch of its new fragrance IRIS DEBONAIR."
+   },
+   "note": {
+    "ar": "إطلاق مهم لعشاق العطور الفاخرة التي تعتمد على زهرة السوسن (Iris) كمكون أساسي وجذاب.",
+    "en": "An exciting release for lovers of luxury niche perfumery focusing on iris notes."
+   }
+  },
+  {
+   "id": "nuvqxrf",
+   "url": "https://www.premiumbeautynews.com/fr/quatre-parfumeurs-renforcent-le,28465",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-11-02T23:30:00.000Z",
+   "original": "Quatre parfumeurs renforcent le pôle créatif de Symrise à Paris",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "شركة Symrise تعزز مركزها الإبداعي في باريس بانضمام أربعة صانعي عطور",
+    "en": "Symrise Strengthens Paris Creative Hub with Four New Perfumers"
+   },
+   "summary": {
+    "ar": "عززت شركة Symrise مركزها الإبداعي للعطور الراقية في باريس بانضمام أربعة صانعي عطور بارزين هم Philippe Paparella-Paris وThéo Belmas وLeslie Girard وMargaux Le Paih Guérin.",
+    "en": "Symrise Fine Fragrance has strengthened its Paris Creative Center with the arrival of four perfumers: Philippe Paparella-Paris, Théo Belmas, Leslie Girard, and Margaux Le Paih Guérin."
+   },
+   "note": {
+    "ar": "استقطاب المواهب الكبيرة يوضح التنافس المستمر بين شركات توريد العطور لتقديم مبتكرات جديدة للعلامات التجارية.",
+    "en": "Talent acquisition among major fragrance houses signals intense competition for unique olfactory creativity."
+   }
+  },
+  {
+   "id": "n1jfl3h3",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9wdmpzVjUtWU1EUkRmbnZ3ZWlMRGFYeUNqcWQ2VGhEemotSHlQeWdwMWw1NzRPUTMxNXBvWjdjcWctRE1BN2hxdWNMR0pNM1BvQnhLb3MtNzdiaXJRU0xybnpWZTFxTk8wbEpRRldOZkxuMHRRcjhn?oc=5",
+   "source": "Oui Speak Fashion (OSF)",
+   "publishedAt": "2026-11-02T15:51:48.000Z",
+   "original": "Coty Launches the Coty Fragrance Club as Fragrance Marketing Shifts From Advertising to Community",
+   "lang": "en",
+   "category": "market",
+   "importance": 4,
+   "title": {
+    "ar": "مجموعة Coty تطلق نادي Coty Fragrance Club للتحول نحو بناء المجتمعات العطرية",
+    "en": "Coty Launches the Coty Fragrance Club to Shift Toward Community-Driven Marketing"
+   },
+   "summary": {
+    "ar": "أطلقت شركة Coty مبادرة 'Coty Fragrance Club' بهدف التحول في التسويق العطري من الإعلانات التقليدية المباشرة إلى بناء مجتمعات تفاعلية من عشاق العطور.",
+    "en": "Coty has launched the Coty Fragrance Club, shifting its fragrance marketing strategy from traditional advertising toward engaged consumer communities."
+   },
+   "note": {
+    "ar": "هذا التحول يثبت أهمية بناء علاقة حقيقية مع محبي العطور والمستهلكين في عصر التسويق الرقمي والمجتمعات.",
+    "en": "A clear industry shift towards community engagement over traditional ad spending."
+   }
+  },
+  {
+   "id": "nl7ybi7",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOd1ZFMjhzLXZtVjlCb084V2JJZzBkNk9nQXFJMVItckNlT0NJdTVONnpNaGlXQmxpVWtOZUZCZlFUOTNnSzgxXzhOX2dTa3VEVGd4Ymh1SE5vN3I3eGpfMkh4RXV5VzNRbGd3YVV2QVhuLUk2UVV4NkdhR0J1STdBWWRkbWxmSWZkTzhGcUM1N29sUU41NFZVQkZXcXVTZw?oc=5",
+   "source": "openPR.com",
+   "publishedAt": "2026-11-03T09:19:39.000Z",
+   "original": "Perfume Ingredients Chemicals Market to Reach US$13.0 Billion by 2033 at 6.1% CAGR | Persistence Market Research",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 4,
+   "title": {
+    "ar": "سوق مواد ومنتجات العطور يترقب وصوله إلى 13 مليار دولار بحلول عام 2033",
+    "en": "Perfume Ingredients Chemicals Market Expected to Reach US$13.0 Billion by 2033"
+   },
+   "summary": {
+    "ar": "أظهرت دراسة سوقية حديثة أن سوق مواد ومكونات العطور الكيميائية والطبيعية يتوقع أن يبلغ 13 مليار دولار بحلول عام 2033 بمعدل نمو سنوي مركب يبلغ 6.1%.",
+    "en": "A recent market study projects that the perfume ingredients and chemicals market will reach US$13.0 billion by 2033 at a 6.1% CAGR."
+   },
+   "note": {
+    "ar": "استمرار نمو سوق المكونات الخام يؤكد توسع قطاع صناعة العطور المستقلة والشخصية حول العالم.",
+    "en": "Steady growth in raw ingredients indicates robust expansion across independent and custom perfumery sectors."
+   }
+  },
+  {
+   "id": "nl83uh1",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOQWFwaGdrUUVOSzgtOUoyenl2SXhGbGkyTnVFT2VCa3hfeVFoSGg2b2tNb1YtNkNPSU0zcElxYjFRZHMwYjhzNV85Zy10U1B2aDl1Zi1zNjhXZDVwbElENnZzdVNvU3NMS0V6Tk4xY0pEQ2hsRGtjZWdHRGV3WWZmZUtIVjBoQ2FkQlIzd2wyaVVRWWtUQXJKLWJHd3Yzb3FGMnc?oc=5",
+   "source": "Beauty Independent",
+   "publishedAt": "2026-11-03T05:01:41.000Z",
+   "original": "Fresh Founders’ Fragrance Brand The Maker Closes, But A Comeback Is Possible",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "توقف علامة العطور The Maker وتوقعات باحتمالية عودتها مستقبلاً",
+    "en": "Fragrance Brand The Maker Closes, But a Comeback Is Possible"
+   },
+   "summary": {
+    "ar": "أعلنت علامة العطور الشهيرة The Maker عن إغلاق أعمالها الحالية، مع بقاء احتمالات العودة والتجديد واردة في المستقبل.",
+    "en": "The prominent fragrance brand The Maker has closed its doors, though a future comeback remains a possibility."
+   },
+   "note": {
+    "ar": "يذكرنا هذا التحدي بصعوبة الحفاظ على استدامة العلامات التجارية المستقلة في السوق التنافسي الحالي.",
+    "en": "Highlights the business volatility and fierce competition independent perfume brands face."
+   }
+  },
+  {
+   "id": "n1urilgt",
+   "url": "https://news.google.com/rss/articles/CBMivwJBVV95cUxOYjR3TnRHbk5mRHp4MlczNDgtMk5LNDYyeEtuR1RSWnVncFB2eTVjdGQybWZVSWg1VUpyRTltT3FvemhTcC1FR3dsRmJoS1J0cjFoeGdKX1hOcVFsODRBcmx6RXJFbUJIeUM1NjJLcmxSV1NSUE5aVGV3Uko0Z2JEV3JDanVJb25JdXdKWkExTy1aVTVmOEYtX3VFOVJ5R3JmS19IZmFEdE1Oai1aXzhTUG05R09vTWZrV2hYX0JpaGFPdVRuREtOQlZlS1A4bkoyNVdHRTBIZnlDYy1NX2NJZnVUVWtEeElrdkpwT0pzQllaOVE1b25DTWFpTGZYZUt5ZFNtMWtwTkhSN2FHWUFhNmZoSUdTeGJFNHNMVkY1cUV6SndwTkN6Z1RFbUdHZjROS0hnT3dDM3RzZVg0Z0tN?oc=5",
+   "source": "كيفاش",
+   "publishedAt": "2026-11-03T03:32:15.000Z",
+   "original": "بمشاركة مارسيل خليفة.. تطوان تحتضن فعاليات المهرجان الدولي للعود",
+   "lang": "ar",
+   "category": "events",
+   "importance": 3,
+   "title": {
+    "ar": "مدينة تطوان المغربية تحتضن فعاليات المهرجان الدولي للعود بمشاركة فنانين بارزين",
+    "en": "Tetouan International Oud Festival Kicks Off with Prominent Artists"
+   },
+   "summary": {
+    "ar": "تحتضن مدينة تطوان المغربية فعاليات الدورة الجديدة من المهرجان الدولي للعود بمشاركة فنانين كبار مثل مارسيل خليفة وتكريم نجوم الطرب الأصيل.",
+    "en": "The Moroccan city of Tetouan is hosting the International Oud Festival featuring renowned artists such as Marcel Khalife."
+   },
+   "note": {
+    "ar": "مهرجانات التراث الموسيقي والثقافي ترتبط وثيقاً بثقافة العود الأصيل التي تُعد ركيزة أساسية في صناعة العطور الشرقية.",
+    "en": "Cultural festivals celebrating the oud instrument honor the deep roots of traditional oriental perfumery ingredients."
+   }
+  },
+  {
+   "id": "np3226",
+   "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE90bGQ2MG9tVXNSSThfR1ZHLTlub3ByZENjRHhkS1RQbTA5UmctSmtkVjN5QlllLTVLV3RRWHg2c0k1dC1IUVhQMVZHMjdwckZzUUV6VDY4ZzU5M2Jfa0ZLcURJTmhGUQ?oc=5",
+   "source": "BeautyNewsDaily",
+   "publishedAt": "2026-11-03T12:24:23.000Z",
+   "original": "New Fragrance Brand Artifact Debuts Two Genderless Extraits",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "العلامة الجديدة Artifact تطلق عطرين مركزين محايدين للجنسين",
+    "en": "New Fragrance Brand Artifact Debuts Two Genderless Extraits"
+   },
+   "summary": {
+    "ar": "أطلقت علامة العطور الناشئة Artifact عطرين جديدين بتركيز خلاصة العطر (Extrait) وبتصميم محايد للجنسين.",
+    "en": "New fragrance brand Artifact has debuted two genderless Extrait de Parfum formulations."
+   },
+   "note": {
+    "ar": "دليل إضافي على تصاعد توجه العطور المحايدة للجنسين والتركيزات العالية الثابتة.",
+    "en": "Reflects the ongoing consumer preference for high-concentration, gender-fluid fragrances."
+   }
+  },
+  {
+   "id": "nu0b9sn",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNeFAyQlFFNFEwa1RFMGs1eDktQmNTQWZHcEVKV2VIR2VHWldSeFhSZ2lPd0s4Z09FVmxsUHBaWFdDMjJkR0dSVkRyZVFrWmdJUW1GdEt6U3FCc2pMWUVseFBKLTI3NXFHUUdDTWQtWlVfWHNVTThiTWJGSW9EYzE1X3hTYl9QcC1fRHM2YTVsamlXMkU?oc=5",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-11-03T11:09:37.000Z",
+   "original": "Ouai enters fragrance wearables through Heaven Mayhem jewellery collaboration",
+   "lang": "en",
+   "category": "launch",
+   "importance": 3,
+   "title": {
+    "ar": "علامة Ouai تقتحم مجال العطور القابلة للارتداء عبر تعاون مع مجوهرات Heaven Mayhem",
+    "en": "Ouai Enters Fragrance Wearables Through Heaven Mayhem Jewelry Collaboration"
+   },
+   "summary": {
+    "ar": "دخلت علامة Ouai عالم العطور القابلة للارتداء من خلال إطلاق قطع مجوهرات معطرة بالتعاون مع علامة Heaven Mayhem.",
+    "en": "Ouai has entered wearable fragrances through a jewellery collaboration with Heaven Mayhem."
+   },
+   "note": {
+    "ar": "ابتكار طرق جديدة لتجربة العطور بعيداً عن الزجاجات التقليدية يفتح آفاقاً ممتعة لمصممي العطور.",
+    "en": "Innovative formats like scented jewelry offer fresh ways to experience personal scent."
+   }
+  },
+  {
+   "id": "ndbb4ur",
+   "url": "https://www.premiumbeautynews.com/fr/cosmetic-valley-et-universite-cote,28452",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-11-02T09:22:00.000Z",
+   "original": "Cosmetic Valley et Université Côte d'Azur unis pour l'innovation en parfumerie",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "شراكة استراتيجية بين Cosmetic Valley وجامعة كوت دازور لتعزيز الابتكار في صناعة العطور",
+    "en": "Cosmetic Valley and Université Côte d'Azur Partner for Perfumery Innovation"
+   },
+   "summary": {
+    "ar": "وقعت منظمة Cosmetic Valley ومؤسسة جامعة كوت دازور اتفاقية شراكة لربط خبرات منطقة جراس التاريخية بالبحث العلمي المتطور.",
+    "en": "Cosmetic Valley and the Université Côte d'Azur Foundation signed a partnership agreement to connect Grasse's historical expertise with regional scientific research."
+   },
+   "note": {
+    "ar": "هذا التعاون يعزز مستقبل تطوير المكونات العطرية وتقنيات الاستخلاص الحديثة في معاقل صناعة العطور الفرنسية.",
+    "en": "Bridges historic perfumery heritage with modern scientific research in Grasse."
+   }
+  },
+  {
+   "id": "n12cugzf",
+   "url": "https://news.google.com/rss/articles/CBMi7wRBVV95cUxNNHN4MXVLSC1ncFJVR1pzVXdHNl9zcUdMZ3k5cEQ5Mm9UYTJlLTU3Z3dXMDNNbnNtMGNOWUUwMGpYTks0YnZwbFRsVV8zTUFCbHY3ZTVWRU9LM0Q4OEdVcmFYU25yTmg4MkRCSEhnWGdPQXRpX0VlU3NLZFV1OU4tdGl3YlZsQTBDRUV1bFlOaGV3cXpuakxySW8yZ1UxdllXd2NDQVVuVklxUkhnU2FvRmdCcnBIWnZsR0duTzlWOUZJNlVubG9WTW5Cd1NaOEFfQUlLZzhFOEFaUGRFMExueGd3bE13Z2ZDWlB4VDJGNEJMdnpKYXVwOGRlVS1oUGl5eUlDM3FkTHRGSjUzRVNnSGdjNHViVmVudnlhRk1ObzBCclNJR09KQVQtZE1tcTZBd1VkS2xuWHRIYV9Pd3lITk5pVjBzSXVqZ2JkUk1pc1Z4eG9PZUlHOHZ1bFN6Nk1GN1daalJ2ZWUzUzQ5WEwxUW8ySEpJY2dvbExFT3JkNVZuM055aHFMM1VGYzdvQU9nN0xfRVZRVnpvRHdwWVZlZmIyVW5md3ZnNzN0MTlMLUhiWVhCZTBGbmI4aENvX1JoMWMtX2pIQUxJbDFnQVNKaUJhNVZsYmJEbVFSODhZQnY2ZkM5U0Q4dENfNjVqS1JsbDFLTWI2T2JPbEJ0dXE2ODRrbERTNV9BdFA5S0t5UWN6c3RVOE1NZWhOcER6ZmRVUWRlaGZWSllzWkRpNG5jYmNCMzktTTBPaVlHcWlqeFQxeXRtSGNhZTMzRi00eUE2VTBFcDNrZXpBZDVkWWdFY2RubEVxMGRGc2hKYkVfNA?oc=5",
+   "source": "لحظات نيوز",
+   "publishedAt": "2026-11-02T21:41:00.000Z",
+   "original": "قبل الوقوف للصلاة.. دار الإفتاء تحسم الجدل حول استخدام العطور المحتوية على الكحول",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "دار الإفتاء تحسم الجدل حول استخدام العطور المحتوية على الكحول قبل الصلاة",
+    "en": "Dar al-Ifta Clarifies Rulings on Using Alcohol-Based Perfumes Before Prayer"
+   },
+   "summary": {
+    "ar": "أصدرت دار الإفتاء توضيحاً فقهياً بشأن حكم استخدام العطور والروائح التي تحتوي على الكحول قبل الوقوف لأداء الصلاة.",
+    "en": "Dar al-Ifta has issued a religious clarification regarding the use of alcohol-containing perfumes before performing prayers."
+   },
+   "note": {
+    "ar": "سؤال متكرر ومهم لكل مهتم باختيار واستخدام العطور اليومية في العالم العربي والإسلامي.",
+    "en": "Addresses a frequent practical inquiry for fragrance users in the Islamic world."
+   }
+  },
+  {
+   "id": "n17sfd4",
+   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPZlhpeFpoUV90dE4tTFJpb2laNWVSR2VPUUpWdzhpM0J1bUJqQnhMeUNDV3NzUkN4amptVXp2Y1N6QVZKVW96ckhESWtIcnBDR21zbmVyekFkNDlpMXczdXZnQ25JbHlIZ05jTXZPR0N4RUptVGtUR3lyTmxxY09wNnpiMGl2WDlWY05jVUgtSnd0SkgxYVRJSXhHX0JMSDVDRkpydG01bnJhSEFDZmljVjNwNzFyR29NZUEtdGhDUml5TXFLR1pHU04wNHFGZUXSAdQBQVVfeXFMTzZOVUxGdXZSRFFleWNSeGQzdENUSERicHRaM09IRE5OZkZOUjJzTF9pcjA5VjRvUV9ZVTZ5cmNmRXZxWlNHd0Uzek0tQ2o0UEZoSVQyZmlpTkZQd2tWUHp6cUJ5SzJVRGlGYU12d1RGZHczbk5TRlNFcFBxWTlscmUzT1hBcjQyMGF1MDk2X05VcWJDQm5kUVd0SEdZMnNUaXdkcjVCQ1RuNHdrU0tFREJvRlNGYXhiMjRyaGpIQk5acnlSbnJ6RVc5MEZjd1p3WkxMUTM?oc=5",
+   "source": "Hindustan Times",
+   "publishedAt": "2026-11-03T06:14:34.000Z",
+   "original": "Chai is the new muse for beauty, fragrance and home décor | Hindustan Times",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 3,
+   "title": {
+    "ar": "شاي 'الشاي' (Chai) يبرز كمكون ومصدر إلهام جديد في عالم العطور والجمال",
+    "en": "Chai Emerges as a New Muse for Beauty and Fragrance"
+   },
+   "summary": {
+    "ar": "بدأت نوتات شاي 'الشاي' الدافئة والتوابل المرتبطة به تحتل مكانة بارزة كمصدر إلهام رئيسي في ابتكار العطور ومنتجات التجميل.",
+    "en": "Warm chai notes and associated spices are stepping into the spotlight as a primary muse for recent fragrance and beauty creations."
+   },
+   "note": {
+    "ar": "نوتة عطرية دافئة ومريحة يستحق تجربتها لمن يحبون ابتكار عطور مميزة للشتاء.",
+    "en": "A cozy, spiced profile offering inspiring new directions for custom autumn and winter fragrance creation."
    }
   },
   {
@@ -499,204 +733,6 @@
    "summary": {
     "ar": "Versailles : une exposition invite à découvrir les secrets de la parfumerie française",
     "en": "Versailles : une exposition invite à découvrir les secrets de la parfumerie française"
-   }
-  },
-  {
-   "id": "n1vp9c9v",
-   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxONk4yTUhaR2I2X255aFc5NkFSOXpBeE0zMVF6M3J1a3U3YkFrbWY2eFc2aUh0Q1E1dWhTSkFsWlB2cUs1eW1vQ3QxdVdsaG52SGRDNzUwN0RFUGl1VHZ6Zi1rMjFZUlFmUGxkZ0ZJaV9kWkl3c2czd0ZJWk80MFBlUXE3TDMtcU5ENzlfZmlB?oc=5",
-   "source": "The New York Times",
-   "publishedAt": "2026-11-02T10:00:31.000Z",
-   "original": "In France, a Treasure Trove of Fragrance",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "In France, a Treasure Trove of Fragrance",
-    "en": "In France, a Treasure Trove of Fragrance"
-   },
-   "summary": {
-    "ar": "In France, a Treasure Trove of Fragrance",
-    "en": "In France, a Treasure Trove of Fragrance"
-   }
-  },
-  {
-   "id": "n1r8j6c8",
-   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQa1NILWEzcjJ5ZEpyOVFwZXV3SF9DTEUyMUFUU05QRDlVU0xFNU5rTlNjd0Q5Snc4X0xia0lUN1JCX1pzQXB3cWNrOVc4ZUY4bFZRZllDOHFWVnFYRkhwTFpVU3FmbV9NWVRydjd4ZjQ0cWdLTWo2OHZRZFJnWGx1SFFzYU8wSWc5MExhb1BUQWozY1BfWmRfZkFhenpxM1JlZ3cwdExVdw?oc=5",
-   "source": "EIN News",
-   "publishedAt": "2026-11-02T10:00:00.000Z",
-   "original": "10ML Releases Its Perfume Price Database Under an Open License",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "10ML Releases Its Perfume Price Database Under an Open License",
-    "en": "10ML Releases Its Perfume Price Database Under an Open License"
-   },
-   "summary": {
-    "ar": "10ML Releases Its Perfume Price Database Under an Open License",
-    "en": "10ML Releases Its Perfume Price Database Under an Open License"
-   }
-  },
-  {
-   "id": "nboz8tp",
-   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPV2ZtY0dudE9VTDJTeTNlM3E0cl9rU1BEZHZYZjd1QmZMZ21GX2ZjU1k3emk0TVBnQUZZRXNZUGh0cTVfT3l1MFNlV1ozVUdZSDZEbXZVTkpTN05wdlc3QU1mT0UxaFZLNHVVREt0a1hkR1FxX21rZnA5UHRhc1M0Tm90YWM?oc=5",
-   "source": "Arabian Business",
-   "publishedAt": "2026-11-02T07:00:00.000Z",
-   "original": "Inside Goldfield & Banks’ new Pacific Rock Swell fragrance",
-   "lang": "en",
-   "category": "regulation",
-   "importance": 2,
-   "title": {
-    "ar": "Inside Goldfield & Banks’ new Pacific Rock Swell fragrance",
-    "en": "Inside Goldfield & Banks’ new Pacific Rock Swell fragrance"
-   },
-   "summary": {
-    "ar": "Inside Goldfield & Banks’ new Pacific Rock Swell fragrance",
-    "en": "Inside Goldfield & Banks’ new Pacific Rock Swell fragrance"
-   }
-  },
-  {
-   "id": "n13d9lyi",
-   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQYnNUbE92QUxaR0d5eXJTeExwVjU1QWFxU3VEUXpPNHV4S0ZCWlVRY0xKRGlzb1d4Y3dMRUFUang1TWZ5aTFqRGNBSkJ5U0tud1pVaVhES1JPX2tURUM5OEp2OTJSbHRWdHhWcnNrUkNtTFhvMk1wYzhlUmNyNW5icWlkc2FLa3IxR3h6VUFoTjhIcUtwdTBJRnJ0RjBQQQ?oc=5",
-   "source": "openPR.com",
-   "publishedAt": "2026-11-02T05:49:44.000Z",
-   "original": "Selection Guide for Advanced B2B Fragrance Solutions Provider: Lunalith at Cosmoprof Bologna",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Selection Guide for Advanced B2B Fragrance Solutions Provider: Lunalith at Cosmoprof Bologna",
-    "en": "Selection Guide for Advanced B2B Fragrance Solutions Provider: Lunalith at Cosmoprof Bologna"
-   },
-   "summary": {
-    "ar": "Selection Guide for Advanced B2B Fragrance Solutions Provider: Lunalith at Cosmoprof Bologna",
-    "en": "Selection Guide for Advanced B2B Fragrance Solutions Provider: Lunalith at Cosmoprof Bologna"
-   }
-  },
-  {
-   "id": "nlru9r7",
-   "url": "https://news.google.com/rss/articles/CBMingJBVV95cUxOMWRia0tYQnhMdEhSQW0tbjNFRlBubldHeEEwcU53QnFWSjJLQkZZajJFVGQwR2RhWkE5NmVlWlR6WVNEXy1CZE5uRWY3RjVoSnVHdUlINmx1Y2l1ZUxWLTBYOGdFUWptSzFuRHotSUJzbTZPR01oeENhaFRXTndsRzVkempmeHJwdnNycU9yV21kbXA1RWNXMFFtdWVuVC1rWjBENldIa1VZOWd4bk45bUpJMFZWbE1xUVh0QW15bnhKRHIxWTE1dmd5TFV0ZnRlZ05pS2JzTXgwNlNvNTZyYUJTOTlJUEVwQnh2VkxlSXRKV3N2dDh6cTBKTkhwblZRV1RiMmsxRXc2X3ZQbVBSdFlGb0FrRmlFTnlHZGZ3?oc=5",
-   "source": "www.grazia.fr",
-   "publishedAt": "2026-11-02T05:26:17.000Z",
-   "original": "\"Il se revend très cher en seconde main\" : 30 ans après son lancement, ce parfum Lolita Lempicka devenu rarissime continue de faire tourner les têtes",
-   "lang": "fr",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "\"Il se revend très cher en seconde main\" : 30 ans après son lancement, ce parfum Lolita Lempicka devenu rarissime continue de faire tourner les têtes",
-    "en": "\"Il se revend très cher en seconde main\" : 30 ans après son lancement, ce parfum Lolita Lempicka devenu rarissime continue de faire tourner les têtes"
-   },
-   "summary": {
-    "ar": "\"Il se revend très cher en seconde main\" : 30 ans après son lancement, ce parfum Lolita Lempicka devenu rarissime continue de faire tourner les têtes",
-    "en": "\"Il se revend très cher en seconde main\" : 30 ans après son lancement, ce parfum Lolita Lempicka devenu rarissime continue de faire tourner les têtes"
-   }
-  },
-  {
-   "id": "n1ntxwrb",
-   "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE1YQjFxa2w2WVp4YUNKUlVSdE9HVmxSQUI0MFZIN3k3dWdnYVVwa19vb0o3clJuQl9ib0RpdEQ3dXp0YXEzWXg4UXcycU9fLVdvOFVIYW5hUUNQWHhkbEE0TlhrWWstLUhtdWdERWIwSjBxdw?oc=5",
-   "source": "Totally The Bomb",
-   "publishedAt": "2026-11-02T05:23:48.000Z",
-   "original": "Target’s New $20 Perfume Clips Right Onto Your Bag",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Target’s New $20 Perfume Clips Right Onto Your Bag",
-    "en": "Target’s New $20 Perfume Clips Right Onto Your Bag"
-   },
-   "summary": {
-    "ar": "Target’s New $20 Perfume Clips Right Onto Your Bag",
-    "en": "Target’s New $20 Perfume Clips Right Onto Your Bag"
-   }
-  },
-  {
-   "id": "n4f4z4e",
-   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNM1Nqb0RFSE1LY3JiT3d5Q0ZTMHp6b1pKYWdzY2Q2UVpaTHVqOXFlNmlOZlc5WlRpamp5cERaRl90T0pzSTVSLUtqZkJmamNQeHh2QzA1T05TbGR0cW5zaUVsaXNFTU56TkVPU0lsLWtvNkxuSVZQa0hQVlRPMHpZbWtUeXTSAYoBQVVfeXFMUFMtQmhaa2FIRTZJWkI3UkptS0R2RER6bHY3ZTNJMkdWV2stamhmN1pZU282eDVua0ZETWhqc0VOMk5RczkxVGtFVTVjdml6dE8zWDRoT21RVzBSZG1uSVVPQ202azBIQ05fRllwZTgwYnFKdkd6UGN6UXF0OUtZcEFTSncxYl8zY2Jn?oc=5",
-   "source": "Journal du Luxe",
-   "publishedAt": "2026-11-02T05:23:47.000Z",
-   "original": "Avec Nylon Noir, Prada décline sa matière fétiche en parfum",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Avec Nylon Noir, Prada décline sa matière fétiche en parfum",
-    "en": "Avec Nylon Noir, Prada décline sa matière fétiche en parfum"
-   },
-   "summary": {
-    "ar": "Avec Nylon Noir, Prada décline sa matière fétiche en parfum",
-    "en": "Avec Nylon Noir, Prada décline sa matière fétiche en parfum"
-   }
-  },
-  {
-   "id": "nu3cosm",
-   "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5IYUtoMWxxZDctdDdabkhuaG40LWNmTDhRVXNDN2dfR1dIRG40cEc2b1pkNlJteDB1NGNESDBsR09hYWdWYjhKSE0zQUdOZ0hhSE44?oc=5",
-   "source": "auroradesio.it",
-   "publishedAt": "2026-11-02T05:15:55.000Z",
-   "original": "Best Oud Attar - Arabian oud attar perfume or agarwood oil fragrances in mini bottle. Stock Photo Adobe Stock",
-   "lang": "en",
-   "category": "ingredients",
-   "importance": 2,
-   "title": {
-    "ar": "Best Oud Attar - Arabian oud attar perfume or agarwood oil fragrances in mini bottle. Stock Photo Adobe Stock",
-    "en": "Best Oud Attar - Arabian oud attar perfume or agarwood oil fragrances in mini bottle. Stock Photo Adobe Stock"
-   },
-   "summary": {
-    "ar": "Best Oud Attar - Arabian oud attar perfume or agarwood oil fragrances in mini bottle. Stock Photo Adobe Stock",
-    "en": "Best Oud Attar - Arabian oud attar perfume or agarwood oil fragrances in mini bottle. Stock Photo Adobe Stock"
-   }
-  },
-  {
-   "id": "n15ce1qj",
-   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOTTY2NFo5Z0s1dDktM3FFVDFnQXMwU1FLa2JwWjFod0M5bGNaWVpwUXpqdTRsZzBHR2ZIOXhjVHlabktDbS1qMzBvTmRBd3JBMzYtdlp3V3UyZEJqUTVlN3liMThtZllrSUJ5Y1VHZ3p4RDVqSWhEOHU3RWFDYmo2OHpsNzFMN0NQRDIwSTk3djBVQQ?oc=5",
-   "source": "L'Officiel FRANCE",
-   "publishedAt": "2026-11-02T05:11:16.000Z",
-   "original": "BETENOIR, une nouvelle grammaire de la haute parfumerie",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "BETENOIR, une nouvelle grammaire de la haute parfumerie",
-    "en": "BETENOIR, une nouvelle grammaire de la haute parfumerie"
-   },
-   "summary": {
-    "ar": "BETENOIR, une nouvelle grammaire de la haute parfumerie",
-    "en": "BETENOIR, une nouvelle grammaire de la haute parfumerie"
-   }
-  },
-  {
-   "id": "nty6s03",
-   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOZ2ZyQUhJNjA5SFN3Zmc4NDFIMzlldUJ0Tl96RVRBRkxRNUdNZTVxTE9fVElfX3lBU0M0OGNNdDl2WDBKNEU1aHhGOENlYnJGVjJnRHdzN0R5VkxCR1QtUUxhaVRJV3hlQU51RUxEeWRLV1hJdTUxZ25aRUNPT1k2UkVleUxaTmNOZ3NtcGdJSVJwZ0h3QTZ5Q2RyVGdndm84WlhuWGNQeXBzSHhUSVpwdQ?oc=5",
-   "source": "IndexBox",
-   "publishedAt": "2026-11-02T05:01:04.000Z",
-   "original": "Womens Perfume Kit Market To 2035: Discovery and Gifting Drive Growth - News and Statistics",
-   "lang": "en",
-   "category": "market",
-   "importance": 2,
-   "title": {
-    "ar": "Womens Perfume Kit Market To 2035: Discovery and Gifting Drive Growth - News and Statistics",
-    "en": "Womens Perfume Kit Market To 2035: Discovery and Gifting Drive Growth - News and Statistics"
-   },
-   "summary": {
-    "ar": "Womens Perfume Kit Market To 2035: Discovery and Gifting Drive Growth - News and Statistics",
-    "en": "Womens Perfume Kit Market To 2035: Discovery and Gifting Drive Growth - News and Statistics"
-   }
-  },
-  {
-   "id": "n1bgy158",
-   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQVHJvaTVXenEzSi1ROU1aS2hXTjhQX1ZHaU1ldFhJZ1l0eVoxNXpXc2RlcC1yZkdXRk1DTThXbnFQXzV2U01xY1hfRDM4TXlPNXViVldpaFNMMWVoYnVGYWpjUWkxa1l3MC14WXp1N2hTdW5Rc3M5Tk5qY1VHWm5PeWRCV2dnSXh2a3FVanU4RW83LThPQVMzTlJJZWl0c1Jj?oc=5",
-   "source": "Inside Retail Asia",
-   "publishedAt": "2026-11-02T04:07:26.000Z",
-   "original": "Korean fragrance brand BornToStandOut to enter Mainland China",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Korean fragrance brand BornToStandOut to enter Mainland China",
-    "en": "Korean fragrance brand BornToStandOut to enter Mainland China"
-   },
-   "summary": {
-    "ar": "Korean fragrance brand BornToStandOut to enter Mainland China",
-    "en": "Korean fragrance brand BornToStandOut to enter Mainland China"
    }
   }
  ]
