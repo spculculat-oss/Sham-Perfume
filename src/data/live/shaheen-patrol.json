@@ -1,9 +1,9 @@
 {
  "version": 1,
- "updatedAt": "2026-11-03T07:32:25.185Z",
- "publishedAt": "2026-11-03T07:32:25.185Z",
- "signature": "13tv0m1",
- "summaryAr": "وردية المحتوى وتجربة الزائر 07:32 UTC: 7 اختبار عملي (7 سليم)، 19 مشكلة مفتوحة — 0 بتتصلح آلياً، 15 عند شاهين، 1 مهمة تطوير، 3 محتاجة قرارك؛ 5 مراجعة خبير (5 اتقبلت، 0 اترفضت)؛ 0 اتصلحت من آخر دورية.",
+ "updatedAt": "2026-11-03T07:39:03.045Z",
+ "publishedAt": "2026-11-03T07:39:03.045Z",
+ "signature": "1uxe0k8",
+ "summaryAr": "وردية المحتوى وتجربة الزائر 07:39 UTC: 5 اختبار عملي (5 سليم)، 19 مشكلة مفتوحة — 0 بتتصلح آلياً، 15 عند شاهين، 1 مهمة تطوير، 3 محتاجة قرارك؛ 1 مراجعة خبير (1 اتقبلت، 0 اترفضت)؛ 0 اتصلحت من آخر دورية.",
  "health": 91,
  "bots": [
   {
@@ -16,7 +16,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-11-03T06:15:39Z",
-   "lastRunAt": "2026-11-03T06:15:39Z",
+   "lastRunAt": "2026-11-03T07:38:17Z",
    "lastRunOk": true
   },
   {
@@ -32,7 +32,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-11-03T02:54:02Z",
-   "lastRunAt": "2026-11-03T07:32:08Z",
+   "lastRunAt": "2026-11-03T07:38:47Z",
    "lastRunOk": true
   },
   {
@@ -77,7 +77,7 @@
    "status": "warn",
    "problems": 1,
    "reviewed": "2026-11-03T04:36:13Z",
-   "lastRunAt": "2026-11-03T07:18:21Z",
+   "lastRunAt": "2026-11-03T07:32:35Z",
    "lastRunOk": true
   },
   {
@@ -151,7 +151,7 @@
    "status": "ok",
    "problems": 0,
    "reviewed": "2026-11-02T07:46:16Z",
-   "lastRunAt": "2026-11-02T07:46:16Z",
+   "lastRunAt": "2026-11-03T07:33:40Z",
    "lastRunOk": true
   },
   {
@@ -275,8 +275,8 @@
    "id": "seo",
    "status": "ok",
    "problems": 0,
-   "reviewed": "2026-11-03T01:29:59Z",
-   "lastRunAt": "2026-11-03T01:29:59Z",
+   "reviewed": "2026-11-03T07:37:53Z",
+   "lastRunAt": "2026-11-03T07:37:53Z",
    "lastRunOk": true
   },
   {
@@ -460,11 +460,11 @@
   },
   {
    "id": "deploy",
-   "status": "ok",
-   "problems": 0,
+   "status": "warn",
+   "problems": 1,
    "reviewed": "2026-11-03T05:34:13Z",
-   "lastRunAt": "2026-11-03T06:47:24Z",
-   "lastRunOk": true
+   "lastRunAt": "2026-11-03T07:37:53Z",
+   "lastRunOk": false
   },
   {
    "id": "chat_agent",
@@ -574,7 +574,7 @@
    "failed": 0,
    "level": "ok",
    "noteAr": "100 لغة كاملة النصوص الأساسية",
-   "at": "2026-11-03T07:32:25.185Z",
+   "at": "2026-11-03T07:39:03.045Z",
    "nameAr": "نصوص المتجر في كل اللغات",
    "nameEn": "Store texts in every language"
   },
@@ -584,7 +584,7 @@
    "checked": 30,
    "failed": 0,
    "noteAr": "30 خبر، آخر تحديث من 4 ساعة",
-   "at": "2026-11-03T07:32:25.185Z",
+   "at": "2026-11-03T07:39:03.045Z",
    "nameAr": "ملف النشرة",
    "nameEn": "News bulletin file"
   },
@@ -594,7 +594,7 @@
    "checked": 2,
    "failed": 0,
    "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا",
-   "at": "2026-11-03T07:32:25.185Z",
+   "at": "2026-11-03T07:39:03.045Z",
    "nameAr": "الموقع الأساسي يفتح",
    "nameEn": "Main site opens"
   },
@@ -626,7 +626,7 @@
    "checked": 1161,
    "failed": 0,
    "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161",
-   "at": "2026-11-03T07:32:25.185Z",
+   "at": "2026-11-03T07:39:03.045Z",
    "nameAr": "خريطة الموقع لمحركات البحث",
    "nameEn": "Sitemap for search engines"
   },
@@ -646,7 +646,7 @@
    "checked": 6,
    "failed": 0,
    "noteAr": "النشرة على الموقع فيها 6 خبر",
-   "at": "2026-11-03T07:32:25.185Z",
+   "at": "2026-11-03T07:39:03.045Z",
    "nameAr": "النشرة على الموقع الحي",
    "nameEn": "News on the live site"
   },
@@ -671,7 +671,7 @@
    "level": "warn",
    "textAr": "تدقيق التصميم واللغات (مرتين في الأسبوع): تقييم التصميم واللغات 62/100 (5 ملاحظة)",
    "since": "2026-10-21T01:24:02.602Z",
-   "lastSeen": "2026-11-03T07:32:25.185Z",
+   "lastSeen": "2026-11-03T07:39:03.045Z",
    "status": "waiting_shaheen",
    "nextAr": "مفيش إصلاح آلي آمن — اتحوّل لشاهين؛ مفيش محرك ذكاء اصطناعي شغال دلوقتي، فرد من خبرته المسجلة والمشكلة مستنياه (مش هنعمل إصلاح وهمي)",
    "tries": [],
@@ -1435,6 +1435,36 @@
  ],
  "reviews": [
   {
+   "bot": "seo",
+   "reviewerAr": "خبير فحص الظهور في البحث",
+   "reviewerEn": "Search reviewer",
+   "runAt": "2026-11-03T07:37:53Z",
+   "verdict": "approved",
+   "tested": [
+    {
+     "nameAr": "نتيجة التشغيل",
+     "level": "ok",
+     "noteAr": "success"
+    },
+    {
+     "nameAr": "التقرير",
+     "level": "ok",
+     "noteAr": "من 0.1 ساعة"
+    },
+    {
+     "nameAr": "خريطة الموقع لمحركات البحث",
+     "level": "ok",
+     "noteAr": "1161 صفحة منتج في خريطة الموقع من 1161 (1161 اختبار)"
+    },
+    {
+     "nameAr": "الموقع الأساسي يفتح",
+     "level": "ok",
+     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
+    }
+   ],
+   "defects": []
+  },
+  {
    "bot": "teacher",
    "reviewerAr": "خبير فحص دروس المعلم المحلي",
    "reviewerEn": "Local lessons reviewer",
@@ -2109,31 +2139,6 @@
     }
    ],
    "defects": []
-  },
-  {
-   "bot": "studio_bridge",
-   "reviewerAr": "خبير فحص بوابة الاستوديو",
-   "reviewerEn": "Studio bridge reviewer",
-   "runAt": "2026-11-03T04:53:01Z",
-   "verdict": "approved",
-   "tested": [
-    {
-     "nameAr": "نتيجة التشغيل",
-     "level": "ok",
-     "noteAr": "success"
-    },
-    {
-     "nameAr": "التقرير",
-     "level": "ok",
-     "noteAr": "من 245.7 ساعة"
-    },
-    {
-     "nameAr": "الموقع الأساسي يفتح",
-     "level": "ok",
-     "noteAr": "الصفحة الرئيسية وملف التشغيل بيفتحوا (2 اختبار)"
-    }
-   ],
-   "defects": []
   }
  ],
  "reviewedRuns": {
@@ -2154,7 +2159,7 @@
   "product_pages": "2026-11-03T06:39:50Z",
   "secretary": "2026-11-03T03:55:05Z",
   "news": "2026-11-03T03:55:05Z",
-  "seo": "2026-11-03T01:29:59Z",
+  "seo": "2026-11-03T07:37:53Z",
   "languages": "2026-11-02T21:48:02Z",
   "design_audit": "2026-11-03T07:22:27Z",
   "visitor_tour": "2026-11-03T07:22:27Z",
