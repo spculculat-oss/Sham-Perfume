@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-02T19:05:47.429Z",
+ "updatedAt": "2026-11-03T01:15:26.759Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -6112,12 +6112,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-27T00:59:24.917Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-03T01:15:26.759Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-10-27T00:59:24.917Z",
+    "at": "2026-11-03T01:15:26.759Z",
     "checks": [
      {
       "id": "age",
@@ -6145,10 +6145,10 @@
      {
       "id": "identity",
       "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
-      "ok": null,
+      "ok": false,
       "points": 5,
       "max": 15,
-      "detail": "الموقع يمنع قراءة الصفحة آلياً"
+      "detail": "عنوان"
      },
      {
       "id": "returns",
@@ -6185,7 +6185,7 @@
       "ok": true,
       "points": 10,
       "max": 10,
-      "detail": "Visa، Mastercard، American Express، PayPal، Klarna"
+      "detail": "PayPal، Klarna"
      },
      {
       "id": "platform",
@@ -6217,7 +6217,7 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 56.2698,
+   "rateToEgp": 55.4154,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*fragranceoutlet\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.fragranceoutlet.com/sitemap_agentic_discovery.xml",
@@ -6227,7 +6227,7 @@
     "https://www.fragranceoutlet.com/sitemap_products_4.xml?from=6549508784237&to=7551578112109",
     "https://www.fragranceoutlet.com/sitemap_products_5.xml?from=7551604031597&to=15403423989869",
     "https://www.fragranceoutlet.com/sitemap_pages_1.xml?from=67170947&to=162123743341",
-    "https://www.fragranceoutlet.com/sitemap_collections_1.xml?from=82980675&to=511782322285",
+    "https://www.fragranceoutlet.com/sitemap_collections_1.xml?from=82980675&to=512318210157",
     "https://www.fragranceoutlet.com/sitemap_blogs_1.xml",
     "https://www.fragranceoutlet.com/sitemap_articles_1.xml"
    ],
@@ -7370,6 +7370,19 @@
  ],
  "runs": [
   {
+   "at": "2026-11-03T01:15:26.759Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ fragranceoutlet.com: CV 90/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ fragranceoutlet.com (CV 90/100): 4784 perfumes, 3/6 pages read without AI, USD (1 = 55.4154 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-11-02T19:05:47.429Z",
    "mode": "self",
    "found": 0,
@@ -7731,21 +7744,6 @@
    "rejected": 0,
    "notes": [
     "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-26T13:22:04.307Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 2,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "  ↳ lattafa-usa.com: CV 76/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ lattafa-usa.com (CV 76/100): 283 perfumes, 9/9 pages read without AI, USD (1 = 55.6767 EGP) — still good",
-    "  ↳ aedes.com: CV 77/100 [age,https,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✓ aedes.com (CV 77/100): 1249 perfumes, 9/9 pages read without AI, USD (1 = 55.6767 EGP) — still good"
    ]
   }
  ]
