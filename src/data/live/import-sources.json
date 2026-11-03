@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-03T07:23:06.711Z",
+ "updatedAt": "2026-11-03T13:15:09.989Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7370,6 +7370,17 @@
  ],
  "runs": [
   {
+   "at": "2026-11-03T13:15:09.989Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-11-03T07:23:06.711Z",
    "mode": "self",
    "found": 0,
@@ -7733,17 +7744,6 @@
     "✓ ausliebezumduft.de (CV 86/100): 4967 perfumes, 3/6 pages read without AI, EUR (1 = 62.1481 EGP) — still good",
     "  ↳ osswaldnyc.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
     "✓ osswaldnyc.com (CV 83/100): 1000 perfumes, 3/6 pages read without AI, USD (1 = 55.6767 EGP) — still good"
-   ]
-  },
-  {
-   "at": "2026-10-26T16:36:38.563Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
    ]
   }
  ]
