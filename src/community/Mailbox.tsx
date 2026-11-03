@@ -223,7 +223,7 @@ export default function Mailbox({ lang, session, route, go, toast }: Props) {
                 <Empty icon={<MailOpen className="h-10 w-10" />}
                   title={q ? t('مفيش نتايج', 'No results') : meta[folder].label}
                   body={q ? t('جرّب كلمة تانية أو اسم مرسل مختلف.', 'Try another word or a different sender.')
-                    : folder === 'inbox' ? t('صندوقك فاضي لسه — رسايل الإدارة وأعضاء المجتمع هتوصل هنا.', 'Nothing here yet — platform letters and members’ mail will land here.')
+                    : folder === 'inbox' ? t('صندوقك بانتظار أول رسالة — رسايل الإدارة والتواصل مع أصدقائك هتوصل هنا.', 'Your inbox awaits its first message — platform notes and friend chats will land here.')
                     : folder === 'sent' ? t('لسه ما بعتش أي ميل. اضغط «رسالة جديدة» وابدأ!', 'No sent mail yet. Hit “Compose” and start!')
                     : folder === 'drafts' ? t('مفيش مسودات محفوظة.', 'No saved drafts.')
                     : folder === 'trash' ? t('المهملات فاضية.', 'Trash is empty.')
