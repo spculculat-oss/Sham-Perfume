@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-11-02T21:45:01.330Z",
+  "updatedAt": "2026-11-03T09:58:43.252Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -15,7 +15,7 @@
     },
     {
       "file": "src/components/Storefront.tsx",
-      "line": 603
+      "line": 612
     }
   ],
   "score": 54,
@@ -23,13 +23,13 @@
     "الترجمة مش مكتملة: 10.3% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 273068 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط والأخبار الأساسية بس هي اللي مكتملة.",
     "تقليل صارم للغة إلى عربي/إنجليزي في 2 موضع — راجع إن كان المقصود زوج بيانات {ar,en} أم لغة واجهة.",
     "المترجم الذكي: 273068 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3690 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
-    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Payment methods» src/bank/ProductPayMethods.tsx:58، «Payment methods» src/bank/ProductPayMethods.tsx:59، «Payment methods» src/components/Storefront.tsx:1314، «All perfume news» src/components/HomeHub.tsx:335، «direction» src/bank/shamLedger.ts:459، «direction» src/bank/worldPay.ts:125.",
+    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Payment methods» src/bank/ProductPayMethods.tsx:58، «Payment methods» src/bank/ProductPayMethods.tsx:59، «Payment methods» src/components/Storefront.tsx:1323، «All perfume news» src/components/HomeHub.tsx:335، «direction» src/bank/shamLedger.ts:459، «direction» src/bank/worldPay.ts:125.",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: mk، be، fa."
   ],
   "translationCoverage": 10.3,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-11-02T21:45:01.735Z",
+    "at": "2026-11-03T09:58:43.843Z",
     "status": "quota",
     "remaining": 273068,
     "covered": 3690,
@@ -75,14 +75,16 @@
       }
     ],
     "run": {
-      "calls": 1,
+      "calls": 2,
       "translated": 0,
       "rejected": 0,
       "droppedByReview": 0,
       "reviewed": false,
-      "engines": [],
+      "engines": [
+        "gemini"
+      ],
       "languages": [],
-      "resumeAt": "2026-11-03T08:05:00.000Z"
+      "resumeAt": "2026-11-04T08:05:00.000Z"
     },
     "rejectReasons": {},
     "rejectCounts": {
@@ -170,7 +172,7 @@
     }
   },
   "design": {
-    "at": "2026-11-02T21:45:01.330Z",
+    "at": "2026-11-03T09:58:43.252Z",
     "auditAt": "2026-10-31T05:49:00.921Z",
     "auditScore": 62,
     "priorityLanguages": [
@@ -192,7 +194,7 @@
       {
         "phrase": "Payment methods",
         "file": "src/components/Storefront.tsx",
-        "line": 1314
+        "line": 1323
       },
       {
         "phrase": "All perfume news",
