@@ -75,10 +75,10 @@ export function StoriesBar({ lang, currentUser, onOpenMessenger, toast }: {
         })}
 
         {!list.loading && !others.length && (
-          <div className="flex h-48 min-w-56 flex-1 shrink-0 flex-col items-center justify-center rounded-2xl border border-dashed border-amber-300 bg-amber-50/60 p-4 text-center">
-            <span className="text-2xl">📸</span>
-            <p className="mt-1 text-xs font-bold text-amber-900">{t('مفيش قصص من أصدقائك لسه', 'No stories from friends yet')}</p>
-            <p className="mt-1 text-[11px] leading-relaxed text-stone-600">{t('شارك صورة من معملك أو تجربة عطر — بتفضل ٢٤ ساعة وبعدين تختفي.', 'Share a photo from your lab or a scent test — it stays 24 hours.')}</p>
+          <div className="flex h-48 min-w-56 flex-1 shrink-0 flex-col items-center justify-center rounded-2xl border border-dashed border-amber-300 bg-gradient-to-b from-amber-50/80 to-amber-100/40 p-4 text-center shadow-inner">
+            <span className="text-2xl animate-bounce">📸</span>
+            <p className="mt-1 text-xs font-bold text-amber-900">{t('كن أول من يشارك قصة عطرية اليوم!', 'Be the first to share a scent story today!')}</p>
+            <p className="mt-1 text-[11px] leading-relaxed text-stone-600">{t('صور لقطة من معملك، زجاجة بتعتقها، أو لحظة إبداع — القصص بتختفي بعد ٢٤ ساعة.', 'Snap a moment from your lab, a bottle aging, or creative spark — stories vanish after 24h.')}</p>
             {list.error ? <p className="mt-1 text-[11px] text-rose-700">{errorText(list.error, lang)}</p> : null}
           </div>
         )}
