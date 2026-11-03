@@ -58,7 +58,9 @@ async function main() {
     : normalizeCensusReport({ ...diskReport, updatedAt: diskReport.totals.visits > 0 ? diskReport.updatedAt : now.toISOString() }, now);
 
   mkdirSync(dirname(OUT_FILE), { recursive: true });
-  writeFileSync(OUT_FILE, `${JSON.stringify(merged, null, 1)}\n`, 'utf8');
+  // `updatedAt` moves only with real visits; `checkedAt` says the robot ran and compared with the live ledger.
+  const checked = { ...merged, checkedAt: now.toISOString(), liveLedger: liveReport ? 'reached' : apiBase ? 'unreachable' : 'not_configured' };
+  writeFileSync(OUT_FILE, `${JSON.stringify(checked, null, 1)}\n`, 'utf8');
 
   const statementText = plainTextStatement(merged, 'ar', now);
   console.log(statementText);

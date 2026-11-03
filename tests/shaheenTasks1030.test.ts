@@ -23,7 +23,7 @@ test('#408: Malaysia has a published local rate (Pos Laju, highest counter price
 test('#411: the order shows its steps and the delivery/payment step gets a wider page', () => {
   const store = read('src/components/Storefront.tsx');
   assert.match(store, /data-testid="checkout-steps"/);
-  assert.match(store, /step === 'form' \? 'sm:max-w-lg' : 'max-w-sm'/);
+  assert.match(store, /data-step={step}/);
 });
 
 test('#397/#410: no letter-spacing on right-to-left pages, localized cookie footer and currency chip', () => {

@@ -1,3 +1,4 @@
+import { popBelongsToCheckout } from './utils/checkoutHistory';
 import { setInsightsContext, trackInsight } from './utils/insightsTracker';
 import { isVerifiedCustomer } from './utils/paymentAccess';
 import { BookLibrary } from './library/BookLibrary';
@@ -387,6 +388,8 @@ export default function App() {
     } catch {}
 
     const handlePopState = (event: PopStateEvent) => {
+      // 0. The store's order window took or gave back its own history entry: nothing to navigate.
+      if (popBelongsToCheckout()) return;
       // 1. If any modal was open and user pressed browser Back, close the modal safely
       const hasOpenModal =
         activeModalsRef.current.spec ||

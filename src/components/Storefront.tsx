@@ -1,3 +1,4 @@
+import { checkoutClosed, checkoutOpened } from '../utils/checkoutHistory';
 import { trackInsight, viewedForTaste } from '../utils/insightsTracker';
 import { budgetsToHome, localizeChatPrices } from '../utils/chatPrices';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -553,6 +554,14 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   };
   const [orderSent, setOrderSent] = useState('');
   const [step, setStep] = useState<'cart' | 'form'>('cart');
+  // #418/#419: the order is a page of its own — the phone's back button closes it (src/utils/checkoutHistory.ts).
+  useEffect(() => {
+    if (!cartOpen) return;
+    checkoutOpened();
+    const onBack = () => { setCartOpen(false); };
+    window.addEventListener('popstate', onBack);
+    return () => { window.removeEventListener('popstate', onBack); checkoutClosed(); };
+  }, [cartOpen]);
   const [payForm, setPayForm] = useState<CheckoutForm>({ name: '', email: '', phone: '', city: '', line: '' });
   const [paying, setPaying] = useState(false);
   const [payMessage, setPayMessage] = useState('');
@@ -1691,7 +1700,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
       {cartOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end" onClick={() => setCartOpen(false)}>
           <aside
-            className={`w-full ${step === 'form' ? 'sm:max-w-lg' : 'max-w-sm'} h-full bg-white p-5 flex flex-col overflow-y-auto shadow-2xl transition-[max-width]`}
+            className={`w-full ${step === 'form' ? 'sm:px-[max(1.25rem,calc((100vw-34rem)/2))]' : 'max-w-sm'} h-full bg-white p-5 flex flex-col overflow-y-auto shadow-2xl`}
+            data-step={step}
             role="dialog" aria-modal="true" aria-label={directPurchase ? L.buyNow : L.cart}
             onClick={(e) => e.stopPropagation()}
             data-testid="store-cart"
