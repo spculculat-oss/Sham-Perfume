@@ -210,6 +210,8 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       const countries = n(totals.countriesCount) ?? 0;
       if (visits === 0) f.push({ level: 'note', idea: 'خانة التعداد شغالة وجاهزة — لسه ما تسجلتش زيارات في الكشف العلني (بدون أرقام وهمية)' });
       else f.push({ level: 'note', idea: `الكشف العلني يرصد ${visits} زيارة من ${countries} دولة حول العالم` });
+      // #421: say plainly when the live visit ledger could not be read, instead of looking «late».
+      if (r.liveLedger === 'unreachable') f.push({ level: 'warn', problem: 'روبوت التعداد اشتغل لكن ما قدرش يوصل لدفتر الزيارات الحي', fix: 'راجع عنوان السيرفر SHAM_API_BASE_URL ثم شغّل روبوت التعداد' });
       break;
     }
     case 'service': {
@@ -621,7 +623,9 @@ export function runPrecheck(reports: Record<string, unknown>, runs: Record<strin
     // Bots sharing one report (the background agent's missions) are measured on their own part of it.
     const report = bot.section ? o(whole)[bot.section] : whole;
     if (bot.report && bot.id !== 'precheck') {
-      const at = String(o(report)[bot.section ? 'at' : 'updatedAt'] || '');
+      // `checkedAt` = the bot ran and verified its numbers even when nothing changed (the census with no new real
+      // visits keeps its `updatedAt` honest and still proves it is alive — it was reported «177 hours late»).
+      const at = String(o(report)[bot.section ? 'at' : 'checkedAt'] || o(report)[bot.section ? 'at' : 'updatedAt'] || '');
       const age = Date.parse(at) > 0 ? (now - Date.parse(at)) / 3_600_000 : undefined;
       if (age === undefined) { c.problems.push('لسه ما كتبش تقرير'); }
       else {

@@ -508,7 +508,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       accentColor: 'from-emerald-600 to-teal-700 text-emerald-500 bg-emerald-500/10',
       borderGlow: 'hover:border-emerald-500/50 hover:shadow-emerald-900/10',
       icons: [Leaf, Droplets, Flower2, Gem],
-      statsBadge: '24+ خامة نقية · CAS Certified',
+      statsBadge: '24+ خامة نقية · موثّقة بأرقام CAS',
       imageThumbnail: pyramidImg,
       news: [
         {
@@ -766,7 +766,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       category: 'knowledge',
       titleAr: 'دفتر الوصفات وسجلات المعمل',
       titleEn: 'Formula Notebook & Archive',
-      subtitleAr: 'حفظ آمن ومزامنة سحابية مع Firebase وطباعة استمارات التصنيع',
+      subtitleAr: 'حفظ آمن ومزامنة سحابية وطباعة استمارات التصنيع',
       accentColor: 'from-amber-700 to-stone-800 text-amber-500 bg-amber-500/10',
       borderGlow: 'hover:border-amber-600/50 hover:shadow-stone-900/10',
       icons: [BookmarkPlus, BookOpen, Archive, FileText],
@@ -794,9 +794,9 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         {
           id: 'lib3',
           badge: 'المزامنة السحابية المزدوجة',
-          title: 'حفظ آمن على هاتفك ومتصفحك مع مزامنة فورية على سحابة Firebase',
+          title: 'حفظ آمن على هاتفك ومتصفحك مع مزامنة سحابية فورية',
           description: 'لا خوف من فقدان تركيباتك عند تغيير الجهاز، سجلاتك مربوطة بحسابك الشخصي المشفر.',
-          metric: 'Firebase Sync',
+          metric: 'مزامنة سحابية',
           timestamp: 'حماية وتخزين',
           actionHint: 'تصفح الوصفات المحفوظة',
         },
@@ -1010,7 +1010,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           badge: 'حالة الحساب والمصادقة',
           title: currentUser ? `مسجل باسم: ${currentUser.name} (${currentUser.craftLevel})` : 'جلسة ضيف محلية آمنة',
           description: currentUser
-            ? `بياناتك متزامنة مع Firebase Authentication وقاعدة البيانات السحابية المشفرة.`
+            ? 'بياناتك محفوظة في حسابك ومتزامنة بين أجهزتك.'
             : 'يمكنك إنشاء حساب مجاني الآن لمزامنة خلطاتك عبر جميع أجهزتك بأعلى درجات الأمان.',
           metric: currentUser ? 'حساب نشط' : 'جلسة محلية',
           timestamp: 'حالة التسجيل',
