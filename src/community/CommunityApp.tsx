@@ -174,13 +174,13 @@ function PeopleSearch({ lang, go, expanded = false }: { lang: Lang; go: (r: stri
 function NotReady({ lang, offline }: { lang: Lang; offline: boolean }) {
   const t = tx(lang);
   return (
-    <div className="mx-auto max-w-2xl px-3 py-10">
-      <Card className="p-6 text-center">
-        <Empty icon={<Users className="h-12 w-12" />}
-          title={offline ? t('مفيش اتصال بالسيرفر دلوقتي', 'Cannot reach the server right now') : t('مجتمع شام بيتجهّز', 'Sham Community is being set up')}
-          body={offline ? t('اتأكد من الإنترنت وجرّب تاني بعد شوية.', 'Check your connection and try again shortly.')
-            : t('المجتمع والماسنجر وبوابات التجار والأعضاء هيشتغلوا أول ما الإدارة تفعّل قاعدة البيانات. لحد دلوقتي تقدر تستخدم كل أدوات الموقع والمتجر عادي.', 'The community, messenger and portals start as soon as the administration enables the database. Meanwhile all the site’s tools and the store work as usual.')}
-          action={<Btn variant="soft" onClick={() => window.location.reload()}>{t('تحديث', 'Refresh')}</Btn>} />
+    <div className="mx-auto max-w-2xl px-3 py-12">
+      <Card className="p-8 text-center border-amber-200 bg-gradient-to-b from-amber-50/40 to-white shadow-lg">
+        <Empty icon={<Users className="h-14 w-14 text-amber-700 animate-pulse" />}
+          title={offline ? t('مفيش اتصال بالسيرفر دلوقتي', 'Cannot reach the server right now') : t('مجتمع شام بيتجهّز للظهور الكبير', 'Sham Community is preparing for its grand launch')}
+          body={offline ? t('تأكد من اتصالك بالإنترنت وجرب تراجع الصفحة تاني.', 'Check your connection and try refreshing the page.')
+            : t('المجتمع والماسنجر وأروقة العطارين بيجهزوا بكل قوة. تقدر دلوقتي تستمتع بكل حاسبات العطور ومعمل التصميم ومتجر شام العالمي بكل حرية!', 'The community, messenger and perfumers lounges are preparing with full force. You can meanwhile enjoy all perfume calculators, the design lab and the global store freely!')}
+          action={<div className="flex justify-center gap-3 mt-4"><Btn variant="soft" onClick={() => window.location.reload()}>{t('تحديث الصفحة', 'Refresh page')}</Btn></div>} />
       </Card>
     </div>
   );
