@@ -112,5 +112,7 @@
   "desktop": 0,
   "tablet": 0
  },
- "byLanguage": {}
+ "byLanguage": {},
+ "checkedAt": "2026-11-03T07:27:14.427Z",
+ "liveLedger": "reached"
 }
