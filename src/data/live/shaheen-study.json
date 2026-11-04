@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "tutor",
- "updatedAt": "2026-11-03T05:32:16.073Z",
+ "updatedAt": "2026-11-04T05:36:58.182Z",
  "targets": [
   {
    "kind": "carrier",
@@ -594,7 +594,7 @@
    "question": "الشحن لـمصر بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1894",
+    "1886",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -617,7 +617,7 @@
    "question": "الشحن لـالسعودية بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1683",
+    "1676",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -629,7 +629,7 @@
    "question": "الشحن لـالإمارات بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1683",
+    "1676",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -641,7 +641,7 @@
    "question": "الشحن لـالكويت بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1578",
+    "1571",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -653,7 +653,7 @@
    "question": "الشحن لـقطر بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1578",
+    "1571",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -665,7 +665,7 @@
    "question": "الشحن لـالبحرين بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1578",
+    "1571",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -677,7 +677,7 @@
    "question": "الشحن لـعمان بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3145",
+    "3134",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -689,7 +689,7 @@
    "question": "الشحن لـالأردن بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "1578",
+    "1571",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -712,7 +712,7 @@
    "question": "الشحن لـلبنان بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3337",
+    "3324",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -724,7 +724,7 @@
    "question": "الشحن لـالعراق بكام؟ ومن أي شركة؟",
    "kind": "shipping_cost",
    "expected": [
-    "3719",
+    "3705",
     "بوس لاجو الدولي (بريد ماليزيا)"
    ],
    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
@@ -756,52 +756,49 @@
    "targetId": "specialist:specialist_scents"
   },
   {
-   "id": "q-recall-specialist_tech-84",
-   "question": "ازاي ابدا اتعلم برمجة؟",
+   "id": "q-recall-specialist_engineering-84",
+   "question": "يعني ايه ممارسات التصنيع الجيد GMP في مصانع مستحضرات التجميل؟",
    "kind": "rule",
    "expected": [
-    "الخبير",
-    "مساعدك"
+    "22716"
+   ],
+   "source": "src/data/live/shaheen-memory.json",
+   "specialistId": "specialist_engineering",
+   "targetId": "specialist:specialist_engineering"
+  },
+  {
+   "id": "q-recall-specialist_business-85",
+   "question": "ايه القوانين اللي بتنظم تسجيل وبيع مستحضرات التجميل؟",
+   "kind": "rule",
+   "expected": [
+    "2009"
+   ],
+   "source": "src/data/live/shaheen-memory.json",
+   "specialistId": "specialist_business",
+   "targetId": "specialist:specialist_business"
+  },
+  {
+   "id": "q-recall-specialist_tech-86",
+   "question": "ايه الأصباغ والألوان المسموحة في المكياج وازاي بتتصنف؟",
+   "kind": "rule",
+   "expected": [
+    "77491"
    ],
    "source": "src/data/live/shaheen-memory.json",
    "specialistId": "specialist_tech",
    "targetId": "specialist:specialist_tech"
   },
   {
-   "id": "q-recall-specialist_culture-85",
-   "question": "ايه هي المغالطة المنطقية؟",
+   "id": "q-recall-specialist_security-87",
+   "question": "ايه فايدة المستخلصات النباتية في مستحضرات التجميل وهل الطبيعي دايماً آمن؟",
    "kind": "rule",
    "expected": [
-    "المغالطة",
-    "المنطقية"
-   ],
-   "source": "src/data/live/shaheen-memory.json",
-   "specialistId": "specialist_culture",
-   "targetId": "specialist:specialist_culture"
-  },
-  {
-   "id": "q-recall-specialist_security-86",
-   "question": "ايه هو التشفير؟",
-   "kind": "rule",
-   "expected": [
-    "التشفير",
-    "البيانات"
+    "المستخلصات",
+    "النباتية"
    ],
    "source": "src/data/live/shaheen-memory.json",
    "specialistId": "specialist_security",
    "targetId": "specialist:specialist_security"
-  },
-  {
-   "id": "q-recall-specialist_business-87",
-   "question": "ايه دور اتفاقيات التجارة الحرة في الجمارك؟",
-   "kind": "rule",
-   "expected": [
-    "الجمارك",
-    "بتتحدد"
-   ],
-   "source": "src/data/live/shaheen-memory.json",
-   "specialistId": "specialist_business",
-   "targetId": "specialist:specialist_business"
   }
  ],
  "covered": {
