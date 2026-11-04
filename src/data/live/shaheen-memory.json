@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-04T20:36:25.304Z",
+ "updatedAt": "2026-11-04T21:22:03.194Z",
  "entries": [
   {
    "id": "ar|auto|ايه هي قوانين نيوتن التلاتة للحركة",
@@ -63,6 +63,16 @@
    "at": "2026-11-04T20:36:25.302Z",
    "hits": 0,
    "source": "study"
+  },
+  {
+   "id": "ar|auto|اديني مكونات التركيبة",
+   "question": "ادينى مكونات التركيبة",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "عشان تعمل عطر مسائي رجالي جذاب وثباته عالي زي ما طلبت، المقترح التجريبي ده مبني على قاعدة خشبية دافئة مع لمسة عنبرية:\n\n### مقترح عطر رويال المسائي (زجاجة 50 مل، تركيز EDP 20%)\n\n| المكون | النسبة من الزيت | الكمية بالمل |\n|:--- |:--- |:--- |\n| زيت العود الهندي | 30 بالمئة | 3.0 مل |\n| زيت خشب الصندل | 25 بالمئة | 2.5 مل |\n| زيت العنبر | 25 بالمئة | 2.5 مل |\n| زيت المسك الأبيض | 20 بالمئة | 2.0 مل |\n\n**طريقة التحضير:**\nكمية الزيت العطري الإجمالية = 10 مل.\nنضيف عليها كمية الكحول (96 بالمئة) = 40 مل، لتصبح إجمالي الزجاجة 50 مل بالضبط.\n(كمية الكحول = 40 × 1000 ÷ 100 = 40 مل تقريبا).\n\nالتركيبة دي تجريبية ومحتاجة اختبار صغير وتعتيق لمده أسبوعين لدمج النوتات صح.\n\nتحب نعدل في نسبة العود أو نخلي العنبر أهدى؟\n\n```sham-formula\n{\n  \"title\": \"رويال المسائي\",\n  \"author\": \"شاهين — مقترح تجريبي\",\n  \"concentrationPercent\": 20,\n  \"concentrationType\": \"edp\",\n  \"bottleVolumeMl\": 50,\n  \"alcoholPercentage\": 96,\n  \"waterPercent\": 0,\n  \"fixativePercent\": 0,\n  \"macerationDays\": 14,\n  \"summary\": \"مقترح عطر رجالي مسائي جذاب بخشب الصندل والعنبر\",\n  \"pyramidNotes\": [\n    {\n      \"id\": \"note-1\",\n      \"nameAr\": \"زيت العود الهندي\",\n      \"nameEn\": \"Indian Agarwood Oil\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 30\n    },\n    {\n      \"id\": \"note-2\",\n      \"nameAr\": \"زيت خشب الصندل\",\n      \"nameEn\": \"Sandalwood Oil\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 25\n    },\n    {\n      \"id\": \"note-3\",\n      \"nameAr\": \"زيت العنبر\",\n      \"nameEn\": \"Amber Oil\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 25\n    },\n    {\n      \"id\": \"note-4\",\n      \"nameAr\": \"زيت المسك الأبيض\",\n      \"nameEn\": \"White Musk Oil\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 20\n    }\n  ]\n}\n```\n\n```sham-tool\n{\"tools\":[{\"tool\":\"concentration\",\"bottleVolumeMl\":50,\"concentrationPercent\":20,\"concentrationType\":\"edp\",\"alcoholPercentage\":96,\"waterPercent\":0,\"fixativePercent\":0},{\"tool\":\"maceration\",\"macerationDays\":14}]}\n```",
+   "at": "2026-11-04T20:29:16.252Z",
+   "hits": 0,
+   "source": "chat"
   },
   {
    "id": "ar|auto|ايه هو درجات تركيز الزيوت العطرية وفروق الثبات",
