@@ -239,7 +239,7 @@ export const STATE_OUTCOMES: Record<StateOutcome, string> = { approved: 'واف�
  * zone). Only the State's robot writes it; the owner's «رجّع روبوت» from his desk clears the State's pause as well.
  */
 export const STATE_ORDERS_FILE = 'src/data/owner/state-orders.json';
-export type StateOrderAction = 'pause' | 'resume' | 'run' | 'law' | 'repeal';
+export type StateOrderAction = 'pause' | 'resume' | 'run' | 'law' | 'repeal' | 'task';
 export interface StateLaw { id: string; textAr: string; at: string }
 export interface StateOrderEntry { at: string; action: StateOrderAction; target?: string; noteAr: string; by: 'state' | 'owner' }
 export interface StateOrders { paused: string[]; laws: StateLaw[]; log: StateOrderEntry[] }

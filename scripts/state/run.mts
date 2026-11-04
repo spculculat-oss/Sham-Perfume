@@ -30,7 +30,8 @@ import {
 } from '../../src/utils/platformState';
 import { readManeuverReport } from '../../src/utils/maneuver';
 import { fieldTask, fileField, fieldMarker } from '../../src/utils/stateSectors';
-import { STATE_ISSUE_PREFIX, applyStateOrder, judgeStateOrder, parseStateOrder, stateOrderableBots, type StateOrder } from '../../src/utils/stateRoom';
+import { STATE_ISSUE_PREFIX, applyStateOrder, judgeStateOrder, parseStateOrders, stateOrderableBots, type StateOrder, type StateRoomContext } from '../../src/utils/stateRoom';
+import { runStateOwnerAgent } from '../../server/stateAgent';
 
 const REPORT = 'src/data/live/platform-state.json';
 const CONTROLS = 'src/data/owner/controls.json';
@@ -52,7 +53,109 @@ export function supervision(precheck: unknown): StateReport['supervision'] {
   return { ...(typeof p.health === 'number' ? { health: p.health } : {}), problems };
 }
 
-/** Robots the State runs again on its own (S-08): failed in the last check, free to run, not run by it in 24 hours. */
+/** Extract clean owner text from a `[الدولة] ...` issue when no embedded HTML marker was used. */
+export function extractOwnerIssueMessage(title: string, body: string | null | undefined): string {
+  const head = title.startsWith(STATE_ISSUE_PREFIX) ? title.slice(STATE_ISSUE_PREFIX.length).trim() : title.trim();
+  const extra = (body || '').replace(/<!--[\s\S]*?-->/g, '').trim();
+  return [head, extra].filter(Boolean).join('\n').trim();
+}
+
+export interface ExecuteOwnerRequestDeps {
+  controls: ReturnType<typeof readControls>;
+  orders: StateOrders;
+  report: StateReport;
+  precheck?: unknown;
+  env?: Record<string, string | undefined>;
+  fetch?: typeof fetch;
+  carryOut: (order: StateOrder, why: string, currentOrders: StateOrders) => Promise<{ ok: boolean; noteAr: string; orders: StateOrders }>;
+}
+
+/**
+ * Understands and executes one verified owner request in «روبوت دولة المنصة»:
+ * reads structured single/multi-step order cards OR comprehends free-form Egyptian Arabic/English orders via
+ * `runStateOwnerAgent`, judges every step constitutionally via `judgeStateOrder`, executes all approved steps,
+ * and formats the reply + close status for the GitHub issue.
+ */
+export async function executeOwnerRequest(
+  req: { number: number; title: string; body: string | null },
+  deps: ExecuteOwnerRequestDeps,
+): Promise<{ orders: StateOrders; commentAr: string; closeReason: 'completed' | 'not_planned'; notes: string[] }> {
+  let orders = deps.orders;
+  const structured = parseStateOrders(req.body);
+  let planned: StateOrder[] = structured;
+  let agentReplyText: string | undefined;
+  let agentUnderstood = false;
+
+  if (!planned.length) {
+    const ownerText = extractOwnerIssueMessage(req.title, req.body);
+    if (ownerText) {
+      const agentOut = await runStateOwnerAgent(
+        {
+          message: ownerText,
+          context: { controls: deps.controls, orders, report: deps.report, precheck: deps.precheck as StateRoomContext['precheck'] },
+          preferAi: true,
+        },
+        { env: deps.env, fetch: deps.fetch },
+      );
+      agentUnderstood = agentOut.understood;
+      agentReplyText = agentOut.text;
+      planned = agentOut.comprehension?.proposedOrders?.length
+        ? agentOut.comprehension.proposedOrders
+        : agentOut.orders || (agentOut.order ? [agentOut.order] : []);
+    }
+  }
+
+  if (!planned.length) {
+    if (agentUnderstood && agentReplyText) {
+      return {
+        orders,
+        commentAr: `🏛️ **${STATE.nameAr}:**\n\n${agentReplyText}`,
+        closeReason: 'completed',
+        notes: [`#${req.number}: رديت على استفسار صاحب المنصة`],
+      };
+    }
+    return {
+      orders,
+      commentAr: `🏛️ **${STATE.nameAr}:** مش لاقية أمر واضح في الطلب ده — ابعته تاني من غرفة الدولة في جناحك.`,
+      closeReason: 'not_planned',
+      notes: [],
+    };
+  }
+
+  const lines: string[] = [];
+  const stepNotes: string[] = [];
+  let executedCount = 0;
+
+  for (const order of planned) {
+    const verdict = judgeStateOrder(order, { controls: deps.controls, orders });
+    if (!verdict.ok) {
+      lines.push(`❌ مش هنفذ الأمر ده: ${verdict.reasonAr}`);
+      stepNotes.push(`#${req.number}: رفضت — ${verdict.reasonAr}`);
+      continue;
+    }
+    const done = await deps.carryOut(order, verdict.reasonAr, orders);
+    orders = done.orders;
+    if (!done.ok) {
+      lines.push(`⚠️ وافقت على الأمر بس مقدرتش أنفذه: ${done.noteAr}`);
+      stepNotes.push(`#${req.number}: ${done.noteAr}`);
+      continue;
+    }
+    executedCount++;
+    lines.push(`✅ ${done.noteAr}`);
+    stepNotes.push(`#${req.number}: ${done.noteAr}`);
+  }
+
+  const header = lines.length === 1
+    ? `🏛️ **${STATE.nameAr}:** ${lines[0]}`
+    : [`🏛️ **${STATE.nameAr}:** راجعت ونفذت أوامرك (${executedCount} من ${lines.length}):`, '', ...lines.map((l, idx) => `${idx + 1}. ${l}`)].join('\n');
+
+  return {
+    orders,
+    commentAr: header,
+    closeReason: executedCount > 0 ? 'completed' : 'not_planned',
+    notes: stepNotes,
+  };
+}
 export function rerunCandidates(precheck: unknown, orders: StateOrders, controls: ReturnType<typeof readControls>, now = Date.now()): string[] {
   const p = (precheck && typeof precheck === 'object' ? precheck : {}) as { bots?: { id: string; status: string }[] };
   const orderable = new Set(stateOrderableBots().map((b) => b.id as string));
@@ -95,25 +198,27 @@ async function main() {
     const path = `/repos/${repo}`;
     const close = (n: number, reason: 'completed' | 'not_planned') => gh.api(`${path}/issues/${n}`, { method: 'PATCH', body: JSON.stringify({ state: 'closed', state_reason: reason }) }).catch(() => undefined);
 
-    // 0. The owner's orders from the State's room (only his own requests; anyone can open an issue on a public repo).
+    // 0. The owner's orders from the State's room or written directly on GitHub (only his own verified account).
     const requests = (await gh.api<Issue[]>(`${path}/issues?state=open&per_page=30&creator=${encodeURIComponent(OWNER.github)}`).catch(() => [] as Issue[]))
       .filter((i) => !i.pull_request && i.title.startsWith(STATE_ISSUE_PREFIX) && i.user?.login?.toLowerCase() === OWNER.github.toLowerCase())
       .sort((a, b) => a.number - b.number).slice(0, STATE_LIMITS.perRun.orders);
     for (const r of requests) {
-      const order = parseStateOrder(r.body);
-      if (!order) { await gh.comment(r.number, `🏛️ **${STATE.nameAr}:** مش لاقية أمر واضح في الطلب ده — ابعته تاني من غرفة الدولة في جناحك.`).catch(() => undefined); await close(r.number, 'not_planned'); continue; }
-      const verdict = judgeStateOrder(order, { controls, orders });
-      if (!verdict.ok) {
-        await gh.comment(r.number, `🏛️ **${STATE.nameAr}:** ❌ مش هنفذ الأمر ده: ${verdict.reasonAr}`).catch(() => undefined);
-        await close(r.number, 'not_planned'); notes.push(`#${r.number}: رفضت — ${verdict.reasonAr}`); continue;
-      }
-      const done = await carryOut(gh, order, verdict.reasonAr);
-      if (!done.ok) {
-        await gh.comment(r.number, `🏛️ **${STATE.nameAr}:** ⚠️ وافقت على الأمر بس مقدرتش أنفذه: ${done.noteAr}`).catch(() => undefined);
-        await close(r.number, 'not_planned'); notes.push(`#${r.number}: ${done.noteAr}`); continue;
-      }
-      await gh.comment(r.number, `🏛️ **${STATE.nameAr}:** ✅ ${done.noteAr}`).catch(() => undefined);
-      await close(r.number, 'completed'); notes.push(`#${r.number}: ${done.noteAr}`);
+      const outcome = await executeOwnerRequest(r, {
+        controls,
+        orders,
+        report: before,
+        precheck,
+        env: process.env,
+        carryOut: async (order, why, currentOrders) => {
+          orders = currentOrders;
+          const res = await carryOut(gh, order, why);
+          return { ...res, orders };
+        },
+      });
+      orders = outcome.orders;
+      await gh.comment(r.number, outcome.commentAr).catch(() => undefined);
+      await close(r.number, outcome.closeReason);
+      notes.push(...outcome.notes);
     }
     if (active) {
       for (const [name, color, description] of [[STATE_LABELS.approvedTask, '1d76db', 'دولة المنصة وافقت — وكيل البرمجة ينفذها'], [STATE_LABELS.reviewed, 'c5def5', 'دولة المنصة راجعت الموضوع ده'], [STATE_LABELS.refused, 'b60205', 'دولة المنصة رفضته وقفلته']] as const) {
@@ -216,12 +321,46 @@ async function main() {
       }
     }
 
-    /** Carries out one accepted order: robots' runs through GitHub, everything else in the orders file. */
+    /** Carries out one accepted order: robots' runs & approved tasks through GitHub, everything logged in state-orders. */
     async function carryOut(client: GitHub, order: StateOrder, why: string): Promise<{ ok: boolean; noteAr: string }> {
       const o = { ...order, whyAr: order.whyAr || why };
       if (o.action === 'run') {
         const wf = BOTS.find((b) => b.id === o.target)?.workflow;
         try { await client.dispatch(wf!); } catch (e) { return { ok: false, noteAr: `GitHub مارضيش يشغّل «${wf}» (${(e as Error).message.slice(0, 60)}).` }; }
+      }
+      if (o.action === 'task' && o.textAr) {
+        const cleanTitle = o.textAr.trim().slice(0, 120);
+        const vote = stateVote({ kind: 'task', title: cleanTitle, body: o.whyAr });
+        if (!vote.approved) return { ok: false, noteAr: vote.summaryAr };
+        await client.ensureLabel('shaheen-task', '0e8a16', 'مهمة تطوير من شاهين').catch(() => undefined);
+        await client.ensureLabel(STATE_LABELS.approvedTask, '1d76db', 'دولة المنصة وافقت — وكيل البرمجة ينفذها').catch(() => undefined);
+        await client.ensureLabel(STATE_LABELS.reviewed, 'c5def5', 'دولة المنصة راجعت الموضوع ده').catch(() => undefined);
+        let created: { number: number; html_url: string };
+        try {
+          created = await client.api<{ number: number; html_url: string }>(`${path}/issues`, {
+            method: 'POST',
+            body: JSON.stringify({
+              title: `مهمة شاهين: ${cleanTitle}`,
+              body: `🏛️ **مهمة بأمر صاحب الموقع** راجعها واعتمدها أعضاء ${STATE.nameAr}.\n\n${o.textAr.trim()}\n\n${stateComment(vote, ['وكيل البرمجة / وكيل ملك المنصة ينفذها، وكل تعديل منها بيعدّي كل الفحوص.'])}`,
+              labels: ['shaheen-task', STATE_LABELS.approvedTask, STATE_LABELS.reviewed],
+            }),
+          });
+        } catch (e) {
+          return { ok: false, noteAr: `GitHub مارضيش يفتح المهمة (${(e as Error).message.slice(0, 60)}).` };
+        }
+        records.push({
+          at: new Date().toISOString(),
+          number: created.number,
+          kind: 'task',
+          title: cleanTitle,
+          outcome: 'approved',
+          summaryAr: vote.summaryAr,
+          tally: vote.tally,
+          url: created.html_url,
+        });
+        const appliedTask = applyStateOrder(orders, { ...o, target: `#${created.number}` });
+        orders = appliedTask.orders;
+        return { ok: appliedTask.changed, noteAr: `${appliedTask.noteAr} (${created.html_url})` };
       }
       const applied = applyStateOrder(orders, o);
       orders = applied.orders;
