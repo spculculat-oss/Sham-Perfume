@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-11-04T07:49:45.454Z",
- "nextUpdateAt": "2026-11-04T19:49:45.454Z",
+ "updatedAt": "2026-11-04T09:29:08.503Z",
+ "nextUpdateAt": "2026-11-04T21:29:08.503Z",
  "editor": "shaheen",
  "entries": {
   "LAT-052": {
@@ -28274,15 +28274,15 @@
   "ARM-667": {
    "sourceHash": "zqr79f",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "أرماف كلوب دي نوي سيلاج",
-   "nameEn": "Armaf Club De Nuit Sillage",
-   "descriptionAr": "عطر منعش وأنيق بتصميم قلم عملي يلائم التنقل والاستخدام اليومي السريع. يمزج بين حمضيات مشرقة مع نعومة الزهور ودفء الأخشاب والمسك ليمنحك إحساساً متجدداً بالنقاء.",
-   "descriptionEn": "A crisp and uplifting floral woody musk fragrance in a convenient travel pen spray.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "كلوب دي نويت سيلاج من أرماف",
+   "nameEn": "Club De Nuit Sillage by Armaf",
+   "descriptionAr": "عطر يجمع بين الانتعاش الحمضي واللمسات الخشبية والزهرية مع قاعدة دافئة من المسك والعنبر.",
+   "descriptionEn": "A fresh floral woody musk fragrance with bright citrus top notes, a gentle floral heart, and a warm musky base.",
    "gender": "unisex",
    "families": [
     "fresh",
-    "citrus",
+    "woody",
     "musk"
    ],
    "notes": {
@@ -28307,34 +28307,35 @@
     ]
    },
    "seasons": [
+    "summer",
     "spring",
-    "summer"
+    "all"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "كلوب دي نوي",
-    "أرماف سيلاج",
-    "عطر سفر",
-    "Club De Nuit Sillage",
-    "Armaf"
-   ]
+    "Club De Nuit",
+    "Armaf",
+    "Sillage",
+    "عطر للجنسين",
+    "10ml"
+   ],
+   "style": 2
   },
   "ARD-668": {
    "sourceHash": "mhglay",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "أرض الزعفران حورية",
-   "nameEn": "Ard Al Zaafaran Hooria",
-   "descriptionAr": "توليفة أنثوية ساحرة تجمع بين روائح الفواكه الزاهية ونفحات الياسمين والورد الناعمة. تستقر برقة على قاعدة غنية بالفانيليا والأخشاب لتمنحك إطلالة مليئة بالرقة والجاذبية.",
-   "descriptionEn": "A feminine and enchanting scent harmonizing sweet fruits and lush florals over warm vanilla and woods.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "حورية من أرض الزعفران",
+   "nameEn": "Hooria by Ard Al Zaafaran",
+   "descriptionAr": "عطر نسائي يفتح بنوتات الفواكه والزهور الناعمة، مع قلب زهري دافئ وقاعدة غنية بالفانيليا والعنبر.",
+   "descriptionEn": "A feminine fragrance featuring a fruity and soft floral opening, a warm floral heart, and a base of vanilla, amber, and woods.",
    "gender": "women",
    "families": [
     "floral",
-    "fruity",
-    "amber"
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -28359,26 +28360,24 @@
    ],
    "occasions": [
     "daily",
-    "gift",
     "evening"
    ],
    "tags": [
-    "حورية",
+    "Hooria",
     "أرض الزعفران",
     "عطر نسائي",
-    "زهري فواكه",
-    "Hooria",
     "Ard Al Zaafaran"
-   ]
+   ],
+   "style": 2
   },
   "RUE-669": {
    "sourceHash": "161vmam",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "رو بروكا لومينوس بور أوم",
-   "nameEn": "Rue Broca Luminus Pour Homme",
-   "descriptionAr": "عطر رجالي متوازن يفتتح بنفحات منعشة من البرغموت والفلفل الوردي مع لمسة كلاسيكية من اللافندر. تمنحه أخشاب الأرز والعنبر عمقاً راقياً يلائم الإطلالات الرسمية واليومية.",
-   "descriptionEn": "A sophisticated men's fragrance featuring vibrant citrus, lavender, and a robust cedar-amberwood foundation.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "لومينوس بور هوم من رو بروكا",
+   "nameEn": "Luminus Pour Homme by Rue Broca",
+   "descriptionAr": "عطر رجالي يجمع بين انتعاش البرغموت والفلفل الوردي مع قلب من اللافندر وجوزة الطيب وقاعدة خشبية دافئة.",
+   "descriptionEn": "A men's fragrance combining bergamot and pink pepper top notes, a heart of lavender and nutmeg, and an amberwood and cedar base.",
    "gender": "men",
    "families": [
     "woody",
@@ -28400,30 +28399,31 @@
     ]
    },
    "seasons": [
-    "spring",
     "autumn",
+    "winter",
     "all"
    ],
    "occasions": [
     "daily",
+    "evening",
     "work"
    ],
    "tags": [
-    "رو بروكا",
-    "لومينوس",
+    "Luminus",
+    "Rue Broca",
     "عطر رجالي",
-    "Luminus Pour Homme",
-    "Rue Broca"
-   ]
+    "رو بروكا"
+   ],
+   "style": 2
   },
   "ZIM-670": {
    "sourceHash": "1myz9xy",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "زيمايا يا عمري",
-   "nameEn": "Zimaya Yaa Umree",
-   "descriptionAr": "عطر نسائي شرقي راقٍ يمزج بين حلاوة الفانيليا وبياض الزهور مع لمسة ناعمة وفريدة من الملوحة. ترتكز الرائحة على دفء خشب الصندل والمسك لتقدم تجربة عطرية لا تُنسى.",
-   "descriptionEn": "A luxurious oriental scent blending sweet vanilla and white florals with subtle salty notes and sandalwood.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "يا عمري من زيمايا",
+   "nameEn": "Yaa Umree by Zimaya",
+   "descriptionAr": "عطر نسائي شرقي يجمع بين حلاوة الفانيليا والزهور البيضاء مع لمسات مالحة وقاعدة دافئة من خشب الصندل والمسك.",
+   "descriptionEn": "A women's oriental fragrance blending vanilla and white floral sweetness with a salty twist and a warm wood-musk base.",
    "gender": "women",
    "families": [
     "oriental",
@@ -28447,37 +28447,35 @@
     ]
    },
    "seasons": [
-    "autumn",
     "winter",
-    "spring"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "evening",
-    "special",
-    "daily"
+    "special"
    ],
    "tags": [
-    "يا عمري",
-    "زيمايا",
-    "عطر شرقي",
-    "فانيليا",
     "Yaa Umree",
-    "Zimaya"
-   ]
+    "Zimaya",
+    "زيمايا",
+    "عطر نسائي"
+   ],
+   "style": 2
   },
   "VOL-671": {
    "sourceHash": "lf2ng1",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "فولار ريلود سيلفر",
-   "nameEn": "Volare Reload Silver",
-   "descriptionAr": "نفحات متجددة من الحمضيات والنعناع البارد تمنح الرجل إحساساً فورياً بالحيوية والنشاط. يتعزز هذا الانتعاش بقلب عشبي أروماتي يرتكز على قاعدة خشبية نظيفة ومريحة.",
-   "descriptionEn": "An invigorating masculine fragrance composed of cool mint, sparkling citrus, aromatic herbs, and clean woods.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ريلود سيلفر من فولار",
+   "nameEn": "Reload Silver by Volare",
+   "descriptionAr": "عطر رجالي منعش ي والحمضيات والنعناع، ويضم قلباً عشبياً معهاراً مع قاعدة من المسك والعنبر.",
+   "descriptionEn": "A fresh men's fragrance opening with citrus and cool mint, leading to aromatic herbs and light spices, over a musk and amber base.",
    "gender": "men",
    "families": [
     "fresh",
     "citrus",
-    "woody"
+    "musk"
    ],
    "notes": {
     "top": [
@@ -28503,21 +28501,21 @@
     "work"
    ],
    "tags": [
+    "Reload Silver",
+    "Volare",
     "فولار",
-    "ريلود سيلفر",
-    "عطر منعش",
-    "نعناع وحمضيات",
-    "Volare Reload Silver"
-   ]
+    "عطر رجالي منعش"
+   ],
+   "style": 2
   },
   "MAI-672": {
    "sourceHash": "1wid9lj",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ميسون الحمراء لا شارمانت",
-   "nameEn": "Maison Alhambra La Charmante",
-   "descriptionAr": "ميسون الحمراء لا شارمانت — ماء عطر (EDP)، 100 مل، نسائي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
-   "descriptionEn": "Maison Alhambra La Charmante — Eau de Parfum, 100 ml, women. The supplier has not published this perfume's notes, so only the published details are shown.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "لا شارمانت من ميسون ألامبرا",
+   "nameEn": "La Charmante by Maison Alhambra",
+   "descriptionAr": "لا شارمانت من ميسون ألامبرا — ماء عطر (EDP)، 100 مل، نسائي. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "La Charmante by Maison Alhambra — Eau de Parfum, 100 ml, women. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "women",
    "families": [],
    "notes": {
@@ -28534,27 +28532,26 @@
     "work"
    ],
    "tags": [
-    "لا شارمانت",
-    "ميسون الحمراء",
-    "عطر أنثوي",
-    "عطور زهرية",
     "La Charmante",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "ميسون ألامبرا",
+    "عطر نسائي"
+   ],
+   "style": 2
   },
   "MAI-673": {
    "sourceHash": "h59y6k",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ميسون الحمراء ماي بارتي",
-   "nameEn": "Maison Alhambra My Party",
-   "descriptionAr": "عطر أنثوي مرح ينبض بالحيوية بفضل افتتاحية الكمثرى واليوسفي اللذيذة. يتعانق فيه الياسمين والورد مع قاعدة ناعمة من الفانيليا والمسك لتكوني نجمة كل مناسبة.",
-   "descriptionEn": "A lively and delightful fragrance for women featuring sweet pear, mandarin, lush florals, and warm vanilla.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ماي بارتي من ميسون ألامبرا",
+   "nameEn": "My Party by Maison Alhambra",
+   "descriptionAr": "عطر نسائي يبدأ بنوتات الكمثرى واليوسفي، مع قلب من الورد والياسمين وقاعدة من الفانيليا والمسك والعنبر.",
+   "descriptionEn": "A women's fragrance featuring top notes of pear and mandarin orange, a floral heart of rose and jasmine, and a base of vanilla, musk, and amber.",
    "gender": "women",
    "families": [
-    "floral",
     "fruity",
-    "gourmand"
+    "floral",
+    "amber"
    ],
    "notes": {
     "top": [
@@ -28578,31 +28575,29 @@
    ],
    "occasions": [
     "daily",
-    "special",
-    "gift"
+    "evening"
    ],
    "tags": [
-    "ماي بارتي",
-    "ميسون الحمراء",
-    "عطر سهرات",
-    "عطور نسائية",
     "My Party",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "عطر نسائي",
+    "ميسون ألامبرا"
+   ],
+   "style": 2
   },
   "MAI-674": {
    "sourceHash": "19h3kux",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ميسون الحمراء لوكس جيرني",
-   "nameEn": "Maison Alhambra Luxe Journey",
-   "descriptionAr": "رحلة عطرية شرقية فاخرة تبدأ بدفء القرفة والزعفران مع لمسة منعشة من البرغموت. تمتزج الأخشاب والباتشولي مع حلاوة حبوب التونكا والفانيليا لتعطيك بصمة آسرة.",
-   "descriptionEn": "A rich oriental amber fragrance combining warm spices, smooth patchouli, cedar, and sensual tonka bean.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "لوكس جورني من ميسون ألامبرا",
+   "nameEn": "Luxe Journey by Maison Alhambra",
+   "descriptionAr": "عطر للجنسين يجمع بين النفحات الخشبية والعنبرية والشرقية مع توابل دافئة وقاعدة من الفانيليا والمسك.",
+   "descriptionEn": "A unisex fragrance featuring a woody, amber, and oriental profile with bergamot, cinnamon, saffron, and a vanilla-musk base.",
    "gender": "unisex",
    "families": [
+    "woody",
     "amber",
-    "oriental",
-    "woody"
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -28622,34 +28617,33 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "لوكس جيرني",
-    "ميسون الحمراء",
-    "عطور دافئة",
-    "زعفران وقرفة",
-    "Luxe Journey"
-   ]
+    "Luxe Journey",
+    "Maison Alhambra",
+    "عطر للجنسين",
+    "خشب العنبر"
+   ],
+   "style": 2
   },
   "RUE-675": {
    "sourceHash": "1xano4k",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "رو بروكا إكزوتيك هيريتيج",
-   "nameEn": "Rue Broca Exotic Heritage",
-   "descriptionAr": "عطر رجالي راقٍ يفوح بالدفء بفضل توليفة الهيل والقرفة التوابلية المميزة. يكتمل الطابع الشرقي بقاعدة فخمة ترتكز على خشب الأرز والعنبر والباتشولي الأصيل.",
-   "descriptionEn": "A warm and exotic masculine scent featuring cardamom, cinnamon, deep amber, and earthy patchouli.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "إكزوتيك هيريتج من رو بروكا",
+   "nameEn": "Exotic Heritage by Rue Broca",
+   "descriptionAr": "عطر رجالي يجمع بين التوابل الدافئة والأخشاب مع قاعدة غنية بالمسك والباتشولي.",
+   "descriptionEn": "A men's fragrance featuring warm spices, amber, cedarwood, and a base of musk and patchouli.",
    "gender": "men",
    "families": [
-    "spicy",
     "woody",
-    "amber"
+    "spicy"
    ],
    "notes": {
     "top": [],
@@ -28665,31 +28659,29 @@
    ],
    "occasions": [
     "evening",
-    "special",
-    "daily"
+    "work"
    ],
    "tags": [
-    "رو بروكا",
-    "إكزوتيك هيريتيج",
-    "عطور شرقية",
-    "عطور رجالية",
+    "Exotic Heritage",
     "Rue Broca",
-    "Exotic Heritage"
-   ]
+    "عطر رجالي",
+    "رو بروكا"
+   ],
+   "style": 2
   },
   "ZIM-676": {
    "sourceHash": "11hb659",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "زيمايا مزاج إنفيوزد",
-   "nameEn": "Zimaya Mazaaj Infused",
-   "descriptionAr": "عطر مفعم بالانتعاش والنشاط يمزج بين حمضيات مشرقة ونفحات النعناع مع لمسة راقية من اللافندر. تهدأ رائحته على طبقات العنبر والمسك ليمنحك جاذبية عملية وأنيقة.",
-   "descriptionEn": "A dynamic fresh-spicy fragrance for men highlighting zesty citrus, cool mint, lavender, and warm amber.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "مجاج إنفيوزد من زيمايا",
+   "nameEn": "Mazaaj Infused by Zimaya",
+   "descriptionAr": "عطر رجالي يفتح بانتعاش الحمضيات والنعناع، مع قلب من اللافندر والتوابل وقاعدة من العنبر والمسك.",
+   "descriptionEn": "A men's fragrance opening with citrus and mint, a spicy lavender heart, and an amber and musk base.",
    "gender": "men",
    "families": [
     "fresh",
-    "citrus",
-    "spicy"
+    "spicy",
+    "musk"
    ],
    "notes": {
     "top": [
@@ -28715,25 +28707,25 @@
     "work"
    ],
    "tags": [
+    "Mazaaj Infused",
+    "Zimaya",
     "زيمايا",
-    "مزاج إنفيوزد",
-    "عطر يومي",
-    "حمضيات ونعناع",
-    "Zimaya Mazaaj Infused"
-   ]
+    "عطر رجالي"
+   ],
+   "style": 2
   },
   "ARM-677": {
    "sourceHash": "ygat03",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "دبي نايتس ميدنايت من أرماف",
    "nameEn": "Dubai Nights Midnight by Armaf",
-   "descriptionAr": "عطر رجالي دافئ يجمع بين حرارة التوابل من الهيل والقرفة مع عمق العنبر وخشب الأرز. يمنحك حضوراً ليلياً جذاباً يرتكز على قاعدة ناعمة من الفانيليا والمسك والباتشولي.",
-   "descriptionEn": "A warm and spicy men's fragrance featuring notes of cinnamon, amber, and rich vanilla.",
+   "descriptionAr": "عطر رجالي يجمع بين التوابل الغنية والهيل مع قلب خشبي عنبري وقاعدة دافئة من الفانيليا والباتشولي.",
+   "descriptionEn": "A men's fragrance combining warm cardamom, cinnamon, and nutmeg with an amber-lavender heart and a vanilla-patchouli base.",
    "gender": "men",
    "families": [
+    "oriental",
     "spicy",
-    "amber",
     "woody"
    ],
    "notes": {
@@ -28762,25 +28754,24 @@
     "special"
    ],
    "tags": [
-    "ارماف",
-    "دبي نايتس",
-    "عطر رجالي",
-    "Armaf",
     "Dubai Nights",
-    "Midnight"
-   ]
+    "Armaf",
+    "أرماف",
+    "عطر رجالي"
+   ],
+   "style": 2
   },
   "MAI-678": {
    "sourceHash": "15mklfx",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "سموكي من ميسون الحمراء",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "سْموكي من ميسون ألامبرا",
    "nameEn": "Smoky by Maison Alhambra",
-   "descriptionAr": "توليفة دخانية فاخرة تجمع بين حلاوة البرقوق والعسل مع نفحات البخور والتوابل الدافئة. يستقر العطر على قاعدة غنية من أوراق التبغ والعنبر والأخشاب ليمنحك هيبة آسرة.",
-   "descriptionEn": "A rich unisex fragrance blending sweet plum and honey with smoky tobacco and woods.",
+   "descriptionAr": "عطر للجنسين يفتح بنوتات البرقوق الحمضيات، مع قلب دخاني بالعسل والتوابل، وقاعدة من أوراق التبغ والأخشاب.",
+   "descriptionEn": "A unisex fragrance featuring top notes of plum and citrus, a heart of honey, smoke, and spices, over a base of tobacco leaf, amber, and woods.",
    "gender": "unisex",
    "families": [
-    "amber",
+    "oriental",
     "woody",
     "spicy"
    ],
@@ -28809,74 +28800,73 @@
     "special"
    ],
    "tags": [
-    "ميسون الحمراء",
-    "سموكي",
-    "عطر دخاني",
+    "Smoky",
     "Maison Alhambra",
-    "Smoky"
-   ]
+    "ميسون ألامبرا",
+    "عطر للجنسين"
+   ],
+   "style": 2
   },
   "MAI-679": {
    "sourceHash": "19jyj57",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ناريسا بودري من ميسون الحمراء",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ناريسا بودري من ميسون ألامبرا",
    "nameEn": "Narissa Poudree by Maison Alhambra",
-   "descriptionAr": "عطر أنثوي ناعم يفتتح بنفحات الورد البلغاري والياسمين الرقيق ليعانق قلباً بودرياً من المسك وزهر البرتقال. يختتم بحفاوة خشبية دافئة من نجيل الهند وخشب الأرز والكومارين.",
-   "descriptionEn": "An elegant floral powdery fragrance with notes of Bulgarian rose, white musk, and soft woods.",
+   "descriptionAr": "عطر نسائي يبدأ بالياسمين والورد البلغاري، مع قلب ناعم من زهر البرتقال والمسك البودري وقاعدة دافئة من النجيل الهند والخشب.",
+   "descriptionEn": "A women's fragrance opening with jasmine and rose, unfolding into a powdery musk and orange blossom heart, over a warm vetiver and cedarwood base.",
    "gender": "women",
    "families": [
-    "powdery",
     "floral",
+    "powdery",
     "musk"
    ],
    "notes": {
     "top": [
      "Jasmine",
-     "Bulgarian Rose"
+     "Rose"
     ],
     "heart": [
      "Orange Blossom",
-     "Powdery Musk"
+     "Musk"
     ],
     "base": [
      "Vetiver",
      "Cedarwood",
-     "Coumarin",
      "Patchouli"
     ]
    },
    "seasons": [
     "spring",
     "autumn",
-    "winter"
+    "all"
    ],
    "occasions": [
     "daily",
-    "special",
-    "gift"
+    "evening",
+    "work"
    ],
    "tags": [
-    "ناريسا بودري",
-    "ميسون الحمراء",
-    "عطر بودري",
     "Narissa Poudree",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "عطر بودري",
+    "ميسون ألامبرا"
+   ],
+   "style": 2
   },
   "RUE-680": {
    "sourceHash": "1nkrrrc",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "كارينو بلاك بور فيم من روي بروكا",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "كاريتنو بلاك بور فام من رو بروكا",
    "nameEn": "Carino Black Pour Femme by Rue Broca",
-   "descriptionAr": "عطر أنثوي جذاب يمزج بين حيوية اليوسفي والفلفل الوردي مع قلب غني بالورد والياسمين والكراميل. تكتمل الرائحة بقاعدة دافئة من الفانيليا والعنبر والمسك تضفي لمسة ساحرة.",
-   "descriptionEn": "A sweet and alluring feminine fragrance featuring notes of mandarin, caramel, and warm vanilla.",
+   "descriptionAr": "عطر نسائي يجمع بين اليوسفي والفلفل الوردي مع قلب حلو من الورد والياسمين والكراميل وقاعدة من الفانيليا والمسك.",
+   "descriptionEn": "A women's fragrance featuring mandarin and pink pepper top notes, a sweet heart of rose, jasmine, and caramel, and a vanilla-amber base.",
    "gender": "women",
    "families": [
     "gourmand",
     "floral",
-    "amber"
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -28895,31 +28885,29 @@
     ]
    },
    "seasons": [
-    "autumn",
     "winter",
-    "spring"
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
-    "روي بروكا",
-    "كارينو بلاك",
-    "عطر نسائي",
+    "Carino Black",
     "Rue Broca",
-    "Carino Black"
-   ]
+    "عطر نسائي",
+    "رو بروكا"
+   ],
+   "style": 2
   },
   "GRA-681": {
    "sourceHash": "10e7gg1",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "بيتش كورال من غراندور",
    "nameEn": "Beach Coral by Grandeur",
-   "descriptionAr": "عبير زهري فاكهي مبهج يجمع بين نضارة الخوخ واليوسفي مع قلب باذخ من الورد والياسمين. تستقر النغمات على قاعدة رقيقة ودافئة من المسك والفانيليا والعنبر.",
-   "descriptionEn": "A joyful fruity floral fragrance highlighting sweet peach, blooming jasmine, and creamy vanilla.",
+   "descriptionAr": "عطر نسائي يبرز بنوتات الفواكه والزهور مع قاعدة دافئة من المسك والفانيليا والعنبر.",
+   "descriptionEn": "A women's fragrance featuring fruity and floral notes with a warm base of musk, vanilla, and amber.",
    "gender": "women",
    "families": [
     "fruity",
@@ -28947,30 +28935,29 @@
     "spring"
    ],
    "occasions": [
-    "daily",
-    "gift"
+    "daily"
    ],
    "tags": [
-    "غراندور",
-    "بيتش كورال",
-    "عطر صيفي",
+    "Beach Coral",
     "Grandeur",
-    "Beach Coral"
-   ]
+    "عطر نسائي",
+    "فواكه",
+    "زهور"
+   ],
+   "style": 2
   },
   "ZIM-682": {
    "sourceHash": "1h754rg",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "شرف بليند من زيمايا",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "شراف بليند من زيمايا",
    "nameEn": "Sharaf Blend by Zimaya",
-   "descriptionAr": "تركيبة شرقية فاخرة تفتتح بعبير العود والزعفران الأصيل وتندمج مع قلب عنبري فانيلي دافئ. تكتمل التجربة بقاعدة مخملية من المسك وخشب الصندل لتمنحك حضوراً عميقاً ولا يُنسى.",
-   "descriptionEn": "An opulent oriental extrait featuring rich notes of oud, saffron, amber, and sandalwood.",
+   "descriptionAr": "عطر مركز يجمع بين العود والزعفران في الافتتاحية مع قلب من العنبر والفانيليا.",
+   "descriptionEn": "An extrait de parfum combining oud and saffron in the opening with a heart of amber and vanilla.",
    "gender": "men",
    "families": [
     "oud",
-    "oriental",
-    "woody"
+    "amber"
    ],
    "notes": {
     "top": [
@@ -28995,25 +28982,26 @@
     "special"
    ],
    "tags": [
-    "زيمايا",
-    "شرف بليند",
-    "عطر عود",
+    "Sharaf Blend",
     "Zimaya",
-    "Sharaf Blend"
-   ]
+    "عطر رجالي",
+    "عود",
+    "عنبر"
+   ],
+   "style": 2
   },
   "MAI-683": {
    "sourceHash": "yplljg",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "يور تاتش نسائي من ميسون الحمراء",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "يور تاتش ومن من ميسون أهامبرا",
    "nameEn": "Your Touch Women by Maison Alhambra",
-   "descriptionAr": "نفحات أنثوية مشرقة تفيض بانتعاش توت العليق والحمضيات وتتوسطها باقة رقيقة من الورد. وترتكز على لمسات دافئة من الفانيليا والمسك وخشب العنبر لإطلالة متألقة.",
-   "descriptionEn": "A charming floral fruity fragrance led by sweet raspberry, romantic rose, and soft vanilla.",
+   "descriptionAr": "عطر نسائي بنوتات الفواكه المشرقة والورد مع قاعدة غنية بالفانيليا والمسك.",
+   "descriptionEn": "A women's fragrance featuring bright fruity notes and rose with a rich base of vanilla and musk.",
    "gender": "women",
    "families": [
-    "fruity",
-    "floral"
+    "floral",
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -29032,35 +29020,34 @@
    },
    "seasons": [
     "spring",
-    "summer",
-    "autumn"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "work"
    ],
    "tags": [
-    "يور تاتش",
-    "ميسون الحمراء",
-    "عطر نسائي",
     "Your Touch",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "عطر نسائي",
+    "توت",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "MAI-684": {
    "sourceHash": "jjn4jd",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "كانديد من ميسون الحمراء",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "كانديد من ميسون أهامبرا",
    "nameEn": "Candid by Maison Alhambra",
-   "descriptionAr": "مزيج منعش ولذيذ يفتتح بعبير البرغموت والحمضيات مع لمسة من الأناناس وقلب زهري فاتن. ينتهي بقاعدة خشبية سكرية تجمع بين الباتشولي والفانيليا وحبوب التونكا.",
-   "descriptionEn": "A delightful floral and fruity scent featuring notes of pineapple, white florals, and tonka bean.",
+   "descriptionAr": "عطر نسائي يمزج بين الحمضيات والزهور مع لمسات خشبية دافئة في القاعدة.",
+   "descriptionEn": "A women's fragrance blending citrus and florals with warm woody touches in the base.",
    "gender": "women",
    "families": [
     "floral",
     "fruity",
-    "gourmand"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -29081,30 +29068,29 @@
    },
    "seasons": [
     "spring",
-    "autumn",
-    "winter"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "evening",
-    "gift"
+    "evening"
    ],
    "tags": [
-    "كانديد",
-    "ميسون الحمراء",
-    "عطور نسائية",
     "Candid",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "عطر نسائي",
+    "أناناس",
+    "باتشولي"
+   ],
+   "style": 2
   },
   "VOL-685": {
    "sourceHash": "5c6eo6",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "فانيلا آيريش من فولار",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "فانيلا أيريش من فولار",
    "nameEn": "Vanilla Irish by Volare",
-   "descriptionAr": "عطر ناعم وهادئ يجمع بين دفء الفانيليا الخفيفة ورقة الفواكه المنعشة. يمنحك لمسة أنثوية بسيطة ولطيفة تناسب الاستخدام اليومي والأوقات الهادئة.",
-   "descriptionEn": "A delicate and soothing fragrance composed of soft vanilla notes and fresh light fruits.",
+   "descriptionAr": "عطر نسائي يرتكز على نوتات الفانيليا الناعمة والفواكه الخفيفة.",
+   "descriptionEn": "A women's fragrance centered around soft vanilla notes and light fruits.",
    "gender": "women",
    "families": [
     "gourmand",
@@ -29119,35 +29105,33 @@
     "base": []
    },
    "seasons": [
-    "spring",
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
-    "daily",
-    "work"
+    "daily"
    ],
    "tags": [
-    "فولار",
-    "فانيلا ايريش",
-    "عطر فانيليا",
+    "Vanilla Irish",
     "Volare",
-    "Vanilla Irish"
-   ]
+    "عطر نسائي",
+    "فانيليا",
+    "فواكه"
+   ],
+   "style": 2
   },
   "MAI-686": {
    "sourceHash": "1f09s6i",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "سمر فوريفر من ميسون الحمراء",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "سمر فورايفر من ميسون أهامبرا",
    "nameEn": "Summer Forever by Maison Alhambra",
-   "descriptionAr": "عطر أنثوي فريد يمزج بين حلاوة البرقوق والزهور البيضاء مع لمسات جريئة من الجلود وخشب الصندل. تكتمل الرحلة بقاعدة دافئة غنية من البنزوين والعنبر والباتشولي والتوت العليق.",
-   "descriptionEn": "A captivating fragrance uniting sweet plum, white blossoms, smooth leather, and benzoin.",
+   "descriptionAr": "عطر نسائي يجمع بين البرقوق والجلود والأزهار البيضاء مع قاعدة من العنبر والباتشولي.",
+   "descriptionEn": "A women's fragrance combining plum, leather, and white flowers with a base of amber and patchouli.",
    "gender": "women",
    "families": [
-    "leather",
-    "floral",
-    "amber"
+    "fruity",
+    "leather"
    ],
    "notes": {
     "top": [
@@ -29167,35 +29151,35 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter",
+    "summer",
     "spring"
    ],
    "occasions": [
-    "evening",
-    "special"
+    "daily",
+    "evening"
    ],
    "tags": [
-    "سمر فوريفر",
-    "ميسون الحمراء",
-    "عطر جلدي",
     "Summer Forever",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "عطر نسائي",
+    "برقوق",
+    "جلود"
+   ],
+   "style": 2
   },
   "LAT-687": {
    "sourceHash": "10qmlh",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "قائد الشباب من لطافة",
    "nameEn": "Qaaed Al Shabaab by Lattafa",
-   "descriptionAr": "عطر رجالي قوي يتميز بالنفحات الجلدية الفاخرة وخشب الأرز مع بداية ناعمة من زهرة الأوسمانثوس. يستقر بثبات على قاعدة شرقية عميقة من دهن العود والعنبر ليجسد الهيبة الرجولية.",
-   "descriptionEn": "A powerful masculine scent dominated by rich leather, cedarwood, and deep agarwood notes.",
+   "descriptionAr": "عطر رجالي بتركيبة شرقية تضم الجلود والأخشاب ونوتات العود والعنبر.",
+   "descriptionEn": "A men's oriental fragrance featuring leather, woods, and notes of oud and amber.",
    "gender": "men",
    "families": [
     "leather",
-    "oud",
-    "woody"
+    "woody",
+    "oud"
    ],
    "notes": {
     "top": [
@@ -29220,26 +29204,26 @@
     "special"
    ],
    "tags": [
-    "قائد الشباب",
-    "لطافة",
-    "عطر رجالي",
-    "عطر جلدي",
+    "Qaaed Al Shabaab",
     "Lattafa",
-    "Qaaed Al Shabaab"
-   ]
+    "عطر رجالي",
+    "جلود",
+    "عود"
+   ],
+   "style": 2
   },
   "GRA-688": {
    "sourceHash": "dppf0m",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "ديستني من غراندور إيليت",
    "nameEn": "Destiny by Grandeur Elite",
-   "descriptionAr": "عطر منعش وأنيق يجمع بين حيوية السفرجل والجريب فروت مع باقة أنثوية من السوسن والياسمين. يرتكز على قاعدة خشبية مسكية تضفي هدوءاً ونقاءً مستمراً.",
-   "descriptionEn": "A fresh and floral fragrance combining bright quince, radiant hyacinth, and powdery iris.",
+   "descriptionAr": "عطر نسائي منعش يجمع بين الفواكه والأزهار مع قاعدة خشبية وعنبرية.",
+   "descriptionEn": "A fresh women's fragrance combining fruits and florals with a woody and amber base.",
    "gender": "women",
    "families": [
-    "floral",
     "fresh",
+    "floral",
     "woody"
    ],
    "notes": {
@@ -29264,29 +29248,29 @@
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "work"
    ],
    "tags": [
-    "غراندور",
-    "ديستني",
+    "Destiny",
+    "Grandeur Elite",
     "عطر نسائي",
-    "Grandeur",
-    "Destiny"
-   ]
+    "منعش",
+    "زهور"
+   ],
+   "style": 2
   },
   "LAT-689": {
    "sourceHash": "zl6i5u",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "بديع العود أميثيست من لطافة",
    "nameEn": "Badee Al Oud Amethyst by Lattafa",
-   "descriptionAr": "توليفة فاخرة للجنسين تجمع بين توهج الفلفل الوردي والورد التركي والياسمين الأخاذ. تندمج النغمات بانسجام تام مع قاعدة عميقة من العود والعنبر والفانيليا لتمنحك أثراً ساحراً.",
-   "descriptionEn": "An exquisite unisex blend of Turkish rose, pink pepper, oud, and smooth vanilla.",
+   "descriptionAr": "عطر محايد يمزج بين الورد والبرغموت في الافتتاحية مع قاعدة غنية بالعود والعنبر.",
+   "descriptionEn": "A unisex fragrance blending rose and bergamot in the opening with a rich base of oud and amber.",
    "gender": "unisex",
    "families": [
     "oud",
-    "oriental",
+    "amber",
     "floral"
    ],
    "notes": {
@@ -29306,35 +29290,32 @@
    },
    "seasons": [
     "winter",
-    "autumn",
-    "spring"
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
-    "بديع العود",
-    "اميثيست",
-    "لطافة",
-    "عطر عود",
+    "Badee Al Oud",
     "Lattafa",
-    "Badee Al Oud Amethyst"
-   ]
+    "عطر للجنسين",
+    "عود",
+    "ورد"
+   ],
+   "style": 2
   },
   "ARD-690": {
    "sourceHash": "40zhcc",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "باب الوردي من أرض الزعفران",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "باب الورد من أرض الزعفران",
    "nameEn": "Bab Al Wardi by Ard Al Zaafaran",
-   "descriptionAr": "عطر شرقي زهري يفتتح بعبير الورد الناعم والبرغموت المتألق مع قلب غني بالياسمين والفانيليا. يستقر على قاعدة عنبرية مسكية دافئة تمنحك إحساساً دائماً بالرقة والأناقة.",
-   "descriptionEn": "A romantic oriental floral fragrance featuring rich rose, delicate jasmine, and sweet amber.",
+   "descriptionAr": "عطر نسائي شرقي يبرز بنوتات الورد والبرغموت مع قلب زهري وقاعدة من العنبر والمسك.",
+   "descriptionEn": "An oriental women's fragrance highlighting rose and bergamot with a floral heart and amber-musk base.",
    "gender": "women",
    "families": [
     "floral",
-    "oriental",
     "amber"
    ],
    "notes": {
@@ -29353,31 +29334,30 @@
     ]
    },
    "seasons": [
-    "all",
     "spring",
     "autumn"
    ],
    "occasions": [
     "daily",
-    "special",
-    "gift"
+    "evening"
    ],
    "tags": [
-    "باب الوردي",
-    "ارض الزعفران",
-    "عطر نسائي",
     "Bab Al Wardi",
-    "Ard Al Zaafaran"
-   ]
+    "Ard Al Zaafaran",
+    "عطر نسائي",
+    "ورد",
+    "عنبر"
+   ],
+   "style": 2
   },
   "MAI-691": {
    "sourceHash": "1qjamaj",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "دارك دور سبورت ميسون الحمراء",
-   "nameEn": "Dark Door Sport Maison Alhambra Eau de Parfum",
-   "descriptionAr": "عطر رجالي رياضي يفيض بالحيوية والانتعاش بفضل تناغم الحمضيات والنسمات البحرية المنعشة. يستقر على قاعدة خشبية دافئة من خشب الأرز والمسك لتمنحك حضوراً واثقاً.",
-   "descriptionEn": "A fresh and dynamic masculine fragrance blending crisp citrus and marine accords with an invigorating heart of lavender and a warm cedarwood-amber base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "دارك دور سبورت من ميسون أهامبرا",
+   "nameEn": "Dark Door Sport Men by Maison Alhambra",
+   "descriptionAr": "عطر رجالي منعش يجمع بين الحمضيات والنوتات البحرية مع قلب عشبي وقاعدة خشبية.",
+   "descriptionEn": "A fresh men's fragrance combining citrus and marine accords with an herbal heart and woody base.",
    "gender": "men",
    "families": [
     "fresh",
@@ -29409,25 +29389,24 @@
     "work"
    ],
    "tags": [
-    "عطر رياضي",
-    "دارك دور سبورت",
-    "ميسون الحمراء",
-    "عطور رجالية",
     "Dark Door Sport",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "عطر رجالي",
+    "منعش",
+    "حمضيات"
+   ],
+   "style": 2
   },
   "MAI-692": {
    "sourceHash": "jq74xr",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "قسمت لونار ماجيك ميسون الحمراء",
-   "nameEn": "Kismet Lunar Magic Maison Alhambra Eau de Parfum",
-   "descriptionAr": "توليفة شرقية زهرية ساحرة تمزج بين إشراقة البرغموت والكمثرى مع قلب مفعم بعبير الياسمين وزهر البرتقال. تكتمل التجربة بقاعدة مخملية آسرة من الفانيليا والباتشولي والمسك الأبيض لتمنحك جاذبية فريدة.",
-   "descriptionEn": "An elegant amber floral fragrance opening with bergamot and pear, leading to a radiant heart of white florals and settling on a sensual vanilla-patchouli base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "قسمت لونار ماجيك من ميسون أهامبرا",
+   "nameEn": "Kismet Lunar Magic by Maison Alhambra",
+   "descriptionAr": "عطر محايد يفتتح بنوتات الفواكه والبرغموت مع قلب زهري وقاعدة دافئة من الفانيليا والعنبر.",
+   "descriptionEn": "A unisex fragrance opening with fruity and bergamot notes, a floral heart, and a warm vanilla-amber base.",
    "gender": "unisex",
    "families": [
-    "oriental",
     "amber",
     "floral"
    ],
@@ -29451,35 +29430,34 @@
    },
    "seasons": [
     "autumn",
-    "winter",
-    "spring"
+    "winter"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "قسمت لونار ماجيك",
-    "ميسون الحمراء",
-    "عطور شرقية",
-    "عطور للجنسين",
     "Kismet Lunar Magic",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "عطر للجنسين",
+    "عنبر",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "ARD-693": {
    "sourceHash": "1yky703",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "دار الشباب أرض الزعفران",
-   "nameEn": "Dar Al Shabaab Ard Al Zaafaran Eau de Parfum",
-   "descriptionAr": "عطر رجالي أنيق يجمع بين حيوية الليمون والهيل مع عمق خشب الأرز والباتشولي. ينتهي بأثر شرقي غني من خشب الصندل والمسك ليعكس روح الشباب والأناقة العصرية.",
-   "descriptionEn": "A vibrant woody oriental perfume for men featuring fresh citrus and cardamom over an earthy heart of patchouli, finished with creamy sandalwood and musk.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "دار الشباب من أرض الزعفران",
+   "nameEn": "Dar Al Shabaab by Ard Al Zaafaran",
+   "descriptionAr": "عطر رجالي شرقي يجمع بين الحمضيات والتوابل مع قاعدة خشبية وعنبرية.",
+   "descriptionEn": "An oriental men's fragrance combining citrus and spices with a woody and amber base.",
    "gender": "men",
    "families": [
     "woody",
     "amber",
-    "oriental"
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -29499,30 +29477,29 @@
    },
    "seasons": [
     "autumn",
-    "winter",
-    "spring"
+    "winter"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "دار الشباب",
-    "أرض الزعفران",
-    "عطور رجالية",
-    "عطور خشبية",
     "Dar Al Shabaab",
-    "Ard Al Zaafaran"
-   ]
+    "Ard Al Zaafaran",
+    "عطر رجالي",
+    "أخشاب",
+    "توابل"
+   ],
+   "style": 2
   },
   "MAI-694": {
    "sourceHash": "17mytg3",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "إكسبوز إنتنس ميسون الحمراء",
-   "nameEn": "Expose Intense Maison Alhambra Eau de Parfum",
-   "descriptionAr": "عطر رجالي جريء وفواح يفتتح بنفحات حارة ودافئة من الفلفل الأسود والهيل مع لمسة البرغموت. يرتكز على قلب عطري من اللافندر وقاعدة شرقية عميقة من التونكا وخشب الأرز.",
-   "descriptionEn": "A bold and intense spicy woody fragrance for men that blends black pepper and cardamom with aromatic lavender and a rich tonka-patchouli base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "إكسبوز إنتنس من ميسون أهامبرا",
+   "nameEn": "Expose Intense by Maison Alhambra",
+   "descriptionAr": "عطر رجالي خشبي مزين بالتوابل مع قلب من الأخشاب واللافندر وقاعدة دافئة.",
+   "descriptionEn": "A woody men's fragrance accented with spices, featuring a heart of woods and lavender and a warm base.",
    "gender": "men",
    "families": [
     "woody",
@@ -29547,30 +29524,30 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special"
+    "work"
    ],
    "tags": [
-    "إكسبوز إنتنس",
-    "ميسون الحمراء",
-    "عطور شرقية للرجال",
-    "عطر شتوي",
     "Expose Intense",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "عطر رجالي",
+    "توابل",
+    "أخشاب"
+   ],
+   "style": 2
   },
   "MAI-695": {
    "sourceHash": "at88ju",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "فيلوس سنترو ميسون الحمراء",
-   "nameEn": "Philos Centro Maison Alhambra Eau de Parfum",
-   "descriptionAr": "عطر شرقي دافئ يناسب كلا الجنسين، يستهل رحلته بنفحات البهارات والعنبر الجذاب. تتألق قاعدته بلمسات ناعمة من الفانيليا والمسك وخشب الصندل لإطلالة فاخرة ومتوازنة.",
-   "descriptionEn": "A warm oriental unisex fragrance with spicy and amber accents, blooming into resinous floral tones over a comforting base of vanilla and sandalwood.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "فيلوس سنترو ميصون الحمراء",
+   "nameEn": "Philos Centro Maison Alhambra",
+   "descriptionAr": "عطر شرقي متوازن يجمع بين التوابل والعنبر في المقدمة، ويستقر على قاعدة دافئة من المسك والفانيليا وخشب الصندل.",
+   "descriptionEn": "An oriental fragrance combining spices and amber, settling on a warm base of musk, vanilla, and sandalwood.",
    "gender": "unisex",
    "families": [
     "oriental",
@@ -29593,35 +29570,34 @@
     ]
    },
    "seasons": [
+    "winter",
     "autumn",
-    "winter"
+    "all"
    ],
    "occasions": [
-    "evening",
-    "special"
+    "daily",
+    "evening"
    ],
    "tags": [
-    "فيلوس سنترو",
-    "ميسون الحمراء",
-    "عطور للجنسين",
-    "عطور دافئة",
     "Philos Centro",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "عطر للجنسين",
+    "شرقي"
+   ],
+   "style": 2
   },
   "ALW-696": {
    "sourceHash": "14cuzqh",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "سيف الخليج الوطنية",
-   "nameEn": "Saif Al Khaleej Al Wataniah Eau de Parfum",
-   "descriptionAr": "عطر رجالي راقٍ يبدأ بانتعاش الليمون والبرغموت المتألق ليوقظ الحواس. يندمج بانسيابية مع قلب العنبر الفاخر وقاعدة أصيلة من أخشاب الصندل والمسك.",
-   "descriptionEn": "A classic masculine composition opening with zesty bergamot and lemon, evolving into a sophisticated heart of amber and an enduring woody-musk base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "سيف الخليج من الوطنية",
+   "nameEn": "Saif Al Khaleej by Al Wataniah",
+   "descriptionAr": "عطر رجالي يفتح بنوتات منعشة من البرغموت والليمون، يليه قلب من العنبر والباتشولي، وقاعدة خشبية مسكية.",
+   "descriptionEn": "A men's fragrance opening with bergamot and lemon, followed by amber and patchouli, over a woody musky base.",
    "gender": "men",
    "families": [
-    "citrus",
-    "woody",
-    "amber"
+    "fresh",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -29639,9 +29615,9 @@
     ]
    },
    "seasons": [
-    "spring",
     "summer",
-    "autumn"
+    "spring",
+    "all"
    ],
    "occasions": [
     "daily",
@@ -29649,26 +29625,24 @@
    ],
    "tags": [
     "سيف الخليج",
-    "عطور الوطنية",
-    "عطور رجالية",
-    "عطور منعشة",
-    "Saif Al Khaleej",
-    "Al Wataniah"
-   ]
+    "الوطنية",
+    "عطر رجالي",
+    "منعش"
+   ],
+   "style": 2
   },
   "MAI-697": {
    "sourceHash": "xnlxid",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "يوزونيا ميسون الحمراء",
-   "nameEn": "Euzonea Maison Alhambra Eau de Parfum",
-   "descriptionAr": "عطر نسائي أنيق يأسر الحواس بافتتاحية مميزة من الرمان الفاكهي وقلب مفعم بأنوثة اللوتس والأوركيد. يستقر على دفء أخشاب الماهوجني والبنفسج والعنبر ليمنحك هالة من النعومة والجاذبية.",
-   "descriptionEn": "A graceful oriental-floral women's fragrance showcasing sweet grenadine, elegant orchid, and lotus, supported by a powdery mahogany and violet base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "اوزونيا ميصون الحمراء",
+   "nameEn": "Euzonea by Maison Alhambra",
+   "descriptionAr": "عطر نسائي شرقي زهري يتميز بلمحات الفواكه ونوتات زهرة اللوتس والأوركيد مع قاعدة ناعمة من الخشب والمسك.",
+   "descriptionEn": "An oriental-floral women's fragrance with fruity nuances, lotus, orchid, and a smooth woody-musky base.",
    "gender": "women",
    "families": [
-    "oriental",
     "floral",
-    "woody"
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -29687,30 +29661,30 @@
    },
    "seasons": [
     "spring",
-    "autumn",
-    "winter"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
+    "work",
     "special"
    ],
    "tags": [
-    "يوزونيا",
-    "ميسون الحمراء",
-    "عطور نسائية",
-    "عطور زهرية",
     "Euzonea",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "عطر نسائي",
+    "زهري"
+   ],
+   "style": 2
   },
   "ALW-698": {
    "sourceHash": "tiauq3",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "عود ميستري إنتنس الوطنية",
-   "nameEn": "Oud Mystery Intense Al Wataniah Eau de Parfum",
-   "descriptionAr": "توليفة شرقية غامضة ومترفة تبرز فيها أصالة خشب العود المدعومة بالزعفران وجوزة الطيب. تتعانق قاعدة العطر مع الباتشولي والمسك لتترك انطباعاً عميقاً لا يُنسى.",
-   "descriptionEn": "A rich and mystical oud fragrance featuring warm saffron and nutmeg over a majestic heart of agarwood, grounded by patchouli and sensual musk.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "عود ميستري إنتنس من الوطنية",
+   "nameEn": "Oud Mystery Intense by Al Wataniah",
+   "descriptionAr": "عطر خشبي حار يبرز فيه العود مع الزعفران وجوزة الطيب، ويستقر على قاعدة من الباتشولي والمسك.",
+   "descriptionEn": "A woody spicy fragrance highlighting oud, saffron, and nutmeg, resting on a base of patchouli and musk.",
    "gender": "unisex",
    "families": [
     "oud",
@@ -29740,74 +29714,62 @@
     "special"
    ],
    "tags": [
-    "عود ميستري إنتنس",
-    "عطور الوطنية",
-    "دهن عود",
-    "عطور شرقية",
     "Oud Mystery Intense",
-    "Al Wataniah"
-   ]
+    "Al Wataniah",
+    "عود",
+    "عطر خشبي"
+   ],
+   "style": 2
   },
   "ARD-699": {
    "sourceHash": "vpb3l7",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "سلطان القلوب أرض الزعفران",
-   "nameEn": "Sultan Al Quloub Ard Al Zaafaran Eau de Parfum",
-   "descriptionAr": "عطر شرقي خشبي يجمع بين فخامة الزعفران ودفء العنبر والبهارات الأصيلة. يمتزج برقي مع خشب الصندل والعود ولمسات الفانيليا لتجربة عطرية مهيبة تعكس الهيبة والوقار.",
-   "descriptionEn": "A regal oriental-woody fragrance layered with precious saffron, amber, and rich oud, softened by creamy sandalwood and comforting vanilla.",
+   "nameEn": "Sultan Al Quloub Ard Al Zaafaran",
+   "descriptionAr": "عطر رجالي يجمع بين عبق العنبر والزعفران والعود مع لمحات خشبية دافئة ونوتات التوابل والمسك.",
+   "descriptionEn": "A men's fragrance combining amber, saffron, and oud with warm woody notes, spices, and musk.",
    "gender": "men",
    "families": [
     "oriental",
-    "woody",
-    "amber"
+    "oud",
+    "woody"
    ],
    "notes": {
-    "top": [
-     "Saffron",
-     "Spices"
-    ],
-    "heart": [
-     "Amber",
-     "Sandalwood"
-    ],
-    "base": [
-     "Oud",
-     "Vanilla",
-     "Musk"
-    ]
+    "top": [],
+    "heart": [],
+    "base": []
    },
    "seasons": [
+    "winter",
     "autumn",
-    "winter"
+    "all"
    ],
    "occasions": [
-    "evening",
-    "special",
-    "daily"
+    "daily",
+    "evening"
    ],
    "tags": [
     "سلطان القلوب",
     "أرض الزعفران",
-    "عطور رجالية",
-    "عطور العود",
-    "Sultan Al Quloub",
-    "Ard Al Zaafaran"
-   ]
+    "عطر رجالي",
+    "عطر شرقي"
+   ],
+   "style": 2
   },
   "ZIM-700": {
    "sourceHash": "18d128e",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "شرف ديفاين زيمايا",
-   "nameEn": "Sharaf Divine Zimaya Extrait de Parfum",
-   "descriptionAr": "إبداع عطري مركز يفيض بالدفء عبر نغمات القرفة الغنية والتوت ولمسات الكراميل الشهية. تكتمل فخامته بعبير الكونياك وحبوب التونكا والعنبر ليعكس قمة الرقي والتميز.",
-   "descriptionEn": "A decadent unisex extrait de parfum mingling cinnamon and raspberry with luscious caramel, warm cognac, tonka bean, and ambered woods.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "شراف ديفاين زيمايا",
+   "nameEn": "Sharaf Divine By Zimaya",
+   "descriptionAr": "عطر مركز للجنسين يمزج بين الأخشاب والعنبر والكونياك مع لمحات حلوة من الكراميل والفانيليا.",
+   "descriptionEn": "A unisex extrait blending woods, amber, and cognac with sweet nuances of caramel and vanilla.",
    "gender": "unisex",
    "families": [
+    "oriental",
     "amber",
-    "gourmand",
-    "woody"
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -29836,26 +29798,24 @@
     "special"
    ],
    "tags": [
-    "شرف ديفاين",
-    "عطور زيمايا",
-    "اكستري دي بارفان",
-    "عطور جورماند",
     "Sharaf Divine",
-    "Zimaya"
-   ]
+    "Zimaya",
+    "عطر للجنسين",
+    "عنبر"
+   ],
+   "style": 2
   },
   "MAI-701": {
    "sourceHash": "1k1o61b",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "فيكتوريوسو فيرلس ميسون الحمراء",
-   "nameEn": "Victorioso Fearless Maison Alhambra Eau de Parfum",
-   "descriptionAr": "عطر ذكوري مفعم بالشجاعة يبدأ بنفحات حمضية متبلة تعزز الحماس والطاقة. يتدرج نحو قلب عشبي وأخشاب جافة مع قاعدة عنبرية تمنح العطر قوة.",
-   "descriptionEn": "A daring aromatic woody scent for men, combining zesty citrus and spices with herbaceous woods, grounded by warm amber and dry cedar accords.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "فيكتوريوسو فيرليس ميصون الحمراء",
+   "nameEn": "Victorioso Fearless by Maison Alhambra",
+   "descriptionAr": "عطر رجالي عشبي خشبي يفتح بنوتات حمضية وتوابل، مع قلب عطري وقاعدة دافئة من العنبر والمسك والأخشاب.",
+   "descriptionEn": "A masculine aromatic-woody fragrance opening with citrus and spices, an aromatic heart, and a warm amber-musk base.",
    "gender": "men",
    "families": [
     "fresh",
-    "spicy",
     "woody"
    ],
    "notes": {
@@ -29874,80 +29834,65 @@
     ]
    },
    "seasons": [
-    "spring",
+    "all",
     "summer",
-    "autumn"
+    "spring"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "فيكتوريوسو فيرلس",
-    "ميسون الحمراء",
-    "عطور رجالية",
-    "عطر فواح",
     "Victorioso Fearless",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "عطر رجالي",
+    "منعش"
+   ],
+   "style": 2
   },
   "GRA-702": {
    "sourceHash": "is9wji",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ليبرتي جراندور إليت",
-   "nameEn": "Liberty Grandeur Elite Eau de Parfum",
-   "descriptionAr": "عطر نسائي مشرق يمزج بين انتعاش الكشمش الأسود والمندرين مع نقاء اللافندر وزهر البرتقال. يستقر على لمسات ناعمة من فانيليا مدغشقر والعنبر ليعكس أنوثة عصرية واثقة.",
-   "descriptionEn": "A radiant feminine perfume blending French lavender, mandarin, and orange blossom, cushioned on a luxurious base of Madagascar vanilla and ambergris.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ليبرتي جراندور إيليت للنساء",
+   "nameEn": "Liberty EDP Grandeur Elite",
+   "descriptionAr": "عطر نسائي يجمع بين نفحات الخزامى واليوسفي والياسمين مع قاعدة غنية بالفانيليا والمسك والعنبر.",
+   "descriptionEn": "A women's fragrance blending lavender, mandarin, and jasmine with a rich vanilla, musk, and amber base.",
    "gender": "women",
    "families": [
     "floral",
-    "citrus",
-    "powdery"
+    "fruity"
    ],
    "notes": {
-    "top": [
-     "Lavender",
-     "Mandarin Orange",
-     "Black Currant"
-    ],
-    "heart": [
-     "Lavender",
-     "Orange Blossom"
-    ],
-    "base": [
-     "Madagascan Vanilla",
-     "Musk",
-     "Cedar",
-     "Ambergris"
-    ]
+    "top": [],
+    "heart": [],
+    "base": []
    },
    "seasons": [
     "spring",
-    "autumn",
-    "winter"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
     "special"
    ],
    "tags": [
-    "ليبرتي جراندور",
-    "جراندور إليت",
-    "عطور نسائية",
-    "عطور زهرية",
-    "Liberty Grandeur",
-    "Grandeur Elite"
-   ]
+    "Liberty",
+    "Grandeur Elite",
+    "عطر نسائي",
+    "زهري"
+   ],
+   "style": 2
   },
   "MAI-703": {
    "sourceHash": "wafnod",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "أثينا ميسون الحمراء",
-   "nameEn": "Athena Maison Alhambra Eau de Parfum",
-   "descriptionAr": "عطر أنثوي جذاب تتناغم فيه حلاوة اليوسفي والبرغموت مع باقة من زهور الياسمين والإيلنغ الفاتنة. ترتكز الرائحة على دفء الفانيليا وخشب الصندل لتمنحك إطلالة رقيقة.",
-   "descriptionEn": "A sophisticated floral woody feminine fragrance opening with sparkling tangerine and pink pepper, blooming into lush white florals and sweet vanilla-sandalwood.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "أثينا ميصون الحمراء",
+   "nameEn": "Athena Eau de Parfum Maison Alhambra",
+   "descriptionAr": "عطر نسائي ناعم يمزج بين اليوسفي والبرغموت والزهور في القلب، مع قاعدة دافئة من الفانيليا وخشب الصندل.",
+   "descriptionEn": "A soft women's fragrance blending tangerine, bergamot, and floral heart notes with a vanilla and sandalwood base.",
    "gender": "women",
    "families": [
     "floral",
@@ -29974,34 +29919,33 @@
    "seasons": [
     "spring",
     "summer",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
-    "special"
+    "work"
    ],
    "tags": [
-    "أثينا",
-    "ميسون الحمراء",
-    "عطور نسائية ناعمة",
-    "عطور فانيليا",
     "Athena",
-    "Maison Alhambra"
-   ]
+    "Maison Alhambra",
+    "عطر نسائي",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "ARD-704": {
    "sourceHash": "1sihqbk",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "الصياد للرجال أرض الزعفران",
-   "nameEn": "Al Sayaad For Men Ard Al Zaafaran Eau de Parfum",
-   "descriptionAr": "عطر رجالي متألق يفتتح بانتعاش الجريب فروت والمندرين مع لمسة دافئة من القرفة والورد. تبرز في قاعدته نغمات الجلود الفاخرة والعنبر لتضفي طابعاً كلاسيكياً قوياً وجذاباً.",
-   "descriptionEn": "A charismatic men's perfume combining refreshing citrus with spicy cinnamon and rose, enveloped in a rich dry-down of amber, leather, and patchouli.",
+   "nameEn": "Al Sayaad For Men Ard Al Zaafaran",
+   "descriptionAr": "عطر رجالي يفتح بنوتات الجريب فروت واليوسفي، ويحتوي على قلب من الورد والقرفة، وقاعدة من العنبر والجلد.",
+   "descriptionEn": "A men's fragrance opening with grapefruit and mandarin, a rose and cinnamon heart, and an amber-leather base.",
    "gender": "men",
    "families": [
     "fresh",
-    "leather",
-    "spicy"
+    "spicy",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -30019,35 +29963,35 @@
     ]
    },
    "seasons": [
+    "all",
     "spring",
-    "autumn",
-    "winter"
+    "autumn"
    ],
    "occasions": [
     "daily",
-    "evening"
+    "work"
    ],
    "tags": [
-    "الصياد للرجال",
+    "الصياد",
     "أرض الزعفران",
-    "عطور جلدية",
-    "عطور كلاسيكية",
-    "Al Sayaad For Men",
-    "Ard Al Zaafaran"
-   ]
+    "عطر رجالي",
+    "حمضيات"
+   ],
+   "style": 2
   },
   "MAI-705": {
    "sourceHash": "1kr9ds",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "كيس ماي ليبس من ميسون أسرار",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "كِس ماي لبس ميصون أسرار",
    "nameEn": "Kiss My Lips by Maison Asrar",
-   "descriptionAr": "توليفة زهرية ساحرة تمزج بين إشراقة اليوسفي ونفحات البخور مع قلب ينبض بجمال الورد والياسمين. يستقر العطر على قاعدة دافئة من العنبر والمسك والأمبروكسان لتمنحك إطلالة مسائية آسرة.",
-   "descriptionEn": "A sensual floral fragrance blending mandarin and incense with a romantic rose heart and warm amber base.",
+   "descriptionAr": "عطر حسّي للجنسين يجمع بين الماندرين والبخور والورد مع قاعدة دافئة من العنبر والمسك والأمبروكسان.",
+   "descriptionEn": "A sensual unisex fragrance blending mandarin, incense, and rose with an amber, musk, and ambroxan base.",
    "gender": "unisex",
    "families": [
     "floral",
-    "amber"
+    "oriental",
+    "musk"
    ],
    "notes": {
     "top": [
@@ -30067,37 +30011,33 @@
     ]
    },
    "seasons": [
-    "autumn",
     "winter",
-    "spring"
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
-    "كيس ماي ليبس",
-    "ميسون أسرار",
-    "عطر ورد",
-    "عطور عنبرية",
     "Kiss My Lips",
     "Maison Asrar",
-    "Floral Rose"
-   ]
+    "عطر للجنسين",
+    "ورد"
+   ],
+   "style": 2
   },
   "VOL-706": {
    "sourceHash": "1jvt7h8",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "لومينوس ويف من فولاري",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "لومينوس ويف من فولاري للرجال",
    "nameEn": "Luminous Wave by Volare",
-   "descriptionAr": "انطلاقة منعشة مفعمة بالحيوية تمزج بين انتعاش الحمضيات ورذاذ أمواج البحر المنعش. يكتمل الطابع الذكوري بهدوء مع قلب أروماتك وقاعدة من الأخشاب الخفيفة والمسك.",
-   "descriptionEn": "A fresh marine fragrance featuring crisp citrus, aromatic accords, and a smooth woody-musk finish.",
+   "descriptionAr": "عطر رجالي منعش يفتح بنوتات حمضية وبحرية، مع قلب عشبي منعش وقاعدة خفيفة من الأخشاب والمسك والعنبر.",
+   "descriptionEn": "A fresh men's fragrance opening with crisp citrus and marine notes, an aromatic heart, and a light woody-musky base.",
    "gender": "men",
    "families": [
-    "aquatic",
-    "fresh"
+    "fresh",
+    "aquatic"
    ],
    "notes": {
     "top": [
@@ -30122,28 +30062,26 @@
     "work"
    ],
    "tags": [
-    "لومينوس ويف",
-    "فولاري",
-    "عطر مائي",
-    "عطر صيفي",
     "Luminous Wave",
     "Volare",
-    "Fresh Men"
-   ]
+    "عطر رجالي",
+    "منعش"
+   ],
+   "style": 2
   },
   "ZIM-707": {
    "sourceHash": "1kc1ner",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "رويال باراغون من زيمايا",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "رويال باراجون زيمايا للرجال",
    "nameEn": "Royal Paragon by Zimaya",
-   "descriptionAr": "عطر شرقي أنيق يجمع بين حلاوة التفاح وانتعاش اللافندر والحمضيات في بدايته. يتألق القلب بباقة زهرية متناسقة تستند إلى قاعدة فاخرة من الفانيليا وخشب الصندل والباتشولي.",
-   "descriptionEn": "A refined oriental woody perfume opening with crisp apple and lavender over a warm vanilla-sandalwood base.",
+   "descriptionAr": "عطر رجالي شرقي فواكه يضم تفاحاً وبرغموت في المقدمة، مع قلب زهري وقاعدة غنية بالفانيليا والأخشاب والتوابل.",
+   "descriptionEn": "A fruity oriental men's fragrance with apple and bergamot, a floral heart, and a rich vanilla-woody-spicy base.",
    "gender": "men",
    "families": [
     "oriental",
-    "woody",
-    "fruity"
+    "fruity",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -30167,37 +30105,35 @@
     ]
    },
    "seasons": [
-    "autumn",
     "winter",
-    "spring"
+    "autumn",
+    "all"
    ],
    "occasions": [
-    "evening",
-    "special",
-    "work"
+    "daily",
+    "evening"
    ],
    "tags": [
-    "رويال باراغون",
-    "زيمايا",
-    "عطر شرقي خشبي",
-    "عطور رجالية",
     "Royal Paragon",
-    "Zimaya"
-   ]
+    "Zimaya",
+    "عطر رجالي",
+    "شرقي"
+   ],
+   "style": 2
   },
   "GRA-708": {
    "sourceHash": "1a76hv3",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "غلامور ومن من غراندور إيليت",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "جلامور وومان جراندور إيليت",
    "nameEn": "Glamour Woman by Grandeur Elite",
-   "descriptionAr": "تجربة عطرية ساحرة تمزج بين نغمات اللوز والقهوة مع باقة غنية من مسك الروم والورد البلغاري. تغوص الرائحة في قاعدة سكرية دافئة من الفانيليا والبرالين وحبوب التونكا لإطلالة أنثوية مغرية.",
-   "descriptionEn": "A gourmand floral fragrance that blends almond and coffee with rich florals and a base of praline, cacao, and vanilla.",
+   "descriptionAr": "عطر نسائي غورماند يجمع بين اللوز والقهوة والبرغموت، مع قلب زهرة التوبروز والياسمين وقاعدة من الكاكاو والفانيليا.",
+   "descriptionEn": "A gourmand women's fragrance blending almond, coffee, and bergamot, with tuberose and jasmine over a cacao-vanilla base.",
    "gender": "women",
    "families": [
     "gourmand",
     "floral",
-    "amber"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -30230,30 +30166,28 @@
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
-    "غلامور",
-    "غراندور إيليت",
-    "عطور سكرية",
+    "Glamour",
+    "Grandeur Elite",
     "عطر نسائي",
-    "Glamour Woman",
-    "Grandeur"
-   ]
+    "غورماند"
+   ],
+   "style": 2
   },
   "ZIM-709": {
    "sourceHash": "1wt3q2b",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "أندلسي بينك من زيمايا",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "اندالوسي بينك بواسطة زامايا",
    "nameEn": "Andalusi Pink by Zimaya",
-   "descriptionAr": "عطر أنثوي رقيق ينبض بنفحات التوت المنعش ونعومة الخوخ الفاتن. يتعانق الورد والياسمين في القلب ليمتزجا بانسجام مع قاعدة ناعمة من الفانيليا والمسك.",
-   "descriptionEn": "A soft feminine scent blending sweet berries and peach with a delicate heart of rose, jasmine, and vanilla.",
+   "descriptionAr": "عطر نسائي يبدأ بافتتاحية فاكهية من التوت والبرتقال الخوخي، يعقبه قلب زهري من الورد والياسمين، ويستقر على قاعدة دافئة من المسك والفانيليا.",
+   "descriptionEn": "A women's fragrance featuring top notes of berries and peach, a floral heart of rose and jasmine, resting on a base of musk and vanilla.",
    "gender": "women",
    "families": [
-    "fruity",
-    "floral"
+    "floral",
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -30275,30 +30209,28 @@
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "evening"
    ],
    "tags": [
-    "أندلسي بينك",
-    "زيمايا",
-    "عطور زهرية",
-    "عطور فواكه",
+    "Zimaya",
     "Andalusi Pink",
-    "Zimaya"
-   ]
+    "عطر نسائي",
+    "فانيليا",
+    "مسك"
+   ],
+   "style": 2
   },
   "GRA-710": {
    "sourceHash": "1yjdaob",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ماونتن روز باريس من غراندور إيليت",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ماونتين روز باريس من جراندور إليت",
    "nameEn": "Mountain Rose Paris by Grandeur Elite",
-   "descriptionAr": "رحلة عطرية تحتفي بأنوثة الورد الدمشقي المنعش مع لمسات خفيفة من البرغموت. يختتم العطر بحضن بودري ناعم من المسك الأبيض والعنبر والفانيليا ليمنحك حضوراً هادئاً وراقياً.",
-   "descriptionEn": "An elegant powdery rose fragrance highlighting Damask rose and white musk atop a delicate vanilla base.",
+   "descriptionAr": "عطر نسائي يبرز برائحة الورد والبرغموت في المقدمة، مع قلب غني بالورد الدمشقي والياسمين والمسك الأبيض، وقاعدة من الفانيليا والعنبر والنوتات البودرية.",
+   "descriptionEn": "A women's fragrance with a rose and bergamot opening, a damask rose, jasmine and white musk heart, and a base of vanilla, amber and powdery notes.",
    "gender": "women",
    "families": [
     "floral",
-    "powdery",
     "musk"
    ],
    "notes": {
@@ -30319,35 +30251,33 @@
    },
    "seasons": [
     "spring",
-    "autumn",
-    "summer"
+    "all"
    ],
    "occasions": [
     "daily",
-    "special",
-    "gift"
+    "work"
    ],
    "tags": [
-    "ماونتن روز",
-    "غراندور إيليت",
-    "عطر بودري",
-    "ورد دمشقي",
-    "Mountain Rose Paris",
-    "Grandeur"
-   ]
+    "Grandeur",
+    "Mountain Rose",
+    "عطر نسائي",
+    "ورد",
+    "مسك أبيض"
+   ],
+   "style": 2
   },
   "ZIM-711": {
    "sourceHash": "a9f6m",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "حواء ريد من زيمايا",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "حواء ريد بواسطة زامايا",
    "nameEn": "Hawwa Red by Zimaya",
-   "descriptionAr": "مزيج فاكهي مشرق يأسر الحواس بنفحات التوت الأحمر والخوخ الناعم. يتألق قلب العطر برقة الورد والياسمين ليرتكز على لمسات مهدئة من المسك والفانيليا.",
-   "descriptionEn": "A vibrant fruity-floral perfume combining red berries, luscious peach, romantic florals, and a warm vanilla musk base.",
+   "descriptionAr": "عطر نسائي يبدأ بنوتات التوت الأحمر والخوخ، مع قلب من الورد والياسمين، وقاعدة عطرية من الفانيليا والمسك.",
+   "descriptionEn": "A women's fragrance opening with red berries and peach, followed by a heart of rose and jasmine, on a base of vanilla and musk.",
    "gender": "women",
    "families": [
-    "fruity",
-    "floral"
+    "floral",
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -30365,31 +30295,29 @@
    },
    "seasons": [
     "spring",
-    "summer",
-    "autumn"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "evening",
-    "gift"
+    "evening"
    ],
    "tags": [
-    "حواء ريد",
-    "زيمايا",
-    "توت أحمر",
-    "عطور فاكهية",
+    "Zimaya",
     "Hawwa Red",
-    "Zimaya"
-   ]
+    "عطر نسائي",
+    "فواكه",
+    "مسك"
+   ],
+   "style": 2
   },
   "ARD-712": {
    "sourceHash": "lnvlst",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "للنساء فقط من أرض الزعفران",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ليل نساء فقط من أرض الزعفران",
    "nameEn": "Lil Nisae Faqat by Ard Al Zaafaran",
-   "descriptionAr": "عطر مفعم بالأنوثة يجمع بين انتعاش الفواكه والحمضيات مع أريج الورد والياسمين. تختتم الرائحة بلمسات خشبية دافئة ممزوجة بنعومة الفانيليا والمسك.",
-   "descriptionEn": "A feminine fruity-floral scent featuring bright berries, sweet floral notes, and a comforting warm vanilla finish.",
+   "descriptionAr": "عطر نسائي بمقدمة فواكه وزهور من التوت والحمضيات، يليه قلب من الورد والياسمين والفانيليا، وقاعدة من المسك والأخشاب والفانيليا الدافئة.",
+   "descriptionEn": "A women's fragrance featuring a fruity-floral opening of berries and citrus, a heart of rose, jasmine and vanilla, and a base of musk, woods and warm vanilla.",
    "gender": "women",
    "families": [
     "floral",
@@ -30412,43 +30340,38 @@
     ]
    },
    "seasons": [
-    "all",
     "spring",
-    "autumn"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "evening"
    ],
    "tags": [
-    "للنساء فقط",
-    "أرض الزعفران",
-    "عطور نسائية",
-    "فانيليا ومسك",
+    "Ard Al Zaafaran",
     "Lil Nisae Faqat",
-    "Ard Al Zaafaran"
-   ]
+    "عطر نسائي",
+    "فواكه",
+    "زهور"
+   ],
+   "style": 2
   },
   "ARD-713": {
    "sourceHash": "a0uvn4",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "شهرزاد من أرض الزعفران",
    "nameEn": "Shahrazad by Ard Al Zaafaran",
-   "descriptionAr": "عطر شرقي غامض ومثير يفتتح بنفحات خضراء أروماتيكية وتوابل دافئة. يفيض القلب بنفحات السوسن وزهر البرتقال مع قاعدة فاخرة من الجلود والعنبر والفانيليا.",
-   "descriptionEn": "A captivating oriental blend opening with spices and green notes, leading into a floral heart and a rich leather-vanilla base.",
+   "descriptionAr": "عطر شرقي يبدأ بنوتات خضراء وأوزون وتوابل، مع قلب زهري من الفريزيا والهيلوتروب والياسمين وزهر البرتقال والسوسن، وقاعدة غنية بالمسك والجلود والعنبر والتونكا والفانيليا.",
+   "descriptionEn": "An oriental fragrance opening with green notes, ozone and spices, a floral heart of freesia, heliotrope, jasmine, orange blossom and iris, and a base of musk, leather, amber, tonka bean and vanilla.",
    "gender": "unisex",
    "families": [
     "oriental",
-    "spicy",
-    "leather"
+    "floral"
    ],
    "notes": {
     "top": [
-     "Aromatic Green Notes",
-     "Ozone",
-     "Spices"
+     "Green Notes"
     ],
     "heart": [
      "Freesia",
@@ -30461,7 +30384,6 @@
      "Musk",
      "Leather",
      "Amber",
-     "Balsamic Notes",
      "Tonka Bean",
      "Vanilla"
     ]
@@ -30475,26 +30397,25 @@
     "special"
    ],
    "tags": [
-    "شهرزاد",
-    "أرض الزعفران",
-    "عطور شرقية",
-    "عطر جلدي",
+    "Ard Al Zaafaran",
     "Shahrazad",
-    "Ard Al Zaafaran"
-   ]
+    "عطر شرقي",
+    "جلود",
+    "عنبر"
+   ],
+   "style": 2
   },
   "GRA-714": {
    "sourceHash": "j2n50k",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ترايبال بلو من غراندور",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ترايبال بلو مان من جراندور",
    "nameEn": "Tribal Blue Man by Grandeur",
-   "descriptionAr": "تركيبة ذكورية منعشة تمزج بين حيوية الجريب فروت والفلفل الوردي مع قلب من اللافندر وجوزة الطيب. تكتمل أناقة العطر بقاعدة رجولية عميقة من نجيل الهند والباتشولي والعنبر.",
-   "descriptionEn": "A vibrant masculine fragrance featuring crisp citrus and pink pepper over an aromatic lavender heart and vetiver base.",
+   "descriptionAr": "عطر رجالي بمقدمة من الجريب فروت والليمون والفلفل الوردي، وقلب من اللافندر وجوزة الطيب والجرانيوم، وقاعدة من العنبر النجيل الهند الباتشولي.",
+   "descriptionEn": "A men's fragrance featuring top notes of grapefruit, lemon and pink pepper, a heart of lavender, nutmeg and geranium, and a base of amber, vetiver and patchouli.",
    "gender": "men",
    "families": [
     "fresh",
-    "woody",
     "spicy"
    ],
    "notes": {
@@ -30515,36 +30436,34 @@
     ]
    },
    "seasons": [
-    "spring",
     "summer",
-    "autumn"
+    "spring"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "ترايبال بلو",
-    "غراندور",
-    "عطور منعشة",
-    "عطر رجالي",
+    "Grandeur",
     "Tribal Blue",
-    "Grandeur"
-   ]
+    "عطر رجالي",
+    "حمضيات",
+    "توابل"
+   ],
+   "style": 2
   },
   "MAI-715": {
    "sourceHash": "3sirmq",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "جلاسير بور أوم من ميسون الحمراء",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "جلاسي بور هوم من ميسون ألامبرا",
    "nameEn": "Glacier Pour Homme by Maison Alhambra",
-   "descriptionAr": "توليفة أروماتيكية منعشة تبرز فيها برودة النعناع واللافندر مع دفء الهيل والبرغموت. تندمج القرفة وزهر البرتقال بانسيابية نحو قاعدة دافئة من حبوب التونكا والفانيليا وخشب الصندل.",
-   "descriptionEn": "A fresh aromatic fragrance that pairs cool mint and lavender with warm spices, tonka bean, and sandalwood.",
+   "descriptionAr": "عطر رجالي يبدأ بنوتات اللافندر والنعناع والبرغموت والهيل، مع قلب من القرفة وزهر البرتقال والكراوية، وقاعدة من خشب الصندل والتونكا والفانيليا والعنبر.",
+   "descriptionEn": "A men's fragrance with a top of lavender, mint, bergmot and cardamom, a heart of cinnamon, orange blossom and caraway, and a base of sandalwood, tonka bean, vanilla and amber.",
    "gender": "men",
    "families": [
-    "fresh",
-    "spicy",
-    "amber"
+    "woody",
+    "fresh"
    ],
    "notes": {
     "top": [
@@ -30567,30 +30486,29 @@
    },
    "seasons": [
     "all",
-    "spring",
-    "autumn"
+    "spring"
    ],
    "occasions": [
     "daily",
-    "work",
     "evening"
    ],
    "tags": [
-    "جلاسير",
-    "ميسون الحمراء",
-    "عطر أروماتيك",
+    "Maison Alhambra",
     "Glacier Pour Homme",
-    "Maison Alhambra"
-   ]
+    "عطر رجالي",
+    "نعناع",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "GRA-716": {
    "sourceHash": "180mhld",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "بينك شوجر من توبيز غراندور",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "بينك شوغار باي توبيز جراندور",
    "nameEn": "Pink Sugar by Tubbees Grandeur",
-   "descriptionAr": "نفحات سكرية مرحة تعيد ذكريات الحلوى وغزل البنات مع لمسات من التوت اللذيذ. تمتزج كريمة الفانيليا والزهور الوردية بقاعدة ناعمة من الأخشاب الخفيفة والمسك.",
-   "descriptionEn": "A sweet gourmand perfume wrapped in cotton candy and berries, cushioned by vanilla cream and soft musk.",
+   "descriptionAr": "عطر نسائي يبدأ برائحة الحلويات السكرية والتوت وغزل البنات، مع قلب من الزهور الوردية وكريمة الفانيليا، وقاعدة من الفانيليا الدافئة والمسك والأخشاب الناعمة.",
+   "descriptionEn": "A women's fragrance opening with sugary sweets, berries and cotton candy, a heart of pink flowers and vanilla cream, and a base of warm vanilla, musk and soft woods.",
    "gender": "women",
    "families": [
     "gourmand",
@@ -30614,47 +30532,39 @@
    },
    "seasons": [
     "winter",
-    "autumn",
-    "spring"
+    "autumn"
    ],
    "occasions": [
     "daily",
-    "special",
-    "gift"
+    "evening"
    ],
    "tags": [
-    "بينك شوجر",
-    "توبيز غراندور",
-    "عطر غزل البنات",
-    "عطور سويت",
+    "Grandeur",
     "Pink Sugar",
-    "Grandeur"
-   ]
+    "عطر نسائي",
+    "حلويات",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "ARD-717": {
    "sourceHash": "fd2feo",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "حريم السلطان من أرض الزعفران",
    "nameEn": "Hareem Al Sultan by Ard Al Zaafaran",
-   "descriptionAr": "عطر شرقي ساحر يتألق بافتتاحية مبهجة من الحمضيات والفواكه الحمراء. يبرز القلب نفحات الورد والياسمين والتوابل الدافئة قبل أن يستقر على خشب الصندل والعنبر والمسك.",
-   "descriptionEn": "An opulent oriental floral scent featuring juicy red fruits, rich floral accords, and a velvety amber-sandalwood drydown.",
+   "descriptionAr": "عطر شرقي زهري يبدأ بنوتات الحمضيات والفواكه الحمراء والزهور، مع قلب من الياسمين والورد والتوابل الدافئة، وقاعدة من العنبر والفانيليا والمسك وخشب الصندل.",
+   "descriptionEn": "An oriental floral fragrance opening with citrus, red fruits and floral accords, a heart of jasmine, rose and warm spices, and a base of amber, vanilla, musk and sandalwood.",
    "gender": "women",
    "families": [
     "oriental",
-    "floral",
-    "fruity"
+    "floral"
    ],
    "notes": {
-    "top": [
-     "Citrus",
-     "Red Fruits",
-     "Floral Accords"
-    ],
+    "top": [],
     "heart": [
      "Jasmine",
-     "Rose",
-     "Warm Spices"
+     "Rose"
     ],
     "base": [
      "Amber",
@@ -30664,35 +30574,35 @@
     ]
    },
    "seasons": [
-    "autumn",
     "winter",
-    "spring"
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
-    "حريم السلطان",
-    "أرض الزعفران",
-    "عطور شرقية",
+    "Ard Al Zaafaran",
     "Hareem Al Sultan",
-    "Ard Al Zaafaran"
-   ]
+    "عطر نسائي",
+    "عنبر",
+    "مسك"
+   ],
+   "style": 2
   },
   "ZIM-718": {
    "sourceHash": "rzrnni",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "حواء بينك من زيمايا",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "حواء بينك بواسطة زامايا",
    "nameEn": "Hawwa Pink by Zimaya",
-   "descriptionAr": "إشراقة أنثوية تفيض بحلاوة الليتشي والكمثرى مع انتعاش البرغموت والورد. يزهر القلب بأناقة الورد التركي والفاوانيا ليستقر على دفء نجيل الهند والمسك الأبيض.",
-   "descriptionEn": "A graceful fruity-floral composition of litchi, pear, and Turkish rose balanced by soft woods and white musk.",
+   "descriptionAr": "عطر نسائي يجمع بين الزهور والفواكه والأخشاب، يبدأ والليتشي والورد والكمثرى والبرغموت، مع قلب من الورد التركي والفاوانيا، وقاعدة من المسك الأبيض والأخشاب ونجيل الهند.",
+   "descriptionEn": "A floral fruity woody women's fragrance opening with litchi, rose, pear and bergamot, a heart of turkish rose and peony, and a base of white musk, woody notes and haitian vetiver.",
    "gender": "women",
    "families": [
     "floral",
-    "fruity"
+    "fruity",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -30717,31 +30627,29 @@
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "work"
    ],
    "tags": [
-    "حواء بينك",
-    "زيمايا",
-    "عطور نسائية",
-    "عطر ورد وليتشي",
+    "Zimaya",
     "Hawwa Pink",
-    "Zimaya"
-   ]
+    "عطر نسائي",
+    "ليتشي",
+    "ورد"
+   ],
+   "style": 2
   },
   "ZIM-719": {
    "sourceHash": "1b76yti",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ريزيرفد عود من زيمايا",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ريزرفد عود من زامايا",
    "nameEn": "Reserved Oud by Zimaya",
-   "descriptionAr": "عطر فاخر يمزج بين عمق العود ونضارة اللافندر البري بأسلوب شرقي ساحر. يرتكز على قاعدة دافئة من العنبر والمسك ولمسات الفانيليا الناعمة ليمنحك حضوراً آسراً.",
-   "descriptionEn": "A rich oriental fragrance blending agarwood and wild lavender with a creamy heart of vanilla and warm amber base.",
+   "descriptionAr": "عطر للجنسين غني بنوتات العود وخزامى البراري في المقدمة، مع قلب كريمي من الفانيليا والنوتات البودرية والمسك، وقاعدة من العنبر والنوتات العطرية الخشبية.",
+   "descriptionEn": "A rich unisex fragrance opening with agarwood (oud) and wild lavender, a heart of vanilla, musk and powdery notes, and a base of amber and sweet aromatic notes.",
    "gender": "unisex",
    "families": [
     "oud",
-    "amber",
-    "oriental"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -30768,25 +30676,26 @@
     "special"
    ],
    "tags": [
-    "عطر عود",
-    "زيمايا",
-    "عطور شتوية",
-    "عود وفانيليا",
-    "Zimaya Oud"
-   ]
+    "Zimaya",
+    "Reserved Oud",
+    "عطر للجنسين",
+    "عود",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "MAI-720": {
    "sourceHash": "uksrt5",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "يور تاتش صندل من ميسون الحمراء",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "يور تاتش سانتال من ميسون ألامبرا",
    "nameEn": "Your Touch Santal by Maison Alhambra",
-   "descriptionAr": "عطر خشبي كريمي يتمحور حول دفء خشب الصندل واللمسات التابلية الهادئة. تكتمل روعته بقاعدة راقية من العنبر والأخشاب الجافة لتجربة عطرية مريحة وأنيقة.",
-   "descriptionEn": "A smooth and creamy woody fragrance centered around sandalwood, complemented by amber, musk, and dry woods.",
+   "descriptionAr": "عطر خشبي كريمي للجنسين يركز على خشب الصندل، يبدأ بتوابل خفيفة وأخشاب فاتحة، ينتقل إلى خشب الصندل الحليبي الناعم، وينتهي بقاعدة من العنبر والمسك والأخشاب الجافة.",
+   "descriptionEn": "A creamy woody unisex fragrance centered around sandalwood, opening with subtle spice and light woods, moving into smooth milky sandalwood, and finishing with amber, musk and dry woods.",
    "gender": "unisex",
    "families": [
-    "woody",
-    "oriental"
+    "oriental",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -30804,36 +30713,34 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter",
-    "spring"
+    "all",
+    "autumn"
    ],
    "occasions": [
     "daily",
-    "work",
-    "evening"
+    "work"
    ],
    "tags": [
-    "يور تاتش",
+    "Maison Alhambra",
+    "Your Touch Santal",
+    "عطر للجنسين",
     "خشب الصندل",
-    "ميسون الحمراء",
-    "عطور خشبية",
-    "Maison Alhambra"
-   ]
+    "عنبر"
+   ],
+   "style": 2
   },
   "MAI-721": {
    "sourceHash": "wy8vxv",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "ريجنت من ميسون أسرار",
    "nameEn": "Regent by Maison Asrar",
-   "descriptionAr": "توليفة حمضية عنبرية مفعمة بالحيوية تفتتح بنفحات منعشة من البرغموت والزنجبيل. يتعانق فيها قلب زهري أنيق مع قاعدة غنية بخشب الأرز وحبوب التونكا والعنبر.",
-   "descriptionEn": "A vibrant hesperidic ambery fragrance opening with zesty citrus and ginger, leading to a refined floral and woody-musky base.",
+   "descriptionAr": "عطر حمضي أمبري للجنسين يبدأ بنوتات البرغموت واليوسفي والزنجبيل والجريب فروت، مع قلب من الياسمين وزهر البرتقال والسوسن، وقاعدة من العنبر الرمادي وخشب الأرز والمسك والباتشولي وخشب الصندل والتونكا.",
+   "descriptionEn": "A hesperidic ambery fragrance for women and men with a bright citrus-spicy opening of bergamot, mandarin, ginger and grapefruit, a floral heart of jasmine, orange blossom and orris, and a warm woody-musky base.",
    "gender": "unisex",
    "families": [
-    "citrus",
-    "amber",
-    "woody"
+    "floral",
+    "aquatic"
    ],
    "notes": {
     "top": [
@@ -30857,36 +30764,34 @@
     ]
    },
    "seasons": [
-    "spring",
     "summer",
-    "all"
+    "spring"
    ],
    "occasions": [
     "daily",
-    "work",
-    "special"
+    "work"
    ],
    "tags": [
-    "ميسون أسرار",
-    "ريجنت",
-    "عطور منعشة",
-    "حمضيات وعنبر",
-    "Maison Asrar"
-   ]
+    "Maison Asrar",
+    "Regent",
+    "عطر للجنسين",
+    "حمضيات",
+    "زهور"
+   ],
+   "style": 2
   },
   "VOL-722": {
    "sourceHash": "ah4hl1",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ريلود بلو من فولار للرجال",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ريلود بلو من فولاري مان",
    "nameEn": "Reload Blue by Volare Man",
-   "descriptionAr": "عطر مائي منعش يفيض بطاقة الحمضيات والنفحات البحرية النقية المصممة للرجل العصري. يستقر على قاعدة متزنة من المسك والأخشاب والعنبر ليمنحك انتعاشاً.",
-   "descriptionEn": "A refreshing aquatic-citrus fragrance for men, blending crisp marine notes with a smooth musk and woody amber base.",
+   "descriptionAr": "عطر رجالي منعش يبدأ بنوتات الحمضيات والنوتات المائية، مع قلب عطري منعش، وقاعدة من المسك والأخشاب والعنبر المنعش.",
+   "descriptionEn": "A men's fragrance featuring top notes of citrus and fresh aquatic notes, a heart of aromatic fresh notes, and a base of musk, woods and fresh amber.",
    "gender": "men",
    "families": [
-    "aquatic",
     "fresh",
-    "citrus"
+    "aquatic"
    ],
    "notes": {
     "top": [
@@ -30911,26 +30816,27 @@
     "work"
    ],
    "tags": [
-    "عطور مائية",
-    "فولار للرجال",
-    "عطور صيفية",
-    "عطر منعش",
-    "Reload Blue"
-   ]
+    "Volare",
+    "Reload Blue",
+    "عطر رجالي",
+    "منعش",
+    "مائي"
+   ],
+   "style": 2
   },
   "MAI-723": {
    "sourceHash": "k754rv",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ليجاسي من ميسون أسرار",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ليجاسي باي ميسون أسرار",
    "nameEn": "Legacy by Maison Asrar",
-   "descriptionAr": "عطر متألق يجمع بين انتعاش الكمثرى والبرغموت وحرارة الزنجبيل في افتتاحية حيوية. يتدرج نحو قلب زهري رقيق ليستقر على قاعدة دافئة ومغرية من الفانيليا والمسك والعنبر.",
-   "descriptionEn": "A crisp fruity-spicy fragrance featuring juicy pear and ginger, softening into floral notes over a warm vanilla-amber base.",
+   "descriptionAr": "عطر يجمع بين نفحات الحمضيات والتوابل في الافتتاحية، يعقبه قلب زهري دافئ، ويستقر على قاعدة غنية بالمسك والفانيليا والعنبر. يناسب الاستخدام اليومي والمناسبات المختلفة.",
+   "descriptionEn": "Legacy by Maison Asrar is a Hesperidic Ambery fragrance with a bright fruity-spicy opening, elegant floral heart and warm musky base of musk, vanilla and amber.",
    "gender": "unisex",
    "families": [
-    "fruity",
-    "oriental",
-    "amber"
+    "citrus",
+    "amber",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -30950,8 +30856,7 @@
     ]
    },
    "seasons": [
-    "spring",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
@@ -30959,21 +30864,21 @@
     "special"
    ],
    "tags": [
-    "ليجاسي",
-    "ميسون أسرار",
-    "عطور للجنسين",
-    "عطر كمثرى",
-    "Maison Asrar"
-   ]
+    "Maison Asrar",
+    "Legacy",
+    "عطر للجنسين",
+    "فانيليا وعنبر"
+   ],
+   "style": 2
   },
   "GUL-724": {
    "sourceHash": "1p0k0wt",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "هوني مون من جلف أوركيد",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "هاني مون باي جلف أوركيد",
    "nameEn": "Honeymoon by Gulf Orchid",
-   "descriptionAr": "مزيج سكري ناعم يفوح برقة الأزهار ولمسات الفانيليا الدافئة في تناغم مبهج. تضفي قاعدة العنبر والأخشاب والمسك عمقاً رومانسياً وجذاباً يناسب جميع الأوقات.",
-   "descriptionEn": "A sweet and romantic unisex fragrance blending soft florals and jasmine with a warm foundation of vanilla and woods.",
+   "descriptionAr": "عطر يمزج بين الفانيليا والزهور الناعمة في البداية، مع قلب من العنبر والياسمين والنفحات السكرية، وقاعدة من المسك والأخشاب والفانيليا الدافئة.",
+   "descriptionEn": "Honeymoon by Gulf Orchid is a fragrance featuring top notes of vanilla and soft florals, a heart of amber, jasmine, and sweet notes, on a base of musk, woods, and warm vanilla.",
    "gender": "unisex",
    "families": [
     "gourmand",
@@ -30997,36 +30902,33 @@
     ]
    },
    "seasons": [
-    "all",
-    "spring",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
-    "special",
-    "gift"
+    "evening"
    ],
    "tags": [
-    "هوني مون",
-    "جلف أوركيد",
-    "عطور سويت",
-    "فانيليا",
-    "Gulf Orchid"
-   ]
+    "Gulf Orchid",
+    "Honeymoon",
+    "عطر فانيليا",
+    "مسك وأخشاب"
+   ],
+   "style": 2
   },
   "ARD-725": {
    "sourceHash": "kmezu7",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "عود مود من أرض الزعفران",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "عود مود باي أرض الزعفران",
    "nameEn": "Oud Mood by Ard Al Zaafaran",
-   "descriptionAr": "عطر شرقي دافئ يمزج بسلاسة بين خيوط الزعفران الفاخرة وعمق الراتنجات والعنبر. تختتم الرائحة بلمسات دخانية فاخرة متوازنة مع الفانيليا وخشب الصندل الكريمي.",
-   "descriptionEn": "A warm oriental-vanilla fragrance opening with saffron and florals, settling into rich resins, smoke, and creamy sandalwood.",
+   "descriptionAr": "عطر شرقي دافئ يفتتح بنفحات زهرية والزعفران، يليه قلب غني بالعنبر والراتنجات، ويستقر على قاعدة من الدخان والفانيليا وخشب الصندل.",
+   "descriptionEn": "Oud Mood by Ard Al Zaafaran is a warm oriental fragrance with floral and saffron top notes, a heart of amber and resins, and a base of smoke, vanilla, and sandalwood.",
    "gender": "unisex",
    "families": [
     "oriental",
-    "oud",
-    "amber"
+    "amber",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -31052,21 +30954,21 @@
     "special"
    ],
    "tags": [
-    "عود مود",
     "أرض الزعفران",
-    "عطور شرقية",
-    "زعفران وفانيليا",
-    "Ard Al Zaafaran"
-   ]
+    "عود مود",
+    "عطر شرقي",
+    "سهرة"
+   ],
+   "style": 2
   },
   "ARM-726": {
    "sourceHash": "12u5odt",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "لا روزا من أرماف",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "أرماف لا روزا",
    "nameEn": "Armaf La Rosa",
-   "descriptionAr": "توليفة نسائية ناعمة تبدأ بانتعاش الفواكه والحمضيات وتتفتح نحو قلب زهري فتان. تمنحك قاعدته المكونة من المسك والعنبر والأخشاب لمسة نهائية رقيقة ومفعمة بالأنوثة.",
-   "descriptionEn": "An elegant floral-fruity feminine fragrance opening with citrus accords and resting on a soft musky-amber foundation.",
+   "descriptionAr": "عطر يبدأ بنفحات الفواكه والحمضيات المنعشة، لينتقل إلى قلب زهري أنيق، ويستقر على قاعدة ناعمة من المسك والعنبر والأخشاب.",
+   "descriptionEn": "Armaf La Rosa opens with fresh fruity and citrus accords before unfolding into an elegant floral heart, settling into a soft base of musk, amber, and woody notes.",
    "gender": "women",
    "families": [
     "floral",
@@ -31075,39 +30977,33 @@
    "notes": {
     "top": [],
     "heart": [],
-    "base": [
-     "Musk",
-     "Amber",
-     "Woody Notes"
-    ]
+    "base": []
    },
    "seasons": [
     "spring",
-    "summer",
-    "all"
+    "summer"
    ],
    "occasions": [
     "daily",
-    "work",
-    "special"
+    "work"
    ],
    "tags": [
-    "أرماف",
-    "لا روزا",
-    "عطور نسائية",
-    "عطر زهري",
-    "Armaf"
-   ]
+    "Armaf",
+    "La Rosa",
+    "عطر نسائي",
+    "زهري فواكه"
+   ],
+   "style": 2
   },
   "MAI-727": {
    "sourceHash": "12d9o0g",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "يور تاتش ليذر من ميسون الحمراء",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "يور توتش ليذر باي ميسون الحمراء",
    "nameEn": "Your Touch Leather by Maison Alhambra",
-   "descriptionAr": "عطر جلدي دافئ يتميز بنفحاته التابلية الجريئة وعبير الجلد المدبوغ الفاخر. يمنحك طابعاً دخانياً أنيقاً يرتكز على الأخشاب والعنبر ليعكس الفخامة والقوة.",
-   "descriptionEn": "A bold leather-woody fragrance featuring spicy aromatics, suede leather, and a sophisticated amber-musk base.",
-   "gender": "men",
+   "descriptionAr": "عطر جريء يجمع بين الدفء الخشبي والنفحات الجلدية المدخنة مع لمسات عطرية توابلية وأخشاب العنبر.",
+   "descriptionEn": "Your Touch Leather by Maison Alhambra is a bold leather-woody fragrance with smoky warmth, spicy aromatics, suede-leather notes, and amber woods.",
+   "gender": "unisex",
    "families": [
     "leather",
     "woody",
@@ -31137,26 +31033,26 @@
     "special"
    ],
    "tags": [
-    "يور تاتش ليذر",
     "ميسون الحمراء",
-    "عطور جلدية",
-    "عطر رجالي فخم",
-    "Leather Perfume"
-   ]
+    "عطر جلد",
+    "رجالي ومختلط",
+    "شتاء"
+   ],
+   "style": 2
   },
   "ARM-728": {
    "sourceHash": "137hvbo",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "كونوسور من أرماف للرجال",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "كونويسور مان باي أرماف",
    "nameEn": "Connoisseur Man by Armaf",
-   "descriptionAr": "عطر أروماتك فاخر ينبض بالانتعاش بفضل البرغموت والجريب فروت مع لمسة تابلية من الفلفل. يتألق قلبه باللافندر ونجيل الهند قبل أن يستقر على حبوب التونكا والعنبر الدافئ.",
-   "descriptionEn": "A sophisticated aromatic fragrance for men, blending fresh citrus and pepper with lavender, vetiver, and tonka bean.",
+   "descriptionAr": "عطر رجالي يفتح بنفحات البرغموت والجريب فروت والفلفل، مع قلب من اللافندر والجرانيوم ونجيل الهند، وقاعدة من العنبر وفول التونكا والمسك.",
+   "descriptionEn": "Connoisseur Man by Armaf is a men's fragrance featuring top notes of bergamot, grapefruit, and pepper, a heart of lavender, geranium, and vetiver, and a base of amber, tonka bean, and musk.",
    "gender": "men",
    "families": [
-    "fresh",
     "woody",
-    "spicy"
+    "spicy",
+    "citrus"
    ],
    "notes": {
     "top": [
@@ -31176,31 +31072,28 @@
     ]
    },
    "seasons": [
-    "spring",
-    "summer",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
-    "work",
-    "evening"
+    "work"
    ],
    "tags": [
-    "كونوسور",
-    "أرماف رجالي",
-    "عطور أروماتك",
-    "عطر منعش وفخم",
-    "Armaf Connoisseur"
-   ]
+    "Armaf",
+    "Connoisseur Man",
+    "عطر رجالي",
+    "أخشاب وتوابل"
+   ],
+   "style": 2
   },
   "MAI-729": {
    "sourceHash": "1nxoec6",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "خورخي دي بروفومو أكوا من ميسون الحمراء",
-   "nameEn": "Jorge Di Profumo Aqua by Maison Alhambra",
-   "descriptionAr": "عطر مائي أسطوري يجسد نسيم البحر الممزوج بنضارة البرغموت وإكليل الجبل العطري. تضفي لمسات البخور والباتشولي والأخشاب لمسة مدخنة عميقة تزيد من جاذبيته.",
-   "descriptionEn": "An invigorating aquatic-aromatic fragrance with sea notes and bergamot, enriched by rosemary, incense, and dark patchouli.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "خورخي دي بروفومو أكوا باي ميسون الحمراء",
+   "nameEn": "Jorge Di Profumo Aqua Maison Alhambra",
+   "descriptionAr": "عطر مائي منعشي مصمم للرجل العصري، يفتتح برائحة البحر والبرغموت، يليه قلب عشبي من المريمية وإكليل الجبل، وقاعدة من البخور والباتشولي.",
+   "descriptionEn": "Jorge Di Profumo Aqua by Maison Alhambra is an invigorating aquatic-aromatic fragrance with sea notes, bergamot, herbal sage, rosemary, and a base of incense and patchouli.",
    "gender": "men",
    "families": [
     "aquatic",
@@ -31215,13 +31108,12 @@
     "heart": [
      "Sage",
      "Rosemary",
+     "Rose",
      "Geranium"
     ],
     "base": [
      "Incense",
-     "Patchouli",
-     "Amberwood",
-     "Mineral Notes"
+     "Patchouli"
     ]
    },
    "seasons": [
@@ -31233,26 +31125,26 @@
     "work"
    ],
    "tags": [
-    "خورخي دي بروفومو",
     "ميسون الحمراء",
-    "عطور بحرية",
-    "عطور صيفية",
-    "Aqua Perfume"
-   ]
+    "عطر مائي",
+    "رجالي منعش",
+    "صيف"
+   ],
+   "style": 2
   },
   "ZIM-730": {
    "sourceHash": "17k47cy",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "أبدي أوبولينت من زيمايا للرجال",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "أبادي أبولينت باي زيمايا",
    "nameEn": "Abadi Opulent by Zimaya",
-   "descriptionAr": "عطر رجالي واثق يجمع بين انتعاش البرغموت واللافندر مع ثمار العرعر الفواحة. يتوج هذا التكوين قاعدة فاخرة من اللبان العماني والعود العميق لأناقة لا تُنسى.",
-   "descriptionEn": "A bold masculine scent pairing crisp bergamot and juniper berries with a rich foundation of frankincense and deep oud.",
+   "descriptionAr": "عطر رجالي جريء يفتتح بنفحات البرغموت واللافندر، مع قلب من الجرانيوم وتوت العرعر، وقاعدة غنية باللبان والعود.",
+   "descriptionEn": "Abadi Opulent by Zimaya is a bold masculine fragrance with bergamot and lavender, a heart of geranium and juniper berries, and a base of frankincense and oud.",
    "gender": "men",
    "families": [
-    "oud",
     "woody",
-    "fresh"
+    "oriental",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -31268,36 +31160,33 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter",
-    "spring"
+    "all"
    ],
    "occasions": [
-    "special",
-    "evening",
-    "work"
+    "daily",
+    "evening"
    ],
    "tags": [
-    "أبدي أوبولينت",
-    "زيمايا",
-    "عطور رجالية",
-    "عود ولبان",
-    "Zimaya"
-   ]
+    "Zimaya",
+    "Abadi Opulent",
+    "عطر عود",
+    "رجالي"
+   ],
+   "style": 2
   },
   "ARD-731": {
    "sourceHash": "1ihk3v7",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "الدرغام من أرض الزعفران للرجال",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "الضرغام باي أرض الزعفران",
    "nameEn": "Al Dirgham by Ard Al Zaafaran",
-   "descriptionAr": "عطر عصري متعدد الاستخدامات يستهل رحلته بحيوية اليوسفي وعشبة الليمون المنعشة. يزدهر بقلب زهري تيبلي جذاب، مستنداً إلى دفء المسك والفانيليا وحبوب التونكا.",
-   "descriptionEn": "A versatile men's fragrance featuring zesty lemongrass and tangerine, a spicy floral heart, and a smooth tonka-vanilla base.",
+   "descriptionAr": "عطر رجالي يجمع بين الحمضيات المنعشة والتوابل، مع قلب زهري غني من الياسمين والورد والقرنفل، وقاعدة دافئة من المسك وفول التونكا.",
+   "descriptionEn": "Al Dirgham by Ard Al Zaafaran is a modern men's fragrance with crisp citrus, lemongrass, geranium, floral heart notes, and a warm base of musk and tonka bean.",
    "gender": "men",
    "families": [
-    "fresh",
     "citrus",
-    "oriental"
+    "floral",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -31321,36 +31210,33 @@
     ]
    },
    "seasons": [
-    "all",
-    "spring",
-    "summer"
+    "all"
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "work"
    ],
    "tags": [
-    "الدرغام",
     "أرض الزعفران",
-    "عطور رجالية",
-    "عطر يومي",
-    "Dirgham"
-   ]
+    "الضرغام",
+    "عطر رجالي",
+    "حمضيات وتوابل"
+   ],
+   "style": 2
   },
   "ARD-732": {
    "sourceHash": "vzz7qr",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "عود التراث من أرض الزعفران",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "عود التراث باي أرض الزعفران",
    "nameEn": "Oud Al Turas by Ard Al Zaafaran",
-   "descriptionAr": "عطر عود شرقي خشبي يفتتح بالعود والزعفران والبرغموت، وقلبه من الورد وخشب الأرز والباتشولي، وقاعدته من العنبر وخشب الصندل والمسك.",
-   "descriptionEn": "A classic oriental woody fragrance celebrating traditional perfumery with deep oud accords and warm undertones.",
+   "descriptionAr": "عطر شرقي خشبي يجمع بين العود والزعفران والبرغموت في الافتتاحية، مع قلب من الورد وخشب الأرز والباتشولي، وقاعدة من العنبر وخشب الصندل والمسك.",
+   "descriptionEn": "Oud Al Turas Eau De Parfum by Ard Al Zaafaran features notes of oud, saffron, bergamot, rose, cedarwood, patchouli, amber, sandalwood, and musk.",
    "gender": "unisex",
    "families": [
     "oud",
-    "oriental",
-    "woody"
+    "woody",
+    "amber"
    ],
    "notes": {
     "top": [
@@ -31378,26 +31264,26 @@
     "special"
    ],
    "tags": [
-    "عود التراث",
     "أرض الزعفران",
-    "دهن عود",
-    "عطور تراثية",
-    "Ard Al Zaafaran Oud"
-   ]
+    "عود التراث",
+    "عطر عود",
+    "شرقي"
+   ],
+   "style": 2
   },
   "MAI-733": {
    "sourceHash": "1mkucfo",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ميسون الحمراء فيلوس أوبوس نوار",
-   "nameEn": "Maison Alhambra Philos Opus Noir Eau de Parfum",
-   "descriptionAr": "عطر رجالي دافئ وغامض يمزج بين التوابل الحارة والأخشاب الدخانية العميقة. يمنحك حضوراً واثقاً ومميزاً في الأجواء الباردة والمناسبات المسائية.",
-   "descriptionEn": "A bold and mysterious fragrance featuring warm spices, amber, smoky woods, and rich vanilla.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "فيلوس أوبوس نوار باي ميسون الحمراء",
+   "nameEn": "Philos Opus Noir by Maison Alhambra",
+   "descriptionAr": "عطر رجالي داكن ومدخن يجمع بين التوابل والأمبر والأخشاب مع قاعدة من الأخشاب المدخنة والمسك والفانيليا.",
+   "descriptionEn": "Philos Opus Noir by Maison Alhambra is a dark, smoky, spicy, and woody fragrance with amber, woods, smoky woods, musk, and vanilla.",
    "gender": "men",
    "families": [
-    "oriental",
     "woody",
-    "spicy"
+    "spicy",
+    "amber"
    ],
    "notes": {
     "top": [
@@ -31422,27 +31308,25 @@
     "special"
    ],
    "tags": [
-    "فيلوس أوبوس",
+    "ميسون الحمراء",
+    "فيلوس نوار",
     "عطر رجالي",
-    "عطور شرقية",
-    "أخشاب مدخنة",
-    "Maison Alhambra",
-    "Philos Opus"
-   ]
+    "مدخن"
+   ],
+   "style": 2
   },
   "GRA-734": {
    "sourceHash": "j4ie69",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "جراندور سوكد صن إكسكلوسيف",
-   "nameEn": "Grandeur Soaked Sun Exclusif Eau de Parfum",
-   "descriptionAr": "توليفة منعشة ومشرقة تنبض بالحيوية بفضل مزيج الحمضيات المشمسة والأخشاب الناعمة. اختيار مناسب للأيام الصيفية المبهجة والأنشطة النهارية المنعشة.",
-   "descriptionEn": "A vibrant citrus fragrance blending bright lemon, mandarin, and blood orange with soft woods.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "سوكد سن إكسكلوسيف باي غراندور إيليت",
+   "nameEn": "Soaked Sun Exclusif by Grandeur Elite",
+   "descriptionAr": "عطر منعشي يفتتح بنفحات الليمون والماندارين والبرغموت، مع قلب من البرتقال الدموي، وقاعدة من الجريب فروت والأخشاب الناعمة.",
+   "descriptionEn": "Soaked Sun Exclusif by Grandeur is a vibrant unisex fragrance with lemon, mandarin, bergamot, blood orange, orange peel, grapefruit, and soft woods.",
    "gender": "unisex",
    "families": [
     "citrus",
-    "fresh",
-    "woody"
+    "fresh"
    ],
    "notes": {
     "top": [
@@ -31467,27 +31351,26 @@
     "work"
    ],
    "tags": [
-    "حمضيات",
-    "عطر منعش",
-    "عطور صيفية",
-    "جراندور",
     "Grandeur",
-    "Soaked Sun"
-   ]
+    "سوكد سن",
+    "عطر صيفي",
+    "حمضيات"
+   ],
+   "style": 2
   },
   "MAI-735": {
    "sourceHash": "1rf85cn",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ميسون الحمراء إن بيرفكت هارموني",
-   "nameEn": "Maison Alhambra In Perfect Harmony Eau de Parfum",
-   "descriptionAr": "عطر نسائي ناعم يجمع بتناغم ساحر بين الزهور الرقيقة والمسك الأبيض الدافئ. يمنحك إحساساً بالنقاء والأناقة الهادئة التي.",
-   "descriptionEn": "A smooth and feminine fragrance combining sweet florals, soft musk, and creamy vanilla woods.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "إن بيرفكت هارموني باي ميسون الحمراء",
+   "nameEn": "In Perfect Harmony by Maison Alhambra",
+   "descriptionAr": "عطر نسائي يتميز بنفحات زهرية حلوة في البداية، مع قلب من المسك والعنبر، وقاعدة كريمية من الأخشاب والفانيليا والمسك الأبيض.",
+   "descriptionEn": "In Perfect Harmony by Maison Alhambra is a sweet, floral, and musky fragrance with sweet florals, musk, amber, creamy woods, vanilla, and white musk.",
    "gender": "women",
    "families": [
     "floral",
     "musk",
-    "amber"
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -31504,8 +31387,6 @@
     ]
    },
    "seasons": [
-    "spring",
-    "summer",
     "all"
    ],
    "occasions": [
@@ -31513,26 +31394,26 @@
     "work"
    ],
    "tags": [
+    "ميسون الحمراء",
     "عطر نسائي",
-    "زهور ناعمة",
-    "مسك أبيض",
-    "Maison Alhambra",
-    "Perfect Harmony"
-   ]
+    "مسك وفانيليا",
+    "نعومة"
+   ],
+   "style": 2
   },
   "GRA-736": {
    "sourceHash": "dm6rv4",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "جراندور ستيتمنت مان",
-   "nameEn": "Grandeur Statement Man Eau de Parfum",
-   "descriptionAr": "عطر خشبي أروماتك راقٍ يفتتح بانتعاش البرغموت والفلفل الأسود مع قلب عطري من اللافندر. يستقر على قاعدة دافئة من العنبر والباتشولي لإطلالة رجالية واثقة.",
-   "descriptionEn": "A refined woody aromatic fragrance opening with citrus and black pepper, leading to an aromatic heart and rich woody base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "غراندور ستيتمنت مان",
+   "nameEn": "Grandeur Statement Man",
+   "descriptionAr": "عطر رجالي يفتتح بالبرغموت والجريب فروت والفلفل الأسود، مع قلب عطري من اللافندر والجرانيوم وخشب الأرز، وقاعدة من العنبر والباتشولي ونجيل الهند والمسك.",
+   "descriptionEn": "Grandeur Statement Man opens with bergamot, grapefruit, and black pepper, an aromatic heart of lavender, geranium, and cedarwood, and a base of amber, patchouli, vetiver, and musk.",
    "gender": "men",
    "families": [
     "woody",
-    "fresh",
-    "spicy"
+    "spicy",
+    "citrus"
    ],
    "notes": {
     "top": [
@@ -31553,36 +31434,33 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "spring",
-    "winter"
+    "all"
    ],
    "occasions": [
     "daily",
-    "work",
-    "special"
+    "work"
    ],
    "tags": [
+    "Grandeur",
     "ستيتمنت مان",
     "عطر رجالي",
-    "أخشاب",
-    "Grandeur",
-    "Statement Man"
-   ]
+    "أخشاب وعطري"
+   ],
+   "style": 2
   },
   "VOL-737": {
    "sourceHash": "7ao1we",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "فولاري جلادياتور توايلايت",
-   "nameEn": "Volare Gladiator Twilight Eau de Parfum",
-   "descriptionAr": "عطر رجالي جذاب يجمع بين الانتعاش العطري للافندر والنعناع مع دفء التبغ وفول التونكا. يمنحك هيبة آسرة وتألقاً لافتاً في الأمسيات والمناسبات الخاصة.",
-   "descriptionEn": "A captivating masculine scent blending fresh lavender and mint with rich vanilla, tobacco, and warm woods.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "فولاري جلادياتور تويلايت",
+   "nameEn": "Parfum Gladiator Twilight 100ml by Volare Man",
+   "descriptionAr": "عطر رجالي يجمع بين الانتعاش العطري والعمق الخشبي الدافئ. يفتتح برائحة اللافندر والنعناع والهيل فوق البرغموت، ويستقر على قاعدة من حبوب التونكا والتبغ والأخشاب الدافئة.",
+   "descriptionEn": "A modern men's fragrance featuring crisp lavender, mint, and cardamom over bergamot, evolving into vanilla and woods, with a lingering base of tonka bean, tobacco, and warm woods.",
    "gender": "men",
    "families": [
     "woody",
-    "spicy",
-    "oriental"
+    "fresh",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -31598,35 +31476,36 @@
     "base": []
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "evening",
-    "special"
+    "special",
+    "daily"
    ],
    "tags": [
-    "جلادياتور",
-    "عطر مسائي",
-    "عطر رجالي",
     "فولاري",
-    "Gladiator Twilight",
-    "Volare"
-   ]
+    "جلادياتور تويلايت",
+    "عطر رجالي",
+    "فولاري 100مل",
+    "عطر خشبي عطري"
+   ],
+   "style": 2
   },
   "MAI-738": {
    "sourceHash": "wdwjpc",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ميسون الحمراء قسمت للرجال",
-   "nameEn": "Maison Alhambra Kismet For Men Eau de Parfum",
-   "descriptionAr": "عطر شرقي دافئ وساحر بنفحات خشبية ممزوجة بجرأة الكاكاو والقهوة الغنية. يضفي لمسة من الفخامة والجاذبية الغامضة على إطلالتك المسائية.",
-   "descriptionEn": "A luxurious woody gourmand fragrance featuring nutmeg, coffee, cacao, and rich patchouli over a vanilla base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "كيسمت للرجال من ميسون ألامبرا",
+   "nameEn": "Kismet For Men by Maison Alhambra 100ml Man",
+   "descriptionAr": "عطر رجالي يمزج بين التوابل والأخشاب الدافئة واللمسات الشرقية الغورماند. يحتوي على قلب من البتشولي وخشب الصندل والكاكاو والقهوة مع قاعدة من الفانيليا ونجيل الهند.",
+   "descriptionEn": "A men's fragrance featuring woody notes and nutmeg, a heart of patchouli, sandalwood, cacao, and coffee, and a base of vanilla and vetiver.",
    "gender": "men",
    "families": [
     "woody",
-    "gourmand",
-    "spicy"
+    "spicy",
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -31645,43 +31524,45 @@
     ]
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "work",
+    "daily"
    ],
    "tags": [
-    "قسمت رجالي",
-    "عطر شرقي",
-    "قهوة وكاكاو",
-    "Maison Alhambra",
-    "Kismet For Men"
-   ]
+    "ميسون ألامبرا",
+    "كيسمت",
+    "عطر رجالي",
+    "عطر خشبي",
+    "ميسون ألامبرا 100مل"
+   ],
+   "style": 2
   },
   "MAI-739": {
    "sourceHash": "6451tz",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ميسون الحمراء ناريسا روبي روج",
-   "nameEn": "Maison Alhambra Narissa Ruby Rouge Eau de Parfum",
-   "descriptionAr": "عطر أنثوي بودري فاخر يتألق بعبير الورد البلغاري والسوسن مع قلب من المسك الحريري. ترتكز قاعدته على أخشاب الأرز والفانيليا لإطلالة مفعمة بالرقة والجاذبية.",
-   "descriptionEn": "An elegant powdery floral musk scent with iris and Bulgarian rose over a creamy heart and warm woody vanilla base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ناريسا روبي من ميسون ألامبرا",
+   "nameEn": "Narissa Ruby (Rouge) Maison Alhambra 100ml",
+   "descriptionAr": "عطر نسائي زهري خشبي مسكي يفتتح بنفحات بودرية ناعمة من السوسن والورد البلغاري، مع قلب من المسك ومسك الروم، وقاعدة من خشب الأرز والفانيليا وخشب الصندل.",
+   "descriptionEn": "A woody floral musk fragrance with iris and Bulgarian rose, a heart of musk, tuberose, and orange blossom, and a base of tonka bean, cedar, vetiver, sandalwood, and vanilla.",
    "gender": "women",
    "families": [
     "floral",
-    "powdery",
+    "woody",
     "musk"
    ],
    "notes": {
     "top": [
+     "Musk",
+     "Vanilla",
      "Iris",
-     "Bulgarian Rose"
+     "Rose"
     ],
     "heart": [
-     "Musk",
      "Tuberose",
      "Orange Blossom"
     ],
@@ -31689,41 +31570,41 @@
      "Tonka Bean",
      "Cedar",
      "Vetiver",
-     "Sandalwood",
-     "Vanilla"
+     "Sandalwood"
     ]
    },
    "seasons": [
+    "spring",
     "autumn",
-    "winter",
-    "spring"
+    "all"
    ],
    "occasions": [
     "daily",
-    "evening",
-    "special"
+    "work",
+    "evening"
    ],
    "tags": [
-    "ناريسا روج",
-    "عطر بودري",
-    "عطور نسائية",
-    "Maison Alhambra",
-    "Narissa Ruby"
-   ]
+    "ناريسا روبي",
+    "ميسون ألامبرا",
+    "عطر نسائي",
+    "مسك وزهور",
+    "عطر 100مل"
+   ],
+   "style": 2
   },
   "GUL-740": {
    "sourceHash": "zfc4a3",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "جلف أوركيد صنسيت كيس",
-   "nameEn": "Gulf Orchid Sunset Kiss Eau de Parfum",
-   "descriptionAr": "عطر أنثوي مبهج يمزج بين انتعاش الفواكه ولمسات الفستق مع باقة زهرية ناعمة. يختتم بنفحات لذيذة من الكريمة المخفوقة والفانيليا لجاذبية حلوة.",
-   "descriptionEn": "A delightful feminine scent blending pistachio and blackcurrant with white florals and a rich whipped cream vanilla base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "سانست كيس من جلف أوركيد",
+   "nameEn": "Sunset Kiss Gulf Orchid 100ml EDP Woman",
+   "descriptionAr": "عطر نسائي يجمع بين انتعاش الفواكه والحمضيات في الافتتاحية مع زهور الياسمين والعنبر في القلب، ويستقر على قاعدة ناعمة من الكريمة المخفوقة والفانيليا والمسك.",
+   "descriptionEn": "A women's fragrance featuring bergamot, blackcurrant, pistachio, and pink pepper, a heart of amber and sambac jasmine, and a base of whipped cream, vanilla, and musk.",
    "gender": "women",
    "families": [
-    "gourmand",
-    "floral",
-    "fruity"
+    "fresh",
+    "fruity",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -31746,36 +31627,36 @@
     ]
    },
    "seasons": [
+    "summer",
     "spring",
-    "autumn",
-    "summer"
+    "all"
    ],
    "occasions": [
     "daily",
-    "special",
+    "work",
     "gift"
    ],
    "tags": [
-    "صنسيت كيس",
-    "عطر فانيليا",
     "جلف أوركيد",
-    "عطور غورماند",
-    "Gulf Orchid",
-    "Sunset Kiss"
-   ]
+    "سانست كيس",
+    "عطر نسائي",
+    "عطر فواكه",
+    "جلف أوركيد 100مل"
+   ],
+   "style": 2
   },
   "ZIM-741": {
    "sourceHash": "30tfc0",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "زيمايا الإمبراطور إكسير",
-   "nameEn": "Zimaya Al Embratur Elixir Eau de Parfum",
-   "descriptionAr": "عطر شرقي فاخر يفوح بعبير الزعفران الفاخر وجوزة الطيب مع عمق خشب الصندل والعنبر. تتوج قاعدته بالعود الأصيل والفانيليا ليمنحك حضوراً إمبراطورياً مهيباً.",
-   "descriptionEn": "A regal oriental fragrance blending saffron and nutmeg with warm amber, creamy sandalwood, and rich oud.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "الامبراطور إلكسير من زيميا",
+   "nameEn": "Al Embratur Elixir by Zimaya 100ml EDP",
+   "descriptionAr": "عطر رجالي يفتتح بنفحات الزعفران وجوزة الطيب، مع قلب دافئ من العنبر وخشب الصندل، وقاعدة غنية بالمسك والفانيليا والعود.",
+   "descriptionEn": "An eau de parfum featuring top notes of saffron and nutmeg, a heart of amber and sandalwood, and a base of musk, vanilla, and oud.",
    "gender": "men",
    "families": [
-    "oud",
     "oriental",
+    "woody",
     "spicy"
    ],
    "notes": {
@@ -31794,36 +31675,36 @@
     ]
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "evening",
     "special",
-    "gift"
+    "daily"
    ],
    "tags": [
-    "الإمبراطور",
-    "عطور عود",
-    "عطر شرقي",
-    "زيمايا",
-    "Zimaya",
-    "Al Embratur"
-   ]
+    "زيميا",
+    "الامبراطور إلكسير",
+    "عطر رجالي",
+    "عود وعنبر",
+    "زيميا 100مل"
+   ],
+   "style": 2
   },
   "MAI-742": {
    "sourceHash": "16ysyuq",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ميسون الحمراء بينك شيمر سيكريت",
-   "nameEn": "Maison Alhambra Pink Shimmer Secret Eau de Parfum",
-   "descriptionAr": "توليفة أنثوية متألقة تجمع بين الكمثرى المنعشة والفلفل الوردي مع باقة ساحرة من الياسمين والفاوانيا. تكتمل روعته بقاعدة دافئة من الفانيليا والعنبر والمسك الأبيض.",
-   "descriptionEn": "A sparkling floral amber fragrance blending juicy pear and fresh blossoms with a comforting vanilla and white musk base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "بيناك شيمير سيكريت من ميسون ألامبرا",
+   "nameEn": "Pink Shimmer Secret 100ml by Maison Alhambra",
+   "descriptionAr": "عطر نسائي يفتتح بنفحات منعشة من البرغموت والكمثرى والفلفل الوردي، مع قلب زهري من الياسمين والفاوانيا، وقاعدة دافئة من الفانيليا والعنبر والمسك الأبيض وخشب الصندل.",
+   "descriptionEn": "A floral amber fragrance with bergamot, pear, and pink pepper, a heart of jasmine, peony, and orange blossom, and a base of vanilla, amber, white musk, and sandalwood.",
    "gender": "women",
    "families": [
     "floral",
-    "fruity",
-    "amber"
+    "oriental",
+    "fresh"
    ],
    "notes": {
     "top": [
@@ -31850,30 +31731,31 @@
    ],
    "occasions": [
     "daily",
-    "special",
+    "work",
     "gift"
    ],
    "tags": [
-    "بينك شيمر",
-    "عطر أنثوي",
-    "عطور زهرية",
-    "Maison Alhambra",
-    "Pink Shimmer Secret"
-   ]
+    "ميسون ألامبرا",
+    "بيناك شيمير سيكريت",
+    "عطر نسائي",
+    "عطر زهري",
+    "ميسون ألامبرا 100مل"
+   ],
+   "style": 2
   },
   "MAI-743": {
    "sourceHash": "9nhgcl",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ميسون الحمراء يور تاتش عود",
-   "nameEn": "Maison Alhambra Your Touch Oud Eau de Parfum",
-   "descriptionAr": "عطر شرقي آسر يمزج بين حلاوة الفواكه وسحر العود الناعم مع العنبر الدافئ. يمنحك هالة حسية راقية ومميزة تناسب اللقاءات المسائية الفاخرة.",
-   "descriptionEn": "A captivating fragrance blending sweet fruity accords with smooth oud, warm amber, and creamy vanilla.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "يور تاتش عود من ميسون ألامبرا",
+   "nameEn": "Your Touch Oud by Maison Alhambra 100ml EDP",
+   "descriptionAr": "عطر مختلط يتميز بطابع حلو وخشبي كريمي مع لمحات من العود الناعم والعنبر، ويستقر على قاعدة من الفانيليا والمسك والأخشاب.",
+   "descriptionEn": "A unisex fragrance featuring sweet fruity notes, a heart of oud and amber, and a base of vanilla, musk, and woody notes.",
    "gender": "unisex",
    "families": [
-    "oud",
     "oriental",
-    "amber"
+    "amber",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -31890,54 +31772,7 @@
     ]
    },
    "seasons": [
-    "winter",
-    "autumn"
-   ],
-   "occasions": [
-    "evening",
-    "special"
-   ],
-   "tags": [
-    "يور تاتش عود",
-    "عطر عود",
-    "عطور شرقية",
-    "Maison Alhambra",
-    "Your Touch Oud"
-   ]
-  },
-  "ARD-744": {
-   "sourceHash": "14oejbd",
-   "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "أرض الزعفران جذاب جولد",
-   "nameEn": "Ard Al Zaafaran Jazzab Gold Eau de Parfum",
-   "descriptionAr": "توليفة شرقية راقية تفتتح بنفحات منعشة تتبعها باقة دافئة من التوابل والورد والأخشاب. يستقر العطر على قاعدة غنية من العود والعنبر ليمنحك فخامة شرقية أصيلة.",
-   "descriptionEn": "A warm oriental woody scent featuring fresh citrus, aromatic spices, and a rich foundation of oud and amber.",
-   "gender": "unisex",
-   "families": [
-    "oud",
-    "oriental",
-    "woody"
-   ],
-   "notes": {
-    "top": [
-     "Citrus",
-     "Herbal Accords",
-     "Floral Nuances"
-    ],
-    "heart": [
-     "Spices",
-     "Rose",
-     "Woody Notes"
-    ],
-    "base": [
-     "Oud",
-     "Amber",
-     "Musk",
-     "Cedarwood"
-    ]
-   },
-   "seasons": [
+    "summer",
     "winter",
     "autumn"
    ],
@@ -31947,27 +31782,72 @@
     "daily"
    ],
    "tags": [
-    "جذاب جولد",
-    "أرض الزعفران",
+    "ميسون ألامبرا",
+    "يور تاتش عود",
     "عطر عود",
-    "عطور شرقية",
-    "Ard Al Zaafaran",
-    "Jazzab Gold"
-   ]
+    "عطر مختلط",
+    "ميسون ألامبرا 100مل"
+   ],
+   "style": 2
+  },
+  "ARD-744": {
+   "sourceHash": "14oejbd",
+   "editor": "shaheen",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "جذاب جولد من أرض الزعفران",
+   "nameEn": "Jazzab Gold by Ard Al Zaafaran Eau De Parfum 100ml",
+   "descriptionAr": "عطر مختلط يفتح بنفحات الحمضيات والأعشاب والزهور، ويتطور إلى قلب غني بالتوابل والورد والأخشاب، مع قاعدة شرقية دافئة من العود والعنبر والمسك وخشب الأرز.",
+   "descriptionEn": "An oriental woody fragrance with floral and citrus nuances, a heart of spices, rose, and woody notes, and a rich base of oud, amber, musk, and cedarwood.",
+   "gender": "unisex",
+   "families": [
+    "oriental",
+    "woody",
+    "floral"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [
+     "Rose"
+    ],
+    "base": [
+     "Oud",
+     "Amber",
+     "Musk",
+     "Cedarwood"
+    ]
+   },
+   "seasons": [
+    "autumn",
+    "winter",
+    "all"
+   ],
+   "occasions": [
+    "daily",
+    "evening",
+    "special"
+   ],
+   "tags": [
+    "أرض الزعفران",
+    "جذاب جولد",
+    "عطر شرقي",
+    "عود وعنبر",
+    "أرض الزعفران 100مل"
+   ],
+   "style": 2
   },
   "MAI-745": {
    "sourceHash": "1nwoc58",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ميسون أسرار نايت إن باريس",
-   "nameEn": "Maison Asrar Night In Paris Eau de Parfum",
-   "descriptionAr": "عطر رومانسي أنيق يتنفس بعبير الورد وزنبق الوادي مع لمسات المسك الحريرية. ترتكز قاعدته على العنبر الدافئ وطحلب السنديان ليضفي سحراً شاعرياً على أمسياتك.",
-   "descriptionEn": "A romantic floral amber fragrance featuring delicate rose and lily of the valley over a warm bed of moss, musk, and amber.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "نايت إن باريس من ميسون أسرار",
+   "nameEn": "Night In Paris by Maison Asrar 90ml EDP Unisex",
+   "descriptionAr": "عطر مختلط رومانسي زهري عنبري يفتتح بزنبق الوادي والورد، مع قلب مسكي زهري، وقاعدة دافئة من النفحات العنبرية والطحالب والمسك. مناسب للمساء والمناسبات الخاصة.",
+   "descriptionEn": "A romantic floral ambery unisex fragrance opening with lily of the valley and rose, a heart of musk and rose, and a base of ambery notes, moss, and musk.",
    "gender": "unisex",
    "families": [
     "floral",
-    "amber",
-    "musk"
+    "oriental",
+    "fresh"
    ],
    "notes": {
     "top": [
@@ -31986,31 +31866,32 @@
     ]
    },
    "seasons": [
-    "spring",
     "autumn",
-    "all"
+    "winter",
+    "spring"
    ],
    "occasions": [
     "evening",
     "special",
-    "gift"
+    "daily"
    ],
    "tags": [
-    "نايت إن باريس",
-    "عطر رومانسي",
     "ميسون أسرار",
-    "Maison Asrar",
-    "Night In Paris"
-   ]
+    "نايت إن باريس",
+    "عطر مختلط",
+    "عطر زهري",
+    "ميسون أسرار 90مل"
+   ],
+   "style": 2
   },
   "MAI-746": {
    "sourceHash": "zozttx",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T10:57:17.405Z",
-   "nameAr": "ميسون الحمراء إكسبوز بلانك",
-   "nameEn": "Maison Alhambra Expose Blanc Eau de Parfum",
-   "descriptionAr": "عطر رجالي منعش وأنيق يجمع بين بهجة البرغموت وحرارة الهيل مع قلب من اللافندر النقي. يرتكز على قاعدة خشبية دافئة من خشب الأرز وفول التونكا لإطلالة يومية جذابة.",
-   "descriptionEn": "A crisp masculine fragrance blending bright bergamot and cardamom with calming lavender and a warm cedarwood base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "إكسبوز بلانك من ميسون ألامبرا",
+   "nameEn": "Expose Blanc by Maison Alhambra 100ml EDP Men",
+   "descriptionAr": "عطر رجالي يفتتح بنفحات منعشة من البرغموت والهيل، مع قلب من خشب العنبر واللافندر، وقاعدة دافئة من المسك وحبوب التونكا وخشب الأرز.",
+   "descriptionEn": "A men's eau de parfum featuring top notes of bergamot and cardamom, a heart of amberwood and lavender, and a base of musk, tonka bean, and cedarwood.",
    "gender": "men",
    "families": [
     "woody",
@@ -32035,82 +31916,85 @@
    "seasons": [
     "spring",
     "summer",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
-    "work"
+    "work",
+    "evening"
    ],
    "tags": [
+    "ميسون ألامبرا",
     "إكسبوز بلانك",
-    "عطر منعش",
     "عطر رجالي",
-    "Maison Alhambra",
-    "Expose Blanc"
-   ]
+    "عطر خشبي",
+    "ميسون ألامبرا 100مل"
+   ],
+   "style": 2
   },
   "GRA-747": {
    "sourceHash": "13tl3os",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "توبيز شوكليت فدج من غرانجور",
-   "nameEn": "Tubbees Chocolate Fudge Grandeur",
-   "descriptionAr": "عطر غورماند دافئ وغني يرتكز على سحر الشوكولاتة الداكنة مع الكراميل الكريمي والفانيليا الناعمة. يمنحك توليفة شهية ومريحة من اللوز والبندق وخشب الصندل تعزف نغمات الحلويات الفاخرة.",
-   "descriptionEn": "Tubbees Chocolate Fudge by Grandeur is a rich gourmand fragrance built around dark chocolate, creamy caramel, and warm vanilla with nutty nuances and smooth woods.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "توبيس شوكليت فادج من غراندور",
+   "nameEn": "Tubbees Chocolate Fudge by Grandeur 50ml EDP",
+   "descriptionAr": "عطر مختلط غني بالنفحات الغورماند يعتمد على الشوكولاتة الداكنة والكراميل الكريمي والفانيليا الدافئة مع البندق واللوز المر وقاعدة من البرالين وخشب الصندل.",
+   "descriptionEn": "A rich gourmand fragrance built around dark chocolate, hazelnut, chocolate fudge, Irish cream, caramel, bitter almond, praline, vanilla, and sandalwood.",
    "gender": "unisex",
    "families": [
     "gourmand",
+    "oriental",
     "amber"
    ],
    "notes": {
     "top": [
      "Dark Chocolate",
      "Hazelnut",
-     "Dulce de Leche"
+     "Cocoa"
     ],
     "heart": [
-     "Chocolate Fudge",
-     "Irish Cream",
+     "Chocolate",
+     "Cream",
      "Caramel",
      "Bitter Almond"
     ],
     "base": [
      "Praline",
-     "Vanilla Absolute",
-     "Amberwood",
+     "Vanilla",
      "Sandalwood"
     ]
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "evening",
-    "special"
+    "daily",
+    "gift"
    ],
    "tags": [
-    "توبيز شوكليت فدج",
-    "غرانجور",
-    "عطر شوكولاتة",
+    "غراندور",
+    "توبيس شوكليت فادج",
     "عطر غورماند",
-    "Tubbees Chocolate Fudge",
-    "Grandeur"
-   ]
+    "عطر شوكولاتة",
+    "غراندور 50مل"
+   ],
+   "style": 2
   },
   "MAI-748": {
    "sourceHash": "1cy2ttb",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "ميسون الحمراء جان لو ازور",
-   "nameEn": "Jean Lowe Azure Maison Alhambra",
-   "descriptionAr": "عطر حمضي عنبري منعش يبدأ بنفحات حيوية من البرغموت واليوسفي لينتقل إلى قلب زهري خشبي. يرتكز على قاعدة ناعمة ودافئة من العنبر والمسك لتمنحك حضوراً عصرياً أنيقاً.",
-   "descriptionEn": "Jean Lowe Azure by Maison Alhambra is a fresh citrus-amber fragrance blending vibrant bergamot and mandarin with jasmine, cedarwood, and a smooth amber-musk base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "جان لوي أزور من ميسون ألامبرا",
+   "nameEn": "Jean Lowe Azure by Maison Alhambra EDP 100 ml",
+   "descriptionAr": "عطر مختلط منعش يجمع بين الحمضيات المتمثلة في البرغموت والماندرين، وقلب من الياسمين وخشب الأرز، وقاعدة ناعمة من العنبر الرمادي والمسك.",
+   "descriptionEn": "A fresh citrus-amber unisex fragrance with bergamot and mandarin, a heart of jasmine and cedarwood, and a smooth base of ambergris and musk.",
    "gender": "unisex",
    "families": [
+    "fresh",
     "citrus",
-    "amber",
-    "woody"
+    "amber"
    ],
    "notes": {
     "top": [
@@ -32128,28 +32012,31 @@
    },
    "seasons": [
     "spring",
-    "summer"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
-    "work"
+    "work",
+    "evening"
    ],
    "tags": [
-    "جان لو ازور",
-    "ميسون الحمراء",
+    "ميسون ألامبرا",
+    "جان لوي أزور",
     "عطر منعش",
-    "Jean Lowe Azure",
-    "Maison Alhambra"
-   ]
+    "عطر حمضيات",
+    "ميسون ألامبرا 100مل"
+   ],
+   "style": 2
   },
   "MAI-749": {
    "sourceHash": "10ley3p",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "ميسون الحمراء شاتو عثمان",
-   "nameEn": "Chateau Ottoman Maison Alhambra",
-   "descriptionAr": "توليفة شرقية دافئة وناعمة تمزج النوتات الحلوة والتوابل الرقيقة مع عمق العنبر والأخشاب. يختتم أثره بنعومة الفانيليا والمسك الكريمي لجاذبية راقية تناسب كافة الأوقات.",
-   "descriptionEn": "Chateau Ottoman by Maison Alhambra is a warm and creamy oriental-amber fragrance featuring gentle spices, amber, and a rich vanilla-musk base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "شاتوه عثمان من ميسون ألامبرا",
+   "nameEn": "Chateau Ottoman by Maison Alhambra 100ml EDP",
+   "descriptionAr": "عطر مختلط دافئ وكريمي يحتوي على نفحات عنبرية خفيفة وأخشاب وتوابل ناعمة، مع قاعدة من المسك والفانيليا والأخشاب الكريمية.",
+   "descriptionEn": "A warm, sweet, and creamy unisex fragrance featuring sweet notes, soft spices, a heart of amber and woody notes, and a base of musk, vanilla, and creamy woods.",
    "gender": "unisex",
    "families": [
     "oriental",
@@ -32177,28 +32064,31 @@
    ],
    "occasions": [
     "evening",
+    "special",
     "daily"
    ],
    "tags": [
-    "شاتو عثمان",
-    "ميسون الحمراء",
+    "ميسون ألامبرا",
+    "شاتوه عثمان",
+    "عطر شرقي",
     "عطر عنبر",
-    "Chateau Ottoman",
-    "Maison Alhambra"
-   ]
+    "ميسون ألامبرا 100مل"
+   ],
+   "style": 2
   },
   "MAI-750": {
    "sourceHash": "1a5hy9d",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "ميسون الحمراء مونتان فانيلا",
-   "nameEn": "Montaigne Vanille Maison Alhambra",
-   "descriptionAr": "عطر أنثوي جذاب ينبض بنضارة الليمون في الافتتاحية ممتزجاً بسحر الورد التركي الأنيق. تستقر الرائحة على قاعدة حلوة مخملية من الفانيليا والمسك الأبيض مع خشب الأرز.",
-   "descriptionEn": "Montaigne Vanille by Maison Alhambra blends zesty lemon with romantic Turkish rose over a cozy base of sweet vanilla, white musk, and cedarwood.",
-   "gender": "women",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "مونتين فانيلا من ميسون ألامبرا",
+   "nameEn": "Montaigne Vanille by Maison Alhambra 100ml",
+   "descriptionAr": "عطر مختلط يفتتح برائحة الليمون المنعشة، مع قلب من الورد التركي، وقاعدة غنية بالفانيليا والمسك الأبيض وخشب الأرز.",
+   "descriptionEn": "An eau de parfum featuring top notes of lemon, a heart of Turkish rose, and a base of vanilla, white musk, and cedarwood.",
+   "gender": "unisex",
    "families": [
     "oriental",
-    "floral"
+    "floral",
+    "fresh"
    ],
    "notes": {
     "top": [
@@ -32216,32 +32106,35 @@
    "seasons": [
     "spring",
     "autumn",
-    "winter"
+    "all"
    ],
    "occasions": [
     "daily",
-    "special"
+    "work",
+    "gift"
    ],
    "tags": [
-    "مونتان فانيلا",
-    "ميسون الحمراء",
+    "ميسون ألامبرا",
+    "مونتين فانيلا",
     "عطر فانيليا",
-    "Montaigne Vanille",
-    "Maison Alhambra"
-   ]
+    "عطر مختلط",
+    "ميسون ألامبرا 100مل"
+   ],
+   "style": 2
   },
   "ARD-751": {
    "sourceHash": "ii2dr0",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "أرض الزعفران عود رومانسية فخامة",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "أود رومانسيا فخمة أرد إبراهيم الزعفران",
    "nameEn": "Oud Romancea Fakhama Ard Al Zaafaran",
-   "descriptionAr": "عطر شرقي فاخر يجمع بين دفء التوابل الزهرية مع فخامة العود والباتشولي والكراميل. تضفي الفانيليا والعنبر لمسة حسية عميقة تعكس روح الفخامة الشرقية الأصيلة.",
-   "descriptionEn": "Oud Romancea Fakhama by Ard Al Zaafaran features a bold blend of pimento, saffron, and rose layered over oud, patchouli, caramel, and warm vanilla amber.",
+   "descriptionAr": "عطر غني ودافئ وحلو يجمع بين الأزهار الحارة وعمق العود ونهاية ناعمة من العنبر والفانيليا. يفتتح بنفحات البيمينتو والزعفران والورد.",
+   "descriptionEn": "A rich, warm and sweet fragrance featuring spicy florals, deep oud and a smooth amber-vanilla finish with top notes of pimento, saffron and rose.",
    "gender": "unisex",
    "families": [
     "oud",
-    "oriental"
+    "spicy",
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -32261,33 +32154,36 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
+    "evening",
     "special",
-    "evening"
+    "daily"
    ],
    "tags": [
-    "عود رومانسية فخامة",
-    "أرض الزعفران",
+    "أود رومانسيا فخمة",
+    "عطر للجنسين",
+    "أرد إبراهيم الزعفران",
     "عطر عود",
-    "Oud Romancea Fakhama",
-    "Ard Al Zaafaran"
-   ]
+    "عطر فانيليا وعنبر"
+   ],
+   "style": 2
   },
   "ARM-752": {
    "sourceHash": "1geu33x",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "أرماف كينغ تشيك ميت",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "أرماف كينغ تشيكميت",
    "nameEn": "Armaf King Checkmate",
-   "descriptionAr": "عطر رجالي راقٍ يفتتح بنفحات حارة ومنعشة تمهد الطريق لقلب أروماتي دافئ من الأخشاب. تمنحك قاعدة العنبر والمسك حضوراً واثقاً ومناسباً لبيئات العمل والأمسيات.",
-   "descriptionEn": "Armaf King Checkmate is a refined men's fragrance featuring fresh spicy top notes, an aromatic woody heart, and a sophisticated amber-musk finish.",
+   "descriptionAr": "عطر رجالي يتميز بنفحات افتتاحية منعشة وحارة، مع قلب عطر من الأخشاب الدافئة والنوتات العطرية، وقاعدة من العنبر والمسك.",
+   "descriptionEn": "An eau de parfum for men featuring fresh spicy top notes, a heart of warm woods and aromatic notes, with a base of amber, musk, and soft woods.",
    "gender": "men",
    "families": [
     "spicy",
     "woody",
-    "amber"
+    "fresh"
    ],
    "notes": {
     "top": [
@@ -32305,33 +32201,35 @@
    },
    "seasons": [
     "autumn",
-    "spring",
-    "winter"
+    "winter",
+    "all"
    ],
    "occasions": [
     "work",
-    "evening"
+    "evening",
+    "daily"
    ],
    "tags": [
-    "كينغ تشيك ميت",
-    "أرماف",
+    "أرماف كينغ تشيكميت",
     "عطر رجالي",
-    "Armaf King Checkmate",
-    "Armaf"
-   ]
+    "عطر خشبي حار",
+    "أرماف 100 مل"
+   ],
+   "style": 2
   },
   "ARM-753": {
    "sourceHash": "qvgcvt",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "أرماف بيتش بارتي",
    "nameEn": "Armaf Beach Party",
-   "descriptionAr": "عطر صيفي حمضي يفتتح بالبرغموت واليوسفي، وقلبه من الياسمين وجوز الهند، وقاعدته من المسك والعنبر وخشب الصندل والفانيليا.",
-   "descriptionEn": "Armaf Beach Party is a lively and refreshing citrus fragrance designed to capture the vibrant, carefree spirit of sunny coastal days.",
+   "descriptionAr": "عطر يجمع بين الانتعاش والدفء، يفتتح بنوتات الحمضيات من البرغموت واليوسفي، مع قلب من الياسمين وجوز الهند وقاعدة من المسك والعنبر.",
+   "descriptionEn": "An eau de parfum featuring top notes of bergamot and mandarin, a heart of jasmine and coconut, and a base of musk, amber, sandalwood, and vanilla.",
    "gender": "unisex",
    "families": [
     "citrus",
-    "fresh"
+    "floral",
+    "musk"
    ],
    "notes": {
     "top": [
@@ -32354,25 +32252,25 @@
     "spring"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "evening"
    ],
    "tags": [
-    "بيتش بارتي",
-    "أرماف",
-    "عطر صيفي",
-    "عطر حمضي",
-    "Armaf Beach Party",
-    "Armaf"
-   ]
+    "أرماف بيتش بارتي",
+    "عطر منعش",
+    "عطر جوز الهند",
+    "عطر صيفي"
+   ],
+   "style": 2
   },
   "MAI-754": {
    "sourceHash": "1o1j3iy",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "ميسون أسرار مونارك",
-   "nameEn": "Monarch Maison Asrar",
-   "descriptionAr": "توليفة خشبية فاكهية دافئة تبدأ بتناغم الهيل والخوخ مع القرفة بلمسة. يحتوي قلبه على لمسات حليبية ناعمة مع جوز الهند والياسمين وقاعدة بودرية أنيقة.",
-   "descriptionEn": "Monarch by Maison Asrar is an exquisite woody-fruity fragrance opening with cardamom and peach, leading into creamy coconut and jasmine on an earthy, powdery base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "مونارك من ميسون أسرار",
+   "nameEn": "Monarch by Maison Asrar",
+   "descriptionAr": "عطر خشبي فاكهي يجمع بين الهيل والخوخ والقرفة في المقدمة، مع قلب كريمي من الياسمين والحليب وجوز الهند وقاعدة من الباتشولي والمسك.",
+   "descriptionEn": "A woody fruity fragrance opening with cardamom, peach and cinnamon, a heart of jasmine, milk and coconut, and a base of heliotrope, patchouli and musk.",
    "gender": "unisex",
    "families": [
     "woody",
@@ -32398,32 +32296,35 @@
    },
    "seasons": [
     "autumn",
-    "winter"
+    "winter",
+    "all"
    ],
    "occasions": [
     "evening",
-    "special"
+    "special",
+    "gift"
    ],
    "tags": [
-    "مونارك",
-    "ميسون أسرار",
-    "عطر مونارك",
-    "Monarch",
-    "Maison Asrar"
-   ]
+    "مونارك ميسون أسرار",
+    "عطر خشبي فاكهي",
+    "عطر للجنسين",
+    "ميسون أسرار"
+   ],
+   "style": 2
   },
   "MAI-755": {
    "sourceHash": "8lyjkx",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "ميسون الحمراء بريشوس جولد",
-   "nameEn": "Precious Gold Maison Alhambra",
-   "descriptionAr": "عطر نسائي زهري يفتتح بالبرغموت والكمثرى والفلفل الوردي، وقلبه من الياسمين والورد وزهر البرتقال، وقاعدته من الفانيليا والعنبر والمسك الأبيض وخشب الصندل.",
-   "descriptionEn": "Precious Gold by Maison Alhambra is an elegant floral-aquatic fragrance crafted for women, delivering a radiant, refreshing, and graceful scent trail.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "بريشيوس جولد من ميسون الحمراء",
+   "nameEn": "Precious Gold by Maison Alhambra",
+   "descriptionAr": "عطر نسائي يفتتح بنوتات منعشة من البرغموت والكمثرى والفلفل الوردي، مع قلب زهري وقاعدة دافئة من الفانيليا والعنبر والمسك.",
+   "descriptionEn": "A women's fragrance featuring top notes of bergamot, pear and pink pepper, floral heart notes, and a base of vanilla, amber, white musk and sandalwood.",
    "gender": "women",
    "families": [
     "floral",
-    "aquatic"
+    "aquatic",
+    "amber"
    ],
    "notes": {
     "top": [
@@ -32445,28 +32346,30 @@
    },
    "seasons": [
     "spring",
-    "summer"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
-    "special"
+    "work",
+    "gift"
    ],
    "tags": [
-    "بريشوس جولد",
+    "بريشيوس جولد",
     "ميسون الحمراء",
     "عطر نسائي",
-    "Precious Gold",
-    "Maison Alhambra"
-   ]
+    "عطر زهري"
+   ],
+   "style": 2
   },
   "RUE-756": {
    "sourceHash": "v66hjb",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "رو بروكا ثيوريم ماتريكس",
-   "nameEn": "Theoreme Matrix Rue Broca",
-   "descriptionAr": "عطر رجالي منعش يجمع حيوية الليمون وحرارة الفلفل الوردي والهيل مع قلب لافندر مهدئ. تتكامل تركيبته بقاعدة خشبية عنبرية راقية تمنحك حضوراً ذكورياً مميزاً.",
-   "descriptionEn": "Theoreme Matrix by Rue Broca is a fresh, spicy, and woody masculine fragrance opening with lemon and cardamom over lavender, nutmeg, and a warm cedar-sandalwood base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ثيوريم ماتريكس من رو بروكا",
+   "nameEn": "Theoreme Matrix by Rue Broca",
+   "descriptionAr": "عطر رجالي منعش وحار وخشبي، يفتتح بالليمون والفلفل الوردي والهيل، مع قلب من اللافندر وجوزة الطيب وخشب الأرز وقاعدة من المسك والعنبر.",
+   "descriptionEn": "A fresh, spicy, and woody men's fragrance featuring top notes of lemon, pink pepper and cardamom, a heart of lavender, nutmeg and cedarwood, and a base of musk, amber and sandalwood.",
    "gender": "men",
    "families": [
     "fresh",
@@ -32493,32 +32396,34 @@
    "seasons": [
     "spring",
     "summer",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "work",
-    "daily"
+    "daily",
+    "evening"
    ],
    "tags": [
     "ثيوريم ماتريكس",
     "رو بروكا",
     "عطر رجالي",
-    "Theoreme Matrix",
-    "Rue Broca"
-   ]
+    "عطر منعش خشبي"
+   ],
+   "style": 2
   },
   "GRA-757": {
    "sourceHash": "crcz1s",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "غرانجور غالانت للرجال",
-   "nameEn": "Gallant Grandeur",
-   "descriptionAr": "عطر أروماتي جذاب يعكس روح الشجاعة بافتتاحية منعشة من الأناناس والبرغموت. يمتزج قلبه بنفحات التفاح والهيل وتستقر قاعدته على حبوب التونكا والعنبر وخشب الأرز.",
-   "descriptionEn": "Gallant by Grandeur is a charismatic aromatic fragrance opening with pineapple and bergamot, enriched by red apple and cardamom on a warm tonka and cedar base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "جالانت من غراندور",
+   "nameEn": "Gallant Perfume Man Grandeur",
+   "descriptionAr": "عطر رجالي يفتتح بنفحات الأناناس والبرغموت المنعشة، مع قلب من التفاح الأحمر والهيل والياسمين، وقاعدة دافئة من حبوب التونكا والعنبر وخشب الأرز.",
+   "descriptionEn": "An aromatic men's fragrance featuring top notes of pineapple and bergamot, a heart of red apple, cardamom, pepperwood and jasmine, and a base of tonka bean, amber, white cedar extract and oakmoss.",
    "gender": "men",
    "families": [
     "fresh",
-    "woody"
+    "woody",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -32528,45 +32433,46 @@
     "heart": [
      "Red Apple",
      "Cardamom",
-     "Pepperwood",
      "Jasmine"
     ],
     "base": [
      "Tonka Bean",
      "Amber",
-     "White Cedar Extract",
+     "Cedar",
      "Oakmoss"
     ]
    },
    "seasons": [
     "spring",
-    "autumn",
-    "summer"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
-    "work"
+    "work",
+    "evening"
    ],
    "tags": [
-    "غالانت",
-    "غرانجور",
-    "عطر غالانت",
-    "Gallant Perfume",
-    "Grandeur"
-   ]
+    "جالانت غراندور",
+    "عطر رجالي",
+    "عطر أروماتك",
+    "غراندور"
+   ],
+   "style": 2
   },
   "GRA-758": {
    "sourceHash": "1u2jrzl",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "توبيز بيري بلاست من غرانجور",
-   "nameEn": "Berry Blast Grandeur Tubbees",
-   "descriptionAr": "انفجار عطري مرح من التوت المشكل والفواكه اللذيذة تلتقي بنعومة الأزهار الرقيقة. تضفي الفانيليا والمسك لمسة ناعمة ودافئة تبرز أنوثتك في كل مناسبة نهارية.",
-   "descriptionEn": "Berry Blast by Grandeur Tubbees is a sweet and vibrant fragrance blending luscious mixed berries and gentle florals with a cozy vanilla-musk base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "بيري بلاست من غراندور توبيز",
+   "nameEn": "Berry Blast by Grandeur Tubbees",
+   "descriptionAr": "عطر نسائي يفتتح بنوتات التوت المختلط والفواكه الحلوة، مع قلب من الزهور الناعمة، وقاعدة من الفانيليا والمسك والنوتات الدافئة.",
+   "descriptionEn": "A women's fragrance featuring top notes of mixed berries and sweet fruits, a heart of soft florals, and a base of vanilla, musk and warm notes.",
    "gender": "women",
    "families": [
     "fruity",
-    "floral"
+    "floral",
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -32584,7 +32490,8 @@
    },
    "seasons": [
     "spring",
-    "summer"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
@@ -32592,24 +32499,25 @@
    ],
    "tags": [
     "بيري بلاست",
-    "توبيز",
-    "غرانجور",
-    "Berry Blast",
-    "Grandeur Tubbees"
-   ]
+    "غراندور توبيز",
+    "عطر نسائي",
+    "عطر فواكه"
+   ],
+   "style": 2
   },
   "MAI-759": {
    "sourceHash": "136582g",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "ميسون أسرار فانيلا فوياج",
-   "nameEn": "Vanilla Voyage Maison Asrar",
-   "descriptionAr": "رحلة استثنائية في عالم الغورماند تبدأ بحلاوة الكراميل والنوتات الزبدية الدافئة. يتعانق العسل مع حبوب التونكا والياسمين ليرتكز على توليفة فاخرة من الفانيليا والعنبر.",
-   "descriptionEn": "Vanilla Voyage by Maison Asrar is a decadent gourmand fragrance featuring caramel and buttery notes mingled with honey, tonka, and a cozy vanilla-amber base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "فانيلا فويي ج من ميسون أسرار",
+   "nameEn": "Vanilla Voyage by Maison Asrar",
+   "descriptionAr": "عطر دافئ وغورماند يفتتح بنوتات الكراميل والزبدة، مع قلب من الياسمين والتونكا والعسل وقاعدة ناعمة من الفانيليا والمسك والعنبر.",
+   "descriptionEn": "A warm gourmand sweet fragrance opening with caramel and buttery notes, a heart of jasmine, tonka and honey, and a base of vanilla, musk and ambery notes.",
    "gender": "unisex",
    "families": [
     "gourmand",
-    "oriental"
+    "oriental",
+    "amber"
    ],
    "notes": {
     "top": [
@@ -32633,25 +32541,25 @@
    ],
    "occasions": [
     "evening",
-    "special"
+    "special",
+    "gift"
    ],
    "tags": [
-    "فانيلا فوياج",
+    "فانيلا فويي ج",
     "ميسون أسرار",
     "عطر فانيليا",
-    "عطر كراميل",
-    "Vanilla Voyage",
-    "Maison Asrar"
-   ]
+    "عطر غورماند"
+   ],
+   "style": 2
   },
   "ALW-760": {
    "sourceHash": "150aaix",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "الوطنية كاستيلا",
-   "nameEn": "Castilla Al Wataniah",
-   "descriptionAr": "عطر نسائي شرقي زهري ساحر يفتتح بإشراقة اليوسفي مع دفء الفلفل الوردي. يفوح قلبه بأنوثة الورد والياسمين مع حلاوة الكراميل على قاعدة غنية بالفانيليا والعنبر.",
-   "descriptionEn": "Castilla by Al Wataniah is an alluring oriental floral fragrance blending mandarin and pink pepper with rose, caramel, and a sweet vanilla-amber drydown.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "كاستيلا من الوطنعية",
+   "nameEn": "Castilla by Al Wataniah",
+   "descriptionAr": "عطر نسائي يجمع بين النفحات الزهرية والشرقية الحلوة، يفتتح باليوسفي والفلفل الوردي، مع قلب من الورد والياسمين والكراميل وقاعدة من الفانيليا والعنبر والمسك.",
+   "descriptionEn": "A floral oriental sweet women's fragrance featuring top notes of mandarin and pink pepper, a heart of rose, jasmine and caramel, and a base of vanilla, amber and musk.",
    "gender": "women",
    "families": [
     "floral",
@@ -32680,30 +32588,31 @@
     "spring"
    ],
    "occasions": [
-    "special",
     "evening",
+    "daily",
     "gift"
    ],
    "tags": [
-    "كاستيلا",
-    "الوطنية",
+    "كاستيلا الوطنعية",
     "عطر نسائي",
-    "Castilla",
-    "Al Wataniah"
-   ]
+    "عطر شرقي زهري",
+    "الوطنية للعطور"
+   ],
+   "style": 2
   },
   "RUE-761": {
    "sourceHash": "x1t7od",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "إكزوتيك بارادايس من رو بروكا",
-   "nameEn": "Exotic Paradise by Rue Broca Eau de Parfum",
-   "descriptionAr": "توليفة نسائية مشرقة تمزج بين انتعاش الكمثرى والتوت الأحمر مع نعومة الياسمين وزهر الفاوانيا. يستقر العطر على قاعدة غنية وناعمة من الفانيليا والمسك لتمنحكِ حضوراً جذاباً.",
-   "descriptionEn": "A bright feminine fragrance opening with pear and red berries, leading into a floral heart of jasmine and peony over a smooth vanilla and musk base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "إكزوتيك باراديس من رو بروكا",
+   "nameEn": "Exotic Paradise by Rue Broca",
+   "descriptionAr": "عطر نسائي يفتتح بنفحات الكمثرى والتوت الأحمر، مع قلب من الياسمين والفاوانيا، وقاعدة ناعمة من الفانيليا والمسك.",
+   "descriptionEn": "A women's fragrance featuring top notes of pear and red berries, a heart of jasmine and peony, and a base of vanilla and musk.",
    "gender": "women",
    "families": [
+    "fruity",
     "floral",
-    "fruity"
+    "musk"
    ],
    "notes": {
     "top": [
@@ -32721,34 +32630,34 @@
    },
    "seasons": [
     "spring",
-    "summer"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
-    "gift"
+    "work"
    ],
    "tags": [
-    "إكزوتيك بارادايس",
+    "إكزوتيك باراديس",
     "رو بروكا",
     "عطر نسائي",
-    "Exotic Paradise",
-    "Rue Broca",
-    "فواكه وزهور"
-   ]
+    "عطر فاكهي زهري"
+   ],
+   "style": 2
   },
   "MAI-762": {
    "sourceHash": "11i7332",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "فانغارد من ميسون أسرار",
-   "nameEn": "Vanguard by Maison Asrar Eau de Parfum",
-   "descriptionAr": "عطر جلدي تشيبر جريء ومميز يفتتح بنفحات منعشة من الفواكه والحمضيات مع لمسة فلفل وردي حارة. يتعمق القلب بالتوابل الأنيقة قبل أن يرسو على قاعدة خشبية جلدية دافئة تلفت الأنظار.",
-   "descriptionEn": "A bold chypre leather fragrance opening with fruity citrus and pink pepper, followed by a spicy floral heart and a powerful woody-leathery base.",
+   "nameEn": "Vanguard by Maison Asrar",
+   "descriptionAr": "عطر جريء يجمع بين نفحات الفواكه والحمضيات في المقدمة، مع قلب دافئ وعطري من الزنجبيل والهيل، وقاعدة خشبية جلدية قوية من خشب الأرز والمسك والجلد.",
+   "descriptionEn": "A bold fragrance opening with crisp fruity-citrus notes, a heart of carnation, ginger, cardamom and lily of the valley, and a powerful woody-leathery base with ambergris and leather.",
    "gender": "unisex",
    "families": [
     "leather",
-    "fruity",
-    "woody"
+    "woody",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -32777,7 +32686,7 @@
    "seasons": [
     "autumn",
     "winter",
-    "spring"
+    "all"
    ],
    "occasions": [
     "work",
@@ -32785,26 +32694,25 @@
     "special"
    ],
    "tags": [
-    "فانغارد",
-    "ميسون أسرار",
-    "Vanguard",
-    "Maison Asrar",
+    "فانغارد ميسون أسرار",
     "عطر جلدي",
-    "عطور نيش"
-   ]
+    "عطر رجالي نسائي",
+    "ميسون أسرار"
+   ],
+   "style": 2
   },
   "MAI-763": {
    "sourceHash": "13j9cyr",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "زينو من ميسون الحمراء",
-   "nameEn": "Zeno by Maison Alhambra Eau de Parfum",
-   "descriptionAr": "إشراقة أنثوية منعشة تبدأ بتناغم الفواكه المنعشة مثل الأناناس والجريب فروت مع نفحات الورد والزهور البيضاء. تتكامل التجربة بقاعدة راقية تجمع الباتشولي والمسك الأبيض وخشب الأرز لإحساس مفعم بالحيوية.",
-   "descriptionEn": "An uplifting floral-fruity scent opening with sparkling citrus and pineapple, evolving into delicate florals and resting on an elegant woody base.",
+   "nameEn": "Zeno by Maison Alhambra",
+   "descriptionAr": "عطر نسائي يجمع بين الفواكه والزهور والأخشاب، يفتتح والجريب فروت والأناناس والبرغموت، مع قلب زهري غني وقاعدة من الباتشولي والمسك الأبيض والعنبر.",
+   "descriptionEn": "A women's fragrance featuring top notes of grapefruit, pineapple, bergamot, orange and rose, a rich floral heart, and a base of pine, patchouli, white musk, cedar and amber-incense.",
    "gender": "women",
    "families": [
-    "floral",
     "fruity",
+    "floral",
     "woody"
    ],
    "notes": {
@@ -32836,34 +32744,33 @@
    "seasons": [
     "spring",
     "summer",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
-    "work",
-    "special"
+    "work"
    ],
    "tags": [
-    "زينو",
-    "ميسون الحمراء",
-    "Zeno",
-    "Maison Alhambra",
-    "عطر نسائي زهري",
-    "بديل زين"
-   ]
+    "زينو ميسون الحمراء",
+    "عطر نسائي",
+    "عطر فواكه وزهور",
+    "ميسون الحمراء"
+   ],
+   "style": 2
   },
   "MAI-764": {
    "sourceHash": "1c7ku54",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "سو كانديد من ميسون الحمراء",
-   "nameEn": "So Candid by Maison Alhambra Eau de Parfum",
-   "descriptionAr": "عطر أنثوي مغرٍ ينبض بالحيوية بفضل مقدمته المنعشة من الفواكه والحمضيات الفواحة. يتألق قلب العطر بباقة زهرية من الورد والياسمين ليرتكز بنعومة على الفانيليا والأخشاب الكريمية.",
-   "descriptionEn": "A sweet and alluring fragrance blending bright fruity notes with romantic jasmine and rose, set on a creamy vanilla and musk base.",
+   "nameEn": "So Candid by Maison Alhambra",
+   "descriptionAr": "عطر نسائي يفتتح بنوتات الفواكه والحمضيات، مع قلب من الزهور الناعمة والورد والياسمين، وقاعدة دافئة من الفانيليا والمسك والأخشاب الكريمة.",
+   "descriptionEn": "A women's fragrance featuring top notes of fruity notes and citrus, a heart of soft florals, rose and jasmine, and a base of vanilla, musk and creamy woods.",
    "gender": "women",
    "families": [
     "floral",
-    "fruity"
+    "fruity",
+    "musk"
    ],
    "notes": {
     "top": [
@@ -32883,34 +32790,33 @@
    },
    "seasons": [
     "spring",
-    "autumn",
-    "winter"
+    "summer",
+    "all"
    ],
    "occasions": [
-    "evening",
-    "special",
-    "daily"
+    "daily",
+    "gift"
    ],
    "tags": [
     "سو كانديد",
     "ميسون الحمراء",
-    "So Candid",
-    "Maison Alhambra",
-    "عطر نسائي"
-   ]
+    "عطر نسائي",
+    "عطر زهري فاكهي"
+   ],
+   "style": 2
   },
   "ARD-765": {
    "sourceHash": "18lzsmk",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "طيف الحب من أرض الزعفران",
-   "nameEn": "Teef Al Hub by Ard Al Zaafaran Eau de Parfum",
-   "descriptionAr": "توليفة شرقية ساحرة تمزج فخامة العود مع حلاوة التوت الأحمر والأناناس والكراميل اللذيذ. يتناغم قلب العطر الزهري مع الفانيليا الداكنة والباتشولي ليمنحك هالة من الفخامة والجاذبية.",
-   "descriptionEn": "An oriental gourmand creation that unites rich agarwood with red berries, luscious caramel, and dark vanilla for a deep, captivating scent.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "تيف الحب من أرض الزعفران",
+   "nameEn": "Teef Al Hub by Ard Al Zaafaran",
+   "descriptionAr": "عطر متوازن يجمع بين نوتات العود والفواكه مع لمسات الزهور والفانيليا الدافئة.",
+   "descriptionEn": "A balanced fragrance combining notes of oud and fruits with touches of flowers and warm vanilla.",
    "gender": "unisex",
    "families": [
     "oud",
-    "oriental",
+    "fruity",
     "gourmand"
    ],
    "notes": {
@@ -32934,34 +32840,36 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "evening",
-    "special"
+    "special",
+    "daily"
    ],
    "tags": [
-    "طيف الحب",
+    "تيف الحب",
     "أرض الزعفران",
-    "Teef Al Hub",
-    "Ard Al Zaafaran",
     "عطر عود",
-    "عطر سويت"
-   ]
+    "عطر فواكه",
+    "عطر للجنسين"
+   ],
+   "style": 2
   },
   "AFN-766": {
    "sourceHash": "148jgl0",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "توراثي إلكتريك من أفنان",
-   "nameEn": "Turathi Electric by Afnan Eau de Parfum",
-   "descriptionAr": "عبير عصري منعش يفتتح بدفعة مبهجة من البرغموت والجريب فروت لإحساس فوري بالنشاط. يمتزج اللافندر والباتشولي في قلبه بأناقة ليختتم رحلته بقاعدة مسكية عنبرية راقية.",
-   "descriptionEn": "An energizing unisex scent defined by sparkling citrus notes, aromatic lavender, and a modern amber-musk dry down.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "توراتي إلكتريك من أفنان",
+   "nameEn": "Turathi Electric by Afnan",
+   "descriptionAr": "عطر منعش يفتتح بنوتات الحمضيات والحغفر ويمتزج بقاعدة من العمبر والمسك.",
+   "descriptionEn": "A fresh fragrance opening with citrus and grapefruit notes, blended with a base of amber and musk.",
    "gender": "unisex",
    "families": [
     "fresh",
     "citrus",
-    "amber"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -32979,34 +32887,34 @@
    },
    "seasons": [
     "summer",
-    "spring",
-    "all"
+    "spring"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "توراثي إلكتريك",
+    "توراتي إلكتريك",
     "أفنان",
-    "Turathi Electric",
-    "Afnan",
-    "عطر صيفي",
-    "عطر منعش"
-   ]
+    "عطر منعش",
+    "عطر حمضيات",
+    "عطر للجنسين"
+   ],
+   "style": 2
   },
   "GRA-767": {
    "sourceHash": "113z0or",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "شيري لوكس من غرانجور توبيز",
-   "nameEn": "Cherry Luxe by Grandeur Tubbees Eau de Parfum",
-   "descriptionAr": "عطر نسائي مبهج يعبق بنفحات الكرز الحلو والتوت الأحمر ليمنحك شعوراً بالبهجة والدلال. يتزين القلب بنسمات زهرية رقيقة تستقر على لمسات ناعمة من الفانيليا والمسك الدافئ.",
-   "descriptionEn": "A playful and sweet fragrance highlighting ripe cherry and red berries, softened by delicate florals and creamy vanilla.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "تشيري لوكس من غراندور",
+   "nameEn": "Cherry Luxe by Grandeur",
+   "descriptionAr": "عطر نسائي يبرز بنكهات الكرز الحلو والفواكه مع قاعدة كريمية ناعمة.",
+   "descriptionEn": "A women's fragrance highlighting sweet cherry and fruit notes with a soft creamy base.",
    "gender": "women",
    "families": [
     "fruity",
-    "gourmand"
+    "gourmand",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -33024,36 +32932,36 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter",
-    "spring"
+    "spring",
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
     "gift"
    ],
    "tags": [
-    "شيري لوكس",
-    "غرانجور",
-    "Cherry Luxe",
-    "Grandeur",
-    "عطر الكرز",
-    "عطر نسائي"
-   ]
+    "تشيري لوكس",
+    "غراندور",
+    "عطر كرز",
+    "عطر نسائي",
+    "عطر فواكه"
+   ],
+   "style": 2
   },
   "ZIM-768": {
    "sourceHash": "1ad2bds",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "أندلسي بلو من زيمايا",
-   "nameEn": "Andalusi Blue by Zimaya Eau de Parfum",
-   "descriptionAr": "عطر رجالي مفعم بالحيوية يجمع بين حدة الفلفل وانتعاش الحمضيات في افتتاحية آسرة. يتوازن القلب بنوتات اللافندر وإبرة الراعي، ليستقر بثبات على خشب العنبر والمسك النقي.",
-   "descriptionEn": "A dynamic masculine scent combining crisp citrus and black pepper with aromatic lavender over a warm amberwood base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "أندالوسي بلو من زيمايا",
+   "nameEn": "Andalusi Blue by Zimaya",
+   "descriptionAr": "عطر رجالي يجمع بين انتعاش الحمضيات والتوابل مع قاعدة خشبية دافئة.",
+   "descriptionEn": "A men's fragrance combining the freshness of citrus and spices with a warm woody base.",
    "gender": "men",
    "families": [
     "fresh",
-    "citrus",
-    "spicy"
+    "spicy",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -33079,25 +32987,26 @@
     "work"
    ],
    "tags": [
-    "أندلسي بلو",
+    "أندالوسي بلو",
     "زيمايا",
-    "Andalusi Blue",
-    "Zimaya",
     "عطر رجالي",
-    "عطر فريش"
-   ]
+    "عطر منعش",
+    "عطر توابل"
+   ],
+   "style": 2
   },
   "ALW-769": {
    "sourceHash": "7pc0j1",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "شغف الورد من الوطنية",
-   "nameEn": "Shagaf Al Ward by Al Wataniah Eau de Parfum",
-   "descriptionAr": "بوكيه أنثوي فاخر يبدأ بأناقة بتوليفة ساحرة من الورد والياسمين والأوسمانثوس. يتعمق الأريج مع زهر المسك الرومي والنرجس ليستقر على دفء العنبر وخشب الأرز الطبيعي.",
-   "descriptionEn": "A lush floral fragrance capturing a luxurious bouquet of rose, jasmine, and tuberose, balanced on an amber and cedarwood foundation.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "شغف الورد من الوطنّية",
+   "nameEn": "Shagaf Al Ward by Al Wataniah",
+   "descriptionAr": "عطر نسائي يرتكز على باقة من الزهور البيضاء والورد مع قاعدة خشبية وعمبرية.",
+   "descriptionEn": "A women's fragrance centered on a bouquet of white flowers and rose with a woody and amber base.",
    "gender": "women",
    "families": [
     "floral",
+    "woody",
     "amber"
    ],
    "notes": {
@@ -33118,34 +33027,34 @@
    "seasons": [
     "spring",
     "summer",
-    "autumn"
+    "all"
    ],
    "occasions": [
-    "special",
+    "daily",
     "evening",
     "gift"
    ],
    "tags": [
     "شغف الورد",
     "الوطنية",
-    "Shagaf Al Ward",
-    "Al Wataniah",
-    "عطر ورد",
-    "عطر زهري"
-   ]
+    "عطر نسائي",
+    "عطر زهور",
+    "عطر ورد"
+   ],
+   "style": 2
   },
   "ALW-770": {
    "sourceHash": "4yr96",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "غرناطة من الوطنية",
-   "nameEn": "Granada by Al Wataniah Eau de Parfum",
-   "descriptionAr": "توليفة شرقية دافئة وغنية بنفحات أوركيد الفانيليا ولمسات الياسمين الأبيض الفاتن. يفيض قلب العطر بحلاوة السكر البني وحبوب التونكا ليستقر على قاعدة عنبرية خشبية آسرة.",
-   "descriptionEn": "A warm oriental gourmand scent featuring vanilla orchid and jasmine, enriched by brown sugar, tonka bean, and sweet amberwood.",
+   "nameEn": "Granada by Al Wataniah",
+   "descriptionAr": "عطر نسائي شرقي بحلاوة السكر البني والفانيليا ونوتات العمبر الدافئة.",
+   "descriptionEn": "An oriental women's fragrance with the sweetness of brown sugar, vanilla, and warm amber notes.",
    "gender": "women",
    "families": [
-    "gourmand",
     "oriental",
+    "gourmand",
     "amber"
    ],
    "notes": {
@@ -33175,20 +33084,20 @@
    "tags": [
     "غرناطة",
     "الوطنية",
-    "Granada",
-    "Al Wataniah",
     "عطر شرقي",
-    "فانيليا وسكر"
-   ]
+    "عطر فانيليا",
+    "عطر نسائي"
+   ],
+   "style": 2
   },
   "ZIM-771": {
    "sourceHash": "16epmpa",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
    "nameAr": "إتقان جولد من زيمايا",
-   "nameEn": "Itqan Gold by Zimaya Eau de Parfum",
-   "descriptionAr": "عطر شرقي راقٍ يجمع بين فخامة خيوط الزعفران وجمال زهور الياسمين النقي. يتهادى العطر بنعومة خشب العنبر والفانيليا ليختتم حضوره بنفحات المسك وخشب الأرز العطري.",
-   "descriptionEn": "A refined oriental fragrance highlighting precious saffron and jasmine, enveloped by amberwood, soft vanilla, and cedar.",
+   "nameEn": "Itqan Gold by Zimaya",
+   "descriptionAr": "عطر يجمع بين نوتات الزعفران والياسمين مع قاعدة خشبية ومسكية دافئة.",
+   "descriptionEn": "A fragrance combining saffron and jasmine notes with a warm woody and musky base.",
    "gender": "unisex",
    "families": [
     "oriental",
@@ -33212,7 +33121,7 @@
    "seasons": [
     "winter",
     "autumn",
-    "spring"
+    "all"
    ],
    "occasions": [
     "evening",
@@ -33222,24 +33131,24 @@
    "tags": [
     "إتقان جولد",
     "زيمايا",
-    "Itqan Gold",
-    "Zimaya",
-    "عطر الزعفران",
-    "عطر شرقي"
-   ]
+    "عطر زعفران",
+    "عطر شرقي",
+    "عطر للجنسين"
+   ],
+   "style": 2
   },
   "KHA-772": {
    "sourceHash": "1i4ah18",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "باناش أنجل دست من خدلج",
-   "nameEn": "Panache Angel Dust by Khadlaj Extrait de Parfum",
-   "descriptionAr": "إبداع فاخر بتركيز إكستري دو بارفان يمزج حلاوة المندرين والفانيليا مع لمسة الكشمش الأحمر الجذابة. يفيض القلب بزهور التوبيروز والرم قبل أن يغلفك بدفء الكريمة المخفوقة والجاوي والمسك المخملي.",
-   "descriptionEn": "An indulgent extrait de parfum opening with juicy mandarin and vanilla, revealing a creamy rum-tuberose heart and a rich whipped cream dry down.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "باناش أنجل داست من خادلاج",
+   "nameEn": "Panache Angel Dust by Khadlaj",
+   "descriptionAr": "عطر نسائي غني برائحة الفانيليا والكريمة مع لمسات الفواكه والزهور الناعمة.",
+   "descriptionEn": "A rich women's fragrance with vanilla and cream notes paired with soft fruits and florals.",
    "gender": "women",
    "families": [
     "gourmand",
-    "oriental",
+    "amber",
     "floral"
    ],
    "notes": {
@@ -33269,27 +33178,27 @@
     "special"
    ],
    "tags": [
-    "باناش أنجل دست",
-    "خدلج",
-    "Panache Angel Dust",
-    "Khadlaj",
+    "باناش أنجل داست",
+    "خادلاج",
     "عطر فانيليا",
-    "اكستري دي بارفان"
-   ]
+    "عطر كريمة",
+    "عطر نسائي"
+   ],
+   "style": 2
   },
   "KHA-773": {
    "sourceHash": "dixo0t",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "ستيلر مسك من خدلج",
-   "nameEn": "Stellar Musk by Khadlaj Eau de Parfum",
-   "descriptionAr": "عطر نقي يعبر عن الصفاء والرقي بنفحات المسك الأبيض واللمسات المنعشة المشرقة. يمتزج القلب البودري الناعم مع عبير الزهور ليرتكز بأمان على خشب دافئ وفانيليا هادئة.",
-   "descriptionEn": "A pure, calming musk fragrance enriched with crisp fresh notes, powdery florals, and a gentle woody-vanilla base.",
-   "gender": "unisex",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "ستيلار مسك من خادلاج",
+   "nameEn": "Stellar Musk by Khadlaj",
+   "descriptionAr": "عطر يعتمد على المسك الأبيض والنوتات المنعشة مع قاعدة بودرية وناعمة.",
+   "descriptionEn": "A fragrance based on white musk and fresh notes with a soft powdery base.",
+   "gender": "women",
    "families": [
     "musk",
     "powdery",
-    "floral"
+    "fresh"
    ],
    "notes": {
     "top": [
@@ -33316,22 +33225,22 @@
     "work"
    ],
    "tags": [
-    "ستيلر مسك",
-    "خدلج",
-    "Stellar Musk",
-    "Khadlaj",
-    "مسك أبيض",
-    "عطر بودري"
-   ]
+    "ستيلار مسك",
+    "خادلاج",
+    "عطر مسك",
+    "عطر بودري",
+    "عطر نسائي"
+   ],
+   "style": 2
   },
   "MOO-774": {
    "sourceHash": "ob5lx2",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "مود نايف فور هير",
-   "nameEn": "Mood Naif For Her by Mood Perfume Eau de Parfum",
-   "descriptionAr": "عطر أنثوي استوائي آسر يفتتح بعبير جوز الهند المنعش مع الياسمين وزهر البرتقال الفواح. يتألق قلبه بأزهار التياري والورد الطائفي قبل أن يستقر على فخامة الفانيليا وخشب الغاياك والمسك.",
-   "descriptionEn": "A seductive floral-oriental scent featuring exotic coconut and tiare flower, layered over warm vanilla, tonka bean, and guaiac wood.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "مود نايف للنساء",
+   "nameEn": "Mood Naif For Her",
+   "descriptionAr": "عطر نسائي يبرز بنفحات جوز الهند والزهور الاستوائية مع قاعدة فانيليا شرقية.",
+   "descriptionEn": "A women's fragrance highlighting coconut and tropical floral notes with an oriental vanilla base.",
    "gender": "women",
    "families": [
     "floral",
@@ -33359,32 +33268,30 @@
     ]
    },
    "seasons": [
-    "spring",
     "summer",
-    "autumn"
+    "spring"
    ],
    "occasions": [
     "daily",
-    "evening",
-    "special"
+    "evening"
    ],
    "tags": [
     "مود نايف",
     "مود بيرفيوم",
-    "Mood Naif",
-    "Mood Perfume",
-    "عطر نسائي",
-    "جوز الهند والزهور"
-   ]
+    "عطر جوز الهند",
+    "عطر زهور",
+    "عطر نسائي"
+   ],
+   "style": 2
   },
   "KHA-775": {
    "sourceHash": "1pk0r63",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "خدلج كاروس عود فاير",
-   "nameEn": "Khadlaj Karus Oud Fire Eau de Parfum",
-   "descriptionAr": "عطر شرقي دافئ يجمع بين انتعاش البرغموت والورد مع لمسات دافئة من جوزة الطيب والهيل. يستقر على قاعدة ناعمة وغنية من الفانيليا والباتشولي لإحساس خشبي مريح.",
-   "descriptionEn": "A warm, spicy fragrance blending bergamot and davana with a heart of nutmeg and cardamom over a rich vanilla and patchouli base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "كاروس عود فاير من خادلاج",
+   "nameEn": "Karus Oud Fire by Khadlaj",
+   "descriptionAr": "عطر دافئ يجمع بين التوابل والبرغموت مع قاعدة فانيليا وأخشاب مدخنة.",
+   "descriptionEn": "A warm fragrance combining spices and bergamot with a base of vanilla and smoky woods.",
    "gender": "unisex",
    "families": [
     "oriental",
@@ -33407,29 +33314,30 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "خدلج",
     "كاروس عود فاير",
-    "عطر للجنسين",
-    "Khadlaj Karus Oud Fire",
-    "عطور دافئة"
-   ]
+    "خادلاج",
+    "عطر توابل",
+    "عطر شرقي",
+    "عطر للجنسين"
+   ],
+   "style": 2
   },
   "KHA-776": {
    "sourceHash": "5x0zts",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "خدلج كاروس سيكريت مسك",
-   "nameEn": "Khadlaj Karus Secret Musk Eau de Parfum",
-   "descriptionAr": "توليفة مسكية سكرية جذابة تمتزج فيها نعومة المسك مع الشوكولاتة والتونكا والورد. تكتمل الرائحة بنفحات دافئة من الزعفران والفواكه الحمراء لتمنح طابعاً غنياً ومميزاً.",
-   "descriptionEn": "A sweet, musky fragrance combining sugary musk with tonka and chocolate, finishing on warm saffron and red fruits.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "كاروس سيكريت مسك من خادلاج",
+   "nameEn": "Karus Secret Musk by Khadlaj",
+   "descriptionAr": "عطر مسكي وحلو يمزج بين الشوكولاتة والتونكا مع لمسات الفواكه والزعفران.",
+   "descriptionEn": "A sweet and musky fragrance blending chocolate and tonka with touches of fruits and saffron.",
    "gender": "unisex",
    "families": [
     "musk",
@@ -33452,36 +33360,36 @@
     ]
    },
    "seasons": [
-    "autumn",
     "winter",
-    "spring"
+    "autumn",
+    "all"
    ],
    "occasions": [
-    "daily",
     "evening",
-    "special"
+    "daily"
    ],
    "tags": [
-    "خدلج",
     "كاروس سيكريت مسك",
+    "خادلاج",
     "عطر مسك",
-    "Khadlaj Karus Secret Musk",
-    "مسك وسكر"
-   ]
+    "عطر شوكولاتة",
+    "عطر للجنسين"
+   ],
+   "style": 2
   },
   "KHA-777": {
    "sourceHash": "oqi0n3",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "خدلج كاروس عنبر جولد",
-   "nameEn": "Khadlaj Karus Amber Gold Eau de Parfum",
-   "descriptionAr": "عطر زهري خشبي فاخر ينبض بأناقة الياسمين والنرجس مع قلب من الورد والكشمش الأسود. ترتكز تركيبته على عمق العود والباتشولي ليمنح لمسة راقية.",
-   "descriptionEn": "A luxurious floral-woody fragrance blending jasmine, narcissus, and rose with a deep base of oud and patchouli.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "كاروس أمبر جولد من خادلاج",
+   "nameEn": "Karus Amber Gold by Khadlaj",
+   "descriptionAr": "عطر يجمع بين الزهور البيضاء الفواحة والورد مع قاعدة عود وأخشاب عميقة.",
+   "descriptionEn": "A fragrance combining radiant white florals and rose with a deep oud and wood base.",
    "gender": "unisex",
    "families": [
-    "amber",
+    "floral",
     "oud",
-    "floral"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -33499,35 +33407,35 @@
     ]
    },
    "seasons": [
-    "autumn",
     "winter",
+    "autumn",
     "spring"
    ],
    "occasions": [
     "evening",
-    "special",
-    "gift"
+    "special"
    ],
    "tags": [
-    "خدلج",
-    "كاروس عنبر جولد",
+    "كاروس أمبر جولد",
+    "خادلاج",
+    "عطر زهور",
     "عطر عود",
-    "Khadlaj Karus Amber Gold",
-    "عنبر وورد"
-   ]
+    "عطر للجنسين"
+   ],
+   "style": 2
   },
   "KHA-778": {
    "sourceHash": "1udecu5",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T13:06:31.049Z",
-   "nameAr": "خدلج كاروس بلو سبايس",
-   "nameEn": "Khadlaj Karus Blu Spice Eau de Parfum",
-   "descriptionAr": "عطر رجالي منعش يجمع بين نقاء الشاي والبرغموت مع حيوية النيرولي والزنجبيل. يستقر على لمسات دافئة من القرفة وخشب الغاياك لتمنحك حضوراً مفعماً بالثقة.",
-   "descriptionEn": "A fresh aromatic men's fragrance opening with tea and bergamot, enriched with ginger and neroli over a warm cinnamon and guaiacwood base.",
+   "updatedAt": "2026-11-04T09:29:08.503Z",
+   "nameAr": "كاروس بلو سبايس من خادلاج",
+   "nameEn": "Karus Blu Spice by Khadlaj",
+   "descriptionAr": "عطر رجالي منعش يفتتح بنوتات الشاي والبرغموت وينتهي بقاعدة دافئة من القرفة.",
+   "descriptionEn": "A fresh men's fragrance opening with tea and bergamot notes and ending with a warm cinnamon base.",
    "gender": "men",
    "families": [
-    "spicy",
     "fresh",
+    "spicy",
     "woody"
    ],
    "notes": {
@@ -33545,22 +33453,22 @@
     ]
    },
    "seasons": [
-    "spring",
     "summer",
-    "autumn"
+    "spring",
+    "all"
    ],
    "occasions": [
     "daily",
-    "work",
-    "evening"
+    "work"
    ],
    "tags": [
-    "خدلج",
     "كاروس بلو سبايس",
+    "خادلاج",
     "عطر رجالي",
-    "Khadlaj Karus Blu Spice",
-    "عطور منعشة"
-   ]
+    "عطر منعش",
+    "عطر توابل"
+   ],
+   "style": 2
   },
   "KHA-779": {
    "sourceHash": "1hulq59",
