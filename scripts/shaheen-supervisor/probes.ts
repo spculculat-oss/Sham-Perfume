@@ -394,6 +394,36 @@ function platformOwnerProbes(): Probe[] {
   return [{ tool: 'platform_owner_agent', question: 'تأكيد تسجيل وكيل ملك المنصة تحت إدارة شاهين', answer: 'مسجل تحت قسم القيادة، خاضع لدولة المنصة، وأوامر صاحب الموقع فوق أوامره.', ms: 0, ok: true, findings: [] }];
 };
 
+async function visitorSuggestionsProbes(ctx: ProbeContext): Promise<Probe[]> {
+  if (!ctx.adminToken) return [];
+  type Response = {
+    storage?: { persistent?: boolean };
+    retentionDays?: number;
+    summary?: { total?: number; new?: number };
+    items?: Record<string, unknown>[];
+  };
+  const r = await timed(() => json<Response>(ctx.fetch, `${ctx.site}/api/admin/insights/suggestions`, {
+    headers: { Authorization: `Bearer ${ctx.adminToken}` },
+  }, 15_000));
+  const data = r.value;
+  const findings: Probe['findings'] = [];
+  const schemaOk = Boolean(data?.storage && typeof data.storage.persistent === 'boolean'
+    && data.retentionDays === 180 && data.summary && Number.isInteger(data.summary.total)
+    && Number.isInteger(data.summary.new) && Array.isArray(data.items));
+  if (!r.error && !schemaOk) findings.push({ severe: true, text: 'مسار مراجعة الاقتراحات لا يرجع المخطط أو مدة الاحتفاظ المتوقعة' });
+  if (!r.error && schemaOk && !data!.storage!.persistent) findings.push({ severe: false, text: 'التخزين غير دائم؛ الإرسال العام معطل حمايةً من فقد الاقتراحات' });
+  const sensitiveFields = ['accountId', 'visitorId', 'email', 'phone', 'ip', 'userAgent'];
+  if (!r.error && (data?.items || []).some((item) => sensitiveFields.some((field) => field in item))) {
+    findings.push({ severe: true, text: 'سجل اقتراح يتضمن حقلاً شخصيًا غير مسموح' });
+  }
+  // Never pass visitor-submitted text, examples, identifiers or aggregate counts to Shaheen's model reviewer.
+  return [{
+    tool: 'visitor_suggestions', question: 'فحص مخطط صندوق الاقتراحات ومدة الاحتفاظ فقط',
+    answer: 'تم فحص مسار الإدارة والمخطط ومدة الاحتفاظ. لم تُقرأ أو تُرسل نصوص الاقتراحات أو معرّفات الزوار.',
+    ms: r.ms, ok: !r.error && schemaOk, error: r.error, findings,
+  }];
+};
+
 /**
  * «وكيل مجلس المتخصصين»: المجلس وأدواته، وأسئلة من **بنك تدريب المجلس نفسه** — فأداة الإشراف بتقيس
  * على الموقع الحي نفس الحالات اللي الوكيل متدرّب عليها في `scripts/shaheen-specialists/questions.ts`،
@@ -464,4 +494,5 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   shaheen_council: councilProbes,
   language_agent: languageAgentProbes,
   platform_owner_agent: platformOwnerProbes,
+  visitor_suggestions: visitorSuggestionsProbes,
 };

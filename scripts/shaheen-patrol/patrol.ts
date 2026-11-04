@@ -145,6 +145,7 @@ export const REVIEWERS: Partial<Record<BotId, Reviewer>> = {
   sales: { nameAr: 'خبير فحص المبيعات والتحصيل', nameEn: 'Sales & collection reviewer', probes: ['payments', 'pricing'] },
   service: { nameAr: 'خبير فحص مكتب الدعم', nameEn: 'Customer care reviewer', probes: [] },
   visitor_tour: { nameAr: 'خبير فحص رحلة الشراء', nameEn: 'Purchase journey reviewer', probes: ['currency', 'product_pages', 'site'] },
+  visitor_voice: { nameAr: 'خبير فحص خصوصية اقتراحات الزوار', nameEn: 'Visitor suggestions privacy reviewer', probes: [] },
   design_audit: { nameAr: 'خبير فحص التصميم واللغات', nameEn: 'Design & languages reviewer', probes: ['l10n', 'site'] },
   school: { nameAr: 'خبير فحص المذاكرة', nameEn: 'School reviewer', probes: [] },
   teacher: { nameAr: 'خبير فحص دروس المعلم المحلي', nameEn: 'Local lessons reviewer', probes: [] },

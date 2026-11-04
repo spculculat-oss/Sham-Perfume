@@ -146,4 +146,8 @@ test("the handbook puts the owner above everything", () => {
   const doc = handbookDoc();
   assert.ok(doc.indexOf('صاحب الموقع والصلاحيات') < doc.indexOf('مين إحنا ورايحين فين'));
   for (const r of OWNER_RULES) assert.ok(doc.includes(r.id));
+  const pricingRule = OWNER_RULES.find((r) => r.id === 'O-12')!;
+  assert.match(pricingRule.textAr, /50%/);
+  assert.match(pricingRule.textAr, /شحن التوصيل للعميل يُحسب منفصلاً ويدفعه العميل/);
+  assert.match(pricingRule.textAr, /لا يغيّر أي روبوت سعر المنتج أو الشحن أو العرض/);
 });

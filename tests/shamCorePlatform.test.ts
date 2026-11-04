@@ -43,6 +43,8 @@ test('the seed ships a document for each platform feature, including the ones ad
   }
   // The Arabic docs stay searchable in English too (the visitor may ask in English).
   assert.match(docs.get('kb-platform-molecule-studio')!.tags.join(' '), /molecule studio/i);
+  assert.match(docs.get('kb-platform-suggestions')!.content, /180 يوم/);
+  assert.match(docs.get('kb-platform-suggestions')!.content, /لا.*مشاعر|مشاعر.*لا/);
   // The model prompt gets the live map and the real shipping table, never a copied list.
   assert.match(platformCatalog('en'), /Molecule Studio/);
   assert.match(platformCatalog('ar'), /حاسبة التركيز/);
@@ -84,8 +86,9 @@ test('knowledgeSeedAdditions only lists what a given version introduced', () => 
   assert.ok(fresh.every((d) => d.id.startsWith('kb-platform-') || d.id.startsWith('kb-store-')), 'only the guides added after v1');
   assert.ok(fresh.some((d) => d.id.startsWith('kb-platform-')), 'the platform guide is in the upgrade');
   assert.deepEqual(knowledgeSeedAdditions(KNOWLEDGE_SEED_VERSION), []);
-  // A store that only has the platform guide still receives the store guide.
-  assert.ok(knowledgeSeedAdditions(2).every((d) => d.id.startsWith('kb-store-')), 'v3 adds the store guide only');
+  // Existing v2 stores get the v3 store guide; v3 stores receive the newly added v4 suggestion guide only.
+  assert.ok(knowledgeSeedAdditions(2).some((d) => d.id.startsWith('kb-store-')), 'v3 adds the store guide');
+  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions'], 'v4 adds the visitor-suggestions guide');
 });
 
 test('the router recognises platform questions and never reads an English word as an order reference', () => {
@@ -102,6 +105,8 @@ test('the router recognises platform questions and never reads an English word a
     ['what is molecule studio', 'molecule_studio'],
     ['tell me about shipping', 'shipping'],
     ['how do I sign in with a passkey', 'account'],
+    ['إزاي أبعت اقتراح للمنصة؟', 'visitor_suggestions'],
+    ['how do I send feedback?', 'visitor_suggestions'],
     ['دليل المنصة', undefined],
     ['إيه الجديد في المنصة؟', undefined],
   ];
@@ -138,6 +143,12 @@ test('a platform question is answered directly, in the visitor’s language, wit
   assert.match(en.reply, /Book library/);
   assert.match(en.reply, /Open page/);
   assert.ok(en.actions.some((a) => a.type === 'open_tab' && a.tab === 'world_perfumes'));
+
+  const feedback = await bot.chat({ message: 'إزاي أبعت اقتراح للموقع؟', visitorId: visitor, language: 'ar' });
+  assert.match(feedback.reply, /اقتراح/);
+  assert.match(feedback.reply, /180 يوم/);
+  assert.ok(feedback.citations.some((c) => c.id === 'kb-platform-suggestions'));
+  assert.equal(feedback.actions.some((a) => a.type === 'open_tab'), false, 'the footer form has no tab to open');
 
   // Platform questions are not knowledge gaps: the guide always has an answer.
   assert.deepEqual(await repo.gaps(), []);

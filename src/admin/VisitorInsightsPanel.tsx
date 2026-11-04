@@ -5,7 +5,7 @@
  * Data: GET /api/admin/insights (server/insights.ts); the analysis lives in src/utils/visitorInsights.ts.
  */
 import React, { useCallback, useEffect, useState } from 'react';
-import { Activity, Brain, Download, Eye, FlaskConical, Globe, Package, RefreshCw, ShieldCheck, Trash2, Users } from 'lucide-react';
+import { Activity, Brain, Download, Eye, FlaskConical, Globe, Lightbulb, Package, RefreshCw, ShieldCheck, Trash2, Users } from 'lucide-react';
 import { adminRequest, send } from './adminApi';
 import { T, TP, formatAdminNumber, getAdminLang, useAdminLanguage } from './adminL10n';
 import {
@@ -14,6 +14,10 @@ import {
 } from '../utils/visitorInsights';
 import type { OrderCountry, PulseCountry } from '../utils/insightsPulse';
 import type { BuyerMotive, BuyerStyle } from '../utils/salesCraft';
+import {
+  SUGGESTION_KINDS, SUGGESTION_STATUSES, SUGGESTION_STATUS_TEXT, SUGGESTION_TOPIC_TEXT,
+  SUGGESTION_KIND_TEXT, type SuggestionStatus, type VisitorSuggestion, type VisitorSuggestionSummary,
+} from '../utils/visitorVoice';
 
 type Text = { ar: string; en: string };
 const pick = (t?: Text) => (t ? (getAdminLang() === 'ar' ? t.ar : t.en) : '');
@@ -40,6 +44,100 @@ function Card({ title, icon, children }: { title: string; icon?: React.ReactNode
       <h3 className="font-bold text-stone-900 text-sm flex items-center gap-2">{icon}{title}</h3>
       {children}
     </section>
+  );
+}
+
+type SuggestionResponse = {
+  storage: { kind: string; persistent: boolean };
+  retentionDays: number;
+  summary: VisitorSuggestionSummary;
+  items: VisitorSuggestion[];
+};
+
+function SuggestionInbox() {
+  const [data, setData] = useState<SuggestionResponse | null>(null);
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+  const reload = useCallback(async () => {
+    setBusy(true); setError('');
+    try { setData(await adminRequest<SuggestionResponse>('/insights/suggestions')); }
+    catch (e) { setError(e instanceof Error ? e.message : String(e)); }
+    finally { setBusy(false); }
+  }, []);
+  useEffect(() => { void reload(); }, [reload]);
+
+  const update = async (id: string, status: SuggestionStatus) => {
+    setBusy(true); setError('');
+    try {
+      await adminRequest(`/insights/suggestions/${encodeURIComponent(id)}`, send('PATCH', { status }));
+      await reload();
+    } catch (e) { setError(e instanceof Error ? e.message : String(e)); setBusy(false); }
+  };
+  const erase = async (id: string) => {
+    if (!window.confirm(T('تمسح الاقتراح ده نهائيًا؟'))) return;
+    setBusy(true); setError('');
+    try {
+      await adminRequest(`/insights/suggestions/${encodeURIComponent(id)}`, send('DELETE'));
+      await reload();
+    } catch (e) { setError(e instanceof Error ? e.message : String(e)); setBusy(false); }
+  };
+  const locale = getAdminLang() === 'ar' ? 'ar-EG' : 'en';
+  const summary = data?.summary;
+  const counts: Array<[string, number]> = summary ? [
+    [T('إجمالي الاقتراحات'), summary.total], [T('بانتظار المراجعة'), summary.new],
+    ...SUGGESTION_KINDS.map((kind) => [pick(SUGGESTION_KIND_TEXT[kind]), summary.kinds[kind]] as [string, number]),
+  ] : [];
+
+  return (
+    <Card title={T('اقتراحات الزوار (اختيارية)')} icon={<Lightbulb className="h-4 w-4 text-amber-600" />}>
+      <p className="text-xs text-stone-600">{T('مراجعة بشرية واقتراحات موضوعية بالكلمات المفتاحية فقط؛ لا استنتاج للمشاعر ولا تعديل تلقائي للترشيحات أو الأسعار أو العروض.')}</p>
+      <div className="flex flex-wrap items-center gap-2">
+        <button type="button" onClick={() => void reload()} disabled={busy} className="rounded-lg border border-stone-300 px-2.5 py-1.5 text-[11px] font-semibold hover:bg-stone-50 disabled:opacity-50"><RefreshCw className="me-1 inline h-3 w-3" />{T('تحديث الاقتراحات')}</button>
+        {data && <span className="text-[11px] text-stone-500">{T('مدة الاحتفاظ')} {data.retentionDays} {T('يومًا')}</span>}
+      </div>
+      <p className="text-[10px] text-stone-500">{T('الاقتراحات المنتهية تُحذف في دورة التنظيف أو عند أول استخدام لاحق للموقع.')}</p>
+      {!data?.storage.persistent && data && <p className="rounded-lg border border-amber-200 bg-amber-50 p-2 text-[11px] text-amber-900">{T('التخزين الدائم غير متاح؛ لن تُقبل اقتراحات جديدة.')}</p>}
+      {error && <p role="alert" className="text-xs text-red-700">{error}</p>}
+      {summary && (
+        <>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {counts.map(([label, count]) => (
+              <div key={label} className="rounded-xl border border-stone-200 bg-stone-50 p-2"><p className="text-[10px] text-stone-500">{label}</p><p className="font-bold tabular-nums">{n(count)}</p></div>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {Object.entries(summary.topics).filter(([, count]) => count > 0).map(([topic, count]) => (
+              <span key={topic} className="rounded-full bg-amber-50 px-2 py-1 text-[10px] text-amber-900">{pick(SUGGESTION_TOPIC_TEXT[topic as keyof typeof SUGGESTION_TOPIC_TEXT])}: {n(count)}</span>
+            ))}
+            {!Object.values(summary.topics).some((count) => count > 0) && <span className="text-[11px] text-stone-500">{T('لسه مافيش بيانات.')}</span>}
+          </div>
+          {!data.items.length && <p className="text-xs text-stone-500">{T('لسه مافيش اقتراحات.')}</p>}
+          <div className="space-y-2">
+            {data.items.map((item) => (
+              <article key={item.id} className="rounded-xl border border-stone-200 p-3 space-y-2">
+                <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-stone-500">
+                  <span className="font-semibold text-stone-800">{pick(SUGGESTION_KIND_TEXT[item.kind])}</span>
+                  <span>·</span><time dateTime={item.createdAt}>{new Date(item.createdAt).toLocaleString(locale)}</time>
+                  {item.language && <><span>·</span><span>{item.language}</span></>}
+                  {item.topics.map((topic) => <span key={topic} className="rounded-full bg-stone-100 px-2 py-0.5">{pick(SUGGESTION_TOPIC_TEXT[topic])}</span>)}
+                </div>
+                <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-stone-800">{item.text}</p>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <label className="flex items-center gap-1.5 text-[11px] text-stone-600">
+                    <span>{T('الحالة')}:</span>
+                    <select value={item.status} disabled={busy} onChange={(event) => void update(item.id, event.target.value as SuggestionStatus)} className="rounded-lg border border-stone-300 bg-white px-2 py-1 text-xs">
+                      {SUGGESTION_STATUSES.map((status) => <option key={status} value={status}>{pick(SUGGESTION_STATUS_TEXT[status])}</option>)}
+                    </select>
+                  </label>
+                  <button type="button" onClick={() => void erase(item.id)} disabled={busy} className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-2 py-1 text-[11px] text-red-700 hover:bg-red-50 disabled:opacity-50"><Trash2 className="h-3 w-3" />{T('حذف نهائي')}</button>
+                </div>
+              </article>
+            ))}
+          </div>
+          {summary.total > data.items.length && <p className="text-[11px] text-stone-500">{T('المعروض أحدث 300 اقتراح؛ الإجمالي يشمل كل السجلات غير المنتهية.')}</p>}
+        </>
+      )}
+    </Card>
   );
 }
 
@@ -83,6 +181,7 @@ export default function VisitorInsightsPanel() {
         <button type="button" onClick={() => void load()} disabled={busy} className="rounded-xl bg-amber-500 text-stone-950 px-3 py-1.5 text-xs font-bold flex items-center gap-1 disabled:opacity-50"><RefreshCw className="w-3.5 h-3.5" />{T('تحديث')}</button>
         <button type="button" onClick={() => void exportAll()} className="rounded-xl border border-stone-300 px-3 py-1.5 text-xs flex items-center gap-1"><Download className="w-3.5 h-3.5" />{T('تصدير كل البيانات (JSON)')}</button>
       </div>
+      <SuggestionInbox />
       {error && <p className="text-xs text-red-700">{error}</p>}
       {data && !data.storage.persistent && (
         <p className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-900">{T('التخزين مؤقت دلوقتي: البيانات بتتمسح لما السيرفر يعيد التشغيل. هتتحفظ على طول أول ما قاعدة البيانات المجانية تتوصل.')}</p>

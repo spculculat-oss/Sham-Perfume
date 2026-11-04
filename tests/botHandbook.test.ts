@@ -25,6 +25,10 @@ test('the new robots joined the organisation: the teacher, the library and the r
     assert.ok(REVIEWERS[id], `${id} has an expert reviewer`);
   }
   assert.ok(LINKS.some((l) => l.from === 'legal' && l.to === 'researcher'), 'the legal manager rules on the open sources');
+  assert.ok(BOTS.some((b) => b.id === 'visitor_voice' && b.aiTools?.includes('visitor_suggestions')), 'visitor feedback belongs to Shaheen');
+  assert.ok(SHIFTS.some((s) => s.bots.includes('visitor_voice')), 'visitor feedback is monitored in the visitor shift');
+  assert.ok(REVIEWERS.visitor_voice, 'the privacy specialist reviews its work');
+  assert.ok(LINKS.some((l) => l.from === 'visitor_voice' && l.to === 'secretary'), 'the secretary tests its metadata without reading suggestions');
   assert.ok(JOURNEYS.some((j) => ['library', 'researcher', 'teacher'].every((b) => j.steps.some((s) => s.bot === b))), 'the ops map shows the offline journey');
 });
 
@@ -44,6 +48,9 @@ test("the handbook's pricing is the store's real rule and shipping table", () =>
   const pricing = handbookSections().find((s) => s.id === 'pricing')!.points.join('\n');
   assert.ok(pricing.includes(`× ${PRICE_MARKUP}`));
   for (const z of [...SHIPPING.zones, SHIPPING.default]) assert.ok(pricing.includes(`${z.name.ar}: ${z.firstItem} ${SHIPPING.currency} لأول زجاجة + ${z.extraItem}`), z.id);
+  assert.match(pricing, /شحن التوصيل للعميل.*على العميل/);
+  assert.match(pricing, /مش بيتخصم من نسبة الـ50%/);
+  assert.match(handbookBrief(), /شحن التوصيل للعميل.*على العميل/);
 });
 
 test('the handbook directory lists every robot, and SHAHEEN_HANDBOOK.md is up to date', () => {

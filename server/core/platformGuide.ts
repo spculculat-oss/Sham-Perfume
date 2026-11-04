@@ -320,6 +320,20 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     tags: ['خصوصية', 'بيانات', 'privacy', 'cookies', 'gdpr'],
   },
   {
+    id: 'visitor_suggestions', group: 'help', docId: 'kb-platform-suggestions',
+    name: { ar: 'اقتراحات الزوار', en: 'Visitor suggestions' },
+    summary: {
+      ar: 'تقدر تبعت اقتراحًا اختياريًا من غير حساب، من زر «شارك اقتراحك» في تذييل الموقع.',
+      en: 'You can send an optional suggestion without an account using “Share a suggestion” in the site footer.',
+    },
+    details: {
+      ar: 'اكتب اقتراحك ووافق على الإرسال بنفسك. مفيش خانة اسم أو تواصل أو ربط بحسابك؛ البريد والأرقام الطويلة بتتخفى، والأسرار والبيانات الشخصية الواضحة بترفض. إدارة شام تراجع الرسائل وتضع لها موضوعات بالكلمات المفتاحية فقط؛ مش بنحلل المشاعر ولا نبعت النص لمحرك ذكاء ولا نغير ترشيحات أو أسعار أو عروض تلقائيًا. تنتهي صلاحيته بعد 180 يومًا، ويحذفه التنظيف الدوري أو أول استخدام لاحق للموقع؛ وتفاصيل أكتر في سياسة الخصوصية.',
+      en: 'Write a suggestion and confirm submission. There is no name or contact field and it is not linked to your account; e-mails and long numbers are redacted, and secrets or clear personal details are refused. Sham administration reviews suggestions and applies keyword-only topic tags; we do not infer emotions, send the text to an AI engine, or automatically change recommendations, prices or offers. Suggestions expire after 180 days and are removed by routine cleanup or on the first later use of the site. See the privacy policy for details.',
+    },
+    keywords: ['اقتراحات الزوار', 'اقتراح للموقع', 'اقتراح للمنصة', 'اقتراحات الموقع', 'ارسل اقتراح', 'ابعت اقتراح', 'ابعت ملاحظة', 'شارك اقتراحك', 'ملاحظات الموقع', 'send feedback', 'send a suggestion', 'feedback', 'suggestion', 'share feedback'],
+    tags: ['اقتراحات', 'ملاحظات', 'خصوصية', 'feedback', 'suggestions'],
+  },
+  {
     id: 'legal', group: 'help', docId: 'kb-platform-legal',
     name: { ar: 'المركز القانوني', en: 'Legal centre' },
     summary: {

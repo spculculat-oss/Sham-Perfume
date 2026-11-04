@@ -182,6 +182,9 @@ test('the curriculum comes from the handbook and the selling craft — every les
   // Every handbook section is taught somewhere, and every principle is used by a lesson.
   for (const section of ids) assert.ok(SALES_LESSONS.some((l) => l.handbook.includes(section)), section);
   for (const principle of principleIds) assert.ok(SALES_LESSONS.some((l) => l.principles.includes(principle)), principle);
+  const pricingLesson = SALES_LESSONS.find((lesson) => lesson.id === 'platform-pricing')!;
+  assert.match(pricingLesson.ideaAr, /شحن التوصيل للعميل.*على العميل.*مايتخصمش من نسبة الـ50%/);
+  assert.match(pricingLesson.quiz.qAr, /قبل الشحن للعميل/);
   const rotation = Array.from({ length: SALES_LESSONS.length }, (_, i) => lessonOfDay(NOW, i).id);
   assert.equal(new Set(rotation).size, SALES_LESSONS.length, 'the rotation covers the whole curriculum');
   assert.equal(studyPlan(NOW, 7).length, 7);
