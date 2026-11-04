@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-04T02:22:58.335Z",
+ "updatedAt": "2026-11-04T02:28:33.421Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7370,6 +7370,17 @@
  ],
  "runs": [
   {
+   "at": "2026-11-04T02:28:33.421Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-11-04T02:22:58.335Z",
    "mode": "self",
    "found": 0,
@@ -7721,19 +7732,6 @@
     "0 new stores found this run (own methods, no AI)",
     "  ↳ volareperfumes.com: CV 80/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
     "✓ volareperfumes.com (CV 80/100): 653 perfumes, 4/6 pages read without AI, AED (1 = 15.2737 EGP) — still good"
-   ]
-  },
-  {
-   "at": "2026-10-28T07:07:31.829Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 1,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "  ↳ armaf.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ armaf.com (CV 90/100): 500 perfumes, 4/6 pages read without AI, USD (1 = 56.0948 EGP) — still good"
    ]
   }
  ]
