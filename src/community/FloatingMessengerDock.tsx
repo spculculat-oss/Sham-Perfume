@@ -8,6 +8,7 @@ import { CheckCheck, ImagePlus, Maximize2, Minus, Send, Smile, X } from 'lucide-
 import { cx, resizeImage, type ChatView, type Message } from './api';
 import { pulseNow } from './session';
 import { Avatar, Spinner, errorText, tx, type Lang } from './ui';
+import { FloatingDock } from '../components/FloatingDock';
 
 const QUICK_EMOJIS = ['👍', '❤️', '🧪', '🔥', '🌹', '✨', '😂', '👌'];
 const POLL_MS = 4000;
@@ -78,11 +79,13 @@ export function FloatingMessengerDock({ lang, userId, onClose, onExpand, toast }
 
   if (minimized) {
     return (
-      <div className="fixed bottom-4 end-4 z-[60] flex cursor-pointer items-center gap-2.5 rounded-full border border-amber-200 bg-white p-2 shadow-xl transition hover:scale-105 hover:border-amber-400 sm:end-6" onClick={() => setMinimized(false)}>
+      <FloatingDock id="messenger" lang={lang} className="fixed bottom-4 end-4 z-[60] sm:end-6">
+      <div className="flex cursor-pointer items-center gap-2.5 rounded-full border border-amber-200 bg-white p-2 shadow-xl transition hover:scale-105 hover:border-amber-400" onClick={() => setMinimized(false)}>
         <span className="relative">{other ? <Avatar user={other} size={38} ring /> : <span className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-600 text-white">💬</span>}</span>
         <span className="pe-1 text-xs font-bold text-stone-900">{name}</span>
         <button type="button" onClick={(e) => { e.stopPropagation(); onClose(); }} className="rounded-full p-1 text-stone-400 hover:bg-stone-100 hover:text-stone-700 cursor-pointer" aria-label={t('إغلاق', 'Close')}><X className="h-3.5 w-3.5" /></button>
       </div>
+      </FloatingDock>
     );
   }
 

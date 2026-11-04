@@ -33,6 +33,7 @@ import { UserDetailedAddress, FACILITY_TYPE_LABELS } from '../types/address';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL, getCommonLabel } from '../لغات/localizedContent';
 import { LText, makeT, fmt, pickArEn, localeDate } from '../لغات/localize';
+import { FloatingDock } from './FloatingDock';
 
 interface ManufacturingSpecSheetProps {
   formulaTitle: string;
@@ -1613,7 +1614,7 @@ export const ManufacturingSpecSheet: React.FC<ManufacturingSpecSheetProps> = ({
       </div>
 
       {/* Floating Corner Quick-Close Button (Always visible on all screens regardless of scroll position) */}
-      <div className={`fixed bottom-6 ${rtl ? 'left-6' : 'right-6'} z-50 no-print`}>
+      <FloatingDock id="spec_close" lang={currentLang} className={`fixed bottom-6 ${rtl ? 'left-6' : 'right-6'} z-50 no-print`}>
         <button
           onClick={onClose}
           className="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 shadow-2xl border-2 border-white/40 cursor-pointer transition-all hover:scale-105 active:scale-95 animate-in fade-in"
@@ -1622,7 +1623,7 @@ export const ManufacturingSpecSheet: React.FC<ManufacturingSpecSheetProps> = ({
           <X className="w-4 h-4" />
           <span>{L('close_fab')}</span>
         </button>
-      </div>
+      </FloatingDock>
 
     </div>
   );
