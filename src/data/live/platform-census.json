@@ -1,30 +1,427 @@
 {
  "version": 1,
- "updatedAt": "2026-11-04T07:30:38.849Z",
+ "updatedAt": "2026-11-04T22:56:54.934Z",
  "startedAt": "2026-10-23T12:00:00.000Z",
  "siteCreatedAt": "2026-10-12T05:24:11.000Z",
  "totals": {
-  "visits": 0,
-  "uniqueVisitors": 0,
-  "todayVisits": 0,
-  "todayUnique": 0,
-  "last7DaysVisits": 0,
-  "last7DaysUnique": 0,
-  "thisMonthVisits": 0,
-  "thisMonthUnique": 0,
-  "last30DaysVisits": 0,
-  "countriesCount": 0,
-  "placesCount": 0,
-  "regionsCount": 0
+  "visits": 23,
+  "uniqueVisitors": 13,
+  "todayVisits": 23,
+  "todayUnique": 13,
+  "last7DaysVisits": 23,
+  "last7DaysUnique": 13,
+  "thisMonthVisits": 23,
+  "thisMonthUnique": 13,
+  "last30DaysVisits": 23,
+  "countriesCount": 2,
+  "placesCount": 2,
+  "regionsCount": 1
  },
- "byCountry": [],
- "byPlace": [],
- "recentEntries": [],
+ "byCountry": [
+  {
+   "code": "EG",
+   "visits": 18,
+   "uniqueVisitors": 11,
+   "todayVisits": 18,
+   "todayDate": "2026-11-05",
+   "lastVisitAt": "2026-11-04T22:50:53.583Z",
+   "sections": {
+    "community": 12,
+    "pyramid": 6
+   },
+   "languages": {
+    "ar": 18
+   }
+  },
+  {
+   "code": "SA",
+   "visits": 5,
+   "uniqueVisitors": 2,
+   "todayVisits": 5,
+   "todayDate": "2026-11-05",
+   "lastVisitAt": "2026-11-04T22:56:54.934Z",
+   "sections": {
+    "concentration": 2,
+    "home": 2,
+    "other": 1
+   },
+   "languages": {
+    "ar": 5
+   }
+  }
+ ],
+ "byPlace": [
+  {
+   "id": "EG:cairo",
+   "country": "EG",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "regionEn": "Cairo Governorate",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "visits": 18,
+   "uniqueVisitors": 11,
+   "todayVisits": 18,
+   "todayDate": "2026-11-05",
+   "lastVisitAt": "2026-11-04T22:50:53.583Z",
+   "sections": {
+    "community": 12,
+    "pyramid": 6
+   }
+  },
+  {
+   "id": "SA:jeddah",
+   "country": "SA",
+   "cityAr": "جدة",
+   "cityEn": "Jeddah",
+   "regionAr": "منطقة مكة المكرمة",
+   "regionEn": "Makkah Region",
+   "lat": 21.49,
+   "lon": 39.19,
+   "precision": "edge-coords",
+   "visits": 5,
+   "uniqueVisitors": 2,
+   "todayVisits": 5,
+   "todayDate": "2026-11-05",
+   "lastVisitAt": "2026-11-04T22:56:54.934Z",
+   "sections": {
+    "concentration": 2,
+    "home": 2,
+    "other": 1
+   }
+  }
+ ],
+ "recentEntries": [
+  {
+   "at": "2026-11-04T22:56:54.934Z",
+   "country": "SA",
+   "placeId": "SA:jeddah",
+   "cityAr": "جدة",
+   "cityEn": "Jeddah",
+   "regionAr": "منطقة مكة المكرمة",
+   "lat": 21.49,
+   "lon": 39.19,
+   "precision": "edge-coords",
+   "section": "home",
+   "device": "desktop",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:56:54.201Z",
+   "country": "SA",
+   "placeId": "SA:jeddah",
+   "cityAr": "جدة",
+   "cityEn": "Jeddah",
+   "regionAr": "منطقة مكة المكرمة",
+   "lat": 21.49,
+   "lon": 39.19,
+   "precision": "edge-coords",
+   "section": "concentration",
+   "device": "desktop",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:55:11.081Z",
+   "country": "SA",
+   "placeId": "SA:jeddah",
+   "cityAr": "جدة",
+   "cityEn": "Jeddah",
+   "regionAr": "منطقة مكة المكرمة",
+   "lat": 21.49,
+   "lon": 39.19,
+   "precision": "edge-coords",
+   "section": "other",
+   "device": "desktop",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:53:23.549Z",
+   "country": "SA",
+   "placeId": "SA:jeddah",
+   "cityAr": "جدة",
+   "cityEn": "Jeddah",
+   "regionAr": "منطقة مكة المكرمة",
+   "lat": 21.49,
+   "lon": 39.19,
+   "precision": "edge-coords",
+   "section": "concentration",
+   "device": "desktop",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:52:45.373Z",
+   "country": "SA",
+   "placeId": "SA:jeddah",
+   "cityAr": "جدة",
+   "cityEn": "Jeddah",
+   "regionAr": "منطقة مكة المكرمة",
+   "lat": 21.49,
+   "lon": 39.19,
+   "precision": "edge-coords",
+   "section": "home",
+   "device": "desktop",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:50:53.583Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "pyramid",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:48:24.350Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "pyramid",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:41:32.002Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "pyramid",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:38:04.984Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "pyramid",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:37:49.624Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:37:36.658Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:36:20.511Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:35:54.909Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:33:50.394Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:31:04.932Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:29:19.777Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:26:36.712Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:17:11.421Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "pyramid",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:16:28.744Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:16:21.626Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "pyramid",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:13:18.215Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:10:46.343Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T22:10:16.560Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  }
+ ],
  "byRegion": {
   "arab": {
-   "visits": 0,
-   "uniqueVisitors": 0,
-   "countries": 0
+   "visits": 23,
+   "uniqueVisitors": 13,
+   "countries": 2
   },
   "europe": {
    "visits": 0,
@@ -52,10 +449,53 @@
    "countries": 0
   }
  },
- "byDay": [],
- "byMonth": [],
+ "byDay": [
+  {
+   "date": "2026-11-05",
+   "visits": 23,
+   "uniqueVisitors": 13,
+   "byCountry": {
+    "EG": 18,
+    "SA": 5
+   },
+   "hours": [
+    23,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  }
+ ],
+ "byMonth": [
+  {
+   "month": "2026-11",
+   "visits": 23,
+   "uniqueVisitors": 13
+  }
+ ],
+ "todayHoursDate": "2026-11-05",
  "todayByHour": [
-  0,
+  23,
   0,
   0,
   0,
@@ -81,7 +521,7 @@
   0
  ],
  "allTimeByHour": [
-  0,
+  23,
   0,
   0,
   0,
@@ -106,13 +546,21 @@
   0,
   0
  ],
- "bySection": {},
+ "bySection": {
+  "community": 12,
+  "pyramid": 6,
+  "concentration": 2,
+  "home": 2,
+  "other": 1
+ },
  "byDevice": {
   "mobile": 0,
-  "desktop": 0,
-  "tablet": 0
+  "desktop": 5,
+  "tablet": 18
  },
- "byLanguage": {},
- "checkedAt": "2026-11-04T07:30:38.849Z",
- "liveLedger": "unreachable"
+ "byLanguage": {
+  "ar": 23
+ },
+ "checkedAt": "2026-11-04T23:19:55.885Z",
+ "liveLedger": "reached"
 }
