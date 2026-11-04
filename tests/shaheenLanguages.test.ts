@@ -148,9 +148,9 @@ test('the audit flags a language clamped to ar|en as a VALUE, not {ar,en} data p
 
 test('report scoring: clean = 100, the German-page bug hurts most', () => {
   const languages = ['ar', 'en', 'de'];
-  const full = Object.fromEntries(languages.map((l) => [l, { storeCore: 42, storeTotal: 129, banner: 46 }]));
+  const full = Object.fromEntries(languages.map((l) => [l, { storeCore: 42, storeTotal: 129, banner: 46, news: 79 }]));
   const clean = buildLanguageReport({
-    at: new Date(0).toISOString(), languages, storeCoreSize: 42, bannerSize: 46, coverage: full,
+    at: new Date(0).toISOString(), languages, storeCoreSize: 42, bannerSize: 46, newsSize: 79, coverage: full,
     publicNumberInputs: [], operatorNumberInputs: [], bareLocaleFormatting: [], languageClamps: [],
   });
   assert.equal(clean.score, 100);
@@ -159,13 +159,13 @@ test('report scoring: clean = 100, the German-page bug hurts most', () => {
   assert.ok(isLanguageLiveReport(clean));
 
   const dirty = buildLanguageReport({
-    at: new Date(0).toISOString(), languages, storeCoreSize: 42, bannerSize: 46,
-    coverage: { ...full, de: { storeCore: 10, storeTotal: 10, banner: 3 } },
+    at: new Date(0).toISOString(), languages, storeCoreSize: 42, bannerSize: 46, newsSize: 79,
+    coverage: { ...full, de: { storeCore: 10, storeTotal: 10, banner: 3, news: 79 } },
     publicNumberInputs: [{ file: 'src/components/X.tsx', line: 7 }],
     operatorNumberInputs: [], bareLocaleFormatting: [], languageClamps: [],
   });
   assert.ok(dirty.score < 90);
-  assert.deepEqual(dirty.incompletePacks, [{ lang: 'de', storeCore: '10/42', banner: '3/46' }]);
+  assert.deepEqual(dirty.incompletePacks, [{ lang: 'de', storeCore: '10/42', banner: '3/46', news: '79/79' }]);
   assert.ok(dirty.notes.some((n) => n.includes('LocalizedNumberInput')));
 });
 
@@ -243,7 +243,7 @@ test('Shaheen\'s council hears the language agent: facts always, tasks when some
       ...liveReport,
       score: 40,
       publicNumberInputs: [{ file: 'src/components/X.tsx', line: 12 }],
-      incompletePacks: [{ lang: 'sw', storeCore: '10/42', banner: '46/46' }],
+      incompletePacks: [{ lang: 'sw', storeCore: '10/42', banner: '46/46', news: '79/79' }],
     },
   }, now, []);
   const digits = bad.signals.find((s) => s.decision?.title === 'توحيد أرقام حقول الزوار على لغة الموقع');
@@ -259,9 +259,9 @@ test('Shaheen\'s council hears the language agent: facts always, tasks when some
 
 test('«لا تعلن الاكتمال»: full packs with most texts still in English is NOT «سليمة», and the score says so', () => {
   const languages = ['ar', 'en', 'de', 'fr'];
-  const full = Object.fromEntries(languages.map((l) => [l, { storeCore: 42, storeTotal: 129, banner: 46 }]));
+  const full = Object.fromEntries(languages.map((l) => [l, { storeCore: 42, storeTotal: 129, banner: 46, news: 79 }]));
   const packsOnly = buildLanguageReport({
-    at: new Date(0).toISOString(), languages, storeCoreSize: 42, bannerSize: 46, coverage: full,
+    at: new Date(0).toISOString(), languages, storeCoreSize: 42, bannerSize: 46, newsSize: 79, coverage: full,
     publicNumberInputs: [], operatorNumberInputs: [], bareLocaleFormatting: [], languageClamps: [],
   });
   const half = applyTranslationCoverage(packsOnly, { remaining: 1000, total: 2000, fullyTranslated: 0 });

@@ -18,16 +18,19 @@ import { BankService } from './finance/bank';
 import { MemoryStore } from './core/store';
 import { ValidationError } from './core/repository';
 import { toMinor } from '../src/finance/money';
+import { PAYMENT_HELD, reviewCharge } from '../src/finance/shield';
 import productsData from '../src/data/products.json';
-import { mergeCatalog, type RawProduct, type StoreCatalogFile, type StoreProduct } from '../src/utils/storeCatalog';
+import { mergeCatalog, skuOf, type RawProduct, type StoreCatalogFile, type StoreProduct } from '../src/utils/storeCatalog';
 import { customerPayOffer } from '../src/bank/worldPay';
-import { BUNDLED_FX, chargeCurrency, currencyFor, isCountry, isFxTable, quote, type FxTable, type ShippingTable } from '../src/utils/pricing';
+import { BUNDLED_FX, chargeCurrency, convert, currencyFor, isCountry, isFxTable, quote, type FxTable, type ShippingTable } from '../src/utils/pricing';
 import { createSession, kashierConfig, KashierError, sessionPayment, verifyWebhook, type KashierConfig } from './core/kashier';
 import { containsCardSecret, stripeCardNetwork, verdictFromProvider } from '../src/utils/cardNetwork';
 import { createNotifier } from './core/notify';
 import { liveStoreCatalog, loadLive } from './core/liveData';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { corsOrigins } from './cors';
+import { ShamBooks, readMoneyBody } from './finance/shamBooks';
+import { PLATFORM_HOLDER } from '../src/bank/shamLedger';
 
 type Env = Record<string, string | undefined>;
 export interface CheckoutRouterOptions {
@@ -46,24 +49,31 @@ export interface CheckoutRouterOptions {
   }) => Promise<void>;
   /** Called when Kashier confirms a payment (verified server-side). */
   onPaid?: (ref: string) => Promise<void>;
+  /**
+   * The signed-in customer behind the request (a real, server-verified account session).
+   * When given, card/wallet payments through the gateway answer 401 LOGIN_REQUIRED for visitors,
+   * demo logins and browser-only local profiles. «بنك شام» direct orders (InstaPay, bank transfer,
+   * wallet, cash on delivery) are open to visitors — the merchant confirms receipt after seeing the money.
+   */
+  customer?: (req: express.Request) => Promise<{ id: string } | undefined>;
 }
 
 export const DEFAULT_RETURN_URL = 'https://spculculat-oss.github.io/Sham-Perfume/';
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.replace(/[\u0000-\u001f]+/g, ' ').trim().slice(0, max) : '');
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
 
-/** The visitor's country from the edge (Vercel / Cloudflare headers), or undefined. */
-export function countryFromHeaders(headers: Record<string, string | string[] | undefined>): string | undefined {
-  for (const name of ['x-vercel-ip-country', 'cf-ipcountry', 'x-country-code']) {
-    const value = String(headers[name] || '').toUpperCase();
-    if (isCountry(value)) return value;
-  }
-  return undefined;
-}
+import { countryFromHeaders } from './core/replyMoney';
+export { countryFromHeaders };
 
 export interface CheckoutInput {
   items: { sku: string; qty: number }[]; country: string; lang: 'ar' | 'en'; method?: 'card' | 'wallet';
   contact: { name: string; email: string; phone: string }; address: { city: string; line: string }; returnUrl?: string;
+  /**
+   * The total the page showed the visitor, in the currency it showed (the browser's own quote). The server
+   * recomputes that same number and refuses to charge a different one (`PRICE_CHANGED`) — so a price, a rate or a
+   * shipping change between opening the basket and paying can never be charged silently.
+   */
+  quoted?: { total: number; currency: string };
 }
 
 /** Validates the visitor's form. Returns an error code or the clean input. */
@@ -91,7 +101,40 @@ export function readCheckout(body: unknown): CheckoutInput | { error: string } {
   if (!isEmail(contact.email)) return { error: 'INVALID_EMAIL' };
   if (contact.phone.replace(/\D/g, '').length < 7) return { error: 'INVALID_PHONE' };
   if (!address.city || address.line.length < 5) return { error: 'MISSING_ADDRESS' };
-  return { items: [...merged].map(([sku, qty]) => ({ sku, qty })), country, ...(b.method ? { method: b.method as 'card' | 'wallet' } : {}), lang: b.lang === 'ar' ? 'ar' : 'en', contact, address, returnUrl: str(b.returnUrl, 500) || undefined };
+  const quoted = readQuoted(b.quoted);
+  return { items: [...merged].map(([sku, qty]) => ({ sku, qty })), country, ...(b.method ? { method: b.method as 'card' | 'wallet' } : {}), lang: b.lang === 'ar' ? 'ar' : 'en', contact, address, returnUrl: str(b.returnUrl, 500) || undefined, ...(quoted ? { quoted } : {}) };
+}
+
+/** The total the page showed: a positive amount in a real ISO currency, else nothing (never trusted as a price). */
+export function readQuoted(raw: unknown): { total: number; currency: string } | undefined {
+  const q = (raw && typeof raw === 'object' ? raw : undefined) as { total?: unknown; currency?: unknown } | undefined;
+  const total = Number(q?.total);
+  const currency = String(q?.currency || '').toUpperCase();
+  if (!Number.isFinite(total) || total <= 0 || total > 1e9 || !/^[A-Z]{3}$/.test(currency)) return undefined;
+  return { total: Math.round(total * 100) / 100, currency };
+}
+
+/**
+ * «السعر اللي شافه الزائر» — recompute the page's own quote in the same currency and compare.
+ * A tolerance of the larger of one unit and 0.5 % absorbs rounding between the browser's bundled rates and the
+ * server's live ones; anything beyond that is a real change the visitor must see before any money moves.
+ */
+export function quotedDrift(
+  input: CheckoutInput,
+  lines: { sku: string; qty: number; price: number }[],
+  rates: FxTable,
+  shipping: ShippingTable | undefined,
+): { changed: boolean; shown?: number; now?: number; currency?: string } {
+  if (!input.quoted) return { changed: false };
+  try {
+    const fresh = quote(lines, input.country, { fx: rates, shipping, currency: input.quoted.currency });
+    const tolerance = Math.max(1, Math.abs(fresh.total) * 0.005);
+    const changed = Math.abs(fresh.total - input.quoted.total) > tolerance;
+    return { changed, shown: input.quoted.total, now: fresh.total, currency: input.quoted.currency };
+  } catch {
+    // عملة مش في جدول الصرف: مانقدرش نقارن، ومابنمنعش البيع بسبب ده — الفحص على السيرفر بيتحسب بالعملة الرسمية.
+    return { changed: false };
+  }
 }
 
 /** Where Kashier sends the visitor back: their page, only if it is one of the site's own origins. */
@@ -147,6 +190,22 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     const lines = missing ? [] : input.items.map((i) => ({ sku: i.sku, qty: i.qty, price: bySku.get(i.sku)!.price }));
     return { list, lines, missing, rates: await fx().catch(() => bundledFx) };
   };
+  /**
+   * تكلفة المورد للطلب بعملة الخصم — عشان «حارس المدفوعات» يعرف يكشف بيع تحت التكلفة. لو أي بند مش معروف
+   * تكلفته، بنرجّع `undefined` (مجهولة) بدل ما نخترع رقماً.
+   */
+  const supplierCostOf = (items: { sku: string; qty: number }[], rates: FxTable, currency: string): number | undefined => {
+    const bySku = new Map(products.map((p) => [skuOf(p), Number(p.supplierPrice)]));
+    let egp = 0;
+    for (const item of items) {
+      const cost = bySku.get(item.sku);
+      if (!(typeof cost === 'number' && cost > 0)) return undefined;
+      egp += cost * item.qty;
+    }
+    if (!(egp > 0)) return undefined;
+    try { return convert(egp, 'EGP', currency, rates); } catch { return undefined; }
+  };
+
   const syncOrder = async (ref: string, req: express.Request, input: CheckoutInput, list: StoreProduct[], lines: { sku: string; qty: number; price: number }[], rates: FxTable, total: number, currency: string) => {
     if (!options.onCheckout) return;
     const catalogBySku = new Map(list.map((p) => [p.sku, p]));
@@ -191,10 +250,20 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     res.json({ enabled: methods.length > 0, mode: cfg.mode, currencies: cfg.currencies, currency, country, methods, direct, offer });
   }));
 
+  /** Payment needs a signed-in account (owner's rule): visitors and local-only profiles are refused here, not just in the page. */
+  const signedIn = async (req: express.Request, res: express.Response) => {
+    if (!options.customer) return true;
+    const who = await options.customer(req).catch(() => undefined);
+    if (who?.id) return true;
+    res.status(401).json({ error: 'Please sign in to your account before paying', code: 'LOGIN_REQUIRED' });
+    return false;
+  };
+
   router.post('/store/checkout', wrap(async (req, res) => {
     res.setHeader('Cache-Control', 'private, no-store');
     const cfg = config();
     if (!cfg) { res.status(503).json({ error: 'Online payment is not configured yet', code: 'PAYMENTS_NOT_CONFIGURED' }); return; }
+    if (!(await signedIn(req, res))) return;
     if (!limiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many requests, please wait a minute', code: 'RATE_LIMITED' }); return; }
     const input = readCheckout(req.body);
     if ('error' in input) { res.status(400).json({ error: 'Invalid order', code: input.error }); return; }
@@ -203,6 +272,28 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     if (missing) { res.status(409).json({ error: 'A product is no longer available', code: 'UNAVAILABLE', sku: missing.sku }); return; }
     const display = quote(lines, input.country, { fx: rates, shipping: options.shipping });
     const charge = quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: chargeCurrency(currencyFor(input.country, rates), cfg.currencies) });
+
+    // «السعر اللي شافه الزائر»: لو اتغير، مانخصمش — بنعرض المبلغ الجديد ويوافق بنفسه.
+    const drift = quotedDrift(input, lines, rates, options.shipping);
+    if (drift.changed) {
+      res.status(409).json({
+        error: 'The price changed since you opened the basket', code: 'PRICE_CHANGED',
+        now: { total: drift.now, currency: drift.currency }, was: { total: drift.shown, currency: drift.currency },
+      });
+      return;
+    }
+
+    // «حارس المدفوعات والعمولات»: the cart is reviewed on the server, right before any money moves.
+    const verdict = reviewCharge({
+      country: input.country, displayCurrency: display.currency, chargeCurrency: charge.currency,
+      accepted: cfg.currencies, lines: charge.lines, items: charge.items, shipping: charge.shipping, total: charge.total,
+      officialCurrency: currencyFor(input.country, rates), supplierCost: supplierCostOf(input.items, rates, charge.currency),
+    });
+    if (!verdict.ok) {
+      console.warn('[finance_shield] payment held:', verdict.findings.filter((f) => f.level === 'stop').map((f) => f.code).join(','));
+      res.status(409).json({ error: PAYMENT_HELD.en, code: PAYMENT_HELD.code, message: PAYMENT_HELD.ar });
+      return;
+    }
 
     const methods = await finance.methods(input.country, charge.currency);
     if (!methods.length || (input.method && !methods.some((m) => m.id === input.method))) {
@@ -249,6 +340,7 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
   router.post('/store/checkout/direct', wrap(async (req, res) => {
     res.setHeader('Cache-Control', 'private, no-store');
     if (!directLimiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many requests, please wait a minute', code: 'RATE_LIMITED' }); return; }
+    // «بنك شام» للدفع المباشر متاح للزائر أيضاً: التاجر يؤكد الدفع بعد ما يشوف الفلوس، ولا يطلب حساباً مسجلاً.
     const { method: _ignored, ...body } = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>;
     const input = readCheckout(body);
     if ('error' in input) { res.status(400).json({ error: 'Invalid order', code: input.error }); return; }
@@ -258,6 +350,25 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     const { list, lines, missing, rates } = await priceItems(input);
     if (missing) { res.status(409).json({ error: 'A product is no longer available', code: 'UNAVAILABLE', sku: missing.sku }); return; }
     const charge = quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: method.currency });
+    const drift = quotedDrift(input, lines, rates, options.shipping);
+    if (drift.changed) {
+      res.status(409).json({
+        error: 'The price changed since you opened the basket', code: 'PRICE_CHANGED',
+        now: { total: drift.now, currency: drift.currency }, was: { total: drift.shown, currency: drift.currency },
+      });
+      return;
+    }
+    // «حارس المدفوعات»: the same instant review before a direct receipt (InstaPay, transfer, wallet, cash).
+    const verdict = reviewCharge({
+      country: input.country, displayCurrency: currencyFor(input.country, rates), chargeCurrency: charge.currency,
+      accepted: [method.currency], lines: charge.lines, items: charge.items, shipping: charge.shipping, total: charge.total,
+      officialCurrency: currencyFor(input.country, rates), supplierCost: supplierCostOf(input.items, rates, charge.currency),
+    });
+    if (!verdict.ok) {
+      console.warn('[finance_shield] direct payment held:', verdict.findings.filter((f) => f.level === 'stop').map((f) => f.code).join(','));
+      res.status(409).json({ error: PAYMENT_HELD.en, code: PAYMENT_HELD.code, message: PAYMENT_HELD.ar });
+      return;
+    }
     const ref = newOrderRef();
     const receipt = await bank.createDirect({ ref, accountId: method.id, country: input.country, currency: charge.currency,
       totalMinor: toMinor(charge.total, charge.currency), shippingChargedMinor: toMinor(charge.shipping, charge.currency),
@@ -301,6 +412,59 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
       const e = error instanceof KashierError ? error : new KashierError('FAILED', 502);
       res.status(e.status === 404 || e.status === 400 ? e.status : 502).json({ error: 'Could not read the payment', code: e.code });
     }
+  }));
+
+  const books = new ShamBooks(finance.store, () => new Date().toISOString(), () => finance.persistent);
+  const bookLimiter = new RateLimiter(40, 10 * 60_000);
+  const bookWrap = (work: (req: express.Request, res: express.Response) => Promise<unknown>) => (req: express.Request, res: express.Response) => {
+    res.setHeader('Cache-Control', 'private, no-store');
+    work(req, res).catch((error) => {
+      if (res.headersSent) return;
+      if (error instanceof ValidationError) res.status(error.status).json({ code: error.code, error: error.message });
+      else res.status(503).json({ code: 'FINANCE_UNAVAILABLE', error: 'The Sham books could not be updated. Retry with the same key.' });
+    });
+  };
+  const bookHolder = async (req: express.Request, res: express.Response) => {
+    if (!options.customer) { res.status(401).json({ code: 'LOGIN_REQUIRED', error: 'Sign in first.' }); return; }
+    const who = await options.customer(req).catch(() => undefined);
+    if (!who?.id || who.id === PLATFORM_HOLDER) { res.status(401).json({ code: 'LOGIN_REQUIRED', error: 'Sign in first.' }); return; }
+    return who.id;
+  };
+  router.get('/store/sham-bank', bookWrap(async (req, res) => {
+    const id = await bookHolder(req, res);
+    if (!id) return;
+    res.json(await books.open(id));
+  }));
+  router.get('/store/sham-bank/resolve', bookWrap(async (req, res) => {
+    const id = await bookHolder(req, res);
+    if (!id) return;
+    if (!(await books.exists(String(req.query.number || '')))) { res.status(404).json({ code: 'UNKNOWN_ACCOUNT', error: 'No Sham account with that number.' }); return; }
+    res.json({ ok: true });
+  }));
+  router.post('/store/sham-bank/transfer', bookWrap(async (req, res) => {
+    const id = await bookHolder(req, res);
+    if (!id) return;
+    if (!bookLimiter.allow(clientKey(req))) { res.status(429).json({ code: 'RATE_LIMITED', error: 'Wait a moment before another transfer.' }); return; }
+    res.json(await books.transfer(id, readMoneyBody(req.body)));
+  }));
+  router.post('/store/sham-bank/hold', bookWrap(async (req, res) => {
+    const id = await bookHolder(req, res);
+    if (!id) return;
+    if (!bookLimiter.allow(clientKey(req))) { res.status(429).json({ code: 'RATE_LIMITED', error: 'Wait a moment.' }); return; }
+    res.json(await books.hold(id, readMoneyBody(req.body)));
+  }));
+  router.post('/store/sham-bank/release', bookWrap(async (req, res) => {
+    const id = await bookHolder(req, res);
+    if (!id) return;
+    res.json(await books.release(id, readMoneyBody(req.body).postingId));
+  }));
+  router.post('/store/sham-bank/convert', bookWrap(async (req, res) => {
+    const id = await bookHolder(req, res);
+    if (!id) return;
+    if (!bookLimiter.allow(clientKey(req))) { res.status(429).json({ code: 'RATE_LIMITED', error: 'Wait a moment.' }); return; }
+    const body = readMoneyBody(req.body);
+    const rates = await fx().catch(() => bundledFx);
+    res.json(await books.convert(id, { from: body.from, to: body.to, amount: body.amount, idempotencyKey: body.idempotencyKey, confirmed: body.confirmed }, rates));
   }));
 
   router.post('/store/kashier/webhook', wrap(async (req, res) => {

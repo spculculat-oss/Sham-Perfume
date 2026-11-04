@@ -1,6 +1,6 @@
 /**
  * «مكتبة شاهين» — when no AI engine answers, Shaheen answers from what he already knows (materials encyclopaedia,
- * his lessons, his memory), says where it comes from, and puts the question on his study list.
+ * his lessons, his memory), keeps internal retrieval details out of the visitor reply, and records knowledge gaps.
  * Hand-written fixtures only (never the live files, which the bots rewrite).
  */
 import assert from 'node:assert/strict';
@@ -37,7 +37,7 @@ test('a question about a material gets its fact card from the encyclopaedia', ()
   assert.equal(a.kind, 'material');
   assert.match(a.answer, /\*\*أمبروكسان نقي/);
   assert.match(a.answer, /النسبة المعتادة في التركيبة: 0\.5% - 4%/);
-  assert.match(a.answer, /من مكتبة شاهين/, 'always says where it comes from');
+  assert.doesNotMatch(a.answer, /من مكتبة شاهين|المصدر|references/i, 'internal retrieval details stay hidden');
   assert.equal(libraryAnswer(SRC, 'الفانيليا بتتحط بنسبة كام؟', 'ar')?.kind, 'material');
 });
 
@@ -48,8 +48,8 @@ test('a lesson answers its topic; a close remembered question is shown as such',
   assert.match(lesson.answer, /من أسبوعين لستة أسابيع/);
   const near = libraryAnswer(SRC, 'العطر مش بيثبت على جلدي خالص', 'ar', { recorded: true })!;
   assert.equal(near.kind, 'memory');
-  assert.match(near.answer, /أقرب سؤال جاوبته قبل كده: «ازاي اخلي العطر يثبت على جلدي اكتر»/);
-  assert.match(near.answer, /سؤالك اتسجل عشان أذاكره/);
+  assert.ok(near.answer.startsWith(LONG), 'the remembered answer is phrased directly, not introduced as a retrieval result');
+  assert.match(near.answer, /سؤالك اتسجل عشان أراجعه/);
 });
 
 test('the library never guesses: news, prices, personal or unrelated questions get nothing', () => {
@@ -96,7 +96,9 @@ test('every engine down: the server answers from the library and puts the questi
     assert.equal(gaps[0]!.reason, SHAHEEN_OFFLINE_GAP);
     assert.equal((await chat('ايه هي الطاقة الشمسية')).status, 503, 'nothing in the library: the honest error');
     assert.equal((await repo.gaps()).length, 2, 'and the question still waits for study');
-    assert.equal((await chat('عايز اشتري عطر هدية')).status, 503, 'shopping: left to the store picks in the browser');
+    const shop = await chat('عايز اشتري عطر هدية');
+    assert.equal(shop.status, 200, 'shopping: answered from «متجر شام» itself by the linked brain (S-10)');
+    assert.equal(((await shop.json()) as { memory: string }).memory, 'store');
     assert.equal((await chat('ايه هو الامبروكسان', { memory: false })).status, 503, 'the supervisor’s probes test the engines only');
     assert.equal((await chat('اسمي احمد ورقمي 01012345678 عايز اعرف عن الامبروكسان')).status, 503, 'personal details: not searched');
     assert.equal((await repo.gaps()).length, 2, 'shopping and personal questions are never put on the study list');

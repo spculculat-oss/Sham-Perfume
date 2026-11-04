@@ -66,6 +66,7 @@ export interface Me {
 }
 export interface Post {
   id: string; body: string; image: string | null; visibility: 'public' | 'friends'; createdAt: string; editedAt: string | null;
+  saved?: boolean;
   author: PublicUser; mine: boolean; comments: number; reactions: Record<string, number>; myReaction: string | null;
   recipe: { id: string; title: string; data: Record<string, unknown> } | null;
 }
@@ -144,7 +145,7 @@ export interface MailCounts { inbox: number; unread: number; drafts: number; tra
 export interface MailSendResult { id: string; delivered: number; missed: string[]; external?: { to: string[]; status: 'none' | 'sent' | 'failed' | 'unconfigured' } }
 export interface AuthResult { token: string; expiresAt: string; me: Me }
 /** Two-factor accounts: the password alone opens a short pending login (Google/Meta style). */
-export interface PendingLogin { pending: true; pendingToken: string; expiresIn: number; method?: 'totp' | 'phone' }
+export interface PendingLogin { pending: true; pendingToken: string; expiresIn: number; method?: 'totp' | 'phone'; phoneMethod?: 'sms' | 'whatsapp' }
 export interface SessionInfo { id: string; agent: string; ip: string; createdAt: string; lastUsedAt: string; current: boolean }
 
 /* Passkeys (WebAuthn): base64url on the wire, ArrayBuffer in the browser. */

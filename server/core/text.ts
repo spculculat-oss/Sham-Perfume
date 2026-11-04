@@ -57,6 +57,31 @@ export function detectScriptLanguage(text: string): 'ar' | 'en' {
   return arabic >= latin ? 'ar' : 'en';
 }
 
+/**
+ * Whole-word keyword match that tolerates real inflections only (text is normalised + space-padded):
+ * - prefixes: ال، و، وال، بال، لل  ("الموظف" ⇒ موظف)
+ * - suffixes: plural/verb endings + pronouns, incl. Egyptian dative ("موظفين"، "طلباتي"، "اطلبلي"، "طلبت")
+ * but NOT arbitrary continuations: "بشري" no longer matches "بشريط", "طلب" does not match "مطلوب".
+ * A keyword written with a trailing space ("hi ") must match exactly.
+ */
+const PREFIXES = ['', 'ال', 'و', 'وال', 'بال', 'لل'];
+const AR_SUFFIX = /^(?:ين|ون|ات|ان|وا|و|ت|تي|تم|تو|يه)?(?:ي|ك|ه|ها|هم|هن|كم|كن|نا|لي|لك|لنا|لكم|له|لها)?$/;
+const EN_SUFFIX = /^(?:s|es|ed|ing|d)?$/;
+export function matchesKeyword(text: string, word: string): boolean {
+  const exact = word.endsWith(' ');
+  const key = normalize(word);
+  if (!key) return false;
+  const latin = /^[a-z0-9 ]+$/.test(key);
+  for (const prefix of latin ? [''] : PREFIXES) {
+    const needle = ` ${prefix}${key}`;
+    for (let i = text.indexOf(needle); i >= 0; i = text.indexOf(needle, i + 1)) {
+      const rest = (text.slice(i + needle.length).match(/^\S*/) || [''])[0];
+      if (exact ? rest === '' : (latin ? EN_SUFFIX : AR_SUFFIX).test(rest)) return true;
+    }
+  }
+  return false;
+}
+
 export interface IndexedDoc { id: string; title: string; text: string; kind: 'knowledge' | 'product' | 'service' }
 
 /** Okapi BM25 — the classic lexical retrieval used for grounded answers (RAG) without any external embedding API. */

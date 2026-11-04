@@ -300,7 +300,7 @@ function Bubble({ m, lang, grouped, showName, name, sender, read, replyName, men
             </div>
           )}
           {m.deleted ? t('🚫 تم حذف هذه الرسالة', '🚫 This message was deleted') : (<>
-            {m.kind === 'image' && m.attachment && <a href={m.attachment} target="_blank" rel="noreferrer"><img src={m.attachment} alt="" className="mb-1 max-h-72 rounded-xl object-cover" /></a>}
+            {m.kind === 'image' && m.attachment && <a href={m.attachment} target="_blank" rel="noreferrer"><img loading="lazy" decoding="async" src={m.attachment} alt="" className="mb-1 max-h-72 rounded-xl object-cover" /></a>}
             {m.kind === 'voice' && m.attachment && <audio controls src={m.attachment} className="h-10 max-w-[240px]" preload="none" />}
             {recipe && <div className="-mx-4 text-stone-900"><RecipeCard lang={lang} title={recipe.title} data={recipe.data} /></div>}
             {m.text && <p className="whitespace-pre-wrap break-words">{m.text}</p>}

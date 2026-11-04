@@ -2,7 +2,7 @@
  * The front door of «مجتمع شام»: sign in, or create an account in three short steps
  * (account type → details → privacy), for members and merchants alike.
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff, Fingerprint, GraduationCap, Lock, MessageCircle, ShieldCheck, Store, Users } from 'lucide-react';
 import { countryOptions, useStoreMoney } from '../utils/storeCheckout';
 import { PendingLoginError, completePendingLogin, setMe, signIn, signUp } from './session';
@@ -33,29 +33,98 @@ export default function HubAuth({ lang, onDone, initial = 'login' }: { lang: Lan
   const [agree, setAgree] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [whatsappAvailable, setWhatsappAvailable] = useState(false);
+  const [whatsappConfigLoaded, setWhatsappConfigLoaded] = useState(false);
+  const [whatsappConfigError, setWhatsappConfigError] = useState(false);
+  const [enableWhatsApp2fa, setEnableWhatsApp2fa] = useState(false);
+  const [whatsappPhone, setWhatsappPhone] = useState('');
+  const [phoneSetupPending, setPhoneSetupPending] = useState(false);
+  const [phoneSetupMerchant, setPhoneSetupMerchant] = useState(false);
+  const [phoneResendCooldown, setPhoneResendCooldown] = useState(0);
+  const [phoneCodeRequested, setPhoneCodeRequested] = useState(false);
   const set = (k: keyof typeof form) => (e: { target: { value: string } }) => setForm((f) => ({ ...f, [k]: e.target.value }));
   const pw = strength(form.password);
   const pwOk = form.password.length >= 8 && /\d/.test(form.password) && /[A-Za-z\u0600-\u06FF]/.test(form.password);
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim());
 
+  useEffect(() => {
+    let live = true;
+    cx<{ whatsappOtp: boolean }>('/community/auth/config')
+      .then((config) => { if (live) { setWhatsappAvailable(config.whatsappOtp === true); setWhatsappConfigError(false); } })
+      .catch(() => { if (live) { setWhatsappAvailable(false); setWhatsappConfigError(true); } })
+      .finally(() => { if (live) setWhatsappConfigLoaded(true); });
+    return () => { live = false; };
+  }, []);
+  useEffect(() => {
+    if (phoneResendCooldown <= 0) return;
+    const timer = setTimeout(() => setPhoneResendCooldown((seconds) => seconds - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [phoneResendCooldown]);
+
   const [pending, setPending] = useState<PendingLogin | null>(null);
   const [tfaCode, setTfaCode] = useState('');
+  const requestPendingPhoneCode = async (token: string) => {
+    setPhoneCodeRequested(false);
+    try {
+      await cx('/community/auth/login/phone/request', { body: { pendingToken: token } });
+      setPhoneCodeRequested(true);
+      setPhoneResendCooldown(60);
+      setError('');
+    } catch (e) { setError(errorText(e, lang)); }
+  };
+  const requestSignupPhoneCode = async () => {
+    if (!phoneSetupPending) return;
+    setBusy(true); setError(''); setPhoneCodeRequested(false);
+    try {
+      await cx('/community/me/2fa/phone/setup', { body: { phone: whatsappPhone, method: 'whatsapp', password: form.password } });
+      setPhoneCodeRequested(true);
+      setPhoneResendCooldown(60);
+    } catch (e) { setError(errorText(e, lang)); }
+    finally { setBusy(false); }
+  };
+  const verifySignupPhoneCode = async () => {
+    if (!phoneSetupPending) return;
+    setBusy(true); setError('');
+    try {
+      await cx('/community/me/2fa/phone/confirm', { body: { code: tfaCode } });
+      onDone(phoneSetupMerchant);
+    } catch (e) { setError(errorText(e, lang)); }
+    finally { setBusy(false); }
+  };
+  const continueWithoutWhatsApp = async () => {
+    if (!phoneSetupPending) return;
+    setBusy(true);
+    try { await cx('/community/me/2fa/phone/cancel', { body: { password: form.password } }); } catch { /* An unverified code expires; it never enables the factor by itself. */ }
+    setPhoneSetupPending(false);
+    setPhoneCodeRequested(false);
+    setBusy(false);
+    onDone(phoneSetupMerchant);
+  };
   const login = async () => {
     setBusy(true); setError('');
     try {
       const me = await signIn(form.email.trim(), form.password);
       onDone(Boolean(me.merchant));
     } catch (e) {
-      if (e instanceof PendingLoginError) setPending(e.pending);
-      else setError(errorText(e, lang));
+      if (e instanceof PendingLoginError) {
+        setPending(e.pending);
+        if (e.pending.method === 'phone') void requestPendingPhoneCode(e.pending.pendingToken);
+      } else setError(errorText(e, lang));
     } finally { setBusy(false); }
   };
   const login2fa = async () => {
     if (!pending) return;
     setBusy(true); setError('');
     try {
-      const me = await completePendingLogin(pending.pendingToken, tfaCode);
-      onDone(Boolean(me.merchant));
+      if (pending.method === 'phone') {
+        const result = await cx<AuthResult>('/community/auth/login/phone/verify', { body: { pendingToken: pending.pendingToken, code: tfaCode } });
+        setSessionToken(result.token);
+        setMe(result.me);
+        onDone(Boolean(result.me.merchant));
+      } else {
+        const me = await completePendingLogin(pending.pendingToken, tfaCode);
+        onDone(Boolean(me.merchant));
+      }
     } catch (e) { setError(errorText(e, lang)); } finally { setBusy(false); }
   };
   const passkeyLogin = async () => {
@@ -76,8 +145,24 @@ export default function HubAuth({ lang, onDone, initial = 'login' }: { lang: Lan
   };
   const register = async () => {
     setBusy(true); setError('');
+    const formattedPhone = whatsappPhone.replace(/[\s().-]/g, '').replace(/^00/, '+');
+    if (enableWhatsApp2fa && !/^\+[1-9]\d{7,14}$/.test(formattedPhone)) {
+      setError(tx(lang)('اكتب رقم واتساب بالصيغة الدولية، يبدأ بـ + ومفتاح الدولة', 'Enter a WhatsApp number in international format, starting with + and the country code'));
+      setBusy(false); setStep(3); return;
+    }
     try {
       await signUp({ name: form.name.trim(), email: form.email.trim(), password: form.password, country: form.country || money.country, craftLevel: form.craftLevel, lang, phone: form.phone, city: form.city });
+      if (enableWhatsApp2fa) {
+        setPhoneSetupPending(true);
+        setPhoneSetupMerchant(kind === 'merchant');
+        setPhoneCodeRequested(false);
+        try {
+          await cx('/community/me/2fa/phone/setup', { body: { phone: formattedPhone, method: 'whatsapp', password: form.password } });
+          setPhoneCodeRequested(true);
+          setPhoneResendCooldown(60);
+        } catch (e) { setError(errorText(e, lang)); }
+        return;
+      }
       onDone(kind === 'merchant');
     } catch (e) { setError(errorText(e, lang)); setStep(2); } finally { setBusy(false); }
   };
@@ -115,21 +200,52 @@ export default function HubAuth({ lang, onDone, initial = 'login' }: { lang: Lan
       <section className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm sm:p-7">
         <div className="mb-5 grid grid-cols-2 rounded-2xl bg-stone-100 p-1 text-sm font-bold">
           {(['login', 'register'] as const).map((m) => (
-            <button key={m} type="button" onClick={() => { setMode(m); setError(''); setStep(1); }}
-              className={`rounded-xl py-2.5 transition cursor-pointer ${mode === m ? 'bg-white text-amber-800 shadow-sm' : 'text-stone-500'}`}>
+              <button key={m} type="button" disabled={phoneSetupPending} onClick={() => { setMode(m); setError(''); setStep(1); }}
+              className={`rounded-xl py-2.5 transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${mode === m ? 'bg-white text-amber-800 shadow-sm' : 'text-stone-500'}`}>
               {m === 'login' ? t('تسجيل الدخول', 'Sign in') : t('حساب جديد', 'Create account')}
             </button>
           ))}
         </div>
 
-        {mode === 'login' && pending ? (
-          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); void login2fa(); }}>
-            <h2 className="text-xl font-black text-stone-900">{t('التحقق بخطوتين', 'Two-step verification')}</h2>
-            <p className="text-sm leading-relaxed text-stone-600">{t('كلمة السر سليمة — اكتب الكود من تطبيق التحقق على موبايلك:', 'Password accepted — enter the code from your authenticator app:')}</p>
-            <Field label={t('الكود', 'Code')}>
+        {phoneSetupPending ? (
+          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); void verifySignupPhoneCode(); }}>
+            <h2 className="text-xl font-black text-stone-900">{t('أكّد رقم واتساب', 'Verify your WhatsApp number')}</h2>
+            <p className="text-sm leading-relaxed text-stone-600">{phoneCodeRequested
+              ? t('طلبنا إرسال كود واتساب من 6 أرقام. لو وصلك، اكتبه هنا؛ بعد التأكيد هيتطلب عند الدخول.', 'We requested a 6-digit WhatsApp code. If it arrives, enter it here; after verification it will be required at sign-in.')
+              : t('ماقدرناش نأكد قبول طلب الإرسال. جرّب إعادة الإرسال، أو كمل من غير تفعيل واتساب.', 'We could not confirm Meta accepted the request. Retry, or continue without WhatsApp.')}</p>
+            <p className="font-mono text-xs text-stone-600" dir="ltr">{whatsappPhone}</p>
+            <Field label={t('كود واتساب', 'WhatsApp code')}>
               <input className={`${inputClass} text-center tracking-[0.4em]`} inputMode="numeric" maxLength={6} autoComplete="one-time-code"
                 value={tfaCode} onChange={(e) => setTfaCode(e.target.value.replace(/\D/g, ''))} required dir="ltr" />
             </Field>
+            {error && <p className="rounded-xl bg-rose-50 p-2.5 text-sm text-rose-700">{error}</p>}
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+              <button type="button" onClick={() => void requestSignupPhoneCode()} disabled={busy || phoneResendCooldown > 0} className="font-semibold text-emerald-800 underline disabled:text-stone-400 disabled:no-underline">
+                {phoneResendCooldown > 0 ? `${t('إعادة الإرسال بعد', 'Resend in')} ${phoneResendCooldown}s` : t('إعادة إرسال الكود', 'Resend code')}
+              </button>
+              <button type="button" onClick={() => void continueWithoutWhatsApp()} disabled={busy} className="text-stone-600 underline disabled:opacity-50">{t('متابعة من غير واتساب', 'Continue without WhatsApp')}</button>
+            </div>
+            <Btn type="submit" busy={busy} disabled={tfaCode.length !== 6} className="w-full">{t('تأكيد الرقم وتفعيل الحماية', 'Verify number and enable protection')}</Btn>
+          </form>
+        ) : mode === 'login' && pending ? (
+          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); void login2fa(); }}>
+            <h2 className="text-xl font-black text-stone-900">{t('التحقق بخطوتين', 'Two-step verification')}</h2>
+            <p className="text-sm leading-relaxed text-stone-600">{pending.method === 'phone'
+              ? phoneCodeRequested
+                ? t('طلبنا إرسال كود التحقق لهاتفك. لو ماوصلكش، اطلب إعادة الإرسال.', 'We requested a verification code to your phone. If it does not arrive, request another.')
+                : t('ماقدرناش نأكد قبول طلب الإرسال. جرّب إعادة الإرسال.', 'We could not confirm the provider accepted the request. Try resending.')
+              : t('كلمة السر سليمة — اكتب الكود من تطبيق التحقق على موبايلك:', 'Password accepted — enter the code from your authenticator app:')}</p>
+            <Field label={pending.method === 'phone'
+              ? pending.phoneMethod === 'sms' ? t('كود SMS', 'SMS code') : t('كود واتساب', 'WhatsApp code')
+              : t('الكود', 'Code')}>
+              <input className={`${inputClass} text-center tracking-[0.4em]`} inputMode="numeric" maxLength={6} autoComplete="one-time-code"
+                value={tfaCode} onChange={(e) => setTfaCode(e.target.value.replace(/\D/g, ''))} required dir="ltr" />
+            </Field>
+            {pending.method === 'phone' && (
+              <button type="button" onClick={() => void requestPendingPhoneCode(pending.pendingToken)} disabled={phoneResendCooldown > 0} className="text-xs font-semibold text-emerald-800 underline disabled:text-stone-400 disabled:no-underline">
+                {phoneResendCooldown > 0 ? `${t('إعادة الإرسال بعد', 'Resend in')} ${phoneResendCooldown}s` : pending.phoneMethod === 'sms' ? t('إعادة إرسال كود SMS', 'Resend SMS code') : t('إعادة إرسال كود واتساب', 'Resend WhatsApp code')}
+              </button>
+            )}
             {error && <p className="rounded-xl bg-rose-50 p-2.5 text-sm text-rose-700">{error}</p>}
             <div className="flex gap-2">
               <Btn type="button" variant="soft" className="flex-1" onClick={() => { setPending(null); setTfaCode(''); }}>{t('رجوع', 'Back')}</Btn>
@@ -231,6 +347,22 @@ export default function HubAuth({ lang, onDone, initial = 'login' }: { lang: Lan
                     t('تقدر تنزّل نسخة من بياناتك أو تحذف حسابك في أي وقت من «بوابتي».', 'You can download your data or delete your account anytime from “My portal”.'),
                   ].map((line) => <li key={line} className="flex gap-2"><Lock className="mt-1 h-3.5 w-3.5 shrink-0 text-amber-600" />{line}</li>)}
                 </ul>
+                {whatsappConfigLoaded && whatsappAvailable && (
+                  <details className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3">
+                    <summary className="cursor-pointer text-sm font-bold text-emerald-950">{t('إعدادات أمان متقدمة — واتساب (اختياري)', 'Advanced security — WhatsApp (optional)')}</summary>
+                    <div className="mt-3 space-y-2">
+                      <label className="flex items-start gap-2 text-xs leading-relaxed text-stone-700">
+                        <input type="checkbox" checked={enableWhatsApp2fa} onChange={(e) => setEnableWhatsApp2fa(e.target.checked)} className="mt-0.5 h-4 w-4 accent-emerald-700" />
+                        <span>{t('أكّد رقم واتساب بكود وقت التسجيل، واستخدمه كخطوة أمان عند كل دخول. موافقتي اختيارية، والرقم للأمان فقط.', 'Verify my WhatsApp number at sign-up and use it as a second step at each sign-in. This is optional and the number is for security only.')}</span>
+                      </label>
+                      {enableWhatsApp2fa && <input type="tel" inputMode="tel" autoComplete="tel" dir="ltr" placeholder="+201001234567" value={whatsappPhone} onChange={(e) => setWhatsappPhone(e.target.value)} className={`${inputClass} text-left font-mono`} aria-label={t('رقم واتساب بالصيغة الدولية', 'WhatsApp number in international format')} />}
+                      {enableWhatsApp2fa && <p className="text-[10px] leading-relaxed text-stone-600">{t('الرقم يُحفظ مشفّرًا ويُستخدم لأكواد الأمان فقط. مفتاح المرور أو تطبيق المصادقة أقوى.', 'Your number is encrypted and used only for security codes. A passkey or authenticator app is stronger.')}</p>}
+                    </div>
+                  </details>
+                )}
+                {whatsappConfigLoaded && !whatsappAvailable && <p className="rounded-xl border border-stone-200 bg-stone-50 p-2.5 text-xs text-stone-500">{whatsappConfigError
+                  ? t('مش قادرين نتحقق من إعداد واتساب على السيرفر دلوقتي؛ الخيار مخفي لحد ما الحالة تتأكد.', 'We could not check the server’s WhatsApp settings; the option stays hidden until its status can be confirmed.')
+                  : t('تأكيد واتساب هيظهر لما إعدادات Meta المطلوبة تتضاف للسيرفر. لو Meta رفضت الإرسال، هنوضح لك ومش هنقول إن الكود اتبعت.', 'WhatsApp verification appears after the required Meta settings are added on the server. If Meta rejects a send, we will say so rather than claim it was sent.')}</p>}
                 <label className="flex items-start gap-2 rounded-2xl bg-stone-50 p-3 text-sm text-stone-700">
                   <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} className="mt-1 h-4 w-4 accent-amber-700" />
                   {t('موافق على شروط المجتمع وسياسة الخصوصية، وهلتزم بالاحترام وعدم نشر أرقام أو روابط تواصل خارجية.', 'I accept the community rules and privacy policy, and will not post external contacts or links.')}

@@ -1,0 +1,98 @@
+name: Shaheen weave — link mind to data, and curate knowledge
+
+# «الناسج والمؤرشف» (src/utils/shaheenOrg.ts + scripts/shaheen-memory/weaver.ts + curator.ts):
+#   · «الناسج»: يربط كل وجهة بتكلفتها الحقيقية، شركتها، جماركها، منطقتها، واتفاقيتها — كل خيط بمصدر وتاريخ.
+#     والمراجعة لكل حافة في شبكة العقل هل مبنية على بيانات حقيقية.
+#   · «المؤرشف»: يحول كل إجابة مؤكدة إلى بطاقة معرفة (إجابة + مصدر + تاريخ فحص + حداثة).
+# لا روبوت هنا يغيّر سعر ولا يعد بتوصيل: الأسعار والوعود قرار صاحب المتجر.
+
+on:
+  schedule:
+    # مرة واحدة في اليوم.
+    - cron: '41 5 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main, 'arena/**']
+    paths:
+      - 'scripts/shaheen-memory/weaver.ts'
+      - 'scripts/shaheen-memory/curator.ts'
+      - 'scripts/shaheen-memory/weave.mts'
+      - 'src/data/live/shaheen-graph.json'
+      - 'src/data/live/trade-lanes.json'
+      - 'src/data/live/shaheen-study.json'
+      - 'src/data/live/shaheen-exam.json'
+      - 'src/data/live/shaheen-reflex.json'
+      - 'src/data/live/senses-site.json'
+      - 'src/data/customs.json'
+      - 'src/data/shipping-costs.json'
+      - 'src/data/live/fx-rates.json'
+      - '.github/workflows/shaheen-weave.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-weave-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May these robots run?
+        id: gate
+        run: node scripts/owner/gate.mjs weaver curator
+
+  weave:
+    name: «الناسج» و«المؤرشف»
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Run the weave and curate robots
+        run: node --import tsx scripts/shaheen-memory/weave.mts
+      - name: Behaviour tests
+        run: node --import tsx --test tests/shaheenWeave.test.ts
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen weave"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "شاهين: الناسج والمؤرشف $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/weave.json \
+            src/data/live/curate.json \
+            || { echo "::error::Could not push the weave reports"; exit 1; }

@@ -85,7 +85,7 @@ export async function connectPglite(dataDir?: string): Promise<Sql> {
   return wrap(db);
 }
 
-export const SCHEMA_VERSION = 7;
+export const SCHEMA_VERSION = 10;
 
 export const SCHEMA: string[] = [
   `CREATE TABLE IF NOT EXISTS community_meta (key text PRIMARY KEY, value text NOT NULL)`,
@@ -257,6 +257,13 @@ export const SCHEMA: string[] = [
   )`,
   `CREATE INDEX IF NOT EXISTS posts_created ON posts (created_at DESC)`,
   `CREATE INDEX IF NOT EXISTS posts_author ON posts (author_id, created_at DESC)`,
+  /* v8 — private, account-backed post bookmarks. */
+  `CREATE TABLE IF NOT EXISTS saved_posts (
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    post_id text NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    PRIMARY KEY (user_id, post_id)
+  )`,
   `CREATE TABLE IF NOT EXISTS reactions (
     post_id text NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
     user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -490,6 +497,11 @@ export const SCHEMA: string[] = [
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_2fa_method text NOT NULL DEFAULT ''`,
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_2fa_phone_enc text`,
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_2fa_last text NOT NULL DEFAULT ''`,
+  /* v9 — keep a phone change pending until its WhatsApp/SMS code is verified. */
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_2fa_pending_phone_enc text`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_2fa_pending_method text NOT NULL DEFAULT ''`,
+  /* v10 — a pending phone destination expires with its one-time code. */
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_2fa_pending_expires_at timestamptz`,
 ];
 
 /** Creates the tables (idempotent) and records the schema version. */

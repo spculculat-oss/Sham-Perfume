@@ -116,9 +116,9 @@ test('the desk acts only on the owner\'s own requests, and checks everything bef
   assert.match(wf, /fetch-depth: 300/, '«رجّع» needs the recent history');
 });
 
-test('the owner chose: every change waits for him, and every robot respects it', () => {
+test('the owner chose: the robots go to «دولة المنصة» for approvals, nothing goes in by itself beyond small safe fixes', () => {
   const c = readControls(JSON.parse(read('src/data/owner/controls.json')));
-  assert.equal(c.selfDevelopment, 'approve_all');
+  assert.equal(c.selfDevelopment, 'state');
   assert.ok(OWNER_RULES.some((r) => r.id === 'O-09' && /صندوق الموافقات/.test(r.textAr)));
   assert.match(read('scripts/shaheen-council/run.mts'), /ownerApprovesAll[\s\S]*t\.needsApproval = true/);
   assert.match(read('scripts/aistudio/bridge.mts'), /selfDevelopment === 'approve_all'[\s\S]*plan\.verdict = 'review'/);

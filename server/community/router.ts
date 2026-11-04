@@ -178,6 +178,7 @@ export function createCommunityRouter(community: Community, options: { env?: Env
     if (!authLimiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many attempts, please wait a minute', code: 'RATE_LIMITED' }); return; }
     return handler(req, res);
   };
+  router.get('/community/auth/config', limitedAuth(open(async () => svc.authPublicConfig(env))));
   router.post('/community/auth/register', limitedAuth(open(async (ctx, req) => {
     const out = await svc.register(ctx, req.body || {}, agent(req), ip(req));
     // The platform's first official letter: every new member finds a welcome mail in «بريد شام».
@@ -220,10 +221,12 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   /* Phone 2FA (WhatsApp/SMS) — optional, suggested (Google prompt style) */
   router.post('/community/me/2fa/phone/setup', member(async (ctx, u, req) => svc.setupPhone2fa(ctx, u.id, req.body || {})));
   router.post('/community/me/2fa/phone/confirm', member(async (ctx, u, req) => svc.confirmPhone2fa(ctx, u.id, req.body?.code)));
+  router.post('/community/me/2fa/phone/cancel', member(async (ctx, u, req) => svc.cancelPhone2faSetup(ctx, u.id, req.body?.password)));
   router.post('/community/me/2fa/phone/disable', member(async (ctx, u, req) => svc.disablePhone2fa(ctx, u.id, req.body?.password, req.body?.code)));
   router.post('/community/auth/login/phone/request', limitedAuth(open((ctx, req) => svc.requestPhoneLoginCode(ctx, String(req.body?.pendingToken || '')))));
   router.post('/community/auth/login/phone/verify', limitedAuth(open((ctx, req) => svc.verifyPhoneLoginCode(ctx, req.body || {}))));
-  /* OAuth (Google/Facebook) — start with the account you already have */
+  /* OAuth (Google/Facebook) — the browser opens the provider window; only a token that provider issued is accepted. */
+  router.get('/community/auth/oauth/config', open(async () => svc.oauthPublicConfig(env)));
   router.post('/community/auth/google', limitedAuth(open((ctx, req) => svc.loginWithGoogle(ctx, req.body || {}, agent(req), ip(req)))));
   router.post('/community/auth/facebook', limitedAuth(open((ctx, req) => svc.loginWithFacebook(ctx, req.body || {}, agent(req), ip(req)))));
 
@@ -257,6 +260,8 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   router.get('/community/posts/:id', member((ctx, u, req) => social.getPost(ctx, u.id, p(req, 'id'))));
   router.patch('/community/posts/:id', member((ctx, u, req) => social.editPost(ctx, u.id, p(req, 'id'), req.body || {})));
   router.delete('/community/posts/:id', member(async (ctx, u, req) => { await social.deletePost(ctx, u.id, p(req, 'id')); }));
+  router.put('/community/posts/:id/saved', member((ctx, u, req) => social.savePost(ctx, u.id, p(req, 'id'))));
+  router.delete('/community/posts/:id/saved', member(async (ctx, u, req) => { await social.unsavePost(ctx, u.id, p(req, 'id')); }));
   router.post('/community/posts/:id/react', member((ctx, u, req) => social.react(ctx, u.id, p(req, 'id'), req.body?.kind ?? null)));
   router.get('/community/posts/:id/comments', member((ctx, u, req) => social.comments(ctx, u.id, p(req, 'id'))));
   router.post('/community/posts/:id/comments', member((ctx, u, req) => social.addComment(ctx, u.id, p(req, 'id'), req.body?.body)));

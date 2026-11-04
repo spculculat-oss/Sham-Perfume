@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { callEngine, engineStatuses, perplexityBody, perplexityText, PERPLEXITY_AGENT_URL } from '../server/core/engines';
+import { callEngine, engineStatuses, perplexityBody, perplexitySources, perplexityText, PERPLEXITY_AGENT_URL } from '../server/core/engines';
 import { SHAHEEN_ENGINES, SHAHEEN_SITE_SETTINGS } from '../server/config/shaheen';
-import { configuredEngines } from '../scripts/doctor/agent';
+import { configuredEngines, makeAsk } from '../scripts/doctor/agent';
 
 const KEY = 'pplx-test-key-123';
 const answer = (text: string) => ({
@@ -29,8 +29,9 @@ test('the request uses the Agent API (instructions + input items + max_output_to
     return new Response(JSON.stringify(answer('الفانيليا تعطي دفئاً [1][2] وتدوم طويلاً [3].')), { status: 200, headers: { 'Content-Type': 'application/json' } });
   }) as typeof fetch;
   let streamed = '';
+  let sources: { title: string; url: string }[] = [];
   const reply = await callEngine('perplexity', 'You are Shaheen.', [{ role: 'user', text: 'ما دور الفانيليا؟' }],
-    { env: { PERPLEXITY_API_KEY: KEY }, fetch: fake, signal: AbortSignal.timeout(5000), temperature: 0.3, maxTokens: 500, onToken: (t) => { streamed += t; } });
+    { env: { PERPLEXITY_API_KEY: KEY }, fetch: fake, signal: AbortSignal.timeout(5000), temperature: 0.3, maxTokens: 500, onToken: (t) => { streamed += t; }, onSources: (found) => { sources = found; } });
   assert.equal(seen?.url, PERPLEXITY_AGENT_URL);
   assert.equal(seen?.headers.Authorization, `Bearer ${KEY}`);
   assert.equal(seen?.body.preset, 'fast');
@@ -40,6 +41,30 @@ test('the request uses the Agent API (instructions + input items + max_output_to
   assert.equal(seen?.body.messages, undefined, 'no Sonar messages array');
   assert.equal(reply, 'الفانيليا تعطي دفئاً وتدوم طويلاً.', 'citation markers are removed');
   assert.equal(streamed, reply, 'the caller still receives the answer');
+  assert.deepEqual(sources, [{ title: 'A', url: 'https://example.org/a' }], 'live-search source metadata reaches its caller');
+});
+
+test('live-search sources are public HTTPS links only, sanitized, deduplicated and bounded', () => {
+  const found = perplexitySources({ output: [
+    { type: 'search_results', results: [
+      { title: 'A [1] result', url: 'https://example.org/a' },
+      { title: 'Duplicate', url: 'https://example.org/a' },
+      { title: 'Plain HTTP', url: 'http://example.org/a' },
+      { title: 'Credentials', url: 'https://user:pass@example.org/a' },
+      { title: 'Localhost', url: 'https://localhost/a' },
+      { title: 'Private IP', url: 'https://192.168.1.1/a' },
+      { title: 'Nonstandard port', url: 'https://example.org:8443/a' },
+      { title: 'B', url: 'https://example.net/b' },
+      { title: 'C', url: 'https://example.edu/c' },
+    ] },
+  ] }, 2);
+  assert.deepEqual(found, [
+    { title: 'A 1 result', url: 'https://example.org/a' },
+    { title: 'B', url: 'https://example.net/b' },
+  ]);
+  assert.deepEqual(perplexitySources({ output: [{ type: 'message', content: [{ type: 'output_text', text: 'x', annotations: [
+    { type: 'url_citation', url_citation: { title: 'Citation', url: 'https://example.org/cited' } },
+  ] }] }] }), [{ title: 'Citation', url: 'https://example.org/cited' }]);
 });
 
 test('an explicit model gets the web search tool; output_text is read when present; failures are classified', async () => {
@@ -63,4 +88,19 @@ test('Perplexity joins Shaheen, the robots and the council right after the free 
   assert.equal(SHAHEEN_SITE_SETTINGS.engines[1], 'perplexity');
   assert.deepEqual(await configuredEngines({ GEMINI_API_KEY: 'g-key', PERPLEXITY_API_KEY: KEY, DEEPSEEK_API_KEY: 'd-key' }), ['gemini', 'perplexity', 'deepseek']);
   assert.deepEqual(await configuredEngines({ PERPLEXITY_API_KEY: KEY }), ['perplexity'], 'works alone too');
+});
+
+test('the school can exclude live web search while other bots keep the shared engine available', async () => {
+  const calls: string[] = [];
+  const request = (async (url: string | URL | Request) => {
+    calls.push(String(url));
+    return new Response(JSON.stringify({ choices: [{ message: { content: 'grounded lesson' } }] }), { status: 200, headers: { 'content-type': 'application/json' } });
+  }) as typeof fetch;
+  const env = { OPENAI_API_KEY: 'test-openai', PERPLEXITY_API_KEY: KEY };
+  assert.deepEqual(await configuredEngines(env), ['perplexity', 'openai'], 'the shared pool still exposes both when configured');
+  let used = '';
+  const ask = await makeAsk(env, { bot: 'teacher', excludeEngines: ['perplexity'], request, onEngine: (id) => { used = id; } });
+  assert.equal(await ask!('system', 'question'), 'grounded lesson');
+  assert.equal(used, 'openai');
+  assert.deepEqual(calls, ['https://api.openai.com/v1/chat/completions']);
 });

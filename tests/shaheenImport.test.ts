@@ -192,6 +192,8 @@ test('every product gets a standalone page with share preview, schema.org price 
   assert.match(html, /og:image" content="https:\/\/www\.shamperfume\.com\/cdn\/large\//);
   assert.match(html, /href="\.\.\/#product=52"/);
   assert.match(html, /الهرم العطري/);
+  assert.match(html, /class="lab-links"/);
+  assert.match(html, /href="\.\.\/tools\/perfume-formulation-calculator\.html"/);
   // Labels are real pills, never their own markup printed as text (seen live on every product page).
   assert.match(html, /<div class="chips"><span class="chip" data-l="[a-z_]+">[^<]+<\/span>/);
   assert.doesNotMatch(html, /&lt;span/);

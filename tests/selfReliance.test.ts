@@ -22,12 +22,13 @@ import controls from '../src/data/owner/controls.json';
 const OFF = { [AI_PLATFORMS_VAR]: 'off' };
 const KEYS = { GEMINI_API_KEY: 'g', OPENAI_API_KEY: 'o', ANTHROPIC_API_KEY: 'a', DEEPSEEK_API_KEY: 'd', OPENROUTER_API_KEY: 'r', PERPLEXITY_API_KEY: 'p', MANUS_API_KEY: 'm' };
 
-test('the owner switched the platforms off, and the switch is read', () => {
-  assert.equal(readControls(controls).aiPlatforms, 'off');
+test('the owner\'s platform switch is read (now «تلقائي»: tests/platformsAuto.test.ts); «off» still closes everything', () => {
+  assert.equal(readControls(controls).aiPlatforms, 'auto');
+  assert.equal(readControls({ aiPlatforms: 'off' }).aiPlatforms, 'off');
   assert.equal(readControls({}).aiPlatforms, 'on'); // an old file keeps the old behaviour
   assert.ok(platformsOff(OFF));
   assert.ok(!platformsOff({}));
-  assert.ok(OWNER_RULES.some((r) => r.id === 'O-10' && /منصة ذكاء اصطناعي/.test(r.textAr)));
+  assert.ok(OWNER_RULES.some((r) => r.id === 'O-10' && /منصات الذكاء الاصطناعي/.test(r.textAr) && /يقفل المنصات خالص/.test(r.textAr)));
 });
 
 test('off: every hosted engine and Manus are closed, whatever keys exist', () => {

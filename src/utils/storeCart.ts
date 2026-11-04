@@ -1,3 +1,4 @@
+import { trackInsight } from './insightsTracker';
 import { useEffect, useState } from 'react';
 import type { StoreProduct } from './storeCatalog';
 import { makeStoreT, storeLocalized } from '../لغات/storeL10n';
@@ -18,12 +19,19 @@ export function readCart(): Cart {
   } catch { return {}; }
 }
 
+const AT_KEY = 'sham-store-cart-at';
+/** When the basket last changed (ms), on this device — for «سلتك لسه مستنياك» when he comes back. */
+export function cartTouchedAt(): number {
+  try { return Number(localStorage.getItem(AT_KEY)) || 0; } catch { return 0; }
+}
+
 function write(cart: Cart) {
-  try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch { /* private mode: in-memory only */ }
+  try { localStorage.setItem(KEY, JSON.stringify(cart)); localStorage.setItem(AT_KEY, String(Date.now())); } catch { /* private mode: in-memory only */ }
   window.dispatchEvent(new CustomEvent(EVENT, { detail: cart }));
 }
 
 export function addToCart(sku: string, qty = 1) {
+  trackInsight('cart', { sku, qty }); // «خزنة فهم الزوار» (only with the visitor's consent)
   const cart = readCart();
   cart[sku] = Math.min(99, (cart[sku] || 0) + qty);
   write(cart);

@@ -1,13 +1,13 @@
 /**
  * «باحث شاهين» — a new question looked up in open sources (Wikipedia's public API), read, analysed and answered
- * with its sources. A fake Wikipedia only (tests never touch the network).
+ * naturally; source links are kept as metadata for an explicit request. A fake Wikipedia only (tests never touch the network).
  */
 import assert from 'node:assert/strict';
 import type { AddressInfo } from 'node:net';
 import { test } from 'node:test';
 import express from 'express';
 import { emptyMemory } from '../src/utils/shaheenMemory';
-import { analyse, articleUrl, research, researchAnswer, researchBlock, researchQueries } from '../src/utils/webResearch';
+import { analyse, articleUrl, research, researchAnswer, researchQueries } from '../src/utils/webResearch';
 import { ShaheenMemory } from '../server/core/memory';
 import { Repository } from '../server/core/repository';
 import { MemoryStore } from '../server/core/store';
@@ -45,7 +45,7 @@ test('what is looked up: the question’s topic, never news, prices or personal 
   assert.equal(articleUrl('ar', 'عود (بخور)').includes('('), false, 'brackets escaped so the chat link stays whole');
 });
 
-test('read, compared, answered with sources: what several sources agree on comes first; off-topic text is dropped', async () => {
+test('read and compare: agreed passages rank first, off-topic text is dropped, and links stay hidden until requested', async () => {
   calls.length = 0;
   const found = (await research(wiki, 'ايه هو البخور وبيتعمل ازاي؟', 'ar'))!;
   assert.ok(found);
@@ -56,12 +56,13 @@ test('read, compared, answered with sources: what several sources agree on comes
   assert.equal(found.passages.filter((p) => /يصنع البخور العربي/.test(p.text)).length, 1, 'one idea once');
   assert.deepEqual(found.sources.map((s) => s.title).sort(), ['بخور', 'عود (بخور)'].sort());
   const answer = researchAnswer(found, { recorded: true });
-  assert.match(answer, /بحثت لك في المصادر المفتوحة/);
-  assert.match(answer, /أكتر من مصدر بيأكدها/);
-  assert.match(answer, /\[ويكيبيديا: بخور\]\(https:\/\/ar\.wikipedia\.org\/wiki\//);
-  assert.match(answer, /CC BY-SA/);
+  assert.match(answer, /الخلاصة/);
+  assert.doesNotMatch(answer, /ويكيبيديا|wikipedia|https:\/\//i, 'ordinary replies do not reveal source names or links');
+  assert.match(answer, /مش مراجعة من متخصص/);
   assert.match(answer, /سؤالك اتسجل/);
-  assert.match(researchBlock(found), /\(ويكيبيديا\)/);
+  const withSources = researchAnswer(found, { includeSources: true });
+  assert.match(withSources, /\[ويكيبيديا: بخور\]\(https:\/\/ar\.wikipedia\.org\/wiki\//);
+  assert.match(withSources, /CC BY-SA/);
   assert.equal(await research(wiki, 'ايه هي الطاقة الشمسية في الفضاء', 'ar'), undefined, 'nothing found: nothing invented');
   const oud = (await research(wiki, 'ايه هو العود؟', 'ar'))!;
   assert.deepEqual(oud.sources.map((s) => s.title), ['عود (بخور)'], 'Shaheen’s field is perfume: the musical instrument is left out');
@@ -85,14 +86,20 @@ test('every engine down and nothing in his library: the server looks it up and a
   const server = app.listen(0, '127.0.0.1');
   await new Promise((done) => server.once('listening', done));
   const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}/api`;
-  const chat = (message: string) => fetch(`${base}/chat`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ model: 'auto', language: 'ar', conversationHistory: [], message }) });
+  const chat = (message: string, conversationHistory: unknown[] = []) => fetch(`${base}/chat`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ model: 'auto', language: 'ar', conversationHistory, message }) });
   try {
     const res = await chat('ايه هو البخور وبيتعمل ازاي؟');
     assert.equal(res.status, 200);
-    const body = await res.json() as { reply: string; memory: string; engine: { provider: string } };
+    const body = await res.json() as { reply: string; memory: string; sources?: { title: string; url: string }[]; engine: { provider: string } };
     assert.equal(body.memory, 'research');
     assert.equal(body.engine.provider, 'shaheen');
-    assert.match(body.reply, /ويكيبيديا/);
+    assert.doesNotMatch(body.reply, /ويكيبيديا|https:\/\//i);
+    assert.ok(body.sources?.length, 'sources remain available to show on request');
+    const cited = await chat('مصدر؟', [
+      { role: 'user', text: 'ايه هو البخور وبيتعمل ازاي؟' }, { role: 'assistant', text: body.reply, sources: body.sources },
+    ]);
+    const citedBody = await cited.json() as { reply: string };
+    assert.ok(citedBody.reply.includes('[بخور](https://ar.wikipedia.org/wiki/%D8%A8%D8%AE%D9%88%D8%B1)'));
     assert.equal((await repo.gaps()).length, 1, 'and the question goes to the school, which studies it properly');
     assert.equal((await chat('ايه هي الطاقة الشمسية في الفضاء')).status, 503);
   } finally { await new Promise((done) => server.close(done)); }
@@ -105,10 +112,12 @@ test('in the browser with no server: library first, then the research, then the 
   const mem = {
     learn: () => {}, recall: async () => undefined,
     library: async () => { order.push('library'); return undefined; },
-    research: async (q: string, lang: string) => { order.push('research'); const r = await research(wiki, q, lang); return r && researchAnswer(r); },
+    research: async (q: string, lang: string) => { order.push('research'); const r = await research(wiki, q, lang); return r && { answer: researchAnswer(r), sources: r.sources }; },
   };
   const store = createChatStore(offline, async () => {}, mem, async () => undefined);
   await store.send({ model: 'fast', language: 'ar', errorText: () => 'unavailable', text: 'ايه هو البخور وبيتعمل ازاي؟' });
   assert.deepEqual(order, ['library', 'research']);
-  assert.match(store.getSnapshot().messages.at(-1)!.text, /ويكيبيديا/);
+  const answer = store.getSnapshot().messages.at(-1)!;
+  assert.doesNotMatch(answer.text, /ويكيبيديا|https:\/\//i);
+  assert.deepEqual(answer.sources?.map((source) => source.title).sort(), ['بخور', 'عود (بخور)'].sort());
 });

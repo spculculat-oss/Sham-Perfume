@@ -106,6 +106,7 @@ jobs:
           git config user.name "Shaheen patrol bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           node scripts/ci/publish.mjs "الدورية بالتناوب: $(date -u +'%Y-%m-%d %H:%M')" src/data/live/shaheen-patrol.json src/data/live/ai-quota.json \
+            src/data/live/shaheen-blocks.json \
             || { echo "::error::Could not push the patrol log"; exit 1; }
       - name: Start the robots that fix what broke
         if: env.PATROL_ACT == 'true' && steps.patrol.outputs.reruns != ''
@@ -115,7 +116,7 @@ jobs:
         run: |
           for wf in $RERUNS; do
             case "$wf" in
-              shaheen-import.yml|shaheen-discover.yml|shaheen-news.yml|shaheen-seo.yml|shaheen-languages.yml|pages.yml|product-pages-check.yml|live-smoke.yml|shaheen-precheck.yml)
+              shaheen-import.yml|shaheen-discover.yml|shaheen-news.yml|shaheen-seo.yml|shaheen-service.yml|shaheen-inventory.yml|shaheen-languages.yml|pages.yml|product-pages-check.yml|live-smoke.yml|shaheen-precheck.yml)
                 gh workflow run "$wf" --ref main && echo "::notice::Started $wf" || echo "::warning::Could not start $wf" ;;
               *) echo "::warning::Ignored unknown workflow $wf" ;;
             esac

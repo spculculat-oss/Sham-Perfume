@@ -1,0 +1,835 @@
+{
+ "version": 1,
+ "note": "طريقة التسليم مسجّلة لكل منصة بمصدرها وتاريخها: منصة بتشحن = وساطة (مكسبنا صافي)، منصة محلية = إحنا بنشحن لعالم كله.",
+ "updatedAt": "2026-10-25",
+ "modes": {
+  "platform_ships": {
+   "nameAr": "المنصة بتشحن (وساطة)",
+   "meaningAr": "المنصة المصدر مسؤولة عن التوصيل لأي دولة. دورنا: نعرض ونبيع ونتابع، وناخد مكسبنا بس. الشحن بيتحسب بسعر المنصة، ومفيش أي وعد توصيل من عندنا.",
+   "weArrangeShipping": false,
+   "wePayCustoms": false,
+   "riskAr": "الخطر الأكبر: لو المنصة اتأخرت أو رفضت ترجع، العميل بيحاسبنا إحنا."
+  },
+  "broker": {
+   "nameAr": "إحنا بنشحن (وسيط بيسلّم)",
+   "meaningAr": "المنصة بتسلّم محلياً بس. إحنا بنستلم وبنشحن للعميل: محلي لو العميل في نفس بلد المنصة، ودولي لو في بلد تاني — وبنختار الشركة الأنسب لكل ممر.",
+   "weArrangeShipping": true,
+   "wePayCustoms": false,
+   "riskAr": "الخطر: سعر الشحن بيتغير بالوزن والوجهة، والجمارك على العميل. لازم السعر يتأكد قبل الدفع."
+  },
+  "unknown": {
+   "nameAr": "مش معروف (لازم يتأكد)",
+   "meaningAr": "لسه مش مسجل: المنصة بتشحن ولا محلية بس؟ لحد ما يتأكد مفيش وعد توصيل للزائر، والطلب يتأكد بالكلام مع صاحب المتجر.",
+   "weArrangeShipping": null,
+   "wePayCustoms": null,
+   "riskAr": "وعد توصيل من غير معرفة = شكوى. ممنوع."
+  }
+ },
+ "platforms": [
+  {
+   "id": "shamperfume",
+   "nameAr": "شام بيرفيوم",
+   "nameEn": "Sham Perfume",
+   "host": "www.shamperfume.com",
+   "products": 1063,
+   "originCountry": "MY",
+   "originConfidence": "verified",
+   "originEvidenceAr": "متجر ماليزي: أسعاره بالرينجت (MYR) وكل منتج مسجّل بسعر صرفه 13.0813 ج.م/رينجت — نفس مصدر السكرابر الأصلي. مؤكد من ملف الاستيراد نفسه، مش مستنتج من اسم الموقع.",
+   "fulfilment": "broker",
+   "shipsTo": [
+    "MY"
+   ],
+   "shipsToNoteAr": "مفيش صفحة سياسة شحن على موقعها (بترجع 404)، وكله مدفوعات محلية ماليزية (Touch n Go · GrabPay · ShopeePay) — يعني بتسلّم جوه ماليزيا بس. فإحنا اللي بنشحن لكل العالم.",
+   "source": "https://www.shamperfume.com",
+   "checkedAt": "2026-10-25",
+   "shipmentSource": "https://www.shamperfume.com/perfumes/policies/shipping-policy/",
+   "shipmentCheckedAt": "2026-10-25"
+  },
+  {
+   "id": "afnan",
+   "nameAr": "أفنان للعطور",
+   "nameEn": "Afnan Perfumes",
+   "host": "afnan.com",
+   "products": 98,
+   "originCountry": "AE",
+   "originConfidence": "verified",
+   "originEvidenceAr": "أسعار المورد بالدرهم الإماراتي (AED) بسعر صرف 14.5568 ج.م/درهم — أفنان مقرها الشارقة، الإمارات. الموقع (afnan.com) بيع الماركة نفسها.",
+   "fulfilment": "platform_ships",
+   "shipsTo": [
+    "US"
+   ],
+   "shipsToNoteAr": "سياستها المنشورة بتقول «بنشحن لأمريكا بس» (آخر تحديث ١ نوفمبر ٢٠٢٤) — يعني لأمريكا وساطة ومكسبنا صافي، ولأي دولة تانية إحنا اللي بنشحن.",
+   "source": "https://afnan.com",
+   "checkedAt": "2026-10-25",
+   "shipmentSource": "https://us.afnan.com/policies/shipping-policy",
+   "shipmentCheckedAt": "2026-10-25"
+  },
+  {
+   "id": "direct",
+   "nameAr": "منتجات مباشرة بدون رابط مصدر",
+   "nameEn": "Direct products (no source page)",
+   "host": null,
+   "products": 51,
+   "originCountry": "EG",
+   "originConfidence": "inferred",
+   "originEvidenceAr": "مخزون عندنا في مصر — بس الـ51 كلهم مخفيين دلوقتي في فحص الصفحات (بدون صفحة مصدر): 32 منهم جايين من shamaperfumes.com (الهند) و19 من غير مورد مسجل. يعني «شحن محلي من مصر» مش شغال فعلاً لحد ما يكون ليهم مصدر حقيقي.",
+   "fulfilment": "broker",
+   "shipsTo": [
+    "EG"
+   ],
+   "shipsToNoteAr": "لما يبقى فيهم بضاعة معروضة فعلاً: بنشحن منها محلياً بشركة محلية (بوستة 30–55 ج.م)، ودولياً بشركة دولية بتقبل العطور.",
+   "source": "src/data/products.json",
+   "checkedAt": "2026-10-25",
+   "shipmentCheckedAt": "2026-10-25"
+  }
+ ],
+ "carriers": [
+  {
+   "id": "bosta",
+   "nameAr": "بوستة",
+   "nameEn": "Bosta",
+   "country": "EG",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": {
+    "cairo": [
+     30,
+     55
+    ],
+    "governorates": [
+     60,
+     90
+    ]
+   },
+   "speedAr": "اليوم التالي",
+   "noteAr": "الأشهر والأرخص للتجارة الإلكترونية في مصر، وفيها دفع عند الاستلام.",
+   "source": "https://www.easyorders.eg/blog/أفضل-شركات-الشحن-الداخلي-في-مصر/",
+   "checkedAt": "2026-10-25",
+   "originCountry": "EG"
+  },
+  {
+   "id": "mylerz",
+   "nameAr": "مايلرز",
+   "nameEn": "Mylerz",
+   "country": "EG",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": {
+    "cairo": [
+     40,
+     70
+    ],
+    "governorates": [
+     80,
+     110
+    ]
+   },
+   "speedAr": "2–3 أيام",
+   "noteAr": "تغطي مصر والمغرب والأردن وتونس والجزائر.",
+   "source": "https://www.easyorders.eg/blog/أفضل-شركات-الشحن-الداخلي-في-مصر/",
+   "checkedAt": "2026-10-25",
+   "originCountry": "EG"
+  },
+  {
+   "id": "shipblu",
+   "nameAr": "شيب بلو",
+   "nameEn": "ShipBlu",
+   "country": "EG",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": {
+    "cairo": [
+     35,
+     55
+    ],
+    "governorates": [
+     65,
+     90
+    ]
+   },
+   "speedAr": "1–3 أيام",
+   "noteAr": "شركة مصرية حديثة، قوية في القاهرة.",
+   "source": "https://www.easyorders.eg/blog/أفضل-شركات-الشحن-الداخلي-في-مصر/",
+   "checkedAt": "2026-10-25",
+   "originCountry": "EG"
+  },
+  {
+   "id": "weevo",
+   "nameAr": "ويفو",
+   "nameEn": "Weevo",
+   "country": "EG",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": {
+    "cairo": [
+     30,
+     50
+    ],
+    "governorates": [
+     70,
+     100
+    ]
+   },
+   "speedAr": "1–3 أيام",
+   "noteAr": "أرخص فئة في القاهرة.",
+   "source": "https://www.easyorders.eg/blog/أفضل-شركات-الشحن-الداخلي-في-مصر/",
+   "checkedAt": "2026-10-25",
+   "originCountry": "EG"
+  },
+  {
+   "id": "aramex_eg",
+   "nameAr": "أرامكس مصر",
+   "nameEn": "Aramex Egypt",
+   "country": "EG",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": {
+    "cairo": [
+     70,
+     100
+    ],
+    "governorates": [
+     105,
+     140
+    ]
+   },
+   "speedAr": "1–2 يوم",
+   "noteAr": "الأغلى محلياً بس عندها شبكة دولية وخدمة مواد خطرة (يتأكد).",
+   "source": "https://www.aramex.com/eg/en/ship/calculate-rates",
+   "checkedAt": "2026-10-25",
+   "originCountry": "EG"
+  },
+  {
+   "id": "egypt_post",
+   "nameAr": "البريد المصري",
+   "nameEn": "Egypt Post",
+   "country": "EG",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": null,
+   "speedAr": "2–5 أيام",
+   "noteAr": "أوسع تغطية (4,238 مكتب) وأرخص للمناطق النائية، بس أبطأ ومفيش سعر منشور متأكد منه.",
+   "source": "https://www.mordorintelligence.com/industry-reports/egypt-courier-express-and-parcel-cep-market",
+   "checkedAt": "2026-10-25",
+   "originCountry": "EG"
+  },
+  {
+   "id": "aramex_intl",
+   "nameAr": "أرامكس الدولية",
+   "nameEn": "Aramex International",
+   "country": "*",
+   "scope": "international",
+   "dg": null,
+   "cod": false,
+   "priceBandUsd": {
+    "gulf": [
+     20,
+     55
+    ],
+    "europe_north_america": [
+     40,
+     100
+    ]
+   },
+   "speedAr": "3–7 أيام",
+   "noteAr": "الأسعار دي محسوبة للطرد اللي بيطلع من مصر — متنفعش تتستخدم كسعر من ماليزيا أو الإمارات. ولازم يتأكد إنها بتقبل العطور (UN1266) على المسار ده.",
+   "source": "https://zabroker.com/blog/egypt-shipping-companies",
+   "checkedAt": "2026-10-25",
+   "originCountry": "EG"
+  },
+  {
+   "id": "dhl_express",
+   "nameAr": "دي إتش إل إكسبريس",
+   "nameEn": "DHL Express",
+   "country": "*",
+   "scope": "international",
+   "dg": null,
+   "cod": false,
+   "priceBandUsd": null,
+   "speedAr": "2–5 أيام",
+   "noteAr": "أقوى تغطية عالمية. سعرها بيتحسب بالوزن الحجمي ونوع المادة — مفيش فئة منشورة. لازم اتفاقية مواد خطرة للعطور.",
+   "source": "https://www.dhl.com/",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "fedex",
+   "nameAr": "فيديكس",
+   "nameEn": "FedEx",
+   "country": "*",
+   "scope": "international",
+   "dg": null,
+   "cod": false,
+   "priceBandUsd": null,
+   "speedAr": "2–5 أيام",
+   "noteAr": "مناسبة للطرود الأكبر. نفس ملاحظة المواد الخطرة.",
+   "source": "https://www.fedex.com/",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "ups",
+   "nameAr": "يو بي إس",
+   "nameEn": "UPS",
+   "country": "*",
+   "scope": "international",
+   "dg": null,
+   "cod": false,
+   "priceBandUsd": null,
+   "speedAr": "2–5 أيام",
+   "noteAr": "بديل لفيديكس. نفس ملاحظة المواد الخطرة.",
+   "source": "https://www.ups.com/",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "jt_my",
+   "nameAr": "جي آند تي ماليزيا",
+   "nameEn": "J&T Express Malaysia",
+   "country": "MY",
+   "originCountry": "MY",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": null,
+   "speedAr": "1–3 أيام",
+   "noteAr": "من أكبر شركات التوصيل في ماليزيا وبتغطي كل الولايات. مفيش فئة سعر منشورة على موقعها — السعر يتأكد بالوزن والولاية قبل أي وعد.",
+   "source": "https://www.jtexpress.my/",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "ninja_van_my",
+   "nameAr": "نينجا فان ماليزيا",
+   "nameEn": "Ninja Van Malaysia",
+   "country": "MY",
+   "originCountry": "MY",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": null,
+   "speedAr": "1–3 أيام",
+   "noteAr": "شركة إقليمية قوية في جنوب شرق آسيا، أسعارها بالعقد مش منشورة. تتأكد قبل التسعير.",
+   "source": "https://www.ninjavan.co/en-my",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "pos_malaysia",
+   "nameAr": "بريد ماليزيا",
+   "nameEn": "Pos Malaysia",
+   "country": "MY",
+   "originCountry": "MY",
+   "scope": "local",
+   "dg": null,
+   "cod": null,
+   "priceBandEgp": null,
+   "speedAr": "2–5 أيام",
+   "noteAr": "أوسع تغطية للقرى والمناطق البعيدة في ماليزيا. السعر المسجّل هو أعلى سعر شباك منشور لأول كيلو (من شبه الجزيرة لصباح وسرواك: 11 رينجت)، وكل زجاجة زيادة محسوبة بسعر الكيلو الإضافي لشرق ماليزيا (10 رينجت) — يعني الرقم بيغطي أبعد ولاية.",
+   "source": "https://sellershipment.com/ecommerce-shipping-cost/pos-laju-rate/ + https://jomjual.my/blog/jt-vs-pos-laju-vs-ninja-van-vs-dhl-perbandingan-kadar-penghantaran-malaysia-2026",
+   "checkedAt": "2026-10-30",
+   "perCountryBand": {
+    "currency": "MYR",
+    "rates": {
+     "MY": [
+      11,
+      10
+     ]
+    }
+   }
+  },
+  {
+   "id": "aramex_ae",
+   "nameAr": "أرامكس الإمارات",
+   "nameEn": "Aramex UAE",
+   "country": "AE",
+   "originCountry": "AE",
+   "scope": "local",
+   "dg": null,
+   "cod": true,
+   "priceBandEgp": null,
+   "speedAr": "1–3 أيام",
+   "noteAr": "أقوى شبكة توصيل في الإمارات. مفيش فئة منشورة عامة — السعر بالوزن والإمارة.",
+   "source": "https://www.aramex.com/ae/en",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "emirates_post",
+   "nameAr": "بريد الإمارات",
+   "nameEn": "Emirates Post",
+   "country": "AE",
+   "originCountry": "AE",
+   "scope": "local",
+   "dg": null,
+   "cod": null,
+   "priceBandEgp": null,
+   "speedAr": "2–4 أيام",
+   "noteAr": "البريد الرسمي — أرخص للطرود الصغيرة، والتغطية لكل الإمارات.",
+   "source": "https://www.epg.gov.ae/",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "poslaju_intl",
+   "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+   "nameEn": "PosLaju EMS International (Pos Malaysia)",
+   "country": "*",
+   "originCountry": "MY",
+   "scope": "international",
+   "dg": null,
+   "cod": false,
+   "priceBandUsd": null,
+   "perCountryBand": {
+    "currency": "MYR",
+    "rates": {
+     "BN": [
+      43,
+      6
+     ],
+     "KH": [
+      52,
+      6
+     ],
+     "ID": [
+      45,
+      6
+     ],
+     "LA": [
+      52,
+      8
+     ],
+     "MM": [
+      80,
+      20
+     ],
+     "PH": [
+      55,
+      8
+     ],
+     "SG": [
+      40,
+      5
+     ],
+     "TH": [
+      45,
+      6
+     ],
+     "VN": [
+      50,
+      6
+     ],
+     "CN": [
+      63,
+      12
+     ],
+     "HK": [
+      55,
+      12
+     ],
+     "JP": [
+      64,
+      15
+     ],
+     "MO": [
+      60,
+      12
+     ],
+     "MN": [
+      150,
+      22
+     ],
+     "KR": [
+      65,
+      15
+     ],
+     "TW": [
+      65,
+      12
+     ],
+     "BD": [
+      60,
+      10
+     ],
+     "BT": [
+      115,
+      39
+     ],
+     "IN": [
+      65,
+      12
+     ],
+     "MV": [
+      65,
+      12
+     ],
+     "NP": [
+      90,
+      30
+     ],
+     "PK": [
+      62,
+      12
+     ],
+     "LK": [
+      65,
+      12
+     ],
+     "BH": [
+      75,
+      20
+     ],
+     "IR": [
+      115,
+      22
+     ],
+     "JO": [
+      75,
+      20
+     ],
+     "KW": [
+      75,
+      20
+     ],
+     "LB": [
+      160,
+      40
+     ],
+     "OM": [
+      150,
+      40
+     ],
+     "QA": [
+      75,
+      20
+     ],
+     "SA": [
+      80,
+      25
+     ],
+     "SY": [
+      155,
+      40
+     ],
+     "TR": [
+      70,
+      20
+     ],
+     "AE": [
+      80,
+      20
+     ],
+     "YE": [
+      157,
+      40
+     ],
+     "AT": [
+      100,
+      30
+     ],
+     "BE": [
+      100,
+      15
+     ],
+     "BG": [
+      157,
+      40
+     ],
+     "CY": [
+      157,
+      40
+     ],
+     "CZ": [
+      157,
+      40
+     ],
+     "DK": [
+      100,
+      15
+     ],
+     "EE": [
+      157,
+      40
+     ],
+     "FI": [
+      100,
+      15
+     ],
+     "FR": [
+      100,
+      15
+     ],
+     "DE": [
+      100,
+      19
+     ],
+     "GR": [
+      100,
+      20
+     ],
+     "HU": [
+      160,
+      36
+     ],
+     "IS": [
+      123,
+      20
+     ],
+     "IE": [
+      100,
+      15
+     ],
+     "IT": [
+      100,
+      15
+     ],
+     "LI": [
+      110,
+      35
+     ],
+     "LU": [
+      144,
+      22
+     ],
+     "NL": [
+      110,
+      23
+     ],
+     "NO": [
+      120,
+      25
+     ],
+     "PL": [
+      160,
+      40
+     ],
+     "PT": [
+      100,
+      15
+     ],
+     "RU": [
+      110,
+      20
+     ],
+     "CS": [
+      157,
+      40
+     ],
+     "SK": [
+      157,
+      40
+     ],
+     "ES": [
+      115,
+      15
+     ],
+     "SE": [
+      130,
+      30
+     ],
+     "CH": [
+      130,
+      30
+     ],
+     "UA": [
+      155,
+      40
+     ],
+     "GB": [
+      100,
+      15
+     ],
+     "AU": [
+      75,
+      14
+     ],
+     "FJ": [
+      180,
+      55
+     ],
+     "NZ": [
+      76,
+      17
+     ],
+     "PG": [
+      66,
+      15
+     ],
+     "SB": [
+      180,
+      55
+     ],
+     "AR": [
+      137,
+      39
+     ],
+     "BR": [
+      137,
+      38
+     ],
+     "CA": [
+      110,
+      22
+     ],
+     "CL": [
+      180,
+      55
+     ],
+     "CU": [
+      180,
+      55
+     ],
+     "MX": [
+      137,
+      30
+     ],
+     "SR": [
+      180,
+      55
+     ],
+     "US": [
+      100,
+      20
+     ],
+     "VE": [
+      120,
+      20
+     ],
+     "EG": [
+      90,
+      15
+     ],
+     "GH": [
+      180,
+      55
+     ],
+     "KE": [
+      100,
+      30
+     ],
+     "MW": [
+      180,
+      42
+     ],
+     "MU": [
+      180,
+      40
+     ],
+     "MA": [
+      180,
+      45
+     ],
+     "NG": [
+      150,
+      42
+     ],
+     "ZA": [
+      150,
+      39
+     ],
+     "SD": [
+      180,
+      55
+     ],
+     "TN": [
+      100,
+      30
+     ],
+     "KZ": [
+      157,
+      40
+     ],
+     "TJ": [
+      155,
+      40
+     ],
+     "UZ": [
+      157,
+      40
+     ],
+     "*": [
+      180,
+      55
+     ]
+    },
+    "surchargePercent": 40,
+    "sourceAr": "جدول البضائع الدولي (أول 500 جم + كل 500 جم) + رسم وقود دولي 40% على كل شحنة دولية، بيتحدث كل جمعة"
+   },
+   "speedAr": "3–4 أيام لأغلب الوجهات",
+   "noteAr": "أرخص سعر دولي منشور من ماليزيا: 90 رينجت لأول 500 جم لمصر، و80 للسعودية والإمارات، و100 لأوروبا وأمريكا — وده قبل رسم الوقود 40%. اتأكد إن البريد بيقبل العطور (UN1266) قبل أي وعد: العطر سائل قابل للاشتعال والبريد عادةً بيرفض المواد الخطرة.",
+   "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
+   "surchargeSource": "https://www.pos.com.my/parcel/fuel-surcharge",
+   "checkedAt": "2026-10-25"
+  }
+ ],
+ "candidates": [
+  {
+   "country": "SA",
+   "names": [
+    "SMSA",
+    "Naqel",
+    "Aramex",
+    "J&T Express"
+   ],
+   "verified": false
+  },
+  {
+   "country": "AE",
+   "names": [
+    "Aramex",
+    "Emirates Post",
+    "Quiqup"
+   ],
+   "verified": false
+  },
+  {
+   "country": "MY",
+   "names": [
+    "Ninja Van",
+    "J&T Express",
+    "Pos Malaysia",
+    "DHL eCommerce"
+   ],
+   "verified": false
+  },
+  {
+   "country": "GB",
+   "names": [
+    "Royal Mail",
+    "Evri",
+    "DPD",
+    "DHL Parcel UK"
+   ],
+   "verified": false
+  },
+  {
+   "country": "DE",
+   "names": [
+    "DHL Paket",
+    "Hermes",
+    "DPD",
+    "GLS"
+   ],
+   "verified": false
+  },
+  {
+   "country": "FR",
+   "names": [
+    "Colissimo",
+    "Chronopost",
+    "Mondial Relay",
+    "DPD France"
+   ],
+   "verified": false
+  },
+  {
+   "country": "US",
+   "names": [
+    "UPS",
+    "FedEx",
+    "USPS",
+    "OnTrac"
+   ],
+   "verified": false
+  }
+ ]
+}

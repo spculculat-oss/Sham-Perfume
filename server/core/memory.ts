@@ -26,7 +26,13 @@ export interface MemoryHit { entry: MemoryEntry; from: 'learned' | 'shared'; exa
 export class ShaheenMemory {
   constructor(private store: Store, private env: Env = process.env, private request: typeof fetch = fetch,
     /** Tests inject the shared file; in dev and tests the bundled copy is never used (no hidden test data). */
-    private sharedOverride?: MemoryFile) {}
+    private sharedOverride?: MemoryFile,
+    /**
+     * A durable copy (the database, when the site has one) of what he learns. On Vercel the main store is often
+     * temporary memory, so every instance forgot its visitors' answers before the bots could collect them; the
+     * answers are now also written there (never waited on by the visitor) and handed to the bots from there.
+     */
+    private durable?: Store) {}
 
   /** What everyone learned (the shared file); empty in tests and dev unless injected. */
   async shared(): Promise<MemoryFile> {
@@ -56,12 +62,23 @@ export class ShaheenMemory {
   async all(): Promise<MemoryFile> { return mergeMemory(await this.learned(), await this.shared()); }
 
   /** When no engine answers: the closest remembered question (learned or shared, any style). */
-  async recallSimilar(question: string, lang: string): Promise<MemoryHit | undefined> {
+  async recallSimilar(question: string, lang: string, threshold?: number): Promise<MemoryHit | undefined> {
     const all = mergeMemory(await this.learned(), await this.shared());
-    const best = recallSimilar(all, question, lang);
+    const best = recallSimilar(all, question, lang, threshold);
     if (!best) return undefined;
     await this.used({ ...best.entry });
     return { entry: best.entry, from: 'learned', exact: best.score >= 1, score: best.score };
+  }
+
+  /** What the bots collect (GET /api/admin/shaheen-memory): this instance's answers plus the durable copy. */
+  async exported(): Promise<MemoryFile> {
+    const mine = await this.learned();
+    if (!this.durable || this.durable === this.store) return mine;
+    const kept = await Promise.race([
+      this.durable.list('memory').catch(() => [] as MemoryEntry[]),
+      new Promise<MemoryEntry[]>((done) => setTimeout(() => done([]), 8000)),
+    ]);
+    return mergeMemory(mine, { version: 1, updatedAt: kept.map((e) => e.lastUsed || e.at).sort().pop() || new Date(0).toISOString(), entries: kept });
   }
 
   /** Keeps an answer Shaheen just gave (ignored when not worth remembering). */
@@ -72,6 +89,7 @@ export class ShaheenMemory {
     const old = await this.store.get('memory', docId(entry.id)).catch(() => undefined);
     if (old) { entry.hits = old.hits; entry.lastUsed = old.lastUsed; }
     await this.store.put('memory', docId(entry.id), entry).catch(() => undefined);
+    if (this.durable && this.durable !== this.store) void this.durable.put('memory', docId(entry.id), entry).catch(() => undefined);
     return true;
   }
 

@@ -8,6 +8,7 @@
  * one short question when the request gives no direction at all instead of guessing. Pure and browser-safe: the
  * same answer in the visitor's browser and on the server.
  */
+import { looksCosmetic } from './cosmeticFormulator';
 import { asciiDigits } from './shaheenQuickApps';
 
 type Layer = 'top' | 'heart' | 'base';
@@ -98,6 +99,8 @@ const MOODS: { re: RegExp; tags: Tag[]; ar: string; en: string; warm?: boolean; 
 const DESIGN_VERB = /صمم|صمّم|تصميم|تركيب[ةه]|ركّب|ركب لي|ركبلي|خلط[ةه]|وصف[ةه]|فورمولا|اعمل(?:لي| لي)? عطر|اعملي عطر|اخترع(?:لي)? عطر|ابتكر|\bformula\b|\brecipe\b|\bblend\b|design (?:a|me|my)|create (?:a|me) (?:perfume|fragrance|scent)|make (?:me )?a (?:perfume|fragrance|scent)/i;
 /** Questions about a formula, not requests for one («إيه هي التركيبة الهرمية؟», «ازاي احسب التركيز؟»). */
 const NOT_A_REQUEST = /^(?:ما|ماهي|ما هي|ايه|إيه|يعني ايه|شو|ازاي|إزاي|كيف|هل|ليه|لماذا|what(?:'s| is| are)|how (?:do|to|does)|why|is|are)(?=[\s؟?،,]|$)/i;
+/** «ازاي/كيف اعمل (لي) عطر …» — a how-to that asks for a perfume to be made. */
+const HOW_TO_MAKE = /^(?:ازاي|إزاي|ازاى|كيف|how (?:do|can) i (?:make|create))\s+(?:(?:ممكن|اقدر|أقدر)\s+)?(?:اعمل|أعمل|نعمل|اصنع|أصنع|نصنع|اركب|أركب|make|create)?\s*(?:لي|لى)?\s*(?:عطر|برفان|perfume|fragrance)\s+\S/i;
 const AFTER = '(?![a-zA-Z\\u0600-\\u06FF])';
 
 export interface DesignBrief { tags: Tag[]; moods: string[]; named: string[]; bottleMl: number; concentration: number; type: 'extrait' | 'edp' | 'edt' | 'edc'; warm: boolean; fresh: boolean; explicitSize: boolean }
@@ -105,7 +108,11 @@ export interface DesignBrief { tags: Tag[]; moods: string[]; named: string[]; bo
 /** Reads a design request; undefined when the text is not one. */
 export function readBrief(text: string, lang: 'ar' | 'en' = 'ar'): DesignBrief | undefined {
   const clean = asciiDigits(text).replace(/\s+/g, ' ').trim();
-  if (clean.length < 4 || clean.length > 600 || !DESIGN_VERB.test(clean) || NOT_A_REQUEST.test(clean)) return undefined;
+  // «ازاي اعمل عطر عود؟» asks for a formula (a how-to that names what the perfume should smell of); «ازاي احسب التركيز؟» does not.
+  const howToMake = HOW_TO_MAKE.test(clean);
+  if (clean.length < 4 || clean.length > 600 || !DESIGN_VERB.test(clean) || (NOT_A_REQUEST.test(clean) && !howToMake)) return undefined;
+  // A cream, serum, lip balm … is the cosmetics formulator's job (src/utils/cosmeticFormulator.ts), not a perfume.
+  if (looksCosmetic(clean)) return undefined;
   const tags = new Set<Tag>(); const moods: string[] = []; let warm = false; let fresh = false;
   for (const m of MOODS) {
     if (!m.re.test(clean)) continue;
@@ -117,6 +124,7 @@ export function readBrief(text: string, lang: 'ar' | 'en' = 'ar'): DesignBrief |
   const named = PALETTE.filter((m) => m.names.test(clean)).map((m) => m.id);
   // Only materials named: their own families guide the rest of the formula.
   if (!tags.size && named.length) for (const id of named) PALETTE.find((m) => m.id === id)!.tags.slice(0, 3).forEach((t) => tags.add(t));
+  if (howToMake && NOT_A_REQUEST.test(clean) && !tags.size) return undefined;
   const size = clean.match(new RegExp(`(\\d{1,4}(?:\\.\\d+)?)\\s*(?:مل|ملي|مللي|ml)${AFTER}`, 'i'));
   const bottleMl = size ? Math.min(1000, Math.max(5, Number(size[1]))) : 50;
   const type = /extrait|اكستريه|إكستريه|برفان|parfum\b|بيور/i.test(clean) ? 'extrait'
@@ -287,6 +295,11 @@ function askDirection(lang: 'ar' | 'en'): string {
  * last request when he is refining a formula Shaheen just gave («خليه صيفي»).
  */
 export function designAnswer(message: string, language: string, previous?: string): string | undefined {
+  return designFor(message, language, previous)?.reply;
+}
+
+/** The same answer with the formula behind it (the store link shows ready perfumes close to it). */
+export function designFor(message: string, language: string, previous?: string): { reply: string; design?: Design; lang: 'ar' | 'en' } | undefined {
   // He answers in the language the visitor wrote in (Arabic letters → Arabic, whatever the site language).
   const lang: 'ar' | 'en' = /[\u0600-\u06FF]/.test(message) || ((language === 'ar' || language === 'fa') && !/[a-z]{3}/i.test(message)) ? 'ar' : 'en';
   let brief = readBrief(message, lang);
@@ -307,7 +320,8 @@ export function designAnswer(message: string, language: string, previous?: strin
     }
   }
   if (!brief) return undefined;
-  if (!brief.tags.length && !brief.named.length) return askDirection(lang);
-  return designReply(composeDesign(brief, lang), lang);
+  if (!brief.tags.length && !brief.named.length) return { reply: askDirection(lang), lang };
+  const design = composeDesign(brief, lang);
+  return { reply: designReply(design, lang), design, lang };
 }
 const conflicts = (t: Tag, now: DesignBrief) => (now.fresh && ['warm', 'amber', 'gourmand', 'oud', 'smoky'].includes(t)) || (now.warm && ['aquatic', 'fresh', 'citrus'].includes(t));

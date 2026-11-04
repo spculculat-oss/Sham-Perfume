@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: "الأمر: pause = وقف روبوت، resume = رجّعه، freeze = وقف كل الروبوتات، unfreeze = رجّعهم، safe_auto = التصليح الصغير تلقائي، approve_all = كل تغيير بموافقتي، self_reliant = شاهين يعتمد على نفسه من غير منصات ذكاء اصطناعي، platforms_on = اسمح بالمنصات"
+        description: "الأمر: pause = وقف روبوت، resume = رجّعه، freeze = وقف كل الروبوتات، unfreeze = رجّعهم، safe_auto = التصليح الصغير تلقائي، approve_all = كل تغيير بموافقتي، state_rule = دولة المنصة توافق (وإنت فوقها)، self_reliant = شاهين يعتمد على نفسه من غير منصات ذكاء اصطناعي، platforms_on = اسمح بالمنصات، platforms_auto = تلقائي: المنصات وهي شغالة ويتعلم منها، ولو وقفت يعتمد على نفسه"
         required: true
         type: choice
         options:
@@ -22,8 +22,10 @@ on:
           - unfreeze
           - safe_auto
           - approve_all
+          - state_rule
           - self_reliant
           - platforms_on
+          - platforms_auto
       bot:
         description: "الروبوت (للوقف والتشغيل بس)"
         required: false
@@ -31,31 +33,56 @@ on:
         type: choice
         options:
           - none
+          - census
           - council
           - secretary
           - catalog
+          - catalog_review
+          - trade_lanes
+          - carriers
+          - synapse
+          - immune
+          - tutor
+          - examiner
+          - reflex
+          - ears
+          - senses_site
+          - senses_world
+          - weaver
+          - curator
+          - inventory
           - news
           - precheck
           - patrol
+          - maneuver
           - finance
+          - finance_shield
+          - sales
           - scout
           - teacher
           - school
+          - academy
+          - lab
+          - brain
           - importer
           - images
           - product_pages
           - seo
           - languages
+          - localization_audit
+          - scent_behavior
           - design_audit
           - visitor_tour
           - verifier
           - inspect
+          - service
           - doctor
           - live_check
           - keys
           - intake
           - studio_bridge
           - studio_zip
+          - state
 
 permissions:
   contents: read
@@ -101,7 +128,7 @@ jobs:
         run: |
           git config user.name "Owner desk"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          node scripts/ci/publish.mjs "أمر صاحب الموقع: ${{ inputs.action }} ${{ inputs.bot }}" src/data/owner/controls.json \
+          node scripts/ci/publish.mjs "أمر صاحب الموقع: ${{ inputs.action }} ${{ inputs.bot }}" src/data/owner/controls.json src/data/owner/state-orders.json \
             || { echo "::error::Could not save the owner's order"; exit 1; }
 
   change:

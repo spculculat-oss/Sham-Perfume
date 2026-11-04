@@ -9,7 +9,12 @@ test('Arabic: the claim goes, the scent stays', () => {
   assert.equal(stripClaims('عطر يجمع بين العود والعنبر. يترك أثراً دخانياً خشبياً دافئاً يدوم طويلاً.', 'ar'),
     'عطر يجمع بين العود والعنبر. يترك أثراً دخانياً خشبياً دافئاً.');
   assert.equal(stripClaims('عطر غني يجمع بين الشوكولاتة والعود. يمنحك ثباتاً طويلاً وجاذبية فريدة تناسب الجنسين.', 'ar'),
-    'عطر غني يجمع بين الشوكولاتة والعود. يمنحك جاذبية فريدة تناسب الجنسين.');
+    'عطر غني يجمع بين الشوكولاتة والعود.');
+  // Council task #183: a promise about the wearer and promotional adjectives go; the scent stays.
+  assert.equal(stripClaims('عطر شرقي خشبي ساحر يجمع بين الزعفران والكراميل ليمنحك شعوراً بالفخامة.', 'ar'), 'عطر شرقي خشبي يجمع بين الزعفران والكراميل.');
+  assert.equal(stripClaims('عطر فاخر يمزج بين الجلود الراقية والأخشاب المدخنة.', 'ar'), 'عطر يمزج بين الجلود والأخشاب المدخنة.');
+  assert.equal(stripClaims('عطر نسائي زهري بالورد والياسمين. يمنحك إطلالة أنثوية جذابة.', 'ar'), 'عطر نسائي زهري بالورد والياسمين.');
+  assert.equal(stripClaims('يمنح الهيل العطر عمقاً دافئاً.', 'ar'), 'يمنح الهيل العطر عمقاً دافئاً.', 'what a note gives the scent is a description');
   assert.equal(stripClaims('عطر منعش بالحمضيات. خيار مثالي للاستخدام اليومي.', 'ar'), 'عطر منعش بالحمضيات. خيار مناسب للاستخدام اليومي.');
   assert.equal(stripClaims('يحقق توازناً مثالياً بين الانتعاش والجاذبية طوال اليوم.', 'ar'), 'يحقق توازناً مناسباً بين الانتعاش والجاذبية.');
   assert.equal(stripClaims('عطر حلو يجمع الفانيليا والمارشميلو في مزيج لا يقاوم.', 'ar'), 'عطر حلو يجمع الفانيليا والمارشميلو.');
@@ -47,12 +52,12 @@ test('the store shows the description without claims, and a plain true sentence 
   const base = mergeProduct(p);
   const entry: StoreEntry = {
     sourceHash: '', editor: 'shaheen', updatedAt: '2026-10-20T00:00:00Z', nameAr: 'عطر سما', nameEn: 'Sama',
-    descriptionAr: 'عطر زهري بالورد والمسك. يمنحك شعوراً بالأنوثة يدوم طوال اليوم.', descriptionEn: 'The best perfume. Buy it online now.',
+    descriptionAr: 'عطر زهري بالورد والمسك الأبيض والفانيليا. يمنحك شعوراً بالأنوثة يدوم طوال اليوم.', descriptionEn: 'The best perfume. Buy it online now.',
     gender: 'women', families: ['floral'], notes: { top: [], heart: [], base: [] }, seasons: [], occasions: [], tags: [],
   };
   entry.sourceHash = productHash(p);
   const shown = mergeProduct(p, entry);
-  assert.equal(shown.description.ar, 'عطر زهري بالورد والمسك. يمنحك شعوراً بالأنوثة.');
+  assert.equal(shown.description.ar, 'عطر زهري بالورد والمسك الأبيض والفانيليا.');
   assert.equal(shown.description.en, 'Sama by Lattafa for women with a floral character.');
   assert.ok(base.description.ar.length > 0);
 });
@@ -88,4 +93,31 @@ test('«مرصد العطور» without an AI engine: the collected headlines, w
   assert.match(out[0].contentAr, /المصدر: PR Newswire — https:\/\/example\.org\/b/);
   assert.equal(out[1].category, 'trends');
   assert.ok(out.every((a) => !/مولّد|ذكاء اصطناعي/.test(`${a.badge} ${a.source} ${a.author}`)));
+});
+
+test('the product page never repeats its own title or the notes pyramid inside the description', () => {
+  // What the external reviewer saw on a live product page: the name again at the top of «الوصف», and the
+  // supplier's «Fragrance Notes» list — which «الهرم العطري» already shows right underneath.
+  const p: RawProduct = { id: 252, sku: 'LAT-252', nameAr: 'عطر قمة للرجال من لطافة', nameEn: 'Lattafa Qimmah Eau De Parfum for Men 100ml',
+    brand: 'Lattafa', category: 'رجالي', descriptionAr: '', descriptionEn: '', ourPrice: 1200, sizeMl: 100 };
+  const sentence = 'The fragrance opens with lavender, cedarwood and saffron before revealing a heart of myrrh.';
+  const entry = (descriptionAr: string, descriptionEn: string): StoreEntry => ({
+    sourceHash: productHash(p), editor: 'shaheen', updatedAt: '2026-10-24T00:00:00Z',
+    nameAr: 'عطر قمة للرجال من لطافة', nameEn: 'Lattafa Qimmah Eau De Parfum for Men 100ml',
+    descriptionAr, descriptionEn, gender: 'men', families: ['oriental', 'woody'],
+    notes: { top: ['Lavender'], heart: ['Myrrh'], base: ['Oud'] }, seasons: [], occasions: [], tags: [],
+  });
+
+  // Name on its own line, then the same name glued to the sentence.
+  const echoed = mergeProduct(p, entry('عطر قمة للرجال من لطافة يفتتح بالخزامى وخشب الأرز والزعفران ويقود إلى قلب من المر والأعشاب.',
+    `Lattafa Qimmah Eau De Parfum for Men 100ml\nLattafa Qimmah Eau De Parfum for Men 100ml ${sentence}`));
+  assert.equal(echoed.description.en, sentence);
+  assert.doesNotMatch(echoed.description.en, /Qimmah/);
+  assert.match(echoed.description.ar, /الخزامى/, 'the Arabic sentence keeps its own words');
+
+  // Nothing but the name and the notes list: the plain true sentence takes its place.
+  const onlyNotes = mergeProduct(p, entry('', 'Aroma Mood – 100 ml Eau de Parfum Unisex\nFragrance Notes:\nTop: Citrus\nHeart: Musk\nBase: Amber'));
+  assert.ok(onlyNotes.description.en.length > 0);
+  assert.doesNotMatch(onlyNotes.description.en, /Top:|Fragrance Notes/i);
+  assert.doesNotMatch(onlyNotes.description.ar, /Top:|Fragrance Notes/i);
 });

@@ -16,7 +16,7 @@
  *      Arabic-or-English language (legitimate only for raw {ar,en} data pairs,
  *      which use the dedicated `lang === 'ar' ? ar : en` shape on DATA, so this
  *      check only flags a clamped language VALUE being assigned/returned).
- *   4. Pack coverage — every supported language × the store/banner packs
+ *   4. Pack coverage — every supported language × the store/banner/news packs
  *      (computed in run.mts through the public لغات APIs and fed in here).
  *
  * Findings are written to `src/data/live/shaheen-languages.json`; the daily
@@ -39,6 +39,8 @@ export interface LanguagePackCoverage {
   storeTotal: number;
   /** Banner pack keys present (BANNER_KEYS size = 100%). */
   banner: number;
+  /** News page pack keys present (NEWS_KEYS size = 100%). */
+  news: number;
 }
 
 export const HEALTHY_NOTE = 'اللغات سليمة: الحزم مكتملة، والأرقام تتبع لغة الموقع في كل واجهات الزوار.';
@@ -50,10 +52,10 @@ export interface LanguageLiveReport {
   updatedAt: string;
   /** Languages the site supports (SUPPORTED_LANGUAGES.length). */
   languageCount: number;
-  /** Languages with a complete store core + banner pack. */
+  /** Languages with a complete store core + banner + news pack. */
   fullyCovered: number;
-  /** Languages whose store core or banner pack is incomplete. */
-  incompletePacks: { lang: string; storeCore: string; banner: string }[];
+  /** Languages whose store core, banner or news pack is incomplete. */
+  incompletePacks: { lang: string; storeCore: string; banner: string; news: string }[];
   /** Check 1: native number inputs on visitor-facing surfaces (should be 0). */
   publicNumberInputs: LanguageFinding[];
   /** Check 1b: the same on operator-only surfaces (admin console, merchant desks). */
@@ -199,6 +201,7 @@ export function buildLanguageReport(input: {
   languages: readonly string[];
   storeCoreSize: number;
   bannerSize: number;
+  newsSize: number;
   coverage: Record<string, LanguagePackCoverage>;
   publicNumberInputs: LanguageFinding[];
   operatorNumberInputs: LanguageFinding[];
@@ -207,11 +210,12 @@ export function buildLanguageReport(input: {
 }): LanguageLiveReport {
   const incompletePacks = input.languages
     .map((lang) => ({ lang, cov: input.coverage[lang] }))
-    .filter(({ cov }) => !cov || cov.storeCore < input.storeCoreSize || cov.banner < input.bannerSize)
+    .filter(({ cov }) => !cov || cov.storeCore < input.storeCoreSize || cov.banner < input.bannerSize || cov.news < input.newsSize)
     .map(({ lang, cov }) => ({
       lang,
       storeCore: `${cov?.storeCore ?? 0}/${input.storeCoreSize}`,
       banner: `${cov?.banner ?? 0}/${input.bannerSize}`,
+      news: `${cov?.news ?? 0}/${input.newsSize}`,
     }));
 
   let score = 100;
@@ -278,7 +282,7 @@ export function applyTranslationCoverage(report: LanguageLiveReport, t: Pick<Tra
   const pct = Math.floor(coverage * 1000) / 10;
   const notes = report.notes.filter((n) => n !== HEALTHY_NOTE);
   if (remaining > 0) {
-    notes.unshift(`الترجمة مش مكتملة: ${pct}% بس من نصوص الموقع مترجمة لكل اللغات (${report.languageCount - 2} لغة غير العربي والإنجليزي، المكتمل منها ${t.fullyTranslated ?? 0}) — ${remaining} نص × لغة لسه بيظهر للزائر بالإنجليزي.${report.incompletePacks.length ? '' : ' حزم المتجر والشريط الأساسية بس هي اللي مكتملة.'}`);
+    notes.unshift(`الترجمة مش مكتملة: ${pct}% بس من نصوص الموقع مترجمة لكل اللغات (${report.languageCount - 2} لغة غير العربي والإنجليزي، المكتمل منها ${t.fullyTranslated ?? 0}) — ${remaining} نص × لغة لسه بيظهر للزائر بالإنجليزي.${report.incompletePacks.length ? '' : ' حزم المتجر والشريط والأخبار الأساسية بس هي اللي مكتملة.'}`);
   } else if (!notes.length) notes.push(HEALTHY_NOTE);
   return {
     ...report, notes, translationCoverage: pct, fullyTranslated: t.fullyTranslated,

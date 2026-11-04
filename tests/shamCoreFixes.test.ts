@@ -52,7 +52,8 @@ test('retrieval cites only passages that add a significant part of the answer', 
   const repo = freshRepo();
   const ids = async (query: string) => (await tools.retrieve_knowledge.run({ query }, { repo } as never)).citations!.map((c) => c.id);
   assert.deepEqual(await ids('يعني ايه تعتيق العطر؟'), ['kb-maceration']);
-  assert.deepEqual(await ids('مدة التعتيق ومدة الشحن'), ['kb-maceration', 'kb-orders'], 'multi-part questions still get both');
+  // Shipping now cites the platform shipping guide (zones, UN1266, customs) rather than the ordering page.
+  assert.deepEqual(await ids('مدة التعتيق ومدة الشحن'), ['kb-platform-shipping', 'kb-maceration'], 'multi-part questions still get both');
 });
 
 test('privacy card shows service names, not internal ids; admin agent uses Arabic labels', async () => {

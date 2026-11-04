@@ -19,6 +19,7 @@ import {
   Layers,
   Wind,
   Atom,
+  PenLine,
   Sliders,
   Wine,
   Gauge,
@@ -70,11 +71,14 @@ import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../لغات/localizedHub';
 import { isRTL } from '../لغات/localizedContent';
 import { LText, makeT, loc, fmt, LOCALE_MAP } from '../لغات/localize';
 import { uiLabel } from '../لغات/uiTextL10n';
+import { designersText } from '../لغات/designersL10n';
 import { loadLiveNews, relativeTime, type NewsFile } from '../utils/liveNews';
 import { PORTAL_L10N as PORTAL_L10N_BASE, NEWS_L10N_A, NewsL10N } from '../لغات/hubL10n';
 import { NEWS_L10N_B } from '../لغات/hubL10n2';
 import { NEWS_L10N_C } from '../لغات/hubL10n3';
 import { mergeHubL10n } from '../لغات/hubL10nExt';
+import { freeShippingOffer, freeShippingSentence } from '../utils/freeShipping';
+import { useStoreMoney } from '../utils/storeCheckout';
 
 interface PortalNewsItem {
   id: string;
@@ -178,6 +182,15 @@ export const HomeHub: React.FC<HomeHubProps> = ({
 }) => {
   const isRtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
+
+  // «شحن مجاني» is a promise with money behind it: it is only shown when the merchant approved it in
+  // src/data/shipping.json (`freeShippingAboveEgp`), the threshold is shown in the visitor's own currency,
+  // and the same table makes checkout charge it. No approved offer → the banner says nothing about it.
+  const storeMoney = useStoreMoney(currentLang, currentLang === 'ar' ? 'ج.م' : 'EGP');
+  const freeShipping = freeShippingOffer();
+  const freeShippingLine = freeShipping
+    ? freeShippingSentence(freeShipping, storeMoney.price(freeShipping.thresholdEgp), currentLang)
+    : '';
 
   const SUBTITLE_EN_MAP: Record<string, string> = {
     portal_concentration: 'Gravimetric molecular weight calculation at 0.01g precision',
@@ -495,7 +508,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       accentColor: 'from-emerald-600 to-teal-700 text-emerald-500 bg-emerald-500/10',
       borderGlow: 'hover:border-emerald-500/50 hover:shadow-emerald-900/10',
       icons: [Leaf, Droplets, Flower2, Gem],
-      statsBadge: '24+ خامة نقية · CAS Certified',
+      statsBadge: '24+ خامة نقية · موثّقة بأرقام CAS',
       imageThumbnail: pyramidImg,
       news: [
         {
@@ -753,7 +766,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       category: 'knowledge',
       titleAr: 'دفتر الوصفات وسجلات المعمل',
       titleEn: 'Formula Notebook & Archive',
-      subtitleAr: 'حفظ آمن ومزامنة سحابية مع Firebase وطباعة استمارات التصنيع',
+      subtitleAr: 'حفظ آمن ومزامنة سحابية وطباعة استمارات التصنيع',
       accentColor: 'from-amber-700 to-stone-800 text-amber-500 bg-amber-500/10',
       borderGlow: 'hover:border-amber-600/50 hover:shadow-stone-900/10',
       icons: [BookmarkPlus, BookOpen, Archive, FileText],
@@ -781,9 +794,9 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         {
           id: 'lib3',
           badge: 'المزامنة السحابية المزدوجة',
-          title: 'حفظ آمن على هاتفك ومتصفحك مع مزامنة فورية على سحابة Firebase',
+          title: 'حفظ آمن على هاتفك ومتصفحك مع مزامنة سحابية فورية',
           description: 'لا خوف من فقدان تركيباتك عند تغيير الجهاز، سجلاتك مربوطة بحسابك الشخصي المشفر.',
-          metric: 'Firebase Sync',
+          metric: 'مزامنة سحابية',
           timestamp: 'حماية وتخزين',
           actionHint: 'تصفح الوصفات المحفوظة',
         },
@@ -977,7 +990,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           badge: 'حصانة الأسرار العطرية',
           title: 'تركيباتك ومعادلاتك العطرية مشفرة محلياً وسحابياً ولا تُشارك أبداً',
           description: 'نظام تشفير خاص يضمن أن أسرار نسب خلطاتك تبقى ملكك الخاص دون أي وصول من أي أطراف تجارية أخرى.',
-          metric: 'AES Encryption',
+          metric: 'تشفير AES',
           timestamp: 'أمان قصوى',
           actionHint: 'فحص إعدادات التشفير',
           onSpecialAction: onOpenPrivacyModal,
@@ -997,7 +1010,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           badge: 'حالة الحساب والمصادقة',
           title: currentUser ? `مسجل باسم: ${currentUser.name} (${currentUser.craftLevel})` : 'جلسة ضيف محلية آمنة',
           description: currentUser
-            ? `بياناتك متزامنة مع Firebase Authentication وقاعدة البيانات السحابية المشفرة.`
+            ? 'بياناتك محفوظة في حسابك ومتزامنة بين أجهزتك.'
             : 'يمكنك إنشاء حساب مجاني الآن لمزامنة خلطاتك عبر جميع أجهزتك بأعلى درجات الأمان.',
           metric: currentUser ? 'حساب نشط' : 'جلسة محلية',
           timestamp: 'حالة التسجيل',
@@ -1024,7 +1037,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       category: 'business',
       titleAr: '🛍️ المتجر | عطور أصيلة بأسعار مميزة',
       titleEn: '🛍️ SHOP | Authentic Perfumes at Special Prices',
-      subtitleAr: 'مئات العطور من أفضل الموردين - شحن مجاني - دفع آمن',
+      subtitleAr: `مئات العطور من أفضل الموردين - دفع آمن${freeShippingLine ? ` - ${freeShippingLine}` : ''}`,
       accentColor: 'from-amber-500 to-orange-600 text-amber-600 bg-amber-500/10',
       borderGlow: 'hover:border-amber-500/80 hover:shadow-amber-900/20 hover:scale-[1.02] transition-transform',
       icons: [Store, Sparkles, Gift, Award],
@@ -1035,7 +1048,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           id: 's1',
           badge: '🔥 عرض حصري',
           title: 'اكتشف مجموعة واسعة من العطور الأصلية',
-          description: 'نحن نورد العطور من أفضل الموردين مثل لطيفة، الرحاب، وغيرهم. أسعار مميزة مع شحن مجاني للطلبات فوق 500 جنيه.',
+          description: `نحن نورد العطور من أفضل الموردين مثل لطيفة، الرحاب، وغيرهم. أسعار مميزة ودفع آمن${freeShippingLine ? `. ${freeShippingLine}` : ''}.`,
           metric: '100+ منتج',
           timestamp: 'مجموعة متنوعة',
           actionHint: 'تصفح المتجر الآن',
@@ -1170,6 +1183,15 @@ export const HomeHub: React.FC<HomeHubProps> = ({
               <Atom className="h-4 w-4 text-amber-300" />
               <span>{currentLang === 'ar' ? 'افتح مختبر تركيب وتحليل العطور' : 'Open the perfume composition studio'}</span>
             </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('perfume_designers')}
+              data-testid="home-designers"
+              className="ms-2 inline-flex items-center gap-2 rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-2.5 text-xs font-bold text-amber-100 transition hover:border-amber-300 hover:bg-amber-300/20 focus:outline-none focus:ring-2 focus:ring-amber-300"
+            >
+              <PenLine className="h-4 w-4 text-amber-300" />
+              <span>{designersText(currentLang, 'hubButton')} — {designersText(currentLang, 'hubButtonSub')}</span>
+            </button>
 
             {/* Quick Live Stats Strip */}
             <div className="pt-2 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-stone-300">
@@ -1232,7 +1254,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           {/* Right Showcase Card */}
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-2xl overflow-hidden border border-amber-600/30 shadow-xl aspect-16/10 group bg-stone-950">
-              <img
+              <img decoding="async" fetchPriority="high"
                 src={heroImg}
                 alt={L('alt_hero')}
                 referrerPolicy="no-referrer"

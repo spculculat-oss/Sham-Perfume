@@ -27,6 +27,14 @@ function Stars({ value, size = 16 }: { value: number; size?: number }) {
   );
 }
 
+/**
+ * Is «مجتمع شام» switched on on this server? Asked once per page (the status route always answers 200), so a product
+ * page never fires a review request the server can only refuse with 503 — no failed request in the visitor's console.
+ */
+let communityOn: Promise<boolean> | undefined;
+const communityEnabled = () => (communityOn ||= cx<{ enabled: boolean }>('/community/status', { timeoutMs: 8000 })
+  .then((s) => s.enabled === true, () => { communityOn = undefined; return false; }));
+
 export function ProductReviewsSection({ sku, currentLang }: { sku: string; currentLang: SupportedLanguage }) {
   const t = makeStoreT(currentLang);
   const dir = isRTL(currentLang) ? 'rtl' : 'ltr';
@@ -38,6 +46,7 @@ export function ProductReviewsSection({ sku, currentLang }: { sku: string; curre
   const signedIn = Boolean(getSessionToken());
 
   const load = useCallback(async () => {
+    if (!(await communityEnabled())) { setState('unavailable'); return; }
     try { setData(await cx<ReviewSummary>(`/community/reviews/${encodeURIComponent(sku)}`, { timeoutMs: 12000 })); setState('ready'); }
     catch { setState('unavailable'); }
   }, [sku]);
@@ -135,7 +144,7 @@ export function ProductReviewsSection({ sku, currentLang }: { sku: string; curre
               <article key={r.id} className={`rounded-2xl border p-4 ${r.mine ? 'border-amber-300 bg-amber-50/30' : 'border-stone-100'}`}>
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-amber-400 to-amber-700 text-xs font-bold text-white">
-                    {r.author.avatar ? <img src={r.author.avatar} alt="" className="h-full w-full object-cover" /> : r.author.name.trim()[0] || '?'}
+                    {r.author.avatar ? <img loading="lazy" decoding="async" src={r.author.avatar} alt="" className="h-full w-full object-cover" /> : r.author.name.trim()[0] || '?'}
                   </span>
                   <span className="text-sm font-bold text-stone-900">{r.mine ? t('rv_mine') : r.author.name}</span>
                   <Stars value={r.rating} size={14} />

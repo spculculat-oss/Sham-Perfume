@@ -1,3 +1,4 @@
+import { useChatPrices } from '../utils/storeCheckout';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Sparkles,
@@ -268,6 +269,8 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 }) => {
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
+  // «شاهين بعملة بلدك»: prices in Shaheen's replies in the visitor's own currency.
+  const prices = useChatPrices(currentLang);
   const masterPrompts: string[] = [L('prompt_1'), L('prompt_2'), L('prompt_3'), L('prompt_4'), L('prompt_5')];
   // Same conversation store as the floating Shaheen window (one history, never overwritten by the other).
   const { messages, setMessages, daysRemaining, isLoading, busy, sendMessage, retryLast, clearHistory } = useShaheenChat();
@@ -392,7 +395,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
       <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200/90 shadow-2xs flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="relative w-10 h-10 rounded-full overflow-hidden border border-amber-600 shrink-0">
-            <img
+            <img loading="lazy" decoding="async"
               src={perfumerImg}
               alt="Master Shahin"
               className="w-full h-full object-cover object-top"
@@ -579,7 +582,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
               m.id === 'welcome'
                 ? shaheenWelcome(currentLang)
                 : m.role === 'assistant'
-                    ? stripOpeningGreeting(stripMediaBlock(m.text), messages.slice(0, msgIndex).filter((x) => x.role === 'user').pop()?.text || '')
+                    ? prices.show(stripOpeningGreeting(stripMediaBlock(m.text), messages.slice(0, msgIndex).filter((x) => x.role === 'user').pop()?.text || ''))
                     : stripMediaBlock(m.text);
 
             const isError = m.kind === 'error';
@@ -612,7 +615,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                   {m.role === 'user' ? (
                     L('you')
                   ) : (
-                    <img
+                    <img loading="lazy" decoding="async"
                       src={perfumerImg}
                       alt={L('alt_shahin')}
                       className="w-full h-full object-cover object-top"
@@ -871,7 +874,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
           {isLoading && (
             <div className="flex items-start gap-3 sm:gap-4">
               <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border border-amber-600 shrink-0">
-                <img
+                <img loading="lazy" decoding="async"
                   src={perfumerImg}
                   alt={L('alt_shahin')}
                   className="w-full h-full object-cover object-top"

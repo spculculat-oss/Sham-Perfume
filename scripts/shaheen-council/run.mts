@@ -129,8 +129,9 @@ if (unopened.length && token && env.COUNCIL_ISSUES === 'true') {
   for (const [name, color, description] of [['shaheen-task', 'b8860b', 'مهمة تطوير من اجتماع شاهين اليومي'], ['needs-approval', 'd73a4a', 'تحتاج موافقة التاجر قبل التنفيذ'], ['priority-high', 'b60205', ''], ['priority-medium', 'fbca04', ''], ['priority-low', '0e8a16', '']] as const) {
     await gh('/labels', { method: 'POST', body: JSON.stringify({ name, color, description }) }).catch(() => undefined);
   }
-  // «شاهين يجهّز وصاحب الموقع يوافق»: when the owner wants to approve everything, every task waits for him first.
-  const ownerApprovesAll = loadOwnerControls().selfDevelopment === 'approve_all';
+  // «شاهين يجهّز وصاحب الموقع يوافق»: when the owner wants to approve everything, every task waits for him first —
+  // or for «دولة المنصة» when he handed it the approvals (scripts/state/run.mts reviews them within the hour).
+  const ownerApprovesAll = loadOwnerControls().selfDevelopment !== 'safe_auto';
   for (const t of unopened) {
     if (ownerApprovesAll) t.needsApproval = true;
     const res = await gh('/issues', { method: 'POST', body: JSON.stringify({ title: `مهمة شاهين: ${t.title}`, body: issueBody(t), labels: ['shaheen-task', `priority-${t.priority}`, ...(t.needsApproval ? ['needs-approval'] : [])] }) }).catch(() => undefined);

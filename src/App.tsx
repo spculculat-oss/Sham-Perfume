@@ -1,3 +1,6 @@
+import { popBelongsToCheckout } from './utils/checkoutHistory';
+import { setInsightsContext, trackInsight } from './utils/insightsTracker';
+import { isVerifiedCustomer } from './utils/paymentAccess';
 import { BookLibrary } from './library/BookLibrary';
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Header } from './components/Header';
@@ -5,6 +8,7 @@ import { ToastNotification } from './components/ToastNotification';
 import { UserProfilePage } from './components/UserProfilePage';
 import { Hero } from './components/Hero';
 import { HomeHub } from './components/HomeHub';
+import { SectionsGateway } from './components/SectionsGateway';
 import { Storefront } from './components/Storefront';
 import { ProductDetail } from './components/ProductDetail';
 import { ConcentrationCalculator } from './components/ConcentrationCalculator';
@@ -21,6 +25,7 @@ import { ManufacturingSpecSheet } from './components/ManufacturingSpecSheet';
 import { PerfumerAIChatbot } from './components/PerfumerAIChatbot';
 import { PerfumerMasterLabView } from './components/PerfumerMasterLabView';
 import { ShamAssistant } from './assistant/ShamAssistant';
+import SpecialistsHub from './components/SpecialistsHub';
 import { WorldPerfumeNews } from './components/WorldPerfumeNews';
 import { Footer } from './components/Footer';
 import { LocalizedNumberInput } from './components/LocalizedNumberInput';
@@ -31,6 +36,7 @@ import { AuthModal } from './components/AuthModal';
 import { DataPrivacyModal } from './components/DataPrivacyModal';
 import { LegalCenter } from './components/LegalCenter';
 import { CookieConsent } from './components/CookieConsent';
+import { trackPlatformVisit } from './utils/visitTracker';
 import { useSeo } from './hooks/useSeo';
 import {
   FormulationState,
@@ -55,18 +61,20 @@ import {
   getInitialUserEnvironment,
   alignEnvironmentToCountry,
 } from './utils/environmentAdapter';
-import { setStoreCountry, useStoreCountry } from './utils/storeCheckout';
+import { followEntryCountry, setStoreCountry, useStoreCountry } from './utils/storeCheckout';
 import { loadDetailedAddress } from './utils/addressStorage';
 import {
   detectEntryLanguageAsync,
+  watchEntryCountry,
   forceRedetectLocation,
   USER_LANGUAGE_MANUAL_OVERRIDE_KEY,
+  LANGUAGE_PICKED_AT_KEY,
   saveUserCountryCode,
 } from './utils/geoDetector';
 import { UserProfile } from './types/auth';
 import { getCurrentUserSession, logoutUser } from './utils/authStorage';
 import { decodeFormulaPayload } from './utils/formulaShare';
-import { Check, X, BookmarkPlus } from 'lucide-react';
+import { Check, X, BookmarkPlus, Loader2 } from 'lucide-react';
 import { LOAD_FORMULA_EVENT, syncRecipeToAccount, trackLearning, type SharedFormula } from './community/sync';
 import { getSessionToken } from './community/api';
 import { profileFromMember, saveCurrentUserProfile } from './utils/authStorage';
@@ -75,6 +83,8 @@ import { ErrorBoundary, lazyWithReload } from './utils/lazyRetry';
 
 // «مجتمع شام» (social, messenger, member and merchant portals): its own bundle, loaded on the first #community visit.
 const CommunityApp = lazyWithReload(() => import('./community/CommunityApp'));
+const CosmeticsHub = lazyWithReload(() => import('./components/CosmeticsHub'));
+const DesignersStudio = lazyWithReload(() => import('./components/DesignersStudio'));
 
 const LOCAL_STORAGE_KEY = 'miyaar_perfume_saved_formulas';
 
@@ -318,8 +328,10 @@ export default function App() {
     }
   };
 
-  const navigateToTab = (tab: string, pushHistory = true) => {
-    if (tab === activeTab) {
+  const navigateToTab = (target: string, pushHistory = true) => {
+    // «store?section=cosmetics»: the tab is the part before «?», the rest stays in the address for the page to read.
+    const tab = target.split('?')[0] || 'home';
+    if (tab === activeTab && tab === target) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -329,9 +341,9 @@ export default function App() {
     if (pushHistory) {
       setHistoryStack((prev) => [...prev, tab]);
       try {
-        window.history.pushState({ tab, isAppNav: true }, '', `#${tab}`);
+        window.history.pushState({ tab, isAppNav: true }, '', `#${target}`);
       } catch (e) {
-        window.location.hash = `#${tab}`;
+        window.location.hash = `#${target}`;
       }
     }
     setActiveTab(tab);
@@ -376,6 +388,8 @@ export default function App() {
     } catch {}
 
     const handlePopState = (event: PopStateEvent) => {
+      // 0. The store's order window took or gave back its own history entry: nothing to navigate.
+      if (popBelongsToCheckout()) return;
       // 1. If any modal was open and user pressed browser Back, close the modal safely
       const hasOpenModal =
         activeModalsRef.current.spec ||
@@ -526,6 +540,13 @@ export default function App() {
     setCurrentEnvironment((prev) => alignEnvironmentToCountry(prev, storeCountry));
   }, [storeCountry]);
 
+  useEffect(() => {
+    trackPlatformVisit({ section: activeTab, country: storeCountry, lang: currentLang });
+    // «خزنة فهم الزوار» (only with the visitor's consent to «التحليل»): the section he opened, his country and language.
+    setInsightsContext({ country: storeCountry, language: currentLang });
+    trackInsight('section', { section: activeTab });
+  }, [activeTab, storeCountry, currentLang]);
+
   // Check and load shared formula from URL hash or query params
   useEffect(() => {
     const handleUrlFormula = () => {
@@ -567,26 +588,32 @@ export default function App() {
     };
   }, []);
 
-  // The opening language already comes from the entry country
-  // (getInitialLanguage -> detectEntryLanguage). Refine it once with the
-  // IP-based country, unless the visitor picked a language themselves.
+  // The opening language comes from the device (getInitialLanguage -> detectEntryLanguage: time zone, browser).
+  // The network then says where the visit really comes from (a VPN changes that, never the clock): asked on entry,
+  // and again when he comes back to the tab or the network changes — so no refresh is needed. A language he picked
+  // himself always stays.
+  const langRef = React.useRef(currentLang);
+  langRef.current = currentLang;
   useEffect(() => {
-    detectEntryLanguageAsync()
-      .then((hit) => {
-        if (!hit) return;
-        if (hit.countryCode) {
-          saveUserCountryCode(hit.countryCode);
-        }
+    let live = true;
+    const refine = () => {
+      void detectEntryLanguageAsync().then((hit) => {
+        if (!hit || !live) return;
+        saveUserCountryCode(hit.countryCode);
+        followEntryCountry(hit.countryCode); // prices follow the country he is entering from now
         let hasOverride = false;
         try {
           hasOverride = !!localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
         } catch (e) {}
-        if (!hasOverride && hit.language !== currentLang) {
+        if (!hasOverride && hit.language !== langRef.current) {
           setCurrentLang(hit.language);
           saveLanguage(hit.language);
         }
-      })
-      .catch(() => {});
+      }).catch(() => {});
+    };
+    refine();
+    const stop = watchEntryCountry(refine);
+    return () => { live = false; stop(); };
   }, []);
 
   // Sync document direction and language code whenever language changes
@@ -606,6 +633,7 @@ export default function App() {
   const handleSelectLanguage = (lang: SupportedLanguage) => {
     try {
       localStorage.setItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY, 'true');
+      localStorage.setItem(LANGUAGE_PICKED_AT_KEY, String(Date.now())); // the newest choice sets the currency
     } catch (e) {}
     setCurrentLang(lang);
     saveLanguage(lang);
@@ -980,7 +1008,23 @@ export default function App() {
             onOpenPrintModal={handleOpenSpecModal}
           />
 
-          {activeTab === 'home' && (
+          {/* The home page mixes the two sections; «العطور» opens the perfume hub on its own. */}
+          {activeTab === 'home' && <SectionsGateway currentLang={currentLang} onNavigate={(tabId) => navigateToTab(tabId)} />}
+
+          {activeTab === 'cosmetics' && (
+            <Suspense fallback={<div className="py-16 text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto text-rose-700" /></div>}>
+              <CosmeticsHub currentLang={currentLang} onNavigate={(tabId) => navigateToTab(tabId)} />
+            </Suspense>
+          )}
+
+          {/* «قسم المصممين»: the designer's journal + full simulation, in the perfume and the cosmetics sections. */}
+          {(activeTab === 'perfume_designers' || activeTab === 'cosmetic_designers') && (
+            <Suspense fallback={<div className="py-16 text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto text-amber-700" /></div>}>
+              <DesignersStudio key={activeTab} kind={activeTab === 'perfume_designers' ? 'perfume' : 'cosmetic'} currentLang={currentLang} onNavigate={(tabId) => navigateToTab(tabId)} />
+            </Suspense>
+          )}
+
+          {(activeTab === 'home' || activeTab === 'perfumes') && (
             <HomeHub
               onNavigate={(tabId) => navigateToTab(tabId)}
               currentLang={currentLang}
@@ -1154,8 +1198,8 @@ export default function App() {
           <Storefront
             onClose={() => navigateToTab('home')}
             currentLang={currentLang}
-            retailerId={currentUser?.id}
-            signedIn={Boolean(currentUser)}
+            retailerId={isVerifiedCustomer(currentUser) ? currentUser?.id : undefined}
+            signedIn={isVerifiedCustomer(currentUser)}
             onRequireAuth={handleOpenAuthModal}
             shaheenQuery={storeQuery}
           />
@@ -1165,7 +1209,7 @@ export default function App() {
           <ProductDetail
             productId={productId}
             currentLang={currentLang}
-            signedIn={Boolean(currentUser)}
+            signedIn={isVerifiedCustomer(currentUser)}
             onRequireAuth={handleOpenAuthModal}
             onClose={() => navigateToTab('store')}
           />
@@ -1186,6 +1230,9 @@ export default function App() {
 
       {/* Sham Core services assistant: orders, store, bespoke, B2B, support (opposite corner to Shaheen) */}
       <ShamAssistant currentLang={currentLang} />
+
+      {/* «مجلس المتخصصين»: استشارة علوم شاهين في أي قسم وفي أي وقت (وسط الشاشة السفلي) */}
+      <SpecialistsHub section={activeTab} lang={currentLang} />
 
       {/* Footer */}
       <Footer

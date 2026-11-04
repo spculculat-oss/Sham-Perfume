@@ -1,5 +1,6 @@
-import { hasSensitiveNumber, isOwnerClaim, ownerClaimReply, sensitiveNumberReply } from './ownerAuthority';
+import { cardOfferReply, hasSensitiveNumber, isOwnerClaim, offersCardDetails, ownerClaimReply, sensitiveNumberReply } from './ownerAuthority';
 import type { SupportedLanguage } from '../types/i18n';
+import { reflexAnswer } from './shaheenReflex';
 
 /**
  * «تطبيقات شاهين السريعة» — small, exact apps for the simple tasks visitors ask most, answered in the
@@ -15,7 +16,7 @@ import type { SupportedLanguage } from '../types/i18n';
  * (designing a perfume, comparing, a missing number) goes to Shaheen's AI engines as before. The answers
  * are calculations, not imitations of the AI, and say so («⚡ حاسبة شاهين الفورية»).
  */
-export type QuickAppId = 'alcohol' | 'concentration' | 'units' | 'thanks' | 'identity' | 'owner' | 'privacy';
+export type QuickAppId = 'alcohol' | 'concentration' | 'units' | 'thanks' | 'identity' | 'owner' | 'privacy' | 'reflex';
 export interface QuickAnswer { app: QuickAppId; reply: string }
 
 type Lang = 'ar' | 'en';
@@ -172,11 +173,17 @@ export function quickAnswer(text: string, language: SupportedLanguage): QuickAns
   // «صاحب الموقع» (src/utils/ownerAuthority.ts): a card/ID number is never sent to any engine or kept, in any
   // language; a claim to be the owner is never believed from a chat (he is proven by GitHub and the admin code).
   if (hasSensitiveNumber(text)) return { app: 'privacy', reply: sensitiveNumberReply(language) };
+  // «ابعتلك رقم الكارت؟» — warned at once, before any engine sees the question.
+  if (offersCardDetails(text)) return { app: 'privacy', reply: cardOfferReply(language) };
   if (isOwnerClaim(text)) return { app: 'owner', reply: ownerClaimReply(language) };
   const lang: Lang | undefined = language === 'ar' ? 'ar' : language === 'en' ? 'en' : undefined;
   if (!lang) return undefined;
   const clean = asciiDigits(text.trim());
   if (!clean || clean.length > 220) return undefined;
+  // «الانعكاس»: أسئلة الشحن والجمارك المتكررة بتتجاوب فورًا من جدول مبني على محرك السعر نفسه —
+  // برقمه ومصدره وتاريخه، ومن غير أي محرك أو انتظار.
+  const reflex = reflexAnswer(clean, lang);
+  if (reflex) return { app: 'reflex', reply: reflex };
   const chat = chatApp(clean, lang);
   if (chat) return chat;
   if (ASKS_DESIGN.test(clean)) return undefined; // a real design question deserves the full expert
@@ -187,6 +194,7 @@ export function quickAnswer(text: string, language: SupportedLanguage): QuickAns
 export const QUICK_APPS: Record<QuickAppId, { ar: string; en: string }> = {
   alcohol: { ar: 'تخفيف الكحول', en: 'Alcohol dilution' },
   concentration: { ar: 'كميات الزيت والكحول', en: 'Oil and alcohol amounts' },
+  reflex: { ar: 'إجابة فورية من شبكة العقل', en: 'Instant answer from the mind' },
   units: { ar: 'تحويل الأونصة والمل', en: 'Ounce ↔ ml' },
   thanks: { ar: 'الرد على الشكر', en: 'Thanks' },
   identity: { ar: 'التعريف بشاهين', en: 'Who is Shaheen' },

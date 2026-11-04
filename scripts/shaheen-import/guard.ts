@@ -43,7 +43,11 @@ export async function fetchApprovedDomains(apiBase: string, adminToken: string, 
   if (!apiBase || !adminToken) return { domains: [], error: 'no SHAM_API_BASE / SHAM_ADMIN_TOKEN' };
   try {
     const res = await request(`${apiBase.replace(/\/+$/, '')}/api/admin/contracts/approved`, { headers: { Authorization: `Bearer ${adminToken}` }, signal: AbortSignal.timeout(15000) });
-    if (!res.ok) return { domains: [], error: `HTTP ${res.status}` };
+    // The server says why (CONTRACTS_NOT_CONFIGURED = no database, ADMIN_NOT_CONFIGURED, UNAUTHORIZED): keep the code.
+    if (!res.ok) {
+      const code = await res.json().then((data: unknown) => { const b = data as { code?: unknown } | null; return typeof b?.code === 'string' ? b.code.replace(/[^A-Z_]/g, '').slice(0, 40) : ''; }, () => '');
+      return { domains: [], error: `HTTP ${res.status}${code ? ` ${code}` : ''}` };
+    }
     const data = await res.json() as { stores?: { domain?: string }[] };
     return { domains: (data.stores || []).map((s) => String(s.domain || '')).filter(Boolean) };
   } catch (error) {

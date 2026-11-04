@@ -196,7 +196,7 @@ function MerchantsView({ open, onChange }: { open: (id: string) => void; onChang
       {loading ? <Loading /> : !data?.length ? <p className={`${card} text-center text-sm text-stone-500`}>{T('لا يوجد')}</p> : data.map((m) => (
         <div key={m.userId} className={`${card} space-y-3`}>
           <div className="flex flex-wrap items-center gap-3">
-            {m.logo ? <img src={m.logo} alt="" className="h-12 w-12 rounded-xl object-cover" /> : <span className="text-3xl">🏪</span>}
+            {m.logo ? <img loading="lazy" decoding="async" src={m.logo} alt="" className="h-12 w-12 rounded-xl object-cover" /> : <span className="text-3xl">🏪</span>}
             <div className="flex-1"><p className="font-bold">{m.storeName} <St s={m.status} /></p><p className="text-xs text-stone-500">{m.owner?.name} · @{m.owner?.handle} · <span dir="ltr">{m.owner?.email}</span> · {m.country} · {m.currency}</p></div>
             <span className="text-xs text-stone-500">{m.products} {T('منتج')} · {m.pending} {T('للمراجعة')}</span>
           </div>
@@ -234,7 +234,7 @@ function ProductsView({ onChange }: { onChange: () => void }) {
       {loading ? <Loading /> : !data?.length ? <p className={`${card} text-center text-sm text-stone-500`}>{T('لا يوجد')}</p> : (
         <div className="grid gap-3 lg:grid-cols-2">{data.map((p) => (
           <div key={p.id} className={`${card} space-y-2`}>
-            <div className="flex gap-1.5 overflow-x-auto">{p.images.map((src: string, i: number) => <a key={i} href={src} target="_blank" rel="noreferrer"><img src={src} alt="" className="h-24 w-24 shrink-0 rounded-xl object-cover" /></a>)}</div>
+            <div className="flex gap-1.5 overflow-x-auto">{p.images.map((src: string, i: number) => <a key={i} href={src} target="_blank" rel="noreferrer"><img loading="lazy" decoding="async" src={src} alt="" className="h-24 w-24 shrink-0 rounded-xl object-cover" /></a>)}</div>
             <p className="font-bold">{p.name} <St s={p.status} /></p>
             <p className="text-xs text-stone-500">🏪 {p.storeName} · {T(CATEGORY[p.category] || p.category)} · {T('المخزون')}: {p.stock}</p>
             <p className="text-sm">{T('سعر التاجر')}: <b>{fmt(p.price, p.currency)}</b> → {T('سعر البيع')}: <b className="text-amber-800">{fmt(sale(p.price, p.currency), 'EGP')}</b></p>
@@ -320,7 +320,7 @@ function ModerationView({ open, onChange }: { open: (id: string) => void; onChan
           <div key={p.id} className={`${card} space-y-1.5 text-sm`}>
             <p className="text-xs text-stone-500"><button type="button" onClick={() => open(p.author.id)} className="font-bold text-stone-800 hover:underline cursor-pointer">{p.author.name}</button> · {date(p.createdAt)} · <St s={p.status === 'visible' ? 'active' : 'suspended'} /> {p.reports > 0 && <Pill tone="bg-rose-100 text-rose-700">{p.reports} {T('بلاغ')}</Pill>}</p>
             {p.body && <p className="whitespace-pre-wrap text-stone-800">{p.body}</p>}
-            {p.image && <img src={p.image} alt="" className="max-h-40 rounded-xl" />}
+            {p.image && <img loading="lazy" decoding="async" src={p.image} alt="" className="max-h-40 rounded-xl" />}
             <div className="flex gap-1.5">{p.status === 'visible' ? <button type="button" onClick={() => void moderate('posts', p.id, 'hidden')} className={`${btn} bg-rose-100 py-1 text-xs text-rose-700`}>{T('إخفاء')}</button>
               : <button type="button" onClick={() => void moderate('posts', p.id, 'visible')} className={`${btn} bg-emerald-100 py-1 text-xs text-emerald-800`}>{T('إظهار')}</button>}</div>
           </div>
@@ -386,7 +386,7 @@ function UserFile({ id, onClose, onChange }: { id: string; onClose: () => void; 
               <div className="mb-3 flex items-center justify-between"><p className="font-bold">{chat.conversation.title || chat.members.map((m: Any) => m.name).join(' ↔ ')}</p><button type="button" onClick={() => setChat(null)}><X className="h-4 w-4" /></button></div>
               <div className="space-y-1.5">{chat.messages.map((m: Any) => (
                 <div key={m.id} className="rounded-xl bg-stone-50 p-2 text-sm"><p className="text-[11px] text-stone-500">{chat.members.find((x: Any) => x.id === m.senderId)?.name || m.senderId} · {date(m.createdAt)} {m.deletedAt && `· ${T('محذوفة')}`}</p>
-                  {m.kind === 'image' && m.attachment && <img src={m.attachment} alt="" className="max-h-40 rounded-lg" />}{m.kind === 'voice' && m.attachment && <audio controls src={m.attachment} />}<p className="whitespace-pre-wrap">{m.text}</p></div>
+                  {m.kind === 'image' && m.attachment && <img loading="lazy" decoding="async" src={m.attachment} alt="" className="max-h-40 rounded-lg" />}{m.kind === 'voice' && m.attachment && <audio controls src={m.attachment} />}<p className="whitespace-pre-wrap">{m.text}</p></div>
               ))}</div>
             </div>
           </div>

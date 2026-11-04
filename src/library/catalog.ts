@@ -1,26 +1,110 @@
 import type { LText } from '../لغات/localize';
+import {
+  EAST_ASIAN_BOOKS, EAST_ASIAN_LANGUAGES, EAST_ASIAN_LANGUAGE_TARGETS, EAST_ASIAN_REGIONS,
+} from './eastAsianCatalog';
+import {
+  INTERNATIONAL_BOOKS, INTERNATIONAL_COUNTRIES, INTERNATIONAL_LANGUAGES, INTERNATIONAL_LANGUAGE_COVERAGE,
+  INTERNATIONAL_LANGUAGE_TARGETS, INTERNATIONAL_REGIONS, INTERNATIONAL_CATALOG_SCOPE,
+} from './internationalCatalog';
 
 export const BOOK_CATEGORIES = {
-  chemistry: { ar: 'كيمياء الروائح', en: 'Fragrance chemistry' },
+  chemistry: { ar: 'الكيمياء', en: 'Chemistry' },
   technology: { ar: 'التصنيع والتكنولوجيا', en: 'Manufacturing & technology' },
   cosmetics: { ar: 'مستحضرات التجميل والثبات', en: 'Cosmetics & stability' },
   aromatherapy: { ar: 'العلاج العطري وسلامة الزيوت', en: 'Aromatherapy & essential oil safety' },
   criticism: { ar: 'النقد والتقييم', en: 'Criticism & reviews' },
   reference: { ar: 'المعاجم والمراجع', en: 'Dictionaries & reference' },
-  history: { ar: 'التاريخ والفن', en: 'History & art' },
+  history: { ar: 'التاريخ', en: 'History' },
+  mathematics: { ar: 'الرياضيات', en: 'Mathematics' },
+  physics: { ar: 'الفيزياء', en: 'Physics' },
+  biology: { ar: 'الأحياء', en: 'Biology' },
+  engineering: { ar: 'الهندسة', en: 'Engineering' },
+  agriculture: { ar: 'الزراعة', en: 'Agriculture' },
+  medicine_history: { ar: 'تاريخ الطب', en: 'History of medicine' },
+  education: { ar: 'التربية والتعليم', en: 'Education' },
+  language: { ar: 'اللغة والمعاجم', en: 'Languages & dictionaries' },
+  literature: { ar: 'الأدب', en: 'Literature' },
+  philosophy: { ar: 'الفلسفة والفكر', en: 'Philosophy & thought' },
+  law: { ar: 'القانون', en: 'Law' },
+  geography: { ar: 'الجغرافيا', en: 'Geography' },
+  astronomy: { ar: 'الفلك', en: 'Astronomy' },
+  computer_science: { ar: 'علوم الحاسوب', en: 'Computer science' },
+  psychology: { ar: 'علم النفس', en: 'Psychology' },
+  management: { ar: 'الإدارة', en: 'Management' },
+  commerce: { ar: 'الاقتصاد والتجارة', en: 'Economics & commerce' },
+  science_reference: { ar: 'مراجع العلوم', en: 'Science reference' },
+  quantum: { ar: 'الحوسبة والفيزياء الكمية', en: 'Quantum science' },
+  statistics: { ar: 'الإحصاء وتصميم التجارب', en: 'Statistics & experimental design' },
+  environment: { ar: 'البيئة', en: 'Environment' },
+  sociology: { ar: 'علم الاجتماع', en: 'Sociology' },
+  anthropology: { ar: 'علم الإنسان', en: 'Anthropology' },
+  programming: { ar: 'البرمجة والخوارزميات', en: 'Programming & algorithms' },
+  communication: { ar: 'الاتصال والعلاقات العامة', en: 'Communication & public relations' },
+  sports_science: { ar: 'علوم الرياضة', en: 'Sports science' },
 } satisfies Record<string, LText>;
 export type BookCategory = keyof typeof BOOK_CATEGORIES;
+export type BookAccess = 'metadata-only' | 'licensed-full-text';
+export type BookMetadataStatus = 'pending-edition-verification' | 'verified';
+export type BookSchoolApproval = 'pending-review' | 'approved';
+export type BookWorkKind = 'complete-book' | 'complete-reference-work';
+
 export interface LibraryBook {
   id: string;
+  /** Original or standard catalogue title; may be in the source language's script. */
   title: string;
+  titleEnglish?: string;
+  titleVariants?: readonly string[];
+  transliteration?: string;
   authors: string;
+  authorsNative?: string;
   publisher?: string;
   category: BookCategory;
   summary: LText;
-  language: 'en';
-  metadataStatus: 'pending-edition-verification';
-  access: 'metadata-only';
+  /** ISO 639/BCP-47 tag for the catalogued text or language edition, not proof a copy is present. */
+  language: string;
+  /** Optional original language when this catalogue record is for a translation. */
+  sourceLanguage?: string;
+  /** Broad cultural/authorial region; not necessarily the publication location. */
+  originArea?: string;
+  /** Broad cultural/authorial country, not necessarily the publication location (ISO 3166-1 alpha-2). */
+  originCountry?: string;
+  /** Existing records and new records all describe whole books, not posts or excerpts. */
+  workKind: BookWorkKind;
+  /** The complete text is not in this repository; licensed full text requires separate review. */
+  access: BookAccess;
+  metadataStatus: BookMetadataStatus;
+  /** Only approved, edition-verified and lawfully accessible books may enter school learning. */
+  schoolApproval: BookSchoolApproval;
+  /** Curriculum track identifiers; these are bibliographic links, not learned content. */
+  trackIds: readonly string[];
 }
+
+export const BOOK_LANGUAGES: Record<string, LText> = {
+  en: { ar: 'الإنجليزية', en: 'English' },
+  ...EAST_ASIAN_LANGUAGES,
+  ...INTERNATIONAL_LANGUAGES,
+};
+export const BOOK_REGIONS: Record<string, LText> = { ...EAST_ASIAN_REGIONS, ...INTERNATIONAL_REGIONS };
+export const BOOK_COUNTRIES: Record<string, LText> = { ...INTERNATIONAL_COUNTRIES };
+export {
+  EAST_ASIAN_BOOKS, EAST_ASIAN_LANGUAGES, EAST_ASIAN_LANGUAGE_TARGETS, EAST_ASIAN_REGIONS,
+  INTERNATIONAL_BOOKS, INTERNATIONAL_LANGUAGES, INTERNATIONAL_LANGUAGE_TARGETS, INTERNATIONAL_REGIONS,
+  INTERNATIONAL_COUNTRIES, INTERNATIONAL_CATALOG_SCOPE,
+};
+
+export const EAST_ASIAN_CATALOG_SCOPE = {
+  kind: 'curated-starter-catalog' as const,
+  exhaustive: false,
+  note: 'A first, non-exhaustive bibliography. A zero-count language means its book records still need authoritative catalog research; it does not mean the language has no books.',
+  noteAr: 'فهرس تأسيسي أولي غير شامل. اللغة ذات العدد صفر تحتاج بحثاً في فهارس موثوقة؛ لا يعني ذلك عدم وجود كتب بها.',
+};
+export const LIBRARY_CATALOG_SCOPE = {
+  kind: 'curated-starter-catalog' as const,
+  exhaustive: false,
+  note: 'The combined catalogue is a non-exhaustive starting index. Language coverage gaps require authoritative source research and do not imply that books do not exist.',
+  noteAr: 'الفهرس الموحّد تأسيسي وغير شامل؛ فجوات اللغات تحتاج بحثاً في مصادر موثوقة ولا تعني عدم وجود كتب.',
+};
+
 const seeds: Array<[string, string, string, string | undefined, BookCategory, string, string]> = [
   ['001', 'Chemistry and Technology of Flavors and Fragrances', 'David J. Rowe (editor)', 'Blackwell Publishing', 'chemistry', 'كيمياء النكهات والروائح وتقنيات تركيبها.', 'Chemistry of flavors and fragrances and their formulation technologies.'],
   ['002', 'The Chemistry of Fragrances: From Perfumer to Consumer', 'Charles S. Sell (editor)', 'Royal Society of Chemistry', 'chemistry', 'الجزيئات العطرية وتطبيقاتها وثباتها في المنتجات.', 'Fragrance molecules, their applications and stability in products.'],
@@ -39,21 +123,95 @@ const seeds: Array<[string, string, string, string | undefined, BookCategory, st
   ['015', 'Clinical Aromatherapy: Essential Oils in Healthcare', 'Jane Buckle', undefined, 'aromatherapy', 'يناقش العلاج العطري في الرعاية الصحية وحدود الأدلة والاحتياطات المهنية.', 'Discusses aromatherapy in healthcare, evidence limitations and professional precautions.'],
   ['016', 'Essential Oil Safety', 'Robert Tisserand & Rodney Young', undefined, 'aromatherapy', 'مرجع لسلامة الزيوت العطرية والسمية وموانع الاستعمال؛ نسبة التأليف والتفاصيل تُراجع وفق الطبعة.', 'Reference on essential oil safety, toxicity and contraindications; authorship and details must be checked against the edition.'],
 ];
-/** Bibliographic archive, not an archive of copyrighted full texts. No edition/ISBN invented. */
-export const LIBRARY_BOOKS: readonly LibraryBook[] = seeds.map(([id, title, authors, publisher, category, ar, en]) => ({
-  id: `SHAM-LIB-${id}`, title, authors, publisher, category, summary: { ar, en },
-  language: 'en', metadataStatus: 'pending-edition-verification', access: 'metadata-only',
+
+const CATEGORY_TRACKS: Record<BookCategory, readonly string[]> = {
+  chemistry: ['chemistry'], technology: ['engineering', 'technical'], cosmetics: ['chemistry'],
+  aromatherapy: ['medicine', 'biology'], criticism: ['literature'], reference: ['media_info'],
+  history: ['history'], mathematics: ['math'], physics: ['physics'], biology: ['biology'],
+  engineering: ['engineering'], agriculture: ['biology', 'earth_space'], medicine_history: ['medicine', 'history'],
+  education: ['education'], language: ['literature', 'education', 'media_info'], literature: ['literature'],
+  philosophy: ['religion', 'social'], law: ['law'], geography: ['geography'], astronomy: ['earth_space'],
+  computer_science: ['it_sciences'], psychology: ['psychology'], management: ['management'],
+  commerce: ['commerce'], science_reference: ['academic'], quantum: ['quantum', 'physics'],
+  statistics: ['math', 'academic'], environment: ['earth_space'],
+  sociology: ['social'], anthropology: ['social', 'history'], programming: ['prog_langs', 'software'],
+  communication: ['pr', 'media_info'], sports_science: ['sports', 'biology'],
+
+};
+const existingBooks: LibraryBook[] = seeds.map(([id, title, authors, publisher, category, ar, en]) => ({
+  id: `SHAM-LIB-${id}`, title, authors, publisher, category, summary: { ar, en }, language: 'en',
+  workKind: ['006', '012'].includes(id) ? 'complete-reference-work' : 'complete-book',
+  metadataStatus: 'pending-edition-verification', access: 'metadata-only', schoolApproval: 'pending-review',
+  trackIds: CATEGORY_TRACKS[category],
 }));
-const normalize = (s: string) => s.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().trim();
-/** Local library robot: deterministic classification/search; no external AI or file ingestion. */
-export function searchBooks(query: string, category: BookCategory | 'all' = 'all'): LibraryBook[] {
-  const terms = normalize(query).split(/\s+/).filter(Boolean);
-  return LIBRARY_BOOKS.filter(b => (category === 'all' || b.category === category) && terms.every(t => normalize([
-    b.id, b.title, b.authors, b.publisher || '', b.summary.ar, b.summary.en,
-    BOOK_CATEGORIES[b.category].ar, BOOK_CATEGORIES[b.category].en,
-  ].join(' ')).includes(t)));
+
+/** Bibliographic index only; no full copyrighted books or excerpts are packaged here. */
+export const LIBRARY_BOOKS: readonly LibraryBook[] = [...existingBooks, ...EAST_ASIAN_BOOKS, ...INTERNATIONAL_BOOKS];
+
+export interface LibrarySearchFilters {
+  language?: string;
+  trackId?: string;
 }
+const normalize = (s: string) => s.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().trim();
+/** Local librarian search; returns catalogue records only, never book text or approved scientific claims. */
+export function searchBooks(
+  query: string,
+  category: BookCategory | 'all' = 'all',
+  filters: LibrarySearchFilters = {},
+): LibraryBook[] {
+  const terms = normalize(query).split(/\s+/).filter(Boolean);
+  return LIBRARY_BOOKS.filter(b => {
+    if (category !== 'all' && b.category !== category) return false;
+    if (filters.language && b.language !== filters.language) return false;
+    if (filters.trackId && !b.trackIds.includes(filters.trackId)) return false;
+    const languageName = BOOK_LANGUAGES[b.language];
+    const haystack = normalize([
+      b.id, b.title, b.titleEnglish || '', ...(b.titleVariants || []), b.transliteration || '',
+      b.authors, b.authorsNative || '', b.publisher || '', b.summary.ar, b.summary.en,
+      BOOK_CATEGORIES[b.category].ar, BOOK_CATEGORIES[b.category].en,
+      languageName?.ar || b.language, languageName?.en || b.language,
+      b.sourceLanguage || '',
+      b.originArea ? `${BOOK_REGIONS[b.originArea]?.ar || b.originArea} ${BOOK_REGIONS[b.originArea]?.en || b.originArea}` : '',
+      b.originCountry ? `${BOOK_COUNTRIES[b.originCountry]?.ar || b.originCountry} ${BOOK_COUNTRIES[b.originCountry]?.en || b.originCountry}` : '',
+      ...b.trackIds,
+    ].join(' '));
+    return terms.every(t => haystack.includes(t));
+  });
+}
+
+/** Bibliography candidates can be browsed by curriculum track, but are not automatically lesson content. */
+export function booksForTrack(trackId: string): LibraryBook[] {
+  return LIBRARY_BOOKS.filter(book => book.trackIds.includes(trackId));
+}
+/** Strict school gate: verified edition + approved use + lawful full text + whole-book record. */
+export function approvedBooksForTrack(trackId: string): LibraryBook[] {
+  return booksForTrack(trackId).filter(book =>
+    book.metadataStatus === 'verified' && book.schoolApproval === 'approved' &&
+    book.access === 'licensed-full-text' &&
+    (book.workKind === 'complete-book' || book.workKind === 'complete-reference-work'));
+}
+
+export const EAST_ASIAN_LANGUAGE_COVERAGE = EAST_ASIAN_LANGUAGE_TARGETS.map(code => {
+  const bookCount = EAST_ASIAN_BOOKS.filter(book => book.language === code).length;
+  return {
+    code,
+    language: EAST_ASIAN_LANGUAGES[code],
+    bookCount,
+    state: bookCount ? 'records-pending-verification' as const : 'needs-source-research' as const,
+  };
+});
+export { INTERNATIONAL_LANGUAGE_COVERAGE };
+
 export function exportLibraryArchive(): string {
-  return JSON.stringify({ schemaVersion: 1, supervisor: 'shaheen', robot: 'librarian',
-    rights: 'Metadata only; no licensed electronic files supplied.', books: LIBRARY_BOOKS }, null, 2);
+  return JSON.stringify({
+    schemaVersion: 3,
+    supervisor: 'shaheen',
+    robot: 'librarian',
+    rights: 'Catalogue metadata only; no full book text or licensed electronic files supplied.',
+    scope: LIBRARY_CATALOG_SCOPE,
+    catalogs: [EAST_ASIAN_CATALOG_SCOPE, INTERNATIONAL_CATALOG_SCOPE],
+    eastAsianLanguageCoverage: EAST_ASIAN_LANGUAGE_COVERAGE,
+    internationalLanguageCoverage: INTERNATIONAL_LANGUAGE_COVERAGE,
+    books: LIBRARY_BOOKS,
+  }, null, 2);
 }

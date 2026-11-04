@@ -99,6 +99,9 @@ test('Gemini thinking is disabled or capped so it cannot eat the answer budget',
   assert.deepEqual(geminiThinking('gemini-2.5-pro', 4096), { maxOutputTokens: 5120, thinkingConfig: { thinkingBudget: 128 } });
   assert.equal(geminiThinking('gemini-3-pro-preview', 1024).maxOutputTokens, 3072);
   assert.deepEqual(geminiThinking('gemini-2.0-flash', 1024), { maxOutputTokens: 1024 });
+  // The rolling aliases (Gemini 3.x behind them thinks at «medium» by default — too slow for a chat).
+  assert.deepEqual(geminiThinking('gemini-flash-latest', 1024), { maxOutputTokens: 3072, thinkingConfig: { thinkingLevel: 'low' } });
+  assert.deepEqual(geminiThinking('gemini-flash-lite-latest', 1024), { maxOutputTokens: 2048, thinkingConfig: { thinkingLevel: 'minimal' } });
 });
 
 test('probeEngines reports each allowed engine honestly without leaking upstream details', async () => {

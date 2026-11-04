@@ -26,7 +26,7 @@ test('every robot (workflow) and every AI tool is placed under Shaheen — a new
 
 test('the structure: unique ids, five departments each with bots, links between real bots, a secretary', () => {
   assert.equal(new Set(BOTS.map((b) => b.id)).size, BOTS.length);
-  assert.equal(DEPARTMENTS.length, 5);
+  assert.equal(DEPARTMENTS.length, 6);
   for (const d of DEPARTMENTS) assert.ok(BOTS.some((b) => b.dept === d.id), d.id);
   for (const l of LINKS) { assert.ok(botOf(l.from) && botOf(l.to), `${l.from} → ${l.to}`); assert.notEqual(l.from, l.to); }
   assert.equal(botOf(SECRETARY.bot)?.dept, 'leadership');

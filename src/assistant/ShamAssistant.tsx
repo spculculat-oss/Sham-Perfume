@@ -1,3 +1,4 @@
+import { trackInsight } from '../utils/insightsTracker';
 import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
@@ -8,6 +9,8 @@ import {
 import type { SupportedLanguage } from '../types/i18n';
 import { SUPPORTED_LANGUAGES } from '../types/i18n';
 import { ApiError, ApiUnavailableError, isStaticHosting } from '../utils/api';
+import { followEntryCountry, formatMoney, useChatPrices, useStoreMoney } from '../utils/storeCheckout';
+import { BUNDLED_FX, priceIn } from '../utils/pricing';
 import { fmt, loc, makeT, type LText } from '../لغات/localize';
 import {
   assistantApi, CONVERSATION_KEY, streamChat, type ActionCard, type AssistantConfig, type ChatReply, type FormField, type ProductCard,
@@ -50,7 +53,8 @@ const S = {
   contact: { ar: 'الهاتف أو البريد المستخدم في الطلب', en: 'Phone or email used in the request' },
   track: { ar: 'تتبع', en: 'Track' },
   status: { ar: 'الحالة', en: 'Status' },
-  open_tab: { ar: 'افتح الأداة', en: 'Open tool' },
+  open_tab: { ar: 'افتح الصفحة', en: 'Open page' },
+  platform_guide: { ar: 'دليل المنصة والأدوات', en: 'Platform guide & tools' },
   static: { ar: 'هذه نسخة ثابتة بلا خادم؛ مساعد الخدمات والطلبات يحتاج تشغيل خادم شام.', en: 'Static edition without a server; the services assistant needs the Sham server.' },
   error: { ar: 'تعذّر الاتصال بخادم شام. حاول مرة أخرى.', en: 'Could not reach the Sham server. Please try again.' },
   rate: { ar: 'رسائل كثيرة في وقت قصير، انتظر دقيقة من فضلك.', en: 'Too many messages — please wait a minute.' },
@@ -130,6 +134,8 @@ function errorText(lang: SupportedLanguage, error: unknown) {
 export function ShamAssistant({ currentLang }: Props) {
   const L = makeT(currentLang, S);
   const rtl = SUPPORTED_LANGUAGES.find((l) => l.code === currentLang)?.dir === 'rtl';
+  // «شاهين بعملة بلدك»: prices in the replies shown in the currency of the visitor's country.
+  const prices = useChatPrices(currentLang);
   const [open, setOpen] = useState(false);
   const [config, setConfig] = useState<AssistantConfig | null>(null);
   const [messages, setMessages] = useState<UiMessage[]>([]);
@@ -201,6 +207,7 @@ export function ShamAssistant({ currentLang }: Props) {
 
   /** `replaces` = text of the latest user message being regenerated/edited (rewind and re-ask). */
   const send = useCallback(async (text: string, replaces?: string) => {
+    if (!replaces) trackInsight('chat', { text }); // «خزنة فهم الزوار» (with consent)
     const message = text.trim();
     if (!message || busy) return;
     setError(''); setNotice('');
@@ -220,18 +227,19 @@ export function ShamAssistant({ currentLang }: Props) {
       let streamed = false;
       let reply: ChatReply;
       try {
-        reply = await streamChat(message, currentLang, conversationId, (event) => {
+        reply = await streamChat(prices.outgoing(message), currentLang, conversationId, (event) => {
           streamed = true;
           if (event.type === 'step') patch((x) => ({ ...x, steps: [...(x.steps || []), event.step] }));
           else if (event.type === 'delta') patch((x) => ({ ...x, text: x.text + event.text }));
           else if (event.type === 'reset') patch((x) => ({ ...x, text: '' }));
-        }, controller.signal, replaces, consulting);
+        }, controller.signal, replaces && prices.outgoing(replaces), consulting);
       } catch (e) {
         const terminal = streamed || controller.signal.aborted || e instanceof ApiUnavailableError || (e instanceof ApiError && e.status < 500 && e.status !== 404);
         if (terminal) throw e;
-        reply = await assistantApi.chat(message, currentLang, conversationId, controller.signal, replaces, consulting);
+        reply = await assistantApi.chat(prices.outgoing(message), currentLang, conversationId, controller.signal, replaces && prices.outgoing(replaces), consulting);
       }
       if (controller.signal.aborted) throw new DOMException('Stopped', 'AbortError');
+      followEntryCountry(reply.country); // the server checked where he is entering from (prices follow it)
       setConversationId(reply.conversationId);
       setStatus(reply.status);
       patch((x) => ({
@@ -259,7 +267,7 @@ export function ShamAssistant({ currentLang }: Props) {
     if (!canSpeak) return;
     if (speakingId === key) { stopSpeaking(); return; }
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(m.text.replace(/[*_#`>]/g, ''));
+    const utterance = new SpeechSynthesisUtterance(prices.show(m.text).replace(/[*_#`>]/g, ''));
     utterance.lang = speechLang(currentLang);
     utterance.onend = () => setSpeakingId((id) => (id === key ? null : id));
     utterance.onerror = utterance.onend;
@@ -381,6 +389,11 @@ export function ShamAssistant({ currentLang }: Props) {
                       className="inline-flex items-center gap-1 text-[11px] font-semibold rounded-full border border-emerald-300 bg-white px-2.5 py-1.5 text-emerald-900 hover:bg-emerald-50">
                       <PackageSearch className="w-3.5 h-3.5" />{L('track_title')}
                     </button>
+                    {/* «دليل المنصة»: خريطة كل الأدوات والمكتبات والمجتمع — عشان الزائر يعرف الجديد فوراً. */}
+                    <button type="button" onClick={() => send(currentLang === 'ar' || currentLang === 'fa' ? 'دليل المنصة' : 'Platform guide')}
+                      className="inline-flex items-center gap-1 text-[11px] font-semibold rounded-full border border-stone-300 bg-white px-2.5 py-1.5 text-stone-800 hover:bg-stone-100">
+                      <Sparkles className="w-3.5 h-3.5" />{L('platform_guide')}
+                    </button>
                   </div>
                 </div>
               )}
@@ -397,7 +410,7 @@ export function ShamAssistant({ currentLang }: Props) {
                         <button className="text-[11px] font-bold rounded-lg bg-stone-900 text-amber-100 px-2.5 py-1">{L('save_edit')}</button>
                       </div>
                     </form>
-                  ) : m.streaming && !m.text ? null : <Bubble role={m.role} text={m.text} engine={m.engine} lang={currentLang} streaming={m.streaming} stopped={m.stopped} />}
+                  ) : m.streaming && !m.text ? null : <Bubble role={m.role} text={prices.show(m.text)} engine={m.engine} lang={currentLang} streaming={m.streaming} stopped={m.stopped} />}
                   {m.role === 'user' && i === lastUserIndex(messages) && editing === null && !busy && status === 'open' && !isStaticHosting && (
                     <div className="flex justify-end px-1 -mt-1">
                       <button type="button" onClick={() => setEditing(m.text)} aria-label={L('edit')} title={L('edit')} className="p-1 rounded-md text-stone-400 hover:text-stone-700 hover:bg-stone-200"><Pencil className="w-3 h-3" /></button>
@@ -660,8 +673,10 @@ function Action({ action, lang, services, conversationId, productsInMessage, onS
   if (action.type === 'open_tab' && action.tab) {
     return (
       <button type="button" onClick={() => { window.location.hash = `#${action.tab}`; }}
-        className="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full bg-amber-100 text-amber-950 px-3 py-1.5 hover:bg-amber-200">
-        <ExternalLink className="w-3.5 h-3.5" />{L('open_tab')}
+        title={action.title ? `${L('open_tab')}: ${action.title}` : L('open_tab')}
+        aria-label={action.title ? `${L('open_tab')}: ${action.title}` : L('open_tab')}
+        className="inline-flex max-w-full items-center gap-1.5 text-xs font-semibold rounded-full bg-amber-100 text-amber-950 px-3 py-1.5 hover:bg-amber-200">
+        <ExternalLink className="w-3.5 h-3.5 shrink-0" /><span className="truncate">{L('open_tab')}{action.title ? ` — ${action.title}` : ''}</span>
       </button>
     );
   }
@@ -729,7 +744,11 @@ function RequestForm({ lang, serviceId, kind, fields, title, products, conversat
   const [done, setDone] = useState<RequestView | null>(null);
   const store = kind === 'store';
   const list = useMemo(() => products || [], [products]);
-  const total = list.reduce((sum, p) => sum + (qty[p.id] || 0) * p.price, 0);
+  // «دولة الدخول»: the catalog's pounds shown in the visitor's currency, like the store page and Shaheen's replies.
+  const money = useStoreMoney(lang, ar ? 'جنيه' : 'EGP');
+  const unit = (p: ProductCard) => (p.currency === 'EGP' ? priceIn(p.price, money.currency, BUNDLED_FX) : p.price);
+  const total = list.reduce((sum, p) => sum + (qty[p.id] || 0) * unit(p), 0);
+  const totalCurrency = list[0]?.currency === 'EGP' ? money.currency : list[0]?.currency || money.currency;
 
   if (done) return null; // the confirmation message is appended to the conversation
 
@@ -757,14 +776,14 @@ function RequestForm({ lang, serviceId, kind, fields, title, products, conversat
             <div key={p.id} className="flex items-center gap-2 rounded-xl border border-stone-200 p-2">
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-semibold truncate">{(ar ? p.nameAr : p.nameEn) || p.nameAr} {p.demo && <span className="text-[9px] bg-stone-200 rounded px-1">{L('demo')}</span>}</p>
-                <p className="text-[11px] text-stone-500">{p.price} {p.currency} / {p.unit}{p.stock <= 0 ? ` · ${L('out')}` : ''}</p>
+                <p className="text-[11px] text-stone-500">{p.currency === 'EGP' ? money.price(p.price) : `${p.price} ${p.currency}`} / {p.unit}{p.stock <= 0 ? ` · ${L('out')}` : ''}</p>
               </div>
               <LocalizedNumberInput lang={lang} integer min={0} max={Math.max(0, p.stock)} disabled={p.stock <= 0} ariaLabel={`${L('qty')} ${p.sku}`}
                 value={qty[p.id] || 0} onValue={(n) => setQty((q) => ({ ...q, [p.id]: Math.max(0, Math.min(p.stock, Math.floor(n || 0))) }))}
                 className="w-16 rounded-lg border border-stone-300 px-2 py-1 text-sm text-center disabled:opacity-40" />
             </div>
           ))}
-          {total > 0 && <p className="text-xs text-stone-700">{L('total')}: <b>{Math.round(total * 100) / 100} {list[0]?.currency}</b></p>}
+          {total > 0 && <p className="text-xs text-stone-700">{L('total')}: <b>{formatMoney(Math.round(total * 100) / 100, totalCurrency, lang, ar ? 'جنيه' : 'EGP')}</b></p>}
         </div>
       )}
       <input className={inputClass} required value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} placeholder={L('name')} aria-label={L('name')} maxLength={120} />

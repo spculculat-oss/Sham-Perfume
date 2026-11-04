@@ -25,7 +25,7 @@ export function StoreDirectory({ lang, go }: Props) {
       {loading ? <Spinner /> : error ? <Card><Empty title={errorText(error, lang)} /></Card> : !data?.length ? <Card><Empty icon={<Store className="h-10 w-10" />} title={t('أول المتاجر في الطريق', 'The first stores are on their way')} body={t('كن أول تاجر في شام!', 'Be the first merchant on Sham!')} /></Card> : (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{data.map((s) => (
           <button key={s.slug} type="button" onClick={() => go(`store/${s.slug}`)} className="rounded-2xl border border-stone-200 bg-white p-4 text-start shadow-sm transition hover:-translate-y-0.5 hover:border-amber-300 cursor-pointer">
-            <div className="flex items-center gap-3">{s.logo ? <img src={s.logo} alt="" className="h-14 w-14 rounded-xl object-cover" /> : <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-100 text-2xl">🏪</span>}
+            <div className="flex items-center gap-3">{s.logo ? <img loading="lazy" decoding="async" src={s.logo} alt="" className="h-14 w-14 rounded-xl object-cover" /> : <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-100 text-2xl">🏪</span>}
               <span className="min-w-0"><span className="block truncate font-bold">{s.name}</span><span className="text-xs text-stone-500">{s.products} {t('منتج', 'products')} · {s.country}</span></span></div>
             {s.about && <p className="mt-2 line-clamp-2 text-xs text-stone-600">{s.about}</p>}
           </button>
@@ -51,7 +51,7 @@ export function StorePage({ lang, go, slug }: Props & { slug: string }) {
       <Card className="overflow-hidden">
         <div className="h-28 bg-gradient-to-br from-stone-900 via-amber-900 to-amber-600" />
         <div className="flex flex-wrap items-end gap-4 px-5 pb-5">
-          {data.store.logo ? <img src={data.store.logo} alt="" className="-mt-10 h-24 w-24 rounded-2xl border-4 border-white bg-white object-cover" /> : <span className="-mt-10 flex h-24 w-24 items-center justify-center rounded-2xl border-4 border-white bg-amber-100 text-4xl">🏪</span>}
+          {data.store.logo ? <img loading="lazy" decoding="async" src={data.store.logo} alt="" className="-mt-10 h-24 w-24 rounded-2xl border-4 border-white bg-white object-cover" /> : <span className="-mt-10 flex h-24 w-24 items-center justify-center rounded-2xl border-4 border-white bg-amber-100 text-4xl">🏪</span>}
           <div className="min-w-0 flex-1"><h2 className="text-2xl font-black">{data.store.name}</h2><p className="text-xs text-stone-500">✅ {t('متجر معتمد من شام', 'Approved by Sham')} · {data.products.length} {t('منتج', 'products')}</p></div>
           {count > 0 && <Btn onClick={() => { window.location.hash = 'store'; }}><ShoppingBag className="h-4 w-4" />{t('السلة', 'Basket')} ({count})</Btn>}
         </div>
@@ -76,7 +76,7 @@ export function StorePage({ lang, go, slug }: Props & { slug: string }) {
       {open && (
         <Sheet title={open.name} onClose={() => setOpen(null)} wide>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="grid grid-cols-3 gap-2">{(open.images.length ? open.images : ['']).map((src, i) => src ? <img key={i} src={src} alt="" className={`${i === 0 ? 'col-span-3 aspect-square' : 'aspect-square'} w-full rounded-xl object-cover`} /> : <span key={i} className="col-span-3 flex aspect-square items-center justify-center rounded-xl bg-stone-100 text-5xl">🧴</span>)}</div>
+            <div className="grid grid-cols-3 gap-2">{(open.images.length ? open.images : ['']).map((src, i) => src ? <img loading="lazy" decoding="async" key={i} src={src} alt="" className={`${i === 0 ? 'col-span-3 aspect-square' : 'aspect-square'} w-full rounded-xl object-cover`} /> : <span key={i} className="col-span-3 flex aspect-square items-center justify-center rounded-xl bg-stone-100 text-5xl">🧴</span>)}</div>
             <div className="space-y-3">
               <p className="text-2xl font-black text-amber-900">{money.price(open.priceEgp)}</p>
               {open.description && <p className="whitespace-pre-wrap text-sm leading-relaxed text-stone-700">{open.description}</p>}

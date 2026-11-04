@@ -12,6 +12,9 @@ assert.equal(fallback, html, '404.html must match the current build, not an olde
 const verification = await readFile(new URL('google7ef3d5aa6cf98197.html', output), 'utf8');
 assert.equal(verification, 'google-site-verification: google7ef3d5aa6cf98197.html', 'Search Console verification file is missing or altered.');
 await access(new URL('.nojekyll', output));
+await access(new URL('media/index.html', output));
+await access(new URL('og/concentration.png', output));
+await access(new URL('og/pin-concentration.png', output));
 assert.ok(!html.includes('/src/main.tsx'), 'Pages must serve built JavaScript, not TypeScript source.');
 
 const assets = [...html.matchAll(/(?:src|href)="([^"]+\.(?:js|css))"/g)].map((match) => match[1]);

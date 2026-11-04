@@ -27,7 +27,7 @@ export type Action =
   | { type: 'study'; question: string }
   | { type: 'scout-seed'; domain: string };
 
-export const RERUNNABLE = ['shaheen-import.yml', 'shaheen-discover.yml', 'shaheen-news.yml', 'shaheen-seo.yml'] as const;
+export const RERUNNABLE = ['shaheen-import.yml', 'shaheen-discover.yml', 'shaheen-news.yml', 'shaheen-seo.yml', 'shaheen-service.yml', 'shaheen-inventory.yml'] as const;
 export type Rerunnable = (typeof RERUNNABLE)[number];
 
 export interface Seat { id: SeatId; titleAr: string; titleEn: string; brief: string; area: Area }

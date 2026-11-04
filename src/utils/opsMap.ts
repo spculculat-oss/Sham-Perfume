@@ -181,6 +181,18 @@ export const JOURNEYS: Journey[] = [
     { bot: 'finance', ar: 'طرق الدفع وتسجيل الطلب', en: 'Payment methods and the order record' },
     { bot: 'visitor_tour', ar: 'جولة شراء تجريبية تتأكد إن الرحلة سليمة', en: 'A test shopping tour checks the journey' },
   ] },
+  { id: 'care', nameAr: 'خدمة بعد البيع', nameEn: 'After-sales care', steps: [
+    { bot: 'chat', ar: 'الزائر بيسأل أو بيشتكي', en: 'A visitor asks or complains' },
+    { bot: 'service', ar: 'مكتب الدعم يجهز الرد ويصعّد المتأخر', en: 'The care desk prepares the reply and escalates late cases' },
+    { bot: 'secretary', ar: 'المشرف يتأكد إن كل حالة اتغطت', en: 'The secretary makes sure every case is covered' },
+    { bot: 'catalog', ar: 'السؤال الناقص يتحول لبيانات أو درس', en: 'A missing answer becomes data or a lesson' },
+  ] },
+  { id: 'stock', nameAr: 'مخزون ناقص', nameEn: 'Stock runs low', steps: [
+    { bot: 'inventory', ar: 'يرصد النفاد والطلب الحقيقي', en: 'Spots the shortage and the real demand' },
+    { bot: 'importer', ar: 'يجهز إعادة التوريد من المتاجر المعتمدة', en: 'Prepares the restock from approved stores' },
+    { bot: 'store_advisor', ar: 'يرشح البدائل المتاحة لحد ما يوصل', en: 'Suggests available alternatives meanwhile' },
+    { bot: 'chat', ar: 'يرد على الزائر بالبدائل', en: 'Answers the visitor with the alternatives' },
+  ] },
   { id: 'news', nameAr: 'خبر جديد', nameEn: 'A news story', steps: [
     { bot: 'news', ar: 'يجمع الأخبار الحقيقية بمصادرها', en: 'Collects real news with sources' },
     { bot: 'secretary', ar: 'يقيّم الجودة ويدي توجيهات', en: 'Scores the quality and guides' },
@@ -193,6 +205,13 @@ export const JOURNEYS: Journey[] = [
     { bot: 'researcher', ar: 'مش في المكتبة؟ الباحث يدور في المصادر المفتوحة', en: 'Not there? The researcher looks it up' },
     { bot: 'teacher', ar: 'المعلم المحلي يكتب الدرس والمراجع يفحصه', en: 'The local teacher writes the lesson; the reviewer checks it' },
     { bot: 'school', ar: 'الدرس يتحفظ في ذاكرة شاهين للمرة الجاية', en: 'The lesson joins his memory for next time' },
+  ] },
+  { id: 'academy', nameAr: 'المدرسة على مدار الساعة', nameEn: 'The school around the clock', steps: [
+    { bot: 'academy', ar: 'كل ساعة يشوف إيه الباقي على الخبراء', en: 'Every hour, checks what the experts still have to study' },
+    { bot: 'researcher', ar: 'يقرا المصادر المفتوحة عن السؤال', en: 'Reads open sources about the question' },
+    { bot: 'teacher', ar: 'الخبير يكتب الدرس والمراجع الصارم يفحصه', en: 'The expert writes the lesson; the strict reviewer checks it' },
+    { bot: 'school', ar: 'الدرس يدخل ذاكرة شاهين', en: 'The lesson enters Shaheen\'s memory' },
+    { bot: 'chat', ar: 'وكيل شاهين يرد بيه على الزوار', en: 'Shaheen\'s agent answers visitors with it' },
   ] },
   { id: 'incident', nameAr: 'عطل في الموقع', nameEn: 'A site problem', steps: [
     { bot: 'patrol', ar: 'الدورية تكتشفه بالتجربة', en: 'The patrol finds it by testing' },
@@ -234,9 +253,9 @@ export function journeyHealth(j: Journey, scores: ToolScore[]): { grade: Grade; 
 }
 
 // ── Layout of the map (SVG user units) ────────────────────────────────────────────────────────────────────
-export const MAP = { width: 1240, height: 790, nodeW: 220, nodeH: 42, top: 210, gap: 54 } as const;
+export const MAP = { width: 1480, height: 1130, nodeW: 220, nodeH: 42, top: 210, gap: 54 } as const;
 /** Columns right-to-left (Arabic reading order): leadership first. */
-export const DEPT_ORDER: DeptId[] = ['leadership', 'store', 'content', 'experience', 'reliability'];
+export const DEPT_ORDER: DeptId[] = ['leadership', 'store', 'content', 'experience', 'reliability', 'innovation'];
 export const deptX = (dept: DeptId) => MAP.width - 130 - DEPT_ORDER.indexOf(dept) * 245;
 export const ROOT = { x: MAP.width / 2, y: 52 };
 

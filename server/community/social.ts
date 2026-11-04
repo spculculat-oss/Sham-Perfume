@@ -23,6 +23,7 @@ const POST_SELECT = `
     (SELECT count(*) FROM comments c WHERE c.post_id = p.id AND c.status = 'visible')::int AS comments,
     (SELECT coalesce(json_object_agg(kind, n), '{}') FROM (SELECT kind, count(*)::int AS n FROM reactions r WHERE r.post_id = p.id GROUP BY kind) k) AS reaction_counts,
     (SELECT kind FROM reactions r WHERE r.post_id = p.id AND r.user_id = $1) AS my_reaction,
+    EXISTS (SELECT 1 FROM saved_posts sp WHERE sp.post_id = p.id AND sp.user_id = $1) AS saved,
     rc.title AS recipe_title, rc.data AS recipe_data, rc.visibility AS recipe_visibility
   FROM posts p JOIN users u ON u.id = p.author_id LEFT JOIN merchants m ON m.user_id = u.id LEFT JOIN recipes rc ON rc.id = p.recipe_id`;
 
@@ -37,7 +38,7 @@ function postView(row: Row, viewerId: string) {
   return {
     id: row.post_id, body: row.body, image: row.image || null, visibility: row.visibility, createdAt: iso(row.post_created), editedAt: iso(row.edited_at),
     author: publicUser(row), mine: row.author_id === viewerId, comments: row.comments,
-    reactions: row.reaction_counts || {}, myReaction: row.my_reaction || null,
+    saved: Boolean(row.saved), reactions: row.reaction_counts || {}, myReaction: row.my_reaction || null,
     recipe: recipeVisible ? { id: row.recipe_id, title: row.recipe_title, data: row.recipe_data } : null,
   };
 }
@@ -47,6 +48,7 @@ export async function feed(ctx: Ctx, viewerId: string, options: { before?: unkno
   const params: unknown[] = [viewerId];
   let where = VISIBLE;
   if (typeof options.before === 'string' && !Number.isNaN(Date.parse(options.before))) { params.push(options.before); where += ` AND p.created_at < $${params.length}`; }
+  if (options.scope === 'saved') where += ` AND EXISTS (SELECT 1 FROM saved_posts sp WHERE sp.post_id = p.id AND sp.user_id = $1)`;
   if (options.scope === 'friends') where += ` AND (p.author_id = $1 OR EXISTS (SELECT 1 FROM friendships f WHERE f.status = 'accepted' AND ((f.user_a = $1 AND f.user_b = p.author_id) OR (f.user_b = $1 AND f.user_a = p.author_id))))`;
   const rows = await ctx.sql.query(`${POST_SELECT} WHERE ${where} ORDER BY p.created_at DESC LIMIT ${PAGE}`, params);
   return rows.map((r) => postView(r, viewerId));
@@ -74,6 +76,18 @@ export async function getPost(ctx: Ctx, viewerId: string, id: string) {
   const [row] = await ctx.sql.query(`${POST_SELECT} WHERE p.id = $2 AND ${VISIBLE}`, [viewerId, id]);
   if (!row) fail(404, 'NOT_FOUND');
   return postView(row, viewerId);
+}
+
+/** Saving never grants access to a post. Every read still applies VISIBLE. */
+export async function savePost(ctx: Ctx, userId: string, postId: string) {
+  await getPost(ctx, userId, postId);
+  await ctx.sql.query(`INSERT INTO saved_posts (user_id, post_id) VALUES ($1,$2) ON CONFLICT DO NOTHING`, [userId, postId]);
+  return getPost(ctx, userId, postId);
+}
+
+/** Idempotent and allowed even after the post becomes inaccessible. Only affects the caller. */
+export async function unsavePost(ctx: Ctx, userId: string, postId: string) {
+  await ctx.sql.query(`DELETE FROM saved_posts WHERE user_id = $1 AND post_id = $2`, [userId, postId]);
 }
 
 export async function editPost(ctx: Ctx, userId: string, id: string, input: { body?: unknown; visibility?: unknown }) {

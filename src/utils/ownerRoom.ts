@@ -80,23 +80,31 @@ export const isSealedRoom = (x: unknown): x is SealedRoom => {
   return Boolean(s && s.v === 1 && s.kdf === 'PBKDF2-SHA256' && Number.isInteger(s.iter) && s.iter >= 100_000 && typeof s.salt === 'string' && typeof s.iv === 'string' && typeof s.data === 'string');
 };
 
-/** Seals the room with the owner's code (a fresh salt and IV every time). */
-export async function sealRoom(code: string, room: RoomData, iter = ROOM_KDF_ITERATIONS): Promise<SealedRoom> {
+/** Seals any room's data with the owner's code (a fresh salt and IV every time) — Shaheen's room and the State's. */
+export async function sealData(code: string, value: unknown, iter = ROOM_KDF_ITERATIONS): Promise<SealedRoom> {
   if (!code.trim()) throw new Error('No code');
   const salt = globalThis.crypto.getRandomValues(new Uint8Array(16));
   const iv = globalThis.crypto.getRandomValues(new Uint8Array(12));
   const key = await roomKey(code, salt, iter);
-  const data = new Uint8Array(await subtle().encrypt({ name: 'AES-GCM', iv: buf(iv) }, key, new TextEncoder().encode(JSON.stringify(room))));
+  const data = new Uint8Array(await subtle().encrypt({ name: 'AES-GCM', iv: buf(iv) }, key, new TextEncoder().encode(JSON.stringify(value))));
   return { v: 1, kdf: 'PBKDF2-SHA256', iter, salt: b64(salt), iv: b64(iv), data: b64(data) };
 }
-
-/** Opens a sealed room; undefined when the code is not the one it was sealed with (or the data was changed). */
-export async function openRoom(code: string, sealed: SealedRoom): Promise<RoomData | undefined> {
+/** Opens sealed data; undefined when the code is not the one it was sealed with (or the data was changed). */
+export async function openData(code: string, sealed: SealedRoom): Promise<unknown> {
   try {
     const key = await roomKey(code, unb64(sealed.salt), sealed.iter);
     const plain = await subtle().decrypt({ name: 'AES-GCM', iv: buf(unb64(sealed.iv)) }, key, buf(unb64(sealed.data)));
-    return readRoom(JSON.parse(new TextDecoder().decode(plain)));
+    return JSON.parse(new TextDecoder().decode(plain));
   } catch { return undefined; }
+}
+
+/** Seals the room with the owner's code. */
+export const sealRoom = (code: string, room: RoomData, iter = ROOM_KDF_ITERATIONS): Promise<SealedRoom> => sealData(code, room, iter);
+
+/** Opens a sealed room; undefined when the code is not the one it was sealed with (or the data was changed). */
+export async function openRoom(code: string, sealed: SealedRoom): Promise<RoomData | undefined> {
+  const value = await openData(code, sealed);
+  return value === undefined ? undefined : readRoom(value);
 }
 
 const SPEAKERS = new Set<RoomSpeaker>(['owner', 'shaheen', 'secretary']);

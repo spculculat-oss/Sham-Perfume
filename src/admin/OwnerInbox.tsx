@@ -2,7 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { CheckCircle2, ExternalLink, GitPullRequest, History, ListTodo, Loader2, MessagesSquare, RefreshCw, RotateCcw, Undo2, XCircle } from 'lucide-react';
 import { T, TP, adminLocale } from './adminL10n';
 import { sendDeskRequest } from './deskRequest';
-import { OWNER } from '../utils/ownerAuthority';
+import bundledControls from '../data/owner/controls.json';
+import { OWNER, readControls } from '../utils/ownerAuthority';
+import { stateActive } from '../utils/platformState';
 import { parseChanges } from '../utils/ownerFiles';
 import { decideDraft, deskLog, inboxFrom, inboxUrls, logUrl, parseOrders, revertDraft, type Decision, type GhIssue, type InboxItem, type LogItem } from '../utils/ownerDesk';
 import { isSealedRoom, openRoom, ROOM_STORAGE_KEY } from '../utils/ownerRoom';
@@ -72,6 +74,9 @@ export default function OwnerInbox({ code, onRoom }: { code: string; onRoom?: ()
           <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />{T('حدّث')}
         </button>
       </div>
+      {stateActive(readControls(bundledControls)) && (
+        <p className="rounded-xl border border-sky-800 bg-sky-950/50 p-2 text-xs text-sky-100">{T('🏛️ دولة المنصة ماسكة كل الموافقات وبتقرر فيها بنفسها كل ساعة، ومابترجعلكش. اللي هنا للاطلاع — ولو حبيت ترد على حاجة قبلها، ردك هو اللي يمشي.')}</p>
+      )}
       {error && <p role="alert" className="rounded-xl bg-red-950 p-2 text-xs text-red-200">{error}</p>}
 
       {waiting > 0 && (
@@ -137,6 +142,7 @@ function InboxCard({ item, sent, onSent }: { item: InboxItem; sent?: string; onS
       <div className="mb-1 flex flex-wrap items-center gap-2">
         {item.kind === 'pull' ? <GitPullRequest className="h-4 w-4 text-violet-300" /> : <ListTodo className="h-4 w-4 text-sky-300" />}
         <span className="rounded-full border border-stone-700 px-2 py-0.5 text-[10px] text-stone-300">{item.kind === 'pull' ? T('تعديل جاهز من روبوت') : T('مهمة من المجلس')}</span>
+        {item.stateRefused && <span className="rounded-full border border-red-700 bg-red-950/50 px-2 py-0.5 text-[10px] text-red-200">{T('رفضته دولة المنصة — القرار ليك')}</span>}
         <b className="text-sm text-stone-100">{item.title}</b>
       </div>
       {item.summary && <p className="mb-2 text-stone-400">{item.summary}</p>}

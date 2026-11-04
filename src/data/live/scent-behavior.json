@@ -1,0 +1,194 @@
+{
+ "version": 1,
+ "agent": "scent-behavior",
+ "updatedAt": "2026-11-03T05:07:04.158Z",
+ "signals": {
+  "read": true,
+  "noteAr": "العدّاد الحي مقروء من السيرفر (أعداد مجهولة فقط: خامات ونوع تركيز، من غير أي بيانات شخصية).",
+  "designs": 0,
+  "materialsCounted": 0,
+  "types": [],
+  "bands": []
+ },
+ "top": [],
+ "families": [
+  {
+   "tag": "woody",
+   "nameAr": "خشبي",
+   "share": 18.5
+  },
+  {
+   "tag": "floral",
+   "nameAr": "زهري",
+   "share": 12.8
+  },
+  {
+   "tag": "oriental",
+   "nameAr": "شرقي",
+   "share": 11.2
+  },
+  {
+   "tag": "amber",
+   "nameAr": "عنبري",
+   "share": 10.1
+  },
+  {
+   "tag": "fresh",
+   "nameAr": "منعش",
+   "share": 8.8
+  },
+  {
+   "tag": "spicy",
+   "nameAr": "توابل",
+   "share": 8.4
+  },
+  {
+   "tag": "fruity",
+   "nameAr": "فاكهي",
+   "share": 8.3
+  },
+  {
+   "tag": "gourmand",
+   "nameAr": "جورماند",
+   "share": 5.4
+  },
+  {
+   "tag": "citrus",
+   "nameAr": "حمضي",
+   "share": 4.6
+  },
+  {
+   "tag": "oud",
+   "nameAr": "عود",
+   "share": 3.8
+  },
+  {
+   "tag": "musk",
+   "nameAr": "مسكي",
+   "share": 3.8
+  },
+  {
+   "tag": "aquatic",
+   "nameAr": "مائي",
+   "share": 1.9
+  },
+  {
+   "tag": "leather",
+   "nameAr": "جلدي",
+   "share": 1.7
+  },
+  {
+   "tag": "powdery",
+   "nameAr": "بودري",
+   "share": 0.9
+  }
+ ],
+ "unused": [],
+ "unknownTyped": [],
+ "proposals": [
+  {
+   "rawId": "mat-hojari-frankincense",
+   "nameAr": "زيت اللبان الحوجري العماني النقي (Omani Hojari Frankincense)",
+   "nameEn": "Boswellia Sacra (Royal Green Hojari Frankincense Oil)",
+   "family": "راتنجي بخوري حمضي منعش متبل",
+   "category": "صموغ وبخور ملكي",
+   "score": 8.8,
+   "reasonAr": "من العائلات اللي عليها طلب (منعش)"
+  }
+ ],
+ "coverage": [
+  {
+   "family": "amber",
+   "nameAr": "عنبري",
+   "products": 315,
+   "bankMaterials": 6
+  },
+  {
+   "family": "leather",
+   "nameAr": "جلدي",
+   "products": 53,
+   "bankMaterials": 7
+  },
+  {
+   "family": "powdery",
+   "nameAr": "بودري",
+   "products": 27,
+   "bankMaterials": 7
+  },
+  {
+   "family": "musk",
+   "nameAr": "مسكي",
+   "products": 118,
+   "bankMaterials": 10
+  },
+  {
+   "family": "woody",
+   "nameAr": "خشبي",
+   "products": 577,
+   "bankMaterials": 12
+  },
+  {
+   "family": "oriental",
+   "nameAr": "شرقي",
+   "products": 348,
+   "bankMaterials": 12
+  },
+  {
+   "family": "oud",
+   "nameAr": "عود",
+   "products": 119,
+   "bankMaterials": 12
+  },
+  {
+   "family": "fruity",
+   "nameAr": "فاكهي",
+   "products": 258,
+   "bankMaterials": 14
+  },
+  {
+   "family": "gourmand",
+   "nameAr": "جورماند",
+   "products": 170,
+   "bankMaterials": 14
+  },
+  {
+   "family": "floral",
+   "nameAr": "زهري",
+   "products": 398,
+   "bankMaterials": 15
+  },
+  {
+   "family": "spicy",
+   "nameAr": "توابل",
+   "products": 261,
+   "bankMaterials": 17
+  },
+  {
+   "family": "citrus",
+   "nameAr": "حمضي",
+   "products": 144,
+   "bankMaterials": 22
+  },
+  {
+   "family": "aquatic",
+   "nameAr": "مائي",
+   "products": 58,
+   "bankMaterials": 22
+  },
+  {
+   "family": "fresh",
+   "nameAr": "منعش",
+   "products": 274,
+   "bankMaterials": 27
+  }
+ ],
+ "planAr": [
+  "أكثر العائلات طلباً في المتجر: خشبي، زهري، شرقي.",
+  "مرشحون للإضافة: زيت اللبان الحوجري العماني النقي."
+ ],
+ "notes": [
+  "العداد شغال ومفيش ولا تركيبة اتشاركت لحد الآن — الزوار مش بيبعتوا حاجة غير لما يدوسوا «شارك التركيبة مجهولة» بنفسهم."
+ ],
+ "score": 100,
+ "summaryAr": "سلوك المعمل: العدّاد شغال ومفيش تركيبة اتشاركت لحد الآن — مفيش أرقام تُذكر، والتقرير مبني على محتوى البنك والمتجر."
+}

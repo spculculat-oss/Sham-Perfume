@@ -11,13 +11,22 @@ name: Shaheen source scout and school (every 6 hours)
 # «مدرسة شاهين» (scripts/shaheen-school/): Shaheen examines himself on a question bank, learns what he can from
 # his own library (no AI), studies the rest while an AI engine is up, and keeps everything in his memory —
 # the memory the site answers from when no AI engine is available (GitHub Pages included).
+# The school's new missions (scripts/shaheen-school/curriculum.ts): ALL known programming languages, building
+# programming blocks and scheduling them (src/utils/shaheenBlocks.ts), software engineering, graphics & design,
+# a website-maintenance course, AI with ALL its skills and the modern sciences (self-managed without any
+# external AI app), cybersecurity (30 lessons) and quantum computing (17 lessons), and every AI tool developed
+# in its field — intensive self-study by default (SCHOOL_INTENSIVE=0 restores the old pace). It also builds its
+# own block programs and schedules them in src/data/live/shaheen-blocks.json (study, site care, tool
+# development, self-management) — and really RUNS the due ones: the school executes study/tooling, and the
+# patrol executes «ai-self» (every 12h) and «site-care» (daily 08:00) with that hour's measured facts.
 # «المعلم المحلي» (scripts/shaheen-school/teacher.sh): an open model (Qwen2.5-7B-Instruct, Apache-2.0) run by llama.cpp on
 # this runner — no key, no account — teaches the school when the AI keys fail. Variables (optional): TEACHER_MODEL_URL +
 # TEACHER_MODEL_SHA256 (another GGUF model), TEACHER_MODEL_NAME, SCHOOL_PREFER (an engine id to try first).
 # Settings (repository variables, all optional): DISCOVER_MAX_ACTIVE (20 stores), DISCOVER_VET_PER_RUN (10),
 # DISCOVER_QUERIES (4 web searches per run), DISCOVER_BLOCK (sites never to use), DISCOVER_TRUSTED (stores
 # you vouch for: a weak CV does not stop them, red flags still do), DISCOVER_SEEDS (sites to
-# check), SCHOOL_MAX_STUDY (10 questions per run). Optional secrets: BRAVE_SEARCH_API_KEY (a search service),
+# check), SCHOOL_MAX_STUDY (10 questions per run), SCHOOL_INTENSIVE (1 = the academy teaches everything it can
+# per run; 0 = the old pace). Optional secrets: BRAVE_SEARCH_API_KEY (a search service),
 # SAFE_BROWSING_API_KEY (Google Safe Browsing, free — adds «is this site dangerous?» to every store's CV).
 
 on:
@@ -27,7 +36,7 @@ on:
   push:
     # Branches: rehearsal only (nothing is committed); main: a change to the scout or the school runs at once.
     branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-discover/**', 'scripts/shaheen-school/**', 'scripts/shaheen-import/**', '.github/workflows/shaheen-discover.yml']
+    paths: ['scripts/shaheen-discover/**', 'scripts/shaheen-school/**', 'scripts/shaheen-import/**', 'src/data/sciences/**', '.github/workflows/shaheen-discover.yml']
 
 permissions:
   contents: write
@@ -77,6 +86,7 @@ jobs:
       DISCOVER_TRUSTED: ${{ vars.DISCOVER_TRUSTED }}
       DISCOVER_SEEDS: ${{ vars.DISCOVER_SEEDS }}
       SCHOOL_MAX_STUDY: ${{ vars.SCHOOL_MAX_STUDY || (github.ref == 'refs/heads/main' && '10' || '2') }}
+      SCHOOL_INTENSIVE: ${{ vars.SCHOOL_INTENSIVE || '1' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -154,7 +164,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           before=$(git rev-parse HEAD)
           node scripts/ci/publish.mjs "كشّاف المصادر ومدرسة شاهين $(date -u +%Y-%m-%dT%H:%MZ)" \
-            src/data/live/import-sources.json src/data/live/shaheen-school.json src/data/live/shaheen-memory.json \
+            src/data/live/import-sources.json src/data/live/shaheen-school.json src/data/live/shaheen-sciences.json \
+            src/data/live/shaheen-memory.json src/data/live/shaheen-blocks.json \
             src/data/live/ai-memory.json src/data/live/ai-quota.json \
             || { echo "::error::Could not push the scout's results"; exit 1; }
           if [ "$(git rev-parse HEAD)" = "$before" ]; then exit 0; fi

@@ -1,4 +1,7 @@
+import type { CountryPulse } from '../../src/utils/insightsPulse';
 import type { FinanceOrder, FinanceSession, FinanceEntry, FinanceAttempt, FinanceIssue, PaymentRegistration, FinanceReport, FinanceReview, FinanceRun, CollectionAccount, DirectPayment, Payable, Budget, BankAudit } from '../finance/types';
+import type { ShamHolder, ShamImport, ShamLock, ShamPosting } from '../../src/bank/shamLedger';
+import type { SaleSettlement } from '../../src/bank/worldFirstRail';
 /**
  * Sham Core — shared domain types.
  * Every entity is owned by Sham's own storage; no provider ever owns business data.
@@ -6,6 +9,15 @@ import type { FinanceOrder, FinanceSession, FinanceEntry, FinanceAttempt, Financ
 import type { MemoryEntry } from '../../src/utils/shaheenMemory';
 import type { SupportedLanguage } from '../../src/types/i18n';
 import type { SeoState } from '../../src/seo/agentState';
+import type { CensusReport } from '../../src/utils/platformCensus';
+import type { LabAggregate } from '../../src/utils/labSignals';
+import type { InsightProfile } from '../../src/utils/visitorInsights';
+import type { Deal as SalesDeal } from '../../src/sales/pipeline';
+import type { SalesTarget } from '../../src/sales/targets';
+import type { StudyResult as SalesStudyRecord } from '../../src/sales/playbook';
+
+/** «إدارة المبيعات» audit line — action names only, no personal data. */
+export interface SalesAudit { id: string; at: string; action: string; target: string; detail?: string }
 
 export type Lang = SupportedLanguage;
 
@@ -277,6 +289,11 @@ export interface CoreSettings {
   currency: string;
   handoffContact: string;
   businessHours: string;
+  /**
+   * Version of the built-in knowledge seed already applied to this store (see server/core/seed.ts).
+   * Older stores miss it, so they are upgraded once: new platform guides are added, edited docs kept.
+   */
+  knowledgeSeedVersion?: number;
   updatedAt: string;
 }
 
@@ -296,6 +313,13 @@ export interface Collections {
   bankPayables: Payable;
   bankBudgets: Budget;
   bankAudit: BankAudit;
+  /** Internal Sham account books. Not an external bank, and not a stored card. */
+  shamHolders: ShamHolder;
+  shamPostings: ShamPosting;
+  shamImports: ShamImport;
+  shamLocks: ShamLock;
+  /** Queued WorldFirst settlement behind Sham Bank. Never a sent transfer, and never an account number. */
+  shamSettlement: SaleSettlement;
   services: ServiceDef;
   products: Product;
   knowledge: KnowledgeDoc;
@@ -308,5 +332,18 @@ export interface Collections {
   memory: MemoryEntry;
   /** «منارة شاهين»: SEO/media agent state and learning history (one record: id 'state'). */
   seo: SeoState;
+  /** «روبوت التعداد — دولة المنصة»: aggregated, privacy-safe platform visit ledger (one record: id 'state'). */
+  census: CensusReport & { id: string };
+  /** «إشارات المعمل»: anonymous counters of the designs visitors chose to share (one record: id 'state'). */
+  labSignals: LabAggregate & { id: string };
+  /** «خزنة فهم الزوار»: one behaviour profile per visitor who accepted «التحليل» — the administration's only (server/insights.ts). */
+  insightProfiles: InsightProfile;
+  /** «نبض الدول»: anonymous counts per country and month (no visitor id, no text). */
+  insightPulse: CountryPulse;
+  /** «إدارة المبيعات» inside «بنك شام»: opportunities by label only (no contacts), monthly targets, study answers, audit. */
+  salesDeals: SalesDeal;
+  salesTargets: SalesTarget;
+  salesStudy: SalesStudyRecord;
+  salesAudit: SalesAudit;
 }
 export type CollectionName = keyof Collections;

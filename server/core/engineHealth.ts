@@ -9,6 +9,7 @@
  *  rate_limited                            … the provider's «retry in Ns», else a minute
  *  upstream_error / timeout / empty / bad_request … only after two failures in a row, for a few minutes
  */
+import { createHash } from 'node:crypto';
 import type { EngineFailure } from './engines';
 
 export type HealthFailure = EngineFailure | 'timeout' | 'empty';
@@ -38,6 +39,10 @@ export function parkFor(failure: HealthFailure, detail: string, streak: number, 
     case 'region_blocked': return 6 * 60 * MIN;
     case 'model_not_found': return 60 * MIN;
     case 'rate_limited': return retry ? Math.max(30_000, Math.ceil(Number(retry[1]) * 1000) + 5_000) : MIN;
+    // A slow answer is not a dead engine: Shaheen's own time limit cut it. Parked only after three in a row, and
+    // briefly — parking it longer made every visitor skip a platform that works (the owner's «Gemini works but is
+    // not linked to Shaheen»).
+    case 'timeout': return streak >= 3 ? Math.min(3 * MIN, MIN * (streak - 2)) : 0;
     default: return streak >= 2 ? Math.min(10 * MIN, 2 * MIN * (streak - 1)) : 0;
   }
 }
@@ -94,5 +99,47 @@ export class EngineHealth {
     return out;
   }
 
+  /** Parks an engine known to be down elsewhere (the bots' quota file) — the first success still brings it back. */
+  park(id: string, until: number, reason: HealthFailure) {
+    if (until <= this.now()) return;
+    const e = this.entry(id);
+    e.reason = reason; e.failures = Math.max(1, e.failures); e.parkedUntil = Math.max(e.parkedUntil, until);
+  }
+
   reset() { this.entries.clear(); }
+}
+
+/** The environment variables holding each engine's key (same list as the bots' fingerprint, scripts/doctor/agent.ts). */
+const ENGINE_KEY_VARS: Record<string, string[]> = {
+  gemini: ['GEMINI_API_KEY'], openai: ['OPENAI_API_KEY'], claude: ['ANTHROPIC_API_KEY'], deepseek: ['DEEPSEEK_API_KEY'],
+  openrouter: ['OPENROUTER_API_KEY'], perplexity: ['PERPLEXITY_API_KEY'], self_hosted: ['SHAM_LLM_BASE_URL', 'SHAM_LLM_API_KEY', 'AI_GATEWAY_API_KEY'],
+};
+/** 8 hex characters of a SHA-256 of the key (never reversible) — a new key gives a new fingerprint. */
+export function keyPrint(env: Record<string, string | undefined>, id: string): string {
+  const parts = (ENGINE_KEY_VARS[id] || []).map((name) => (env[name] || '').trim());
+  if (!parts.some(Boolean)) return '';
+  return createHash('sha256').update(parts.join('\u0000')).digest('hex').slice(0, 8);
+}
+
+/**
+ * Every server instance used to start with an empty health record, so after each cold start the first visitors
+ * waited on engines the bots already knew were dead (a key out of credit, an invalid key). The bots' quota file
+ * (src/data/live/ai-quota.json) now seeds it: an engine paused for its KEY (no credit / invalid) stays parked —
+ * only while the key is the same one (a new key in GitHub changes the fingerprint and the pause is ignored).
+ * A «chat_reserve» pause is the bots keeping the quota FOR the chat, so it never parks the chat.
+ */
+export function seedQuotaPauses(health: EngineHealth, file: unknown, env: Record<string, string | undefined>, now = Date.now()): string[] {
+  const engines = (file && typeof file === 'object' ? (file as { engines?: unknown }).engines : undefined) as Record<string, { pausedUntil?: string; reason?: string; key?: string }> | undefined;
+  if (!engines || typeof engines !== 'object') return [];
+  const parked: string[] = [];
+  for (const [id, p] of Object.entries(engines)) {
+    if (!p || (p.reason !== 'no_credit' && p.reason !== 'invalid_key')) continue;
+    const until = Date.parse(p.pausedUntil || '');
+    if (!(until > now)) continue;
+    const print = keyPrint(env, id);
+    if (!print || (p.key && p.key !== print)) continue;
+    health.park(id, until, p.reason);
+    parked.push(id);
+  }
+  return parked;
 }

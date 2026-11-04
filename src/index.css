@@ -60,3 +60,8 @@ body[data-sham-focus='messenger'] .sham-floating { display: none !important; }
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 @keyframes sham-story-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* #397/#410: letter-spacing tears Arabic letters apart (the joined script loses its joins) and pushed the
+   cinema captions past the screen edge on phones. Right-to-left pages keep the tracking utilities' look in
+   Latin-only languages but never space out Arabic, Persian or Urdu letters. */
+[dir='rtl'] :is(.tracking-wide, .tracking-wider, .tracking-widest, [class*='tracking-[']) { letter-spacing: normal; }

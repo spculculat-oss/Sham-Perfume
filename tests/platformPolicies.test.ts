@@ -19,7 +19,7 @@ test('risk-based speed never implies silent approval or overrides the owner', ()
   assert.ok(RISK_LANES[2].condition.includes('لا موافقة بالسكوت'));
   assert.ok(OPERATING_RULES.find((r) => r.id === 'P05')!.rule.includes('لا يسمح بالتنفيذ'));
   assert.ok(RESPONSE_TARGETS.every((t) => t.kind && t.target));
-  assert.equal(readControls(controls).selfDevelopment, 'approve_all');
+  assert.equal(readControls(controls).selfDevelopment, controls.selfDevelopment, 'policy definitions do not override the current owner setting');
 });
 test('policy tab is behind the server-backed owner gate and has no execution side effects', () => {
   const panel = readFileSync(new URL('../src/admin/GovernancePanel.tsx', import.meta.url), 'utf8');

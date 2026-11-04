@@ -5,9 +5,9 @@
  * until it is registered here — so no new AI tool runs without Shaheen's supervision.
  */
 export type AiToolId =
-  | 'shaheen_chat' | 'sham_assistant' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
+  | 'shaheen_chat' | 'sham_assistant' | 'specialists_agent' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
   | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school' | 'seo_agent' | 'shaheen_council' | 'finance_agent'
-  | 'contracts_agent' | 'design_agent' | 'language_agent' | 'owner_room';
+  | 'contracts_agent' | 'design_agent' | 'language_agent' | 'owner_room' | 'platform_owner_agent';
 
 export interface AiToolDef {
   id: AiToolId;
@@ -49,6 +49,12 @@ export const AI_TOOLS: AiToolDef[] = [
     sources: ['server/core/orchestrator.ts'], routes: ['/api/assistant/chat', '/api/assistant/chat/stream'], acceptsGuidance: true,
   },
   {
+    id: 'specialists_agent', nameAr: 'وكيل مجلس المتخصصين («استشير متخصصاً»)', nameEn: "Specialists' board agent",
+    descriptionAr: 'أيقونة «استشير متخصصاً» وكيل ذكي: يوجّه سؤال الزائر لمتخصصه من المجلس (عشرة متخصصين على علوم مدرسة شاهين)، ويشتغل بأدواته — منهج المدرسة وعلومها المراجَعة، ذاكرة شاهين، مكتبته، موسوعة المواد الخام، حاسبات المعمل (التركيز والتخفيف والهرم والتكلفة والتعتيق والسلامة)، المتجر بأسعاره الحقيقية، نشرة الأخبار، ملجأ شاهين، المصادر المفتوحة والوسايط، وأدوات التوجيه والتسليم والتوضيح — ويرد من ملاحظات أدواته بس، وكل رد مكتوب عليه مصدره والأدوات اللي اشتغلت فيه. ولو المحركات كلها وقفت يرد من نفس الأدوات من غير ذكاء اصطناعي، ولو مفيش معلومة صلبة يقول بصراحة إنه هيذاكر السؤال ويسجّله لمدرسة شاهين.',
+    sources: ['server/specialists/agent.ts', 'server/specialists/tools.ts', 'server/specialists/router.ts'],
+    routes: ['/api/specialists/consult', '/api/specialists/board', '/api/specialists/tools'], acceptsGuidance: true,
+  },
+  {
     id: 'news_articles', nameAr: 'مقالات مرصد العطور', nameEn: 'Perfume observatory articles',
     descriptionAr: 'مقالات تثقيفية قصيرة يكتبها الذكاء الاصطناعي لصفحة الأخبار عند الطلب (ليست أخباراً موثقة).',
     sources: ['server/app.ts'], routes: ['/api/news', '/api/news/refresh'], acceptsGuidance: true,
@@ -85,7 +91,7 @@ export const AI_TOOLS: AiToolDef[] = [
   },
   {
     id: 'shaheen_school', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school (self-reliance)",
-    descriptionAr: 'كل 6 ساعات يمتحن شاهين نفسه على أسئلة العطور والموقع، يتعلم من مكتبته بدون ذكاء اصطناعي، ويذاكر الباقي مع محرك متاح ويحفظه في ذاكرته ليرد بها لو توقفت كل الخدمات.',
+    descriptionAr: 'كل 6 ساعات يمتحن شاهين نفسه على كل المسارات (العطور، جميع لغات البرمجة، بناء بلوكات البرمجة وجدولتها، هندسة البرمجة، الجرافيك والديزاين، صيانة المواقع، الذكاء الاصطناعي بجميع مهاراته وأحدث العلوم، ومجال كل أداة ذكاء اصطناعي)، يتعلم من مكتبته بدون ذكاء اصطناعي (تعليم مكثف)، ويذاكر الباقي بمساعدة محرك متاح بالاعتماد على مراجع المكتبة الداخلية الموثقة فقط؛ نتائج البحث الخارجي غير المراجعة لا تتحول إلى ذاكرة أو دروس مدرسية. كمان يبني برامجه بالبلوكات ويجدولها (مذاكرة، صيانة موقع، تطوير الأدوات، إدارة ذاتية) في سجل بلوكات شاهين.',
     sources: ['scripts/shaheen-school/run.mts'], routes: [], acceptsGuidance: true,
   },
   {
@@ -95,8 +101,8 @@ export const AI_TOOLS: AiToolDef[] = [
   },
   {
     id: 'shaheen_council', nameAr: 'مجلس شاهين — الاجتماع اليومي للتطوير', nameEn: "Shaheen's council — daily development meeting",
-    descriptionAr: 'شاهين مدير كل أدوات الذكاء الاصطناعي: كل يوم يجتمع مع خمسة خبراء (الأدوات، المتجر، المحتوى، تجربة الزائر، الجودة) على تقارير الموقع الحقيقية، يكتب محضراً بقرارات، ينفذ الآمن منها فوراً (تشغيل روبوت، سؤال للمدرسة، متجر للكشّاف، هدف تطوير لكل أداة) ويحوّل الباقي إلى مهام تطوير ينفذها وكيل البرمجة في الشات. وفي «الدورية كل ساعة» يشخص المشاكل اللي الأدوات ماقدرتش تصلحها لوحدها.',
-    sources: ['scripts/shaheen-council/run.mts', 'scripts/shaheen-patrol/run.mts'], routes: [], acceptsGuidance: false,
+    descriptionAr: 'شاهين مدير كل أدوات الذكاء الاصطناعي: كل يوم يجتمع مع خمسة خبراء (الأدوات، المتجر، المحتوى، تجربة الزائر، الجودة) على تقارير الموقع الحقيقية، يكتب محضراً بقرارات، ينفذ الآمن منها فوراً (تشغيل روبوت، سؤال للمدرسة، متجر للكشّاف، هدف تطوير لكل أداة) ويحوّل الباقي إلى مهام تطوير ينفذها وكيل البرمجة في الشات. وفي «الدورية كل ساعة» يشخص المشاكل اللي الأدوات ماقدرتش تصلحها لوحدها، وفي «مناورة التخصصات» يقترح التحسينات الناقصة من نتائج الفحص الميداني (اختياري، والقواعد بتكفي لوحدها).',
+    sources: ['scripts/shaheen-council/run.mts', 'scripts/shaheen-patrol/run.mts', 'scripts/shaheen-maneuver/run.mts'], routes: [], acceptsGuidance: false,
   },
   {
     id: 'design_agent', nameAr: 'خبير التصميم متعدد التخصصات', nameEn: 'Multidisciplinary design expert',
@@ -113,6 +119,11 @@ export const AI_TOOLS: AiToolDef[] = [
     descriptionAr: 'شاهين والسكرتير بيكلموا صاحب الموقع بس، بالكود السري. الكلام متشفر على جهازه والخادم مابيحفظش حاجة؛ المشرف بيفحص الأداة من غير ما يقرا أي كلام من الغرفة (O-07).',
     sources: ['server/ownerRoom.ts'], routes: ['/api/admin/owner-room'], acceptsGuidance: false,
   },
+  {
+    id: 'platform_owner_agent', nameAr: 'وكيل ملك المنصة', nameEn: 'Platform Owner Agent',
+    descriptionAr: 'وكيل مثل وكيل البرمجة في الشات: ينفّذ مهام شاهين والصيانة والتطوير، ويدير المنصة نيابة عن صاحب الموقع تحت رقابة دولة المنصة، وكل تعديل له يقرّه تصويت الدولة قبل النزول، وهو خاضع لأوامر صاحب الموقع في أي وقت.',
+    sources: [], routes: [], acceptsGuidance: true,
+  },
 ];
 
 /** Shared plumbing (engine calls, the advisory council, the doctor, Shaheen's own supervisor), not visitor tools. */
@@ -120,6 +131,8 @@ export const AI_INFRASTRUCTURE = [
   'server/core/engines.ts', 'server/core/council.ts', 'scripts/doctor/agent.ts', 'scripts/doctor/run.mts', 'scripts/shaheen-supervisor/run.mts',
   // Shaheen's background agent (Manus): admin-only audits in GitHub Actions, never a visitor tool.
   'server/core/manus.ts', 'scripts/shaheen-manus/run.mts',
+  // «مختبر عقل شاهين»: examines Shaheen's own trained brain on the runner's open model (never an AI platform).
+  'scripts/shaheen-brain/exam.mts',
 ];
 
 export const aiTool = (id: string) => AI_TOOLS.find((t) => t.id === id);

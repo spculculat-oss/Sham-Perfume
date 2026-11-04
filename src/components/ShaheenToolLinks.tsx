@@ -5,6 +5,7 @@ import { makeT, type LText } from '../لغات/localize';
 import type { ShaheenTool, ToolLink } from '../utils/shaheenTools';
 
 const S = {
+  storeTitle: { ar: 'كمّل في متجر شام', en: 'Continue in the Sham store', fr: 'Continuer dans la boutique Sham', es: 'Continuar en la tienda Sham', de: 'Weiter im Sham-Shop', tr: 'Sham mağazasında devam et', fa: 'ادامه در فروشگاه شام' },
   title: { ar: 'افتح في أدوات المعمل', en: 'Open in the lab tools', fr: 'Ouvrir dans les outils du labo', es: 'Abrir en las herramientas', de: 'In den Labor-Werkzeugen öffnen', tr: 'Laboratuvar araçlarında aç', fa: 'باز کردن در ابزارهای آزمایشگاه' },
   concentration: { ar: 'حاسبة التركيب', en: 'Compounding calculator', fr: 'Calculateur de formulation', es: 'Calculadora de formulación', de: 'Formulierungsrechner', tr: 'Formül hesaplayıcı', fa: 'ماشین‌حساب ترکیب' },
   pyramid: { ar: 'الهرم العطري', en: 'Fragrance pyramid', fr: 'Pyramide olfactive', es: 'Pirámide olfativa', de: 'Duftpyramide', tr: 'Koku piramidi', fa: 'هرم عطری' },
@@ -52,7 +53,7 @@ export function ShaheenToolLinks({ links, lang, onOpen }: { links: ToolLink[]; l
     <div className="mt-2 rounded-2xl border border-stone-200 bg-stone-50/80 p-2.5 space-y-2 text-xs" data-testid="shaheen-tool-links">
       <div className="flex items-center gap-1.5 font-bold text-stone-700 text-[11px]">
         <Wrench className="w-3.5 h-3.5 text-amber-700" />
-        <span>{L('title')}</span>
+        <span>{L(links.every((l) => l.tool === 'store') ? 'storeTitle' : 'title')}</span>
       </div>
       <div className="flex flex-wrap gap-1.5">
         {links.map((link) => {
