@@ -10,6 +10,7 @@ import { STATE, STATE_CONSTITUTION, STATE_MEMBERS, STATE_OUTCOMES, readStateOrde
 import { revertDraft } from '../utils/ownerDesk';
 import { sendDeskRequest } from './deskRequest';
 import ManeuverFieldCard from './ManeuverFieldCard';
+import PlatformCensusPanel from './PlatformCensusPanel';
 
 /**
  * «دولة المنصة» in the owner's suite: whether it holds the approvals right now, its members and constitution, what it
@@ -65,6 +66,9 @@ export default function PlatformStatePanel() {
           <ExternalLink className="h-4 w-4" />{T('افتح مكتب صاحب الموقع (لإعطاء أمر)')}
         </a>
       </div>
+
+      {/* خانة التعداد والكشف العلني وخريطة العالم الحرارية داخل هيكل دولة المنصة */}
+      <PlatformCensusPanel embedded />
 
       <div className={card}>
         <h3 className="font-bold">{T('قرارات الدولة')}</h3>

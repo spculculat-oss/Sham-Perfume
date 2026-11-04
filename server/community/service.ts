@@ -8,8 +8,10 @@ import type { Row, Sql } from './db';
 import { hashPassword, newId, newToken, tokenHash, verifyPassword, type Vault } from './crypto';
 import { checkCode, issueCode, type CodePurpose } from './codes';
 import { isCommonPassword } from './passwords';
+import { parsePhoneNumberFromString, type CountryCode } from 'libphonenumber-js/min';
 import { codeMail, sendAuthEmail } from './notify';
 import { newTotpSecret, otpauthUri, verifyTotp } from './totp';
+import { metaWhatsAppReady, sendMetaWhatsAppCode } from './whatsapp';
 import { cborDecode, coseToPublicKey, newChallenge, rpIdOf, verifyAssert, verifyCreate } from './webauthn';
 
 export interface Ctx { sql: Sql; vault: Vault; fx?: () => Promise<FxTable>; now?: () => Date; env?: Record<string, string | undefined> }
@@ -32,6 +34,11 @@ const auditEvent = (ctx: Ctx, actor: string, action: string, target = '', detail
 
 /** The environment for e-mail providers (tests pass an empty one, so no real e-mail can leak out). */
 const envOf = (ctx: Ctx) => ctx.env ?? process.env;
+
+/** Public capability only; never expose the Meta token, sender ID, template or Graph version. */
+export function authPublicConfig(env: Record<string, string | undefined> = process.env) {
+  return { whatsappOtp: metaWhatsAppReady(env) };
+}
 
 export class CommunityError extends Error {
   constructor(public status: number, public code: string, message = code) { super(message); }
@@ -133,6 +140,8 @@ export interface RegisterInput {
   name?: unknown; email?: unknown; password?: unknown; handle?: unknown; country?: unknown; lang?: unknown; craftLevel?: unknown;
   /** Private data kept encrypted: phone, city, address. */
   phone?: unknown; city?: unknown;
+  /** Optional: enable two-factor (TOTP) at registration. */
+  enable2fa?: unknown;
 }
 
 export function passwordPolicy(password: unknown): string {
@@ -158,12 +167,21 @@ export async function register(ctx: Ctx, input: RegisterInput, agent = '', ip = 
   const handle = await uniqueHandle(ctx.sql, clean(input.handle, 30) || email.split('@')[0] || name);
   const privateData = { phone: clean(input.phone, 40), city: clean(input.city, 120) };
   await ctx.sql.query(
-    `INSERT INTO users (id, handle, name, email_idx, email_enc, pass_hash, country, lang, craft_level, private_enc)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+    `INSERT INTO users (id, handle, name, email_idx, email_enc, pass_hash, country, lang, craft_level, private_enc, totp_enabled, totp_last)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,'0')`,
     [id, handle, name, emailIdx, ctx.vault.seal(email), await hashPassword(password), isCountry(country) ? country : '', LANG.test(lang) ? lang : 'ar', craft,
-      privateData.phone || privateData.city ? ctx.vault.sealJson(privateData) : null],
+      privateData.phone || privateData.city ? ctx.vault.sealJson(privateData) : null,
+      typeof input.enable2fa === 'boolean' && input.enable2fa],
   ).catch((error) => { if (/unique|duplicate/i.test(String(error?.message))) fail(409, 'EMAIL_EXISTS'); throw error; });
   auditEvent(ctx, id, 'register', '', `${name} <${email}>`);
+  // Optional two-factor at sign-up: generate and seal a TOTP secret so the member can set up
+  // their authenticator app. Returned once — never stored plain.
+  let totpSecret: string | undefined;
+  if (typeof input.enable2fa === 'boolean' && input.enable2fa) {
+    totpSecret = newTotpSecret();
+    await ctx.sql.query(`UPDATE users SET totp_secret_enc = $1 WHERE id = $2`, [ctx.vault.seal(totpSecret), id]);
+    auditEvent(ctx, id, 'totp_setup_started');
+  }
   // E-mail verification (Google/Meta verify the contact at sign-up). Soft: the account works, but
   // the portal shows «verify your e-mail» until the code is entered — and nothing is faked when the
   // server has no e-mail provider configured.
@@ -174,10 +192,10 @@ export async function register(ctx: Ctx, input: RegisterInput, agent = '', ip = 
       'To verify your e-mail on your new Sham account, enter this code: My portal → Security.'), envOf(ctx));
     if (!sent.delivered) console.warn('[community] verification e-mail not delivered:', sent.error || sent.provider);
   } catch (error) { console.warn('[community] verification code failed:', error instanceof Error ? error.message : error); }
-  return { ...(await startSession(ctx, id, agent, ip)), me: await me(ctx, id) };
+  return { ...(await startSession(ctx, id, agent, ip)), me: await me(ctx, id), ...(totpSecret ? { totpSecret } : {}) };
 }
 
-export interface LoginPending { pending: true; pendingToken: string; expiresIn: number; method?: 'totp' | 'phone' }
+export interface LoginPending { pending: true; pendingToken: string; expiresIn: number; method?: 'totp' | 'phone'; phoneMethod?: 'sms' | 'whatsapp' }
 export interface LoginSuccess { token: string; expiresAt: string; me: Awaited<ReturnType<typeof me>> }
 export type LoginOutcome = LoginPending | LoginSuccess;
 
@@ -209,11 +227,10 @@ export async function login(ctx: Ctx, input: { email?: unknown; password?: unkno
     const { token, hash } = newToken();
     await ctx.sql.query(`INSERT INTO pending_logins (token_hash, user_id, agent, ip, expires_at) VALUES ($1,$2,$3,$4,$5)`,
       [hash, row.id, clean(agent, 200), clean(ip, 64), new Date(Date.now() + PENDING_LOGIN_MS).toISOString()]);
-    if (row.phone_2fa_enabled) {
-      try { await sendPhoneCodeForUser(ctx, row.id); } catch {}
-    }
+    // The client explicitly requests the second-factor code after showing the correct channel UI.
     auditEvent(ctx, row.id, 'login_2fa_started');
-    return { pending: true, pendingToken: token, expiresIn: Math.round(PENDING_LOGIN_MS / 1000), method: row.phone_2fa_enabled ? 'phone' as const : 'totp' as const };
+    return { pending: true, pendingToken: token, expiresIn: Math.round(PENDING_LOGIN_MS / 1000), method: row.phone_2fa_enabled ? 'phone' as const : 'totp' as const,
+      ...(row.phone_2fa_enabled ? { phoneMethod: row.phone_2fa_method === 'whatsapp' ? 'whatsapp' as const : 'sms' as const } : {}) };
   }
   auditEvent(ctx, row.id, 'login_ok', '', `${clean(agent, 80)} ${ip}`.trim());
   return { ...(await startSession(ctx, row.id, agent, ip)), me: await me(ctx, row.id) };
@@ -259,6 +276,9 @@ export async function logout(ctx: Ctx, token: string, everywhere = false) {
 
 /** Everything the signed-in user may see about themself (their own private data decrypted). */
 export async function me(ctx: Ctx, userId: string) {
+  // Abandoned verification destinations are retained only until their one-time code expires.
+  await ctx.sql.query(`UPDATE users SET phone_2fa_pending_phone_enc = NULL, phone_2fa_pending_method = '', phone_2fa_pending_expires_at = NULL
+    WHERE id = $1 AND phone_2fa_pending_phone_enc IS NOT NULL AND (phone_2fa_pending_expires_at IS NULL OR phone_2fa_pending_expires_at <= now())`, [userId]);
   const [u] = await ctx.sql.query(`SELECT * FROM users WHERE id = $1`, [userId]);
   if (!u) fail(404, 'NOT_FOUND');
   const [m] = await ctx.sql.query(`SELECT slug, store_name, status, admin_note FROM merchants WHERE user_id = $1`, [userId]);
@@ -578,128 +598,106 @@ export async function passkeyLoginFinish(ctx: Ctx, input: { challengeId?: unknow
 }
 
 /* ------------------------------------ OAuth (Google/Facebook) -----------------------------------
- * Google & Facebook login: the big-3 let users start with the account they already have.
- * The server verifies the provider's token (or mock in tests) and creates/links a local account.
+ * The browser opens Google's or Facebook's own window. Sham accepts only a token that provider
+ * issued and that this server can verify. A typed e-mail, a JSON blob, or an unsigned JWT is not a link.
  */
 
-function decodeJwtPayload(token: string): Record<string, unknown> | null {
+export interface OAuthProfile { email: string; name: string; picture: string; subject: string }
+
+/** Public client ids only. A provider is offered only when this server can verify its token. */
+export function oauthPublicConfig(env: Record<string, string | undefined>): { googleClientId: string | null; facebookAppId: string | null } {
+  const google = env.GOOGLE_CLIENT_ID?.trim() || '';
+  const facebook = env.FACEBOOK_APP_ID?.trim() && env.FACEBOOK_APP_SECRET?.trim() ? env.FACEBOOK_APP_ID.trim() : '';
+  return { googleClientId: google || null, facebookAppId: facebook || null };
+}
+
+function mockOAuthProfile(token: string): OAuthProfile | null {
+  // Rehearsal only. A real token has dots or no @; a typed address is never accepted outside this flag.
+  if (token.split('.').length >= 3 || !isEmail(token)) return null;
+  const email = token.toLowerCase();
+  return { email, name: email.split('@')[0], picture: '', subject: `mock:${email}` };
+}
+
+async function verifyGoogleToken(idToken: string, env: Record<string, string | undefined>): Promise<OAuthProfile | null> {
+  const cleanToken = clean(idToken, 4000);
+  if (!cleanToken) return null;
+  if (env.SHAM_ALLOW_MOCK_OAUTH === '1') return mockOAuthProfile(cleanToken);
+  const clientId = env.GOOGLE_CLIENT_ID?.trim();
+  if (!clientId) return null;
   try {
-    const parts = token.split('.');
-    if (parts.length < 2) return null;
-    const b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-    const json = Buffer.from(b64, 'base64').toString('utf8');
-    return JSON.parse(json);
+    const kind = cleanToken.split('.').length === 3 ? 'id_token' : 'access_token';
+    const res = await fetch(`https://oauth2.googleapis.com/tokeninfo?${kind}=${encodeURIComponent(cleanToken)}`);
+    if (!res.ok) return null;
+    const data = await res.json() as { email?: string; name?: string; picture?: string; aud?: string; email_verified?: string | boolean; sub?: string };
+    const verified = data.email_verified === true || data.email_verified === 'true';
+    if (!verified || data.aud !== clientId || !data.email || !isEmail(data.email) || !data.sub) return null;
+    return { email: data.email.toLowerCase(), name: clean(data.name || data.email.split('@')[0], 60) || data.email.split('@')[0], picture: data.picture || '', subject: data.sub };
   } catch { return null; }
 }
 
-async function verifyGoogleToken(idToken: string, env: Record<string, string | undefined>): Promise<{ email: string; name: string; picture?: string } | null> {
-  const cleanToken = clean(idToken, 8000);
-  if (!cleanToken) return null;
-  // Mock mode for tests / local dev: token is plain e-mail or JSON with email
-  if (env.SHAM_ALLOW_MOCK_OAUTH === '1') {
-    if (cleanToken.includes('@') && isEmail(cleanToken)) return { email: cleanToken.toLowerCase(), name: cleanToken.split('@')[0] };
-    try {
-      const obj = JSON.parse(cleanToken);
-      if (obj.email && isEmail(String(obj.email))) return { email: String(obj.email).toLowerCase(), name: clean(obj.name || obj.email.split('@')[0], 60) || String(obj.email).split('@')[0] };
-    } catch {}
-    const payload = decodeJwtPayload(cleanToken);
-    if (payload?.email && isEmail(String(payload.email))) return { email: String(payload.email).toLowerCase(), name: clean(payload.name as string || String(payload.email).split('@')[0], 60) || String(payload.email).split('@')[0], picture: payload.picture as string | undefined };
-  }
-  // Real verification via Google tokeninfo (requires internet + GOOGLE_CLIENT_ID)
-  if (env.GOOGLE_CLIENT_ID?.trim()) {
-    try {
-      const res = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(cleanToken)}`);
-      if (!res.ok) return null;
-      const data = await res.json() as { email?: string; name?: string; picture?: string; aud?: string };
-      if (!data.email || !isEmail(data.email)) return null;
-      if (data.aud && data.aud !== env.GOOGLE_CLIENT_ID.trim()) return null;
-      return { email: data.email.toLowerCase(), name: clean(data.name || data.email.split('@')[0], 60) || data.email.split('@')[0], picture: data.picture };
-    } catch { return null; }
-  }
-  // Fallback mock: treat idToken as e-mail for dev
-  if (cleanToken.includes('@') && isEmail(cleanToken)) return { email: cleanToken.toLowerCase(), name: cleanToken.split('@')[0] };
-  const payload = decodeJwtPayload(cleanToken);
-  if (payload?.email && isEmail(String(payload.email))) return { email: String(payload.email).toLowerCase(), name: clean(payload.name as string || String(payload.email).split('@')[0], 60) || String(payload.email).split('@')[0] };
-  return null;
-}
-
-async function verifyFacebookToken(accessToken: string, env: Record<string, string | undefined>): Promise<{ email: string; name: string; picture?: string } | null> {
-  const token = clean(accessToken, 2000);
+async function verifyFacebookToken(accessToken: string, env: Record<string, string | undefined>): Promise<OAuthProfile | null> {
+  const token = clean(accessToken, 4000);
   if (!token) return null;
-  if (env.SHAM_ALLOW_MOCK_OAUTH === '1') {
-    if (token.includes('@') && isEmail(token)) return { email: token.toLowerCase(), name: token.split('@')[0] };
-    try {
-      const obj = JSON.parse(token);
-      if (obj.email && isEmail(String(obj.email))) return { email: String(obj.email).toLowerCase(), name: clean(obj.name || String(obj.email).split('@')[0], 60) || String(obj.email).split('@')[0] };
-    } catch {}
-    const payload = decodeJwtPayload(token);
-    if (payload?.email && isEmail(String(payload.email))) return { email: String(payload.email).toLowerCase(), name: clean(payload.name as string || String(payload.email).split('@')[0], 60) || String(payload.email).split('@')[0] };
-  }
-  if (env.FACEBOOK_APP_ID?.trim() && env.FACEBOOK_APP_SECRET?.trim()) {
-    try {
-      // Verify via Graph API
-      const appToken = `${env.FACEBOOK_APP_ID}|${env.FACEBOOK_APP_SECRET}`;
-      let res = await fetch(`https://graph.facebook.com/debug_token?input_token=${encodeURIComponent(token)}&access_token=${encodeURIComponent(appToken)}`);
-      if (!res.ok) return null;
-      const dbg = await res.json() as { data?: { is_valid?: boolean; user_id?: string } };
-      if (!dbg.data?.is_valid) return null;
-      res = await fetch(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${encodeURIComponent(token)}`);
-      if (!res.ok) return null;
-      const meData = await res.json() as { email?: string; name?: string; picture?: { data?: { url?: string } } };
-      const email = (meData as any).email;
-      if (!email || !isEmail(email)) return null;
-      return { email: email.toLowerCase(), name: clean((meData as any).name || email.split('@')[0], 60) || email.split('@')[0], picture: (meData as any).picture?.data?.url };
-    } catch { return null; }
-  }
-  if (token.includes('@') && isEmail(token)) return { email: token.toLowerCase(), name: token.split('@')[0] };
+  if (env.SHAM_ALLOW_MOCK_OAUTH === '1') return mockOAuthProfile(token);
+  const appId = env.FACEBOOK_APP_ID?.trim();
+  const secret = env.FACEBOOK_APP_SECRET?.trim();
+  if (!appId || !secret) return null;
   try {
-    const obj = JSON.parse(token);
-    if (obj.email && isEmail(String(obj.email))) return { email: String(obj.email).toLowerCase(), name: clean(obj.name || String(obj.email).split('@')[0], 60) || String(obj.email).split('@')[0] };
-  } catch {}
-  return null;
+    const appToken = `${appId}|${secret}`;
+    const debug = await fetch(`https://graph.facebook.com/debug_token?input_token=${encodeURIComponent(token)}&access_token=${encodeURIComponent(appToken)}`);
+    if (!debug.ok) return null;
+    const dbg = await debug.json() as { data?: { is_valid?: boolean; app_id?: string; user_id?: string } };
+    if (!dbg.data?.is_valid || dbg.data.app_id !== appId || !dbg.data.user_id) return null;
+    const meRes = await fetch(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${encodeURIComponent(token)}`);
+    if (!meRes.ok) return null;
+    const meData = await meRes.json() as { id?: string; email?: string; name?: string; picture?: { data?: { url?: string } } };
+    if (!meData.email || !isEmail(meData.email) || meData.id !== dbg.data.user_id) return null;
+    return { email: meData.email.toLowerCase(), name: clean(meData.name || meData.email.split('@')[0], 60) || meData.email.split('@')[0], picture: meData.picture?.data?.url || '', subject: dbg.data.user_id };
+  } catch { return null; }
 }
 
-async function oauthFindOrCreate(ctx: Ctx, email: string, name: string, provider: string, avatar?: string): Promise<string> {
-  const emailIdx = ctx.vault.index(email);
-  let [row] = await ctx.sql.query(`SELECT id, status FROM users WHERE email_idx = $1`, [emailIdx]);
+async function oauthFindOrCreate(ctx: Ctx, email: string, name: string, provider: 'google' | 'facebook', subject: string, avatar?: string): Promise<string> {
+  const linked = clean(subject, 120);
+  if (linked.length < 4 || linked === 'google' || linked === 'facebook') fail(401, 'OAUTH_INVALID');
+  const col = provider === 'google' ? 'oauth_google_id' : 'oauth_facebook_id';
+  let [row] = await ctx.sql.query(`SELECT id, status FROM users WHERE ${col} = $1`, [linked]);
+  if (!row) {
+    [row] = await ctx.sql.query(`SELECT id, status FROM users WHERE email_idx = $1`, [ctx.vault.index(email)]);
+  }
   if (row) {
     if (row.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
     if (row.status === 'deleted') fail(401, 'INVALID_LOGIN');
-    // Link OAuth id if column exists
-    const col = provider === 'google' ? 'oauth_google_id' : 'oauth_facebook_id';
-    try { await ctx.sql.query(`UPDATE users SET ${col} = $1 WHERE id = $2`, [provider, row.id]); } catch {}
+    await ctx.sql.query(`UPDATE users SET ${col} = $1 WHERE id = $2`, [linked, row.id]);
     return row.id;
   }
-  // Create new user via OAuth — no password from user, generate secure random one
   const id = newId('u');
   const handle = await uniqueHandle(ctx.sql, email.split('@')[0] || name);
-  const randomPw = `Oauth_${Math.random().toString(36).slice(2)}_${Date.now()}`;
   await ctx.sql.query(
-    `INSERT INTO users (id, handle, name, email_idx, email_enc, pass_hash, country, lang, craft_level, avatar, email_verified_at)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10, now())`,
-    [id, handle, clean(name, 60) || email.split('@')[0], emailIdx, ctx.vault.seal(email), await hashPassword(randomPw + 'A1b!_' + Math.random()), '', 'ar', 'hobbyist', avatar ? clean(avatar, 300) : null],
+    `INSERT INTO users (id, handle, name, email_idx, email_enc, pass_hash, country, lang, craft_level, avatar, email_verified_at, ${col})
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10, now(), $11)`,
+    [id, handle, clean(name, 60) || email.split('@')[0], ctx.vault.index(email), ctx.vault.seal(email), await hashPassword(newToken().token), '', 'ar', 'hobbyist', avatar ? clean(avatar, 300) : null, linked],
   );
-  auditEvent(ctx, id, 'oauth_register', provider, email);
+  auditEvent(ctx, id, 'oauth_register', provider);
   return id;
 }
 
 export async function loginWithGoogle(ctx: Ctx, input: { idToken?: unknown; accessToken?: unknown }, agent = '', ip = ''): Promise<LoginOutcome> {
   const env = envOf(ctx);
+  if (!env.GOOGLE_CLIENT_ID?.trim() && env.SHAM_ALLOW_MOCK_OAUTH !== '1') fail(503, 'OAUTH_NOT_CONFIGURED');
   const token = String(input.idToken || input.accessToken || '');
+  if (!clean(token, 4000)) fail(400, 'INVALID_FIELD', 'idToken');
   const info = await verifyGoogleToken(token, env);
   if (!info) fail(401, 'OAUTH_INVALID', 'google');
-  const userId = await oauthFindOrCreate(ctx, info!.email, info!.name, 'google', info!.picture);
-  const [u] = await ctx.sql.query(`SELECT totp_enabled, phone_2fa_enabled, status FROM users WHERE id = $1`, [userId]);
+  const userId = await oauthFindOrCreate(ctx, info!.email, info!.name, 'google', info!.subject, info!.picture);
+  const [u] = await ctx.sql.query(`SELECT totp_enabled, phone_2fa_enabled, phone_2fa_method, status FROM users WHERE id = $1`, [userId]);
   if (u?.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
   if (u?.totp_enabled || u?.phone_2fa_enabled) {
     const { token: pending, hash } = newToken();
     await ctx.sql.query(`INSERT INTO pending_logins (token_hash, user_id, agent, ip, expires_at) VALUES ($1,$2,$3,$4,$5)`, [hash, userId, clean(agent, 200), clean(ip, 64), new Date(Date.now() + PENDING_LOGIN_MS).toISOString()]);
-    // If phone 2FA, send code immediately
-    if (u?.phone_2fa_enabled) {
-      try { await sendPhoneCodeForUser(ctx, userId); } catch {}
-    }
+    // The client requests the one-time code after it knows the configured factor channel.
     auditEvent(ctx, userId, 'login_2fa_started', 'oauth_google');
-    return { pending: true, pendingToken: pending, expiresIn: Math.round(PENDING_LOGIN_MS / 1000), method: u?.phone_2fa_enabled ? 'phone' as const : 'totp' as const };
+    return { pending: true, pendingToken: pending, expiresIn: Math.round(PENDING_LOGIN_MS / 1000), method: u?.phone_2fa_enabled ? 'phone' as const : 'totp' as const,
+      ...(u?.phone_2fa_enabled ? { phoneMethod: u.phone_2fa_method === 'whatsapp' ? 'whatsapp' as const : 'sms' as const } : {}) };
   }
   auditEvent(ctx, userId, 'login_ok', '', 'oauth_google');
   return { ...(await startSession(ctx, userId, agent || 'oauth_google', ip)), me: await me(ctx, userId) };
@@ -707,93 +705,157 @@ export async function loginWithGoogle(ctx: Ctx, input: { idToken?: unknown; acce
 
 export async function loginWithFacebook(ctx: Ctx, input: { accessToken?: unknown; idToken?: unknown }, agent = '', ip = ''): Promise<LoginOutcome> {
   const env = envOf(ctx);
+  if (!(env.FACEBOOK_APP_ID?.trim() && env.FACEBOOK_APP_SECRET?.trim()) && env.SHAM_ALLOW_MOCK_OAUTH !== '1') fail(503, 'OAUTH_NOT_CONFIGURED');
   const token = String(input.accessToken || input.idToken || '');
+  if (!clean(token, 4000)) fail(400, 'INVALID_FIELD', 'accessToken');
   const info = await verifyFacebookToken(token, env);
   if (!info) fail(401, 'OAUTH_INVALID', 'facebook');
-  const userId = await oauthFindOrCreate(ctx, info!.email, info!.name, 'facebook', info!.picture);
-  const [u] = await ctx.sql.query(`SELECT totp_enabled, phone_2fa_enabled, status FROM users WHERE id = $1`, [userId]);
+  const userId = await oauthFindOrCreate(ctx, info!.email, info!.name, 'facebook', info!.subject, info!.picture);
+  const [u] = await ctx.sql.query(`SELECT totp_enabled, phone_2fa_enabled, phone_2fa_method, status FROM users WHERE id = $1`, [userId]);
   if (u?.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
   if (u?.totp_enabled || u?.phone_2fa_enabled) {
     const { token: pending, hash } = newToken();
     await ctx.sql.query(`INSERT INTO pending_logins (token_hash, user_id, agent, ip, expires_at) VALUES ($1,$2,$3,$4,$5)`, [hash, userId, clean(agent, 200), clean(ip, 64), new Date(Date.now() + PENDING_LOGIN_MS).toISOString()]);
-    if (u?.phone_2fa_enabled) {
-      try { await sendPhoneCodeForUser(ctx, userId); } catch {}
-    }
+    // The client requests the one-time code after it knows the configured factor channel.
     auditEvent(ctx, userId, 'login_2fa_started', 'oauth_facebook');
-    return { pending: true, pendingToken: pending, expiresIn: Math.round(PENDING_LOGIN_MS / 1000), method: u?.phone_2fa_enabled ? 'phone' as const : 'totp' as const };
+    return { pending: true, pendingToken: pending, expiresIn: Math.round(PENDING_LOGIN_MS / 1000), method: u?.phone_2fa_enabled ? 'phone' as const : 'totp' as const,
+      ...(u?.phone_2fa_enabled ? { phoneMethod: u.phone_2fa_method === 'whatsapp' ? 'whatsapp' as const : 'sms' as const } : {}) };
   }
   auditEvent(ctx, userId, 'login_ok', '', 'oauth_facebook');
   return { ...(await startSession(ctx, userId, agent || 'oauth_facebook', ip)), me: await me(ctx, userId) };
 }
 
 /* ---------------------------------- Phone 2FA (WhatsApp/SMS) ----------------------------------
- * Optional second factor via phone — suggested but not required (user choice, like Google prompt).
- * Code is sent via SMS/WhatsApp provider (Twilio, SHAM_SMS_WEBHOOK) or mock in tests.
+ * Optional second factor; a phone is not active until its one-time code is confirmed.
+ * WhatsApp uses Meta's approved template. SMS may use Twilio or a dedicated webhook.
  */
 
-async function sendPhoneCode(phone: string, code: string, method: string, env: Record<string, string | undefined>): Promise<{ delivered: boolean; error?: string }> {
-  const to = phone.replace(/\D/g, '').slice(-15);
-  if (!to) return { delivered: false, error: 'no phone' };
-  // Mock mode for tests/dev
-  if (env.SHAM_ALLOW_MOCK_SMS === '1' || env.SHAM_ALLOW_MOCK_OAUTH === '1') {
-    console.info(`[community] mock ${method} code ${code} to ${to}`);
-    return { delivered: true };
+async function sendPhoneCode(phone: string, code: string, method: string, env: Record<string, string | undefined>): Promise<{ delivered: boolean }> {
+  if (!/^\+[1-9]\d{7,14}$/.test(phone) || !/^\d{6}$/.test(code)) return { delivered: false };
+  // Tests only: never print or persist a code, phone number, or provider response.
+  if (env.NODE_ENV === 'test' && (env.SHAM_ALLOW_MOCK_SMS === '1' || env.SHAM_ALLOW_MOCK_OAUTH === '1')) return { delivered: true };
+
+  if (method === 'whatsapp') {
+    const result = await sendMetaWhatsAppCode(phone, code, env);
+    return { delivered: result.accepted };
   }
-  // Twilio SMS
+  if (method !== 'sms') return { delivered: false };
+
+  // Twilio SMS (not WhatsApp — channels are never silently substituted).
   if (env.TWILIO_ACCOUNT_SID?.trim() && env.TWILIO_AUTH_TOKEN?.trim() && env.TWILIO_FROM?.trim()) {
     try {
-      const url = `https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_ACCOUNT_SID}/Messages.json`;
-      const body = new URLSearchParams({ To: `+${to}`, From: env.TWILIO_FROM.trim(), Body: `شام للعطور — كود التحقق ${code} (صالح 5 دقائق)` });
-      const res = await fetch(url, { method: 'POST', headers: { Authorization: `Basic ${Buffer.from(`${env.TWILIO_ACCOUNT_SID}:${env.TWILIO_AUTH_TOKEN}`).toString('base64')}`, 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
-      if (res.ok) return { delivered: true };
-      return { delivered: false, error: await res.text() };
-    } catch (e) { return { delivered: false, error: String(e) }; }
+      const sid = env.TWILIO_ACCOUNT_SID.trim();
+      const url = `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`;
+      const body = new URLSearchParams({ To: phone, From: env.TWILIO_FROM.trim(), Body: `Sham Perfume — verification code ${code} (valid for 10 minutes)` });
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { Authorization: `Basic ${Buffer.from(`${sid}:${env.TWILIO_AUTH_TOKEN}`).toString('base64')}`, 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(), signal: AbortSignal.timeout(8_000),
+      });
+      return { delivered: res.ok };
+    } catch { return { delivered: false }; }
   }
-  // Generic webhook (SHAM_SMS_WEBHOOK_URL receives {to, code, method})
-  if (env.SHAM_SMS_WEBHOOK_URL?.trim() || env.SHAM_WEBHOOK_URL?.trim()) {
-    const url = (env.SHAM_SMS_WEBHOOK_URL || env.SHAM_WEBHOOK_URL)!.trim();
+
+  // A dedicated security-code webhook only; never send OTPs to the general store notification hook.
+  const webhook = env.SHAM_SMS_WEBHOOK_URL?.trim();
+  if (webhook) {
     try {
-      const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ to: `+${to}`, code, method, app: 'sham-perfume' }) });
-      if (res.ok) return { delivered: true };
-      return { delivered: false, error: await res.text() };
-    } catch (e) { return { delivered: false, error: String(e) }; }
+      const res = await fetch(webhook, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: phone, code, method: 'sms', app: 'sham-perfume' }), signal: AbortSignal.timeout(8_000),
+      });
+      return { delivered: res.ok };
+    } catch { return { delivered: false }; }
   }
-  return { delivered: false, error: 'no sms provider' };
+  return { delivered: false };
 }
 
 async function sendPhoneCodeForUser(ctx: Ctx, userId: string): Promise<void> {
-  const [u] = await ctx.sql.query(`SELECT phone_2fa_phone_enc, phone_2fa_method FROM users WHERE id = $1`, [userId]);
+  const [u] = await ctx.sql.query(`SELECT phone_2fa_phone_enc, phone_2fa_method, country FROM users WHERE id = $1`, [userId]);
   if (!u?.phone_2fa_phone_enc) fail(400, 'PHONE_NOT_SET');
-  const phone = ctx.vault.open(u.phone_2fa_phone_enc);
+  const phone = normalizeStoredPhone(ctx.vault.open(u.phone_2fa_phone_enc), u.country);
   const method = u.phone_2fa_method || 'sms';
+  if (method === 'whatsapp' && !metaWhatsAppReady(envOf(ctx))) fail(503, 'WHATSAPP_UNAVAILABLE');
   const code = await issueCode(ctx, userId, 'phone_2fa');
   const sent = await sendPhoneCode(phone, code, method, envOf(ctx));
-  if (!sent.delivered) fail(503, 'SMS_UNAVAILABLE');
+  if (!sent.delivered) fail(503, method === 'whatsapp' ? 'WHATSAPP_UNAVAILABLE' : 'SMS_UNAVAILABLE');
+}
+
+function normalizeE164(value: unknown): string {
+  let phone = clean(value, 40).replace(/[\s().-]/g, '');
+  if (phone.startsWith('00')) phone = `+${phone.slice(2)}`;
+  if (!/^\+[1-9]\d{7,14}$/.test(phone)) fail(400, 'INVALID_PHONE');
+  const parsed = parsePhoneNumberFromString(phone);
+  if (!parsed) return fail(400, 'INVALID_PHONE');
+  if (!parsed.isPossible() || !/^\+[1-9]\d{7,14}$/.test(parsed.number)) return fail(400, 'INVALID_PHONE');
+  return parsed.number;
+}
+
+/**
+ * Older verified phone factors predate strict E.164 input and may be stored as a country-code number
+ * without '+', or as a local number. Canonicalize only for delivery; never guess a country unless the
+ * account has a valid ISO region. This keeps previously verified factors usable without weakening new setup.
+ */
+function normalizeStoredPhone(value: string, country: unknown): string {
+  const raw = value.trim().replace(/[\s().-]/g, '');
+  if (!raw || !/^\+?\d+$/.test(raw)) fail(503, 'PHONE_FORMAT_UNSUPPORTED');
+  const region = isCountry(country) ? country as CountryCode : undefined;
+  const international = raw.startsWith('00') ? `+${raw.slice(2)}` : raw.startsWith('+') ? raw : `+${raw}`;
+  const parsedInternational = parsePhoneNumberFromString(international);
+  if (parsedInternational?.isPossible() && /^\+[1-9]\d{7,14}$/.test(parsedInternational.number)) return parsedInternational.number;
+  if (region) {
+    const parsedNational = parsePhoneNumberFromString(raw.replace(/\D/g, ''), region);
+    if (parsedNational?.isPossible() && /^\+[1-9]\d{7,14}$/.test(parsedNational.number)) return parsedNational.number;
+  }
+  return fail(503, 'PHONE_FORMAT_UNSUPPORTED');
 }
 
 export async function setupPhone2fa(ctx: Ctx, userId: string, input: { phone?: unknown; method?: unknown; password?: unknown }) {
   const [u] = await ctx.sql.query(`SELECT pass_hash FROM users WHERE id = $1`, [userId]);
   if (!u || !(await verifyPassword(String(input.password || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
-  const phone = clean(input.phone, 20).replace(/\s/g, '');
-  if (phone.replace(/\D/g, '').length < 8) fail(400, 'INVALID_PHONE');
+  const phone = normalizeE164(input.phone);
   const method = clean(input.method, 20).toLowerCase();
   if (!['sms', 'whatsapp'].includes(method)) fail(400, 'INVALID_METHOD');
-  try {
-    await ctx.sql.query(`UPDATE users SET phone_2fa_phone_enc = $1, phone_2fa_method = $2 WHERE id = $3`, [ctx.vault.seal(phone), method, userId]);
-  } catch {
-    await ctx.sql.query(`UPDATE users SET phone_2fa_phone_enc = $1 WHERE id = $2`, [ctx.vault.seal(phone), userId]).catch(() => {});
-  }
+  if (method === 'whatsapp' && !metaWhatsAppReady(envOf(ctx))) fail(503, 'WHATSAPP_UNAVAILABLE');
+
+  // Issue first, so a rate-limit rejection never changes the pending destination under a live code.
   const code = await issueCode(ctx, userId, 'phone_2fa');
+  // Keep the currently verified factor active while a replacement number is being checked.
+  const pendingExpiresAt = new Date(Date.now() + 10 * 60_000).toISOString();
+  await ctx.sql.query(`UPDATE users SET phone_2fa_pending_phone_enc = $1, phone_2fa_pending_method = $2, phone_2fa_pending_expires_at = $3 WHERE id = $4`, [ctx.vault.seal(phone), method, pendingExpiresAt, userId]);
   const sent = await sendPhoneCode(phone, code, method, envOf(ctx));
-  if (!sent.delivered) fail(503, 'SMS_UNAVAILABLE');
-  auditEvent(ctx, userId, 'phone_2fa_setup_started', method, phone.slice(-4));
+  if (!sent.delivered) {
+    await ctx.sql.query(`UPDATE users SET phone_2fa_pending_phone_enc = NULL, phone_2fa_pending_method = '', phone_2fa_pending_expires_at = NULL WHERE id = $1`, [userId]).catch(() => {});
+    fail(503, method === 'whatsapp' ? 'WHATSAPP_UNAVAILABLE' : 'SMS_UNAVAILABLE');
+  }
+  auditEvent(ctx, userId, 'phone_2fa_setup_started', method);
   return { ok: true, method, phone: phone.slice(0, 4) + '***' + phone.slice(-3) };
 }
 
 export async function confirmPhone2fa(ctx: Ctx, userId: string, code: unknown) {
+  const [u] = await ctx.sql.query(`SELECT phone_2fa_pending_phone_enc, phone_2fa_pending_method, phone_2fa_pending_expires_at FROM users WHERE id = $1`, [userId]);
+  if (!u?.phone_2fa_pending_phone_enc || !['sms', 'whatsapp'].includes(u.phone_2fa_pending_method || '')) fail(400, 'PHONE_SETUP_NOT_STARTED');
+  if (!u.phone_2fa_pending_expires_at || new Date(u.phone_2fa_pending_expires_at).getTime() <= Date.now()) {
+    await ctx.sql.query(`UPDATE users SET phone_2fa_pending_phone_enc = NULL, phone_2fa_pending_method = '', phone_2fa_pending_expires_at = NULL WHERE id = $1`, [userId]);
+    fail(400, 'CODE_INVALID');
+  }
   if (!(await checkCode(ctx, userId, 'phone_2fa', String(code || '')))) fail(400, 'CODE_INVALID');
-  await ctx.sql.query(`UPDATE users SET phone_2fa_enabled = true, phone_2fa_last = $1 WHERE id = $2`, [Date.now().toString(36), userId]);
+  await ctx.sql.query(
+    `UPDATE users SET phone_2fa_phone_enc = phone_2fa_pending_phone_enc, phone_2fa_method = phone_2fa_pending_method,
+     phone_2fa_pending_phone_enc = NULL, phone_2fa_pending_method = '', phone_2fa_pending_expires_at = NULL, phone_2fa_enabled = true, phone_2fa_last = $1 WHERE id = $2`,
+    [Date.now().toString(36), userId],
+  );
   auditEvent(ctx, userId, 'phone_2fa_enabled');
+  return { ok: true };
+}
+
+export async function cancelPhone2faSetup(ctx: Ctx, userId: string, password: unknown) {
+  const [u] = await ctx.sql.query(`SELECT pass_hash FROM users WHERE id = $1`, [userId]);
+  if (!u || !(await verifyPassword(String(password || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
+  // Clear only the unverified replacement; an already active factor remains untouched.
+  await ctx.sql.query(`UPDATE users SET phone_2fa_pending_phone_enc = NULL, phone_2fa_pending_method = '', phone_2fa_pending_expires_at = NULL WHERE id = $1`, [userId]);
+  await ctx.sql.query(`UPDATE auth_codes SET used_at = now() WHERE user_id = $1 AND purpose = 'phone_2fa' AND used_at IS NULL`, [userId]);
+  auditEvent(ctx, userId, 'phone_2fa_setup_cancelled');
   return { ok: true };
 }
 
@@ -803,7 +865,7 @@ export async function disablePhone2fa(ctx: Ctx, userId: string, password: unknow
   if (!(await verifyPassword(String(password || ''), u.pass_hash))) fail(401, 'WRONG_PASSWORD');
   // Require code if provided, otherwise just password (phone 2FA is second factor itself, password is enough to disable with re-auth)
   if (code && !(await checkCode(ctx, userId, 'phone_2fa', String(code)))) fail(400, 'CODE_INVALID');
-  await ctx.sql.query(`UPDATE users SET phone_2fa_enabled = false, phone_2fa_phone_enc = NULL, phone_2fa_method = '', phone_2fa_last = '' WHERE id = $1`, [userId]);
+  await ctx.sql.query(`UPDATE users SET phone_2fa_enabled = false, phone_2fa_phone_enc = NULL, phone_2fa_method = '', phone_2fa_last = '', phone_2fa_pending_phone_enc = NULL, phone_2fa_pending_method = '', phone_2fa_pending_expires_at = NULL WHERE id = $1`, [userId]);
   auditEvent(ctx, userId, 'phone_2fa_disabled');
   return { ok: true };
 }

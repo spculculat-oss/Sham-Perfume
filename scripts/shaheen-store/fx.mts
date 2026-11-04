@@ -5,6 +5,7 @@
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { isFxTable } from '../../src/utils/pricing';
+import { rebuildReflexFromFiles } from '../shaheen-mind/reflexFiles';
 
 const FILE = new URL('../../src/data/live/fx-rates.json', import.meta.url);
 const gh = Boolean(process.env.GITHUB_ACTIONS);
@@ -23,6 +24,8 @@ try {
   if (previous.updatedAt === table.updatedAt) { say('notice', `already current (${table.updatedAt})`); process.exit(0); }
   writeFileSync(FILE, `${JSON.stringify(table)}\n`);
   say('notice', `${Object.keys(table.rates).length} currencies, 1 USD = ${table.rates.EGP} EGP (${table.updatedAt})`);
+  // The instant shipping answers quote EGP — rebuild them at the new rate so they match the checkout.
+  try { say('notice', `instant answers rebuilt at the new rate: ${rebuildReflexFromFiles()}`); } catch (e) { say('warning', `instant answers kept: ${(e as Error).message}`); }
 } catch (error) {
   say('warning', `kept the previous rates: ${(error as Error).message}`);
 }

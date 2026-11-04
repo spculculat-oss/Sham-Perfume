@@ -23,7 +23,10 @@ export type BuyerStyle = 'direct' | 'analytical' | 'expressive' | 'cautious' | '
 type Scored = Exclude<BuyerStyle, 'friendly'>;
 export type BuyerMotive = 'gift' | 'occasion' | 'signature' | 'value' | 'self';
 export type BuyerStage = 'looking' | 'comparing' | 'ready' | 'objecting';
-export type Recipient = 'wife' | 'husband' | 'fiancee' | 'fiance' | 'mother' | 'father' | 'sister' | 'brother' | 'friend_m' | 'friend_f' | 'colleague' | 'child';
+export type Recipient = 'wife' | 'husband' | 'fiancee' | 'fiance' | 'mother' | 'father' | 'sister' | 'brother' | 'friend_m' | 'friend_f' | 'colleague'
+  | 'boss' | 'teacher' | 'mother_in_law' | 'father_in_law' | 'son' | 'daughter' | 'child';
+/** Recipients a romantic perfume name («ورد العشاق») does not suit. */
+export const FORMAL_RECIPIENTS: ReadonlySet<Recipient> = new Set(['colleague', 'boss', 'teacher', 'mother_in_law', 'father_in_law', 'mother', 'father', 'son', 'daughter', 'child', 'sister', 'brother']);
 
 export interface BuyerProfile {
   style: BuyerStyle;
@@ -70,14 +73,22 @@ const RECIPIENTS: [Recipient, RegExp][] = [
   ['brother', /(?<![\u0621-\u064A])(?:لأخويا|لاخويا|أخويا|اخويا|لأخي|أخي)(?![\u0621-\u064A])|\bmy brother\b/i],
   ['friend_f', /(?<![\u0621-\u064A])(?:لصاحبتي|صاحبتي|لصديقتي|صديقتي)(?![\u0621-\u064A])|\bmy (?:girl ?friend|female friend|best friend \(she\))\b/i],
   ['friend_m', /(?<![\u0621-\u064A])(?:لصاحبي|صاحبي|لصديقي|صديقي)(?![\u0621-\u064A])|\bmy friend\b/i],
-  ['colleague', /(?<![\u0621-\u064A])(?:لزميلي|زميلي|لزميلتي|زميلتي|لمديري|مديري|لمديرتي|مديرتي)(?![\u0621-\u064A])|\bmy (?:colleague|boss|manager|coworker)\b/i],
-  ['child', /(?<![\u0621-\u064A])(?:لابني|ابني|لبنتي|بنتي)(?![\u0621-\u064A])|\bmy (?:son|daughter)\b/i],
+  ['boss', /(?<![\u0621-\u064A])(?:لمديري|مديري|لمديرتي|مديرتي|لرئيسي|رئيسي في الشغل)(?![\u0621-\u064A])|\bmy (?:boss|manager)\b/i],
+  ['colleague', /(?<![\u0621-\u064A])(?:لزميلي|زميلي|لزميلتي|زميلتي|لزمايلي|زمايلي|لزملائي|زملائي)(?![\u0621-\u064A])|\bmy (?:colleagues?|coworkers?)\b/i],
+  ['teacher', /(?<![\u0621-\u064A])(?:لأستاذي|لاستاذي|أستاذي|استاذي|لمدرسي|مدرسي|لمدرستي|مدرستي|للمدرس|للمدرسة)(?![\u0621-\u064A])|\bmy (?:teacher|professor)\b/i],
+  ['mother_in_law', /(?<![\u0621-\u064A])(?:لحماتي|حماتي)(?![\u0621-\u064A])|\bmy mother-in-law\b/i],
+  ['father_in_law', /(?<![\u0621-\u064A])(?:لحمايا|حمايا|لحمايا|حماي)(?![\u0621-\u064A])|\bmy father-in-law\b/i],
+  ['son', /(?<![\u0621-\u064A])(?:لابني|ابني|لإبني|إبني)(?![\u0621-\u064A])|\bmy son\b/i],
+  ['daughter', /(?<![\u0621-\u064A])(?:لبنتي|بنتي)(?![\u0621-\u064A])|\bmy daughter\b/i],
+  ['child', /(?<![\u0621-\u064A])(?:لولادي|ولادي|لعيالي|عيالي)(?![\u0621-\u064A])|\bmy (?:kids|children)\b/i],
 ];
 export const RECIPIENT_LABEL: Record<Recipient, Record<Lang, string>> = {
   wife: { ar: 'مراتك', en: 'your wife' }, husband: { ar: 'جوزك', en: 'your husband' }, fiancee: { ar: 'خطيبتك', en: 'your fiancée' },
   fiance: { ar: 'خطيبك', en: 'your fiancé' }, mother: { ar: 'والدتك', en: 'your mother' }, father: { ar: 'والدك', en: 'your father' },
   sister: { ar: 'أختك', en: 'your sister' }, brother: { ar: 'أخوك', en: 'your brother' }, friend_m: { ar: 'صاحبك', en: 'your friend' },
-  friend_f: { ar: 'صاحبتك', en: 'your friend' }, colleague: { ar: 'زميلك', en: 'your colleague' }, child: { ar: 'ابنك/بنتك', en: 'your child' },
+  friend_f: { ar: 'صاحبتك', en: 'your friend' }, colleague: { ar: 'زميلك', en: 'your colleague' }, boss: { ar: 'مديرك', en: 'your boss' },
+  teacher: { ar: 'أستاذك', en: 'your teacher' }, mother_in_law: { ar: 'حماتك', en: 'your mother-in-law' }, father_in_law: { ar: 'حماك', en: 'your father-in-law' },
+  son: { ar: 'ابنك', en: 'your son' }, daughter: { ar: 'بنتك', en: 'your daughter' }, child: { ar: 'ولادك', en: 'your children' },
 };
 
 const hits = (res: RegExp[], text: string) => res.reduce((n, re) => n + (re.test(text) ? 1 : 0), 0);

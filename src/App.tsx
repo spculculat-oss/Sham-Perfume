@@ -1,3 +1,6 @@
+import { popBelongsToCheckout } from './utils/checkoutHistory';
+import { setInsightsContext, trackInsight } from './utils/insightsTracker';
+import { isVerifiedCustomer } from './utils/paymentAccess';
 import { BookLibrary } from './library/BookLibrary';
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Header } from './components/Header';
@@ -33,6 +36,7 @@ import { AuthModal } from './components/AuthModal';
 import { DataPrivacyModal } from './components/DataPrivacyModal';
 import { LegalCenter } from './components/LegalCenter';
 import { CookieConsent } from './components/CookieConsent';
+import { trackPlatformVisit } from './utils/visitTracker';
 import { useSeo } from './hooks/useSeo';
 import {
   FormulationState,
@@ -57,12 +61,14 @@ import {
   getInitialUserEnvironment,
   alignEnvironmentToCountry,
 } from './utils/environmentAdapter';
-import { setStoreCountry, useStoreCountry } from './utils/storeCheckout';
+import { followEntryCountry, setStoreCountry, useStoreCountry } from './utils/storeCheckout';
 import { loadDetailedAddress } from './utils/addressStorage';
 import {
   detectEntryLanguageAsync,
+  watchEntryCountry,
   forceRedetectLocation,
   USER_LANGUAGE_MANUAL_OVERRIDE_KEY,
+  LANGUAGE_PICKED_AT_KEY,
   saveUserCountryCode,
 } from './utils/geoDetector';
 import { UserProfile } from './types/auth';
@@ -382,6 +388,8 @@ export default function App() {
     } catch {}
 
     const handlePopState = (event: PopStateEvent) => {
+      // 0. The store's order window took or gave back its own history entry: nothing to navigate.
+      if (popBelongsToCheckout()) return;
       // 1. If any modal was open and user pressed browser Back, close the modal safely
       const hasOpenModal =
         activeModalsRef.current.spec ||
@@ -532,6 +540,13 @@ export default function App() {
     setCurrentEnvironment((prev) => alignEnvironmentToCountry(prev, storeCountry));
   }, [storeCountry]);
 
+  useEffect(() => {
+    trackPlatformVisit({ section: activeTab, country: storeCountry, lang: currentLang });
+    // «خزنة فهم الزوار» (only with the visitor's consent to «التحليل»): the section he opened, his country and language.
+    setInsightsContext({ country: storeCountry, language: currentLang });
+    trackInsight('section', { section: activeTab });
+  }, [activeTab, storeCountry, currentLang]);
+
   // Check and load shared formula from URL hash or query params
   useEffect(() => {
     const handleUrlFormula = () => {
@@ -573,26 +588,32 @@ export default function App() {
     };
   }, []);
 
-  // The opening language already comes from the entry country
-  // (getInitialLanguage -> detectEntryLanguage). Refine it once with the
-  // IP-based country, unless the visitor picked a language themselves.
+  // The opening language comes from the device (getInitialLanguage -> detectEntryLanguage: time zone, browser).
+  // The network then says where the visit really comes from (a VPN changes that, never the clock): asked on entry,
+  // and again when he comes back to the tab or the network changes — so no refresh is needed. A language he picked
+  // himself always stays.
+  const langRef = React.useRef(currentLang);
+  langRef.current = currentLang;
   useEffect(() => {
-    detectEntryLanguageAsync()
-      .then((hit) => {
-        if (!hit) return;
-        if (hit.countryCode) {
-          saveUserCountryCode(hit.countryCode);
-        }
+    let live = true;
+    const refine = () => {
+      void detectEntryLanguageAsync().then((hit) => {
+        if (!hit || !live) return;
+        saveUserCountryCode(hit.countryCode);
+        followEntryCountry(hit.countryCode); // prices follow the country he is entering from now
         let hasOverride = false;
         try {
           hasOverride = !!localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
         } catch (e) {}
-        if (!hasOverride && hit.language !== currentLang) {
+        if (!hasOverride && hit.language !== langRef.current) {
           setCurrentLang(hit.language);
           saveLanguage(hit.language);
         }
-      })
-      .catch(() => {});
+      }).catch(() => {});
+    };
+    refine();
+    const stop = watchEntryCountry(refine);
+    return () => { live = false; stop(); };
   }, []);
 
   // Sync document direction and language code whenever language changes
@@ -612,6 +633,7 @@ export default function App() {
   const handleSelectLanguage = (lang: SupportedLanguage) => {
     try {
       localStorage.setItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY, 'true');
+      localStorage.setItem(LANGUAGE_PICKED_AT_KEY, String(Date.now())); // the newest choice sets the currency
     } catch (e) {}
     setCurrentLang(lang);
     saveLanguage(lang);
@@ -1176,8 +1198,8 @@ export default function App() {
           <Storefront
             onClose={() => navigateToTab('home')}
             currentLang={currentLang}
-            retailerId={currentUser?.id}
-            signedIn={Boolean(currentUser)}
+            retailerId={isVerifiedCustomer(currentUser) ? currentUser?.id : undefined}
+            signedIn={isVerifiedCustomer(currentUser)}
             onRequireAuth={handleOpenAuthModal}
             shaheenQuery={storeQuery}
           />
@@ -1187,7 +1209,7 @@ export default function App() {
           <ProductDetail
             productId={productId}
             currentLang={currentLang}
-            signedIn={Boolean(currentUser)}
+            signedIn={isVerifiedCustomer(currentUser)}
             onRequireAuth={handleOpenAuthModal}
             onClose={() => navigateToTab('store')}
           />

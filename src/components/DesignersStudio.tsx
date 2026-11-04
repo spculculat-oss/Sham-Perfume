@@ -27,6 +27,8 @@ import { DesignerAdvisor } from './DesignerAdvisor';
 import { consultPerfume, perfumeGoal, perfumeSuggestions } from '../utils/designers/perfumeAdvisor';
 import { consultCosmetic, cosmeticGoal, cosmeticSuggestions } from '../utils/designers/cosmeticAdvisor';
 import { loadStoreCatalog, productPageUrl } from '../utils/liveStore';
+import { LAB_SIGNAL_NOTE } from '../utils/labSignals';
+import { shareLabSignal } from '../utils/labSignalSend';
 import { openFormulaInLab } from '../community/sync';
 import {
   compareLines, deleteEntry, journalExport, journalImport, rateVersion, readJournal, saveVersion, type DesignerKind, type JournalEntry,
@@ -264,6 +266,7 @@ function PerfumeStudio({ lang, dt, num, onNavigate }: Inner) {
   const [tab, setTab] = useState<ResultTab>('result');
   const [store, setStore] = useState<StoreReference[]>([]);
   const [seed, setSeed] = useState(1);
+  const [shared, setShared] = useState<'idle' | 'shared' | 'failed'>('idle');
   const [current, setCurrent] = useState<string | undefined>();
   const { done, copy } = useCopy();
   useEffect(() => { try { localStorage.setItem(PERFUME_DRAFT, JSON.stringify(d)); } catch { /* private mode */ } }, [d]);
@@ -426,6 +429,12 @@ function PerfumeStudio({ lang, dt, num, onNavigate }: Inner) {
                   <button type="button" onClick={() => { if (sendToLab()) onNavigate('concentration'); }} data-testid="designer-send-lab" className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-700 text-white text-xs font-bold cursor-pointer"><FlaskConical className="w-3.5 h-3.5" /> {dt('sendLab')}</button>
                   <ToolButton icon={done ? Check : Copy} label={dt(done ? 'copied' : 'copy')} onClick={() => copy(formulaText())} />
                   <ToolButton icon={Printer} label={dt('print')} onClick={() => window.print()} />
+                  {/* «شارك تركيبك مجهولاً»: one deliberate press — material ids and the concentration type only. */}
+                  <button type="button" data-testid="designer-share-anonymous" title={loc(lang, LAB_SIGNAL_NOTE)}
+                    onClick={() => { void shareLabSignal(d).then((r) => setShared(r === 'shared' ? 'shared' : 'failed')); }}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-stone-300 bg-white text-xs font-bold cursor-pointer">
+                    <Wind className="w-3.5 h-3.5" /> {shared === 'shared' ? loc(lang, { ar: 'اتشاركت مجهولة — شكراً', en: 'Shared anonymously — thank you' }) : loc(lang, { ar: 'شارك التركيبة مجهولة', en: 'Share this formula anonymously' })}
+                  </button>
                 </div>
               </div>
             )}

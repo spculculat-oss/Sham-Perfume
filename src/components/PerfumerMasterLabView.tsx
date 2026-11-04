@@ -395,7 +395,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
       <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200/90 shadow-2xs flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="relative w-10 h-10 rounded-full overflow-hidden border border-amber-600 shrink-0">
-            <img
+            <img loading="lazy" decoding="async"
               src={perfumerImg}
               alt="Master Shahin"
               className="w-full h-full object-cover object-top"
@@ -615,7 +615,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                   {m.role === 'user' ? (
                     L('you')
                   ) : (
-                    <img
+                    <img loading="lazy" decoding="async"
                       src={perfumerImg}
                       alt={L('alt_shahin')}
                       className="w-full h-full object-cover object-top"
@@ -874,7 +874,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
           {isLoading && (
             <div className="flex items-start gap-3 sm:gap-4">
               <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border border-amber-600 shrink-0">
-                <img
+                <img loading="lazy" decoding="async"
                   src={perfumerImg}
                   alt={L('alt_shahin')}
                   className="w-full h-full object-cover object-top"

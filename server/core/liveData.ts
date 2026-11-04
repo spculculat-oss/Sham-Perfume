@@ -7,7 +7,10 @@ import bundledNews from '../../src/data/live/shaheen-news.json';
 import bundledTraining from '../../src/data/live/sham-training.json';
 import bundledSupervisor from '../../src/data/live/ai-supervisor.json';
 import bundledStore from '../../src/data/live/store-catalog.json';
+import bundledTrade from '../../src/data/live/trade-lanes.json';
+import bundledGraph from '../../src/data/live/shaheen-graph.json';
 import { isCatalogFile, type StoreCatalogFile } from '../../src/utils/storeCatalog';
+import { isShaheenGraph, type ShaheenGraph } from '../../src/utils/shaheenGraph';
 import { guidanceBlock, type AiToolId } from '../../src/utils/aiTools';
 import type { KnowledgeDoc } from './types';
 
@@ -101,6 +104,42 @@ export async function supervisorGuidance(tool: AiToolId, env: Env = process.env,
 }
 
 /** Shaheen's enrichment of the store products (scripts/shaheen-store); the bundled copy in tests and dev. */
+/** «الشحن والتجارة»: the trade robot's own report — the only source the board may quote for a shipping price. */
+export interface TradeLanesFile {
+  updatedAt: string;
+  destinations: {
+    code: string; nameAr: string; lane: string; promise: string;
+    /** What the visitor paid with the old zone prices (kept for the comparison). */
+    chargedEgp: number;
+    /** What the visitor pays now: the carrier's real cost + the merchant's handling margin (`null` = no published rate). */
+    proposedChargedEgp?: number | null;
+    /** The carrier's real cost for the first bottle; `[low, high]` for 500 g → 1 kg. */
+    costEgp?: [number, number] | null;
+    /** The carrier that actually carries this lane, with the published source it came from. */
+    carrier?: { id: string; nameAr: string; source?: string | null } | null;
+    customs: { verified: boolean; vatPercent: number | null; dutyPercent: [number, number] | null; deMinimis: string | null; restricted: string | null; noteAr: string };
+  }[];
+  platforms: { id: string; nameAr: string; fulfilment: string; originCountry: string | null; shipsTo: string[]; products: number }[];
+  origins: { code: string; nameAr: string; products: number }[];
+  shippingProposal: { nameAr: string; currentFirstItem: number; currency: string }[];
+  money?: {
+    profitPerBottleEgp: number; pricedDestinations: number; keptWholeDestinations: number;
+    marginEatenDestinations: number; costBasedDestinations: number; uncoveredDestinations: number;
+    medianShippingMarginEgp: number | null;
+  };
+}
+
+export async function liveTradeLanes(env: Env = process.env, request: typeof fetch = fetch): Promise<TradeLanesFile | undefined> {
+  const file = await load('trade-lanes.json', bundledTrade as unknown as TradeLanesFile, (d): d is TradeLanesFile => Boolean(d && typeof d === 'object' && typeof (d as TradeLanesFile).updatedAt === 'string' && Array.isArray((d as TradeLanesFile).destinations)), env, request);
+  return file;
+}
+
+/** «شبكة عقل شاهين»: the mind itself — nodes, edges (each with its source and date) and the mind's score. */
+export async function liveMindGraph(env: Env = process.env, request: typeof fetch = fetch): Promise<ShaheenGraph | undefined> {
+  const file = await load('shaheen-graph.json', bundledGraph as ShaheenGraph, isShaheenGraph, env, request);
+  return file;
+}
+
 export async function liveStoreCatalog(env: Env = process.env, request: typeof fetch = fetch): Promise<StoreCatalogFile> {
   return load('store-catalog.json', bundledStore as unknown as StoreCatalogFile, isCatalogFile, env, request);
 }

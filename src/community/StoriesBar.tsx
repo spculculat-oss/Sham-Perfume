@@ -38,7 +38,7 @@ export function StoriesBar({ lang, currentUser, onOpenMessenger, toast }: {
           className="group relative flex h-48 w-32 shrink-0 cursor-pointer flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white text-start shadow-sm transition hover:-translate-y-1 hover:shadow-md">
           <div className="relative h-32 w-full overflow-hidden bg-stone-100">
             {mine?.items.at(-1)?.image || currentUser?.avatar ? (
-              <img src={mine?.items.at(-1)?.image || currentUser?.avatar || ''} alt="" className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+              <img loading="lazy" decoding="async" src={mine?.items.at(-1)?.image || currentUser?.avatar || ''} alt="" className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
             ) : (
               <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-500 to-amber-800 text-3xl font-black text-white">{currentUser?.name?.[0] || '✨'}</div>
             )}
@@ -59,7 +59,7 @@ export function StoriesBar({ lang, currentUser, onOpenMessenger, toast }: {
             <button key={g.user.id} type="button" onClick={() => setOpen(groups.indexOf(g))}
               className="group relative flex h-48 w-32 shrink-0 cursor-pointer flex-col justify-between overflow-hidden rounded-2xl text-start shadow-sm transition hover:-translate-y-1 hover:shadow-md">
               {cover.image
-                ? <img src={cover.image} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-110" />
+                ? <img loading="lazy" decoding="async" src={cover.image} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-110" />
                 : <div className={`absolute inset-0 bg-gradient-to-br ${STORY_BG[cover.bg] || STORY_BG.amber}`} />}
               <div className="absolute inset-0 bg-gradient-to-b from-stone-900/50 via-transparent to-stone-950/85" />
               <div className="relative z-10 p-2.5">
@@ -75,10 +75,10 @@ export function StoriesBar({ lang, currentUser, onOpenMessenger, toast }: {
         })}
 
         {!list.loading && !others.length && (
-          <div className="flex h-48 min-w-56 flex-1 shrink-0 flex-col items-center justify-center rounded-2xl border border-dashed border-amber-300 bg-amber-50/60 p-4 text-center">
-            <span className="text-2xl">📸</span>
-            <p className="mt-1 text-xs font-bold text-amber-900">{t('مفيش قصص من أصدقائك لسه', 'No stories from friends yet')}</p>
-            <p className="mt-1 text-[11px] leading-relaxed text-stone-600">{t('شارك صورة من معملك أو تجربة عطر — بتفضل ٢٤ ساعة وبعدين تختفي.', 'Share a photo from your lab or a scent test — it stays 24 hours.')}</p>
+          <div className="flex h-48 min-w-56 flex-1 shrink-0 flex-col items-center justify-center rounded-2xl border border-dashed border-amber-300 bg-gradient-to-b from-amber-50/80 to-amber-100/40 p-4 text-center shadow-inner">
+            <span className="text-2xl animate-bounce">📸</span>
+            <p className="mt-1 text-xs font-bold text-amber-900">{t('كن أول من يشارك قصة عطرية اليوم!', 'Be the first to share a scent story today!')}</p>
+            <p className="mt-1 text-[11px] leading-relaxed text-stone-600">{t('صور لقطة من معملك، زجاجة بتعتقها، أو لحظة إبداع — القصص بتختفي بعد ٢٤ ساعة.', 'Snap a moment from your lab, a bottle aging, or creative spark — stories vanish after 24h.')}</p>
             {list.error ? <p className="mt-1 text-[11px] text-rose-700">{errorText(list.error, lang)}</p> : null}
           </div>
         )}
@@ -139,7 +139,7 @@ function StoryViewer({ lang, groups, start, onClose, onReply, toast }: { lang: L
       <div className="relative flex h-[85vh] max-h-[720px] w-full max-w-sm flex-col overflow-hidden rounded-3xl bg-stone-900 shadow-2xl" onClick={(e) => e.stopPropagation()}
         onPointerDown={() => setPaused(true)} onPointerUp={() => !viewers && setPaused(false)}>
         {story.image
-          ? <img src={story.image} alt="" className="absolute inset-0 h-full w-full object-contain" />
+          ? <img loading="lazy" decoding="async" src={story.image} alt="" className="absolute inset-0 h-full w-full object-contain" />
           : <div className={`absolute inset-0 bg-gradient-to-br ${STORY_BG[story.bg] || STORY_BG.amber}`} />}
         <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-transparent to-stone-950/70" />
 
@@ -225,7 +225,7 @@ function StoryComposer({ lang, onClose, onDone, toast }: { lang: Lang; onClose: 
     <Sheet title={t('قصة جديدة', 'New story')} onClose={onClose}>
       <div className="space-y-3">
         <div className={`relative flex h-56 items-center justify-center overflow-hidden rounded-2xl ${image ? 'bg-stone-900' : `bg-gradient-to-br ${STORY_BG[bg]}`}`}>
-          {image ? <img src={image} alt="" className="h-full w-full object-contain" /> : <p className="px-6 text-center text-lg font-black text-white drop-shadow">{caption || t('اكتب سطر يظهر هنا…', 'Your line shows here…')}</p>}
+          {image ? <img loading="lazy" decoding="async" src={image} alt="" className="h-full w-full object-contain" /> : <p className="px-6 text-center text-lg font-black text-white drop-shadow">{caption || t('اكتب سطر يظهر هنا…', 'Your line shows here…')}</p>}
           {image && <button type="button" onClick={() => setImage('')} className="absolute end-2 top-2 rounded-full bg-black/50 p-1.5 text-white cursor-pointer"><X className="h-4 w-4" /></button>}
         </div>
         <div className="flex flex-wrap items-center gap-2">

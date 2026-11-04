@@ -1,3 +1,6 @@
+import { checkoutClosed, checkoutOpened } from '../utils/checkoutHistory';
+import { trackInsight, viewedForTaste } from '../utils/insightsTracker';
+import { budgetsToHome, localizeChatPrices } from '../utils/chatPrices';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowUpRight,
@@ -28,11 +31,13 @@ import {
   Wallet,
   CheckCircle2,
   Building,
+  ShoppingBag,
 } from 'lucide-react';
 import { ProductPayMethods } from '../bank/ProductPayMethods';
 import { CheckoutPayPanel } from './CheckoutPayPanel';
-import { requireCustomerLogin } from '../utils/paymentAccess';
+import { localOnlyProfile, requireCustomerLogin } from '../utils/paymentAccess';
 import { PaymentEnvironmentModal } from './PaymentEnvironmentModal';
+import { ShamAccountDesk } from './ShamAccountDesk';
 import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
 import { saveMerchant } from '../utils/merchantDataStore';
 import { FAMILIES, searchText, type Family, type Gender, type StoreProduct } from '../utils/storeCatalog';
@@ -41,15 +46,25 @@ import { cosmeticsText } from '../لغات/cosmeticsL10n';
 import DirectPaymentCard from './DirectPaymentCard';
 import { SafeImage, photoSources } from './SafeImage';
 import { reserveDirectOrder, savedDirectOrders, type DirectOrder } from '../utils/directPayment';
-import { makeStoreT, storeFamilyLabel, storeGenderLabel, storeLocalized, storeNumber } from '../لغات/storeL10n';
+import { makeStoreT, storeFamilyLabel, storeGenderLabel, storeLocalized, storeNumber, storeText } from '../لغات/storeL10n';
 import { isRTL } from '../لغات/localizedContent';
 import type { SupportedLanguage } from '../types/i18n';
 import { askShaheenStore, loadStoreCatalog, localSuggestion, storeImageSrc, type StoreSuggestion } from '../utils/liveStore';
 import { LegalDisclaimer } from './LegalDisclaimer';
 import { StoreInvoiceBreakdown } from './StoreInvoiceBreakdown';
 import CompleteYourOrder from './CompleteYourOrder';
+import TasteQuiz from './TasteQuiz';
+import { fmt, loc } from '../لغات/localize';
+import { QUIZ_UI, hasTaste, rankForTaste, savedAnswers, tasteFromAnswers, withViewed, type QuizAnswers } from '../utils/tasteQuiz';
+import { variantOf } from '../utils/experiments';
+import { priceYardstick } from '../utils/visitorInsights';
+
+const CART_NUDGE = {
+  text: { ar: 'سلتك لسه فيها {n} منتج مستنيين — تكمل طلبك؟', en: 'Your basket still has {n} item(s) waiting — finish your order?' },
+  open: { ar: 'افتح السلة', en: 'Open basket' },
+};
 import { pastPurchases, rememberPurchase } from '../utils/purchaseMemory';
-import { addToCart, cartSummary, clearCart, orderMessage, orderRef, orderRequestEmail, removePurchasedItems, setCartQty, useCart, type PricedOrder } from '../utils/storeCart';
+import { addToCart, cartTouchedAt, cartSummary, clearCart, orderMessage, orderRef, orderRequestEmail, removePurchasedItems, setCartQty, useCart, type PricedOrder } from '../utils/storeCart';
 import { contactEmail, contactMailto } from '../config/contact';
 import {
   CheckoutError,
@@ -58,11 +73,13 @@ import {
   startCheckout,
   usePayments,
   useStoreMoney,
+  chatMoney,
   type CheckoutForm,
   type PaymentResult,
 } from '../utils/storeCheckout';
 import { DIRECT_PURCHASE_EVENT, takeDirectPurchase, type DirectPurchase } from '../utils/directPurchase';
 import { quote } from '../utils/pricing';
+import { explainFault } from '../finance/errors';
 import { useMerchantCartProducts } from '../community/cartItems';
 
 /**
@@ -198,7 +215,7 @@ function extraLabel(key: string, lang: SupportedLanguage): string {
   return isAr ? item.ar : item.en;
 }
 
-type Sort = 'new' | 'priceLow' | 'priceHigh' | 'rating';
+type Sort = 'new' | 'priceLow' | 'priceHigh' | 'rating' | 'taste';
 type PriceFilter = 'all' | 'under200' | '200to500' | 'above500';
 
 interface Props {
@@ -319,7 +336,37 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const [newOnly, setNewOnly] = useState(false);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [priceRange, setPriceRange] = useState<PriceFilter>('all');
-  const [sort, setSort] = useState<Sort>('new');
+  const [sort, setSort] = useState<Sort>(() => (typeof window !== 'undefined' && hasTaste(tasteFromAnswers(savedAnswers() || {})) ? 'taste' : 'new'));
+  // «مختار ليك على ذوقك»: products he viewed, kept on his device only while he accepts «التحليل».
+  const [viewed, setViewed] = useState<string[]>(() => (typeof window === 'undefined' ? [] : viewedForTaste()));
+  useEffect(() => {
+    const refresh = () => setViewed(viewedForTaste());
+    window.addEventListener('hashchange', refresh);
+    window.addEventListener('cookie-consent-updated', refresh);
+    return () => { window.removeEventListener('hashchange', refresh); window.removeEventListener('cookie-consent-updated', refresh); };
+  }, []);
+  // «اختبار ذوقك» (his own answers, on his device) + what he viewed = «الأنسب لذوقك», his personal order of the store.
+  const [answers, setAnswers] = useState<QuizAnswers>(() => (typeof window === 'undefined' ? {} : savedAnswers() || {}));
+  const [quizOpen, setQuizOpen] = useState(false);
+  useEffect(() => {
+    const refresh = () => { setAnswers(savedAnswers() || {}); setSort('taste'); };
+    window.addEventListener('sham-taste-updated', refresh);
+    return () => window.removeEventListener('sham-taste-updated', refresh);
+  }, []);
+  const yardstick = useMemo(() => priceYardstick(products), [products]);
+  // The price filter's bands come from the catalogue itself (its cheaper and dearer quarters, rounded to 500) — fixed
+  // 200/500 bands left «أقل من 200» empty and «أكثر من 500» the whole store once prices passed them.
+  const bands = useMemo(() => {
+    const round = (n: number) => Math.max(500, Math.round(n / 500) * 500);
+    const a = yardstick.low > 0 ? round(yardstick.low) : 200;
+    const b = yardstick.high > 0 ? Math.max(a + 500, round(yardstick.high)) : 500;
+    return { a, b };
+  }, [yardstick]);
+  const taste = useMemo(() => withViewed(tasteFromAnswers(answers), products.filter((p) => viewed.includes(p.sku))), [answers, viewed, products]);
+  const tasteReady = hasTaste(taste);
+  const quizPrompt = useMemo(() => variantOf('quiz_prompt'), []);
+  const [quizCardHidden, setQuizCardHidden] = useState(() => { try { return localStorage.getItem('sham_quiz_card_hidden') === '1'; } catch { return false; } });
+  const hideQuizCard = () => { setQuizCardHidden(true); try { localStorage.setItem('sham_quiz_card_hidden', '1'); } catch { /* private mode */ } };
 
   const categories = useMemo(() => [...new Set(products.map((p) => p.category).filter(Boolean))].sort(), [products]);
   const brands = useMemo(() => [...new Set(products.map((p) => p.brand).filter(Boolean))].sort(), [products]);
@@ -336,9 +383,9 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
       if (brand !== 'all' && p.brand !== brand) return false;
       if (newOnly && !p.isNew) return false;
       if (inStockOnly && !p.inStock) return false;
-      if (priceRange === 'under200' && p.price >= 200) return false;
-      if (priceRange === '200to500' && (p.price < 200 || p.price > 500)) return false;
-      if (priceRange === 'above500' && p.price <= 500) return false;
+      if (priceRange === 'under200' && p.price >= bands.a) return false;
+      if (priceRange === '200to500' && (p.price < bands.a || p.price > bands.b)) return false;
+      if (priceRange === 'above500' && p.price <= bands.b) return false;
       if (words.length) {
         const text = searchText(p);
         if (!words.every((w) => text.includes(w))) return false;
@@ -347,16 +394,20 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     });
 
     const time = (p: StoreProduct) => (p.createdAt ? Date.parse(p.createdAt) || 0 : 0);
+    if (sort === 'taste' && tasteReady) return rankForTaste(list.sort((a, b) => time(b) - time(a)), taste, yardstick);
+    // «رجالي» / «نسائي» also list the unisex perfumes — after his own ones, so the filter visibly does what it says.
+    const own = (p: StoreProduct) => (gender !== 'all' && gender !== 'unisex' && p.gender !== gender ? 1 : 0);
     return list.sort((a, b) =>
-      sort === 'priceLow'
+      (sort !== 'priceLow' && sort !== 'priceHigh' ? own(a) - own(b) : 0) ||
+      (sort === 'priceLow'
         ? a.price - b.price
         : sort === 'priceHigh'
         ? b.price - a.price
         : sort === 'rating'
         ? (b.rating || 0) - (a.rating || 0)
-        : time(b) - time(a)
+        : time(b) - time(a))
     );
-  }, [products, search, section, gender, family, category, brand, newOnly, inStockOnly, priceRange, sort]);
+  }, [products, search, section, gender, family, category, brand, newOnly, inStockOnly, priceRange, sort, taste, tasteReady, yardstick, bands]);
 
   useEffect(() => {
     setLimit(ALL);
@@ -421,9 +472,12 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     if (message.length < 2) return;
     const id = ++askId.current;
     setWish(message);
-    setAdvice(localSuggestion(products, message, currentLang));
+    // «دولة الدخول»: «under 50 €» reaches the advisor in the catalog's pounds; its answer comes back in his currency.
+    const brainText = budgetsToHome(message, money.currency, currentLang);
+    trackInsight('search', { text: message }); // «خزنة فهم الزوار» (with consent; secrets and numbers are never kept)
+    setAdvice(localSuggestion(products, brainText, currentLang));
     setThinking(true);
-    const better = await askShaheenStore(products, message, currentLang);
+    const better = await askShaheenStore(products, brainText, currentLang, fetch, chatMoney(currentLang));
     if (id !== askId.current) return;
     setThinking(false);
     if (better) setAdvice(better);
@@ -500,6 +554,14 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   };
   const [orderSent, setOrderSent] = useState('');
   const [step, setStep] = useState<'cart' | 'form'>('cart');
+  // #418/#419: the order is a page of its own — the phone's back button closes it (src/utils/checkoutHistory.ts).
+  useEffect(() => {
+    if (!cartOpen) return;
+    checkoutOpened();
+    const onBack = () => { setCartOpen(false); };
+    window.addEventListener('popstate', onBack);
+    return () => { window.removeEventListener('popstate', onBack); checkoutClosed(); };
+  }, [cartOpen]);
   const [payForm, setPayForm] = useState<CheckoutForm>({ name: '', email: '', phone: '', city: '', line: '' });
   const [paying, setPaying] = useState(false);
   const [payMessage, setPayMessage] = useState('');
@@ -508,6 +570,9 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const [justOrdered, setJustOrdered] = useState<string[]>([]);
   const [boughtBefore, setBoughtBefore] = useState<string[]>(() => (typeof window === 'undefined' ? [] : pastPurchases()));
   const [hideForYou, setHideForYou] = useState(false);
+  // «سلتك لسه مستنياك»: he left products in his basket more than two hours ago (his device only; no e-mail, no discount).
+  const [cartNudge, setCartNudge] = useState(() => typeof window !== 'undefined' && cartTouchedAt() > 0 && Date.now() - cartTouchedAt() > 2 * 3_600_000);
+  const cartCount = Object.values(cart).reduce((a, b) => a + b, 0);
   const ordered = (skus: string[]) => { if (!skus.length) return; setJustOrdered(skus); setBoughtBefore(rememberPurchase(skus)); };
 
   useEffect(() => {
@@ -516,12 +581,13 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
       setPayResult(result);
       if (result.state === 'paid' && result.mode === 'live' && result.cartItems) removePurchasedItems(result.cartItems);
       if (result.state === 'paid' && result.cartItems) ordered(result.cartItems.map((i) => i.sku));
+      if (result.state === 'paid' && result.cartItems) result.cartItems.forEach((i) => trackInsight('purchase', { sku: i.sku, qty: i.qty }));
     });
   }, []);
 
   const buyNow = (product: StoreProduct, qty = 1) => {
     if (!product.inStock) return;
-    if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
+    // شراء مباشر للدفع لاحقًا عند التاجر: متاح للزائر بدون حساب. الدفع عبر البوابة يحتاج تسجيل دخول.
     setDirectPurchase({ sku: product.sku, qty, at: Date.now() });
     setCartOpen(true); setStep('form'); setPayMessage(''); setSearchFocused(false);
   };
@@ -529,7 +595,6 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     const receive = () => {
       const intent = takeDirectPurchase();
       if (intent) {
-        if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
         setDirectPurchase(intent); setCartOpen(true); setStep('form'); setPayMessage('');
       }
     };
@@ -537,6 +602,20 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
     window.addEventListener(DIRECT_PURCHASE_EVENT, receive);
     return () => window.removeEventListener(DIRECT_PURCHASE_EVENT, receive);
   }, [signedIn, onRequireAuth]);
+  /**
+   * «رسالة الخطأ بلغة الزائر»: كل كود من كودات الدفع له جملة عربية/إنجليزية ثابتة (src/finance/errors.ts)،
+   * وآخر رقم متاح (المبلغ الجديد بعد تغيّر السعر) بيظهر معاها — مفيش «حصل خطأ» بلا تفسير.
+   */
+  const payFaultMessage = (error: unknown, fallback: string): string => {
+    const code = (error as { code?: string })?.code || '';
+    if (!code) return fallback;
+    const fault = explainFault(code, currentLang === 'ar' ? 'ar' : 'en');
+    const now = error instanceof CheckoutError ? error.now : undefined;
+    const amount = now && Number.isFinite(now.total) ? ` — ${now.total} ${now.currency}` : '';
+    return code === 'PRICE_CHANGED' || code === 'PAYMENT_HELD' || code === 'METHOD_UNAVAILABLE' || code === 'UNAVAILABLE'
+      ? `${currentLang === 'ar' ? fault.ar : fault.en}${amount}` : fallback;
+  };
+
   const changeCheckoutQty = (sku: string, qty: number) => {
     if (directPurchase) setDirectPurchase({ ...directPurchase, qty: Math.min(99, Math.max(1, qty)) });
     else setCartQty(sku, qty);
@@ -545,9 +624,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const pay = async (e: React.FormEvent) => {
     e.preventDefault();
     if (paying) return;
-    if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
-    if (!canPay) { setPayMessage(currentLang === 'ar' ? 'استخدم البطاقة أو المحفظة المحفوظة. إرسال الطلب للمتجر آخر خيار بالأسفل.' : 'Use a saved card or wallet. Sending the order to the store is the last option below.'); return; }
     if (chosenDirect) {
+      // الدفع المباشر عند التاجر (إنستاباي، تحويل، محفظة، الدفع عند الاستلام): متاح للزائر، يؤكده التاجر بعد ما يشوف الفلوس.
       setPaying(true); setPayMessage('');
       try {
         const items = summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty }));
@@ -558,22 +636,29 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
         if (directPurchase) setDirectPurchase(null); else removePurchasedItems(items);
         setStep('cart');
       } catch (error) {
+        if ((error as { code?: string })?.code === 'LOGIN_REQUIRED') { onRequireAuth?.(); setPayMessage(L.payError); return; }
         setPayMessage(error instanceof Error && ['INVALID_EMAIL', 'INVALID_PHONE', 'MISSING_ADDRESS', 'MISSING_NAME'].includes((error as { code?: string }).code || '') ? L.payInvalid : L.payError);
       } finally { setPaying(false); }
       return;
     }
+    // الدفع عبر البوابة (كاشير) يحتاج حسابًا مسجّلاً ومؤكداً.
+    if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
     if (!payments?.enabled || !chosenMethod) { setPayMessage(L.payError); return; }
     setPaying(true); setPayMessage('');
     try {
-      await startCheckout(summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty })), money.country, payForm, currentLang, chosenMethod, directPurchase ? 'direct' : 'cart');
+      // بنبعت اللي الزائر شافه بالظبط: السيرفر بيرفض يخصم مبلغ مختلف (PRICE_CHANGED).
+      await startCheckout(summary.lines.map((l) => ({ sku: l.product.sku, qty: l.qty })), money.country, payForm, currentLang, chosenMethod, directPurchase ? 'direct' : 'cart', { total: bill.total, currency: bill.currency });
     } catch (error) {
-      setPayMessage(error instanceof CheckoutError && ['INVALID_EMAIL', 'INVALID_PHONE', 'MISSING_ADDRESS', 'MISSING_NAME'].includes(error.code) ? L.payInvalid : L.payError);
+      if (error instanceof CheckoutError && error.code === 'LOGIN_REQUIRED') { onRequireAuth?.(); setPayMessage(L.payError); return; }
+      setPayMessage(error instanceof CheckoutError && ['INVALID_EMAIL', 'INVALID_PHONE', 'MISSING_ADDRESS', 'MISSING_NAME'].includes(error.code)
+        ? L.payInvalid
+        : payFaultMessage(error, L.payError));
       // Keep the cart and delivery details. A failed redirect or gateway call is NEVER a payment.
     } finally { setPaying(false); }
   };
 
   const sendToStore = () => {
-    if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; }
+    // إرسال الطلب للمتجر متاح للزائر أيضًا (لا عملية دفع فورية).
     if (!summary.lines.length) return;
     const ref = orderRef();
     const mail = orderRequestEmail(summary, currentLang, priced, payForm, countries.find((c) => c.code === money.country)?.name || money.country, ref);
@@ -584,7 +669,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
 
   // The price bands are catalog amounts (200 / 500 EGP) shown in the visitor's own currency (#169).
   const priceBand = (band: Exclude<PriceFilter, 'all'>) =>
-    extraLabel(`price_${band}`, currentLang).replace('{a}', money.price(200)).replace('{b}', money.price(500));
+    extraLabel(`price_${band}`, currentLang).replace('{a}', money.price(bands.a)).replace('{b}', money.price(bands.b));
 
   const countryPicker = (testId: string) => (
     <label className="inline-flex items-center gap-1.5 text-xs text-stone-600">
@@ -612,6 +697,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const [showReg, setShowReg] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showBank, setShowBank] = useState(false);
   const [form, setForm] = useState({ nameAr: '', email: '', phone: '', pass: '' });
   const register = (e: React.FormEvent) => {
     e.preventDefault();
@@ -727,7 +813,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
             {p.sizeMl ? (
               <>
                 <span aria-hidden="true" className="text-stone-300">·</span>
-                <span>{p.sizeMl}ml</span>
+                {/* «١٠٠ مل» / «100 ml»: the visitor's own numerals and the unit in their own language. */}
+                <span>{storeNumber(p.sizeMl, currentLang)} {storeText(currentLang, 'pd_ml')}</span>
               </>
             ) : null}
           </div>
@@ -736,11 +823,12 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
           {why && (
             <p className="text-[11px] leading-relaxed text-amber-950 bg-amber-50/70 border border-amber-200/70 rounded-xl p-2.5 mt-1">
               <Sparkles className="inline w-3 h-3 text-amber-600 me-1.5 shrink-0" />
-              <span>{why}</span>
+              <span>{localizeChatPrices(why, money.currency, currentLang)}</span>
             </p>
           )}
 
-          <ProductPayMethods lang={currentLang} country={money.country} productName={storeLocalized(p.name, currentLang)} productKey={p.sku} compact />
+          {/* On a phone the store-wide «وسائل الدفع» box above the grid already says it — one copy per card was the repetition visitors saw. */}
+          <div className="hidden sm:block"><ProductPayMethods lang={currentLang} country={money.country} productName={storeLocalized(p.name, currentLang)} productKey={p.sku} compact /></div>
           {/* Price & Action */}
           <div className="mt-auto pt-3 border-t border-stone-100 space-y-2">
             <div>
@@ -790,8 +878,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
         style={{ top: 'var(--sham-global-header-height, 0px)' }}
       >
         <div className="mx-auto flex max-w-7xl items-center gap-2.5 px-3 py-2.5 sm:gap-4 sm:px-4 sm:py-3.5">
-          {/* Store Brand Emblem */}
-          <div className="flex shrink-0 items-center gap-3">
+          {/* Store Brand Emblem (from sm up — on a phone the search needs the room) */}
+          <div className="hidden shrink-0 items-center gap-3 sm:flex">
             <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-300/40 bg-gradient-to-br from-amber-400 via-amber-600 to-stone-900 shadow-md shadow-amber-950/40">
               <Sparkles className="relative h-5 w-5 text-white" />
             </div>
@@ -825,7 +913,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     : 'border-white/15 bg-stone-900/90 hover:border-amber-300/50'
                 }`}
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-700 text-stone-950 shadow-sm shadow-amber-950/40">
+                <span className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-700 text-stone-950 shadow-sm shadow-amber-950/40 sm:flex">
                   <Search className="h-4 w-4" />
                 </span>
                 <input
@@ -1074,11 +1162,22 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
             <span>{currentLang === 'ar' ? 'تحليل المبيعات' : 'Sales Analytics'}</span>
           </button>
 
+          <button
+            type="button"
+            onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setShowBank(true); }}
+            className="flex shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-2.5 sm:px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 cursor-pointer shadow-2xs"
+            data-testid="store-bank-button"
+            title={currentLang === 'ar' ? 'حساب بنك شام' : 'Sham Bank account'}
+          >
+            <Landmark className="h-4 w-4 text-stone-800" />
+            <span className="hidden sm:inline">{currentLang === 'ar' ? 'بنك شام' : 'Sham Bank'}</span>
+          </button>
+
           {/* Customer Saved Payment Methods / Vault Button */}
           <button
             type="button"
             onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setShowPaymentModal(true); }}
-            className="flex shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 cursor-pointer shadow-2xs"
+            className="flex shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-2.5 sm:px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 cursor-pointer shadow-2xs"
             data-testid="store-vault-button"
             title={currentLang === 'ar' ? 'تسجيل البطاقات والمحافظ' : 'Register cards and wallets'}
           >
@@ -1125,12 +1224,37 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
           </div>
         )}
 
+        {cartNudge && cartCount > 0 && (
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 flex items-center gap-3" data-testid="cart-nudge">
+            <ShoppingBag className="w-5 h-5 text-emerald-700 shrink-0" />
+            <p className="text-sm text-emerald-950 flex-1">{fmt(loc(currentLang, CART_NUDGE.text), { n: cartCount })}</p>
+            <button type="button" onClick={() => { setCartNudge(false); setDirectPurchase(null); setStep('cart'); setCartOpen(true); }} className="px-3 py-1.5 rounded-xl bg-emerald-700 text-white text-xs font-bold cursor-pointer">{loc(currentLang, CART_NUDGE.open)}</button>
+            <button type="button" onClick={() => setCartNudge(false)} className="p-1 rounded-lg hover:bg-emerald-100 text-emerald-800 cursor-pointer" aria-label={loc(currentLang, QUIZ_UI.close)}><X className="w-4 h-4" /></button>
+          </div>
+        )}
+
+        {quizPrompt === 'card' && !quizCardHidden && (
+          <div className="rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-50 to-white p-4 flex items-center gap-3" data-testid="quiz-card">
+            <Sparkles className="w-6 h-6 text-amber-600 shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="font-extrabold text-stone-900 text-sm">{loc(currentLang, QUIZ_UI.open)}</p>
+              <p className="text-xs text-stone-600">{loc(currentLang, QUIZ_UI.openHint)}</p>
+            </div>
+            <button type="button" onClick={() => setQuizOpen(true)} className="px-3 py-2 rounded-xl bg-stone-900 text-white text-xs font-bold shrink-0 cursor-pointer">{loc(currentLang, QUIZ_UI.chip)}</button>
+            <button type="button" onClick={hideQuizCard} className="p-1 rounded-lg hover:bg-amber-100 text-stone-500 cursor-pointer" aria-label={loc(currentLang, QUIZ_UI.close)}><X className="w-4 h-4" /></button>
+          </div>
+        )}
+        {quizOpen && <TasteQuiz products={products} lang={currentLang} price={money.price} onAdd={add} onOpen={(p) => { setQuizOpen(false); openDetails(p); }} onClose={() => setQuizOpen(false)} />}
+
         {justOrdered.length > 0 ? (
           <CompleteYourOrder products={products} basis={products.filter((p) => justOrdered.includes(p.sku))} lang={currentLang} variant="after" price={money.price}
             onAdd={add} onOpen={openDetails} added={justAdded} inCart={[...Object.keys(cart), ...justOrdered]} onDismiss={() => setJustOrdered([])} />
         ) : !hideForYou && boughtBefore.length > 0 ? (
           <CompleteYourOrder products={products} basis={products.filter((p) => boughtBefore.slice(0, 3).includes(p.sku))} lang={currentLang} variant="forYou" price={money.price}
             onAdd={add} onOpen={openDetails} added={justAdded} inCart={[...Object.keys(cart), ...boughtBefore]} onDismiss={() => setHideForYou(true)} />
+        ) : !hideForYou && viewed.length > 0 ? (
+          <CompleteYourOrder products={products} basis={products.filter((p) => viewed.slice(0, 3).includes(p.sku))} lang={currentLang} variant="taste" price={money.price}
+            onAdd={add} onOpen={openDetails} added={justAdded} inCart={[...Object.keys(cart), ...viewed.slice(0, 3)]} onDismiss={() => setHideForYou(true)} />
         ) : null}
 
         {/* Haute Parfumerie Hero Presentation */}
@@ -1368,7 +1492,14 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
               <option value="priceLow">{L.sortPriceLow}</option>
               <option value="priceHigh">{L.sortPriceHigh}</option>
               <option value="rating">{L.sortRating}</option>
+              {tasteReady && <option value="taste">{loc(currentLang, QUIZ_UI.sortTaste)}</option>}
             </select>
+            {(quizPrompt === 'chip' || quizCardHidden) && (
+              <button type="button" onClick={() => setQuizOpen(true)} data-testid="quiz-chip"
+                className="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 flex items-center gap-1 cursor-pointer">
+                <Sparkles className="w-3.5 h-3.5" />{loc(currentLang, QUIZ_UI.chip)}
+              </button>
+            )}
 
             {countryPicker('store-country')}
 
@@ -1502,7 +1633,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                   {advice.source === 'shaheen' ? L.byShaheen : L.quick}
                 </span>
                 <p className="text-sm text-stone-800 leading-relaxed font-medium">
-                  {thinking ? L.thinking : advice.reply}
+                  {thinking ? L.thinking : localizeChatPrices(advice.reply, money.currency, currentLang)}
                 </p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -1569,7 +1700,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
       {cartOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end" onClick={() => setCartOpen(false)}>
           <aside
-            className="w-full max-w-sm h-full bg-white p-5 flex flex-col overflow-y-auto shadow-2xl"
+            className={`w-full ${step === 'form' ? 'sm:px-[max(1.25rem,calc((100vw-34rem)/2))]' : 'max-w-sm'} h-full bg-white p-5 flex flex-col overflow-y-auto shadow-2xl`}
+            data-step={step}
             role="dialog" aria-modal="true" aria-label={directPurchase ? L.buyNow : L.cart}
             onClick={(e) => e.stopPropagation()}
             data-testid="store-cart"
@@ -1589,6 +1721,26 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
               </button>
             </div>
 
+            {/* #411: the order has its own clear path — 1) the basket, 2) delivery and payment — shown as steps, and the
+                delivery/payment step gets a wider page of its own (the store's suggestions never appear there). */}
+            {summary.lines.length > 0 && (
+              <ol className="flex items-center gap-2 pt-3 text-[11px] font-bold" data-testid="checkout-steps" aria-label={currentLang === 'ar' ? 'خطوات الطلب' : 'Order steps'}>
+                {[
+                  { id: 'cart', label: currentLang === 'ar' ? 'السلة' : 'Basket' },
+                  { id: 'form', label: currentLang === 'ar' ? 'التوصيل والدفع' : 'Delivery & payment' },
+                ].map((s, i) => (
+                  <li key={s.id} className="flex items-center gap-2 min-w-0" aria-current={step === s.id ? 'step' : undefined}>
+                    {i > 0 && <span className="w-6 h-px bg-stone-300 shrink-0" aria-hidden="true" />}
+                    <button type="button" disabled={s.id === 'form' || paying} onClick={() => setStep('cart')}
+                      className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 ${step === s.id ? 'bg-emerald-700 text-white' : 'bg-stone-100 text-stone-600'} ${s.id === 'cart' && step === 'form' ? 'cursor-pointer hover:bg-stone-200' : ''}`}>
+                      <span className="font-mono-numbers">{storeNumber(i + 1, currentLang)}</span>
+                      <span className="truncate">{s.label}</span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            )}
+
             {visibleDirect.length > 0 && (
               <div className="space-y-2 my-3" data-testid="direct-orders">
                 <p className="text-xs font-bold text-stone-700">{L.directMyOrders}</p>
@@ -1603,11 +1755,12 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     <div key={product.sku} className="py-3 flex items-center gap-3">
                       <ProductImage product={product} className="w-12 h-12 rounded-xl shrink-0 border border-stone-200" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-stone-900 line-clamp-1">
+                        <p className="text-sm font-bold text-stone-900 line-clamp-2 leading-snug">
                           {storeLocalized(product.name, currentLang)}
                         </p>
-                        <p className="text-xs font-semibold text-stone-500 font-mono-numbers">
-                          {money.money(lineTotal.get(product.sku) ?? 0)}
+                        <p className="text-xs text-stone-500 font-mono-numbers" data-testid="cart-line-price">
+                          {qty > 1 && <span>{storeNumber(qty, currentLang)} × {money.money((lineTotal.get(product.sku) ?? 0) / qty)} = </span>}
+                          <span className="font-bold text-stone-800">{money.money(lineTotal.get(product.sku) ?? 0)}</span>
                         </p>
                       </div>
                       <div className="flex items-center gap-1 bg-stone-100 rounded-lg p-0.5">
@@ -1634,11 +1787,6 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     </div>
                   ))}
                 </div>
-
-                {step === 'cart' && !directPurchase && (
-                  <CompleteYourOrder products={products} basis={summary.lines.map((l) => l.product)} lang={currentLang} variant="cart" price={money.price}
-                    onAdd={add} onOpen={(p) => { setCartOpen(false); openDetails(p); }} added={justAdded} inCart={summary.lines.map((l) => l.product.sku)} />
-                )}
 
                 <div className="border-t border-stone-100 pt-4 space-y-2.5">
                   {countryPicker('store-cart-country')}
@@ -1710,7 +1858,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                           onStoreEmail={sendToStore}
                         />
                       ) : (
-                        <button type="button" onClick={() => { requireCustomerLogin(); onRequireAuth?.(); }} className="w-full rounded-xl bg-stone-900 py-2.5 text-sm font-bold text-white" data-testid="checkout-sign-in">{currentLang === 'ar' ? 'سجّل الدخول لحفظ البطاقة أو المحفظة' : 'Sign in to save a card or wallet'}</button>
+                        <><button type="button" onClick={() => { requireCustomerLogin(); onRequireAuth?.(); }} className="w-full rounded-xl bg-stone-900 py-2.5 text-sm font-bold text-white" data-testid="checkout-sign-in">{currentLang === 'ar' ? 'سجّل الدخول لحفظ البطاقة أو المحفظة' : 'Sign in to save a card or wallet'}</button>{localOnlyProfile() && <p className="text-[11px] leading-5 text-amber-900 bg-amber-50 rounded-xl p-2 mt-2" role="status" data-testid="checkout-local-only">{currentLang === 'ar' ? 'دخولك الحالي محفوظ على هذا الجهاز فقط. الدفع يحتاج حساباً مسجّلاً ومؤكَّداً على خادم شام.' : 'Your current sign-in exists on this device only. Paying needs a registered account verified by the Sham server.'}</p>}</>
                       )}
                       {canPay && <fieldset className="rounded-xl border border-stone-200 bg-stone-50 p-3 space-y-3" data-testid="real-payment-methods">
                         <legend className="text-xs font-bold px-1">{currentLang === 'ar' ? 'وسائل الدفع المفعّلة لبلدك' : 'Enabled methods for your country'}</legend>
@@ -1765,11 +1913,11 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     <>
                       <button
                         type="button"
-                        onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setStep('form'); }}
+                        onClick={() => setStep('form')}
                         data-testid="store-pay-start"
                         className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold cursor-pointer transition-all shadow-xs"
                       >
-                        {signedIn ? (currentLang === 'ar' ? 'ادفع بالبطاقة أو المحفظة' : 'Pay by card or wallet') : (currentLang === 'ar' ? 'سجّل الدخول للدفع' : 'Sign in to pay')}
+                        {currentLang === 'ar' ? 'أكمل الطلب' : 'Continue order'}
                       </button>
                       <button
                         type="button"
@@ -1783,8 +1931,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     <div className="space-y-2">
                       {payments === null ? <p className="text-xs text-stone-600" role="status">{L.loading}</p> : <ProductPayMethods lang={currentLang} country={money.country} heading={currentLang === 'ar' ? 'وسائل الدفع المتاحة لطلبك' : 'Payment methods available for this order'} />}
                       {/* #169: the main button continues to the delivery form (the order then goes to the store's inbox), not to the chat. */}
-                      <button type="button" onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setStep('form'); setOrderSent(''); }} disabled={payments === null} data-testid="store-order-start"
-                        className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-400 text-white text-sm font-bold cursor-pointer transition-all shadow-xs">{signedIn ? (currentLang === 'ar' ? 'ادفع بالبطاقة أو المحفظة' : 'Pay by card or wallet') : (currentLang === 'ar' ? 'سجّل الدخول للدفع' : 'Sign in to pay')}</button>
+                      <button type="button" onClick={() => { setStep('form'); setOrderSent(''); }} disabled={payments === null} data-testid="store-order-start"
+                        className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-400 text-white text-sm font-bold cursor-pointer transition-all shadow-xs">{currentLang === 'ar' ? 'أكمل الطلب' : 'Continue order'}</button>
                       <button type="button" onClick={checkout} className="w-full py-1.5 text-xs text-amber-800 hover:underline cursor-pointer text-center">{L.orAssistant}</button>
                     </div>
                   )}
@@ -1800,6 +1948,15 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     </button>
                   )}
                 </div>
+
+                {/* #381/#387: the suggestions come after the total and the «أكمل الطلب» button — on a phone the bill
+                    and the next step are seen first, without scrolling past other products. */}
+                {step === 'cart' && !directPurchase && (
+                  <div className="pt-4">
+                    <CompleteYourOrder products={products} basis={summary.lines.map((l) => l.product)} lang={currentLang} variant="cart" price={money.price}
+                      onAdd={add} onOpen={(p) => { setCartOpen(false); openDetails(p); }} added={justAdded} inCart={summary.lines.map((l) => l.product.sku)} />
+                  </div>
+                )}
               </>
             ) : (
               <div className="py-16 text-center space-y-2">
@@ -1827,6 +1984,14 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
               currentLang={currentLang}
               currencyCode={L.currency}
             />
+          </div>
+        </div>
+      )}
+
+      {showBank && signedIn && retailerId && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-stone-100 p-3 sm:p-6">
+          <div className="mx-auto max-w-5xl">
+            <ShamAccountDesk lang={currentLang} customerId={retailerId} onClose={() => setShowBank(false)} />
           </div>
         </div>
       )}

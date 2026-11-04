@@ -9,6 +9,10 @@ import { SCIENCE_SYLLABUS } from '../data/sciences/syllabus';
 import { SCIENCE_LESSONS } from '../data/sciences';
 import type { SchoolFile } from '../../scripts/shaheen-school/school';
 import type { SciencesFile } from '../../scripts/shaheen-school/sciences';
+import bundledCensus from '../data/live/platform-census.json';
+import { readCensusReport, type CensusReport } from '../utils/platformCensus';
+import { loadLiveCensusSnapshot } from './PlatformCensusPanel';
+import { WorldHeatmapSvgLayer } from './WorldVisitHeatmap';
 
 /**
  * «غرفة التحكم الحية» (the owner's request, 2026-10-22: «شاشة احترافية فيها شغل حركي بكل اللي بيتم»): the platform's
@@ -107,6 +111,11 @@ export default function OpsControlRoom({ live, gh, stepOf, school, sciences, now
   const still = useReducedMotion();
   const box = useRef<HTMLDivElement>(null);
   const [full, setFull] = useState(false);
+  const [censusReport, setCensusReport] = useState<CensusReport>(() => readCensusReport(bundledCensus));
+  const censusVisits = censusReport.totals.visits;
+  useEffect(() => {
+    void loadLiveCensusSnapshot().then((s) => setCensusReport(s.report)).catch(() => {});
+  }, []);
   useEffect(() => {
     const on = () => setFull(document.fullscreenElement === box.current);
     document.addEventListener('fullscreenchange', on);
@@ -188,6 +197,7 @@ export default function OpsControlRoom({ live, gh, stepOf, school, sciences, now
     { label: T('شغالة دلوقتي'), value: running.length, tone: 'text-emerald-300' },
     { label: T('في الطابور'), value: queued.length, tone: 'text-sky-300' },
     { label: T('واقفة'), value: stopped.length, tone: 'text-red-300' },
+    { label: T('زيارات المنصة'), value: censusVisits, tone: 'text-cyan-300' },
     { label: T('دروس في ذاكرة شاهين'), value: lessons, tone: 'text-amber-200' },
     { label: T('أسئلة مستنية المذاكرة'), value: pending, tone: 'text-indigo-200' },
   ];
@@ -216,7 +226,7 @@ export default function OpsControlRoom({ live, gh, stepOf, school, sciences, now
       </div>
       <p className="mt-1 text-sm text-slate-400">{T('صاحب الموقع فوق الكل ← دولة المنصة ← شاهين المدير العام ووكيله ← الأقسام ومدرسة شاهين ← الروبوتات وخبراء المدرسة. النقط المتحركة = شغل ماشي دلوقتي: تقارير طالعة لفوق، وموافقات نازلة، وأسئلة رايحة للخبراء ودروس راجعة للمدرسة.')}</p>
 
-      <div className="mt-2 grid grid-cols-2 gap-2 text-center sm:grid-cols-5">
+      <div className="mt-2 grid grid-cols-2 gap-2 text-center sm:grid-cols-6">
         {counters.map((c) => (
           <div key={c.label} className="rounded-xl border border-slate-800 bg-slate-900/70 p-2">
             <b className={`block text-xl tabular-nums ${c.tone}`}><CountUp value={c.value} still={still} /></b>
@@ -234,6 +244,15 @@ export default function OpsControlRoom({ live, gh, stepOf, school, sciences, now
           </defs>
           <rect width={ROOM.width} height={ROOM.height} fill="url(#ocr-bg)" />
           <rect width={ROOM.width} height={ROOM.height} fill="url(#ocr-grid)" opacity={0.55} />
+          {/* World Thermal Heatmap spread across the Control Room background */}
+          <WorldHeatmapSvgLayer
+            report={censusReport}
+            width={ROOM.width}
+            height={ROOM.height}
+            theme="dark"
+            idPrefix="ocr-world-hm"
+            still={still}
+          />
           {/* The two branches */}
           <text x={300} y={258} textAnchor="middle" fontSize={12.5} fill="#64748b" stroke="#070b14" strokeWidth={3} paintOrder="stroke">{T('فرع المعرفة: المدرسة وخبراؤها')}</text>
           <text x={930} y={258} textAnchor="middle" fontSize={12.5} fill="#64748b" stroke="#070b14" strokeWidth={3} paintOrder="stroke">{T('فرع التشغيل: الأقسام وروبوتاتها')}</text>

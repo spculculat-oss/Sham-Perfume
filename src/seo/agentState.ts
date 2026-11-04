@@ -53,7 +53,7 @@ export interface SeoCoach {
 }
 export interface SeoSubmission {
   engine: string;
-  method: 'indexnow' | 'bing-api' | 'gsc' | 'sitemap' | 'websub';
+  method: 'indexnow' | 'bing-api' | 'yandex-api' | 'gsc' | 'sitemap' | 'websub';
   at: string;
   urls: number;
   ok: boolean;

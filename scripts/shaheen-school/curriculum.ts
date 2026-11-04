@@ -11,10 +11,11 @@
  * tests/shaheenSchoolAcademy.test.ts (every question must find exactly its own lesson).
  */
 import { AI_TOOLS, type AiToolId } from '../../src/utils/aiTools';
+import { booksForTrack, approvedBooksForTrack, type LibraryBook } from '../../src/library/catalog';
 import type { ProgramInput } from '../../src/utils/shaheenBlocks';
 import type { BankQuestion, TrainingDoc } from './school';
 import { AI_PROJECT_LESSONS, CHEM_LESSONS, FRONTIER_LESSONS, IT_LESSONS, MATH_LESSONS, PHYS_LESSONS } from './curriculumWorld';
-import { COMMERCE_LESSONS, GEO_LESSONS, HIST_LESSONS, LAW_LESSONS, LIT_LESSONS, MGMT_LESSONS, PR_LESSONS, SOC_LESSONS } from './curriculumSociety';
+import { COMMERCE_LESSONS, TRADE_PRACTICAL_LESSONS, GEO_LESSONS, HIST_LESSONS, LAW_LESSONS, LIT_LESSONS, MGMT_LESSONS, PR_LESSONS, SOC_LESSONS } from './curriculumSociety';
 import { CYBERPSY_LESSONS, PSY_LESSONS, UXPSY_LESSONS } from './curriculumMind';
 import { BIOLOGY_LESSONS, MEDICINE_LESSONS } from './curriculumLife';
 import { EARTH_LESSONS, ENGINEERING_LESSONS } from './curriculumEngineering';
@@ -262,7 +263,7 @@ export const PROGRAMMING_LANGUAGES: [string, string, keyof typeof LANGUAGE_FAMIL
 ];
 
 // ── Shared lesson builders ───────────────────────────────────────────────────────────────────────────────
-export interface AcademyLesson extends TrainingDoc { track: TrackId; topic: string }
+export interface AcademyLesson extends TrainingDoc { track: TrackId; topic: string; /** «approved» = بحث معتمد يُدرج في المدرسة، غير المعتمد لا يدخل. */ approved?: boolean }
 export interface AcademyPair { lesson: AcademyLesson; question: BankQuestion }
 
 const lang = (ar: string, en: string, family: keyof typeof LANGUAGE_FAMILIES, useAr: string): AcademyLesson => ({
@@ -682,9 +683,9 @@ const PAIRS: AcademyPair[] = [
   ...LANG_CONCEPTS, ...BLOCK_LESSONS, ...SOFTWARE_LESSONS, ...GRAPHICS_LESSONS, ...WEBCARE_LESSONS, ...AI_LESSONS,
   ...SECURITY_LESSONS, ...HACKING_LESSONS, ...THREAT_LESSONS, ...QUANTUM_LESSONS, ...toolPairs(),
   ...AI_PROJECT_LESSONS, ...IT_LESSONS, ...FRONTIER_LESSONS, ...CHEM_LESSONS, ...PHYS_LESSONS, ...MATH_LESSONS,
-  ...COMMERCE_LESSONS, ...LAW_LESSONS, ...PR_LESSONS, ...MGMT_LESSONS, ...HIST_LESSONS, ...GEO_LESSONS, ...LIT_LESSONS, ...SOC_LESSONS,
+  ...COMMERCE_LESSONS, ...TRADE_PRACTICAL_LESSONS, ...LAW_LESSONS, ...PR_LESSONS, ...MGMT_LESSONS, ...HIST_LESSONS, ...GEO_LESSONS, ...LIT_LESSONS, ...SOC_LESSONS,
   ...PSY_LESSONS, ...CYBERPSY_LESSONS, ...UXPSY_LESSONS, ...PERFUME_SKILLS,
-  ...UNIVERSITY_PAIRS, ...RESEARCH_PAIRS,
+  ...UNIVERSITY_PAIRS, ...RESEARCH_PAIRS.filter((p) => Boolean(p.lesson.approved)),
   ...BIOLOGY_LESSONS, ...MEDICINE_LESSONS,
   ...ENGINEERING_LESSONS, ...EARTH_LESSONS,
   ...EDUCATION_LESSONS, ...MEDIA_LESSONS, ...SPORTS_LESSONS, ...ARTS_LESSONS,
@@ -701,6 +702,23 @@ export function academyLessons(): TrainingDoc[] {
 
 export function academyQuestions(): BankQuestion[] {
   return PAIRS.map((p) => p.question);
+}
+
+/** Track-linked catalogue candidates for reading-list planning; metadata never becomes a lesson. */
+export function academyLibraryReferences(track: TrackId): LibraryBook[] {
+  return booksForTrack(track);
+}
+/** Strict publication gate: only an edition-verified, approved, lawfully accessible full work can teach. */
+export function approvedAcademyLibraryBooks(track: TrackId): LibraryBook[] {
+  return approvedBooksForTrack(track);
+}
+/** A coverage report for every school track exposes gaps rather than inventing books. */
+export function academyLibraryCoverage(): Array<{ track: TrackId; candidateCount: number; approvedCount: number }> {
+  return TRACKS.map(({ id }) => ({
+    track: id,
+    candidateCount: academyLibraryReferences(id).length,
+    approvedCount: approvedAcademyLibraryBooks(id).length,
+  }));
 }
 
 // ── The school's own block programs (built and scheduled every school run) ─────────────────────────────────

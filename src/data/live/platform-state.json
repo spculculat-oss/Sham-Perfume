@@ -1,12 +1,12 @@
 {
- "updatedAt": "2026-10-23T11:56:20.893Z",
+ "updatedAt": "2026-11-04T22:08:40.866Z",
  "active": true,
  "decisions": [
   {
-   "at": "2026-10-23T11:56:20.892Z",
-   "number": 285,
+   "at": "2026-11-04T21:13:35.622Z",
+   "number": 463,
    "kind": "task",
-   "title": "[قسم تجربة الزائر والتصميم واللغات] «ابعتلك رقم الكارت؟» مافيش تحذير فوري من شاهين إنه مايبعتش بيانات الكارت",
+   "title": "[قسم الجودة والاعتماد على النفس] القسم بطيء جداً (22 ثانية)",
    "outcome": "approved",
    "summaryAr": "✅ الدولة وافقت (5 موافقة).",
    "tally": {
@@ -14,13 +14,13 @@
     "refuse": 0,
     "veto": 0
    },
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/285"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/463"
   },
   {
-   "at": "2026-10-23T08:58:40.990Z",
-   "number": 272,
+   "at": "2026-11-04T03:12:26.538Z",
+   "number": 456,
    "kind": "task",
-   "title": "إتاحة خيار الدفع كزائر وتبسيط صفحة إتمام الطلب",
+   "title": "إصلاح عطل: مسؤول التعاقدات",
    "outcome": "approved",
    "summaryAr": "✅ الدولة وافقت (6 موافقة).",
    "tally": {
@@ -28,13 +28,27 @@
     "refuse": 0,
     "veto": 0
    },
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/272"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/456"
   },
   {
-   "at": "2026-10-23T08:58:43.074Z",
-   "number": 273,
+   "at": "2026-11-02T09:28:42.493Z",
+   "number": 427,
    "kind": "task",
-   "title": "توحيد واجهة المتجر بالعربية وتثبيت اتجاه العرض (RTL)",
+   "title": "تعريب النصوص الإنجليزية المتبقية في الواجهة",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/427"
+  },
+  {
+   "at": "2026-11-01T09:06:37.450Z",
+   "number": 422,
+   "kind": "task",
+   "title": "توحيد واجهة المتجر واتجاه العرض (RTL) وتعريب النصوص الإنجليزية",
    "outcome": "approved",
    "summaryAr": "✅ الدولة وافقت (5 موافقة).",
    "tally": {
@@ -42,13 +56,27 @@
     "refuse": 0,
     "veto": 0
    },
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/273"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/422"
   },
   {
-   "at": "2026-10-23T08:58:45.437Z",
-   "number": 274,
+   "at": "2026-11-01T09:06:40.934Z",
+   "number": 423,
    "kind": "task",
-   "title": "إصلاح عطل فحص شاهين على الموقع الحي",
+   "title": "معالجة وتصحيح بيانات 516 منتجاً وتفقد المنتجات المخفية",
+   "outcome": "refused",
+   "summaryAr": "❌ الدولة رفضت بالفيتو: المدير القانوني — الموضوع بيتكلم عن قرار قانوني ملزم — محدش يتجاوزه. الدولة قفلت الموضوع.",
+   "tally": {
+    "approve": 4,
+    "refuse": 0,
+    "veto": 1
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/423"
+  },
+  {
+   "at": "2026-10-31T09:00:34.598Z",
+   "number": 419,
+   "kind": "task",
+   "title": "إصلاح مسار إتمام الطلب (Checkout) وتجربة الهاتف",
    "outcome": "approved",
    "summaryAr": "✅ الدولة وافقت (5 موافقة).",
    "tally": {
@@ -56,310 +84,894 @@
     "refuse": 0,
     "veto": 0
    },
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/274"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/419"
+  },
+  {
+   "at": "2026-10-31T09:00:37.429Z",
+   "number": 420,
+   "kind": "task",
+   "title": "تنقية النصوص الإنجليزية المعزولة في النظام",
+   "outcome": "refused",
+   "summaryAr": "❌ الدولة رفضت بالفيتو: المدير القانوني — الموضوع بيتكلم عن قرار قانوني ملزم — محدش يتجاوزه. الدولة قفلت الموضوع.",
+   "tally": {
+    "approve": 3,
+    "refuse": 0,
+    "veto": 1
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/420"
+  },
+  {
+   "at": "2026-10-30T20:00:55.413Z",
+   "number": 416,
+   "kind": "task",
+   "title": "إصلاح عطل: مجلس شاهين (الاجتماع اليومي)",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/416"
+  },
+  {
+   "at": "2026-10-30T20:00:57.619Z",
+   "number": 417,
+   "kind": "task",
+   "title": "إصلاح عطل: جولة الزائر والمستشار الميداني",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/417"
+  },
+  {
+   "at": "2026-10-30T09:14:08.882Z",
+   "number": 410,
+   "kind": "task",
+   "title": "إصلاح وتوحيد اتجاه العرض (RTL) ومعالجة الواجهات",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/410"
+  },
+  {
+   "at": "2026-10-30T09:14:10.959Z",
+   "number": 411,
+   "kind": "task",
+   "title": "فصل وتصميم مسار الدفع (Checkout) بوضوح",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/411"
+  },
+  {
+   "at": "2026-10-30T09:14:13.923Z",
+   "number": 412,
+   "kind": "task",
+   "title": "تنقية وتصحيح بيانات المنتجات في الكتالوج",
+   "outcome": "refused",
+   "summaryAr": "❌ الدولة رفضت بالفيتو: المدير القانوني — الموضوع بيتكلم عن قرار قانوني ملزم — محدش يتجاوزه. الدولة قفلت الموضوع.",
+   "tally": {
+    "approve": 4,
+    "refuse": 0,
+    "veto": 1
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/412"
+  },
+  {
+   "at": "2026-10-29T19:18:49.384Z",
+   "number": 406,
+   "kind": "task",
+   "title": "إصلاح وتوحيد اتجاه الواجهات (RTL) ومعالجة النصوص الإنجليزية",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/406"
+  },
+  {
+   "at": "2026-10-29T19:18:51.754Z",
+   "number": 407,
+   "kind": "task",
+   "title": "تحسين زمن استجابة شات الخبير شاهين",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/407"
+  },
+  {
+   "at": "2026-10-29T19:18:54.914Z",
+   "number": 408,
+   "kind": "task",
+   "title": "تحديث أسعار الشحن لماليزيا في سجل المسارات",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/408"
+  },
+  {
+   "at": "2026-10-29T09:13:23.154Z",
+   "number": 402,
+   "kind": "task",
+   "title": "إصلاح عطل بناء ونشر الموقع وتجاوز اختبارات الجودة",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/402"
+  },
+  {
+   "at": "2026-10-29T09:13:25.423Z",
+   "number": 403,
+   "kind": "task",
+   "title": "إصلاح مسار سلة التسوق وإتاحة الدفع كزائر",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/403"
+  },
+  {
+   "at": "2026-10-29T09:13:27.466Z",
+   "number": 404,
+   "kind": "task",
+   "title": "تصحيح اتجاه النصوص (RTL) وتنظيف الألفاظ الإنجليزية في الواجهات",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (4 موافقة).",
+   "tally": {
+    "approve": 4,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/404"
+  },
+  {
+   "at": "2026-10-28T09:11:56.342Z",
+   "number": 395,
+   "kind": "task",
+   "title": "إصلاح عرض محتوى السلة وتوحيد السعر النهائي للمنتج",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/395"
+  },
+  {
+   "at": "2026-10-28T09:12:00.045Z",
+   "number": 396,
+   "kind": "task",
+   "title": "تصحيح وتحسين بيانات المنتجات ذات الملاحظات في الكتالوج",
+   "outcome": "refused",
+   "summaryAr": "❌ الدولة رفضت بالفيتو: المدير القانوني — الموضوع بيتكلم عن قرار قانوني ملزم — محدش يتجاوزه. الدولة قفلت الموضوع.",
+   "tally": {
+    "approve": 4,
+    "refuse": 0,
+    "veto": 1
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/396"
+  },
+  {
+   "at": "2026-10-28T09:12:02.548Z",
+   "number": 397,
+   "kind": "task",
+   "title": "تحسين تنسيق الاتجاه (RTL) والتباين اللغوي في واجهات الموقع",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/397"
+  },
+  {
+   "at": "2026-10-27T11:56:39.247Z",
+   "number": 387,
+   "kind": "task",
+   "title": "إصلاح مسار السلة وعرض محتوى المنتجات بدقة",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/387"
+  },
+  {
+   "at": "2026-10-27T11:56:42.514Z",
+   "number": 388,
+   "kind": "task",
+   "title": "تنقية بيانات المنتجات التي عليها ملاحظات",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/388"
+  },
+  {
+   "at": "2026-10-27T09:04:24.109Z",
+   "number": 381,
+   "kind": "task",
+   "title": "إصلاح وعرض محتوى سلة المشتريات على الموبايل",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/381"
+  },
+  {
+   "at": "2026-10-27T09:04:26.461Z",
+   "number": 382,
+   "kind": "task",
+   "title": "توحيد اتجاه العرض (RTL) ومعالجة التباين اللغوي",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/382"
+  },
+  {
+   "at": "2026-10-27T09:04:28.814Z",
+   "number": 383,
+   "kind": "task",
+   "title": "معالجة أخطاء اختبارات الجودة وتمكين بناء ونشر الموقع",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/383"
+  },
+  {
+   "at": "2026-10-25T08:53:47.500Z",
+   "number": 346,
+   "kind": "task",
+   "title": "تنسيق RTL وتوحيد اللغة العربية",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/346"
+  },
+  {
+   "at": "2026-10-25T08:53:50.021Z",
+   "number": 347,
+   "kind": "task",
+   "title": "تحسين الثقة والأداء في عرض الصور والأسعار",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/347"
+  },
+  {
+   "at": "2026-10-25T08:53:52.252Z",
+   "number": 348,
+   "kind": "task",
+   "title": "مراجعة النصوص الإنجليزي اللي لقاها قسم التصميم",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/348"
+  },
+  {
+   "at": "2026-10-23T22:52:19.647Z",
+   "number": 318,
+   "kind": "task",
+   "title": "إصلاح خطوة «checkout» في رحلة الشراء",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/318"
+  },
+  {
+   "at": "2026-10-23T22:52:21.936Z",
+   "number": 319,
+   "kind": "task",
+   "title": "إصلاح عطل: السكرتير — مشرف شاهين",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/319"
+  },
+  {
+   "at": "2026-10-23T22:52:24.359Z",
+   "number": 320,
+   "kind": "task",
+   "title": "إصلاح عطل: مدرّب كتالوج المتجر",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/320"
+  },
+  {
+   "at": "2026-10-23T19:51:24.637Z",
+   "number": 304,
+   "kind": "task",
+   "title": "[قسم تجربة الزائر والتصميم واللغات] استرجاع منتج سليم: بيعتذر عن حاجة محصلتش",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/304"
+  },
+  {
+   "at": "2026-10-23T19:51:24.985Z",
+   "number": 305,
+   "kind": "task",
+   "title": "[قسم تجربة الزائر والتصميم واللغات] «10 هدايا لزمايلي» مابتتفهمش كطلب هدايا جماعي",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/305"
+  },
+  {
+   "at": "2026-10-23T19:51:25.492Z",
+   "number": 306,
+   "kind": "task",
+   "title": "[قسم تجربة الزائر والتصميم واللغات] شاهين كرر نفس الرد بالحرف",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/306"
+  },
+  {
+   "at": "2026-10-23T19:03:45.391Z",
+   "number": 301,
+   "kind": "task",
+   "title": "[قسم تجربة الزائر والتصميم واللغات] «إزاي أتتبعه؟» مابتتفهمش من شاهين",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/301"
+  },
+  {
+   "at": "2026-10-23T19:03:45.969Z",
+   "number": 302,
+   "kind": "task",
+   "title": "[قسم تجربة الزائر والتصميم واللغات] مقارنة السعر بمتجر تاني مش متغطية (بيرد بقايمة أو بيروح للمنصات)",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/302"
+  },
+  {
+   "at": "2026-10-23T19:03:46.375Z",
+   "number": 303,
+   "kind": "task",
+   "title": "[قسم تجربة الزائر والتصميم واللغات] «الأوردر ناقص» اتردّ عليها كأنها منتج غلط",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/303"
+  },
+  {
+   "at": "2026-10-23T17:52:41.875Z",
+   "number": 298,
+   "kind": "task",
+   "title": "[قسم تجربة الزائر والتصميم واللغات] رد الجملة مابيلتقطش الكمية والمنتج اللي التاجر قالهم",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (6 موافقة).",
+   "tally": {
+    "approve": 6,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/298"
+  },
+  {
+   "at": "2026-10-23T17:52:42.310Z",
+   "number": 299,
+   "kind": "task",
+   "title": "[قسم تجربة الزائر والتصميم واللغات] شاهين كرر نفس الرد بالحرف",
+   "outcome": "approved",
+   "summaryAr": "✅ الدولة وافقت (5 موافقة).",
+   "tally": {
+    "approve": 5,
+    "refuse": 0,
+    "veto": 0
+   },
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/299"
   }
  ],
  "supervision": {
-  "health": 88,
+  "health": 89,
   "problems": [
-   "patrol: 4 عطل الدورية ماقدرتش تصلحه آلياً",
-   "finance: الإدارة المالية تحتاج مراجعة خاصة",
-   "design_audit: تقييم التصميم واللغات 42/100 (14 ملاحظة)",
-   "visitor_tour: جولة الزائر: خطوات واقعة — store: فتح المتجر وتطبيق فلتر الرجال، لاحظت وجود عناصر بالعربية والإنجليزية وتكرار العن، checkout: الانتقال إلى صفحة الدفع يظهر تسجيل الدخول قبل الدفع ولا يوجد خيار زائر حتى الآن.",
-   "verifier: 1 مهمة اتقفلت ولسه مش متصلحة على الموقع: إصلاح فجوات السيو التقني وهيكل صفحات الموقع",
-   "live_check: آخر تشغيل فشل",
-   "keys: محركات متوقفة مؤقتاً: openai، gemini"
+   "census: آخر تشغيل فشل",
+   "council: 1 مهمة تطوير مفتوحة من أكتر من أسبوع",
+   "secretary: أدوات ذكاء اصطناعي ضعيفة: خبير التصميم متعدد التخصصات (0)",
+   "patrol: 2 عطل الدورية ماقدرتش تصلحه آلياً",
+   "trade_lanes: الشحن بسعره الحقيقي في 74 وجهة، وهامش التجهيز 247 ج.م للطرد — الـ50% صافية فيها ومش متحمّلة على الهامش",
+   "carriers: «بوس لاجو الدولي (بريد ماليزيا)» لسه مش متأكدين إنها بتقبل العطور (UN1266) — وهي اللي بتحمل 73 وجهة",
+   "examiner: درجة الذكاء 17/100 — العقل لسه مش مستقر على أرقامه",
+   "localization_audit: 1 عملة رسمية من غير سعر صرف (KP:KPW)",
+   "design_audit: تقييم التصميم واللغات 58/100 (10 ملاحظة)",
+   "design_expert: تقييم خبير التصميم متعدد التخصصات: 0/10"
   ]
  },
  "field": {
-  "maneuverAt": "2026-10-23T11:06:37.124Z",
-  "at": "2026-10-23T11:56:17.999Z",
+  "maneuverAt": "2026-11-04T20:25:04.585Z",
+  "at": "2026-11-04T22:08:39.037Z",
   "items": [
    {
-    "id": "shaheen_chat:card-number:0:expect",
-    "titleAr": "«ابعتلك رقم الكارت؟» مافيش تحذير فوري من شاهين إنه مايبعتش بيانات الكارت",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
+    "id": "home:slow",
+    "titleAr": "القسم بطيء جداً (22 ثانية)",
+    "section": "home",
+    "sectionAr": "الرئيسية",
     "kind": "error",
-    "severity": "high",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، أمان الزائر في الشات — شغل شات شاهين (بإشراف الأمن والخصوصية)",
+    "severity": "medium",
+    "dept": "reliability",
+    "deptAr": "قسم الجودة والاعتماد على النفس",
+    "bot": "doctor",
+    "botAr": "طبيب شاهين (الصيانة)",
+    "reasonAr": "البطء — شغل قسم الجودة",
     "action": "task",
-    "seen": 2,
-    "issue": 285
+    "issue": 463,
+    "seen": 4
    },
    {
-    "id": "shaheen_chat:knowledge-mid-purchase:1:expect",
-    "titleAr": "سؤال علمي وسط الشراء اتردّ عليه بقايمة عطور بدل الإجابة",
+    "id": "alcohol:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "alcohol",
+    "sectionAr": "الكحول في العطور",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "community:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (1) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "community",
+    "sectionAr": "المجتمع",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "قسم «المجتمع» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "concentration:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "concentration",
+    "sectionAr": "حاسبة التركيز",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "قسم «حاسبة التركيز» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "cosmetic_designers:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "cosmetic_designers",
+    "sectionAr": "قسم المصممين — تجميل",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "cosmetics:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "cosmetics",
+    "sectionAr": "قسم مستحضرات التجميل",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "costing:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "costing",
+    "sectionAr": "حاسبة التكلفة",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "قسم «حاسبة التكلفة» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "costing:ai-idea:إضافةزرنسختفاصيلالتكلفةو",
+    "titleAr": "إضافة زر نسخ تفاصيل التكلفة والحسابات لمشاركتها بسهولة",
+    "section": "costing",
+    "sectionAr": "حاسبة التكلفة",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "قسم «حاسبة التكلفة» تبعه",
+    "action": "backlog",
+    "seen": 1
+   },
+   {
+    "id": "guide:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "guide",
+    "sectionAr": "دليل صناعة العطور",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "guide:ai-idea:إضافةفهرسجانبيسريعللتنقل",
+    "titleAr": "إضافة فهرس جانبي سريع للتنقل بين خطوات دليل تصنيع العطور",
+    "section": "guide",
+    "sectionAr": "دليل صناعة العطور",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "content",
+    "deptAr": "قسم المحتوى والظهور في البحث",
+    "bot": "teacher",
+    "botAr": "المعلم المحلي ومراجع الدروس",
+    "reasonAr": "قسم «دليل صناعة العطور» تبعه",
+    "action": "backlog",
+    "seen": 1
+   },
+   {
+    "id": "home:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "home",
+    "sectionAr": "الرئيسية",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "قسم «الرئيسية» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "home:ai-idea:إضافةشريطتنبيهاتمتحركللإ",
+    "titleAr": "إضافة شريط تنبيهات متحرك للإعلانات والعروض الرسمية المعتمدة في الأعلى",
+    "section": "home",
+    "sectionAr": "الرئيسية",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "قسم «الرئيسية» تبعه",
+    "action": "backlog",
+    "seen": 1
+   },
+   {
+    "id": "library:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "library",
+    "sectionAr": "مكتبة شاهين",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "maceration_simulator:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "maceration_simulator",
+    "sectionAr": "محاكي التخمير والنضج",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "قسم «محاكي التخمير والنضج» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "master_ai:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "master_ai",
+    "sectionAr": "الخبير شاهين",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "قسم «الخبير شاهين» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "molecule_studio:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "molecule_studio",
+    "sectionAr": "استوديو الجزيئات",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "perfume_designers:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "perfume_designers",
+    "sectionAr": "قسم المصممين — عطور",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "perfume_news:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "perfume_news",
+    "sectionAr": "أخبار العطور",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "perfumes:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "perfumes",
+    "sectionAr": "قسم العطور",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "productDetail:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "productDetail",
+    "sectionAr": "صفحة المنتج",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "pyramid:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "pyramid",
+    "sectionAr": "حاسبة الهرم العطري",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "قسم «حاسبة الهرم العطري» تبعه، تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "raw_materials:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "raw_materials",
+    "sectionAr": "المواد الخام",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
+   },
+   {
+    "id": "shaheen_chat:ai-idea:إضافةاقتراحاتأسئلةجاهزةب",
+    "titleAr": "إضافة اقتراحات أسئلة جاهزة بنقرة واحدة لبدء المحادثة مع الخبير",
     "section": "shaheen_chat",
     "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
+    "kind": "idea",
+    "severity": "low",
     "dept": "experience",
     "deptAr": "قسم تجربة الزائر والتصميم واللغات",
     "bot": "chat",
     "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، فهم الأسئلة والإجابة — شغل شات شاهين",
-    "action": "watch",
-    "seen": 2
+    "reasonAr": "قسم «شات الخبير شاهين» تبعه",
+    "action": "backlog",
+    "seen": 1
    },
    {
-    "id": "shaheen_chat:discount-on-shown:1:expect",
-    "titleAr": "رد الخصم بيسأل عن اسم العطر وهو لسه معروض قدام الزائر",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:discount-on-shown:2:expect",
-    "titleAr": "بعد رد الخصم «غالي شوية» مابقتش تتفهم من شاهين (البيع اتقطع وراح للمنصات)",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:gift-pronoun:1:expect",
-    "titleAr": "سؤال الهدية بالضمير «أهاديه» مابيتفهمش من شاهين",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
+    "id": "store:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "store",
+    "sectionAr": "المتجر",
+    "kind": "idea",
+    "severity": "low",
     "dept": "experience",
     "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "watch",
-    "seen": 2
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
    },
    {
-    "id": "shaheen_chat:gift-boss:0:expect",
-    "titleAr": "هدية المدير: سمّاه «زميلك» أو رشّح اسم رومانسي مش لايق",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:gift-son-graduation:0:expect",
-    "titleAr": "«ابني» اتفهمت «ابنك/بنتك» — مابيعرفش إنه ولد ولا إن المناسبة نجاح",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:recommend-after-advice:1:expect",
-    "titleAr": "بعد نصيحة الهدية «رشحلي» بيسأل من الأول وينسى المستلم والمناسبة",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:how-to-order:1:expect",
-    "titleAr": "«إزاي أطلبه؟» بيكرر قايمة العطور بدل خطوات الطلب",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "store",
-    "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:wholesale-quantity:1:expect",
-    "titleAr": "رد الجملة مابيلتقطش الكمية والمنتج اللي التاجر قالهم",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:wholesale-quantity:1:chat-repeat",
-    "titleAr": "شاهين كرر نفس الرد بالحرف",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:calm-tracking:0:expect",
-    "titleAr": "سؤال تتبع هادي اتعامل كشكوى تأخير واعتذر عن حاجة محصلتش",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:calm-tracking:1:expect",
-    "titleAr": "«إزاي أتتبعه؟» مابتتفهمش من شاهين",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:competitor-price:0:expect",
-    "titleAr": "مقارنة السعر بمتجر تاني مش متغطية (بيرد بقايمة أو بيروح للمنصات)",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:missing-item:0:expect",
-    "titleAr": "«الأوردر ناقص» اتردّ عليها كأنها منتج غلط",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:refund-sealed:0:expect",
-    "titleAr": "استرجاع منتج سليم: بيعتذر عن حاجة محصلتش",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:group-gifts:0:expect",
-    "titleAr": "«10 هدايا لزمايلي» مابتتفهمش كطلب هدايا جماعي",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:condolence-incense:1:chat-repeat",
-    "titleAr": "شاهين كرر نفس الرد بالحرف",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
-    "severity": "medium",
-    "dept": "experience",
-    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
-    "bot": "chat",
-    "botAr": "شات الخبير شاهين ومساعد شام",
-    "reasonAr": "قسم «شات الخبير شاهين» تبعه، التعامل مع الناس والشكاوى — شغل شات شاهين",
-    "action": "watch",
-    "seen": 2
-   },
-   {
-    "id": "shaheen_chat:which-lasts-longest:1:chat-lint",
-    "titleAr": "الرد وقع في غلطة من غلطات البيع أو العلاقات",
-    "section": "shaheen_chat",
-    "sectionAr": "شات الخبير شاهين",
-    "kind": "error",
+    "id": "store:ai-idea:تفعيلفلترسريعلتصفيةالمنت",
+    "titleAr": "تفعيل فلتر سريع لتصفية المنتجات حسب الفئة وحالة التوفر في المخزون",
+    "section": "store",
+    "sectionAr": "المتجر",
+    "kind": "idea",
     "severity": "low",
     "dept": "store",
     "deptAr": "قسم المتجر والاستيراد",
-    "bot": "store_advisor",
-    "botAr": "مستشار التسوق «اسأل شاهين»",
-    "reasonAr": "ترشيح وبيع من منتجات المتجر — شغل مستشار التسوق",
-    "action": "watch",
-    "seen": 2
+    "bot": "catalog",
+    "botAr": "مدرّب كتالوج المتجر",
+    "reasonAr": "قسم «المتجر» تبعه",
+    "action": "backlog",
+    "seen": 1
+   },
+   {
+    "id": "world_perfumes:unnamed-button",
+    "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+    "section": "world_perfumes",
+    "sectionAr": "عطور العالم",
+    "kind": "idea",
+    "severity": "low",
+    "dept": "experience",
+    "deptAr": "قسم تجربة الزائر والتصميم واللغات",
+    "bot": "design_expert",
+    "botAr": "خبير التصميم متعدد التخصصات",
+    "reasonAr": "تصميم الموبايل وسهولة الاستخدام — شغل خبير التصميم",
+    "action": "backlog",
+    "seen": 51
    }
   ]
  }

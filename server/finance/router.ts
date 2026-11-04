@@ -5,7 +5,13 @@ import { RateLimiter, clientKey } from '../core/rateLimit';
 import { isCountry } from '../../src/utils/pricing';
 import { FinanceService } from './service';
 import type { BankService } from './bank';
+import type { SalesService } from '../sales/service';
+import { createSalesRouter } from '../sales/router';
 import { BUNDLED_FX, isFxTable, type FxTable } from '../../src/utils/pricing';
+import { PLATFORM_HOLDER } from '../../src/bank/shamLedger';
+import { ShamBooks, readMoneyBody } from './shamBooks';
+import { WorldFirstRail } from './worldFirstRail';
+import { inquireWorldFirst } from './worldFirstInquiry';
 import { loadLive } from '../core/liveData';
 import type { PeriodKind } from './types';
 
@@ -15,7 +21,7 @@ function periodInput(kind: unknown, offset: unknown): { kind: PeriodKind; offset
   if (!['daily', 'weekly', 'monthly'].includes(k as string) || !Number.isInteger(n) || n > 0 || n < -366) throw new ValidationError('INVALID_PERIOD', 'اختر فترة يومية أو أسبوعية أو شهرية وإزاحة بين 0 و-366.');
   return { kind: k as PeriodKind, offset: n };
 }
-export function createFinanceRouter(finance: FinanceService, bank?: BankService) {
+export function createFinanceRouter(finance: FinanceService, bank?: BankService, sales?: SalesService) {
   const router = express.Router();
   const limiter = new RateLimiter(4, 10 * 60_000);
   const statementLimiter = new RateLimiter(20, 10 * 60_000);
@@ -47,6 +53,8 @@ export function createFinanceRouter(finance: FinanceService, bank?: BankService)
     if (req.body?.confirmed !== true) throw new ValidationError('CONFIRMATION_REQUIRED', 'أكد اكتمال مراجعة المصروفات لهذه الفترة.');
     await finance.reviewExpenses(kind, offset, req.body?.fingerprint); res.json({ ok: true });
   }));
+  // «إدارة المبيعات»: the desk inside «بنك شام» — the pipeline, targets, rhythm and study over the same real figures.
+  if (sales) router.use('/sales', createSalesRouter(sales));
   if (bank) {
     // «بنك شام»: direct collection, statement matching, payables, budgets, analytics and «شاهين المحاسب».
     const bundled = { ...BUNDLED_FX, updatedAt: BUNDLED_FX.updatedAt || '1970-01-01T00:00:00Z' };
@@ -68,9 +76,38 @@ export function createFinanceRouter(finance: FinanceService, bank?: BankService)
     router.post('/bank/payables/:id/cancel', wrap(async (req, res) => { res.json({ item: await bank.cancelPayable(String(req.params.id)) }); }));
     router.put('/bank/budgets', wrap(async (req, res) => { res.json({ item: await bank.setBudget(req.body) }); }));
     router.post('/bank/ask', wrap(async (req, res) => { res.json(await bank.ask(req.body?.question)); }));
+    const books = new ShamBooks(finance.store, () => new Date().toISOString(), () => finance.persistent);
+    const house = () => books.open(PLATFORM_HOLDER);
+    router.get('/bank/sham', wrap(async (_req, res) => { res.json(await house()); }));
+    router.post('/bank/sham/import', wrap(async (_req, res) => {
+      const dash = await bank.dashboard();
+      res.json(await books.importConfirmed(dash.balances.map((row) => ({ currency: row.currency, minor: row.collectedMinor }))));
+    }));
+    router.get('/bank/sham/resolve', wrap(async (req, res) => {
+      if (!(await books.exists(String(req.query.number || '')))) throw new ValidationError('UNKNOWN_ACCOUNT', 'لا يوجد حساب شام بهذا الرقم. يجب أن يفتح صاحبه البنك أولاً.', 404);
+      res.json({ ok: true });
+    }));
+    router.post('/bank/sham/transfer', wrap(async (req, res) => { res.json(await books.transfer(PLATFORM_HOLDER, readMoneyBody(req.body))); }));
+    router.post('/bank/sham/hold', wrap(async (req, res) => { res.json(await books.hold(PLATFORM_HOLDER, readMoneyBody(req.body))); }));
+    router.post('/bank/sham/release', wrap(async (req, res) => { res.json(await books.release(PLATFORM_HOLDER, readMoneyBody(req.body).postingId)); }));
+    router.post('/bank/sham/convert', wrap(async (req, res) => {
+      const body = readMoneyBody(req.body);
+      const rates: FxTable = await loadLive('fx-rates.json', bundled, isFxTable, finance.env, fetch).catch(() => bundled);
+      res.json(await books.convert(PLATFORM_HOLDER, body, rates));
+    }));
+    const settlement = new WorldFirstRail(finance.store, () => new Date().toISOString(), finance.env);
+    const inquiryLimiter = new RateLimiter(6, 10 * 60_000);
+    router.get('/bank/sham/settlement', wrap(async (_req, res) => { res.json(await settlement.snapshot()); }));
+    router.post('/bank/sham/settlement', wrap(async (req, res) => { res.status(201).json(await settlement.queue(req.body)); }));
+    router.post('/bank/sham/settlement/inquire', wrap(async (req, res) => {
+      if (!inquiryLimiter.allow(clientKey(req))) throw new ValidationError('RATE_LIMITED', 'انتظر قبل إعادة قراءة الرصيد.', 429);
+      const snap = await settlement.snapshot();
+      const inquiry = await inquireWorldFirst(finance.env);
+      res.json({ ...inquiry, queued: snap.queued, items: snap.items, sendsExternal: false, receiving: 'not_issued', transmission: 'blocked' });
+    }));
   }
   router.get('/export', wrap(async (_req, res) => {
-    const collections = ['financeOrders', 'financeSessions', 'financeEntries', 'financeReports', 'financeReviews', 'financeIssues', 'financeRuns', 'paymentRegistrations', 'bankAccounts', 'bankDirect', 'bankPayables', 'bankBudgets', 'bankAudit'] as const;
+    const collections = ['financeOrders', 'financeSessions', 'financeEntries', 'financeReports', 'financeReviews', 'financeIssues', 'financeRuns', 'paymentRegistrations', 'bankAccounts', 'bankDirect', 'bankPayables', 'bankBudgets', 'bankAudit', 'shamHolders', 'shamPostings', 'shamImports', 'shamSettlement', 'salesDeals', 'salesTargets', 'salesStudy', 'salesAudit'] as const;
     const data: Record<string, unknown> = { exportedAt: new Date().toISOString(), version: 1 };
     for (const c of collections) data[c] = await finance.store.list(c);
     res.setHeader('Content-Disposition', 'attachment; filename="sham-finance-private.json"'); res.json(data);

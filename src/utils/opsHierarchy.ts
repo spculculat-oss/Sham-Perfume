@@ -33,7 +33,7 @@ export interface HNode {
   y: number;
 }
 
-export const ROOM = { width: 1280, height: 640 } as const;
+export const ROOM = { width: 1280, height: 700 } as const;
 export const TIERS: { id: TierId; y: number; labelAr: string; labelEn: string }[] = [
   { id: 'owner', y: 46, labelAr: 'صاحب الموقع', labelEn: 'Owner' },
   { id: 'state', y: 124, labelAr: 'دولة المنصة', labelEn: 'The State' },

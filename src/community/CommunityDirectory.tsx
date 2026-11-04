@@ -26,10 +26,10 @@ export const communitySections = [
 export default function CommunityDirectory({ lang, go, search }: { lang: Lang; go: (route: string) => void; search?: React.ReactNode }) {
   const t = tx(lang);
   return <div className="mx-auto max-w-5xl space-y-6">
-    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-stone-950 via-amber-950 to-stone-900 px-6 py-8 text-white sm:p-10">
-      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-200/20 bg-white/5 px-3 py-1 text-xs text-amber-200"><FlaskConical className="h-4 w-4" />{t('مجتمع شام • ملتقى صناع العطور', 'Sham Community • The perfumers’ hub')}</div>
-      <h1 className="text-2xl font-black sm:text-4xl">{t('ناس تشاركك شغف العطر.', 'People who share your passion for fragrance.')}</h1>
-      <p className="mt-3 max-w-2xl text-sm leading-7 text-stone-300">{t('تواصل مع أصحابك، شارك تجاربك وتركيباتك، وخلي خبرتك جزء من مجتمع بيكبر معاك.', 'Connect with friends, share your experiments and formulas, and help a community grow with your expertise.')}</p>
+    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-stone-950 via-amber-950 to-stone-900 px-6 py-8 text-white sm:p-10 shadow-xl">
+      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-200/30 bg-amber-500/10 px-3.5 py-1 text-xs font-bold text-amber-300"><FlaskConical className="h-4 w-4" />{t('مجتمع شام • نبض صناع العطور', 'Sham Community • The heart of perfumers')}</div>
+      <h1 className="text-2xl font-black sm:text-4xl">{t('بيتك الثاني بين عشاق العطور.', 'Your second home among fragrance lovers.')}</h1>
+      <p className="mt-3 max-w-2xl text-sm leading-7 text-stone-300">{t('شارك تركيباتك، ناقش أسرار التعتيق، وتواصل مع صناع بيشاركونك الشغف خطوة بخطوة.', 'Share your formulas, discuss maceration secrets, and connect with makers who share your passion step by step.')}</p>
     </section>
     {search}
     {communitySections.map(section => <section key={section.en}>

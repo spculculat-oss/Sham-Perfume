@@ -10,6 +10,7 @@ export const SELLER_UI = {
   cartTitle: { ar: 'يكمّل طلبك', en: 'Completes your order' },
   afterTitle: { ar: 'طلبك اتسجل 👌 وده اللي يكمّله', en: 'Your order is in 👌 here is what completes it' },
   forYouTitle: { ar: 'مختار ليك على ذوق آخر طلب', en: 'Picked for you from your last order' },
+  tasteTitle: { ar: 'مختار ليك على ذوقك من اللي شفته', en: 'Picked for your taste from what you viewed' },
   optional: { ar: 'اختياري خالص — ضيف اللي يعجبك بضغطة، ولو مش محتاج حاجة فطلبك كامل كده.', en: 'Entirely optional — add what you like in one tap; if you need nothing more, your order is complete.' },
   add: { ar: 'ضيف للسلة', en: 'Add to cart' },
   added: { ar: 'اتضاف ✓', en: 'Added ✓' },

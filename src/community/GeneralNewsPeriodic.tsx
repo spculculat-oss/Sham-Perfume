@@ -319,7 +319,7 @@ export function GeneralNewsPeriodic({ lang, go, toast, compactTickerOnly }: Prop
             {/* Image Banner */}
             <div className="relative aspect-video w-full overflow-hidden bg-stone-100">
               {article.imageUrl ? (
-                <img
+                <img loading="lazy" decoding="async"
                   src={article.imageUrl}
                   alt={article.titleAr}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -445,7 +445,7 @@ export function GeneralNewsPeriodic({ lang, go, toast, compactTickerOnly }: Prop
 
             {selectedArticle.imageUrl && (
               <div className="rounded-2xl overflow-hidden aspect-video">
-                <img
+                <img loading="lazy" decoding="async"
                   src={selectedArticle.imageUrl}
                   alt={selectedArticle.titleAr}
                   className="w-full h-full object-cover"

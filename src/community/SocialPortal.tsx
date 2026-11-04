@@ -553,7 +553,7 @@ function Composer({
 
       {image && (
         <div className="relative mt-3">
-          <img src={image} alt="" className="max-h-80 w-full rounded-2xl object-cover" />
+          <img loading="lazy" decoding="async" src={image} alt="" className="max-h-80 w-full rounded-2xl object-cover" />
           <button
             type="button"
             onClick={() => setImage(null)}

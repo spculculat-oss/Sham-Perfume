@@ -3,12 +3,13 @@
  *   /api/assistant/*  public visitor API (rate limited)
  *   /api/admin/*      management API (Bearer SHAM_ADMIN_TOKEN, constant-time compare)
  */
+import { createGovernanceRouter } from '../governance/router';
 import { createOwnerRoomRouter } from '../ownerRoom';
-import { createStateAgentRouter } from '../stateAgent';
 import { mailProvider, mailProviderLabel } from './mailer';
 import express from 'express';
 import { FinanceService } from '../finance/service';
 import { createFinanceRouter } from '../finance/router';
+import { SalesService } from '../sales/service';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { reviewSpecialtiesCached } from './specialtyReview';
 import { reviewPagesCached } from './pageReview';
@@ -22,12 +23,17 @@ import { createLedgerStore, createStore, type Store } from './store';
 import { BankService } from '../finance/bank';
 import { RateLimiter, clientKey } from './rateLimit';
 import { createSeoService } from '../seo/service';
+import { createCensusService } from '../census';
+import { createLabSignalsService } from '../labSignals';
+import { createInsightsService } from '../insights';
+import { buildPublicStatement } from '../../src/utils/platformCensus';
 import { probeEngines } from '../shaheen';
 import { createDesignBrief, validateDesignRequest } from '../design/assistant';
 import { SHAHEEN_SITE_SETTINGS } from '../config/shaheen';
 import { engineStatuses } from './engines';
 import { activeSeats, councilAvailable, publicTranscript } from './council';
 import type { CollectionName, RequestStatus, ServiceRequest } from './types';
+import { moneyFor, moneyOut } from './replyMoney';
 import { MAINTENANCE_ACTIONS, ShaheenRuntime, runningVersion, type MaintenanceAction } from './maintenance';
 import {
   sendCustomerStatusEmail,
@@ -67,6 +73,7 @@ export function createShamCore(options: CoreOptions = {}) {
   const durable = options.store ? store : createLedgerStore(env, store);
   const finance = new FinanceService(durable, env, { fetch: options.fetch });
   const bank = new BankService(finance, env, options.fetch || fetch);
+  const sales = new SalesService(finance, bank, env);
   // Shared with the Shaheen chat router: outcomes + capacity parts, read by the maintenance agent.
   const runtime = options.runtime || new ShaheenRuntime(runningVersion(env));
   const orchestrator = new Orchestrator(repo, { env, fetch: options.fetch });
@@ -76,6 +83,12 @@ export function createShamCore(options: CoreOptions = {}) {
   const notifier = createNotifier(env, options.fetch);
   // «منارة شاهين»: SEO/media agent — its own state, engines follow the admin policy, runs are manual or scheduled.
   const seo = createSeoService({ repo, env, fetch: options.fetch });
+  // «روبوت التعداد — دولة المنصة»: privacy-safe global visit ledger & public statement.
+  const census = createCensusService({ store: durable });
+  // «إشارات المعمل»: anonymous counters the scent-behaviour robot reads (opt-in share only).
+  const labSignals = createLabSignalsService({ store: durable });
+  // «خزنة فهم الزوار»: visitors' interactions (with their consent), studied for the administration only.
+  const insights = createInsightsService({ store: durable });
   const seoRunLimiter = new RateLimiter(4, 10 * 60_000);
   const designLimiter = new RateLimiter(8, 10 * 60_000);
   const feedbackLimiter = new RateLimiter(60, 10 * 60_000);
@@ -120,7 +133,8 @@ export function createShamCore(options: CoreOptions = {}) {
     const key = clientKey(req);
     const output = await orchestrator.chat(input, { signal: controller.signal, councilGate: () => councilLimiter.allow(key) });
     await afterChat(output);
-    res.json(output);
+    // «دولة الدخول قبل الرد»: the stored conversation keeps the catalog's pounds; the reply leaves in the visitor's currency.
+    res.json(moneyOut(output, moneyFor(req, input.language), input.language));
   }));
 
   /**
@@ -137,7 +151,13 @@ export function createShamCore(options: CoreOptions = {}) {
     res.on('close', () => { if (!res.writableFinished) controller.abort(); });
     res.writeHead(200, { 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-store, no-transform', Connection: 'keep-alive', 'X-Accel-Buffering': 'no' });
     res.flushHeaders?.();
-    const write = (event: StreamEvent) => { if (!res.writableEnded) res.write(`event: ${event.type}\ndata: ${JSON.stringify(event)}\n\n`); };
+    const money = moneyFor(req, input.language);
+    const lang = input.language;
+    // The live tokens may cut an amount in two (the page converts what it shows); the final answer leaves converted.
+    const write = (event: StreamEvent) => {
+      const out = event.type === 'done' ? { ...event, output: moneyOut(event.output, money, lang) } : event;
+      if (!res.writableEnded) res.write(`event: ${out.type}\ndata: ${JSON.stringify(out)}\n\n`);
+    };
     try {
       const key = clientKey(req);
       const output = await orchestrator.chat(input, { signal: controller.signal, onEvent: write, councilGate: () => councilLimiter.allow(key) });
@@ -244,11 +264,10 @@ export function createShamCore(options: CoreOptions = {}) {
     next();
   });
 
-  admin.use('/finance', createFinanceRouter(finance, bank));
+  admin.use('/governance', createGovernanceRouter(store, env));
+  admin.use('/finance', createFinanceRouter(finance, bank, sales));
   // «غرفة شاهين الخاصة»: the owner, Shaheen and the secretary only — nothing is stored on the server.
   admin.use('/owner-room', createOwnerRoomRouter({ env, fetch: options.fetch, health: runtime.health }));
-  // «وكيل صاحب المنصة في روبوت دولة المنصة»: understands owner commands with constitutional checks & zero storage.
-  admin.use('/state-agent', createStateAgentRouter({ env, fetch: options.fetch, health: runtime.health }));
 
   // What this server learned (questions + answers, no visitor data): merged into
   // src/data/live/shaheen-memory.json by scripts/shaheen-memory every two hours.
@@ -570,13 +589,38 @@ export function createShamCore(options: CoreOptions = {}) {
     res.status(202).json({ accepted: true, submit, startedAt: new Date().toISOString() });
   }));
 
+  // ---- «خزنة فهم الزوار»: the owner's studies of visitors, customers and countries ----
+  admin.use('/insights', insights.admin);
+
+  // ---- «روبوت التعداد — دولة المنصة»: global visit census, world heatmap data & public statement ----
+  // «روبوت سلوك الزائر العطري»: the anonymous lab counters — read by scripts/shaheen-scent with the admin token.
+  admin.get('/lab-signals', wrap(async (_req, res) => {
+    res.json({ ok: true, aggregate: await labSignals.load(), storage: { kind: durable.kind, persistent: durable.persistent } });
+  }));
+
+  admin.get('/census', wrap(async (_req, res) => {
+    const report = await census.load();
+    res.json({
+      ok: true,
+      report,
+      liveNow: census.liveNow(),
+      statement: buildPublicStatement(report),
+      storage: { kind: durable.kind, persistent: durable.persistent, error: storeError },
+    });
+  }));
+
   admin.get('/export', wrap(async (_req, res) => {
-    const collections: CollectionName[] = ['settings', 'services', 'products', 'knowledge', 'requests', 'conversations', 'gaps', 'visitors'];
+    const collections: CollectionName[] = ['settings', 'services', 'products', 'knowledge', 'requests', 'conversations', 'gaps', 'visitors', 'census'];
     const out: Record<string, unknown> = { exportedAt: new Date().toISOString(), storage: store.kind };
-    for (const c of collections) out[c] = await store.list(c);
+    for (const c of collections) out[c] = await (c === 'census' ? durable : store).list(c);
     res.setHeader('Content-Disposition', `attachment; filename="sham-core-backup-${new Date().toISOString().slice(0, 10)}.json"`);
     res.json(out);
   }));
 
-  return { assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank };
+  return {
+    assistant, admin, repo, orchestrator, store, runtime, memory, seo, finance, bank, census,
+    censusRouter: census.router,
+    labSignals, labSignalsRouter: labSignals.router,
+    insightsRouter: insights.router,
+  };
 }

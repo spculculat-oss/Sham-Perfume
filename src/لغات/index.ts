@@ -123,3 +123,5 @@ export * from './storeL10n';
  */
 export * from './bannerKeys';
 export * from './bannerL10n';
+export * from './newsKeys';
+export * from './newsL10n';

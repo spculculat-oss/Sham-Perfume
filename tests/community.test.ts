@@ -539,6 +539,151 @@ test('two-factor: setup proves the password, login is gated, replays refused, di
   }
 });
 
+test('Meta WhatsApp: phone stays pending until verified, enables sign-in 2FA, and can be cancelled safely', async () => {
+  const env = {
+    SHAM_WHATSAPP_ACCESS_TOKEN: 'server-only-test-token',
+    SHAM_WHATSAPP_PHONE_NUMBER_ID: '123456789012345',
+    SHAM_WHATSAPP_GRAPH_VERSION: 'v99.0',
+    SHAM_WHATSAPP_AUTH_TEMPLATE: 'sham_login_code',
+    SHAM_WHATSAPP_TEMPLATE_LANGUAGE: 'ar_EG',
+  };
+  const phoneCtx: svc.Ctx = { ...ctx, env };
+  const originalFetch = globalThis.fetch;
+  const requests: Array<{ url: string; init?: RequestInit }> = [];
+  let providerStatus = 200;
+  globalThis.fetch = (async (input, init) => {
+    requests.push({ url: String(input), init });
+    return new Response('{"messages":[{"id":"test-message"}]}', { status: providerStatus });
+  }) as typeof fetch;
+  const codeFrom = (index: number) => String(JSON.parse(String(requests[index]?.init?.body)).template.components[0].parameters[0].text);
+  try {
+    const { me } = await svc.register(ctx, { name: 'WhatsApp', email: email('whatsapp'), password: PASSWORD });
+    assert.deepEqual(svc.authPublicConfig(env), { whatsappOtp: true });
+    assert.deepEqual(svc.authPublicConfig({}), { whatsappOtp: false });
+    await assert.rejects(svc.setupPhone2fa(phoneCtx, me.id, { phone: '+201001234567', method: 'whatsapp', password: 'Wrong9999xx' }), { code: 'WRONG_PASSWORD' });
+    assert.equal(requests.length, 0, 'wrong password never triggers a provider request');
+
+    await svc.setupPhone2fa(phoneCtx, me.id, { phone: '+201001234567', method: 'whatsapp', password: PASSWORD });
+    const registrationCode = codeFrom(0);
+    assert.match(registrationCode, /^\d{6}$/);
+    assert.equal(requests[0].url, 'https://graph.facebook.com/v99.0/123456789012345/messages');
+    const requestBody = JSON.parse(String(requests[0].init?.body));
+    assert.equal(requestBody.to, '201001234567');
+    assert.equal(requestBody.template.components[0].parameters[0].text, registrationCode);
+
+    const pending = await sql.query(`SELECT phone_2fa_enabled, phone_2fa_phone_enc, phone_2fa_pending_phone_enc, phone_2fa_pending_expires_at FROM users WHERE id = $1`, [me.id]);
+    assert.equal(pending[0].phone_2fa_enabled, false, 'sending a code never enables 2FA');
+    assert.equal(pending[0].phone_2fa_phone_enc, null, 'unverified number is not the active factor');
+    assert.ok(pending[0].phone_2fa_pending_phone_enc, 'pending number is encrypted and held only for verification');
+    assert.ok(pending[0].phone_2fa_pending_expires_at, 'the pending destination expires with its OTP');
+    assert.doesNotMatch(JSON.stringify(pending), /201001234567/);
+    assert.doesNotMatch(await raw(`SELECT code_salt, code_hash FROM auth_codes WHERE user_id = $1 AND purpose = 'phone_2fa'`, [me.id]), new RegExp(registrationCode));
+    const securityAudit = await sql.query(`SELECT action, target, detail FROM audit WHERE actor = $1`, [me.id]);
+    assert.doesNotMatch(JSON.stringify(securityAudit), /201001234567|4567/);
+    assert.doesNotMatch(JSON.stringify(securityAudit), new RegExp(registrationCode));
+    await assert.rejects(svc.confirmPhone2fa(phoneCtx, me.id, registrationCode === '000000' ? '111111' : '000000'), { code: 'CODE_INVALID' });
+    assert.equal((await svc.me(phoneCtx, me.id)).phone2fa.enabled, false, 'a wrong code leaves it disabled');
+
+    await svc.confirmPhone2fa(phoneCtx, me.id, registrationCode);
+    const active = await sql.query(`SELECT phone_2fa_enabled, phone_2fa_method, phone_2fa_phone_enc, phone_2fa_pending_phone_enc FROM users WHERE id = $1`, [me.id]);
+    assert.equal(active[0].phone_2fa_enabled, true);
+    assert.equal(active[0].phone_2fa_method, 'whatsapp');
+    assert.ok(active[0].phone_2fa_phone_enc);
+    assert.equal(active[0].phone_2fa_pending_phone_enc, null);
+    assert.doesNotMatch(JSON.stringify(active), /201001234567/);
+
+    const login = await svc.login(phoneCtx, { email: me.email, password: PASSWORD });
+    if (!('pending' in login)) throw new Error('verified WhatsApp must gate password login');
+    assert.equal(login.method, 'phone');
+    assert.equal(login.phoneMethod, 'whatsapp');
+    assert.equal(requests.length, 1, 'password login waits for the client to explicitly request the code');
+    await svc.requestPhoneLoginCode(phoneCtx, login.pendingToken);
+    const loginCode = codeFrom(1);
+    assert.notEqual(loginCode, registrationCode);
+    const complete = await svc.verifyPhoneLoginCode(phoneCtx, { pendingToken: login.pendingToken, code: loginCode });
+    assert.equal(complete.me.id, me.id);
+    assert.ok(complete.token);
+    await assert.rejects(svc.verifyPhoneLoginCode(phoneCtx, { pendingToken: login.pendingToken, code: loginCode }), { code: 'INVALID_LOGIN' }, 'pending login is single-use');
+
+    const expiredConfirm = await newMember('WhatsAppExpiredConfirm');
+    await svc.setupPhone2fa(phoneCtx, expiredConfirm.id, { phone: '+201001234567', method: 'whatsapp', password: PASSWORD });
+    const expiredConfirmCode = codeFrom(requests.length - 1);
+    await sql.query(`UPDATE users SET phone_2fa_pending_expires_at = now() - interval '1 second' WHERE id = $1`, [expiredConfirm.id]);
+    await assert.rejects(svc.confirmPhone2fa(phoneCtx, expiredConfirm.id, expiredConfirmCode), { code: 'CODE_INVALID' });
+    const afterExpiredConfirm = await sql.query(`SELECT phone_2fa_enabled, phone_2fa_pending_phone_enc FROM users WHERE id = $1`, [expiredConfirm.id]);
+    assert.equal(afterExpiredConfirm[0].phone_2fa_enabled, false);
+    assert.equal(afterExpiredConfirm[0].phone_2fa_pending_phone_enc, null, 'expired destinations are cleared before code confirmation');
+
+    const expiredRead = await newMember('WhatsAppExpiredRead');
+    await svc.setupPhone2fa(phoneCtx, expiredRead.id, { phone: '+201001234567', method: 'whatsapp', password: PASSWORD });
+    const expiredReadCode = codeFrom(requests.length - 1);
+    await sql.query(`UPDATE users SET phone_2fa_pending_expires_at = now() - interval '1 second' WHERE id = $1`, [expiredRead.id]);
+    await svc.me(phoneCtx, expiredRead.id);
+    const afterExpiredRead = await sql.query(`SELECT phone_2fa_pending_phone_enc FROM users WHERE id = $1`, [expiredRead.id]);
+    assert.equal(afterExpiredRead[0].phone_2fa_pending_phone_enc, null, 'profile reads clear abandoned expired destinations');
+    await assert.rejects(svc.confirmPhone2fa(phoneCtx, expiredRead.id, expiredReadCode), { code: 'PHONE_SETUP_NOT_STARTED' });
+
+    const cancelled = await newMember('WhatsAppCancel');
+    const cancelRequestIndex = requests.length;
+    await svc.setupPhone2fa(phoneCtx, cancelled.id, { phone: '+201001234567', method: 'whatsapp', password: PASSWORD });
+    const abandonedCode = codeFrom(cancelRequestIndex);
+    await assert.rejects(svc.cancelPhone2faSetup(phoneCtx, cancelled.id, 'Wrong9999xx'), { code: 'WRONG_PASSWORD' });
+    await svc.cancelPhone2faSetup(phoneCtx, cancelled.id, PASSWORD);
+    const afterCancel = await sql.query(`SELECT phone_2fa_enabled, phone_2fa_pending_phone_enc FROM users WHERE id = $1`, [cancelled.id]);
+    assert.equal(afterCancel[0].phone_2fa_enabled, false);
+    assert.equal(afterCancel[0].phone_2fa_pending_phone_enc, null);
+    await assert.rejects(svc.confirmPhone2fa(phoneCtx, cancelled.id, abandonedCode), { code: 'PHONE_SETUP_NOT_STARTED' });
+
+    const unavailable = await newMember('WhatsAppUnavailable');
+    providerStatus = 503;
+    await assert.rejects(svc.setupPhone2fa(phoneCtx, unavailable.id, { phone: '+201001234567', method: 'whatsapp', password: PASSWORD }), { code: 'WHATSAPP_UNAVAILABLE' });
+    const afterFailure = await sql.query(`SELECT phone_2fa_enabled, phone_2fa_pending_phone_enc FROM users WHERE id = $1`, [unavailable.id]);
+    assert.equal(afterFailure[0].phone_2fa_enabled, false);
+    assert.equal(afterFailure[0].phone_2fa_pending_phone_enc, null, 'failed Meta delivery leaves no pending number');
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('previously verified phone formats are normalized for delivery without changing stored values', async () => {
+  const env = {
+    SHAM_WHATSAPP_ACCESS_TOKEN: 'server-only-test-token',
+    SHAM_WHATSAPP_PHONE_NUMBER_ID: '123456789012345',
+    SHAM_WHATSAPP_GRAPH_VERSION: 'v99.0',
+    SHAM_WHATSAPP_AUTH_TEMPLATE: 'sham_login_code',
+    SHAM_WHATSAPP_TEMPLATE_LANGUAGE: 'ar_EG',
+  };
+  const phoneCtx: svc.Ctx = { ...ctx, env };
+  const originalFetch = globalThis.fetch;
+  const destinations: string[] = [];
+  globalThis.fetch = (async (_input, init) => {
+    destinations.push(String(JSON.parse(String(init?.body)).to));
+    return jsonResponse({ messages: [{ id: 'legacy-phone-test' }] });
+  }) as typeof fetch;
+  try {
+    const cases = [
+      { name: 'LegacyInternational', country: '', storedPhone: '201001234567', expected: '201001234567' },
+      { name: 'LegacyLocal', country: 'EG', storedPhone: '01001234567', expected: '201001234567' },
+    ];
+    for (const item of cases) {
+      const { me } = await svc.register(phoneCtx, { name: item.name, email: email(item.name.toLowerCase()), password: PASSWORD, country: item.country });
+      await sql.query(
+        `UPDATE users SET phone_2fa_enabled = true, phone_2fa_method = 'whatsapp', phone_2fa_phone_enc = $1 WHERE id = $2`,
+        [phoneCtx.vault.seal(item.storedPhone), me.id],
+      );
+      const pending = await svc.login(phoneCtx, { email: me.email, password: PASSWORD });
+      if (!('pending' in pending)) throw new Error('expected a pending login for a verified phone factor');
+      await svc.requestPhoneLoginCode(phoneCtx, pending.pendingToken);
+      assert.equal(destinations.at(-1), item.expected, `normalized delivery for ${item.name}`);
+      const stored = await sql.query<{ phone_2fa_phone_enc: string }>(`SELECT phone_2fa_phone_enc FROM users WHERE id = $1`, [me.id]);
+      assert.equal(phoneCtx.vault.open(stored[0].phone_2fa_phone_enc), item.storedPhone, 'normalization never silently rewrites the encrypted number');
+    }
+    assert.deepEqual(destinations, ['201001234567', '201001234567']);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test('changing the password signs out the other devices — the current one stays', async () => {
   const address = email('chpw');
   const { token, me } = await svc.register(ctx, { name: 'Chpw', email: address, password: PASSWORD });
@@ -699,4 +844,119 @@ test('bookmarks never bypass visibility changes, moderation, deletion or blockin
   assert.deepEqual(await social.feed(ctx, reader.id, { scope: 'saved' }), []);
   await assert.rejects(social.savePost(ctx, reader.id, blocked.id), { code: 'NOT_FOUND' });
   await social.unsavePost(ctx, reader.id, blocked.id);
+});
+
+/* ------------------------------------------ Google / Facebook ------------------------------------------ */
+
+const jsonResponse = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
+
+test('google and facebook login never treats a typed e-mail or an unsigned token as a link', async () => {
+  const before = (await sql.query<{ n: number }>(`SELECT count(*)::int AS n FROM users`))[0].n;
+  await assert.rejects(svc.loginWithGoogle(ctx, { idToken: 'person@example.com' }), { code: 'OAUTH_NOT_CONFIGURED' });
+  await assert.rejects(svc.loginWithFacebook(ctx, { accessToken: 'person@example.com' }), { code: 'OAUTH_NOT_CONFIGURED' });
+  const forged = `${Buffer.from('{"alg":"none"}').toString('base64url')}.${Buffer.from('{"email":"forged@example.com","sub":"evil"}').toString('base64url')}.sig`;
+  await assert.rejects(svc.loginWithGoogle(ctx, { idToken: forged }), { code: 'OAUTH_NOT_CONFIGURED' });
+  await assert.rejects(svc.loginWithGoogle(ctx, { idToken: JSON.stringify({ email: 'forged@example.com' }) }), { code: 'OAUTH_NOT_CONFIGURED' });
+  assert.equal((await sql.query<{ n: number }>(`SELECT count(*)::int AS n FROM users`))[0].n, before, 'a rejected link creates no account');
+  assert.deepEqual(svc.oauthPublicConfig({ GOOGLE_CLIENT_ID: 'gid', FACEBOOK_APP_ID: 'fid', FACEBOOK_APP_SECRET: 'sec' }), { googleClientId: 'gid', facebookAppId: 'fid' });
+  assert.equal(svc.oauthPublicConfig({ FACEBOOK_APP_ID: 'fid' }).facebookAppId, null);
+  assert.equal(JSON.stringify(svc.oauthPublicConfig({ FACEBOOK_APP_SECRET: 'sec' })).includes('sec'), false);
+});
+
+test('a verified provider token links the provider subject, not the word google or facebook', async () => {
+  const original = globalThis.fetch;
+  const address = email('oauthlink');
+  const other = email('oauthother');
+  globalThis.fetch = async (input) => {
+    const url = new URL(String(input));
+    if (url.hostname === 'oauth2.googleapis.com') {
+      const token = url.searchParams.get('access_token') || url.searchParams.get('id_token') || '';
+      if (token === 'good') return jsonResponse({ aud: 'test-google-client', email: address, email_verified: 'true', sub: 'google-sub-42', name: 'Nour' });
+      if (token === 'same-subject') return jsonResponse({ aud: 'test-google-client', email: other, email_verified: 'true', sub: 'google-sub-42', name: 'Nour' });
+      if (token === 'mismatch') return jsonResponse({ aud: 'other-client', email: address, email_verified: 'true', sub: 'google-sub-99' });
+      if (token === 'unverified') return jsonResponse({ aud: 'test-google-client', email: address, email_verified: 'false', sub: 'google-sub-1' });
+      return jsonResponse({ error: 'invalid' }, 400);
+    }
+    if (url.hostname === 'graph.facebook.com' && url.pathname === '/debug_token') {
+      const token = url.searchParams.get('input_token');
+      if (token === 'fb-good') return jsonResponse({ data: { is_valid: true, app_id: 'fb-app', user_id: 'fb-user-9' } });
+      if (token === 'fb-other-app') return jsonResponse({ data: { is_valid: true, app_id: 'other-app', user_id: 'fb-user-9' } });
+      return jsonResponse({ data: { is_valid: false } });
+    }
+    if (url.hostname === 'graph.facebook.com' && url.pathname === '/me') {
+      return jsonResponse({ id: 'fb-user-9', email: address, name: 'Nour' });
+    }
+    return jsonResponse({ error: 'unexpected' }, 404);
+  };
+  try {
+    const google = { ...ctx, env: { GOOGLE_CLIENT_ID: 'test-google-client' } };
+    const facebook = { ...ctx, env: { FACEBOOK_APP_ID: 'fb-app', FACEBOOK_APP_SECRET: 'fb-secret' } };
+    await assert.rejects(svc.loginWithGoogle(google, { accessToken: 'mismatch' }), { code: 'OAUTH_INVALID' });
+    await assert.rejects(svc.loginWithGoogle(google, { accessToken: 'unverified' }), { code: 'OAUTH_INVALID' });
+    await assert.rejects(svc.loginWithGoogle(google, { idToken: address }), { code: 'OAUTH_INVALID' });
+    const existing = await newMember('OAuthExisting', { email: address });
+    const linked = await svc.loginWithGoogle(google, { accessToken: 'good' });
+    if ('pending' in linked) throw new Error('unexpected pending login');
+    assert.equal(linked.me.id, existing.id, 'the provider e-mail links the account that already exists');
+    assert.equal(linked.me.email, address);
+    const row = await sql.query<{ oauth_google_id: string }>(`SELECT oauth_google_id FROM users WHERE id = $1`, [existing.id]);
+    assert.equal(row[0].oauth_google_id, 'google-sub-42');
+    assert.notEqual(row[0].oauth_google_id, 'google');
+    const again = await svc.loginWithGoogle(google, { accessToken: 'same-subject' });
+    if ('pending' in again) throw new Error('unexpected pending login');
+    assert.equal(again.me.id, existing.id, 'the same provider subject stays on the same account');
+    assert.equal(again.me.email, address, 'a different address in a later token does not replace the account');
+    await assert.rejects(svc.loginWithFacebook(facebook, { accessToken: 'fb-other-app' }), { code: 'OAUTH_INVALID' });
+    const fb = await svc.loginWithFacebook(facebook, { accessToken: 'fb-good' });
+    if ('pending' in fb) throw new Error('unexpected pending login');
+    assert.equal(fb.me.id, existing.id);
+    const fbRow = await sql.query<{ oauth_facebook_id: string }>(`SELECT oauth_facebook_id FROM users WHERE id = $1`, [existing.id]);
+    assert.equal(fbRow[0].oauth_facebook_id, 'fb-user-9');
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test('OAuth login creates a pending 2FA challenge without sending or issuing a phone code prematurely', async () => {
+  const original = globalThis.fetch;
+  const address = email('oauthphone2fa');
+  const member = await newMember('OAuthPhone2FA', { email: address });
+  await sql.query(
+    `UPDATE users SET phone_2fa_enabled = true, phone_2fa_method = 'whatsapp', phone_2fa_phone_enc = $1 WHERE id = $2`,
+    [ctx.vault.seal('+201001234567'), member.id],
+  );
+  globalThis.fetch = async (input) => {
+    const url = new URL(String(input));
+    if (url.hostname === 'oauth2.googleapis.com') {
+      return jsonResponse({ aud: 'test-google-client', email: address, email_verified: 'true', sub: 'google-phone-sub', name: 'Nour' });
+    }
+    if (url.hostname === 'graph.facebook.com' && url.pathname === '/debug_token') {
+      return jsonResponse({ data: { is_valid: true, app_id: 'fb-app', user_id: 'fb-phone-user' } });
+    }
+    if (url.hostname === 'graph.facebook.com' && url.pathname === '/me') {
+      return jsonResponse({ id: 'fb-phone-user', email: address, name: 'Nour' });
+    }
+    return jsonResponse({ error: 'unexpected' }, 404);
+  };
+  try {
+    const googleCtx = { ...ctx, env: { GOOGLE_CLIENT_ID: 'test-google-client' } };
+    const facebookCtx = { ...ctx, env: { FACEBOOK_APP_ID: 'fb-app', FACEBOOK_APP_SECRET: 'fb-secret' } };
+    const countPhoneCodes = async () => (await sql.query<{ n: number }>(
+      `SELECT count(*)::int AS n FROM auth_codes WHERE user_id = $1 AND purpose = 'phone_2fa'`, [member.id],
+    ))[0].n;
+
+    const googlePending = await svc.loginWithGoogle(googleCtx, { accessToken: 'google-phone' });
+    assert.equal('pending' in googlePending, true);
+    if (!('pending' in googlePending)) throw new Error('expected a pending Google login');
+    assert.equal(googlePending.phoneMethod, 'whatsapp');
+    assert.equal(await countPhoneCodes(), 0, 'Google login waits for the client to request the code');
+
+    const facebookPending = await svc.loginWithFacebook(facebookCtx, { accessToken: 'facebook-phone' });
+    assert.equal('pending' in facebookPending, true);
+    if (!('pending' in facebookPending)) throw new Error('expected a pending Facebook login');
+    assert.equal(facebookPending.phoneMethod, 'whatsapp');
+    assert.equal(await countPhoneCodes(), 0, 'Facebook login also waits for the client to request the code');
+  } finally {
+    globalThis.fetch = original;
+  }
 });

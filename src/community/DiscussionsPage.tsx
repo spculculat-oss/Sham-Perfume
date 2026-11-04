@@ -89,10 +89,10 @@ export function DiscussionsPage({ lang, go, toast, onOpenMessenger, threadId }: 
         <div className="space-y-3">
           {!list.data?.length ? (
             <Card className="p-8 text-center text-stone-500">
-              <MessageSquare className="mx-auto h-12 w-12 text-stone-300" />
-              <p className="mt-2 text-sm font-bold text-stone-700">{q || category !== 'all' || sort !== 'new' ? t('مفيش نقاشات بالشكل ده', 'No matching discussions') : t('المجلس لسه فاضي', 'The salon is still empty')}</p>
-              <p className="mt-1 text-xs text-stone-400">{t('كن أول من يطرح سؤال أو يشارك تجربة — أول مشاركات المجتمع بتفرق!', 'Be the first to ask or share — the first posts matter!')}</p>
-              <Btn small className="mt-3" onClick={() => setCreating(true)}><Plus className="h-3.5 w-3.5" />{t('ابدأ أول نقاش', 'Start the first one')}</Btn>
+              <MessageSquare className="mx-auto h-12 w-12 text-amber-500" />
+              <p className="mt-2 text-sm font-bold text-stone-800">{q || category !== 'all' || sort !== 'new' ? t('مفيش نقاشات بالشكل ده', 'No matching discussions') : t('صالون العطارين بينتظر مشاركتك الأولى', 'The perfumers salon awaits your first post')}</p>
+              <p className="mt-1 text-xs text-stone-500">{t('اسأل عن التعتيق، شارك تركيبة، أو ابدأ حوار مع صناع العطور — صوتك بيبني مجتمعنا!', 'Ask about maceration, share a formula, or start a dialogue with perfumers — your voice builds our community!')}</p>
+              <Btn small className="mt-4 bg-amber-800 hover:bg-amber-900 text-white" onClick={() => setCreating(true)}><Plus className="h-3.5 w-3.5" />{t('ابدأ أول نقاش الآن', 'Start first discussion now')}</Btn>
             </Card>
           ) : list.data.map((th) => (
             <Card key={th.id} onClick={() => go(`discussions/${th.id}`)}

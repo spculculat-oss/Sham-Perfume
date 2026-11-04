@@ -50,12 +50,13 @@ export function localSuggestion(products: StoreProduct[], message: string, lang:
 }
 
 /** «اسأل شاهين»: POST /api/store/advise; null when the server cannot be reached (keep the local answer). */
-export async function askShaheenStore(products: StoreProduct[], message: string, lang: SupportedLanguage, request: typeof fetch = fetch): Promise<StoreSuggestion | null> {
+/** `money`: the page's country and currency (storeCheckout.chatMoney) — the server checks the entry country and answers in it. */
+export async function askShaheenStore(products: StoreProduct[], message: string, lang: SupportedLanguage, request: typeof fetch = fetch, money?: { country: string; currency: string; countryManual: boolean }): Promise<StoreSuggestion | null> {
   if (isStaticHosting) return null;
   try {
     const response = await request(apiUrl('/api/store/advise'), {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message, language: lang }), signal: AbortSignal.timeout(35_000),
+      body: JSON.stringify({ message, language: lang, ...money }), signal: AbortSignal.timeout(35_000),
     });
     if (!response.ok) return null;
     const data = await response.json() as { source?: string; reply?: string; picks?: { id?: string; why?: string }[] };

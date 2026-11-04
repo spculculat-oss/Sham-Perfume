@@ -33,28 +33,49 @@ on:
         type: choice
         options:
           - none
+          - census
           - council
           - secretary
           - catalog
+          - catalog_review
+          - trade_lanes
+          - carriers
+          - synapse
+          - immune
+          - tutor
+          - examiner
+          - reflex
+          - ears
+          - senses_site
+          - senses_world
+          - weaver
+          - curator
+          - inventory
           - news
           - precheck
           - patrol
           - maneuver
           - finance
+          - finance_shield
+          - sales
           - scout
           - teacher
           - school
           - academy
           - lab
+          - brain
           - importer
           - images
           - product_pages
           - seo
           - languages
+          - localization_audit
+          - scent_behavior
           - design_audit
           - visitor_tour
           - verifier
           - inspect
+          - service
           - doctor
           - live_check
           - keys

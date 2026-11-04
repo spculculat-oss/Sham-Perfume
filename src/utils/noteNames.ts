@@ -34,6 +34,13 @@ export const NOTE_AR: Record<string, string> = {
 
 /** Extra names the dictionary above lacks (the most frequent untranslated notes of the catalogue). */
 const MORE_AR: Record<string, string> = {
+  // From the store's own notes that had no Arabic name yet (catalogue scan 2026-10-26).
+  balsam: 'بلسم', 'cade oil': 'زيت العرعر', mate: 'متة', 'bay leaf': 'ورق الغار', 'palo santo': 'بالو سانتو', florals: 'زهور', wood: 'خشب',
+  'ambrette seed': 'بذور العنبريت', nectarine: 'نكتارين', pomegranate: 'رمان', cyclamen: 'بخور مريم', verbena: 'لويزة', oregano: 'أوريجانو',
+  ozone: 'أوزون', 'pine tree': 'صنوبر', mahogany: 'ماهوجني', carnation: 'قرنفل', opoponax: 'أوبوبوناكس', papyrus: 'بردي', petitgrain: 'بيتيجرين',
+  'rose water': 'ماء الورد', peppermint: 'نعناع فلفلي', yuzu: 'يوزو', angelica: 'حشيشة الملاك', immortelle: 'الخالدة', 'incense (olibanum)': 'بخور (لبان)',
+  'vanilla bean extract': 'خلاصة الفانيليا', 'black vanilla husk': 'قشر الفانيليا السوداء', 'vanilla madagascar': 'فانيليا مدغشقر', 'aqueous accord': 'نفحات مائية',
+  sapodilla: 'سابوتا', pitaya: 'فاكهة التنين', hedione: 'هيديون',
   thyme: 'زعتر', cumin: 'كمون', elemi: 'إليمي', rum: 'روم', dates: 'تمر', date: 'تمر', salt: 'ملح', 'sea salt': 'ملح البحر', basil: 'ريحان',
   cognac: 'كونياك', coriander: 'كزبرة', coumarin: 'كومارين', chocolate: 'شوكولاتة', 'dark chocolate': 'شوكولاتة داكنة', milk: 'حليب',
   'coconut milk': 'حليب جوز الهند', suede: 'شمواه', cassis: 'كشمش أسود', citron: 'أترج', fir: 'تنوب', 'fir balsam': 'بلسم التنوب',

@@ -1,14 +1,15 @@
 /**
  * «باحث شاهين» — a new question nobody taught him: Shaheen looks it up on the open web, reads the pages he finds,
- * keeps the passages that answer it, compares them (what several sources agree on comes first) and answers from
- * them, with the sources listed under the answer.
+ * keeps relevant passages, compares them (agreement across pages is ranked higher), and answers naturally. Source
+ * links stay as hidden chat metadata and are shown only if the visitor asks.
  *
- * The source is Wikipedia's official public API (free, no key, no account, made for programs; text under CC BY-SA,
- * so every answer names and links its articles). Search-engine result pages (Google…) are not scraped: their terms
+ * The source is Wikipedia's official public API (free, no key, no account, made for programs; text under CC BY-SA).
+ * Search-engine result pages (Google…) are not scraped: their terms
  * forbid it and they block robots.
  * Time-bound (news, prices) and personal questions are never looked up.
- * Pure (fetch is injected): used by the server (server/shaheen.ts), the visitor's browser on GitHub Pages
- * (src/utils/browserMemory.ts) and «مدرسة شاهين», whose local teacher turns the findings into a lesson.
+ * Pure (fetch is injected): used by the server (server/shaheen.ts) and the visitor's browser on GitHub Pages
+ * (src/utils/browserMemory.ts) for source-backed visitor replies, with links shown only on request. Its unreviewed
+ * findings are not fed into the school.
  */
 import { greetingKind } from './shaheenGreeting';
 import { topicWords } from './shaheenLibrary';
@@ -171,27 +172,19 @@ export async function research(fetchFn: Fetch, question: string, lang: string, o
   return { question, lang, query, sources: texts.map((t) => t.source).filter((s) => used.has(s.url)), passages };
 }
 
-/** The visitor's answer: the findings as points (confirmed ones marked), the sources, and an honest note. */
-export function researchAnswer(r: Research, options: { recorded?: boolean } = {}): string {
+/** Natural visitor reply; source links stay hidden unless the visitor explicitly requests them. */
+export function researchAnswer(r: Research, options: { recorded?: boolean; includeSources?: boolean } = {}): string {
   const ar = r.lang === 'ar';
-  const head = ar ? '🔎 **بحثت لك في المصادر المفتوحة على الإنترنت، ودي خلاصة اللي لقيته:**' : '🔎 **I looked this up in open sources online; here is what I found:**';
-  const confirmed = ar ? ' _(أكتر من مصدر بيأكدها)_' : ' _(confirmed by more than one source)_';
-  const points = r.passages.map((p) => `• ${clip(p.text, 420)}${p.agreed > 1 ? confirmed : ''}`).join('\n');
-  const sources = r.sources.map((s) => `[${ar ? 'ويكيبيديا' : 'Wikipedia'}: ${s.title}](${s.url})`).join(' · ');
+  const head = ar ? 'الخلاصة:' : 'In short:';
+  const points = r.passages.map((p) => `• ${clip(p.text, 420)}`).join('\n');
+  const wikipediaCredit = r.sources.some((source) => source.site === 'wikipedia')
+    ? (ar ? ' (ويكيبيديا، رخصة CC BY-SA)' : ' (Wikipedia, CC BY-SA)') : '';
+  const sourceGap = String.fromCharCode(10).repeat(2);
+  const sources = options.includeSources && r.sources.length > 0
+    ? `${sourceGap}${sourceGap}${ar ? '**المصادر:**' : '**Sources:**'} ${r.sources.map((s) => `[${ar ? 'ويكيبيديا' : 'Wikipedia'}: ${s.title}](${s.url})`).join(' · ')}${wikipediaCredit}`
+    : '';
   const note = ar
-    ? `\n\n_المعلومات دي متجمعة تلقائيًا من مصادر عامة (ويكيبيديا، رخصة CC BY-SA) ومش مراجعة من خبير — اتأكد منها قبل ما تعتمد عليها.${options.recorded ? ' سؤالك اتسجل عشان أذاكره وأرد عليه أحسن المرة الجاية.' : ''}_`
-    : `\n\n_Collected automatically from open sources (Wikipedia, CC BY-SA), not reviewed by an expert — please double-check.${options.recorded ? ' Your question was noted so he studies it for next time.' : ''}_`;
-  return `${head}\n\n${points}\n\n${ar ? '**المصادر:**' : '**Sources:**'} ${sources}${note}`;
-}
-
-/** For the school's teacher: the findings as references, bounded. */
-export function researchBlock(r: Research | undefined, max = 1800): string {
-  if (!r) return '';
-  let out = '';
-  for (const p of r.passages) {
-    const piece = `\n— ${p.source.title} (ويكيبيديا):\n${clip(p.text, 500)}\n`;
-    if (out.length + piece.length > max) break;
-    out += piece;
-  }
-  return out;
+    ? `\n\n_دي معلومات عامة ومش مراجعة من متخصص.${options.recorded ? ' سؤالك اتسجل عشان أذاكره وأرد عليك أحسن المرة الجاية.' : ''}_`
+    : `\n\n_This is general information and has not been expert-reviewed.${options.recorded ? ' Your question was noted so I can study it for next time.' : ''}_`;
+  return `${head}\n\n${points}${sources}${note}`;
 }

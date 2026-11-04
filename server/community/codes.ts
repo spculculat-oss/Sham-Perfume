@@ -9,7 +9,7 @@
  *  - 10–15 minutes of validity, then dead;
  *  - the request side answers identically whether the e-mail exists or not (no account enumeration).
  */
-import { createHash, randomBytes } from 'node:crypto';
+import { createHash, randomBytes, randomInt } from 'node:crypto';
 import { newId } from './crypto';
 import { CommunityError, type Ctx } from './service';
 
@@ -32,7 +32,7 @@ export async function issueCode(ctx: Ctx, userId: string, purpose: CodePurpose):
   if (count.n >= MAX_ISSUES) throw new CommunityError(429, 'CODE_LIMITED', 'Too many codes, please wait a few minutes');
   // A new code voids the account's previous unused ones of the same purpose (single live code).
   await ctx.sql.query(`UPDATE auth_codes SET used_at = now() WHERE user_id = $1 AND purpose = $2 AND used_at IS NULL`, [userId, purpose]);
-  const code = String(Math.floor(10 ** 5 + Math.random() * 9 * 10 ** 5));
+  const code = String(randomInt(100_000, 1_000_000));
   const salt = randomBytes(8).toString('base64url');
   const expires = new Date(Date.now() + LIFE_MS[purpose]).toISOString();
   await ctx.sql.query(

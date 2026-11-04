@@ -46,6 +46,11 @@ export interface ChatResponse {
   reply: string;
   engine?: ChatMessage['aiEngine'];
   perspectives?: ChatMessage['perspectives'];
+  /** Source links are kept in chat history but are only rendered when the visitor asks for them. */
+  sources?: ChatMessage['sources'];
+  /** The country the server checked the visitor is entering from, and the currency the reply's prices are in. */
+  country?: string;
+  currency?: string;
 }
 
 /** Same-origin, bounded requests. Abort covers response-body parsing as well as headers. */

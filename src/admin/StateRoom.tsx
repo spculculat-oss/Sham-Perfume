@@ -1,17 +1,20 @@
-import { T, TP, adminLocale, getAdminLang } from './adminL10n';
+import { T, adminLocale, getAdminLang } from './adminL10n';
 import { Fragment, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { CheckCircle2, ExternalLink, Landmark, Lock, RefreshCw, Send, Trash2 } from 'lucide-react';
 import bundledControls from '../data/owner/controls.json';
 import bundledOrders from '../data/owner/state-orders.json';
 import bundledReport from '../data/live/platform-state.json';
 import bundledPrecheck from '../data/live/shaheen-precheck.json';
+import bundledCensus from '../data/live/platform-census.json';
 import { OWNER, OWNER_APPROVAL_LABEL, readControls } from '../utils/ownerAuthority';
 import { TASK_APPROVAL_LABEL } from '../utils/ownerDesk';
 import { isSealedRoom, openData, sealData } from '../utils/ownerRoom';
 import { STATE, readStateOrders, readStateReport, stateActive } from '../utils/platformState';
+import { readCensusReport } from '../utils/platformCensus';
+import { loadLiveCensusSnapshot } from './PlatformCensusPanel';
 import {
-  STATE_ORDER_ACTIONS, STATE_ROOM_KEY, STATE_ROOM_STARTERS, STATE_ROOM_LIMITS, readStateRoom, stateOrderPlanUrl, stateOrderUrl, stateReply,
-  type StateReplyResult, type StateRoomContext, type StateRoomData, type StateRoomMessage,
+  STATE_ORDER_ACTIONS, STATE_ROOM_KEY, STATE_ROOM_STARTERS, STATE_ROOM_LIMITS, readStateRoom, stateOrderUrl, stateReply,
+  type StateRoomContext, type StateRoomData, type StateRoomMessage,
 } from '../utils/stateRoom';
 
 /**
@@ -28,6 +31,7 @@ const id = () => `${Date.now().toString(36)}${Math.random().toString(36).slice(2
 
 const bundledContext = (): StateRoomContext => ({
   controls: readControls(bundledControls), orders: readStateOrders(bundledOrders), report: readStateReport(bundledReport),
+  census: readCensusReport(bundledCensus),
   precheck: bundledPrecheck as StateRoomContext['precheck'],
 });
 
@@ -48,7 +52,6 @@ export default function StateRoom({ code }: { code: string }) {
   const [ctx, setCtx] = useState<StateRoomContext>(bundledContext);
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
-  const [thinking, setThinking] = useState(false);
   const [locked, setLocked] = useState(false);
   const opened = useRef(false);
   const end = useRef<HTMLDivElement>(null);
@@ -76,11 +79,12 @@ export default function StateRoom({ code }: { code: string }) {
     const count = async (labels: string, pulls: boolean) => {
       try { const r = await fetch(`${API}${encodeURIComponent(labels)}`, { headers: { Accept: 'application/vnd.github+json' } }); return r.ok ? ((await r.json()) as { pull_request?: unknown }[]).filter((i) => Boolean(i.pull_request) === pulls).length : undefined; } catch { return undefined; }
     };
-    const [controls, orders, report, precheck, pulls, tasks] = await Promise.all([get('owner/controls.json'), get('owner/state-orders.json'), get('live/platform-state.json'), get('live/shaheen-precheck.json'), count(OWNER_APPROVAL_LABEL, true), count(`shaheen-task,${TASK_APPROVAL_LABEL}`, false)]);
+    const [controls, orders, report, precheck, censusSnap, pulls, tasks] = await Promise.all([get('owner/controls.json'), get('owner/state-orders.json'), get('live/platform-state.json'), get('live/shaheen-precheck.json'), loadLiveCensusSnapshot().catch(() => undefined), count(OWNER_APPROVAL_LABEL, true), count(`shaheen-task,${TASK_APPROVAL_LABEL}`, false)]);
     setCtx((c) => ({
       controls: controls ? readControls(controls) : c.controls,
       orders: orders ? readStateOrders(orders) : c.orders,
       report: report ? readStateReport(report) : c.report,
+      census: censusSnap?.report || c.census,
       precheck: (precheck as StateRoomContext['precheck']) || c.precheck,
       ...(pulls !== undefined && tasks !== undefined ? { pending: { pulls, tasks } } : c.pending ? { pending: c.pending } : {}),
     }));
@@ -88,43 +92,19 @@ export default function StateRoom({ code }: { code: string }) {
   }, []);
   useEffect(() => { void refresh(); }, [refresh]);
 
-  const say = async () => {
+  const say = () => {
     const words = text.trim().slice(0, STATE_ROOM_LIMITS.chars);
-    if (!words || thinking) return;
-    setText('');
+    if (!words) return;
     const at = new Date().toISOString();
-    const history = room.messages;
-    let answer: StateReplyResult = stateReply(words, ctx, history);
-    if (code && (!answer.comprehension?.understood || answer.comprehension.intent === 'clarify')) {
-      setThinking(true);
-      try {
-        const res = await fetch('/api/admin/state-agent', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${code}` },
-          body: JSON.stringify({ message: words, context: ctx, history: history.slice(-8), preferAi: true }),
-        });
-        if (res.ok) {
-          const remote = (await res.json()) as StateReplyResult;
-          if (remote && typeof remote.text === 'string' && remote.text.trim()) answer = remote;
-        }
-      } catch { /* Offline or static Pages bundle: local cognitive reply already ready */ }
-      setThinking(false);
-    }
+    const answer = stateReply(words, ctx);
     const mine: StateRoomMessage = { id: id(), by: 'owner', text: words, at };
-    const theirs: StateRoomMessage = {
-      id: id(),
-      by: 'state',
-      text: answer.text,
-      at,
-      ...(answer.order ? { order: answer.order } : {}),
-      ...(answer.orders?.length ? { orders: answer.orders } : {}),
-    };
+    const theirs: StateRoomMessage = { id: id(), by: 'state', text: answer.text, at, ...(answer.order ? { order: answer.order } : {}) };
     setRoom((r) => ({ version: 1, messages: [...r.messages, mine, theirs].slice(-STATE_ROOM_LIMITS.messages) }));
+    setText('');
   };
   const send = (m: StateRoomMessage) => {
-    if (!m.order && !m.orders?.length) return;
-    const url = m.orders && m.orders.length > 1 ? stateOrderPlanUrl(m.orders) : stateOrderUrl(m.order || m.orders![0]);
-    window.open(url, '_blank', 'noopener');
+    if (!m.order) return;
+    window.open(stateOrderUrl(m.order), '_blank', 'noopener');
     setRoom((r) => ({ version: 1, messages: r.messages.map((x) => (x.id === m.id ? { ...x, sent: true } : x)) }));
   };
   const clear = () => {
@@ -170,7 +150,7 @@ export default function StateRoom({ code }: { code: string }) {
               <Words text={m.text} />
               {m.order && (
                 <div className="mt-2 flex flex-wrap items-center gap-2 rounded-xl border border-sky-300 bg-white p-2">
-                  <span className="text-xs font-bold text-sky-900">🏛️ {m.orders && m.orders.length > 1 ? TP('خطة تنفيذ ({n} أوامر)', { n: m.orders.length }) : STATE_ORDER_ACTIONS[m.order.action]}</span>
+                  <span className="text-xs font-bold text-sky-900">🏛️ {STATE_ORDER_ACTIONS[m.order.action]}</span>
                   {m.sent ? (
                     <span className="inline-flex items-center gap-1 text-xs text-emerald-700"><CheckCircle2 className="h-3.5 w-3.5" />{T('اتبعت — الدولة هتنفذه خلال دقيقة وترد على الطلب')}</span>
                   ) : (
@@ -182,18 +162,17 @@ export default function StateRoom({ code }: { code: string }) {
               )}
             </div>
           ))}
-          {thinking && <div className="text-xs text-sky-700">{T('الوكيل يفهم الأمر…')}</div>}
           <div ref={end} />
         </div>
       </div>
       <p className="text-[11px] text-stone-500">{T('«نفّذ» بيفتح صفحة على GitHub من حسابك علشان GitHub يتأكد إن الأمر منك — اضغط فيها «Submit new issue» (إنشاء الطلب)، والدولة بتكمل لوحدها.')}</p>
 
       <div className="flex gap-2">
-        <textarea value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void say(); } }}
-          rows={2} maxLength={STATE_ROOM_LIMITS.chars} placeholder={T('اكتب للدولة بأسلوبك العادي… (أمر واحد أو عدة أوامر معاً: وقف الأخبار وشغّل الدورية، أو اعمل مهمة: …)')}
+        <textarea value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); say(); } }}
+          rows={2} maxLength={STATE_ROOM_LIMITS.chars} placeholder={T('اكتب للدولة… (مثلاً: وقف روبوت الأخبار، أو قانون جديد: …)')}
           className="flex-1 resize-none rounded-xl border border-stone-300 bg-white p-2 text-sm text-stone-900" />
         <div className="flex flex-col gap-2">
-          <button type="button" onClick={() => void say()} disabled={thinking} className="inline-flex items-center gap-1 rounded-xl bg-stone-900 px-4 py-2 text-sm font-bold text-white"><Send className="h-4 w-4" />{T('ابعت')}</button>
+          <button type="button" onClick={say} className="inline-flex items-center gap-1 rounded-xl bg-stone-900 px-4 py-2 text-sm font-bold text-white"><Send className="h-4 w-4" />{T('ابعت')}</button>
           <button type="button" onClick={clear} className="inline-flex items-center gap-1 rounded-xl border border-stone-300 px-2 py-1 text-xs text-stone-600"><Trash2 className="h-3.5 w-3.5" />{T('امسح')}</button>
         </div>
       </div>

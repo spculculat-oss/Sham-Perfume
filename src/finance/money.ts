@@ -1,6 +1,6 @@
 /** Integer minor-unit money. Never silently round a ledger entry or mix currencies. */
 import countryCurrency from '../data/country-currency.json';
-const CURRENCIES = new Set([...Object.values(countryCurrency), 'USD', 'EUR']);
+const CURRENCIES = new Set([...Object.values(countryCurrency), 'USD', 'EUR', 'CNH']);
 const ZERO = new Set(['BIF', 'CLP', 'DJF', 'GNF', 'ISK', 'JPY', 'KMF', 'KRW', 'PYG', 'RWF', 'UGX', 'VND', 'VUV', 'XAF', 'XOF', 'XPF']);
 const THREE = new Set(['BHD', 'IQD', 'JOD', 'KWD', 'LYD', 'OMR', 'TND']);
 export function decimals(currency: string): number {

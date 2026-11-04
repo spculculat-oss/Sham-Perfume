@@ -44,6 +44,19 @@ export interface ImportSource {
   delayMs?: number;
   /** Where the source came from: the built-in supplier list or «كشّاف المصادر». */
   origin?: 'built-in' | 'discovered';
+  /**
+   * How this supplier delivers — the one thing a lane needs and the import never recorded. `platform_ships` = the
+   * supplier delivers itself (we only broker); `broker` = it delivers at home only, so we carry it across borders.
+   * Never a guess: the evidence and its date travel with it, and «الشحن والتجارة» reads them.
+   */
+  delivery?: {
+    fulfilment: 'platform_ships' | 'broker' | 'unknown';
+    /** Country codes it delivers to; `['*']` = worldwide. */
+    shipsTo: string[];
+    evidenceAr: string;
+    source: string;
+    checkedAt: string;
+  };
 }
 
 export interface ImportedFields {

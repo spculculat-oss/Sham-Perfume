@@ -91,7 +91,7 @@ export const AI_TOOLS: AiToolDef[] = [
   },
   {
     id: 'shaheen_school', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school (self-reliance)",
-    descriptionAr: 'كل 6 ساعات يمتحن شاهين نفسه على كل المسارات (العطور، جميع لغات البرمجة، بناء بلوكات البرمجة وجدولتها، هندسة البرمجة، الجرافيك والديزاين، صيانة المواقع، الذكاء الاصطناعي بجميع مهاراته وأحدث العلوم، ومجال كل أداة ذكاء اصطناعي)، يتعلم من مكتبته بدون ذكاء اصطناعي (تعليم مكثف)، ويذاكر الباقي مع محرك متاح ويحفظه في ذاكرته ليرد بها لو توقفت كل الخدمات — وبنفس السلسلة يدير نفسه بدون أي تطبيق ذكاء آخر. كمان يبني برامجه بالبلوكات ويجدولها (مذاكرة، صيانة موقع، تطوير الأدوات، إدارة ذاتية) في سجل بلوكات شاهين.',
+    descriptionAr: 'كل 6 ساعات يمتحن شاهين نفسه على كل المسارات (العطور، جميع لغات البرمجة، بناء بلوكات البرمجة وجدولتها، هندسة البرمجة، الجرافيك والديزاين، صيانة المواقع، الذكاء الاصطناعي بجميع مهاراته وأحدث العلوم، ومجال كل أداة ذكاء اصطناعي)، يتعلم من مكتبته بدون ذكاء اصطناعي (تعليم مكثف)، ويذاكر الباقي بمساعدة محرك متاح بالاعتماد على مراجع المكتبة الداخلية الموثقة فقط؛ نتائج البحث الخارجي غير المراجعة لا تتحول إلى ذاكرة أو دروس مدرسية. كمان يبني برامجه بالبلوكات ويجدولها (مذاكرة، صيانة موقع، تطوير الأدوات، إدارة ذاتية) في سجل بلوكات شاهين.',
     sources: ['scripts/shaheen-school/run.mts'], routes: [], acceptsGuidance: true,
   },
   {
@@ -121,8 +121,8 @@ export const AI_TOOLS: AiToolDef[] = [
   },
   {
     id: 'platform_owner_agent', nameAr: 'وكيل ملك المنصة', nameEn: 'Platform Owner Agent',
-    descriptionAr: 'وكيل ذكي يفهم ويستوعب أوامر صاحب المنصة (المنفردة والمجمّعة وبالعامية المصرية ومع سياق المحادثة) ويراجعها على دستور وقوانين دولة المنصة وينفذها في روبوت دولة المنصة (إيقاف/إرجاع/تشغيل فوري للروبوتات، إضافة وإلغاء القوانين، فتح مهام التطوير المعتمدة، وتقارير الحالة)، مع بديل محلي كامل يعمل بلا انقطاع وتحت رقابة دولة المنصة.',
-    sources: ['server/stateAgent.ts'], routes: ['/api/admin/state-agent'], acceptsGuidance: true,
+    descriptionAr: 'وكيل مثل وكيل البرمجة في الشات: ينفّذ مهام شاهين والصيانة والتطوير، ويدير المنصة نيابة عن صاحب الموقع تحت رقابة دولة المنصة، وكل تعديل له يقرّه تصويت الدولة قبل النزول، وهو خاضع لأوامر صاحب الموقع في أي وقت.',
+    sources: [], routes: [], acceptsGuidance: true,
   },
 ];
 
@@ -131,6 +131,8 @@ export const AI_INFRASTRUCTURE = [
   'server/core/engines.ts', 'server/core/council.ts', 'scripts/doctor/agent.ts', 'scripts/doctor/run.mts', 'scripts/shaheen-supervisor/run.mts',
   // Shaheen's background agent (Manus): admin-only audits in GitHub Actions, never a visitor tool.
   'server/core/manus.ts', 'scripts/shaheen-manus/run.mts',
+  // «مختبر عقل شاهين»: examines Shaheen's own trained brain on the runner's open model (never an AI platform).
+  'scripts/shaheen-brain/exam.mts',
 ];
 
 export const aiTool = (id: string) => AI_TOOLS.find((t) => t.id === id);

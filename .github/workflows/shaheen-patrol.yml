@@ -116,7 +116,7 @@ jobs:
         run: |
           for wf in $RERUNS; do
             case "$wf" in
-              shaheen-import.yml|shaheen-discover.yml|shaheen-news.yml|shaheen-seo.yml|shaheen-languages.yml|pages.yml|product-pages-check.yml|live-smoke.yml|shaheen-precheck.yml)
+              shaheen-import.yml|shaheen-discover.yml|shaheen-news.yml|shaheen-seo.yml|shaheen-service.yml|shaheen-inventory.yml|shaheen-languages.yml|pages.yml|product-pages-check.yml|live-smoke.yml|shaheen-precheck.yml)
                 gh workflow run "$wf" --ref main && echo "::notice::Started $wf" || echo "::warning::Could not start $wf" ;;
               *) echo "::warning::Ignored unknown workflow $wf" ;;
             esac

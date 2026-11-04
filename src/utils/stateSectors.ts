@@ -68,6 +68,7 @@ function claims(f: Pick<ManeuverFinding, 'code' | 'topic' | 'section' | 'kind'>)
       break;
     case 'chat-lang': claim('experience', 'languages', 3, 'لغة الرد غلط — شغل قسم اللغات'); break;
     case 'chat-vendor': claim('leadership', 'legal', 3, 'ظهور اسم منصة للزائر مخالف لقواعد المنصة — المدير القانوني'); break;
+    case 'chat-currency': claim('store', 'store_advisor', 3, 'سعر في الشات بعملة غير عملة دولة الدخول — شغل مستشار التسوق وتسعير المتجر'); break;
     case 'chat-http': case 'chat-empty': claim('reliability', 'doctor', 3, 'الشات وقع أو مارجعش رد — شغل طبيب الموقع'); break;
     default: break;
   }

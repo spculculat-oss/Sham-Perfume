@@ -20,6 +20,7 @@ import type { Repository } from './core/repository';
 import type { ModelEngineId, ShaheenSettings } from './core/types';
 import { SHAHEEN_SITE_SETTINGS } from './config/shaheen';
 import type { EngineHealth } from './core/engineHealth';
+import { moneyFor, moneyOut } from './core/replyMoney';
 
 type Env = Record<string, string | undefined>;
 export interface StoreAdvice { source: 'shaheen' | 'local'; reply: string; picks: { id: string; why: string }[] }
@@ -96,6 +97,12 @@ export function createStoreRouter(options: StoreRouterOptions = {}) {
       : 'en';
     if (message.length < 2) { res.status(400).json({ error: 'Message is required', code: 'INVALID_MESSAGE' }); return; }
     if (!limiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many requests, please wait a minute', code: 'RATE_LIMITED' }); return; }
+    // «دولة الدخول قبل الرد»: the advice (and every pick's reason) leaves in the visitor's currency; the cache keeps pounds.
+    const money = moneyFor(req, lang);
+    const send = res.json.bind(res);
+    res.json = ((body: StoreAdvice) => send(body && Array.isArray(body.picks)
+      ? { ...moneyOut(body, money, lang), picks: body.picks.map((p) => moneyOut(p, money, lang, ['why'])).map(({ id, why }) => ({ id, why })) }
+      : body)) as typeof res.json;
     const list = mergeCatalog(products, await catalog().catch(() => undefined));
     const key = `${lang}:${normalizeQuestion(message)}`;
     const hit = cache.get(key);

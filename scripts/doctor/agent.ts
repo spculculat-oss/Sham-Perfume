@@ -453,14 +453,15 @@ export type QuotaBook = ReturnType<typeof quotaBook>;
  * `prefer`: this engine is asked first (the daily council gives each seat its own engine when several are set).
  * `onEngine`: told which engine answered (the admin panel shows it; visitors never see engine names).
  */
-export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: AnswerBook; maxWaitMs?: number; sleep?: (ms: number) => Promise<void>; request?: typeof fetch; prefer?: string; onEngine?: (id: string) => void;
+export async function makeAsk(env: Env, options: { quota?: QuotaBook; memory?: AnswerBook; maxWaitMs?: number; sleep?: (ms: number) => Promise<void>; request?: typeof fetch; prefer?: string; excludeEngines?: readonly string[]; onEngine?: (id: string) => void;
   /** «كتيب الروبوتات»: the robot asking — its model gets the book's compact edition and the robot's card with every request. */
   bot?: BotId; handbook?: boolean } = {}): Promise<DoctorOptions['ask']> {
   // Every robot's model reads the handbook first (the answer cache stays keyed by the task alone).
   const book = options.handbook === false ? '' : handbookBrief(options.bot);
   const { callEngine, engineStatuses } = await import('../../server/core/engines');
   const order = ['gemini', 'perplexity', 'deepseek', 'openai', 'claude', 'openrouter', 'self_hosted'] as const;
-  const configured = order.filter((id) => engineStatuses(env).find((e) => e.id === id)?.configured);
+  const excluded = new Set(options.excludeEngines || []);
+  const configured = order.filter((id) => !excluded.has(id) && engineStatuses(env).find((e) => e.id === id)?.configured);
   const ready = options.prefer && configured.includes(options.prefer as typeof configured[number]) ? [options.prefer as typeof configured[number], ...configured.filter((id) => id !== options.prefer)] : configured;
   const memory = options.memory;
   // With memory, a question the bots already asked is answered even with no engine configured.

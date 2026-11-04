@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-10-23T12:53:30.719Z",
+ "updatedAt": "2026-11-04T19:08:30.035Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -656,12 +656,12 @@
    "foundBy": "brand-site",
    "foundWith": "Zimaya",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T00:55:57.475Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-04T01:16:40.109Z",
    "trust": {
     "score": 82,
     "verdict": "trusted",
-    "at": "2026-10-21T00:55:57.475Z",
+    "at": "2026-11-04T01:16:40.109Z",
     "checks": [
      {
       "id": "age",
@@ -762,12 +762,12 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "AED",
-   "rateToEgp": 14.8364,
+   "rateToEgp": 15.0771,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*zimayaperfumes\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://zimayaperfumes.com/sitemap_agentic_discovery.xml",
     "https://zimayaperfumes.com/sitemap_products_1.xml?from=7703824531526&to=8509335994438",
-    "https://zimayaperfumes.com/sitemap_pages_1.xml?from=95037456454&to=95037915206",
+    "https://zimayaperfumes.com/sitemap_pages_1.xml?from=95037685830&to=95037915206",
     "https://zimayaperfumes.com/sitemap_collections_1.xml?from=284715122758&to=314055458886",
     "https://zimayaperfumes.com/sitemap_blogs_1.xml",
     "https://zimayaperfumes.com/sitemap_articles_1.xml"
@@ -921,12 +921,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-01T18:53:55.489Z",
    "trust": {
     "score": 80,
     "verdict": "trusted",
-    "at": "2026-10-18T15:10:56.723Z",
+    "at": "2026-11-01T18:53:55.489Z",
     "checks": [
      {
       "id": "age",
@@ -1024,7 +1024,7 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "SAR",
-   "rateToEgp": 14.2559,
+   "rateToEgp": 14.9415,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*niceonesa\\.com/ar/[^?#]+$",
    "sitemaps": [],
    "via": "json-ld",
@@ -1032,7 +1032,7 @@
     "https://niceonesa.com",
     "https://niceonesa.com/ar/perfume"
    ],
-   "productsEstimate": 69
+   "productsEstimate": 66
   },
   {
    "id": "goldenscent-com",
@@ -1680,12 +1680,12 @@
    "foundBy": "brand-site",
    "foundWith": "Armaf",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T06:55:49.085Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-04T07:28:15.596Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-10-21T06:55:49.085Z",
+    "at": "2026-11-04T07:28:15.596Z",
     "checks": [
      {
       "id": "age",
@@ -1693,7 +1693,7 @@
       "ok": true,
       "points": 20,
       "max": 20,
-      "detail": "15 سنة"
+      "detail": "16 سنة"
      },
      {
       "id": "https",
@@ -1786,18 +1786,18 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 54.4889,
+   "rateToEgp": 55.3706,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*armaf\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://armaf.com/sitemap_agentic_discovery.xml",
-    "https://armaf.com/sitemap_products_1.xml?from=9284842357035&to=15424824443179",
-    "https://armaf.com/sitemap_pages_1.xml?from=135551123755&to=167363936555",
-    "https://armaf.com/sitemap_collections_1.xml?from=473743032619&to=535168385323",
+    "https://armaf.com/sitemap_products_1.xml?from=9284842357035&to=15484578595115",
+    "https://armaf.com/sitemap_pages_1.xml?from=135552237867&to=167363936555",
+    "https://armaf.com/sitemap_collections_1.xml?from=473743032619&to=535786619179",
     "https://armaf.com/sitemap_blogs_1.xml",
     "https://armaf.com/sitemap_articles_1.xml"
    ],
-   "via": "generic",
-   "productsEstimate": 494
+   "via": "json-ld",
+   "productsEstimate": 518
   },
   {
    "id": "armafperfumes-com",
@@ -2311,12 +2311,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T23:21:13.356Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T01:17:41.428Z",
    "trust": {
     "score": 84,
     "verdict": "trusted",
-    "at": "2026-10-18T23:21:13.356Z",
+    "at": "2026-11-02T01:17:41.428Z",
     "checks": [
      {
       "id": "age",
@@ -2416,13 +2416,13 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "GBP",
-   "rateToEgp": 71.2388,
+   "rateToEgp": 74.9879,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*pacoperfumerias\\.co\\.uk/[^?#]+\\.html?$",
    "sitemaps": [
     "https://www.pacoperfumerias.co.uk/sitemap.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 6330
+   "productsEstimate": 6333
   },
   {
    "id": "nose-shop-jp",
@@ -2655,15 +2655,15 @@
    "host": "escentials.com",
    "name": "escentials.com",
    "base": "https://escentials.com",
-   "status": "active",
+   "status": "paused",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 3,
-   "vettedAt": "2026-10-20T18:50:32.222Z",
+   "attempts": 4,
+   "vettedAt": "2026-10-27T18:54:26.964Z",
    "trust": {
     "score": 93,
     "verdict": "trusted",
-    "at": "2026-10-20T18:50:32.222Z",
+    "at": "2026-10-27T18:54:26.964Z",
     "checks": [
      {
       "id": "age",
@@ -2760,8 +2760,8 @@
     "registeredAt": "2002-10-20T11:09:35.000Z"
    },
    "region": "east-asia",
-   "sampleOk": 3,
-   "sampleTotal": 6,
+   "sampleOk": 8,
+   "sampleTotal": 9,
    "currency": "SGD",
    "rateToEgp": 42.1119,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*escentials\\.com/products/[^?#]+$",
@@ -2776,7 +2776,8 @@
     "https://escentials.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 1973
+   "productsEstimate": 1973,
+   "reason": "أغلب منتجاته ليست عطوراً (38%)"
   },
   {
    "id": "thefragranceshop-co-uk",
@@ -2799,12 +2800,12 @@
    "foundBy": "brand-site",
    "foundWith": "Volare",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T07:16:55.374Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-04T13:16:08.670Z",
    "trust": {
     "score": 80,
     "verdict": "trusted",
-    "at": "2026-10-21T07:16:55.374Z",
+    "at": "2026-11-04T13:16:08.670Z",
     "checks": [
      {
       "id": "age",
@@ -2904,21 +2905,21 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "AED",
-   "rateToEgp": 14.8364,
+   "rateToEgp": 15.0771,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*volareperfumes\\.com/[^?#]+$",
    "sitemaps": [
     "https://volareperfumes.com/sitemap_agentic_discovery.xml",
-    "https://volareperfumes.com/sitemap_products_1.xml?from=9893736186148&to=10424242667812",
+    "https://volareperfumes.com/sitemap_products_1.xml?from=9893736186148&to=15415133438244",
     "https://volareperfumes.com/sitemap_pages_1.xml?from=140971344164&to=161011859748",
     "https://volareperfumes.com/sitemap_collections_1.xml?from=628052754724&to=650876092708",
     "https://volareperfumes.com/sitemap_blogs_1.xml",
-    "https://volareperfumes.com/ar/sitemap_products_1.xml?from=9893736186148&to=10424242667812",
+    "https://volareperfumes.com/ar/sitemap_products_1.xml?from=9893736186148&to=15415133438244",
     "https://volareperfumes.com/ar/sitemap_pages_1.xml?from=140971344164&to=161011859748",
     "https://volareperfumes.com/ar/sitemap_collections_1.xml?from=628052754724&to=650876092708",
     "https://volareperfumes.com/ar/sitemap_blogs_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 654
+   "productsEstimate": 742
   },
   {
    "id": "volareparfums-com",
@@ -3055,12 +3056,12 @@
    "foundBy": "brand-site",
    "foundWith": "Shama",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-04T13:16:08.670Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-10-21T10:34:54.765Z",
+    "at": "2026-11-04T13:16:08.670Z",
     "checks": [
      {
       "id": "age",
@@ -3160,18 +3161,18 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "INR",
-   "rateToEgp": 0.5743,
+   "rateToEgp": 0.5841,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*shamaperfumes\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://shamaperfumes.com/sitemap_agentic_discovery.xml",
-    "https://shamaperfumes.com/sitemap_products_1.xml?from=7592610988171&to=10362128007307",
+    "https://shamaperfumes.com/sitemap_products_1.xml?from=7592610988171&to=10384618946699",
     "https://shamaperfumes.com/sitemap_pages_1.xml?from=108600000651&to=111503736971",
-    "https://shamaperfumes.com/sitemap_collections_1.xml?from=294751240331&to=317437411467",
+    "https://shamaperfumes.com/sitemap_collections_1.xml?from=294751240331&to=491756028043",
     "https://shamaperfumes.com/sitemap_blogs_1.xml",
     "https://shamaperfumes.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 488
+   "productsEstimate": 491
   },
   {
    "id": "shamaparfums-com",
@@ -3425,15 +3426,15 @@
    "host": "perfumania.com",
    "name": "Perfumania",
    "base": "https://perfumania.com",
-   "status": "active",
+   "status": "paused",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T00:56:02.060Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T01:17:41.428Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-10-19T00:56:02.060Z",
+    "at": "2026-11-02T01:17:41.428Z",
     "checks": [
      {
       "id": "age",
@@ -3461,10 +3462,10 @@
      {
       "id": "identity",
       "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
-      "ok": null,
+      "ok": false,
       "points": 5,
       "max": 15,
-      "detail": "الموقع يمنع قراءة الصفحة آلياً"
+      "detail": "عنوان"
      },
      {
       "id": "returns",
@@ -3530,40 +3531,41 @@
     "registeredAt": "1996-05-28T04:00:00.000Z"
    },
    "region": "americas",
-   "sampleOk": 4,
-   "sampleTotal": 6,
+   "sampleOk": 0,
+   "sampleTotal": 1,
    "currency": "USD",
-   "rateToEgp": 53.5247,
+   "rateToEgp": 55.6767,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*perfumania\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://perfumania.com/sitemap_agentic_discovery.xml",
     "https://perfumania.com/sitemap_products_1.xml?from=4466926518405&to=4467090882693",
-    "https://perfumania.com/sitemap_products_2.xml?from=4467091243141&to=5172600471685",
-    "https://perfumania.com/sitemap_products_3.xml?from=5172600504453&to=6612151435397",
-    "https://perfumania.com/sitemap_products_4.xml?from=6612151500933&to=7208918515845",
-    "https://perfumania.com/sitemap_products_5.xml?from=7208923857029&to=7356602548357",
-    "https://perfumania.com/sitemap_pages_1.xml?from=47882240133&to=95800361093",
-    "https://perfumania.com/sitemap_collections_1.xml?from=163318235269&to=282691174533",
+    "https://perfumania.com/sitemap_products_2.xml?from=4467091243141&to=5172600504453",
+    "https://perfumania.com/sitemap_products_3.xml?from=5172600569989&to=6612151500933",
+    "https://perfumania.com/sitemap_products_4.xml?from=6612151533701&to=7208923857029",
+    "https://perfumania.com/sitemap_products_5.xml?from=7208927756421&to=7364380491909",
+    "https://perfumania.com/sitemap_pages_1.xml?from=47882240133&to=95954731141",
+    "https://perfumania.com/sitemap_collections_1.xml?from=163318235269&to=283797127301",
     "https://perfumania.com/sitemap_blogs_1.xml",
     "https://perfumania.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 4396
+   "productsEstimate": 4402,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)"
   },
   {
    "id": "escentual-com",
    "host": "escentual.com",
    "name": "Escentual",
    "base": "https://escentual.com",
-   "status": "active",
+   "status": "paused",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T00:56:02.060Z",
+   "attempts": 2,
+   "vettedAt": "2026-10-26T01:06:45.971Z",
    "trust": {
     "score": 93,
     "verdict": "trusted",
-    "at": "2026-10-19T00:56:02.060Z",
+    "at": "2026-10-26T01:06:45.971Z",
     "checks": [
      {
       "id": "age",
@@ -3660,8 +3662,8 @@
     "registeredAt": "2002-03-27T12:32:11.000Z"
    },
    "region": "americas",
-   "sampleOk": 3,
-   "sampleTotal": 6,
+   "sampleOk": 9,
+   "sampleTotal": 9,
    "currency": "USD",
    "rateToEgp": 53.5247,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*escentual\\.com/products/[^?#]+$",
@@ -3679,7 +3681,8 @@
     "https://escentual.com/sitemap_blogs_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 4662
+   "productsEstimate": 4662,
+   "reason": "أغلب منتجاته ليست عطوراً (56%)"
   },
   {
    "id": "luckyscent-com",
@@ -3924,18 +3927,18 @@
   {
    "id": "osmaperfumes-com",
    "host": "osmaperfumes.com",
-   "name": "عطور اوسما Osma Perfumes",
+   "name": "OSMA Perfumes",
    "base": "https://sa.osmaperfumes.com",
    "status": "active",
    "foundBy": "brand-site",
    "foundWith": "Osma",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T10:34:54.765Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-04T13:16:08.670Z",
    "trust": {
     "score": 68,
     "verdict": "trusted",
-    "at": "2026-10-21T10:34:54.765Z",
+    "at": "2026-11-04T13:16:08.670Z",
     "checks": [
      {
       "id": "age",
@@ -4032,17 +4035,18 @@
     "registeredAt": "2022-11-21T11:19:29.000Z"
    },
    "region": "arab",
-   "sampleOk": 3,
+   "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "SAR",
-   "rateToEgp": 14.5298,
+   "rateToEgp": 14.7655,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*osmaperfumes\\.com/en/(?:[^?#]*/)?p\\d+/?$",
    "sitemaps": [
-    "https://osmaperfumes.com/ar/sitemap-1.xml",
-    "https://osmaperfumes.com/ar/sitemap-2.xml"
+    "https://osmaperfumes.com/en/sitemap-1.xml",
+    "https://osmaperfumes.com/en/sitemap-2.xml",
+    "https://osmaperfumes.com/en/blog-1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 18
+   "productsEstimate": 92
   },
   {
    "id": "osmaparfums-com",
@@ -4326,12 +4330,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T04:31:58.644Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T07:37:33.706Z",
    "trust": {
-    "score": 84,
+    "score": 79,
     "verdict": "trusted",
-    "at": "2026-10-19T04:31:58.644Z",
+    "at": "2026-11-02T07:37:33.706Z",
     "checks": [
      {
       "id": "age",
@@ -4359,10 +4363,10 @@
      {
       "id": "identity",
       "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
-      "ok": null,
-      "points": 5,
+      "ok": false,
+      "points": 0,
       "max": 15,
-      "detail": "الموقع يمنع قراءة الصفحة آلياً"
+      "detail": "لا توجد"
      },
      {
       "id": "returns",
@@ -4431,7 +4435,7 @@
    "sampleOk": 5,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 53.5247,
+   "rateToEgp": 55.9607,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*scentsplit\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.scentsplit.com/sitemap_agentic_discovery.xml",
@@ -4442,12 +4446,12 @@
     "https://www.scentsplit.com/sitemap_products_5.xml?from=7573047214280&to=7720821358792",
     "https://www.scentsplit.com/sitemap_products_6.xml?from=7720821391560&to=8042998530248",
     "https://www.scentsplit.com/sitemap_products_7.xml?from=8042998595784&to=8166866518216",
-    "https://www.scentsplit.com/sitemap_products_8.xml?from=8166866550984&to=8229621203144",
-    "https://www.scentsplit.com/sitemap_products_9.xml?from=8229621235912&to=8311224434888",
-    "https://www.scentsplit.com/sitemap_products_10.xml?from=8311224467656&to=8334860124360"
+    "https://www.scentsplit.com/sitemap_products_8.xml?from=8166866550984&to=8229329567944",
+    "https://www.scentsplit.com/sitemap_products_9.xml?from=8229329633480&to=8310163734728",
+    "https://www.scentsplit.com/sitemap_products_10.xml?from=8310163767496&to=8334554759368"
    ],
    "via": "generic",
-   "productsEstimate": 10000
+   "productsEstimate": 9996
   },
   {
    "id": "flaconi-de",
@@ -4744,12 +4748,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T19:05:47.429Z",
    "trust": {
     "score": 76,
     "verdict": "trusted",
-    "at": "2026-10-19T12:55:05.997Z",
+    "at": "2026-11-02T19:05:47.429Z",
     "checks": [
      {
       "id": "age",
@@ -4846,20 +4850,20 @@
     "registeredAt": "2024-01-27T01:58:31.000Z"
    },
    "region": "americas",
-   "sampleOk": 9,
-   "sampleTotal": 9,
+   "sampleOk": 4,
+   "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 53.5247,
+   "rateToEgp": 55.9607,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*lattafa-usa\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.lattafa-usa.com/sitemap_agentic_discovery.xml",
-    "https://www.lattafa-usa.com/sitemap_products_1.xml?from=9055147655391&to=15422183669983",
+    "https://www.lattafa-usa.com/sitemap_products_1.xml?from=9055147655391&to=15482339819743",
     "https://www.lattafa-usa.com/sitemap_pages_1.xml?from=119600185567&to=129349484767",
-    "https://www.lattafa-usa.com/sitemap_collections_1.xml?from=470062858463&to=488297201887",
+    "https://www.lattafa-usa.com/sitemap_collections_1.xml?from=470062858463&to=482683486431",
     "https://www.lattafa-usa.com/sitemap_blogs_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 283
+   "productsEstimate": 284
   },
   {
    "id": "douglas-de",
@@ -4905,12 +4909,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T12:55:05.997Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T19:05:47.429Z",
    "trust": {
-    "score": 77,
+    "score": 79,
     "verdict": "trusted",
-    "at": "2026-10-19T12:55:05.997Z",
+    "at": "2026-11-02T19:05:47.429Z",
     "checks": [
      {
       "id": "age",
@@ -4930,18 +4934,18 @@
      {
       "id": "contact",
       "label": "بيانات التواصل",
-      "ok": false,
-      "points": 4,
+      "ok": true,
+      "points": 6,
       "max": 10,
-      "detail": "بريد"
+      "detail": "صفحة تواصل + بريد"
      },
      {
       "id": "identity",
       "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
-      "ok": null,
+      "ok": false,
       "points": 5,
       "max": 15,
-      "detail": "الموقع يمنع قراءة الصفحة آلياً"
+      "detail": "عنوان"
      },
      {
       "id": "returns",
@@ -5007,21 +5011,21 @@
     "registeredAt": "1998-04-25T04:00:00.000Z"
    },
    "region": "americas",
-   "sampleOk": 4,
-   "sampleTotal": 6,
+   "sampleOk": 9,
+   "sampleTotal": 9,
    "currency": "USD",
-   "rateToEgp": 53.5247,
+   "rateToEgp": 55.9607,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*aedes\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.aedes.com/sitemap_agentic_discovery.xml",
     "https://www.aedes.com/sitemap_products_1.xml?from=457680521&to=7701880340559",
-    "https://www.aedes.com/sitemap_products_2.xml?from=7701945516111&to=15439668478031",
-    "https://www.aedes.com/sitemap_pages_1.xml?from=21279917&to=117377073231",
-    "https://www.aedes.com/sitemap_collections_1.xml?from=30872249&to=492165955663",
+    "https://www.aedes.com/sitemap_products_2.xml?from=7701945516111&to=15493921931343",
+    "https://www.aedes.com/sitemap_pages_1.xml?from=21279921&to=117377073231",
+    "https://www.aedes.com/sitemap_collections_1.xml?from=30872249&to=493411500111",
     "https://www.aedes.com/sitemap_blogs_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 1241
+   "productsEstimate": 1250
   },
   {
    "id": "ruebroca-com",
@@ -5058,12 +5062,12 @@
    "foundBy": "brand-site",
    "foundWith": "Rue Broca",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-04T13:16:08.670Z",
    "trust": {
     "score": 74,
     "verdict": "trusted",
-    "at": "2026-10-21T12:18:06.563Z",
+    "at": "2026-11-04T13:16:08.670Z",
     "checks": [
      {
       "id": "age",
@@ -5162,12 +5166,12 @@
    "sampleOk": 7,
    "sampleTotal": 7,
    "currency": "AED",
-   "rateToEgp": 14.8364,
+   "rateToEgp": 15.0771,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*ruebrocaparfums\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://ruebrocaparfums.com/sitemap_agentic_discovery.xml",
     "https://ruebrocaparfums.com/sitemap_products_1.xml?from=9043205456112&to=9868843483376",
-    "https://ruebrocaparfums.com/sitemap_pages_1.xml?from=138719527152&to=146412699888",
+    "https://ruebrocaparfums.com/sitemap_pages_1.xml?from=138720084208&to=138720215280",
     "https://ruebrocaparfums.com/sitemap_collections_1.xml?from=444714647792&to=481870315760",
     "https://ruebrocaparfums.com/sitemap_blogs_1.xml",
     "https://ruebrocaparfums.com/sitemap_articles_1.xml"
@@ -5184,12 +5188,12 @@
    "foundBy": "brand-site",
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-04T13:16:08.670Z",
    "trust": {
     "score": 96,
     "verdict": "trusted",
-    "at": "2026-10-21T12:18:06.563Z",
+    "at": "2026-11-04T13:16:08.670Z",
     "checks": [
      {
       "id": "age",
@@ -5289,23 +5293,23 @@
    "sampleOk": 4,
    "sampleTotal": 7,
    "currency": "AED",
-   "rateToEgp": 14.8364,
+   "rateToEgp": 15.0771,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*khadlaj-perfumes\\.com/[^?#]+$",
    "sitemaps": [
     "https://khadlaj-perfumes.com/sitemap_agentic_discovery.xml",
-    "https://khadlaj-perfumes.com/sitemap_products_1.xml?from=7554095022279&to=8893884170439",
+    "https://khadlaj-perfumes.com/sitemap_products_1.xml?from=7554095022279&to=15453041852615",
     "https://khadlaj-perfumes.com/sitemap_pages_1.xml?from=91005419719&to=165762957511",
     "https://khadlaj-perfumes.com/sitemap_collections_1.xml?from=290774778055&to=490811654343",
     "https://khadlaj-perfumes.com/sitemap_blogs_1.xml",
     "https://khadlaj-perfumes.com/sitemap_articles_1.xml",
-    "https://khadlaj-perfumes.com/ar/sitemap_products_1.xml?from=7554095022279&to=8893884170439",
+    "https://khadlaj-perfumes.com/ar/sitemap_products_1.xml?from=7554095022279&to=15453041852615",
     "https://khadlaj-perfumes.com/ar/sitemap_pages_1.xml?from=91005419719&to=165762957511",
     "https://khadlaj-perfumes.com/ar/sitemap_collections_1.xml?from=290774778055&to=490811654343",
     "https://khadlaj-perfumes.com/ar/sitemap_blogs_1.xml",
     "https://khadlaj-perfumes.com/ar/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 1112
+   "productsEstimate": 1138
   },
   {
    "id": "khadlajperfumes-com",
@@ -5316,12 +5320,12 @@
    "foundBy": "brand-site",
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-21T12:18:06.563Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-04T13:16:08.670Z",
    "trust": {
     "score": 96,
     "verdict": "trusted",
-    "at": "2026-10-21T12:18:06.563Z",
+    "at": "2026-11-04T13:16:08.670Z",
     "checks": [
      {
       "id": "age",
@@ -5421,23 +5425,23 @@
    "sampleOk": 4,
    "sampleTotal": 7,
    "currency": "AED",
-   "rateToEgp": 14.8364,
+   "rateToEgp": 15.0771,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*khadlaj-perfumes\\.com/[^?#]+$",
    "sitemaps": [
     "https://khadlaj-perfumes.com/sitemap_agentic_discovery.xml",
-    "https://khadlaj-perfumes.com/sitemap_products_1.xml?from=7554095022279&to=8893884170439",
+    "https://khadlaj-perfumes.com/sitemap_products_1.xml?from=7554095022279&to=15453041852615",
     "https://khadlaj-perfumes.com/sitemap_pages_1.xml?from=91005419719&to=165762957511",
     "https://khadlaj-perfumes.com/sitemap_collections_1.xml?from=290774778055&to=490811654343",
     "https://khadlaj-perfumes.com/sitemap_blogs_1.xml",
     "https://khadlaj-perfumes.com/sitemap_articles_1.xml",
-    "https://khadlaj-perfumes.com/ar/sitemap_products_1.xml?from=7554095022279&to=8893884170439",
+    "https://khadlaj-perfumes.com/ar/sitemap_products_1.xml?from=7554095022279&to=15453041852615",
     "https://khadlaj-perfumes.com/ar/sitemap_pages_1.xml?from=91005419719&to=165762957511",
     "https://khadlaj-perfumes.com/ar/sitemap_collections_1.xml?from=290774778055&to=490811654343",
     "https://khadlaj-perfumes.com/ar/sitemap_blogs_1.xml",
     "https://khadlaj-perfumes.com/ar/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 1112
+   "productsEstimate": 1138
   },
   {
    "id": "khadlajparfums-com",
@@ -5460,12 +5464,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T19:05:47.429Z",
    "trust": {
     "score": 86,
     "verdict": "trusted",
-    "at": "2026-10-19T18:53:10.915Z",
+    "at": "2026-11-02T19:05:47.429Z",
     "checks": [
      {
       "id": "age",
@@ -5564,23 +5568,23 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "EUR",
-   "rateToEgp": 60.1032,
+   "rateToEgp": 62.2688,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*ausliebezumduft\\.de/products/[^?#]+$",
    "sitemaps": [
     "https://www.ausliebezumduft.de/sitemap_agentic_discovery.xml",
-    "https://www.ausliebezumduft.de/sitemap_products_1.xml?from=10143100928346&to=10143500140890",
-    "https://www.ausliebezumduft.de/sitemap_products_2.xml?from=10143500370266&to=10145456324954",
-    "https://www.ausliebezumduft.de/sitemap_products_3.xml?from=10145456423258&to=10145978155354",
-    "https://www.ausliebezumduft.de/sitemap_products_4.xml?from=10145978253658&to=10153924559194",
-    "https://www.ausliebezumduft.de/sitemap_products_5.xml?from=10153925738842&to=11031995580762",
+    "https://www.ausliebezumduft.de/sitemap_products_1.xml?from=10143100928346&to=10143501746522",
+    "https://www.ausliebezumduft.de/sitemap_products_2.xml?from=10143502336346&to=10145457275226",
+    "https://www.ausliebezumduft.de/sitemap_products_3.xml?from=10145457307994&to=10145981301082",
+    "https://www.ausliebezumduft.de/sitemap_products_4.xml?from=10145981432154&to=10243185049946",
+    "https://www.ausliebezumduft.de/sitemap_products_5.xml?from=10243185082714&to=11056210641242",
     "https://www.ausliebezumduft.de/sitemap_pages_1.xml?from=138209788250&to=161118781786",
-    "https://www.ausliebezumduft.de/sitemap_collections_1.xml?from=639574507866&to=646038651226",
-    "https://www.ausliebezumduft.de/sitemap_collections_2.xml?from=646038683994&to=680812872026",
+    "https://www.ausliebezumduft.de/sitemap_collections_1.xml?from=639574507866&to=646039667034",
+    "https://www.ausliebezumduft.de/sitemap_collections_2.xml?from=646039699802&to=680812872026",
     "https://www.ausliebezumduft.de/sitemap_blogs_1.xml",
     "https://www.ausliebezumduft.de/sitemap_articles_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 4937
+   "productsEstimate": 4956
   },
   {
    "id": "osswaldnyc-com",
@@ -5590,12 +5594,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-19T18:53:10.915Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-02T19:05:47.429Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-10-19T18:53:10.915Z",
+    "at": "2026-11-02T19:05:47.429Z",
     "checks": [
      {
       "id": "age",
@@ -5695,18 +5699,19 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 53.5247,
+   "rateToEgp": 55.9607,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*osswaldnyc\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.osswaldnyc.com/sitemap_agentic_discovery.xml",
-    "https://www.osswaldnyc.com/sitemap_products_1.xml?from=131027455&to=10336615727323",
+    "https://www.osswaldnyc.com/sitemap_products_1.xml?from=131027455&to=10345840378075",
+    "https://www.osswaldnyc.com/sitemap_products_2.xml?from=10362358595803&to=10376229814491",
     "https://www.osswaldnyc.com/sitemap_pages_1.xml?from=125059140&to=126722638043",
-    "https://www.osswaldnyc.com/sitemap_collections_1.xml?from=9704145&to=541556474075",
+    "https://www.osswaldnyc.com/sitemap_collections_1.xml?from=9704145&to=544761610459",
     "https://www.osswaldnyc.com/sitemap_blogs_1.xml",
     "https://www.osswaldnyc.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 992
+   "productsEstimate": 1012
   },
   {
    "id": "niche-beauty-com",
@@ -6108,12 +6113,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-20T00:56:49.671Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-03T01:15:26.759Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-10-20T00:56:49.671Z",
+    "at": "2026-11-03T01:15:26.759Z",
     "checks": [
      {
       "id": "age",
@@ -6141,10 +6146,10 @@
      {
       "id": "identity",
       "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
-      "ok": null,
+      "ok": false,
       "points": 5,
       "max": 15,
-      "detail": "الموقع يمنع قراءة الصفحة آلياً"
+      "detail": "عنوان"
      },
      {
       "id": "returns",
@@ -6181,7 +6186,7 @@
       "ok": true,
       "points": 10,
       "max": 10,
-      "detail": "Visa، Mastercard، American Express، PayPal، Klarna"
+      "detail": "PayPal، Klarna"
      },
      {
       "id": "platform",
@@ -6213,23 +6218,22 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 53.9076,
+   "rateToEgp": 55.4154,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*fragranceoutlet\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.fragranceoutlet.com/sitemap_agentic_discovery.xml",
     "https://www.fragranceoutlet.com/sitemap_products_1.xml?from=2370653827&to=1368496767085",
-    "https://www.fragranceoutlet.com/sitemap_products_2.xml?from=1381238407277&to=3829807251565",
-    "https://www.fragranceoutlet.com/sitemap_products_3.xml?from=3829810823277&to=6549507473517",
-    "https://www.fragranceoutlet.com/sitemap_products_4.xml?from=6549507539053&to=7551565824109",
-    "https://www.fragranceoutlet.com/sitemap_products_5.xml?from=7551569002605&to=15381311062125",
-    "https://www.fragranceoutlet.com/sitemap_pages_1.xml?from=67170883&to=162123743341",
-    "https://www.fragranceoutlet.com/sitemap_collections_1.xml?from=82980675&to=266647437421",
-    "https://www.fragranceoutlet.com/sitemap_collections_2.xml?from=266647470189&to=321053851757",
+    "https://www.fragranceoutlet.com/sitemap_products_2.xml?from=1381238407277&to=3829810823277",
+    "https://www.fragranceoutlet.com/sitemap_products_3.xml?from=3851663048813&to=6549508063341",
+    "https://www.fragranceoutlet.com/sitemap_products_4.xml?from=6549508784237&to=7551578112109",
+    "https://www.fragranceoutlet.com/sitemap_products_5.xml?from=7551604031597&to=15403423989869",
+    "https://www.fragranceoutlet.com/sitemap_pages_1.xml?from=67170947&to=162123743341",
+    "https://www.fragranceoutlet.com/sitemap_collections_1.xml?from=82980675&to=512318210157",
     "https://www.fragranceoutlet.com/sitemap_blogs_1.xml",
     "https://www.fragranceoutlet.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 4780
+   "productsEstimate": 4784
   },
   {
    "id": "marionnaud-fr",
@@ -6358,15 +6362,15 @@
    "host": "perfumesclub.com",
    "name": "Perfumes online",
    "base": "https://www.perfumesclub.com",
-   "status": "active",
+   "status": "paused",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-20T08:43:49.241Z",
+   "attempts": 3,
+   "vettedAt": "2026-10-27T18:54:26.964Z",
    "trust": {
     "score": 87,
     "verdict": "trusted",
-    "at": "2026-10-20T08:43:49.241Z",
+    "at": "2026-10-27T18:54:26.964Z",
     "checks": [
      {
       "id": "age",
@@ -6462,7 +6466,7 @@
     "registeredAt": "2008-12-02T11:38:47.000Z"
    },
    "region": "europe",
-   "sampleOk": 4,
+   "sampleOk": 3,
    "sampleTotal": 7,
    "currency": "EUR",
    "rateToEgp": 60.4222,
@@ -6481,7 +6485,8 @@
    ],
    "via": "json-ld",
    "productsEstimate": 46183,
-   "crawlDelayMs": 1000
+   "crawlDelayMs": 1000,
+   "reason": "صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (3/7)"
   },
   {
    "id": "primor-eu",
@@ -7366,7 +7371,7 @@
  ],
  "runs": [
   {
-   "at": "2026-10-23T12:53:30.719Z",
+   "at": "2026-11-04T19:08:30.035Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
@@ -7377,431 +7382,357 @@
    ]
   },
   {
-   "at": "2026-10-23T08:44:34.461Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "Web search: AI quota used up — the scout continues by himself",
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-23T08:33:38.744Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "Web search: AI quota used up — the scout continues by himself",
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-23T07:42:46.642Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-23T07:12:45.947Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-23T06:55:09.742Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-23T00:58:57.297Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T21:08:54.861Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T20:04:18.207Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T19:06:03.105Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T18:44:43.066Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T14:35:48.176Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "Web search: AI quota used up — the scout continues by himself",
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T13:46:42.390Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T13:23:38.497Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T13:07:28.280Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T12:46:41.468Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T12:10:11.548Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T09:53:36.685Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T08:47:18.157Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T06:56:15.804Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-22T05:53:55.961Z",
+   "at": "2026-11-04T13:16:08.670Z",
    "mode": "self",
    "found": 0,
    "vetted": 6,
    "activated": 0,
-   "rejected": 5,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "✗ ruebroca.com: الموقع لا يفتح",
-    "✗ ruebrocaperfumes.com: الموقع لا يفتح",
-    "✗ khadlajparfums.com: الموقع لا يفتح",
-    "  ↳ frenchavenue.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
-    "… frenchavenue.com: good, waiting (already 20 active stores)",
-    "✗ frenchavenueperfumes.com: الموقع لا يفتح",
-    "✗ frenchavenueparfums.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-22T00:55:40.362Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 10,
-   "notes": [
-    "✗ osma.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ osmaparfums.com: الموقع لا يفتح",
-    "  ↳ pariscornerperfumes.com: CV 56/100 [age,https,contact,identity,platform,social,authentic] on Shopify (pages: /pages/contact→200 /policies/contact-information→404 /policies/refund-policy→404 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
-    "✗ pariscornerperfumes.com: ملف الثقة ضعيف (56/100): ينقصه سياسة الإرجاع والاسترداد، وسائل دفع معروفة، سياسة الشحن",
-    "✗ pariscornerparfums.com: الموقع لا يفتح",
-    "  ↳ velixir.com: CV 54/100 [age,https,identity,returns,authentic] (pages: /contact-us→200 /returns→200)",
-    "✗ velixir.com: ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن",
-    "✗ velixirperfumes.com: الموقع لا يفتح",
-    "  ↳ velixirparfums.com: CV 56/100 [age,https,contact,returns,terms,payment,platform,social] on Shopify (pages: /pages/contact→200 /policies/contact-information→200 /policies/refund-policy→200 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
-    "✗ velixirparfums.com: ملف الثقة ضعيف (56/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
-    "✗ afnanperfumesperfumes.com: الموقع لا يفتح",
-    "✗ afnanperfumesparfums.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-21T18:51:52.675Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 10,
-   "notes": [
-    "  ↳ alwataniah.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
-    "✗ alwataniah.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)",
-    "✗ alwataniahperfumes.com: الموقع لا يفتح",
-    "✗ alwataniahparfums.com: الموقع لا يفتح",
-    "✗ lattafapride.com: الموقع لا يفتح",
-    "✗ lattafaprideperfumes.com: الموقع لا يفتح",
-    "✗ lattafaprideparfums.com: الموقع لا يفتح",
-    "✗ volareparfums.com: الموقع لا يفتح",
-    "  ↳ shama.com: CV 62/100 [age,https,identity,returns,privacy,social,authentic]",
-    "✗ shama.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ shamaparfums.com: الموقع لا يفتح",
-    "✗ afnanperfumes.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-21T17:23:18.494Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 10,
-   "notes": [
-    "✗ zimayaparfums.com: الموقع لا يفتح",
-    "✗ grandeurperfumes.com: الموقع لا يفتح (HTTP 404)",
-    "✗ grandeurparfums.com: الموقع لا يفتح",
-    "  ↳ bujairami.com: CV 54/100 [age,https,identity,returns,authentic] (pages: /contact-us→200 /returns→200)",
-    "✗ bujairami.com: ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن",
-    "  ↳ bujairamiperfumes.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
-    "✗ bujairamiperfumes.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "✗ bujairamiparfums.com: الموقع لا يفتح",
-    "✗ armafperfumes.com: الموقع لا يفتح",
-    "✗ armafparfums.com: الموقع لا يفتح",
-    "  ↳ rasasiparfums.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
-    "✗ rasasiparfums.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة"
-   ]
-  },
-  {
-   "at": "2026-10-21T16:11:30.170Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 5,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "✗ ruebrocaperfumes.com: الموقع لا يفتح",
-    "✗ khadlajparfums.com: الموقع لا يفتح",
-    "  ↳ frenchavenue.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
-    "… frenchavenue.com: good, waiting (already 20 active stores)",
-    "✗ frenchavenueperfumes.com: الموقع لا يفتح",
-    "✗ frenchavenueparfums.com: الموقع لا يفتح",
-    "✗ lattafaperfumes.com: الموقع لا يفتح",
-    "✗ lattafaparfums.com: الموقع لا يفتح",
-    "✗ ardalzaafaran.com: الموقع لا يفتح",
-    "✗ ardalzaafaranperfumes.com: الموقع لا يفتح",
-    "✗ ardalzaafaranparfums.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-21T15:48:34.519Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
    "rejected": 0,
    "notes": [
-    "✗ osmaparfums.com: الموقع لا يفتح",
-    "  ↳ pariscornerperfumes.com: CV 56/100 [age,https,contact,identity,platform,social,authentic] on Shopify (pages: /pages/contact→200 /policies/contact-information→404 /policies/refund-policy→404 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
-    "✗ pariscornerperfumes.com: ملف الثقة ضعيف (56/100): ينقصه سياسة الإرجاع والاسترداد، وسائل دفع معروفة، سياسة الشحن",
-    "✗ pariscornerparfums.com: الموقع لا يفتح",
-    "  ↳ velixir.com: CV 54/100 [age,https,identity,returns,authentic] (pages: /contact-us→200 /returns→200)",
-    "✗ velixir.com: ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن",
-    "✗ velixirperfumes.com: الموقع لا يفتح",
-    "  ↳ velixirparfums.com: CV 56/100 [age,https,contact,returns,terms,payment,platform,social] on Shopify (pages: /pages/contact→200 /policies/contact-information→200 /policies/refund-policy→200 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
-    "✗ velixirparfums.com: ملف الثقة ضعيف (56/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
-    "✗ afnanperfumesperfumes.com: الموقع لا يفتح",
-    "✗ afnanperfumesparfums.com: الموقع لا يفتح",
-    "✗ ruebroca.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-21T14:55:17.636Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "✗ alwataniahperfumes.com: الموقع لا يفتح",
-    "✗ alwataniahparfums.com: الموقع لا يفتح",
-    "✗ lattafapride.com: الموقع لا يفتح",
-    "✗ lattafaprideperfumes.com: الموقع لا يفتح",
-    "✗ lattafaprideparfums.com: الموقع لا يفتح",
-    "✗ volareparfums.com: الموقع لا يفتح",
-    "  ↳ shama.com: CV 62/100 [age,https,identity,returns,privacy,social,authentic]",
-    "✗ shama.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/6)",
-    "✗ shamaparfums.com: الموقع لا يفتح",
-    "✗ afnanperfumes.com: الموقع لا يفتح",
-    "✗ afnanparfums.com: الموقع لا يفتح"
-   ]
-  },
-  {
-   "at": "2026-10-21T13:21:48.779Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "✗ grandeurparfums.com: الموقع لا يفتح",
-    "  ↳ bujairami.com: CV 54/100 [age,https,identity,returns,authentic] (pages: /contact-us→200 /returns→200)",
-    "✗ bujairami.com: ملف الثقة ضعيف (54/100): ينقصه بيانات التواصل، وسائل دفع معروفة، سياسة الشحن",
-    "  ↳ bujairamiperfumes.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
-    "✗ bujairamiperfumes.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "✗ bujairamiparfums.com: الموقع لا يفتح",
-    "✗ armafperfumes.com: الموقع لا يفتح",
-    "✗ armafparfums.com: الموقع لا يفتح",
-    "  ↳ rasasiparfums.com: CV 29/100 [age,https,returns] (pages: /contact-us→200 /returns→200)",
-    "✗ rasasiparfums.com: ملف الثقة ضعيف (29/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، وسائل دفع معروفة",
-    "  ↳ alwataniah.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
-    "✗ alwataniah.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)"
-   ]
-  },
-  {
-   "at": "2026-10-21T12:54:45.361Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "✗ khadlajparfums.com: الموقع لا يفتح",
-    "  ↳ frenchavenue.com: CV 88/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,social,authentic] on Shopify",
-    "… frenchavenue.com: good, waiting (already 20 active stores)",
-    "✗ frenchavenueperfumes.com: الموقع لا يفتح",
-    "✗ frenchavenueparfums.com: الموقع لا يفتح",
-    "✗ lattafaperfumes.com: الموقع لا يفتح",
-    "✗ lattafaparfums.com: الموقع لا يفتح",
-    "✗ ardalzaafaran.com: الموقع لا يفتح",
-    "✗ ardalzaafaranperfumes.com: الموقع لا يفتح",
-    "✗ ardalzaafaranparfums.com: الموقع لا يفتح",
-    "  ↳ zimaya.com: CV 42/100 [age,https,identity,authentic] (pages: /contact-us→404 /returns→404)",
-    "✗ zimaya.com: ملف الثقة ضعيف (42/100): ينقصه بيانات التواصل، سياسة الإرجاع والاسترداد، وسائل دفع معروفة"
-   ]
-  },
-  {
-   "at": "2026-10-21T12:18:06.563Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 10,
-   "activated": 3,
-   "rejected": 0,
-   "notes": [
-    "  ↳ velixirparfums.com: CV 56/100 [age,https,contact,returns,terms,payment,platform,social] on Shopify (pages: /pages/contact→200 /policies/contact-information→200 /policies/refund-policy→200 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
-    "✗ velixirparfums.com: ملف الثقة ضعيف (56/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الشحن، سياسة الخصوصية",
-    "✗ afnanperfumesperfumes.com: الموقع لا يفتح",
-    "✗ afnanperfumesparfums.com: الموقع لا يفتح",
-    "✗ ruebroca.com: الموقع لا يفتح",
-    "✗ ruebrocaperfumes.com: الموقع لا يفتح",
+    "  ↳ volareperfumes.com: CV 80/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ volareperfumes.com (CV 80/100): 742 perfumes, 4/6 pages read without AI, AED (1 = 15.0771 EGP) — still good",
+    "  ↳ shamaperfumes.com: CV 83/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,authentic] on Shopify",
+    "✓ shamaperfumes.com (CV 83/100): 491 perfumes, 4/6 pages read without AI, INR (1 = 0.5841 EGP) — still good",
+    "  ↳ osmaperfumes.com: CV 68/100 [age,https,identity,returns,shipping,privacy,terms,platform,authentic] on Salla",
+    "✓ osmaperfumes.com (CV 68/100): 92 perfumes, 4/6 pages read without AI, SAR (1 = 14.7655 EGP) — still good",
     "  ↳ ruebrocaparfums.com: CV 74/100 [age,https,identity,returns,privacy,platform,social,authentic] on Shopify",
-    "✓ ruebrocaparfums.com (CV 74/100): 44 perfumes, 7/7 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer",
+    "✓ ruebrocaparfums.com (CV 74/100): 44 perfumes, 7/7 pages read without AI, AED (1 = 15.0771 EGP) — still good",
     "  ↳ khadlaj.com: CV 96/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ khadlaj.com (CV 96/100): 1112 perfumes, 4/7 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer",
+    "✓ khadlaj.com (CV 96/100): 1138 perfumes, 4/7 pages read without AI, AED (1 = 15.0771 EGP) — still good",
     "  ↳ khadlajperfumes.com: CV 96/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ khadlajperfumes.com (CV 96/100): 1112 perfumes, 4/7 pages read without AI, AED (1 = 14.8364 EGP) — added to the importer"
+    "✓ khadlajperfumes.com (CV 96/100): 1138 perfumes, 4/7 pages read without AI, AED (1 = 15.0771 EGP) — still good"
+   ]
+  },
+  {
+   "at": "2026-11-04T07:28:15.596Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ armaf.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ armaf.com (CV 90/100): 518 perfumes, 4/6 pages read without AI, USD (1 = 55.3706 EGP) — still good"
+   ]
+  },
+  {
+   "at": "2026-11-04T02:28:33.421Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-11-04T02:22:58.335Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-11-04T01:38:46.722Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-11-04T01:16:40.109Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ zimayaperfumes.com: CV 82/100 [age,https,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ zimayaperfumes.com (CV 82/100): 106 perfumes, 3/6 pages read without AI, AED (1 = 15.0771 EGP) — still good"
+   ]
+  },
+  {
+   "at": "2026-11-03T19:04:36.001Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-11-03T13:15:09.989Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-11-03T07:23:06.711Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-11-03T01:15:26.759Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ fragranceoutlet.com: CV 90/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ fragranceoutlet.com (CV 90/100): 4784 perfumes, 3/6 pages read without AI, USD (1 = 55.4154 EGP) — still good"
+   ]
+  },
+  {
+   "at": "2026-11-02T19:05:47.429Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 4,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ lattafa-usa.com: CV 76/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ lattafa-usa.com (CV 76/100): 284 perfumes, 4/6 pages read without AI, USD (1 = 55.9607 EGP) — still good",
+    "  ↳ aedes.com: CV 79/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✓ aedes.com (CV 79/100): 1250 perfumes, 9/9 pages read without AI, USD (1 = 55.9607 EGP) — still good",
+    "  ↳ ausliebezumduft.de: CV 86/100 [https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ ausliebezumduft.de (CV 86/100): 4956 perfumes, 3/6 pages read without AI, EUR (1 = 62.2688 EGP) — still good",
+    "  ↳ osswaldnyc.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✓ osswaldnyc.com (CV 83/100): 1012 perfumes, 3/6 pages read without AI, USD (1 = 55.9607 EGP) — still good"
+   ]
+  },
+  {
+   "at": "2026-11-02T13:20:05.829Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-11-02T09:26:31.737Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-11-02T07:37:33.706Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ scentsplit.com: CV 79/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ scentsplit.com (CV 79/100): 9996 perfumes, 5/6 pages read without AI, USD (1 = 55.9607 EGP) — still good"
+   ]
+  },
+  {
+   "at": "2026-11-02T01:17:41.428Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 2,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ perfumeprice.co.uk: CV 84/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Magento",
+    "✓ perfumeprice.co.uk (CV 84/100): 6333 perfumes, 3/6 pages read without AI, GBP (1 = 74.9879 EGP) — still good",
+    "  ↳ perfumania.com: CV 90/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✗ perfumania.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (0/1)"
+   ]
+  },
+  {
+   "at": "2026-11-01T18:53:55.489Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ niceonesa.com: CV 80/100 [age,https,contact,identity,returns,privacy,terms,payment,social]",
+    "✓ niceonesa.com (CV 80/100): 66+ (by browsing) perfumes, 4/6 pages read without AI, SAR (1 = 14.9415 EGP) — still good"
+   ]
+  },
+  {
+   "at": "2026-11-01T12:58:55.753Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-11-01T07:10:29.188Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-11-01T01:19:15.469Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-31T18:53:55.916Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-31T12:57:48.636Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-31T08:56:17.460Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-31T07:01:43.165Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-31T01:08:16.244Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-30T18:56:24.503Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-30T13:05:45.688Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-30T10:34:32.978Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-30T04:34:01.259Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-10-29T01:08:25.220Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
    ]
   }
  ]

@@ -90,6 +90,10 @@ test('the design department steers the work: its half-translated languages first
   ];
   assert.deepEqual(locatePhrases(['Live Sync'], screen), [{ phrase: 'Live Sync', file: 'src/components/Panel.tsx', line: 2 }]);
   assert.deepEqual(locatePhrases(['placeholder'], screen), [], 'a translation key is not English text on the screen');
+  // #404/#406: «Cosmetics» was «found» in an import path, a component name, a tab id and a test id — none is on the screen.
+  const code = [{ file: 'src/App.tsx', source: "const CosmeticsHub = lazy(() => import('./components/CosmeticsHub'));\n{activeTab === 'cosmetics' && <CosmeticsHub />}\n<div data-testid=\"cosmetics-hub\">" }];
+  assert.deepEqual(locatePhrases(['Cosmetics'], code), []);
+  assert.equal(locatePhrases(['Cosmetics'], [{ file: 'x.tsx', source: "<h2>Cosmetics</h2>" }]).length, 1, 'a real label is still found');
   assert.equal(findPhysicalDirection('<div className="ml-2 pr-4 text-left ms-2" /><p className="mx-2" />'), 3);
 });
 

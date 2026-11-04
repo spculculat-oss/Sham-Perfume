@@ -6,6 +6,9 @@
  */
 import { curateMemory, emptyMemory, isMemoryFile, recallSimilar, remember, touch, type MemoryFile } from './shaheenMemory';
 import { baseLexicon, buildLexicon, understandQuestion, type Lexicon, type Understanding } from './shaheenSpelling';
+import type { ChatSource } from './chatSources';
+
+export type OfflineAnswer = string | { answer: string; sources?: ChatSource[] };
 
 let researchSpider: ReturnType<typeof import('./researchSpider').createResearchSpider> | undefined;
 
@@ -24,14 +27,14 @@ export interface OfflineMemory {
    */
   science?(question: string, lang: string): Promise<string | undefined>;
   /** «باحث شاهين»: a new question looked up in open sources (Wikipedia's public API, straight from the browser). */
-  research?(question: string, lang: string): Promise<string | undefined>;
+  research?(question: string, lang: string): Promise<OfflineAnswer | undefined>;
   /** «فهم شاهين للغلطات»: the question as he understands it (mistyped words read as the words he knows). */
   understand?(question: string, lang: string): Promise<Understanding>;
   /**
    * «وكيل شاهين»: understands the question, consults the school's experts, his library, his memory and open sources,
    * and answers only when it is solid (else an honest answer, or a question back when it is too vague).
    */
-  agent?(question: string, lang: string): Promise<string | undefined>;
+  agent?(question: string, lang: string): Promise<OfflineAnswer | undefined>;
 }
 
 function readLocal(): MemoryFile {
@@ -109,13 +112,14 @@ export const browserMemory: OfflineMemory = {
     } : undefined;
     const result = await runAgent(question, lang, { sources, lexicon: agentLexicon(sources), research: lookUp });
     if (result.understanding.outOfScope) return undefined;
-    return result.answer || result.understanding.note + referralAnswer(lang, result.expert, false);
+    if (result.answer) return { answer: result.answer, ...(result.sources?.length ? { sources: result.sources } : {}) };
+    return result.understanding.note + referralAnswer(lang, result.expert, false);
   },
   async research(question, lang) {
     if (typeof import.meta.env?.MODE !== 'string' || typeof fetch !== 'function') return undefined;
     const [{ researchAnswer }, { createResearchSpider }] = await Promise.all([import('./webResearch'), import('./researchSpider')]);
     researchSpider ??= createResearchSpider(fetch.bind(globalThis) as never, { timeoutMs: 9000 });
     const found = await researchSpider.search(question, lang);
-    return found ? researchAnswer(found) : undefined;
+    return found ? { answer: researchAnswer(found), sources: found.sources } : undefined;
   },
 };

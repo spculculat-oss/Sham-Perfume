@@ -1,7 +1,8 @@
 /**
  * «دفتر المصمم»: every formula the designer saves, with its versions (each simulation kept as a snapshot: verdict,
  * staying power or texture) and the designer's own evaluation after smelling or trying it. Stored on the designer's
- * device only (localStorage) — nothing is sent anywhere; export gives a JSON file the designer keeps.
+ * device only (localStorage) — nothing is sent anywhere; export gives a JSON file the designer keeps. The separate
+ * «شارك التركيبة مجهولة» button (src/utils/labSignals.ts) sends material ids only, and only when he presses it.
  */
 export type DesignerKind = 'perfume' | 'cosmetic';
 

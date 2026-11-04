@@ -81,6 +81,14 @@ test('«متجر شام»: a named product is answered from the catalogue — ca
   assert.equal(productAnswer(PRODUCTS, withContext('اعملي تركيبة زي Hawas Ice'), 'ar', link), undefined, 'the designer’s job');
 });
 
+test('«حواس آيس» and «هاواس آيس» are one perfume: the copywriter’s Arabic spelling never hides a product', () => {
+  for (const ar of ['هاواس آيس من رصاصي', 'حواس آيس من الرصاصي']) {
+    const list = PRODUCTS.map((p) => (p.slug.startsWith('hawas-ice-by-rasasi') ? { ...p, name: { ...p.name, ar } } : p));
+    for (const q of ['رأيك في هاواس آيس؟', 'حواس آيس ثابت؟']) assert.equal(namedProducts(list, q)[0]?.slug.startsWith('hawas-ice'), true, `${ar} ← ${q}`);
+    assert.deepEqual(namedProducts(list, 'عايز حاجة تفرّح الحواس'), [], 'the plain word «الحواس» is not a product');
+  }
+});
+
 test('a follow-up answered by a platform is kept under the whole question; one that can’t stand alone is not', () => {
   assert.equal(learnedQuestion('ازاي احفظ العطر؟', []), 'ازاي احفظ العطر؟');
   const ctx = learnedQuestion('طب وللصيف؟', [{ role: 'user', text: 'ايه افضل عطر عود للشتا' }, { role: 'assistant', text: 'العود الكمبودي…' }]);

@@ -141,6 +141,9 @@ export const REVIEWERS: Partial<Record<BotId, Reviewer>> = {
   doctor: { nameAr: 'خبير فحص الصيانة', nameEn: 'Maintenance reviewer', probes: ['engine', 'site'] },
   keys: { nameAr: 'خبير فحص المفاتيح', nameEn: 'Keys reviewer', probes: ['engine'] },
   finance: { nameAr: 'خبير فحص الدفع والأسعار', nameEn: 'Payment & pricing reviewer', probes: ['payments', 'pricing', 'currency'] },
+  inventory: { nameAr: 'خبير فحص المخزون والتنبؤ', nameEn: 'Inventory & forecast reviewer', probes: ['catalog'] },
+  sales: { nameAr: 'خبير فحص المبيعات والتحصيل', nameEn: 'Sales & collection reviewer', probes: ['payments', 'pricing'] },
+  service: { nameAr: 'خبير فحص مكتب الدعم', nameEn: 'Customer care reviewer', probes: [] },
   visitor_tour: { nameAr: 'خبير فحص رحلة الشراء', nameEn: 'Purchase journey reviewer', probes: ['currency', 'product_pages', 'site'] },
   design_audit: { nameAr: 'خبير فحص التصميم واللغات', nameEn: 'Design & languages reviewer', probes: ['l10n', 'site'] },
   school: { nameAr: 'خبير فحص المذاكرة', nameEn: 'School reviewer', probes: [] },
@@ -165,6 +168,7 @@ export const REVIEWERS: Partial<Record<BotId, Reviewer>> = {
   specialist_learning: { nameAr: 'خبير فحص استشارات التربية والمعلومات', nameEn: 'Education & information consultations reviewer', probes: [] },
   specialist_culture: { nameAr: 'خبير فحص استشارات الفنون والعلاقات', nameEn: 'Arts & diplomacy consultations reviewer', probes: [] },
   specialists_board: { nameAr: 'خبير فحص وكيل مجلس المتخصصين', nameEn: "Specialists' board agent reviewer", probes: ['engine'] },
+  census: { nameAr: 'خبير فحص التعداد والكشف العلني', nameEn: 'Census & public ledger reviewer', probes: ['site'] },
 };
 export const reviewerOf = (id: BotId): Reviewer => REVIEWERS[id] || { nameAr: `خبير فحص ${botOf(id)?.nameAr || id}`, nameEn: `${botOf(id)?.nameEn || id} reviewer`, probes: [] };
 

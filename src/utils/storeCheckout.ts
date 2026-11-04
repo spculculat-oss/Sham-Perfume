@@ -1,8 +1,11 @@
+import { trackInsight } from './insightsTracker';
 import { useEffect, useState } from 'react';
 import { apiUrl, isStaticHosting } from './api';
-import { BUNDLED_FX, COUNTRY_CODES, currencyFor, guessCountry, isCountry, priceIn, quote, type Quote, type QuoteLine } from './pricing';
+import { BUNDLED_FX, COUNTRY_CODES, guessCountry, isCountry, priceIn, quote, type Quote, type QuoteLine } from './pricing';
 import { LOCALE_MAP } from '../لغات/localize';
 import { budgetsToHome, localizeChatPrices } from './chatPrices';
+import { displayCurrency, type CurrencyChoices } from './displayCurrency';
+import { LANGUAGE_PICKED_AT_KEY, USER_LANGUAGE_MANUAL_OVERRIDE_KEY } from './geoDetector';
 import type { SupportedLanguage } from '../types/i18n';
 import { getSessionToken } from '../community/api';
 import type { DirectMethod } from './directPayment';
@@ -15,17 +18,55 @@ const COUNTRY_KEY = 'sham-store-country';
 const COUNTRY_EVENT = 'sham-store-country-change';
 const PENDING_KEY = 'sham-store-pending-payment';
 
-function savedCountry(): { code: string; manual: boolean } | undefined {
+const ENTRY_KEY = 'sham-store-entry';
+const PAGE_OPENED = Date.now();
+
+function savedCountry(): { code: string; manual: boolean; at?: number; entry?: string } | undefined {
   try {
-    const raw = JSON.parse(localStorage.getItem(COUNTRY_KEY) || 'null') as { code?: string; manual?: boolean } | null;
-    return raw && isCountry(raw.code) ? { code: raw.code, manual: Boolean(raw.manual) } : undefined;
+    const raw = JSON.parse(localStorage.getItem(COUNTRY_KEY) || 'null') as { code?: string; manual?: boolean; at?: number; entry?: string } | null;
+    return raw && isCountry(raw.code)
+      ? { code: raw.code, manual: Boolean(raw.manual), ...(Number(raw.at) > 0 ? { at: Number(raw.at) } : {}), ...(isCountry(raw.entry) ? { entry: raw.entry } : {}) }
+      : undefined;
   } catch { return undefined; }
+}
+
+/** The country the visitor entered from last time the server looked (its edge), or undefined. */
+function savedEntry(): string | undefined {
+  try { const v = localStorage.getItem(ENTRY_KEY) || ''; return isCountry(v) ? v : undefined; } catch { return undefined; }
 }
 
 export function setStoreCountry(code: string, manual = true) {
   if (!isCountry(code)) return;
-  try { localStorage.setItem(COUNTRY_KEY, JSON.stringify({ code, manual })); } catch { /* private mode */ }
+  // A country he picks himself holds while he enters from the same country; entering from another one (a trip, a VPN)
+  // brings the store, the prices and Shaheen's replies back to where he is now (followEntryCountry).
+  const entry = manual ? savedEntry() : undefined;
+  try { localStorage.setItem(COUNTRY_KEY, JSON.stringify({ code, manual, ...(manual ? { at: Date.now() } : {}), ...(entry ? { entry } : {}) })); } catch { /* private mode */ }
   window.dispatchEvent(new CustomEvent(COUNTRY_EVENT, { detail: code }));
+}
+
+/**
+ * «دولة الدخول»: the server just told us the country this visitor is entering from (GET /api/geo, or the country a
+ * chat reply was written for). Follows it unless he picked a store country himself while entering from that same
+ * country. Returns true when the store country changed.
+ */
+export function followEntryCountry(entry: unknown): boolean {
+  if (typeof window === 'undefined' || typeof entry !== 'string' || !isCountry(entry)) return false;
+  try { localStorage.setItem(ENTRY_KEY, entry); } catch { /* private mode */ }
+  const saved = savedCountry();
+  if (saved?.manual && !saved.entry && (saved.at ?? 0) >= PAGE_OPENED) {
+    // Picked on this very visit, before the server answered: it is his pick for the country he is in now.
+    try { localStorage.setItem(COUNTRY_KEY, JSON.stringify({ ...saved, entry })); } catch { /* private mode */ }
+    return false;
+  }
+  if (saved?.manual && (saved.entry ? saved.entry === entry : saved.code === entry)) return false;
+  if (saved && !saved.manual && saved.code === entry) return false;
+  setStoreCountry(entry, false);
+  return true;
+}
+
+/** What a chat request tells the server about the visitor's money: the page's country, currency, and whether he chose it. */
+export function chatMoney(lang: SupportedLanguage): { country: string; currency: string; countryManual: boolean } {
+  return { country: currentStoreCountry(), currency: currentDisplayCurrency(lang), countryManual: Boolean(savedCountry()?.manual) };
 }
 
 /** The visitor's country right now, outside React: his own choice or the server's edge country (saved), else a guess. */
@@ -34,13 +75,31 @@ export function currentStoreCountry(): string {
   try { return savedCountry()?.code || guessCountry(navigator.languages || [], Intl.DateTimeFormat().resolvedOptions().timeZone || ''); } catch { return 'EG'; }
 }
 
+/** The visitor's own choices that decide the currency (src/utils/displayCurrency.ts): his country pick, his language pick. */
+export function currencyChoices(): CurrencyChoices {
+  if (typeof window === 'undefined') return {};
+  try {
+    const country = savedCountry();
+    const languageAt = Number(localStorage.getItem(LANGUAGE_PICKED_AT_KEY));
+    return {
+      ...(country?.manual ? { countryPickedAt: country.at ?? 0 } : {}),
+      ...(languageAt > 0 ? { languagePickedAt: languageAt } : {}),
+      languagePicked: Boolean(localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY)),
+    };
+  } catch { return {}; }
+}
+
+/** The currency prices are shown in right now, outside React (the chat's budget conversion). */
+export const currentDisplayCurrency = (lang: SupportedLanguage) => displayCurrency(currentStoreCountry(), lang, currencyChoices(), BUNDLED_FX);
+
 /**
  * «شاهين بعملة بلدك» for a chat window: replies shown in the currency of the country the conversation comes from
  * (asking the server's edge country once, like the store), and the visitor's own amounts sent to the brain in EGP.
  */
 export function useChatPrices(lang: SupportedLanguage) {
   const [country] = useStoreCountry();
-  const currency = currencyFor(country, BUNDLED_FX);
+  // The country's currency — or the currency of the language he chose (an Egyptian reading in French sees euros).
+  const currency = displayCurrency(country, lang, currencyChoices(), BUNDLED_FX);
   return {
     country, currency,
     show: (text: string) => localizeChatPrices(text, currency, lang, BUNDLED_FX),
@@ -58,11 +117,12 @@ export function useStoreCountry(): [string, (code: string) => void] {
   useEffect(() => {
     const sync = () => setCountry(savedCountry()?.code || country);
     window.addEventListener(COUNTRY_EVENT, sync);
-    if (!savedCountry()?.manual && !geoAsked && !isStaticHosting) {
+    // Asked on every visit (even after a pick of his own): a pick holds only while he enters from the same country.
+    if (!geoAsked && !isStaticHosting) {
       geoAsked = true;
       fetch(apiUrl('/api/geo'), { signal: AbortSignal.timeout(4000) })
         .then((r) => (r.ok ? r.json() : null))
-        .then((d: { country?: string } | null) => { if (d && isCountry(d.country)) setStoreCountry(d.country, false); })
+        .then((d: { country?: string } | null) => { if (d) followEntryCountry(d.country); })
         .catch(() => undefined);
     }
     return () => window.removeEventListener(COUNTRY_EVENT, sync);
@@ -97,12 +157,13 @@ export function formatMoney(amount: number, currency: string, lang: SupportedLan
 /** One price function for the whole store page: catalog EGP → the visitor's currency, formatted. */
 export function useStoreMoney(lang: SupportedLanguage, egpLabel: string) {
   const [country, setCountry] = useStoreCountry();
-  const currency = currencyFor(country, BUNDLED_FX);
+  // Same currency as Shaheen's replies: the page, the cart and the chat always agree. Shipping follows the country.
+  const currency = displayCurrency(country, lang, currencyChoices(), BUNDLED_FX);
   return {
     country, setCountry, currency,
     price: (egp: number) => formatMoney(priceIn(egp, currency, BUNDLED_FX), currency, lang, egpLabel),
     money: (amount: number) => formatMoney(amount, currency, lang, egpLabel),
-    quote: (lines: QuoteLine[]): Quote => quote(lines, country, { fx: BUNDLED_FX }),
+    quote: (lines: QuoteLine[]): Quote => quote(lines, country, { fx: BUNDLED_FX, currency }),
   };
 }
 
@@ -129,10 +190,18 @@ export function usePayments(country = 'EG'): PaymentsInfo | null {
 }
 
 export interface CheckoutForm { name: string; email: string; phone: string; city: string; line: string }
-export class CheckoutError extends Error { constructor(readonly code: string) { super(code); } }
+export class CheckoutError extends Error {
+  constructor(readonly code: string, /** The fresh amount the server will charge, when the price changed. */ readonly now?: { total: number; currency: string }) { super(code); }
+}
 
 /** Opens a Kashier payment page for the cart and sends the visitor there. */
-export async function startCheckout(items: { sku: string; qty: number }[], country: string, form: CheckoutForm, lang: SupportedLanguage, method?: 'card' | 'wallet', context: 'cart' | 'direct' = 'cart'): Promise<void> {
+export async function startCheckout(
+  items: { sku: string; qty: number }[], country: string, form: CheckoutForm, lang: SupportedLanguage,
+  method?: 'card' | 'wallet', context: 'cart' | 'direct' = 'cart',
+  /** Exactly what the page showed: the server refuses to charge anything else (`PRICE_CHANGED`). */
+  shown?: { total: number; currency: string },
+): Promise<void> {
+  trackInsight('checkout', { value: context }); // «خزنة فهم الزوار» (with consent; the form's contact data is never sent there)
   let response: Response;
   try {
     response = await fetch(apiUrl('/api/store/checkout'), {
@@ -141,11 +210,18 @@ export async function startCheckout(items: { sku: string; qty: number }[], count
       body: JSON.stringify({
         items, country, method, lang: lang === 'ar' ? 'ar' : 'en', returnUrl: `${location.origin}${location.pathname}`,
         contact: { name: form.name, email: form.email, phone: form.phone }, address: { city: form.city, line: form.line },
+        ...(shown && Number.isFinite(shown.total) && shown.total > 0 && /^[A-Z]{3}$/.test(shown.currency) ? { quoted: shown } : {}),
       }),
     });
   } catch { throw new CheckoutError('NETWORK'); }
-  const data = await response.json().catch(() => ({})) as { code?: string; ref?: string; sessionId?: string; sessionUrl?: string };
-  if (!response.ok || !data.sessionUrl || !data.sessionId || !data.ref) throw new CheckoutError(data.code || 'FAILED');
+  const data = await response.json().catch(() => ({})) as {
+    code?: string; ref?: string; sessionId?: string; sessionUrl?: string; now?: { total?: number; currency?: string };
+  };
+  if (!response.ok || !data.sessionUrl || !data.sessionId || !data.ref) {
+    const now = data.now && Number(data.now.total) > 0 && /^[A-Z]{3}$/.test(String(data.now.currency || ''))
+      ? { total: Number(data.now.total), currency: String(data.now.currency) } : undefined;
+    throw new CheckoutError(data.code || 'FAILED', now);
+  }
   try {
     const u = new URL(data.sessionUrl);
     if (u.protocol !== 'https:' || u.hostname !== 'payments.kashier.io' || u.port || u.username || u.password || !/^\/session\/[A-Za-z0-9_-]{6,64}$/.test(u.pathname)) throw new Error();

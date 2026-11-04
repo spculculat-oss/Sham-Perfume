@@ -1,0 +1,118 @@
+{
+ "version": 1,
+ "updatedAt": "2026-11-04T07:30:38.849Z",
+ "startedAt": "2026-10-23T12:00:00.000Z",
+ "siteCreatedAt": "2026-10-12T05:24:11.000Z",
+ "totals": {
+  "visits": 0,
+  "uniqueVisitors": 0,
+  "todayVisits": 0,
+  "todayUnique": 0,
+  "last7DaysVisits": 0,
+  "last7DaysUnique": 0,
+  "thisMonthVisits": 0,
+  "thisMonthUnique": 0,
+  "last30DaysVisits": 0,
+  "countriesCount": 0,
+  "placesCount": 0,
+  "regionsCount": 0
+ },
+ "byCountry": [],
+ "byPlace": [],
+ "recentEntries": [],
+ "byRegion": {
+  "arab": {
+   "visits": 0,
+   "uniqueVisitors": 0,
+   "countries": 0
+  },
+  "europe": {
+   "visits": 0,
+   "uniqueVisitors": 0,
+   "countries": 0
+  },
+  "asia": {
+   "visits": 0,
+   "uniqueVisitors": 0,
+   "countries": 0
+  },
+  "africa": {
+   "visits": 0,
+   "uniqueVisitors": 0,
+   "countries": 0
+  },
+  "americas": {
+   "visits": 0,
+   "uniqueVisitors": 0,
+   "countries": 0
+  },
+  "oceania": {
+   "visits": 0,
+   "uniqueVisitors": 0,
+   "countries": 0
+  }
+ },
+ "byDay": [],
+ "byMonth": [],
+ "todayByHour": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "allTimeByHour": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "bySection": {},
+ "byDevice": {
+  "mobile": 0,
+  "desktop": 0,
+  "tablet": 0
+ },
+ "byLanguage": {},
+ "checkedAt": "2026-11-04T07:30:38.849Z",
+ "liveLedger": "unreachable"
+}

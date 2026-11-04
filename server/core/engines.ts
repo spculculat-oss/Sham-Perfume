@@ -50,6 +50,69 @@ export function openCompatibleEngine(env: Env) {
 export const PERPLEXITY_AGENT_URL = 'https://api.perplexity.ai/v1/agent';
 export const PERPLEXITY_DEFAULT_PRESET = 'fast';
 const PERPLEXITY_PRESETS = new Set(['fast', 'low', 'medium', 'high', 'xhigh']);
+
+/** A public link returned by the live-search provider; it is evidence to inspect, not a certified source. */
+export interface ExternalSearchSource { title: string; url: string }
+
+/**
+ * Perplexity's Agent API puts web results in `search_results` output items. Accept only safe public HTTPS
+ * links, deduplicate them, and bound the list before it can reach a visitor-facing answer.
+ */
+export function perplexitySources(data: unknown, max = 5): ExternalSearchSource[] {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return [];
+  const d = data as { output?: unknown; citations?: unknown };
+  const candidates: { title?: unknown; url?: unknown }[] = [];
+  for (const item of Array.isArray(d.output) ? d.output : []) {
+    if (!item || typeof item !== 'object') continue;
+    const output = item as { type?: unknown; results?: unknown; content?: unknown };
+    if (output.type === 'search_results' && Array.isArray(output.results)) {
+      for (const result of output.results) {
+        if (result && typeof result === 'object') candidates.push(result as { title?: unknown; url?: unknown });
+      }
+    }
+    // Some Agent API responses expose their cited URLs as text annotations instead of result cards.
+    if (output.type === 'message' && Array.isArray(output.content)) {
+      for (const block of output.content) {
+        if (!block || typeof block !== 'object') continue;
+        const annotations = (block as { annotations?: unknown }).annotations;
+        if (!Array.isArray(annotations)) continue;
+        for (const annotation of annotations) {
+          if (!annotation || typeof annotation !== 'object') continue;
+          const a = annotation as { url_citation?: unknown; url?: unknown; title?: unknown };
+          const citation = a.url_citation && typeof a.url_citation === 'object' ? a.url_citation as { url?: unknown; title?: unknown } : a;
+          candidates.push({ title: citation.title, url: citation.url });
+        }
+      }
+    }
+  }
+  if (Array.isArray(d.citations)) {
+    for (const citation of d.citations) {
+      if (typeof citation === 'string') candidates.push({ url: citation });
+      else if (citation && typeof citation === 'object') candidates.push(citation as { title?: unknown; url?: unknown });
+    }
+  }
+
+  const limit = Math.max(1, Math.min(8, Math.floor(max) || 5));
+  const seen = new Set<string>(); const sources: ExternalSearchSource[] = [];
+  for (const candidate of candidates) {
+    if (typeof candidate.url !== 'string' || candidate.url.length > 2000) continue;
+    let parsed: URL;
+    try { parsed = new URL(candidate.url); } catch { continue; }
+    const host = parsed.hostname.toLowerCase();
+    const privateHost = host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.local') || host.includes(':')
+      || /^(?:0|10|127|169\.254|192\.168)\./.test(host)
+      || /^172\.(?:1[6-9]|2\d|3[01])\./.test(host);
+    if (parsed.protocol !== 'https:' || parsed.username || parsed.password || parsed.port || privateHost) continue;
+    const url = parsed.href;
+    if (seen.has(url)) continue;
+    seen.add(url);
+    const rawTitle = typeof candidate.title === 'string' ? candidate.title : '';
+    const title = rawTitle.replace(/[\r\n\t]/g, ' ').replace(/[\[\]<>]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160) || host;
+    sources.push({ title, url });
+    if (sources.length >= limit) break;
+  }
+  return sources;
+}
 export function perplexityBody(model: string, system: string, turns: EngineTurn[], temperature: number, maxTokens: number): Record<string, unknown> {
   const preset = PERPLEXITY_PRESETS.has(model);
   return {
@@ -415,7 +478,7 @@ export async function callEngine(
   id: ModelEngineId,
   system: string,
   turns: EngineTurn[],
-  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; model?: string; maxTokens?: number; maxChars?: number; contextFacts?: string[]; onConfidence?: (score: EngineOutputScore) => void; onFailure?: (failure: EngineFailure, status: number, detail: string) => void; onModel?: (model: string) => void },
+  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; onSources?: (sources: ExternalSearchSource[]) => void; model?: string; maxTokens?: number; maxChars?: number; contextFacts?: string[]; onConfidence?: (score: EngineOutputScore) => void; onFailure?: (failure: EngineFailure, status: number, detail: string) => void; onModel?: (model: string) => void },
 ): Promise<string | undefined> {
   const env = options.env || process.env;
   const request = options.fetch || fetch;
@@ -544,6 +607,9 @@ export async function callEngine(
     content?: { type: string; text: string }[];
     choices?: { message?: { content?: unknown } }[];
   };
+  if (id === 'perplexity') {
+    try { options.onSources?.(perplexitySources(data)); } catch { /* citation rendering must never break the answer */ }
+  }
   const reply = id === 'perplexity' ? perplexityText(data) : id === 'gemini'
     ? data.candidates?.[0]?.content?.parts?.filter((p) => !p.thought).map((p) => p.text || '').join('')
     : id === 'claude'

@@ -3,7 +3,7 @@
  * verification files, the static tool landing pages, and the home page's head tags. Pure string
  * builders, so a test can prove each file before it reaches production.
  */
-import { absoluteUrl, SEO_AGENT, SITE } from './site';
+import { absoluteUrl, SEO_AGENT, SITE, socialLinks } from './site';
 import { WEBSUB_DEFAULT_HUB, webSubLinks } from './discovery';
 import { HOME_PAGE, SEO_PAGES, type SeoFaq, type SeoPageDef } from './pages';
 import { escapeHtml, schemaTypes } from './audit';
@@ -23,6 +23,7 @@ export function buildSitemapEntries(input: { siteUrl: string; products?: Product
   if (input.includeTools !== false) {
     entries.push({ loc: absoluteUrl('tools/', input.siteUrl), lastmod: now, changefreq: 'weekly', priority: 0.8 });
     for (const page of SEO_PAGES) entries.push({ loc: absoluteUrl(page.path, input.siteUrl), lastmod: now, changefreq: page.changeFreq, priority: page.priority });
+    entries.push({ loc: absoluteUrl('media/', input.siteUrl), lastmod: now, changefreq: 'monthly', priority: 0.6 });
     entries.push({ loc: absoluteUrl('p/', input.siteUrl), lastmod: now, changefreq: 'daily', priority: 0.8 });
   }
   for (const p of input.products || []) {
@@ -101,6 +102,7 @@ export function renderLlmsTxt(siteUrl: string, products: ProductRef[] = []): str
     `- [sitemap.xml](${absoluteUrl('sitemap.xml', siteUrl)}): كل الصفحات العامة.`,
     `- [robots.txt](${absoluteUrl('robots.txt', siteUrl)}): قواعد الزحف والسماح للزواحف البحثية.`,
     `- [feed.xml](${absoluteUrl('feed.xml', siteUrl)}): خلاصة RSS لأحدث الأدوات والمنتجات.`,
+    `- [الملف الإعلامي](${absoluteUrl('media/', siteUrl)}): نصوص جاهزة للاقتباس وبطاقات المشاركة والهوية الرسمية.`,
     '',
     '## معلومات الناشر / Publisher',
     `- ${SITE.nameAr}: ${SITE.summaryAr}`,
@@ -134,7 +136,7 @@ ${items.map((i) => `<item><title>${escapeXml(i.title)}</title><link>${escapeXml(
 `;
 }
 
-/** Google/Bing verification files from environment values (nothing invented when unset). */
+/** Google/Bing/Yandex verification files from environment values (nothing invented when unset). */
 export function verificationFiles(env: Record<string, string | undefined>): { name: string; content: string }[] {
   const files: { name: string; content: string }[] = [];
   // The site's own Search Console token is committed, so every build serves the verification file
@@ -145,6 +147,13 @@ export function verificationFiles(env: Record<string, string | undefined>): { na
   if (google && /^[A-Za-z0-9_-]{10,120}$/.test(google)) files.push({ name: `google${google}.html`, content: `google-site-verification: google${google}.html` });
   const bing = env.BING_SITE_VERIFICATION?.trim();
   if (bing && /^[A-Za-z0-9_-]{10,120}$/.test(bing)) files.push({ name: 'BingSiteAuth.xml', content: `<?xml version="1.0"?>\n<users><user>${bing}</user></users>\n` });
+  const yandex = env.YANDEX_SITE_VERIFICATION?.trim();
+  if (yandex && /^[A-Za-z0-9_-]{8,120}$/.test(yandex)) {
+    files.push({
+      name: `yandex_${yandex}.html`,
+      content: `<html>\n    <head>\n        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">\n    </head>\n    <body>Verification: ${yandex}</body>\n</html>\n`,
+    });
+  }
   return files;
 }
 
@@ -174,12 +183,35 @@ h2{font-size:1.25rem;margin-top:2em;color:#92400e}h3{font-size:1.05rem;margin-bo
 .faq details{border-bottom:1px solid #f5f5f4;padding:10px 0}.faq details:last-child{border-bottom:0}.faq summary{font-weight:700;cursor:pointer}.faq p{margin:.5em 0 .3em;color:#44403c}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px}.card{display:block;background:#fff;border:1px solid #e7e5e4;border-radius:14px;padding:14px;text-decoration:none;color:inherit}.card b{display:block;color:#1c1917}.card span{font-size:.85rem;color:#78716c}
 .note{background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:12px 16px;font-size:.9rem;margin-top:18px}
+.share-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#fff;border:1px solid #e7e5e4;border-radius:16px;padding:12px 16px;margin:16px 0}
+.share-bar b{color:#92400e;margin-inline-end:6px;font-size:.92rem}
+.share-btn{display:inline-flex;align-items:center;gap:6px;background:#faf7f2;border:1px solid #d6d3d1;color:#1c1917;padding:6px 14px;border-radius:999px;text-decoration:none;font-size:.86rem;font-weight:700;cursor:pointer;font-family:inherit}
+.share-btn:hover{border-color:#d97706;background:#fff7ed;color:#92400e}
+.copy-box{background:#fff;border:1px solid #e7e5e4;border-radius:14px;padding:14px 16px;margin-top:10px}
+.copy-box pre{white-space:pre-wrap;word-break:break-word;background:#faf7f2;border:1px solid #e7e5e4;border-radius:10px;padding:10px 12px;margin:8px 0;font-size:.88rem;font-family:inherit}
 footer{max-width:900px;margin:26px auto 0;padding:18px 20px;color:#78716c;font-size:.85rem;border-top:1px solid #e7e5e4}
 footer nav{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
 @media(max-width:600px){main{padding:16px 14px 4px}.hero{padding:16px}header{padding:10px 14px}}
 `;
 
 const appUrl = (siteUrl: string, tab: string) => `${siteUrl}#${tab}`;
+const PIN_TOOLS = new Set(['concentration', 'alcohol', 'maceration_simulator']);
+
+function renderShareBar(page: SeoPageDef, h1: string, description: string, url: string, siteUrl: string): string {
+  const shareText = `${h1} — ${description} (${SITE.nameAr})`;
+  const wa = `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${url}`)}`;
+  const tg = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(shareText)}`;
+  const xUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(shareText)}`;
+  const pinMedia = absoluteUrl(PIN_TOOLS.has(page.id) ? `og/pin-${page.id}.png` : `og/${page.id}.png`, siteUrl);
+  const pin = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&media=${encodeURIComponent(pinMedia)}&description=${encodeURIComponent(shareText)}`;
+  return `<div class="share-bar" aria-label="مشاركة الأداة"><b>شارك الأداة:</b>`
+    + `<a class="share-btn" href="${escapeHtml(wa)}" target="_blank" rel="noopener noreferrer">واتساب</a>`
+    + `<a class="share-btn" href="${escapeHtml(tg)}" target="_blank" rel="noopener noreferrer">تلجرام</a>`
+    + `<a class="share-btn" href="${escapeHtml(xUrl)}" target="_blank" rel="noopener noreferrer">X / تويتر</a>`
+    + `<a class="share-btn" href="${escapeHtml(pin)}" target="_blank" rel="noopener noreferrer">بينترست</a>`
+    + `<button type="button" class="share-btn" data-copy-url="${escapeHtml(url)}" onclick="navigator.clipboard&&navigator.clipboard.writeText(this.getAttribute('data-copy-url'));this.textContent='تم نسخ الرابط ✓'">نسخ الرابط</button>`
+    + `</div>`;
+}
 
 function faqFor(page: SeoPageDef, override?: SeoPageCopy): SeoFaq[] {
   const list = override?.faq?.length ? override.faq : page.faq;
@@ -207,7 +239,7 @@ export function renderToolPage(page: SeoPageDef, options: ToolPageOptions): stri
   const h1 = copy?.h1 || page.h1;
   const faq = faqFor(page, copy);
   const url = absoluteUrl(page.path, siteUrl);
-  const image = absoluteUrl(SITE.ogImage, siteUrl);
+  const image = absoluteUrl(`og/${page.id}.png`, siteUrl);
   const related = page.related.map((id) => SEO_PAGES.find((p) => p.id === id)).filter((p): p is SeoPageDef => Boolean(p));
   const ld: unknown[] = [
     breadcrumbLd(page, siteUrl),
@@ -235,7 +267,7 @@ export function renderToolPage(page: SeoPageDef, options: ToolPageOptions): stri
 <link rel="alternate" hreflang="x-default" href="${escapeHtml(url)}">
 <meta property="og:type" content="article"><meta property="og:site_name" content="${escapeHtml(SITE.nameAr)}"><meta property="og:locale" content="${SITE.locale}">
 <meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}">
-<meta property="og:url" content="${escapeHtml(url)}"><meta property="og:image" content="${escapeHtml(image)}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:url" content="${escapeHtml(url)}"><meta property="og:image" content="${escapeHtml(image)}"><meta property="og:image:alt" content="${escapeHtml(h1)}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="${SITE.twitterCard}"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(description)}"><meta name="twitter:image" content="${escapeHtml(image)}">
 <meta name="theme-color" content="${SITE.themeColor}">
 <link rel="alternate" type="application/rss+xml" title="${escapeHtml(SITE.nameAr)}" href="${escapeHtml(absoluteUrl('feed.xml', siteUrl))}">
@@ -253,6 +285,7 @@ ${jsonLd}
 <a class="cta alt" href="${escapeHtml(absoluteUrl('tools/', siteUrl))}">تصفح كل أدوات شام</a>
 <p class="small">مجاناً وبلا تسجيل · يعمل على الهاتف والحاسوب · جزء من ${escapeHtml(SITE.nameAr)}</p>
 </div>
+${renderShareBar(page, h1, description, url, siteUrl)}
 <section><h2>لماذا هذه الأداة؟</h2>
 ${(page.intro.slice(1).length ? page.intro.slice(1) : page.intro).map((p) => `<p>${escapeHtml(p)}</p>`).join('')}
 </section>
@@ -264,10 +297,10 @@ ${(page.intro.slice(1).length ? page.intro.slice(1) : page.intro).map((p) => `<p
 </section>
 <div class="note"><b>من كتابة من؟</b> هذه الصفحة جزء من ${escapeHtml(SITE.nameAr)}، تُراجع بياناتها وأدواتها تحت إشراف «${escapeHtml(SEO_AGENT.reportsToAr)}». الحسابات والنصائح إرشادية، والاختبار على الجلد أو بطاقة سلامة المورد هو المرجع النهائي.</div>
 ${related.length ? `<section><h2>أدوات مرتبطة</h2><div class="cards">${related.map((r) => `<a class="card" href="${escapeHtml(absoluteUrl(r.path, siteUrl))}"><b>${escapeHtml(r.h1)}</b><span>${escapeHtml(r.description.slice(0, 110))}…</span></a>`).join('')}</div></section>` : ''}
-<p class="small">آخر تحديث: ${escapeHtml(now.toISOString().slice(0, 10))} · <a href="${escapeHtml(appUrl(siteUrl, 'store'))}">متجر شام</a> · <a href="${escapeHtml(absoluteUrl('p/', siteUrl))}">كل المنتجات</a></p>
+<p class="small">آخر تحديث: ${escapeHtml(now.toISOString().slice(0, 10))} · <a href="${escapeHtml(appUrl(siteUrl, 'store'))}">متجر شام</a> · <a href="${escapeHtml(absoluteUrl('p/', siteUrl))}">كل المنتجات</a> · <a href="${escapeHtml(absoluteUrl('media/', siteUrl))}">الملف الإعلامي</a></p>
 </main>
 <footer><b>${escapeHtml(SITE.nameAr)}</b> — ${escapeHtml(SITE.summaryAr)}
-<nav><a href="${escapeHtml(siteUrl)}">الرئيسية</a><a href="${escapeHtml(absoluteUrl('tools/', siteUrl))}">الأدوات</a><a href="${escapeHtml(appUrl(siteUrl, 'perfume_news'))}">أخبار العطور</a><a href="${escapeHtml(absoluteUrl('sitemap.xml', siteUrl))}">خريطة الموقع</a><a href="${escapeHtml(absoluteUrl('llms.txt', siteUrl))}">llms.txt</a></nav>
+<nav><a href="${escapeHtml(siteUrl)}">الرئيسية</a><a href="${escapeHtml(absoluteUrl('tools/', siteUrl))}">الأدوات</a><a href="${escapeHtml(absoluteUrl('media/', siteUrl))}">الملف الإعلامي</a><a href="${escapeHtml(appUrl(siteUrl, 'perfume_news'))}">أخبار العطور</a><a href="${escapeHtml(absoluteUrl('sitemap.xml', siteUrl))}">خريطة الموقع</a><a href="${escapeHtml(absoluteUrl('llms.txt', siteUrl))}">llms.txt</a></nav>
 </footer>
 </body></html>
 `;
@@ -303,7 +336,110 @@ ${ld.map((block) => `<script type="application/ld+json" data-seo-agent="true">${
 <p>كل أداة هنا لها صفحة كاملة تشرح خطواتها وأسئلتها الشائعة، حتى تقرأ قبل أن تجرب — وحتى يجدها محرك البحث بسهولة. الحسابات تجري داخل متصفحك، والنتائج تُحفظ على جهازك، ولا تحتاج إلى تسجيل. ابدأ بالحاسبة التي تناسب مرحلتك: تصميم التركيبة، ثم الهرم العطري، ثم التعتيق والتكلفة، وأخيراً اختيار الخامات أو منتج جاهز من المتجر.</p>
 <div class="note">نصيحة: افتح أي أداة في صفحتها الكاملة لترى الخطوات والأسئلة الشائعة قبل البدء — ثم عُد إلى المعمل لتطبيقها.</div>
 </main>
-<footer><b>${escapeHtml(SITE.nameAr)}</b> — ${escapeHtml(SITE.summaryAr)}<nav><a href="${escapeHtml(siteUrl)}">الرئيسية</a><a href="${escapeHtml(absoluteUrl('p/', siteUrl))}">المنتجات</a><a href="${escapeHtml(absoluteUrl('sitemap.xml', siteUrl))}">خريطة الموقع</a></nav> آخر تحديث: ${escapeHtml(now.toISOString().slice(0, 10))}</footer>
+<footer><b>${escapeHtml(SITE.nameAr)}</b> — ${escapeHtml(SITE.summaryAr)}<nav><a href="${escapeHtml(siteUrl)}">الرئيسية</a><a href="${escapeHtml(absoluteUrl('p/', siteUrl))}">المنتجات</a><a href="${escapeHtml(absoluteUrl('media/', siteUrl))}">الملف الإعلامي</a><a href="${escapeHtml(absoluteUrl('sitemap.xml', siteUrl))}">خريطة الموقع</a></nav> آخر تحديث: ${escapeHtml(now.toISOString().slice(0, 10))}</footer>
+</body></html>
+`;
+}
+
+export interface MediaKitOptions { siteUrl: string; productsCount?: number; env?: Record<string, string | undefined>; now?: Date }
+
+/**
+ * `/media/` (`media/index.html`) — the public press & media kit of «صمم عطرك مع شام».
+ * Gives bloggers, fragrance communities, journalists and answer engines ready-to-copy descriptions,
+ * verified tool links, Open Graph/Pinterest share cards and clean HTML/Markdown citation snippets.
+ */
+export function renderMediaKit(options: MediaKitOptions): string {
+  const siteUrl = options.siteUrl;
+  const now = options.now || new Date();
+  const productsCount = options.productsCount ?? 1114;
+  const url = absoluteUrl('media/', siteUrl);
+  const image = absoluteUrl('og/media.png', siteUrl);
+  const title = 'الملف الإعلامي لمعمل شام: تعريف المنصة وبطاقات النشر';
+  const description = 'الملف الإعلامي الرسمي لمنصة صمم عطرك مع شام: فقرات تعريفية جاهزة للنسخ، روابط الأدوات، بطاقات المشاركة، وطريقة الاقتباس الصحيحة.';
+  const h1 = 'الملف الإعلامي وبطاقة التعريف — صمم عطرك مع شام';
+  const profiles = socialLinks(options.env);
+  const ld = [
+    {
+      '@context': 'https://schema.org', '@type': 'AboutPage', name: title, url, description, inLanguage: 'ar',
+      isPartOf: { '@type': 'WebSite', name: SITE.nameAr, url: siteUrl },
+    },
+    {
+      '@context': 'https://schema.org', '@type': 'Organization', '@id': `${siteUrl}#organization`,
+      name: SITE.nameAr, alternateName: SITE.nameEn, url: siteUrl, logo: absoluteUrl('favicon.svg', siteUrl),
+      sameAs: profiles, description: SITE.summaryAr,
+    },
+    {
+      '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: SITE.nameAr, item: siteUrl },
+        { '@type': 'ListItem', position: 2, name: 'الملف الإعلامي', item: url },
+      ],
+    },
+  ];
+  const shortBoilerplate = `${SITE.nameAr} — ${SITE.summaryAr}`;
+  const blogBoilerplate = `منصة «${SITE.nameAr}» هي معمل عربي مفتوح في المتصفح لتصميم العطور وحساب تراكيزها بدقة 0.01 جرام: يضم ${SEO_PAGES.length} أداة ودليلاً مجانياً لتخفيف الكحول، ترتيب الهرم العطري، محاكاة التعتيق، وحساب تكلفة الزجاجة، إلى جانب موسوعة المواد الخام ومتجر يضم ${productsCount} عطراً موثقاً بالنوتات والأسعار.`;
+  const htmlCitation = `<a href="${siteUrl}">${SITE.nameAr} — أدوات تركيب العطور وحاسبات المعمل</a>`;
+  const mdCitation = `[${SITE.nameAr} — أدوات تركيب العطور وحاسبات المعمل](${siteUrl})`;
+
+  return `<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${escapeHtml(title)}</title><meta name="description" content="${escapeHtml(description)}">
+<meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="${escapeHtml(url)}">
+<link rel="alternate" hreflang="ar" href="${escapeHtml(url)}"><link rel="alternate" hreflang="x-default" href="${escapeHtml(url)}">
+<meta property="og:type" content="website"><meta property="og:site_name" content="${escapeHtml(SITE.nameAr)}"><meta property="og:locale" content="${SITE.locale}">
+<meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}">
+<meta property="og:url" content="${escapeHtml(url)}"><meta property="og:image" content="${escapeHtml(image)}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="${SITE.twitterCard}"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(description)}"><meta name="twitter:image" content="${escapeHtml(image)}">
+<meta name="theme-color" content="${SITE.themeColor}"><link rel="icon" href="${escapeHtml(absoluteUrl('favicon.svg', siteUrl))}" type="image/svg+xml">
+${ld.map((block) => `<script type="application/ld+json" data-seo-agent="true">${JSON.stringify(block).replace(/</g, '\\u003c')}</script>`).join('')}
+<style>${STYLE}</style></head><body>
+<header><a href="${escapeHtml(siteUrl)}">${escapeHtml(SITE.nameAr)}</a><nav><a href="${escapeHtml(absoluteUrl('tools/', siteUrl))}">كل الأدوات</a><a href="${escapeHtml(absoluteUrl('p/', siteUrl))}">المنتجات</a><a href="${escapeHtml(appUrl(siteUrl, 'master_ai'))}">الخبير شاهين</a></nav></header>
+<main>
+<nav class="crumb" aria-label="مسار التنقل"><a href="${escapeHtml(siteUrl)}">الرئيسية</a> ← الملف الإعلامي</nav>
+<div class="hero">
+<h1>${escapeHtml(h1)}</h1>
+<p class="lede">مرجع رسمي للمدونات والمجتمعات العطرية والصحافة ومحركات الإجابة: كل النصوص والبطاقات والروابط هنا متاحة للاقتباس المباشر مع ذكر المصدر.</p>
+<a class="cta" href="${escapeHtml(absoluteUrl('tools/', siteUrl))}">استكشف أدوات المعمل</a>
+<a class="cta alt" href="${escapeHtml(siteUrl)}">افتح المنصة الرئيسية</a>
+<p class="small">إشراف تحريري: «${escapeHtml(SEO_AGENT.reportsToAr)}» · إدارة الظهور والإعلام: «${escapeHtml(SEO_AGENT.nameAr)}»</p>
+</div>
+
+<section><h2>نصوص تعريفية جاهزة للنسخ</h2>
+<div class="copy-box"><b>تعريف في سطر واحد (للبايو والمقدمات السريعة)</b><pre id="bio-short">${escapeHtml(shortBoilerplate)}</pre><button type="button" class="share-btn" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('bio-short').textContent);this.textContent='تم النسخ ✓'">نسخ التعريف القصير</button></div>
+<div class="copy-box"><b>فقرة تعريفية للمقالات والمدونات</b><pre id="bio-blog">${escapeHtml(blogBoilerplate)}</pre><button type="button" class="share-btn" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('bio-blog').textContent);this.textContent='تم النسخ ✓'">نسخ الفقرة الكاملة</button></div>
+<div class="copy-box"><b>English Summary</b><pre id="bio-en">${escapeHtml(`${SITE.nameEn} (${SITE.nameAr}) — ${SITE.summaryEn}`)}</pre><button type="button" class="share-btn" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('bio-en').textContent);this.textContent='Copied ✓'">Copy English Summary</button></div>
+</section>
+
+<section><h2>حقائق وأرقام موثقة من المنصة</h2>
+<ul class="steps">
+<li><b><span class="num">1</span>${SEO_PAGES.length} أداة ودليلاً مجانياً في المتصفح</b>حاسبات تركيب العطور وتخفيف الكحول والهرم العطري ومحاكي التعتيق وحاسبة التكلفة تعمل مباشرة على الهاتف والحاسوب دون تسجيل.</li>
+<li><b><span class="num">2</span>${productsCount} صفحة منتج مستقلة في متجر شام</b>لكل عطر صفحة HTML كاملة بالعربية والإنجليزية مع الهرم العطري والسعر والبيانات المنظمة.</li>
+<li><b><span class="num">3</span>قنوات اكتشاف مفتوحة للمحركات والذكاء الاصطناعي</b>خريطة موقع <code>sitemap.xml</code> وخلاصة <code>feed.xml</code> وملف <code>llms.txt</code> وإشعارات WebSub وIndexNow.</li>
+</ul>
+</section>
+
+<section><h2>روابط الأدوات الأساسية للاقتباس المباشر</h2>
+<div class="cards">${SEO_PAGES.map((p) => `<a class="card" href="${escapeHtml(absoluteUrl(p.path, siteUrl))}"><b>${escapeHtml(p.h1)}</b><span>${escapeHtml(p.description)}</span></a>`).join('')}</div>
+</section>
+
+<section><h2>بطاقات المشاركة والصور الرسمية (Open Graph &amp; Pinterest)</h2>
+<p>صُممت لكل أداة بطاقة مشاركة عربية بمقاس 1200×630، بالإضافة إلى بطاقات طولية بمقاس 1000×1500 لمنصة بينترست والقصص المصورة:</p>
+<div class="cards">
+<a class="card" href="${escapeHtml(absoluteUrl('og/home.png', siteUrl))}"><b>بطاقة المنصة الرئيسية (1200×630)</b><span>og/home.png</span></a>
+<a class="card" href="${escapeHtml(absoluteUrl('og/concentration.png', siteUrl))}"><b>بطاقة حاسبة التركيب (1200×630)</b><span>og/concentration.png</span></a>
+<a class="card" href="${escapeHtml(absoluteUrl('og/pin-concentration.png', siteUrl))}"><b>Pin حاسبة تركيب العطور (1000×1500)</b><span>og/pin-concentration.png</span></a>
+<a class="card" href="${escapeHtml(absoluteUrl('og/pin-alcohol.png', siteUrl))}"><b>Pin تخفيف الكحول (1000×1500)</b><span>og/pin-alcohol.png</span></a>
+<a class="card" href="${escapeHtml(absoluteUrl('og/pin-maceration_simulator.png', siteUrl))}"><b>Pin محاكي التعتيق (1000×1500)</b><span>og/pin-maceration_simulator.png</span></a>
+<a class="card" href="${escapeHtml(absoluteUrl('favicon.svg', siteUrl))}"><b>شعار المنصة المتجه (SVG)</b><span>favicon.svg</span></a>
+</div>
+</section>
+
+<section><h2>صيغة الإشارة المرجعية (للمواقع والمدونات)</h2>
+<div class="copy-box"><b>كود HTML جاهز للمقالات</b><pre id="cite-html">${escapeHtml(htmlCitation)}</pre><button type="button" class="share-btn" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('cite-html').textContent);this.textContent='تم النسخ ✓'">نسخ كود HTML</button></div>
+<div class="copy-box"><b>كود Markdown جاهز للمجتمعات والتوثيق</b><pre id="cite-md">${escapeHtml(mdCitation)}</pre><button type="button" class="share-btn" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('cite-md').textContent);this.textContent='تم النسخ ✓'">نسخ Markdown</button></div>
+</section>
+</main>
+<footer><b>${escapeHtml(SITE.nameAr)}</b> — ${escapeHtml(SITE.summaryAr)}<nav><a href="${escapeHtml(siteUrl)}">الرئيسية</a><a href="${escapeHtml(absoluteUrl('tools/', siteUrl))}">الأدوات</a><a href="${escapeHtml(absoluteUrl('p/', siteUrl))}">المنتجات</a><a href="${escapeHtml(absoluteUrl('sitemap.xml', siteUrl))}">خريطة الموقع</a><a href="${escapeHtml(absoluteUrl('llms.txt', siteUrl))}">llms.txt</a></nav> آخر تحديث: ${escapeHtml(now.toISOString().slice(0, 10))}</footer>
 </body></html>
 `;
 }
@@ -318,11 +454,12 @@ export function renderHomeHead(options: HomeHeadOptions): string {
   const description = override?.description || HOME_PAGE.description;
   const image = absoluteUrl(SITE.ogImage, siteUrl);
   const google = options.env?.GOOGLE_SITE_VERIFICATION?.trim();
+  const yandex = options.env?.YANDEX_SITE_VERIFICATION?.trim();
   const ld = [
     {
       '@context': 'https://schema.org', '@type': 'Organization', '@id': `${siteUrl}#organization`,
       name: SITE.nameAr, alternateName: SITE.nameEn, url: siteUrl, logo: absoluteUrl('favicon.svg', siteUrl), image,
-      sameAs: [SITE.github], description: SITE.summaryAr, inLanguage: 'ar',
+      sameAs: socialLinks(options.env), description: SITE.summaryAr, inLanguage: 'ar',
     },
     {
       '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${siteUrl}#website`,
@@ -362,6 +499,7 @@ export function renderHomeHead(options: HomeHeadOptions): string {
 <meta name="twitter:image" content="${escapeHtml(image)}">
 <meta name="theme-color" content="${SITE.themeColor}">
 ${google ? `<meta name="google-site-verification" content="${escapeHtml(google)}">` : ''}
+${yandex ? `<meta name="yandex-verification" content="${escapeHtml(yandex)}">` : ''}
 ${ld.map((block) => `<script type="application/ld+json" data-seo-agent="true">${JSON.stringify(block).replace(/</g, '\\u003c')}</script>`).join('\n')}
 <!--seo-agent:head:end-->`;
 }
@@ -383,6 +521,7 @@ export function injectHomeHead(html: string, options: HomeHeadOptions): string {
   out = out.replace(/<meta\s+property=["']og:[^"']+["'][^>]*>/gi, '');
   out = out.replace(/<meta\s+name=["']twitter:[^"']+["'][^>]*>/gi, '');
   out = out.replace(/<meta\s+name=["']google-site-verification["'][^>]*>/gi, '');
+  out = out.replace(/<meta\s+name=["']yandex-verification["'][^>]*>/gi, '');
   out = out.replace(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*data-seo-agent=["']true["'][^>]*>[\s\S]*?<\/script>/gi, '');
   // A static fallback title/description in noscript content must survive; only head tags were removed above.
   if (/<\/head>/i.test(out)) out = out.replace(/<\/head>/i, `${block}\n</head>`);
@@ -483,7 +622,7 @@ export function renderSeoBuildReport(input: { siteUrl: string; pages: number; pr
     toolPages: input.pages,
     products: input.products,
     sitemapUrls: input.sitemapUrls,
-    files: ['robots.txt', 'sitemap.xml', 'feed.xml', 'llms.txt', `${SITE.indexNowKey}.txt`, 'tools/index.html', ...SEO_PAGES.map((p) => p.path)],
+    files: ['robots.txt', 'sitemap.xml', 'feed.xml', 'llms.txt', `${SITE.indexNowKey}.txt`, 'tools/index.html', 'media/index.html', ...SEO_PAGES.map((p) => p.path)],
   }, null, 1) + '\n';
 }
 

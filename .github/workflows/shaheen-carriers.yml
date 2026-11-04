@@ -1,0 +1,93 @@
+name: Shaheen carrier scout — shipping errors, and a cheaper carrier
+
+# «كشّاف الشحن» (store cell, src/utils/shaheenOrg.ts). Every 6 hours it does two things at once:
+#   1. error review: a destination with no published rate, a rate older than 120 days, a carrier without a source,
+#      a carrier whose dangerous-goods answer (UN1266 — perfume is class 3) is unknown or a refusal, or shipping
+#      charged with no handling margin;
+#   2. carrier hunt: opens each candidate carrier's own page — robots.txt first, one page per site, a small budget —
+#      and records what it saw (did the page open? does it speak about dangerous goods?). It never reads a rate
+#      automatically and never invents one: savings are only computed once a rate is recorded with its source and
+#      date, and the merchant decides. Result: src/data/live/carrier-scout.json.
+
+on:
+  schedule:
+    - cron: '13 0,6,12,18 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main, 'arena/**']
+    paths:
+      - 'scripts/shaheen-carriers/**'
+      - 'src/data/carrier-candidates.json'
+      - 'src/data/shipping-lanes.json'
+      - 'src/data/shipping-costs.json'
+      - 'src/data/shipping.json'
+      - '.github/workflows/shaheen-carriers.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-carriers-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner (or «دولة المنصة») can pause this robot («carriers»).
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs carriers
+
+  scout:
+    name: «كشّاف الشحن» — review the errors, then look for a cheaper carrier
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Write the carrier report
+        run: node --import tsx scripts/shaheen-carriers/run.mts
+      - name: Behaviour tests
+        run: node --import tsx --test tests/carrierScout.test.ts
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen carrier scout"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "شاهين: كشّاف الشحن $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/carrier-scout.json \
+            || { echo "::error::Could not push the carrier report"; exit 1; }

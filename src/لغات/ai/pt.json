@@ -122,6 +122,8 @@
   "rv_write": "Escrever uma avaliação",
   "sf_added": "Adicionado ✓",
   "sf_address": "Morada completa",
+  "sf_ai_note_quick": "Sugestão automática do filtro da loja, com base nas suas palavras — verifique os detalhes do produto antes de comprar.",
+  "sf_ai_note_shaheen": "Sugestão gerada por IA a partir dos produtos da loja — verifique os detalhes do produto antes de comprar.",
   "sf_all_brands": "Todas as marcas",
   "sf_all_categories": "Todas as categorias",
   "sf_ask_hint": "Diga ao Shaheen o que procura — ocasião, estação, para homem ou mulher, orçamento — e ele escolhe na loja.",

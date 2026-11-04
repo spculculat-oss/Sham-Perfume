@@ -1,0 +1,5334 @@
+{
+ "version": 1,
+ "agent": "trade-lanes",
+ "updatedAt": "2026-11-04T06:45:21.407Z",
+ "modes": {
+  "platform_ships": {
+   "nameAr": "المنصة بتشحن (وساطة)",
+   "platforms": [
+    "afnan"
+   ],
+   "products": 98
+  },
+  "broker": {
+   "nameAr": "إحنا بنشحن",
+   "platforms": [
+    "shamperfume",
+    "direct"
+   ],
+   "products": 1114
+  },
+  "unknown": {
+   "nameAr": "مش معروف",
+   "platforms": [],
+   "products": 0
+  }
+ },
+ "platforms": [
+  {
+   "id": "shamperfume",
+   "nameAr": "شام بيرفيوم",
+   "fulfilment": "broker",
+   "originCountry": "MY",
+   "originConfidence": "verified",
+   "shipsTo": [
+    "MY"
+   ],
+   "products": 1063,
+   "noteAr": "إحنا بنشحن"
+  },
+  {
+   "id": "afnan",
+   "nameAr": "أفنان للعطور",
+   "fulfilment": "platform_ships",
+   "originCountry": "AE",
+   "originConfidence": "verified",
+   "shipsTo": [
+    "US"
+   ],
+   "products": 98,
+   "noteAr": "وساطة — المنصة بتشحن"
+  },
+  {
+   "id": "direct",
+   "nameAr": "منتجات مباشرة بدون رابط مصدر",
+   "fulfilment": "broker",
+   "originCountry": "EG",
+   "originConfidence": "inferred",
+   "shipsTo": [
+    "EG"
+   ],
+   "products": 51,
+   "noteAr": "إحنا بنشحن"
+  }
+ ],
+ "destinations": [
+  {
+   "code": "EG",
+   "nameAr": "مصر",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "local"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1711.25,
+     1996.45
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1882.35,
+   "zoneChargedEgp": 830.56,
+   "costEgp": [
+    1711.25,
+    1996.45
+   ],
+   "surplusEgp": 171.1,
+   "netEgp": 1362.16,
+   "orderVerdict": "profit",
+   "keptPercent": 114.37,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1711.25,
+    1996.45
+   ],
+   "costExtraEgp": 285.21,
+   "proposedChargedEgp": 1882.35,
+   "proposedMarginEgp": 171.1,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": null,
+    "vatPercent": 14,
+    "dutyPercent": [
+     0,
+     60
+    ],
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "التعريفة من 0% إلى 60% حسب البند، وتضاف ضريبة قيمة مضافة 14% ورسم تنمية موارد ورسوم خدمات جمركية. إعفاء المسافر 15,000 جنيه للأشياء الشخصية والهدايا (مش للطرود التجارية)."
+   }
+  },
+  {
+   "code": "SA",
+   "nameAr": "السعودية",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1521.11,
+     1996.45
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1673.38,
+   "zoneChargedEgp": 775.19,
+   "costEgp": [
+    1521.11,
+    1996.45
+   ],
+   "surplusEgp": 152.27,
+   "netEgp": 1343.33,
+   "orderVerdict": "profit",
+   "keptPercent": 112.78,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1521.11,
+    1996.45
+   ],
+   "costExtraEgp": 475.35,
+   "proposedChargedEgp": 1673.38,
+   "proposedMarginEgp": 152.27,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "AE",
+   "nameAr": "الإمارات",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1521.11,
+     1901.38
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1673.38,
+   "zoneChargedEgp": 775.19,
+   "costEgp": [
+    1521.11,
+    1901.38
+   ],
+   "surplusEgp": 152.27,
+   "netEgp": 1343.33,
+   "orderVerdict": "profit",
+   "keptPercent": 112.78,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1521.11,
+    1901.38
+   ],
+   "costExtraEgp": 380.28,
+   "proposedChargedEgp": 1673.38,
+   "proposedMarginEgp": 152.27,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "KW",
+   "nameAr": "الكويت",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1426.04,
+     1806.31
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1568.9,
+   "zoneChargedEgp": 775.19,
+   "costEgp": [
+    1426.04,
+    1806.31
+   ],
+   "surplusEgp": 142.86,
+   "netEgp": 1333.92,
+   "orderVerdict": "profit",
+   "keptPercent": 111.99,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1426.04,
+    1806.31
+   ],
+   "costExtraEgp": 380.28,
+   "proposedChargedEgp": 1568.9,
+   "proposedMarginEgp": 142.86,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "QA",
+   "nameAr": "قطر",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1426.04,
+     1806.31
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1568.9,
+   "zoneChargedEgp": 775.19,
+   "costEgp": [
+    1426.04,
+    1806.31
+   ],
+   "surplusEgp": 142.86,
+   "netEgp": 1333.92,
+   "orderVerdict": "profit",
+   "keptPercent": 111.99,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1426.04,
+    1806.31
+   ],
+   "costExtraEgp": 380.28,
+   "proposedChargedEgp": 1568.9,
+   "proposedMarginEgp": 142.86,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "BH",
+   "nameAr": "البحرين",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1426.04,
+     1806.31
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1568.9,
+   "zoneChargedEgp": 775.19,
+   "costEgp": [
+    1426.04,
+    1806.31
+   ],
+   "surplusEgp": 142.86,
+   "netEgp": 1333.92,
+   "orderVerdict": "profit",
+   "keptPercent": 111.99,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1426.04,
+    1806.31
+   ],
+   "costExtraEgp": 380.28,
+   "proposedChargedEgp": 1568.9,
+   "proposedMarginEgp": 142.86,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "OM",
+   "nameAr": "عمان",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2852.08,
+     3612.63
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3128.93,
+   "zoneChargedEgp": 775.19,
+   "costEgp": [
+    2852.08,
+    3612.63
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2852.08,
+    3612.63
+   ],
+   "costExtraEgp": 760.55,
+   "proposedChargedEgp": 3128.93,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "JO",
+   "nameAr": "الأردن",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1426.04,
+     1806.31
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1568.9,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    1426.04,
+    1806.31
+   ],
+   "surplusEgp": 142.86,
+   "netEgp": 1333.92,
+   "orderVerdict": "profit",
+   "keptPercent": 111.99,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1426.04,
+    1806.31
+   ],
+   "costExtraEgp": 380.28,
+   "proposedChargedEgp": 1568.9,
+   "proposedMarginEgp": 142.86,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "200 JOD",
+    "vatPercent": 16,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "قرار مجلس الوزراء: إعفاء جمركي كامل للطرود حتى 200 دينار + 16% ضريبة مبيعات."
+   }
+  },
+  {
+   "code": "LB",
+   "nameAr": "لبنان",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3042.21,
+     3802.77
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3319.06,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    3042.21,
+    3802.77
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3042.21,
+    3802.77
+   ],
+   "costExtraEgp": 760.55,
+   "proposedChargedEgp": 3319.06,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "IQ",
+   "nameAr": "العراق",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "SY",
+   "nameAr": "سوريا",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2947.14,
+     3707.7
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3223.99,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    2947.14,
+    3707.7
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2947.14,
+    3707.7
+   ],
+   "costExtraEgp": 760.55,
+   "proposedChargedEgp": 3223.99,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": "عقوبات — الشحن ممنوع",
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "PS",
+   "nameAr": "فلسطين",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "YE",
+   "nameAr": "اليمن",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2985.17,
+     3745.73
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3262.02,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    2985.17,
+    3745.73
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2985.17,
+    3745.73
+   ],
+   "costExtraEgp": 760.55,
+   "proposedChargedEgp": 3262.02,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "LY",
+   "nameAr": "ليبيا",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "TN",
+   "nameAr": "تونس",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2471.8
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    1901.38,
+    2471.8
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2471.8
+   ],
+   "costExtraEgp": 570.42,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "DZ",
+   "nameAr": "الجزائر",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MA",
+   "nameAr": "المغرب",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4278.11
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    3422.49,
+    4278.11
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4278.11
+   ],
+   "costExtraEgp": 855.62,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "SD",
+   "nameAr": "السودان",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MR",
+   "nameAr": "موريتانيا",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "SO",
+   "nameAr": "الصومال",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "DJ",
+   "nameAr": "جيبوتي",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "KM",
+   "nameAr": "جزر القمر",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 996.67,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MY",
+   "nameAr": "ماليزيا",
+   "lane": "local",
+   "assumedLane": "local",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "local"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "العميل في نفس بلد المنصة (MY) — شحن محلي",
+   "carrier": {
+    "id": "pos_malaysia",
+    "nameAr": "بريد ماليزيا",
+    "speedAr": "2–5 أيام",
+    "priceEgp": [
+     149.39,
+     285.21
+    ],
+    "dg": null,
+    "source": "https://sellershipment.com/ecommerce-shipping-cost/pos-laju-rate/ + https://jomjual.my/blog/jt-vs-pos-laju-vs-ninja-van-vs-dhl-perbandingan-kadar-penghantaran-malaysia-2026"
+   },
+   "alternative": null,
+   "chargedEgp": 164.34,
+   "zoneChargedEgp": 332.22,
+   "costEgp": [
+    149.39,
+    285.21
+   ],
+   "surplusEgp": 14.95,
+   "netEgp": 1206.01,
+   "orderVerdict": "profit",
+   "keptPercent": 101.26,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    149.39,
+    285.21
+   ],
+   "costExtraEgp": 135.81,
+   "proposedChargedEgp": 164.34,
+   "proposedMarginEgp": 14.95,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "SG",
+   "nameAr": "سنغافورة",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     760.55,
+     855.62
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 836.41,
+   "zoneChargedEgp": 332.22,
+   "costEgp": [
+    760.55,
+    855.62
+   ],
+   "surplusEgp": 75.86,
+   "netEgp": 1266.92,
+   "orderVerdict": "profit",
+   "keptPercent": 106.37,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    760.55,
+    855.62
+   ],
+   "costExtraEgp": 95.07,
+   "proposedChargedEgp": 836.41,
+   "proposedMarginEgp": 75.86,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "BN",
+   "nameAr": "BN",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     817.6,
+     931.68
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 899.55,
+   "zoneChargedEgp": 332.22,
+   "costEgp": [
+    817.6,
+    931.68
+   ],
+   "surplusEgp": 81.95,
+   "netEgp": 1273.01,
+   "orderVerdict": "profit",
+   "keptPercent": 106.88,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    817.6,
+    931.68
+   ],
+   "costExtraEgp": 114.08,
+   "proposedChargedEgp": 899.55,
+   "proposedMarginEgp": 81.95,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "ID",
+   "nameAr": "إندونيسيا",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     855.62,
+     969.71
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 941.44,
+   "zoneChargedEgp": 332.22,
+   "costEgp": [
+    855.62,
+    969.71
+   ],
+   "surplusEgp": 85.82,
+   "netEgp": 1276.88,
+   "orderVerdict": "profit",
+   "keptPercent": 107.21,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    855.62,
+    969.71
+   ],
+   "costExtraEgp": 114.08,
+   "proposedChargedEgp": 941.44,
+   "proposedMarginEgp": 85.82,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "TH",
+   "nameAr": "تايلاند",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     855.62,
+     969.71
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 941.44,
+   "zoneChargedEgp": 332.22,
+   "costEgp": [
+    855.62,
+    969.71
+   ],
+   "surplusEgp": 85.82,
+   "netEgp": 1276.88,
+   "orderVerdict": "profit",
+   "keptPercent": 107.21,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    855.62,
+    969.71
+   ],
+   "costExtraEgp": 114.08,
+   "proposedChargedEgp": 941.44,
+   "proposedMarginEgp": 85.82,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "PH",
+   "nameAr": "الفلبين",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1045.76,
+     1197.87
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1150.41,
+   "zoneChargedEgp": 332.22,
+   "costEgp": [
+    1045.76,
+    1197.87
+   ],
+   "surplusEgp": 104.65,
+   "netEgp": 1295.71,
+   "orderVerdict": "profit",
+   "keptPercent": 108.79,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1045.76,
+    1197.87
+   ],
+   "costExtraEgp": 152.11,
+   "proposedChargedEgp": 1150.41,
+   "proposedMarginEgp": 104.65,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "VN",
+   "nameAr": "فيتنام",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     950.69,
+     1064.77
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1045.93,
+   "zoneChargedEgp": 332.22,
+   "costEgp": [
+    950.69,
+    1064.77
+   ],
+   "surplusEgp": 95.24,
+   "netEgp": 1286.3,
+   "orderVerdict": "profit",
+   "keptPercent": 108,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    950.69,
+    1064.77
+   ],
+   "costExtraEgp": 114.08,
+   "proposedChargedEgp": 1045.93,
+   "proposedMarginEgp": 95.24,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "KH",
+   "nameAr": "KH",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     988.72,
+     1102.8
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1087.83,
+   "zoneChargedEgp": 332.22,
+   "costEgp": [
+    988.72,
+    1102.8
+   ],
+   "surplusEgp": 99.11,
+   "netEgp": 1290.17,
+   "orderVerdict": "profit",
+   "keptPercent": 108.32,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    988.72,
+    1102.8
+   ],
+   "costExtraEgp": 114.08,
+   "proposedChargedEgp": 1087.83,
+   "proposedMarginEgp": 99.11,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "LA",
+   "nameAr": "LA",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     988.72,
+     1140.83
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1087.83,
+   "zoneChargedEgp": 332.22,
+   "costEgp": [
+    988.72,
+    1140.83
+   ],
+   "surplusEgp": 99.11,
+   "netEgp": 1290.17,
+   "orderVerdict": "profit",
+   "keptPercent": 108.32,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    988.72,
+    1140.83
+   ],
+   "costExtraEgp": 152.11,
+   "proposedChargedEgp": 1087.83,
+   "proposedMarginEgp": 99.11,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MM",
+   "nameAr": "ميانمار",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1521.11,
+     1901.38
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1673.38,
+   "zoneChargedEgp": 332.22,
+   "costEgp": [
+    1521.11,
+    1901.38
+   ],
+   "surplusEgp": 152.27,
+   "netEgp": 1343.33,
+   "orderVerdict": "profit",
+   "keptPercent": 112.78,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1521.11,
+    1901.38
+   ],
+   "costExtraEgp": 380.28,
+   "proposedChargedEgp": 1673.38,
+   "proposedMarginEgp": 152.27,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "GB",
+   "nameAr": "بريطانيا",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2186.59
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    1901.38,
+    2186.59
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2186.59
+   ],
+   "costExtraEgp": 285.21,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": "135 GBP",
+    "vatPercent": 20,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "بريطانيا مش في الاتحاد الأوروبي — حدودها مختلفة، وأرقامها محتاجة تأكيد من مصدر رسمي قبل الاعتماد عليها."
+   }
+  },
+  {
+   "code": "IE",
+   "nameAr": "IE",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2186.59
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    1901.38,
+    2186.59
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2186.59
+   ],
+   "costExtraEgp": 285.21,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "FR",
+   "nameAr": "FR",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2186.59
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    1901.38,
+    2186.59
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2186.59
+   ],
+   "costExtraEgp": 285.21,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "DE",
+   "nameAr": "DE",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2262.65
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    1901.38,
+    2262.65
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2262.65
+   ],
+   "costExtraEgp": 361.26,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "IT",
+   "nameAr": "IT",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2186.59
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    1901.38,
+    2186.59
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2186.59
+   ],
+   "costExtraEgp": 285.21,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "ES",
+   "nameAr": "ES",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2186.59,
+     2471.8
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2405.3,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2186.59,
+    2471.8
+   ],
+   "surplusEgp": 218.71,
+   "netEgp": 1409.77,
+   "orderVerdict": "profit",
+   "keptPercent": 118.36,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2186.59,
+    2471.8
+   ],
+   "costExtraEgp": 285.21,
+   "proposedChargedEgp": 2405.3,
+   "proposedMarginEgp": 218.71,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "PT",
+   "nameAr": "PT",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2186.59
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    1901.38,
+    2186.59
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2186.59
+   ],
+   "costExtraEgp": 285.21,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "NL",
+   "nameAr": "NL",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2091.52,
+     2528.84
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2300.82,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2091.52,
+    2528.84
+   ],
+   "surplusEgp": 209.3,
+   "netEgp": 1400.36,
+   "orderVerdict": "profit",
+   "keptPercent": 117.57,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2091.52,
+    2528.84
+   ],
+   "costExtraEgp": 437.32,
+   "proposedChargedEgp": 2300.82,
+   "proposedMarginEgp": 209.3,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "BE",
+   "nameAr": "BE",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2186.59
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    1901.38,
+    2186.59
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2186.59
+   ],
+   "costExtraEgp": 285.21,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "LU",
+   "nameAr": "LU",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2737.99,
+     3156.3
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3012.07,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2737.99,
+    3156.3
+   ],
+   "surplusEgp": 274.08,
+   "netEgp": 1465.14,
+   "orderVerdict": "profit",
+   "keptPercent": 123.01,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2737.99,
+    3156.3
+   ],
+   "costExtraEgp": 418.3,
+   "proposedChargedEgp": 3012.07,
+   "proposedMarginEgp": 274.08,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "AT",
+   "nameAr": "AT",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2471.8
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    1901.38,
+    2471.8
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2471.8
+   ],
+   "costExtraEgp": 570.42,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "CH",
+   "nameAr": "سويسرا",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2471.8,
+     3042.21
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2718.75,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2471.8,
+    3042.21
+   ],
+   "surplusEgp": 246.95,
+   "netEgp": 1438.01,
+   "orderVerdict": "profit",
+   "keptPercent": 120.73,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2471.8,
+    3042.21
+   ],
+   "costExtraEgp": 570.42,
+   "proposedChargedEgp": 2718.75,
+   "proposedMarginEgp": 246.95,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "SE",
+   "nameAr": "SE",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2471.8,
+     3042.21
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2718.75,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2471.8,
+    3042.21
+   ],
+   "surplusEgp": 246.95,
+   "netEgp": 1438.01,
+   "orderVerdict": "profit",
+   "keptPercent": 120.73,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2471.8,
+    3042.21
+   ],
+   "costExtraEgp": 570.42,
+   "proposedChargedEgp": 2718.75,
+   "proposedMarginEgp": 246.95,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "NO",
+   "nameAr": "النرويج",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2281.66,
+     2757.01
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2509.79,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2281.66,
+    2757.01
+   ],
+   "surplusEgp": 228.13,
+   "netEgp": 1419.19,
+   "orderVerdict": "profit",
+   "keptPercent": 119.15,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2281.66,
+    2757.01
+   ],
+   "costExtraEgp": 475.35,
+   "proposedChargedEgp": 2509.79,
+   "proposedMarginEgp": 228.13,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "DK",
+   "nameAr": "DK",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2186.59
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    1901.38,
+    2186.59
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2186.59
+   ],
+   "costExtraEgp": 285.21,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "FI",
+   "nameAr": "FI",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2186.59
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    1901.38,
+    2186.59
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2186.59
+   ],
+   "costExtraEgp": 285.21,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "IS",
+   "nameAr": "IS",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2338.7,
+     2718.98
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2572.36,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2338.7,
+    2718.98
+   ],
+   "surplusEgp": 233.66,
+   "netEgp": 1424.72,
+   "orderVerdict": "profit",
+   "keptPercent": 119.62,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2338.7,
+    2718.98
+   ],
+   "costExtraEgp": 380.28,
+   "proposedChargedEgp": 2572.36,
+   "proposedMarginEgp": 233.66,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "PL",
+   "nameAr": "PL",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3042.21,
+     3802.77
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3319.06,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3042.21,
+    3802.77
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3042.21,
+    3802.77
+   ],
+   "costExtraEgp": 760.55,
+   "proposedChargedEgp": 3319.06,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "CZ",
+   "nameAr": "CZ",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2985.17,
+     3745.73
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3262.02,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2985.17,
+    3745.73
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2985.17,
+    3745.73
+   ],
+   "costExtraEgp": 760.55,
+   "proposedChargedEgp": 3262.02,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "SK",
+   "nameAr": "SK",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2985.17,
+     3745.73
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3262.02,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2985.17,
+    3745.73
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2985.17,
+    3745.73
+   ],
+   "costExtraEgp": 760.55,
+   "proposedChargedEgp": 3262.02,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "HU",
+   "nameAr": "HU",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3042.21,
+     3726.71
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3319.06,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3042.21,
+    3726.71
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3042.21,
+    3726.71
+   ],
+   "costExtraEgp": 684.5,
+   "proposedChargedEgp": 3319.06,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "RO",
+   "nameAr": "RO",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "BG",
+   "nameAr": "BG",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2985.17,
+     3745.73
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3262.02,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2985.17,
+    3745.73
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2985.17,
+    3745.73
+   ],
+   "costExtraEgp": 760.55,
+   "proposedChargedEgp": 3262.02,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "GR",
+   "nameAr": "GR",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2281.66
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    1901.38,
+    2281.66
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2281.66
+   ],
+   "costExtraEgp": 380.28,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "HR",
+   "nameAr": "HR",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "SI",
+   "nameAr": "SI",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "RS",
+   "nameAr": "RS",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "BA",
+   "nameAr": "BA",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "ME",
+   "nameAr": "ME",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MK",
+   "nameAr": "MK",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "AL",
+   "nameAr": "AL",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "EE",
+   "nameAr": "EE",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2985.17,
+     3745.73
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3262.02,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2985.17,
+    3745.73
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2985.17,
+    3745.73
+   ],
+   "costExtraEgp": 760.55,
+   "proposedChargedEgp": 3262.02,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "LV",
+   "nameAr": "LV",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "LT",
+   "nameAr": "LT",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "CY",
+   "nameAr": "CY",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2985.17,
+     3745.73
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3262.02,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2985.17,
+    3745.73
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2985.17,
+    3745.73
+   ],
+   "costExtraEgp": 760.55,
+   "proposedChargedEgp": 3262.02,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "MT",
+   "nameAr": "MT",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 EUR",
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة."
+   }
+  },
+  {
+   "code": "UA",
+   "nameAr": "أوكرانيا",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2947.14,
+     3707.7
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3223.99,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    2947.14,
+    3707.7
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2947.14,
+    3707.7
+   ],
+   "costExtraEgp": 760.55,
+   "proposedChargedEgp": 3223.99,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MD",
+   "nameAr": "MD",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     3422.49,
+     4468.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 3699.34,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    3422.49,
+    4468.25
+   ],
+   "surplusEgp": 276.85,
+   "netEgp": 1467.91,
+   "orderVerdict": "profit",
+   "keptPercent": 123.24,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    3422.49,
+    4468.25
+   ],
+   "costExtraEgp": 1045.76,
+   "proposedChargedEgp": 3699.34,
+   "proposedMarginEgp": 276.85,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها — يتأكد قبل أي وعد للزائر."
+   }
+  },
+  {
+   "code": "TR",
+   "nameAr": "تركيا",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1330.97,
+     1711.25
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 1463.86,
+   "zoneChargedEgp": 1218.15,
+   "costEgp": [
+    1330.97,
+    1711.25
+   ],
+   "surplusEgp": 132.89,
+   "netEgp": 1323.95,
+   "orderVerdict": "profit",
+   "keptPercent": 111.16,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1330.97,
+    1711.25
+   ],
+   "costExtraEgp": 380.28,
+   "proposedChargedEgp": 1463.86,
+   "proposedMarginEgp": 132.89,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "US",
+   "nameAr": "أمريكا",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "platform"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     1901.38,
+     2281.66
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2091.3,
+   "zoneChargedEgp": 1384.27,
+   "costEgp": [
+    1901.38,
+    2281.66
+   ],
+   "surplusEgp": 189.92,
+   "netEgp": 1380.98,
+   "orderVerdict": "profit",
+   "keptPercent": 115.95,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    1901.38,
+    2281.66
+   ],
+   "costExtraEgp": 380.28,
+   "proposedChargedEgp": 2091.3,
+   "proposedMarginEgp": 189.92,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": true,
+    "deMinimis": "0 USD",
+    "vatPercent": 0,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش إعفاء. الأمريكان بيحسبوا ضريبة مبيعات الولاية على المشتري مش علينا. أرخص طريقة: شحن تجاري مسجّل (Entry) مش بريد."
+   }
+  },
+  {
+   "code": "CA",
+   "nameAr": "كندا",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2091.52,
+     2509.83
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2300.82,
+   "zoneChargedEgp": 1384.27,
+   "costEgp": [
+    2091.52,
+    2509.83
+   ],
+   "surplusEgp": 209.3,
+   "netEgp": 1400.36,
+   "orderVerdict": "profit",
+   "keptPercent": 117.57,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2091.52,
+    2509.83
+   ],
+   "costExtraEgp": 418.3,
+   "proposedChargedEgp": 2300.82,
+   "proposedMarginEgp": 209.3,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  },
+  {
+   "code": "MX",
+   "nameAr": "المكسيك",
+   "lane": "international",
+   "assumedLane": "international",
+   "assumedOrigin": "MY",
+   "lanesByPlatform": [
+    {
+     "platform": "shamperfume",
+     "lane": "international"
+    },
+    {
+     "platform": "afnan",
+     "lane": "international"
+    },
+    {
+     "platform": "direct",
+     "lane": "international"
+    }
+   ],
+   "becauseAr": "البضاعة في MY والعميل في بلد تاني — شحن دولي",
+   "carrier": {
+    "id": "poslaju_intl",
+    "nameAr": "بوس لاجو الدولي (بريد ماليزيا)",
+    "speedAr": "3–4 أيام لأغلب الوجهات",
+    "priceEgp": [
+     2604.9,
+     3175.31
+    ],
+    "dg": null,
+    "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf"
+   },
+   "alternative": null,
+   "chargedEgp": 2865.14,
+   "zoneChargedEgp": 1384.27,
+   "costEgp": [
+    2604.9,
+    3175.31
+   ],
+   "surplusEgp": 260.24,
+   "netEgp": 1451.3,
+   "orderVerdict": "profit",
+   "keptPercent": 121.85,
+   "marginEatenEgp": 0,
+   "requiredShippingEgp": [
+    2604.9,
+    3175.31
+   ],
+   "costExtraEgp": 570.42,
+   "proposedChargedEgp": 2865.14,
+   "proposedMarginEgp": 260.24,
+   "promise": "we_ship",
+   "costVerdict": "ok",
+   "customs": {
+    "verified": false,
+    "deMinimis": null,
+    "vatPercent": null,
+    "dutyPercent": null,
+    "restricted": null,
+    "dutyRelief": null,
+    "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر."
+   }
+  }
+ ],
+ "products": {
+  "platform_ships": 98,
+  "broker": 1114,
+  "unknown": 0,
+  "total": 1212
+ },
+ "origins": [
+  {
+   "code": "MY",
+   "nameAr": "ماليزيا",
+   "products": 1063,
+   "platforms": [
+    "shamperfume"
+   ],
+   "fulfilment": [
+    "broker"
+   ],
+   "localCarrier": {
+    "id": "pos_malaysia",
+    "nameAr": "بريد ماليزيا",
+    "priceEgp": [
+     149.39,
+     285.21
+    ]
+   }
+  },
+  {
+   "code": "AE",
+   "nameAr": "الإمارات",
+   "products": 98,
+   "platforms": [
+    "afnan"
+   ],
+   "fulfilment": [
+    "platform_ships"
+   ],
+   "localCarrier": {
+    "id": "aramex_ae",
+    "nameAr": "أرامكس الإمارات",
+    "priceEgp": null
+   }
+  },
+  {
+   "code": "EG",
+   "nameAr": "مصر",
+   "products": 51,
+   "platforms": [
+    "direct"
+   ],
+   "fulfilment": [
+    "broker"
+   ],
+   "localCarrier": {
+    "id": "bosta",
+    "nameAr": "بوستة",
+    "priceEgp": [
+     30,
+     55
+    ]
+   }
+  }
+ ],
+ "fx": {
+  "thresholdPercent": 2,
+  "lines": [
+   {
+    "currency": "MYR",
+    "rateUsed": 13.081,
+    "rateToday": 13.5813,
+    "driftPercent": 3.8,
+    "products": 1063,
+    "stateAr": "تكلفة الشراء بقت أغلى 3.8% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي"
+   },
+   {
+    "currency": "AED",
+    "rateUsed": 14.5568,
+    "rateToday": 15.0771,
+    "driftPercent": 3.6,
+    "products": 98,
+    "stateAr": "تكلفة الشراء بقت أغلى 3.6% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي"
+   }
+  ],
+  "egpPerUsd": 55.370618,
+  "at": "2026-11-04T00:02:31Z"
+ },
+ "gaps": [
+  {
+   "kindAr": "الجمارك",
+   "whatAr": "34 دولة من الوجهات مفيهاش بيانات جمركية متأكد منها (SA، AE، KW، QA، BH…)",
+   "fixAr": "الروبوت يجيب المصدر الرسمي لكل دولة ويسجله بتاريخه"
+  },
+  {
+   "kindAr": "المواد الخطرة",
+   "whatAr": "5 شركة شحن دولية لسه مش متأكدين إنها بتقبل العطور (UN1266)",
+   "fixAr": "يتأكد من كل شركة قبل ما نعرض توصيل دولي — العطر سائل قابل للاشتعال"
+  },
+  {
+   "kindAr": "شركات محلية",
+   "whatAr": "البضاعة في الإمارات (98 منتج) ومفيش سعر شحن محلي منشور فيها — يعني مفيش سعر توصيل جوّه البلد دي",
+   "fixAr": "يتسجل سعر منشور لشركة محلية في كل بلد فيها بضاعة، وإلا التوصيل الداخلي يبقى «يتأكد»"
+  },
+  {
+   "kindAr": "سعر الشحن الدولي",
+   "whatAr": "مفيش سعر شحن دولي منشور من الإمارات — كل أسعار الشحن المسجلة محسوبة من مصر",
+   "fixAr": "يتجاب سعر منشور من شركة دولية بتشحن من بلد البضاعة (ومصدره وتاريخه) — أي رقم من غير مصدر يبقى «مش متاح»"
+  },
+  {
+   "kindAr": "سعر الصرف",
+   "whatAr": "1063 منتج سعره مبني على 13.081 ج.م/MYR، وسعر النهاردة 13.5813 (فرق +3.8%)",
+   "fixAr": "إعادة تسعير المنتجات دي على سعر الصرف الحالي — أو شرح إن التكلفة تغيّرت"
+  },
+  {
+   "kindAr": "سعر الصرف",
+   "whatAr": "98 منتج سعره مبني على 14.5568 ج.م/AED، وسعر النهاردة 15.0771 (فرق +3.6%)",
+   "fixAr": "إعادة تسعير المنتجات دي على سعر الصرف الحالي — أو شرح إن التكلفة تغيّرت"
+  },
+  {
+   "kindAr": "شركات محلية",
+   "whatAr": "71 وجهة مفيهاش شركة شحن محلية مسجلة",
+   "fixAr": "الروبوت يبحث عن أفضل شركة محلية في كل دولة بسعر منشور"
+  }
+ ],
+ "shippingProposal": [
+  {
+   "zoneId": "egypt",
+   "nameAr": "مصر",
+   "currency": "USD",
+   "countries": 1,
+   "currentFirstItem": 15,
+   "covered": 1,
+   "typicalRequiredFirstItem": 31,
+   "maxRequiredFirstItem": 31,
+   "drivenByAr": "مصر",
+   "destinations": [
+    {
+     "code": "EG",
+     "nameAr": "مصر",
+     "requiredFirstItem": 31
+    }
+   ]
+  },
+  {
+   "zoneId": "gulf",
+   "nameAr": "دول الخليج",
+   "currency": "USD",
+   "countries": 6,
+   "currentFirstItem": 14,
+   "covered": 6,
+   "typicalRequiredFirstItem": 28,
+   "maxRequiredFirstItem": 52,
+   "drivenByAr": "عمان",
+   "destinations": [
+    {
+     "code": "SA",
+     "nameAr": "السعودية",
+     "requiredFirstItem": 28
+    },
+    {
+     "code": "AE",
+     "nameAr": "الإمارات",
+     "requiredFirstItem": 28
+    },
+    {
+     "code": "KW",
+     "nameAr": "الكويت",
+     "requiredFirstItem": 26
+    },
+    {
+     "code": "QA",
+     "nameAr": "قطر",
+     "requiredFirstItem": 26
+    },
+    {
+     "code": "BH",
+     "nameAr": "البحرين",
+     "requiredFirstItem": 26
+    },
+    {
+     "code": "OM",
+     "nameAr": "عمان",
+     "requiredFirstItem": 52
+    }
+   ]
+  },
+  {
+   "zoneId": "arab",
+   "nameAr": "باقي الدول العربية",
+   "currency": "USD",
+   "countries": 15,
+   "currentFirstItem": 18,
+   "covered": 15,
+   "typicalRequiredFirstItem": 62,
+   "maxRequiredFirstItem": 62,
+   "drivenByAr": "العراق",
+   "destinations": [
+    {
+     "code": "JO",
+     "nameAr": "الأردن",
+     "requiredFirstItem": 26
+    },
+    {
+     "code": "LB",
+     "nameAr": "لبنان",
+     "requiredFirstItem": 55
+    },
+    {
+     "code": "IQ",
+     "nameAr": "العراق",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "SY",
+     "nameAr": "سوريا",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "PS",
+     "nameAr": "فلسطين",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "YE",
+     "nameAr": "اليمن",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "LY",
+     "nameAr": "ليبيا",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "TN",
+     "nameAr": "تونس",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "DZ",
+     "nameAr": "الجزائر",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "MA",
+     "nameAr": "المغرب",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "SD",
+     "nameAr": "السودان",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "MR",
+     "nameAr": "موريتانيا",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "SO",
+     "nameAr": "الصومال",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "DJ",
+     "nameAr": "جيبوتي",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "KM",
+     "nameAr": "جزر القمر",
+     "requiredFirstItem": 62
+    }
+   ]
+  },
+  {
+   "zoneId": "southeast_asia",
+   "nameAr": "جنوب شرق آسيا",
+   "currency": "USD",
+   "countries": 10,
+   "currentFirstItem": 6,
+   "covered": 10,
+   "typicalRequiredFirstItem": 18,
+   "maxRequiredFirstItem": 28,
+   "drivenByAr": "ميانمار",
+   "destinations": [
+    {
+     "code": "MY",
+     "nameAr": "ماليزيا",
+     "requiredFirstItem": 3
+    },
+    {
+     "code": "SG",
+     "nameAr": "سنغافورة",
+     "requiredFirstItem": 14
+    },
+    {
+     "code": "BN",
+     "nameAr": "BN",
+     "requiredFirstItem": 15
+    },
+    {
+     "code": "ID",
+     "nameAr": "إندونيسيا",
+     "requiredFirstItem": 16
+    },
+    {
+     "code": "TH",
+     "nameAr": "تايلاند",
+     "requiredFirstItem": 16
+    },
+    {
+     "code": "PH",
+     "nameAr": "الفلبين",
+     "requiredFirstItem": 19
+    },
+    {
+     "code": "VN",
+     "nameAr": "فيتنام",
+     "requiredFirstItem": 18
+    },
+    {
+     "code": "KH",
+     "nameAr": "KH",
+     "requiredFirstItem": 18
+    },
+    {
+     "code": "LA",
+     "nameAr": "LA",
+     "requiredFirstItem": 18
+    },
+    {
+     "code": "MM",
+     "nameAr": "ميانمار",
+     "requiredFirstItem": 28
+    }
+   ]
+  },
+  {
+   "zoneId": "europe",
+   "nameAr": "أوروبا",
+   "currency": "USD",
+   "countries": 39,
+   "currentFirstItem": 22,
+   "covered": 39,
+   "typicalRequiredFirstItem": 54,
+   "maxRequiredFirstItem": 62,
+   "drivenByAr": "RO",
+   "destinations": [
+    {
+     "code": "GB",
+     "nameAr": "بريطانيا",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "IE",
+     "nameAr": "IE",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "FR",
+     "nameAr": "FR",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "DE",
+     "nameAr": "DE",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "IT",
+     "nameAr": "IT",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "ES",
+     "nameAr": "ES",
+     "requiredFirstItem": 40
+    },
+    {
+     "code": "PT",
+     "nameAr": "PT",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "NL",
+     "nameAr": "NL",
+     "requiredFirstItem": 38
+    },
+    {
+     "code": "BE",
+     "nameAr": "BE",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "LU",
+     "nameAr": "LU",
+     "requiredFirstItem": 50
+    },
+    {
+     "code": "AT",
+     "nameAr": "AT",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "CH",
+     "nameAr": "سويسرا",
+     "requiredFirstItem": 45
+    },
+    {
+     "code": "SE",
+     "nameAr": "SE",
+     "requiredFirstItem": 45
+    },
+    {
+     "code": "NO",
+     "nameAr": "النرويج",
+     "requiredFirstItem": 42
+    },
+    {
+     "code": "DK",
+     "nameAr": "DK",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "FI",
+     "nameAr": "FI",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "IS",
+     "nameAr": "IS",
+     "requiredFirstItem": 43
+    },
+    {
+     "code": "PL",
+     "nameAr": "PL",
+     "requiredFirstItem": 55
+    },
+    {
+     "code": "CZ",
+     "nameAr": "CZ",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "SK",
+     "nameAr": "SK",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "HU",
+     "nameAr": "HU",
+     "requiredFirstItem": 55
+    },
+    {
+     "code": "RO",
+     "nameAr": "RO",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "BG",
+     "nameAr": "BG",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "GR",
+     "nameAr": "GR",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "HR",
+     "nameAr": "HR",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "SI",
+     "nameAr": "SI",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "RS",
+     "nameAr": "RS",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "BA",
+     "nameAr": "BA",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "ME",
+     "nameAr": "ME",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "MK",
+     "nameAr": "MK",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "AL",
+     "nameAr": "AL",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "EE",
+     "nameAr": "EE",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "LV",
+     "nameAr": "LV",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "LT",
+     "nameAr": "LT",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "CY",
+     "nameAr": "CY",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "MT",
+     "nameAr": "MT",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "UA",
+     "nameAr": "أوكرانيا",
+     "requiredFirstItem": 54
+    },
+    {
+     "code": "MD",
+     "nameAr": "MD",
+     "requiredFirstItem": 62
+    },
+    {
+     "code": "TR",
+     "nameAr": "تركيا",
+     "requiredFirstItem": 25
+    }
+   ]
+  },
+  {
+   "zoneId": "north_america",
+   "nameAr": "أمريكا الشمالية",
+   "currency": "USD",
+   "countries": 3,
+   "currentFirstItem": 25,
+   "covered": 3,
+   "typicalRequiredFirstItem": 38,
+   "maxRequiredFirstItem": 48,
+   "drivenByAr": "المكسيك",
+   "destinations": [
+    {
+     "code": "US",
+     "nameAr": "أمريكا",
+     "requiredFirstItem": 35
+    },
+    {
+     "code": "CA",
+     "nameAr": "كندا",
+     "requiredFirstItem": 38
+    },
+    {
+     "code": "MX",
+     "nameAr": "المكسيك",
+     "requiredFirstItem": 48
+    }
+   ]
+  }
+ ],
+ "money": {
+  "profitPerBottleEgp": 1191.06,
+  "averageChargedEgp": 2619.99,
+  "pricedDestinations": 74,
+  "overChargedDestinations": 0,
+  "lossDestinations": 0,
+  "orderLossDestinations": 0,
+  "bestNetEgp": 1467.91,
+  "worstNetEgp": 1206.01,
+  "keptWholeDestinations": 74,
+  "marginEatenDestinations": 0,
+  "costBasedDestinations": 74,
+  "uncoveredDestinations": 0,
+  "medianShippingMarginEgp": 246.95
+ },
+ "score": 85,
+ "notes": [
+  "مكسب الزجاجة (٥٠٪) 1191.06 ج.م — والـ٥٠٪ بتفضل كاملة في 74 وجهة بس من 74.",
+  "سعر الصرف: 1063 منتج سعره مبني على 13.081 ج.م/MYR وسعر النهاردة 13.5813 — تكلفة الشراء بقت أغلى 3.8% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي.",
+  "سعر الصرف: 98 منتج سعره مبني على 14.5568 ج.م/AED وسعر النهاردة 15.0771 — تكلفة الشراء بقت أغلى 3.6% من اللي السعر مبني عليه — الربح المحسوب أعلى من الحقيقي."
+ ],
+ "planAr": [
+  "لو إحنا اللي بنشحن، أرخص المسارات: ماليزيا بـ149.39–285.21 ج.م، سنغافورة بـ760.55–855.62 ج.م، BN بـ817.6–931.68 ج.م.",
+  "الشحن بقى بيتحصّل بتكلفته الحقيقية + هامش تجهيز صغير (الجدول تحت) — فالـ٥٠٪ تفضل صافية ومش متحمّلة على الهامش. الزجاجة = أول ٥٠٠ جم، والزجاجة الزيادة بسعر شريحتها.",
+  "الأسعار القديمة في 6 منطقة كانت أقل من التكلفة الحقيقية: مصر كان بياخد 15 والمتوسط الحقيقي 31 USD، دول الخليج كان بياخد 14 والمتوسط الحقيقي 28 USD، باقي الدول العربية كان بياخد 18 والمتوسط الحقيقي 62 USD، جنوب شرق آسيا كان بياخد 6 والمتوسط الحقيقي 18 USD، أوروبا كان بياخد 22 والمتوسط الحقيقي 54 USD، أمريكا الشمالية كان بياخد 25 والمتوسط الحقيقي 38 USD — التسعير الجديد بيحصّل التكلفة + الهامش.",
+  "5 شركة دولية: تأكد قبول العطور (UN1266) قبل أي بيع دولي — الرفض بعد البيع = إلغاء وسمعة.",
+  "98 منتج من منصات بتشحن بنفسها — الوساطة بس، والتأكد إن المنصة بترجع وتتعوض لو حصلت مشكلة.",
+  "البضاعة في: ماليزيا — 1063 منتج (محلي: بريد ماليزيا 149.39–285.21 ج.م)، الإمارات — 98 منتج (مفيش سعر محلي منشور)، مصر — 51 منتج (محلي: بوستة 30–55 ج.م)."
+ ],
+ "summaryAr": "الشحن والتجارة: 74 وجهة — 74 وجهة ممرها معروف، 30 دولة بجمارك متأكد منها، 74 وجهة بسعر شحن مقارن · البضاعة في MY، AE، EG · 2 عملة سعر صرفها قديم."
+}

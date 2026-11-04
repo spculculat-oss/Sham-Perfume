@@ -111,6 +111,35 @@ export function cleanText(text: unknown, max = 600): string {
 const GENERIC = /جودة عالية و\s*(?:سعر|اسعار|أسعار) مميز|high quality at special price/i;
 export const isGenericDescription = (text = '') => !text.trim() || GENERIC.test(text) || text.trim().length < 25;
 
+const escapeRe = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+/** A line that only restates the notes: the page shows them in «الهرم العطري» right under the description. */
+const isNotesLine = (line: string) => /^(?:fragrance\s+notes?|notes?|النوتات|المكونات|مقدمة|قلب|قاعدة)(?:\s+notes?)?\s*[:.،,\-–—]?\s*$/i.test(line)
+  || /^(?:fragrance\s+notes?|notes?|النوتات|المكونات)\s*[:.،,\-–—]/i.test(line)
+  || /^(?:top|heart|middle|base|مقدمة|قلب|قاعدة)(?:\s+notes?)?\s*[:.،,\-–—]/i.test(line);
+
+/**
+ * The product page shows the name as its title and the notes in «الهرم العطري»: a description that opens with
+ * the name again — or is nothing but the supplier's notes list — reads as duplicated text on the live site
+ * (the external reviewer flagged exactly that on a product page). Only the repeated copy goes; the words
+ * describing the scent stay untouched, and an empty result falls back to the plain true sentence.
+ */
+export function withoutPageRepeats(text: string, names: (string | undefined)[]): string {
+  const lines = String(text || '').split(/\n+/).map((l) => l.trim()).filter(Boolean).filter((l) => !isNotesLine(l));
+  const keys = names.map((n) => String(n || '').trim()).filter((n) => n.length >= 6);
+  // Several suppliers stack the name twice («Name\nName The fragrance opens…»): strip it as long as it echoes.
+  while (lines.length) {
+    const head = lines[0];
+    const hit = keys.find((k) => new RegExp(`^${escapeRe(k)}[\\s،,.:;\\-–—]+`, 'i').test(head) || new RegExp(`^${escapeRe(k)}$`, 'i').test(head.trim()));
+    if (!hit) break;
+    const rest = head.replace(new RegExp(`^${escapeRe(hit)}[\\s،,.:;\\-–—]*`, 'i'), '').trim();
+    // Only the name → drop the line; a real sentence after it → keep the sentence without the echo.
+    if (!rest) { lines.shift(); continue; }
+    if (rest.length >= 25) lines[0] = rest;
+    break;
+  }
+  return lines.join('\n').trim();
+}
+
 /** Small stable hash (djb2) of the merchant's own text for a product. */
 export function productHash(p: RawProduct): string {
   const s = [p.nameAr, p.nameEn, p.descriptionAr, p.descriptionEn, p.brand, p.category].map((v) => v || '').join('|');
@@ -239,6 +268,11 @@ export function ruleEntry(p: RawProduct, now = new Date().toISOString()): StoreE
 }
 
 const brandOf = (p: RawProduct) => (p.brand && p.brand !== 'Unknown' ? p.brand : '');
+/** The description as the page shows it: without the echoes, and never empty (a plain true sentence instead). */
+const pageDescription = (text: string, lang: 'ar' | 'en', name: string, rawName: string | undefined, brand: string, gender: Gender | undefined, families: Family[]) => {
+  const clean = withoutPageRepeats(text || '', [name, rawName]);
+  return clean.length >= 40 ? clean : plainDescription(lang, name, brand, gender, families);
+};
 /** A description with its unsupported claims removed, or '' when too little of it is left to read. */
 const honest = (text: string, lang: 'ar' | 'en') => {
   if (!hasClaims(text, lang)) return text;
@@ -254,9 +288,10 @@ export function mergeProduct(p: RawProduct, entry?: StoreEntry): StoreProduct {
   return {
     id: p.id, sku: skuOf(p), name: { ar: e.nameAr, en: e.nameEn },
     // «مراجع الصفحات»: no promise of hours, «the best», «irresistible» or shop slogans — the scent itself stays.
+    // The page repeats neither the name (its title) nor the notes («الهرم العطري») inside the description.
     description: {
-      ar: honest(e.descriptionAr, 'ar') || plainDescription('ar', e.nameAr, brandOf(p), e.gender, e.families),
-      en: honest(e.descriptionEn, 'en') || plainDescription('en', e.nameEn, brandOf(p), e.gender, e.families),
+      ar: pageDescription(honest(e.descriptionAr, 'ar'), 'ar', e.nameAr, p.nameAr, brandOf(p), e.gender, e.families),
+      en: pageDescription(honest(e.descriptionEn, 'en'), 'en', e.nameEn, p.nameEn, brandOf(p), e.gender, e.families),
     },
     brand: p.brand && p.brand !== 'Unknown' ? p.brand : '', category: cleanText(p.category, 40), gender: e.gender, families: e.families,
     // Notes published by the supplier win over an empty list (Shaheen never invents notes).

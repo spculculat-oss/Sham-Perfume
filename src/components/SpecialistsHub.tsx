@@ -23,6 +23,8 @@ import {
   type SpecialistAction, type SpecialistReply, type SpecialistsBoard, type ToolCitation,
 } from '../utils/specialistsClient';
 import { ShaheenMarkdown } from './ShaheenMarkdown';
+import { useChatPrices } from '../utils/storeCheckout';
+import { SUPPORTED_LANGUAGES } from '../types/i18n';
 import { AIDisclosureBadge } from './LegalDisclaimer';
 import type { SupportedLanguage } from '../types/i18n';
 
@@ -147,6 +149,8 @@ export interface SpecialistsHubProps {
 
 export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
   const isEn = (lang ?? 'ar').startsWith('en');
+  // «دولة الدخول قبل الرد»: every price in a specialist's answer in the currency of the country he is entering from.
+  const prices = useChatPrices(SUPPORTED_LANGUAGES.some((l) => l.code === lang) ? lang as SupportedLanguage : isEn ? 'en' : 'ar');
   const t = isEn ? EN : AR;
   const badgeLang: SupportedLanguage = isEn ? 'en' : 'ar';
   const [open, setOpen] = useState(false);
@@ -204,7 +208,7 @@ export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
     setTurns((prev) => [...prev, { id: visitorIdTurn, role: 'visitor', question: q }, { id: agentTurn, role: 'agent', pending: true }]);
     const settle = (patch: Partial<Turn>) => setTurns((prev) => prev.map((x) => (x.id === agentTurn ? { ...x, pending: false, ...patch } : x)));
     try {
-      const reply = await askSpecialists({ question: q, lang: isEn ? 'en' : 'ar', ...(section ? { section } : {}), ...(picked ? { specialist: picked } : {}), history });
+      const reply = await askSpecialists({ question: prices.outgoing(q), lang: isEn ? 'en' : 'ar', ...(section ? { section } : {}), ...(picked ? { specialist: picked } : {}), history });
       if (reply) { settle({ reply }); return; }
       settle({ local: await localAnswer(q), note: t.offlineNote });
     } catch (err) {
@@ -249,16 +253,17 @@ export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
 
   return (
     <>
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 no-print">
+      {/* #381: on a phone the pill is one short line (no wrapping, no badge) so it covers less of the store and the cart. */}
+      <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 no-print">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex items-center gap-2 rounded-full bg-emerald-700 hover:bg-emerald-800 text-white shadow-xl px-5 py-3 text-sm font-bold"
+          className="flex items-center gap-1.5 sm:gap-2 whitespace-nowrap rounded-full bg-emerald-700 hover:bg-emerald-800 text-white shadow-xl px-3.5 py-2 sm:px-5 sm:py-3 text-xs sm:text-sm font-bold"
           aria-label={t.open}
         >
-          <Users className="w-5 h-5" />
+          <Users className="w-4 h-4 sm:w-5 sm:h-5" />
           <span>{t.open}</span>
-          <span className="flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold">
+          <span className="hidden sm:flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold">
             <Sparkles className="w-3 h-3" />{t.agentLabel}
           </span>
         </button>
@@ -326,7 +331,7 @@ export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
                     </div>
 
                     <div className="rounded-2xl rounded-ts-sm bg-white border border-stone-200 p-3 text-sm leading-relaxed text-stone-800">
-                      <ShaheenMarkdown text={turn.reply?.answer || turn.local?.answer || ''} className="font-sans" />
+                      <ShaheenMarkdown text={prices.show(turn.reply?.answer || turn.local?.answer || '')} className="font-sans" />
                     </div>
 
                     <p className={`text-[11px] font-bold ${(turn.reply?.ok ?? turn.local?.ok) ? 'text-emerald-700' : 'text-amber-700'}`}>

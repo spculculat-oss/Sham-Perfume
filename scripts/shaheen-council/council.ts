@@ -18,6 +18,7 @@ import { AI_TOOLS, type AiToolId } from '../../src/utils/aiTools';
 import { similarity } from '../../src/utils/shaheenMemory';
 import { botOf } from '../../src/utils/shaheenOrg';
 import type { PrecheckFile } from './precheck';
+import { journeyRowOk } from '../shaheen-manus/loginGate';
 
 export type SeatId = 'manager' | 'store' | 'content' | 'experience' | 'reliability' | 'field';
 export type Priority = 'high' | 'medium' | 'low';
@@ -27,7 +28,7 @@ export type Action =
   | { type: 'study'; question: string }
   | { type: 'scout-seed'; domain: string };
 
-export const RERUNNABLE = ['shaheen-import.yml', 'shaheen-discover.yml', 'shaheen-news.yml', 'shaheen-seo.yml'] as const;
+export const RERUNNABLE = ['shaheen-import.yml', 'shaheen-discover.yml', 'shaheen-news.yml', 'shaheen-seo.yml', 'shaheen-service.yml', 'shaheen-inventory.yml'] as const;
 export type Rerunnable = (typeof RERUNNABLE)[number];
 
 export interface Seat { id: SeatId; titleAr: string; titleEn: string; brief: string; area: Area }
@@ -54,7 +55,7 @@ export function fieldOpinion(missions: unknown, now: number): SeatOpinion | unde
   if (age === undefined || age > 8 || typeof adv.opinionAr !== 'string' || adv.opinionAr.length < 40) return undefined;
   const proposals = (Array.isArray(adv.proposals) ? adv.proposals as unknown[] : []).map(o);
   const journey = (Array.isArray(tour.journey) ? tour.journey as unknown[] : []).map(o);
-  const broken = journey.filter((s) => s.ok === false).map((s) => String(s.step));
+  const broken = journey.filter((s) => !journeyRowOk(s)).map((s) => String(s.step));
   const text = [
     adv.opinionAr,
     `رحلة الشراء من الموبايل: ${n(tour.score) ?? '—'}/100${broken.length ? ` — خطوات واقعة: ${broken.join('، ')}` : ' — كل الخطوات سليمة'}.`,
@@ -240,7 +241,7 @@ export function buildBriefing(d: LiveData, now: number, openTasks: Task[] = []):
   const tour = o(o(d.missions).tour);
   if ((hoursSince(tour.at, now) ?? 99) < 30) {
     const journey = (Array.isArray(tour.journey) ? tour.journey as unknown[] : []).map(o);
-    const failed = journey.filter((s) => s.ok === false);
+    const failed = journey.filter((s) => !journeyRowOk(s));
     facts.push(`جولة الزائر الصبح (موبايل): ${n(tour.score) ?? '—'}/100 — ${journey.length - failed.length}/${journey.length} خطوة سليمة. ${String(tour.summaryAr || '')}`.trim());
     for (const s of failed) {
       const urgent = s.step === 'cart' || s.step === 'checkout';

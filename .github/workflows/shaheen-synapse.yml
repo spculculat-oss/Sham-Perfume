@@ -1,0 +1,98 @@
+name: Shaheen synapse — the mind graph, and the contradictions in it
+
+# «سينابس شاهين» و«مناعة شاهين» (src/utils/shaheenOrg.ts). Every three hours the mind is rebuilt from the site's real
+# files and checked against itself:
+#   · «سينابس» joins every product, brand, supplier, origin country, destination, carrier, customs table, lesson,
+#     topic and specialist into one graph — each edge with its own source, date and confidence
+#     (src/utils/shaheenGraph.ts) — and scores the mind on coverage, lessons, catalogue, freshness, connectivity
+#     and depth (how much of the world we act on has written knowledge explaining it).
+#   · «مناعة» finds where two parts of the mind disagree: two numbers for one thing, a delivery promise with no
+#     carrier behind it, «verified» customs with no source, a stale rate card, or a price below the merchant's ×1.5
+#     rule (scripts/shaheen-synapse/immune.ts).
+# Neither changes a price or promises anything: they connect, count, and report.
+
+on:
+  schedule:
+    - cron: '27 */3 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main, 'arena/**']
+    paths:
+      - 'scripts/shaheen-synapse/**'
+      - 'src/utils/shaheenGraph.ts'
+      - 'src/data/products.json'
+      - 'src/data/customs.json'
+      - 'src/data/shipping-lanes.json'
+      - 'src/data/shipping-costs.json'
+      - 'src/data/live/trade-lanes.json'
+      - '.github/workflows/shaheen-synapse.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-synapse-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: he (or «دولة المنصة») can pause «سينابس» و«مناعة».
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May these robots run?
+        id: gate
+        run: node scripts/owner/gate.mjs synapse immune
+
+  mind:
+    name: «سينابس» — rebuild the mind and check it against itself
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Build the graph and check the mind
+        run: node --import tsx scripts/shaheen-synapse/run.mts
+      - name: Behaviour tests
+        run: node --import tsx --test tests/shaheenMind.test.ts
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen synapse"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "شاهين: شبكة العقل والمناعة $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/shaheen-graph.json \
+            src/data/live/shaheen-immune.json \
+            || { echo "::error::Could not push the mind report"; exit 1; }

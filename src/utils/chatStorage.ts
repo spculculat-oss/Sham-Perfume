@@ -1,3 +1,5 @@
+import { safeChatSources, type ChatSource } from './chatSources';
+
 export type ShaheenProvider = 'gemini' | 'deepseek' | 'openai' | 'claude' | 'self_hosted' | 'openrouter' | 'perplexity';
 
 export interface ModelPerspective {
@@ -24,6 +26,8 @@ export interface ChatMessage {
     model?: string;
   };
   perspectives?: ModelPerspective[];
+  /** Kept out of the visible reply; sent back only so sources can be shown if the visitor asks. */
+  sources?: ChatSource[];
   activePerspectiveTab?: string;
 }
 
@@ -67,6 +71,7 @@ export function isChatMessage(value: unknown): value is ChatMessage {
       typeof message.aiEngine.id === 'string' && typeof message.aiEngine.name === 'string' &&
       typeof message.aiEngine.badge === 'string' && PROVIDERS.includes(message.aiEngine.provider))) &&
     (message.activePerspectiveTab === undefined || typeof message.activePerspectiveTab === 'string') &&
+    (message.sources === undefined || safeChatSources(message.sources) !== undefined) &&
     (message.perspectives === undefined || (Array.isArray(message.perspectives) && message.perspectives.every((p) =>
       p && PROVIDERS.includes(p.provider) && PROVIDERS.includes(p.modelId) &&
       typeof p.name === 'string' && typeof p.badge === 'string' && typeof p.color === 'string' &&

@@ -1,0 +1,210 @@
+name: Shaheen's brain lab (weekly)
+
+# «مختبر عقل شاهين» — Shaheen's own model, built from what he already knows, with no AI platform:
+#   1. the training files (scripts/shaheen-brain/dataset.mts, no AI, no network): his reviewed memory, the lessons,
+#      the lab and the people-skills drills — personal data, prices and AI-vendor names removed; a fixed share is
+#      held out as the exam paper. On main they are published as the GitHub release «shaheen-brain-data» (outside the
+#      repository history) and the data card goes into src/data/live/shaheen-brain.json;
+#   2. the training itself runs on a free GPU (Kaggle / Colab): scripts/shaheen-brain/train_lora.py (LoRA → GGUF →
+#      the owner's Hugging Face repo, see SHAHEEN_BRAIN.md) — GitHub runners have no GPU;
+#   3. the exam (scripts/shaheen-brain/plan.mts + exam.mts): the newest trained brain (latest.json in the repository
+#      variable SHAHEEN_BRAIN_HF_REPO, or the link given by hand) and the current brain both sit the same paper on
+#      this runner with llama.cpp. The new one is approved only if it leaks nothing, passes every honesty question and
+#      scores at least as well — then «مدرسة شاهين» uses it as her local teacher (scripts/shaheen-brain/teacher.mts).
+# Weekly (Friday 03:20 UTC), by hand (task: dataset | exam), on main when this lab changes (step 1 only), and a
+# rehearsal of step 1 on arena/** branches.
+
+on:
+  schedule:
+    - cron: '20 3 * * 5'
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'dataset = training files only; exam = training files + examine a trained brain'
+        type: choice
+        options: [exam, dataset]
+        default: exam
+      model_url:
+        description: 'A trained brain to examine (https link to a .gguf on Hugging Face or GitHub) — optional'
+        required: false
+        default: ''
+      model_sha256:
+        description: 'Its SHA-256 (64 characters, printed by train_lora.py)'
+        required: false
+        default: ''
+      model_name:
+        description: 'Its name (optional)'
+        required: false
+        default: ''
+  push:
+    # main: the training files are rebuilt and published when this lab changes (no exam).
+    # Branches: rehearsal of the training files only (nothing is published).
+    branches: ['main', 'arena/**']
+    paths: ['scripts/shaheen-brain/**', '.github/workflows/shaheen-brain.yml']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shaheen-brain-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner (or «دولة المنصة») can pause this robot («brain»).
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs brain
+
+  brain:
+    name: «مختبر عقل شاهين» — training files and the exam
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    permissions:
+      contents: write
+    env:
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      DO_EXAM: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.task == 'exam')) && 'true' || 'false' }}
+      LLAMA_BUILD: b11790
+      LLAMA_SHA256: 0e2b856ca192699fdb5c8dfe591b7896d658760bcdd48f133322236cd311c455
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || github.sha }}
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+
+      - name: The training files (no AI, no personal data, no prices)
+        id: data
+        env:
+          BRAIN_OUT: ${{ runner.temp }}/shaheen-brain
+          BRAIN_REPORT: ${{ env.PUBLISH == 'true' && 'write' || '' }}
+        run: node --import tsx scripts/shaheen-brain/dataset.mts
+      - name: Publish the training files (GitHub release «shaheen-brain-data»)
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DIR: ${{ steps.data.outputs.dir }}
+        run: |
+          gh release view shaheen-brain-data >/dev/null 2>&1 || gh release create shaheen-brain-data --latest=false \
+            --title "Shaheen brain — training data" \
+            --notes "Training files for Shaheen's own model (scripts/shaheen-brain). Rebuilt weekly from his reviewed memory; no personal data, no prices." \
+            || { echo "::error::Could not create the release"; exit 1; }
+          gh release upload shaheen-brain-data "$DIR/shaheen-train.jsonl" "$DIR/shaheen-eval.jsonl" "$DIR/shaheen-card.json" --clobber \
+            || { echo "::error::Could not upload the training files"; exit 1; }
+
+      - name: What to examine? (no AI)
+        id: plan
+        if: env.DO_EXAM == 'true'
+        env:
+          CANDIDATE_URL: ${{ inputs.model_url }}
+          CANDIDATE_SHA256: ${{ inputs.model_sha256 }}
+          CANDIDATE_NAME: ${{ inputs.model_name }}
+          SHAHEEN_BRAIN_HF_REPO: ${{ vars.SHAHEEN_BRAIN_HF_REPO }}
+          EVAL_SHA: ${{ steps.data.outputs.eval_sha }}
+        run: node --import tsx scripts/shaheen-brain/plan.mts
+
+      - name: Keep the current brain's model between runs
+        if: steps.plan.outputs.run == 'true' && steps.plan.outputs.need_baseline == 'true'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/teacher-model
+          key: teacher-model-${{ steps.plan.outputs.base_sha }}
+      - name: The current brain on this runner
+        id: base_server
+        if: steps.plan.outputs.run == 'true' && steps.plan.outputs.need_baseline == 'true'
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          TEACHER_MODEL_URL: ${{ steps.plan.outputs.base_url }}
+          TEACHER_MODEL_SHA256: ${{ steps.plan.outputs.base_sha }}
+          TEACHER_MODEL_NAME: ${{ steps.plan.outputs.base_name }}
+          TEACHER_MODEL_CACHE: ${{ runner.temp }}/teacher-model
+        run: bash scripts/shaheen-school/teacher.sh
+      - name: Exam of the current brain (the mark to beat)
+        if: steps.plan.outputs.run == 'true' && steps.plan.outputs.need_baseline == 'true'
+        continue-on-error: true
+        timeout-minutes: 40
+        env:
+          SHAM_LLM_BASE_URL: ${{ steps.base_server.outputs.base_url }}
+          SHAM_LLM_MODEL: ${{ steps.base_server.outputs.model }}
+          EXAM_ROLE: baseline
+          EXAM_MODEL_NAME: ${{ steps.plan.outputs.base_name }}
+          EXAM_MODEL_URL: ${{ steps.plan.outputs.base_url }}
+          EXAM_MODEL_SHA256: ${{ steps.plan.outputs.base_sha }}
+          BRAIN_OUT: ${{ steps.data.outputs.dir }}
+        run: node --import tsx scripts/shaheen-brain/exam.mts
+      - name: Stop the current brain
+        if: always() && steps.base_server.outputs.base_url != ''
+        run: |
+          kill "$(cat "${RUNNER_TEMP}/teacher/server.pid")" 2>/dev/null || true
+          sleep 3
+
+      - name: The new brain on this runner
+        id: cand_server
+        if: steps.plan.outputs.run == 'true'
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          TEACHER_MODEL_URL: ${{ steps.plan.outputs.cand_url }}
+          TEACHER_MODEL_SHA256: ${{ steps.plan.outputs.cand_sha }}
+          TEACHER_MODEL_NAME: ${{ steps.plan.outputs.cand_name }}
+        run: bash scripts/shaheen-school/teacher.sh
+      - name: Exam of the new brain (approved only if honest and at least as good)
+        id: exam
+        if: steps.plan.outputs.run == 'true'
+        continue-on-error: true
+        timeout-minutes: 40
+        env:
+          SHAM_LLM_BASE_URL: ${{ steps.cand_server.outputs.base_url }}
+          SHAM_LLM_MODEL: ${{ steps.cand_server.outputs.model }}
+          EXAM_ROLE: candidate
+          EXAM_MODEL_NAME: ${{ steps.plan.outputs.cand_name }}
+          EXAM_MODEL_URL: ${{ steps.plan.outputs.cand_url }}
+          EXAM_MODEL_SHA256: ${{ steps.plan.outputs.cand_sha }}
+          BRAIN_OUT: ${{ steps.data.outputs.dir }}
+        run: node --import tsx scripts/shaheen-brain/exam.mts
+      - name: Stop the new brain
+        if: always() && steps.cand_server.outputs.base_url != ''
+        run: kill "$(cat "${RUNNER_TEMP}/teacher/server.pid")" 2>/dev/null || true
+
+      - name: Regression tests
+        if: env.PUBLISH == 'true'
+        run: |
+          set -o pipefail
+          bun run test 2>&1 | tee /tmp/test.log || { grep -E 'not ok|error:' /tmp/test.log | head -8 | sed 's/^/::error title=test::/'; exit 1; }
+      - name: Publish the report on main
+        if: env.PUBLISH == 'true'
+        run: |
+          git config user.name "Shaheen brain lab bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "مختبر عقل شاهين $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/shaheen-brain.json \
+            || { echo "::error::Could not push the brain report"; exit 1; }

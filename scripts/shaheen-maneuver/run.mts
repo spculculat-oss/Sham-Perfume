@@ -23,6 +23,7 @@ import {
 } from '../../src/utils/maneuver';
 import { MANEUVER_DRILLS, gradeTurn, liveDrillsFor, runBrainDrills, type Drill } from '../../src/utils/maneuverDrills';
 import { SITE_SECTIONS } from '../../src/utils/shaheenSpecialists';
+import { PRICE_ENTRIES, expectedCurrency, gradePriceCase, livePriceDrillsFor, runPriceDrills } from '../../src/utils/priceDrills';
 import { openBrowser, probeSection } from './browser';
 import { loadOwnerControls } from '../owner/load';
 
@@ -77,6 +78,11 @@ ran.add('brain');
 drafts.push(...brain.findings);
 say(`تدريبات المحادثة (مخ شاهين): ${MANEUVER_DRILLS.length} محادثة، ${brain.turns} رسالة، رد من نفسه على ${brain.answeredOwn} — ${brain.findings.length} ملاحظة`);
 
+// «مناورة دولة الدخول»: visitors from every entry country ask about prices — never Egyptian pounds outside Egypt.
+const prices = runPriceDrills(products);
+drafts.push(...prices.findings);
+say(`مناورة دولة الدخول (الأسعار): ${PRICE_ENTRIES.length} دولة/لغة، ${prices.cases.length} رد، ${prices.priced} رد فيه سعر بعملة الزائر — ${prices.findings.length} ملاحظة`);
+
 let liveRuns = 0;
 if (env.MANEUVER_LIVE !== 'false') {
   const api = new URL('api/chat', SITE.engineUrl.replace(/\/?$/, '/')).href;
@@ -89,6 +95,30 @@ if (env.MANEUVER_LIVE !== 'false') {
     liveRuns += 1;
     drafts.push(...result.findings);
     say(`الشات الحي «${drill.id}»: ${result.findings.length ? result.findings.map((f) => f.titleAr).join(' · ') : 'سليم ✅'}`);
+  }
+  // The live chat, asked about prices as a visitor from another country (his page sends the country he chose).
+  for (const drill of livePriceDrillsFor(new Date(), MANEUVER_LIMITS.livePrices)) {
+    const currency = expectedCurrency(drill.country, drill.language);
+    try {
+      const res = await fetch(api, {
+        method: 'POST', signal: AbortSignal.timeout(55_000),
+        headers: { 'content-type': 'application/json', origin, 'user-agent': 'ShamManeuver/1.0 (+entry-country drill)' },
+        body: JSON.stringify({ message: drill.say, language: drill.language, model: 'auto', conversationHistory: [], country: drill.country, currency, countryManual: true }),
+      });
+      if (res.status !== 200) { say(`شات الأسعار الحي (${drill.country}): ${res.status} — المرة الجاية`); continue; }
+      const body = await res.json().catch(() => ({})) as { reply?: unknown; currency?: unknown };
+      const reply = typeof body.reply === 'string' ? body.reply : '';
+      reached = true; liveRuns += 1;
+      const found = gradePriceCase({ id: 'live', country: drill.country, language: drill.language, say: drill.say, reply, source: 'chat-live', kind: 'live' });
+      if (!found.length && body.currency !== currency && /\d/.test(reply)) {
+        found.push({ id: `${CHAT_SECTION.id}:price-live:${drill.country}-${drill.language}:currency:chat-currency`, kind: 'error', code: 'chat-currency', topic: 'store', section: CHAT_SECTION.id, titleAr: 'السيرفر مابيتأكدش من دولة الدخول قبل الرد', detailAr: `الزائر (${drill.country}): «${drill.say}» — الرد رجع بعملة «${String(body.currency || 'مش محددة')}» والمفروض ${currency}`, severity: 'high', sources: ['chat-live'] });
+      }
+      drafts.push(...found);
+      say(`شات الأسعار الحي (${drill.country} · ${drill.language}): ${found.length ? found.map((f) => f.titleAr).join(' · ') : `سليم ✅ (${currency})`}`);
+    } catch (e) {
+      say(`شات الأسعار الحي: مقدرتش أوصل (${String(e).slice(0, 80)})`);
+      break;
+    }
   }
   if (reached) ran.add('chat-live');
 }
