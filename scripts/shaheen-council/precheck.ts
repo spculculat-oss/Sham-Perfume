@@ -11,6 +11,7 @@
 import { BOTS, LEGAL_DECISIONS, botOf, type BotId } from '../../src/utils/shaheenOrg';
 import { RERUNNABLE, type Action, type Rerunnable } from './council';
 import { failureCauseAr } from '../../src/utils/opsMap';
+import { journeyRowOk } from '../shaheen-manus/loginGate';
 import { OWNER_STOPPED_AR, stoppedByOwner, type OwnerControls } from '../../src/utils/ownerAuthority';
 
 export interface RunInfo {
@@ -151,7 +152,7 @@ function ownChecks(id: BotId, r: Obj, now: number): Finding[] {
       break;
     }
     case 'visitor_tour': {
-      const failed = arr(r.journey).map(o).filter((s) => s.ok === false);
+      const failed = arr(r.journey).map(o).filter((s) => !journeyRowOk(s));
       if (failed.length) f.push({ level: failed.some((s) => s.step === 'cart' || s.step === 'checkout') ? 'fail' : 'warn', problem: `جولة الزائر: خطوات واقعة — ${failed.map((s) => `${String(s.step)}: ${String(s.noteAr || '').slice(0, 80)}`).join('، ')}`, fix: 'إصلاح الخطوة قبل أي تطوير تاني' });
       const score = n(r.score);
       if (score !== undefined && score < 85) f.push({ level: 'note', idea: `رحلة الشراء من الموبايل ${score}/100 — ${arr(r.issues).length} ملاحظة` });

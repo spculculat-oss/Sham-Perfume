@@ -49,19 +49,66 @@ test('census robot is registered inside Platform State leadership, refuge, patro
   assert.equal(found.bot?.id, 'census');
 });
 
-test('committed platform-census.json starts honestly at 0 visits with zero fabricated numbers', () => {
+// Since 11-04 the live database feeds real visits into the committed ledger, so «0 visits forever» is no longer
+// the honest expectation (#461). What must always hold is that every number is consistent with the others.
+test('committed platform-census.json is internally consistent — no fabricated or contradictory numbers', () => {
   const raw = JSON.parse(readFileSync(new URL('../src/data/live/platform-census.json', import.meta.url), 'utf8'));
   const report = readCensusReport(raw);
   assert.equal(report.version, 1);
   assert.equal(report.siteCreatedAt, SITE_CREATED_AT);
-  assert.equal(report.totals.visits, 0);
-  assert.equal(report.totals.uniqueVisitors, 0);
-  assert.equal(report.byCountry.length, 0);
-  assert.equal(report.byPlace.length, 0);
+  const t = report.totals;
+  assert.ok(t.visits >= 0 && Number.isInteger(t.visits));
+  assert.ok(t.uniqueVisitors <= t.visits, 'unique visitors never exceed visits');
+  const countrySum = report.byCountry.reduce((n, c) => n + c.visits, 0);
+  const placeSum = report.byPlace.reduce((n, p) => n + p.visits, 0);
+  assert.ok(countrySum <= t.visits, `countries ${countrySum} ≤ visits ${t.visits}`);
+  assert.ok(placeSum <= t.visits, `places ${placeSum} ≤ visits ${t.visits}`);
+  assert.ok(t.countriesCount <= report.byCountry.length);
+  for (const c of report.byCountry) {
+    assert.ok(c.visits > 0, `${c.code} listed with 0 visits`);
+    assert.ok(c.uniqueVisitors <= c.visits, `${c.code} unique ≤ visits`);
+  }
+  assert.ok(t.todayVisits <= t.visits && t.last7DaysVisits <= t.visits && t.thisMonthVisits <= t.visits);
 
   const st = buildPublicStatement(report);
-  assert.match(st.headlineAr, /0 زيارة/);
-  assert.equal(st.ledger.length, 0);
+  if (t.visits === 0) {
+    assert.match(st.headlineAr, /0 زيارة/);
+    assert.equal(st.ledger.length, 0);
+    assert.equal(report.byPlace.length, 0);
+  } else {
+    assert.ok(st.ledger.length > 0, 'real visits must appear in the public ledger');
+  }
+});
+
+test('#461 — the site\'s own robots are never counted, and their 11-04 inflation is reset once', async () => {
+  const maneuverUa = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1 ShamManeuver';
+  assert.equal(isBotUserAgent(maneuverUa), true);
+  const maneuverSrc = readFileSync(new URL('../scripts/shaheen-maneuver/browser.ts', import.meta.url), 'utf8');
+  assert.match(maneuverSrc, /ShamManeuver/, 'the maneuver robot keeps its UA tag');
+  const trackerSrc = readFileSync(new URL('../src/utils/visitTracker.ts', import.meta.url), 'utf8');
+  assert.match(trackerSrc, /navigator\.webdriver === true\) return/, 'automated browsers send no census beacon');
+
+  const store = new MemoryStore();
+  const at = Date.parse('2026-11-04T20:00:00.000Z');
+  const polluted = emptyCensusReport(new Date(at).toISOString());
+  await store.put('census', 'state', { ...polluted, totals: { ...polluted.totals, visits: 117, uniqueVisitors: 31 }, id: 'state' });
+  const svc = createCensusService({ store, baseline: emptyCensusReport(new Date(at).toISOString()), now: () => new Date(at) });
+  const first = await svc.load();
+  assert.equal(first.totals.visits, 0, 'robot-inflated ledger restarts from the baseline');
+  const saved = await store.get('census', 'state');
+  assert.deepEqual(saved?.corrections, ['2026-11-04-own-robots']);
+
+  const human = await svc.record({
+    headers: { 'user-agent': 'Mozilla/5.0 (Linux; Android 14) Mobile', 'x-vercel-ip-country': 'EG', 'x-vercel-ip-city': 'Cairo' },
+    ipKey: '198.51.100.7',
+    body: { section: 'home', lang: 'ar' },
+  });
+  assert.equal(human.recorded, true);
+  const robot = await svc.record({ headers: { 'user-agent': maneuverUa, 'x-vercel-ip-country': 'US' }, ipKey: '20.1.2.3', body: { section: 'store' } });
+  assert.equal(robot.recorded, false);
+  const after = await svc.load();
+  assert.equal(after.totals.visits, 1, 'the correction runs once — real visits after it are kept');
+  assert.deepEqual((await store.get('census', 'state'))?.corrections, ['2026-11-04-own-robots']);
 });
 
 test('world country boundary dataset separates 182 countries with distinct thermal slot colors and valid bounding boxes', () => {

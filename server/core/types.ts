@@ -333,7 +333,7 @@ export interface Collections {
   /** «منارة شاهين»: SEO/media agent state and learning history (one record: id 'state'). */
   seo: SeoState;
   /** «روبوت التعداد — دولة المنصة»: aggregated, privacy-safe platform visit ledger (one record: id 'state'). */
-  census: CensusReport & { id: string };
+  census: CensusReport & { id: string; corrections?: string[] };
   /** «إشارات المعمل»: anonymous counters of the designs visitors chose to share (one record: id 'state'). */
   labSignals: LabAggregate & { id: string };
   /** «خزنة فهم الزوار»: one behaviour profile per visitor who accepted «التحليل» — the administration's only (server/insights.ts). */
