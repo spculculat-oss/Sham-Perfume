@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-04T03:32:40.523Z",
+ "updatedAt": "2026-11-04T03:53:00.614Z",
  "entries": [
   {
    "id": "ar|auto|ايه هي قوانين نيوتن التلاتة للحركة",
@@ -25,42 +25,12 @@
    "lastUsed": "2026-10-22T11:05:06.645Z"
   },
   {
-   "id": "en|auto|what is the maximum ifra concentration for galaxolide",
-   "question": "What is the maximum IFRA concentration for galaxolide?",
-   "lang": "en",
-   "style": "auto",
-   "answer": "The maximum IFRA concentration recorded for Galaxolide (HHCB Musk, CAS 1222-05-5) in our encyclopaedia is **4.3%**.\n\n- **Pyramid Placement:** Base note (fixative)\n- **General Usage Range Recorded:** 2% to 15%\n\n**Practical Step & Safety Note:** Always ensure your final formulation complies with the latest IFRA standards for the specific product category you are blending. Handle raw materials in a well-ventilated area and consult the lab calculators for accurate dilution and maceration simulation.\n\n*Sources & Tools Used:* \n- Material Card: Galaxolide (CAS 1222-05-5)\n- Safety Check Tool\n\n_🤖 Specialists agent answer — built on the tool observations above._",
-   "at": "2026-11-04T03:05:26.993Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
-   "id": "en|auto|is oud safe on skin? any ifra limit",
-   "question": "Is oud safe on skin? Any IFRA limit?",
-   "lang": "en",
-   "style": "auto",
-   "answer": "Oud oil (specifically *Aquilaria Crassna* / Aged Cambodian Oud Oil) can generally be used on the skin, but its safety depends heavily on purity, proper dilution, and skin sensitivity. \n\nBased on our verified materials and safety records:\n- **Usage Range Recorded:** 1% up to 12% in formulations as a base note.\n- **IFRA / Safety Consideration:** Because natural oud extracts contain complex organic compounds and potential allergens, direct application of pure, undiluted oud oil to the skin is strongly discouraged. It must be properly diluted in a carrier oil or alcohol base within safe dermal limits (typically starting at lower concentrations like 1% to test for sensitivity).\n\n**Practical Step & Safety Note:**\nAlways perform a patch test on a small area of skin 24 hours before full application to check for any allergic reactions or irritation. \n\n*Sources & Tools:* \n- Sham Materials and Safety Database (Observation: `safety_check`).\n- Consult our laboratory calculators for precise dilution ratios before formulating.\n\n_🤖 Specialists agent answer — built on the tool observations above._",
-   "at": "2026-11-04T03:05:24.225Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
-   "id": "ar|auto|انا حامل، ينفع استعمل مسك ابيض",
-   "question": "أنا حامل، ينفع أستعمل مسك أبيض؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "### إجابة استفسار الزائر\n\nبما أنكِ في فترة الحمل، فإن الإجابة تعتمد على الجانب الصحي والتعليمي العام: **يُفضل دائماً استشارة الطبيب المختص والمرخص** قبل استخدام أو استنشاق أي مركبات عطرية مركزة خلال فترة الحمل. \n\nمن الناحية الكيميائية والعطرية، فإن **المسك الأبيض** المتداول تجارياً (مثل *الجالاكسوليد* أو مركبات الماكروليد الصناعية والآمنة كيميائياً) يُستخدم في العطور الشرقية والغربية كمادة مثبتة وقاعدة عطرية تمنح النعومة والثبات (بنسب معتادة تتراوح بين 2% إلى 15% من الزيت العطري وفقاً لمعايير الأمان العالمية مثل IFRA). ومع ذلك، قد تسبب بعض العطور حساسية أو تهيجاً للجهاز التنفسي لدى الحوامل بسبب التغيرات الهيستامينية والحساسية المفرطة في هذه المرحلة.\n\n---\n\n### خطوة عملية وسلامة\n* **خطوة عملية:** استشيري طبيبكِ الخاص قبل استخدام أي منتجات عطرية مباشرة على الجلد أو استنشاقها بتركيزات عالية، ويمكنكِ ربط استشارتك بحاسبات المعمل لمعرفة النِسب الآمنة والُمخففة في حال الاستخدام المعتدل.\n* **المصدر:** مكتبة المواد العطرية وموسوعة مدرسة شاهين (قسم المسك والعنبر وصحة الحامل).\n\n_🤖 رد وكيل المتخصصين — مبني على ملاحظات أدواته المكتوبة أعلاه._",
-   "at": "2026-11-04T03:05:21.287Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
    "id": "ar|auto|احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
    "question": "احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
    "lang": "ar",
    "style": "auto",
-   "answer": "### حساب تكلفة العطور\n\nلعمل 100 زجاجة سعة 50 مل بتركيز 20%، الحسابات بتكون كالتالي:\n\n* **إجمالي الحجم المطلوب:** 100 زجاجة × 50 مل = 5000 مل (5 لتر).\n* **كمية الزيت العطري (تركيز 20%):** 5000 مل × 20 ÷ 100 = 1000 مل (1 لتر).\n* **كمية الكحول:** 5000 مل - 1000 مل = 4000 مل (4 لتر).\n\n**حساب التكلفة الإجمالية:**\n* **تكلفة الزيت:** 1000 مل × 3 جنيه = 3000 جنيه.\n* **تكلفة الكحول:** 4000 مل × 0.2 جنيه = 800 جنيه.\n* **إجمالي التكلفة للخامات:** 3000 + 800 = 3800 جنيه.\n\nيعني تكلفة الخامات للـ 100 زجاجة تقريباً 3800 جنيه، وتكلفة الزجاجة الواحدة خامات حوالي 38 جنيه (مش شاملة سعر الزجاجة نفسها أو العبوات).\n\nتحب نحسب تكلفة الزجاجات والعبوات كمان لو متوفرة عندك؟",
-   "at": "2026-11-04T03:05:13.172Z",
+   "answer": "حساب تكلفة إنتاج 100 زجاجة عطر سعة الواحدة 50 مل بتركيز 20% يتم بطريقة دقيقة بناءً على الأسعار والمقادير التالية:\n\n### تفاصيل الحسبة للزجاجة الواحدة (50 مل):\n* **كمية الزيت العطري (20%)** = 50 × 20 ÷ 100 = 10 مل\n* **كمية الكحول والماء (80%)** = 50 × 80 ÷ 100 = 40 مل\n\n### تكلفة الزجاجة الواحدة:\n* **تكلفة الزيت** = 10 مل × ‏0.05 US$ = ‏0.54 US$\n* **تكلفة الكحول** = 40 مل × ‏0 US$ = ‏0.14 US$\n* **إجمالي تكلفة المحتوى للزجاجة الواحدة** = 30 + 8 = ‏0.69 US$\n\n### إجمالي التكلفة لعدد 100 زجاجة:\n* **التكلفة الإجمالية** = ‏0.69 US$ × 100 زجاجة = ‏69 US$\n\n*(ملاحظة: هذه الحسبة تخص السوائل والمحتوى العطري فقط، ولا تشمل تكلفة الزجاجات الفارغة أو العبوات أو التغليف).*",
+   "at": "2026-11-04T03:53:00.614Z",
    "hits": 0,
    "source": "chat"
   },
@@ -69,48 +39,8 @@
    "question": "What fixative works best for a citrus cologne, and at what percentage?",
    "lang": "en",
    "style": "auto",
-   "answer": "### أفضل مثبتات الكولونيا الحمضية\n\nالعطور الحمضية تتميز بخفة تطاير مكوناتها، لذا فإن اختيار المثبت يعتمد على الحفاظ على الطابع المنعش دون كتمان الحمضيات.\n\nالمثبتات الأفضل لكولونيا حمضية هي:\n- **Iso E Super**: يمنح عمقاً مخملياً خفيفاً ونعومة خشبية تدمج الحمضيات بسلاسة دون أن يطغى عليها.\n- **Ambroxan**: يضيف لمسة خشبية عمبرية نظيفة وثباتاً عالياً مع طابع عصري.\n- **Benzoin (بنزوين)**: يمنح دفئاً خفيفاً وناعماً في القاعدة، لكن بكميات دقيقة جداً حتى لا يثقل العطر.\n\nالنسبة المقترحة للمثبت في إجمالي تركيبة الكولونيا تكون عادة بين **2 إلى 5 بالمئة** من إجمالي حجم الزجاجة، حتى يظل العطر منتعشاً وحيوياً.\n\n### مقترح تجريبي لكولونيا حمضية وثابتة (حجم 50 مل - تركيز EDP 20 بالمئة)\n\nإليك تركيبة تجريبية مقترحة بحجم إجمالي 50 مل، مع نسبة زيت عطري 20 بالمئة (10 مل)، وكحول عالي النقاوة (96 بالمئة).\n\n| المكون | النسبة من الزيت | الكمية بالمل أو الغرام |\n|:--- |:--- |:--- |\n| **زيت برغموت (Bergamot EO)** | 40% | 4.0 مل |\n| **زيت ليمون (Lemon EO)** | 25% | 2.5 مل |\n| **زيت لافندر (Lavender EO)** | 15% | 1.5 مل |\n| **Iso E Super** | 20% (مثبت) | 2.0 مل |\n| **كحول عالي النقاوة (96%)** | - | 39.5 مل |\n| **الإجمالي** | 100% | 50.0 مل |\n\n*ملاحظة: هذه التركيبة تجريبية وتحتاج لمراجعة السلامة واختبار التوافق على نطاق ضيق قبل الإنتاج الكامل.*\n\n```sham-formula\n{\"title\":\"كولونيا الحمضيات المنعشة\",\"author\":\"شاهين — مقترح تجريبي\",\"concentrationPercent\":20,\"concentrationType\":\"edp\",\"bottleVolumeMl\":50,\"alcoholPercentage\":96,\"waterPercent\":0,\"fixativePercent\":4,\"macerationDays\":30,\"summary\":\"مقترح تجريبي لكولونيا حمضية مثبتة بـ Iso E Super\",\"pyramidNotes\":[{\"id\":\"note-1\",\"nameAr\":\"برغموت\",\"nameEn\":\"Bergamot Essential Oil\",\"category\":\"top\",\"percentageOfOil\":40},{\"id\":\"note-2\",\"nameAr\":\"ليمون\",\"nameEn\":\"Lemon Essential Oil\",\"category\":\"top\",\"percentageOfOil\":25},{\"id\":\"note-3\",\"nameAr\":\"لافندر\",\"nameEn\":\"Lavender Essential Oil\",\"category\":\"heart\",\"percentageOfOil\":15},{\"id\":\"note-4\",\"nameAr\":\"ايزو إي سوبر\",\"nameEn\":\"Iso E Super\",\"category\":\"base\",\"percentageOfOil\":20}]}\n```\n\n```sham-tool\n{\"tools\":[{\"tool\":\"concentration\",\"bottleVolumeMl\":50,\"concentrationPercent\":20,\"concentrationType\":\"edp\",\"alcoholPercentage\":96,\"waterPercent\":0,\"fixativePercent\":4},{\"tool\":\"maceration\",\"macerationDays\":30}]}\n```\n\nهل ترغب في تعديل نسبة أي من مكونات الحمضيات أو تجربة مثبت خشبي آخر مثل الأمبروكسان؟",
-   "at": "2026-11-04T03:05:09.836Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
-   "id": "ar|auto|ايه اشهر مدن العطور في العالم؟ وريني اماكنها علي الخريطة",
-   "question": "إيه أشهر مدن العطور في العالم؟ وريني أماكنها على الخريطة.",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "```sham-media\n{\"places\":[\"Grasse, France\",\"Taif, Saudi Arabia\",\"Kannauj, India\",\"Florence, Italy\"]}\n```\nأشهر مدن العطور في العالم بتمتثل لتاريخ طويل في زراعة واستخلاص أجود المكونات العطرية، ودي أبرزها:\n\n### غراس (Grasse) - فرنسا\nتعتبر العاصمة العالمية للعطور، ومشهورة بزراعة الورد البلدي (ورد غراس) والياسمين ومسك الروم، وبتعتمد على تقنيات تقطير واستخلاص عريقة مسجلة في التراث الثقافي غير المادي لليونسكو.\n\n### الطائف - المملكة العربية السعودية\nتشتهر بإنتاج أجود أنواع الورد الطائفي (Rosa damascena trigintipetala)، وليها مكانة تاريخية كبيرة في صناعة الدهن والعطور الشرقية التقليدية من خلال مزارع ومقطرات تقليدية في جبال الهدا الشفا.\n\n### كوجان (Kannauj) - الهند\nتُعرف بـ «غراس الشرق»، وهي المركز التاريخي لصناعة عطر الميتوه (Mittii Attor) المستخلص من الأرض الطينية بعد المطر، بالاضافة لتقطير خشب الصندل والورد بطرق تقليدية تعود لقرون.\n\n### فلورنسا (Florence) - إيطاليا\nتشتهر بزراعة واستخدام زهور السوسن (Orris Root) اللي بتعتبر من أغلى وأرقى مكونات صناعة العطور الفاخرة، وليها تاريخ طويل بيرجع لعصور النهضة وعائلات مثل ميديتشي.",
-   "at": "2026-11-04T03:03:49.011Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
-   "id": "ar|auto|العود الخام شكله ايه وبيتقطر ازاي؟ وريني صور وفيديو",
-   "question": "العود الخام شكله إيه وبيتقطر إزاي؟ وريني صور وفيديو.",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "```sham-media\n{\"images\":[\"agarwood raw chips\",\"agarwood resinous wood\"],\"videos\":[\"agarwood steam distillation process\"],\"places\":[\"Sylhet, Bangladesh\",\"Assam, India\",\"Koh Kong, Cambodia\"]}\n```\nالعود الخام بيظهر على شكل قطع خشبية أخدت لون غامق بني غامق أو أسود، وده بيحصل نتيجة إصابة شجرة الأكِلاريا بفطريات معينة، فالشجرة بتدافع عن نفسها بإفراز مادة صمغية عطرية هي دي اللي بتعمل الريحة المميزة. القطع دي بيبان فيها العروق الغامقة المليانة بالدهن، وكل ما زادت كثافة الصمغ وزاد وزن القطعة وثقلها في المية، كل ما كانت أزكى وأغلى.\n\nأما عن طريقة تقطيره، فهي بتمر بكذا خطوة أساسية لاستخلاص دهن العود الصافي:\n1. **التنظيف والفرز:** بيتم تنظيف خشب العود الخام من أي أخشاب بيضاء مالهاش رصة أو ريحة، وتقطيعه لقطع صغيرة أو طحنه ناعم عشان نسهل خروج الدهن.\n2. **النقع:** قطع العود المطحونة بتتنقع في مية لفترة ممكن تختلف من أسبوع لشهر، والنقع بيساعد ألياف الخشب تتفتح وتسهّل عملية خروج الزيت أثناء الغليان.\n3. **التقطير بالبخار أو المية:** العود المنقوع بيتحط في حلال (أو قدور تقطير كبيرة)، وهنا طريقتين: التقطير المباشر بالمية المغلية، أو تقطير بالبخار. البخار بيعدي جوه الخشب وبيحمل معاه جزيئات الدهن الطيارة ويطلع بيها لفوق.\n4. **التكثيف والفصل:** البخار المحمل بدهن العود بيعدي على أنابيب تبريد عشان يتحول تاني من بخار لسائل، وبينزل في وعاء الفصل؛ وبما إن دهن العود أخف من المية وما بيذوبش فيها، بيطفو على وش المية لوحده وبيتم تجميعه بحذر عشان ناخد الدهن النقي الصافي.",
-   "at": "2026-11-04T03:03:38.144Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
-   "id": "en|deep|my perfume turned cloudy after i added alcohol. why, and how do i fix it",
-   "question": "My perfume turned cloudy after I added alcohol. Why, and how do I fix it?",
-   "lang": "en",
-   "style": "deep",
-   "answer": "### السبب العلمي للتعكير\n\nتعكير العطر بعد إضافة الكحول يحدث عادةً بسبب ثلاثة أسباب رئيسية:\n\n1. **انخفاض ذوبان الزيوت العطرية:** بعض الزيوت العطرية أو المركبات (مثل الراتنجات، والمستخلصات الثقيلة، وبعض الشمع الطبيعي الموجود في الزيوت النقية) تذوب بسهولة في الزيت أو الكحول الخالص، لكنها تفقد قابليتها للذوبان عندما ترتفع نسبة الماء في مزيج الكحول.\n2. **استخدام كحول يحتوي على نسبة ماء عالية:** إذا كان الكحول المستخدم مخففاً بماء زائد (أو ليس بتركيز 96% وما فوق)، فإن الماء يطرد المكونات الزيتية غير القابلة للذوبان في الماء، مما يؤدي إلى ظهور الشوائب أو التعكر اللبني.\n3. **التبريد السريع أو عدم اكتمال التعتيق:** الانتقال المفاجئ لدرجات الحرارة أو عدم دمج الزيت والكحول بشكل كافٍ قبل مرحلة التبريد يمنع الجزيئات من الاندماج الكامل.\n\n---\n\n### جدول الحلول المقترحة\n\n| المشكلة المحتملة | السبب | طريقة الإصلاح |\n|:--- |:--- |:--- |\n| **وجود شوائب ورواسب** | عدم ذوبان بعض الشمع أو الراتنجات الطبيعية | التبريد (Chilling) ثم الترشيح عبر ورق ترشيح مخبري دقيق (Coffee Filter أو Lab Filter Paper). |\n| **تعكير لبني عام** | زيادة نسبة الماء في الكحول المستخدم | إضافة القليل من الكحول النقي (مركز 96%) تدريجياً لإعادة إذابة الزيوت. |\n| **عدم تجانس المزيج** | رج غير كافٍ أو عدم ترك العطر يرتاح | ترك العطر في مكان بارد ومظلم لعدة أيام (مرحلة التبريد) ثم الترشيح. |\n\n---\n\n### خطوات الإصلاح العملية\n\n1. **التبريد (Maceration & Chilling):** ضع زجاجة العطر المعكرة في الثلاجة (درجة حرارة من 4 إلى 8 درجات مئوية) لمدة تتراوح بين 48 إلى 72 ساعة. هذا يساعد الجزيئات غير الذائبة على التجمع والتكتل لتسهيل إزالتها.\n2. **الترشيح (Filtration):** قم بمررة العطر البارد مباشرة عبر ورق ترشيح دقيق جداً (ورق ترشيح القهوة الخالي من الكلور أو ورق ترشيح مختبري) إلى زجاجة نظيفة ومعقمة. تجنب استخدام القطن العادي لكي لا يمتص جزءاً من الرائحة أو يترك أوباراً.\n3. **تعديل التركيبة (إن أمكن):** إذا استمر التعكر، يمكن إضافة بضع قطرات إضافية من الكحول النقي بحذر شديد مع التقليب المستمر.\n\n*ملاحظة: هذه المعالجة تجريبية وتحتاج لاختبار كمية صغيرة أولاً للتأكد من صفاء العطر وثبات رائحته بعد الترشيح.*",
-   "at": "2026-11-04T03:03:26.166Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
-   "id": "ar|auto|عايز اعمل عطر 50 مل تركيز edp بالعود والفانيليا والورد. اقترح علي النسب",
-   "question": "عايز أعمل عطر 50 مل تركيز EDP بالعود والفانيليا والورد. اقترح عليّ النسب.",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "نسبة العطر 20% يعني محتاج 10 مل زيت عطري و40 مل كحول (96%).\n\n### مقترح تركيبة العطر (10 مل زيت عطري)\n\n| المكون | التصنيف | نسبة من الزيت | الكمية |\n|:--- |:--- |:--- |:--- |\n| عود | القاعدة (Base) | 35% | 3.5 مل |\n| فانيليا | القاعدة (Base) | 35% | 3.5 مل |\n| ورد | القلب (Heart) | 30% | 3.0 مل |\n\nحبّيت نبدأ بالتوازن ده بين قوة العود ودفيان الفانيليا ورقة الورد، ولا تحب نزود نوتة الورد شوية عشان تكون واضحة أكتر في الأول؟",
-   "at": "2026-11-04T03:03:06.891Z",
+   "answer": "For a citrus cologne, fixatives that anchor the volatile top notes without muddying the bright, crisp character work best. Materials like **Iso E Super**, **Ambroxan**, or **Benzyl Acetate** are excellent choices because they add longevity and a modern diffusive quality while letting the lemon, bergamot, and orange shine.\n\nIn a standard citrus Eau de Cologne or Eau de Toilette, fixatives and modifiers are typically used at **1 to 3 percent** of the total formula weight, depending on the desired tenacity and IFRA guidelines for specific aroma chemicals.\n\nHere is an experimental 50 ml citrus cologne formula featuring Iso E Super as a soft, woody-amber fixative:\n\n### مقترح تجريبي: عطر كولونيا الحمضيات\n| المكون | النسبة من الزيت | الكمية (لـ 50 مل / تركيز 10%) |\n|:--- |:--- |:--- |\n| زيت البرغموت الأساسي (Bergamot Essential Oil) | 35.0% | 1.75 مل |\n| زيت الليمون الأساسي (Lemon Essential Oil) | 30.0% | 1.50 مل |\n| زيت البرتقال الحلو (Sweet Orange Essential Oil) | 15.0% | 0.75 مل |\n| زهرة البرتقال / نيرولي (Neroli / Petitgrain) | 10.0% | 0.50 مل |\n| إيزو إي سوبر (Iso E Super - مثبت) | 10.0% | 0.50 مل |\n| **المجموع** | **100%** | **5.0 مل (زيت عطري)** |\n\n*ملاحظة الحسابات: الحجم الإجمالي 50 مل، والتركيز 10% (Eau de Cologne)، وتكملة الزجاجة بالكحول (96%) حوالي 45 مل. هذه التركيبة تجريبية وتحتاج لاختبار الثبات والتوافق.*\n\n```sham-formula\n{\n  \"title\": \"عطر كولونيا الحمضيات المثبت\",\n  \"author\": \"شاهين — مقترح تجريبي\",\n  \"concentrationPercent\": 10,\n  \"concentrationType\": \"edc\",\n  \"bottleVolumeMl\": 50,\n  \"alcoholPercentage\": 96,\n  \"waterPercent\": 0,\n  \"fixativePercent\": 1,\n  \"macerationDays\": 21,\n  \"summary\": \"مقترح تجريبي لحمضيات مثبتة بإيزو إي سوبر يحتاج مراجعة السلامة\",\n  \"pyramidNotes\": [\n    {\n      \"id\": \"note-1\",\n      \"nameAr\": \"البرغموت\",\n      \"nameEn\": \"Bergamot Essential Oil\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 35\n    },\n    {\n      \"id\": \"note-2\",\n      \"nameAr\": \"الليمون\",\n      \"nameEn\": \"Lemon Essential Oil\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 30\n    },\n    {\n      \"id\": \"note-3\",\n      \"nameAr\": \"البرتقال الحلو\",\n      \"nameEn\": \"Sweet Orange Essential Oil\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 15\n    },\n    {\n      \"id\": \"note-4\",\n      \"nameAr\": \"النيرولي\",\n      \"nameEn\": \"Neroli\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 10\n    },\n    {\n      \"id\": \"note-5\",\n      \"nameAr\": \"إيزو إي سوبر\",\n      \"nameEn\": \"Iso E Super\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 10\n    }\n  ]\n}\n```\n\n```sham-tool\n{\n  \"tools\": [\n    {\n      \"tool\": \"concentration\",\n      \"bottleVolumeMl\": 50,\n      \"concentrationPercent\": 10,\n      \"concentrationType\": \"edc\",\n      \"alcoholPercentage\": 96,\n      \"waterPercent\": 0,\n      \"fixativePercent\": 1\n    },\n    {\n      \"tool\": \"maceration\",\n      \"macerationDays\": 21\n    }\n  ]\n}\n```\n\nهل تفضل تعديل نسبة المثبت أو تجربة بديل مسكي خفيف مثل الهابانوليد بدلاً من إيزو إي سوبر؟",
+   "at": "2026-11-04T03:53:00.614Z",
    "hits": 0,
    "source": "chat"
   },
@@ -153,6 +83,76 @@
    "at": "2026-11-04T03:32:40.520Z",
    "hits": 0,
    "source": "study"
+  },
+  {
+   "id": "en|auto|what is the maximum ifra concentration for galaxolide",
+   "question": "What is the maximum IFRA concentration for galaxolide?",
+   "lang": "en",
+   "style": "auto",
+   "answer": "The maximum IFRA concentration recorded for Galaxolide (HHCB Musk, CAS 1222-05-5) in our encyclopaedia is **4.3%**.\n\n- **Pyramid Placement:** Base note (fixative)\n- **General Usage Range Recorded:** 2% to 15%\n\n**Practical Step & Safety Note:** Always ensure your final formulation complies with the latest IFRA standards for the specific product category you are blending. Handle raw materials in a well-ventilated area and consult the lab calculators for accurate dilution and maceration simulation.\n\n*Sources & Tools Used:* \n- Material Card: Galaxolide (CAS 1222-05-5)\n- Safety Check Tool\n\n_🤖 Specialists agent answer — built on the tool observations above._",
+   "at": "2026-11-04T03:05:26.993Z",
+   "hits": 0,
+   "source": "chat"
+  },
+  {
+   "id": "en|auto|is oud safe on skin? any ifra limit",
+   "question": "Is oud safe on skin? Any IFRA limit?",
+   "lang": "en",
+   "style": "auto",
+   "answer": "Oud oil (specifically *Aquilaria Crassna* / Aged Cambodian Oud Oil) can generally be used on the skin, but its safety depends heavily on purity, proper dilution, and skin sensitivity. \n\nBased on our verified materials and safety records:\n- **Usage Range Recorded:** 1% up to 12% in formulations as a base note.\n- **IFRA / Safety Consideration:** Because natural oud extracts contain complex organic compounds and potential allergens, direct application of pure, undiluted oud oil to the skin is strongly discouraged. It must be properly diluted in a carrier oil or alcohol base within safe dermal limits (typically starting at lower concentrations like 1% to test for sensitivity).\n\n**Practical Step & Safety Note:**\nAlways perform a patch test on a small area of skin 24 hours before full application to check for any allergic reactions or irritation. \n\n*Sources & Tools:* \n- Sham Materials and Safety Database (Observation: `safety_check`).\n- Consult our laboratory calculators for precise dilution ratios before formulating.\n\n_🤖 Specialists agent answer — built on the tool observations above._",
+   "at": "2026-11-04T03:05:24.225Z",
+   "hits": 0,
+   "source": "chat"
+  },
+  {
+   "id": "ar|auto|انا حامل، ينفع استعمل مسك ابيض",
+   "question": "أنا حامل، ينفع أستعمل مسك أبيض؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "### إجابة استفسار الزائر\n\nبما أنكِ في فترة الحمل، فإن الإجابة تعتمد على الجانب الصحي والتعليمي العام: **يُفضل دائماً استشارة الطبيب المختص والمرخص** قبل استخدام أو استنشاق أي مركبات عطرية مركزة خلال فترة الحمل. \n\nمن الناحية الكيميائية والعطرية، فإن **المسك الأبيض** المتداول تجارياً (مثل *الجالاكسوليد* أو مركبات الماكروليد الصناعية والآمنة كيميائياً) يُستخدم في العطور الشرقية والغربية كمادة مثبتة وقاعدة عطرية تمنح النعومة والثبات (بنسب معتادة تتراوح بين 2% إلى 15% من الزيت العطري وفقاً لمعايير الأمان العالمية مثل IFRA). ومع ذلك، قد تسبب بعض العطور حساسية أو تهيجاً للجهاز التنفسي لدى الحوامل بسبب التغيرات الهيستامينية والحساسية المفرطة في هذه المرحلة.\n\n---\n\n### خطوة عملية وسلامة\n* **خطوة عملية:** استشيري طبيبكِ الخاص قبل استخدام أي منتجات عطرية مباشرة على الجلد أو استنشاقها بتركيزات عالية، ويمكنكِ ربط استشارتك بحاسبات المعمل لمعرفة النِسب الآمنة والُمخففة في حال الاستخدام المعتدل.\n* **المصدر:** مكتبة المواد العطرية وموسوعة مدرسة شاهين (قسم المسك والعنبر وصحة الحامل).\n\n_🤖 رد وكيل المتخصصين — مبني على ملاحظات أدواته المكتوبة أعلاه._",
+   "at": "2026-11-04T03:05:21.287Z",
+   "hits": 0,
+   "source": "chat"
+  },
+  {
+   "id": "ar|auto|ايه اشهر مدن العطور في العالم؟ وريني اماكنها علي الخريطة",
+   "question": "إيه أشهر مدن العطور في العالم؟ وريني أماكنها على الخريطة.",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "```sham-media\n{\"places\":[\"Grasse, France\",\"Taif, Saudi Arabia\",\"Kannauj, India\",\"Florence, Italy\"]}\n```\nأشهر مدن العطور في العالم بتمتثل لتاريخ طويل في زراعة واستخلاص أجود المكونات العطرية، ودي أبرزها:\n\n### غراس (Grasse) - فرنسا\nتعتبر العاصمة العالمية للعطور، ومشهورة بزراعة الورد البلدي (ورد غراس) والياسمين ومسك الروم، وبتعتمد على تقنيات تقطير واستخلاص عريقة مسجلة في التراث الثقافي غير المادي لليونسكو.\n\n### الطائف - المملكة العربية السعودية\nتشتهر بإنتاج أجود أنواع الورد الطائفي (Rosa damascena trigintipetala)، وليها مكانة تاريخية كبيرة في صناعة الدهن والعطور الشرقية التقليدية من خلال مزارع ومقطرات تقليدية في جبال الهدا الشفا.\n\n### كوجان (Kannauj) - الهند\nتُعرف بـ «غراس الشرق»، وهي المركز التاريخي لصناعة عطر الميتوه (Mittii Attor) المستخلص من الأرض الطينية بعد المطر، بالاضافة لتقطير خشب الصندل والورد بطرق تقليدية تعود لقرون.\n\n### فلورنسا (Florence) - إيطاليا\nتشتهر بزراعة واستخدام زهور السوسن (Orris Root) اللي بتعتبر من أغلى وأرقى مكونات صناعة العطور الفاخرة، وليها تاريخ طويل بيرجع لعصور النهضة وعائلات مثل ميديتشي.",
+   "at": "2026-11-04T03:03:49.011Z",
+   "hits": 0,
+   "source": "chat"
+  },
+  {
+   "id": "ar|auto|العود الخام شكله ايه وبيتقطر ازاي؟ وريني صور وفيديو",
+   "question": "العود الخام شكله إيه وبيتقطر إزاي؟ وريني صور وفيديو.",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "```sham-media\n{\"images\":[\"agarwood raw chips\",\"agarwood resinous wood\"],\"videos\":[\"agarwood steam distillation process\"],\"places\":[\"Sylhet, Bangladesh\",\"Assam, India\",\"Koh Kong, Cambodia\"]}\n```\nالعود الخام بيظهر على شكل قطع خشبية أخدت لون غامق بني غامق أو أسود، وده بيحصل نتيجة إصابة شجرة الأكِلاريا بفطريات معينة، فالشجرة بتدافع عن نفسها بإفراز مادة صمغية عطرية هي دي اللي بتعمل الريحة المميزة. القطع دي بيبان فيها العروق الغامقة المليانة بالدهن، وكل ما زادت كثافة الصمغ وزاد وزن القطعة وثقلها في المية، كل ما كانت أزكى وأغلى.\n\nأما عن طريقة تقطيره، فهي بتمر بكذا خطوة أساسية لاستخلاص دهن العود الصافي:\n1. **التنظيف والفرز:** بيتم تنظيف خشب العود الخام من أي أخشاب بيضاء مالهاش رصة أو ريحة، وتقطيعه لقطع صغيرة أو طحنه ناعم عشان نسهل خروج الدهن.\n2. **النقع:** قطع العود المطحونة بتتنقع في مية لفترة ممكن تختلف من أسبوع لشهر، والنقع بيساعد ألياف الخشب تتفتح وتسهّل عملية خروج الزيت أثناء الغليان.\n3. **التقطير بالبخار أو المية:** العود المنقوع بيتحط في حلال (أو قدور تقطير كبيرة)، وهنا طريقتين: التقطير المباشر بالمية المغلية، أو تقطير بالبخار. البخار بيعدي جوه الخشب وبيحمل معاه جزيئات الدهن الطيارة ويطلع بيها لفوق.\n4. **التكثيف والفصل:** البخار المحمل بدهن العود بيعدي على أنابيب تبريد عشان يتحول تاني من بخار لسائل، وبينزل في وعاء الفصل؛ وبما إن دهن العود أخف من المية وما بيذوبش فيها، بيطفو على وش المية لوحده وبيتم تجميعه بحذر عشان ناخد الدهن النقي الصافي.",
+   "at": "2026-11-04T03:03:38.144Z",
+   "hits": 0,
+   "source": "chat"
+  },
+  {
+   "id": "en|deep|my perfume turned cloudy after i added alcohol. why, and how do i fix it",
+   "question": "My perfume turned cloudy after I added alcohol. Why, and how do I fix it?",
+   "lang": "en",
+   "style": "deep",
+   "answer": "### السبب العلمي للتعكير\n\nتعكير العطر بعد إضافة الكحول يحدث عادةً بسبب ثلاثة أسباب رئيسية:\n\n1. **انخفاض ذوبان الزيوت العطرية:** بعض الزيوت العطرية أو المركبات (مثل الراتنجات، والمستخلصات الثقيلة، وبعض الشمع الطبيعي الموجود في الزيوت النقية) تذوب بسهولة في الزيت أو الكحول الخالص، لكنها تفقد قابليتها للذوبان عندما ترتفع نسبة الماء في مزيج الكحول.\n2. **استخدام كحول يحتوي على نسبة ماء عالية:** إذا كان الكحول المستخدم مخففاً بماء زائد (أو ليس بتركيز 96% وما فوق)، فإن الماء يطرد المكونات الزيتية غير القابلة للذوبان في الماء، مما يؤدي إلى ظهور الشوائب أو التعكر اللبني.\n3. **التبريد السريع أو عدم اكتمال التعتيق:** الانتقال المفاجئ لدرجات الحرارة أو عدم دمج الزيت والكحول بشكل كافٍ قبل مرحلة التبريد يمنع الجزيئات من الاندماج الكامل.\n\n---\n\n### جدول الحلول المقترحة\n\n| المشكلة المحتملة | السبب | طريقة الإصلاح |\n|:--- |:--- |:--- |\n| **وجود شوائب ورواسب** | عدم ذوبان بعض الشمع أو الراتنجات الطبيعية | التبريد (Chilling) ثم الترشيح عبر ورق ترشيح مخبري دقيق (Coffee Filter أو Lab Filter Paper). |\n| **تعكير لبني عام** | زيادة نسبة الماء في الكحول المستخدم | إضافة القليل من الكحول النقي (مركز 96%) تدريجياً لإعادة إذابة الزيوت. |\n| **عدم تجانس المزيج** | رج غير كافٍ أو عدم ترك العطر يرتاح | ترك العطر في مكان بارد ومظلم لعدة أيام (مرحلة التبريد) ثم الترشيح. |\n\n---\n\n### خطوات الإصلاح العملية\n\n1. **التبريد (Maceration & Chilling):** ضع زجاجة العطر المعكرة في الثلاجة (درجة حرارة من 4 إلى 8 درجات مئوية) لمدة تتراوح بين 48 إلى 72 ساعة. هذا يساعد الجزيئات غير الذائبة على التجمع والتكتل لتسهيل إزالتها.\n2. **الترشيح (Filtration):** قم بمررة العطر البارد مباشرة عبر ورق ترشيح دقيق جداً (ورق ترشيح القهوة الخالي من الكلور أو ورق ترشيح مختبري) إلى زجاجة نظيفة ومعقمة. تجنب استخدام القطن العادي لكي لا يمتص جزءاً من الرائحة أو يترك أوباراً.\n3. **تعديل التركيبة (إن أمكن):** إذا استمر التعكر، يمكن إضافة بضع قطرات إضافية من الكحول النقي بحذر شديد مع التقليب المستمر.\n\n*ملاحظة: هذه المعالجة تجريبية وتحتاج لاختبار كمية صغيرة أولاً للتأكد من صفاء العطر وثبات رائحته بعد الترشيح.*",
+   "at": "2026-11-04T03:03:26.166Z",
+   "hits": 0,
+   "source": "chat"
+  },
+  {
+   "id": "ar|auto|عايز اعمل عطر 50 مل تركيز edp بالعود والفانيليا والورد. اقترح علي النسب",
+   "question": "عايز أعمل عطر 50 مل تركيز EDP بالعود والفانيليا والورد. اقترح عليّ النسب.",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "نسبة العطر 20% يعني محتاج 10 مل زيت عطري و40 مل كحول (96%).\n\n### مقترح تركيبة العطر (10 مل زيت عطري)\n\n| المكون | التصنيف | نسبة من الزيت | الكمية |\n|:--- |:--- |:--- |:--- |\n| عود | القاعدة (Base) | 35% | 3.5 مل |\n| فانيليا | القاعدة (Base) | 35% | 3.5 مل |\n| ورد | القلب (Heart) | 30% | 3.0 مل |\n\nحبّيت نبدأ بالتوازن ده بين قوة العود ودفيان الفانيليا ورقة الورد، ولا تحب نزود نوتة الورد شوية عشان تكون واضحة أكتر في الأول؟",
+   "at": "2026-11-04T03:03:06.891Z",
+   "hits": 0,
+   "source": "chat"
   },
   {
    "id": "ar|auto|ايه هي كل اقسام وانواع مستحضرات التجميل",
