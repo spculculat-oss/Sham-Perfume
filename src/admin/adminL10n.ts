@@ -1759,6 +1759,9 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
     en: 'As visitors browse the platform, every country and its entry cities appear here automatically with rank, visits, and share, lighting up on the colored map above.',
   },
   'أبرز مدينة دخول': { en: 'Top Entry City' },
+  'خطة تنفيذ ({n} أوامر)': { en: "Execution plan ({n} orders)" },
+  'الوكيل يفهم الأمر…': { en: "Agent understanding command…" },
+  'اكتب للدولة بأسلوبك العادي… (أمر واحد أو عدة أوامر معاً: وقف الأخبار وشغّل الدورية، أو اعمل مهمة: …)': { en: "Write to the State naturally… (single or multi-step orders: pause news and run patrol, or create task: …)" },
 };
 
 let currentLang: SupportedLanguage = 'ar';
