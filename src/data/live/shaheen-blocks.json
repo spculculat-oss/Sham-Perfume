@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-04T19:10:52.123Z",
+ "updatedAt": "2026-11-04T19:44:11.481Z",
  "programs": [
   {
    "id": "school-day",
@@ -263,6 +263,13 @@
   }
  ],
  "runs": [
+  {
+   "program": "ai-self",
+   "at": "2026-11-04T19:44:11.481Z",
+   "ok": true,
+   "steps": 8,
+   "failed": 0
+  },
   {
    "program": "school-day",
    "at": "2026-11-04T19:10:52.123Z",
@@ -532,13 +539,6 @@
   {
    "program": "school-day",
    "at": "2026-10-29T01:09:06.680Z",
-   "ok": true,
-   "steps": 5,
-   "failed": 0
-  },
-  {
-   "program": "school-day",
-   "at": "2026-10-28T19:00:29.524Z",
    "ok": true,
    "steps": 5,
    "failed": 0
