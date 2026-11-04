@@ -1,8 +1,8 @@
 {
  "version": 1,
- "updatedAt": "2026-11-04T07:10:58.904Z",
+ "updatedAt": "2026-11-04T13:00:29.912Z",
  "sources": {
-  "catalogAt": "2026-11-04T05:29:29.393Z",
+  "catalogAt": "2026-11-04T11:32:52.852Z",
   "total": 1212,
   "published": 1161,
   "liveStock": true,
@@ -123,14 +123,6 @@
    "reasonAr": "نفد"
   },
   {
-   "sku": "ARD-744",
-   "nameAr": "أرض الزعفران جذاب جولد",
-   "brand": "Ard Al Zaafaran",
-   "priority": "normal",
-   "units30": 0,
-   "reasonAr": "نفد"
-  },
-  {
    "sku": "ARM-888",
    "nameAr": "أرماف أوديسي أكوا إيديشن",
    "brand": "Armaf",
@@ -220,7 +212,7 @@
   },
   {
    "sku": "ARM-752",
-   "nameAr": "أرماف كينغ تشيك ميت",
+   "nameAr": "أرماف كينغ تشيكميت",
    "brand": "Armaf",
    "priority": "normal",
    "units30": 0,
@@ -510,6 +502,14 @@
    "sku": "MAI-834",
    "nameAr": "إثنيك عود من ميصون الحمراء",
    "brand": "Maison Alhambra",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "GRA-579",
+   "nameAr": "إستنكت نوار مزيل عرق بخاخ للجسم من غراندور",
+   "brand": "Grandeur",
    "priority": "normal",
    "units30": 0,
    "reasonAr": "نفد"
