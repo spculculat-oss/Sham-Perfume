@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "weaver",
- "updatedAt": "2026-11-03T06:30:57.489Z",
+ "updatedAt": "2026-11-04T06:35:15.168Z",
  "score": 0,
  "counts": {
   "complete": 0,
@@ -21,11 +21,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 31.06,
-    "extraItemUsd": 5.18,
-    "chargedEgp": 1721.2,
+    "firstItemUsd": 30.96,
+    "extraItemUsd": 5.16,
+    "chargedEgp": 1714.27,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "egypt",
@@ -53,11 +53,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 27.61,
-    "extraItemUsd": 8.63,
-    "chargedEgp": 1530.02,
+    "firstItemUsd": 27.52,
+    "extraItemUsd": 8.6,
+    "chargedEgp": 1523.8,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "gulf",
@@ -85,11 +85,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 27.61,
-    "extraItemUsd": 6.9,
-    "chargedEgp": 1530.02,
+    "firstItemUsd": 27.52,
+    "extraItemUsd": 6.88,
+    "chargedEgp": 1523.8,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "gulf",
@@ -117,11 +117,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 25.88,
-    "extraItemUsd": 6.9,
-    "chargedEgp": 1434.15,
+    "firstItemUsd": 25.8,
+    "extraItemUsd": 6.88,
+    "chargedEgp": 1428.56,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "gulf",
@@ -149,11 +149,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 25.88,
-    "extraItemUsd": 6.9,
-    "chargedEgp": 1434.15,
+    "firstItemUsd": 25.8,
+    "extraItemUsd": 6.88,
+    "chargedEgp": 1428.56,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "gulf",
@@ -181,11 +181,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 25.88,
-    "extraItemUsd": 6.9,
-    "chargedEgp": 1434.15,
+    "firstItemUsd": 25.8,
+    "extraItemUsd": 6.88,
+    "chargedEgp": 1428.56,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "gulf",
@@ -213,11 +213,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 51.76,
-    "extraItemUsd": 13.8,
-    "chargedEgp": 2868.3,
+    "firstItemUsd": 51.6,
+    "extraItemUsd": 13.76,
+    "chargedEgp": 2857.12,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "gulf",
@@ -245,11 +245,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 25.88,
-    "extraItemUsd": 6.9,
-    "chargedEgp": 1434.15,
+    "firstItemUsd": 25.8,
+    "extraItemUsd": 6.88,
+    "chargedEgp": 1428.56,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -277,11 +277,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 55.21,
-    "extraItemUsd": 13.8,
-    "chargedEgp": 3059.48,
+    "firstItemUsd": 55.04,
+    "extraItemUsd": 13.76,
+    "chargedEgp": 3047.6,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -309,11 +309,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -341,11 +341,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 53.49,
-    "extraItemUsd": 13.8,
-    "chargedEgp": 2964.17,
+    "firstItemUsd": 53.32,
+    "extraItemUsd": 13.76,
+    "chargedEgp": 2952.36,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -373,11 +373,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -405,11 +405,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 54.18,
-    "extraItemUsd": 13.8,
-    "chargedEgp": 3002.4,
+    "firstItemUsd": 54,
+    "extraItemUsd": 13.76,
+    "chargedEgp": 2990.01,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -437,11 +437,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -469,11 +469,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 10.35,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 10.32,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -501,11 +501,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -533,11 +533,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 15.53,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 15.48,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -565,11 +565,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -597,11 +597,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -629,11 +629,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -661,11 +661,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -693,11 +693,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "arab",
@@ -725,11 +725,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 2.71,
+    "firstItemUsd": 2.7,
     "extraItemUsd": 2.46,
-    "chargedEgp": 150.18,
+    "chargedEgp": 149.5,
     "source": "https://sellershipment.com/ecommerce-shipping-cost/pos-laju-rate/ + https://jomjual.my/blog/jt-vs-pos-laju-vs-ninja-van-vs-dhl-perbandingan-kadar-penghantaran-malaysia-2026",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "southeast_asia",
@@ -757,11 +757,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 13.8,
-    "extraItemUsd": 1.73,
-    "chargedEgp": 764.73,
+    "firstItemUsd": 13.76,
+    "extraItemUsd": 1.72,
+    "chargedEgp": 761.9,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "southeast_asia",
@@ -789,11 +789,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 14.84,
-    "extraItemUsd": 2.07,
-    "chargedEgp": 822.36,
+    "firstItemUsd": 14.79,
+    "extraItemUsd": 2.06,
+    "chargedEgp": 818.93,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "southeast_asia",
@@ -821,11 +821,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 15.53,
-    "extraItemUsd": 2.07,
-    "chargedEgp": 860.6,
+    "firstItemUsd": 15.48,
+    "extraItemUsd": 2.06,
+    "chargedEgp": 857.14,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "southeast_asia",
@@ -853,11 +853,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 15.53,
-    "extraItemUsd": 2.07,
-    "chargedEgp": 860.6,
+    "firstItemUsd": 15.48,
+    "extraItemUsd": 2.06,
+    "chargedEgp": 857.14,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "southeast_asia",
@@ -885,11 +885,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 18.98,
-    "extraItemUsd": 2.76,
-    "chargedEgp": 1051.78,
+    "firstItemUsd": 18.92,
+    "extraItemUsd": 2.75,
+    "chargedEgp": 1047.61,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "southeast_asia",
@@ -917,11 +917,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 17.25,
-    "extraItemUsd": 2.07,
-    "chargedEgp": 955.92,
+    "firstItemUsd": 17.2,
+    "extraItemUsd": 2.06,
+    "chargedEgp": 952.37,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "southeast_asia",
@@ -949,11 +949,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 17.94,
-    "extraItemUsd": 2.07,
-    "chargedEgp": 994.15,
+    "firstItemUsd": 17.89,
+    "extraItemUsd": 2.06,
+    "chargedEgp": 990.58,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "southeast_asia",
@@ -981,11 +981,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 17.94,
-    "extraItemUsd": 2.76,
-    "chargedEgp": 994.15,
+    "firstItemUsd": 17.89,
+    "extraItemUsd": 2.75,
+    "chargedEgp": 990.58,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "southeast_asia",
@@ -1013,11 +1013,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 27.61,
-    "extraItemUsd": 6.9,
-    "chargedEgp": 1530.02,
+    "firstItemUsd": 27.52,
+    "extraItemUsd": 6.88,
+    "chargedEgp": 1523.8,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "southeast_asia",
@@ -1045,11 +1045,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 5.18,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 5.16,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1077,11 +1077,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 5.18,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 5.16,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1109,11 +1109,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 5.18,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 5.16,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1141,11 +1141,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 6.56,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 6.54,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1173,11 +1173,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 5.18,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 5.16,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1205,11 +1205,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 39.68,
-    "extraItemUsd": 5.18,
-    "chargedEgp": 2198.88,
+    "firstItemUsd": 39.56,
+    "extraItemUsd": 5.16,
+    "chargedEgp": 2190.46,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1237,11 +1237,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 5.18,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 5.16,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1269,11 +1269,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 37.96,
-    "extraItemUsd": 7.94,
-    "chargedEgp": 2103.57,
+    "firstItemUsd": 37.84,
+    "extraItemUsd": 7.91,
+    "chargedEgp": 2095.22,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1301,11 +1301,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 5.18,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 5.16,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1333,11 +1333,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 49.69,
-    "extraItemUsd": 7.59,
-    "chargedEgp": 2753.59,
+    "firstItemUsd": 49.53,
+    "extraItemUsd": 7.57,
+    "chargedEgp": 2742.51,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1365,11 +1365,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 10.35,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 10.32,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1397,11 +1397,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 44.86,
-    "extraItemUsd": 10.35,
-    "chargedEgp": 2485.93,
+    "firstItemUsd": 44.72,
+    "extraItemUsd": 10.32,
+    "chargedEgp": 2476.17,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1429,11 +1429,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 44.86,
-    "extraItemUsd": 10.35,
-    "chargedEgp": 2485.93,
+    "firstItemUsd": 44.72,
+    "extraItemUsd": 10.32,
+    "chargedEgp": 2476.17,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1461,11 +1461,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 41.41,
-    "extraItemUsd": 8.63,
-    "chargedEgp": 2294.75,
+    "firstItemUsd": 41.28,
+    "extraItemUsd": 8.6,
+    "chargedEgp": 2285.7,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1493,11 +1493,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 5.18,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 5.16,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1525,11 +1525,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 5.18,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 5.16,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1557,11 +1557,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 42.44,
-    "extraItemUsd": 6.9,
-    "chargedEgp": 2351.83,
+    "firstItemUsd": 42.31,
+    "extraItemUsd": 6.88,
+    "chargedEgp": 2342.73,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1589,11 +1589,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 55.21,
-    "extraItemUsd": 13.8,
-    "chargedEgp": 3059.48,
+    "firstItemUsd": 55.04,
+    "extraItemUsd": 13.76,
+    "chargedEgp": 3047.6,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1621,11 +1621,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 54.18,
-    "extraItemUsd": 13.8,
-    "chargedEgp": 3002.4,
+    "firstItemUsd": 54,
+    "extraItemUsd": 13.76,
+    "chargedEgp": 2990.01,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1653,11 +1653,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 54.18,
-    "extraItemUsd": 13.8,
-    "chargedEgp": 3002.4,
+    "firstItemUsd": 54,
+    "extraItemUsd": 13.76,
+    "chargedEgp": 2990.01,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1685,11 +1685,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 55.21,
-    "extraItemUsd": 12.42,
-    "chargedEgp": 3059.48,
+    "firstItemUsd": 55.04,
+    "extraItemUsd": 12.38,
+    "chargedEgp": 3047.6,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1717,11 +1717,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1749,11 +1749,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 54.18,
-    "extraItemUsd": 13.8,
-    "chargedEgp": 3002.4,
+    "firstItemUsd": 54,
+    "extraItemUsd": 13.76,
+    "chargedEgp": 2990.01,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1781,11 +1781,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 6.9,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 6.88,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1813,11 +1813,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1845,11 +1845,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1877,11 +1877,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1909,11 +1909,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1941,11 +1941,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -1973,11 +1973,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -2005,11 +2005,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -2037,11 +2037,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 54.18,
-    "extraItemUsd": 13.8,
-    "chargedEgp": 3002.4,
+    "firstItemUsd": 54,
+    "extraItemUsd": 13.76,
+    "chargedEgp": 2990.01,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -2069,11 +2069,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -2101,11 +2101,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -2133,11 +2133,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 54.18,
-    "extraItemUsd": 13.8,
-    "chargedEgp": 3002.4,
+    "firstItemUsd": 54,
+    "extraItemUsd": 13.76,
+    "chargedEgp": 2990.01,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -2165,11 +2165,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -2197,11 +2197,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 53.49,
-    "extraItemUsd": 13.8,
-    "chargedEgp": 2964.17,
+    "firstItemUsd": 53.32,
+    "extraItemUsd": 13.76,
+    "chargedEgp": 2952.36,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -2229,11 +2229,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 62.11,
-    "extraItemUsd": 18.98,
-    "chargedEgp": 3441.85,
+    "firstItemUsd": 61.91,
+    "extraItemUsd": 18.92,
+    "chargedEgp": 3427.99,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -2261,11 +2261,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 24.16,
-    "extraItemUsd": 6.9,
-    "chargedEgp": 1338.84,
+    "firstItemUsd": 24.08,
+    "extraItemUsd": 6.88,
+    "chargedEgp": 1333.32,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "europe",
@@ -2293,11 +2293,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 34.51,
-    "extraItemUsd": 6.9,
-    "chargedEgp": 1912.38,
+    "firstItemUsd": 34.4,
+    "extraItemUsd": 6.88,
+    "chargedEgp": 1904.75,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "north_america",
@@ -2325,11 +2325,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 37.96,
-    "extraItemUsd": 7.59,
-    "chargedEgp": 2103.57,
+    "firstItemUsd": 37.84,
+    "extraItemUsd": 7.57,
+    "chargedEgp": 2095.22,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "north_america",
@@ -2357,11 +2357,11 @@
     "dg": null
    },
    "cost": {
-    "firstItemUsd": 47.28,
-    "extraItemUsd": 10.35,
-    "chargedEgp": 2620.04,
+    "firstItemUsd": 47.12,
+    "extraItemUsd": 10.32,
+    "chargedEgp": 2609.06,
     "source": "https://poslajutracking.io/wp-content/uploads/2026/10/Poslaju-International-Rates.pdf",
-    "checkedAt": "2026-11-02"
+    "checkedAt": "2026-11-03"
    },
    "zone": {
     "id": "north_america",
