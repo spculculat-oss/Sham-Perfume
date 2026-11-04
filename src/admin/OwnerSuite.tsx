@@ -18,6 +18,7 @@ import { readControls, stoppedByOwner } from '../utils/ownerAuthority';
  * after he is in. Way in: the admin code (everything) or the map code (the read-only tools; the room needs the
  * server). Kept for this tab only, locks itself after 30 idle minutes, and stays out of search engines.
  */
+const GovernancePanel = lazy(() => import('./GovernancePanel'));
 const OwnerRoom = lazy(() => import('./OwnerRoom'));
 const OwnerInbox = lazy(() => import('./OwnerInbox'));
 const OwnerControlPanel = lazy(() => import('./OwnerControlPanel'));
@@ -28,7 +29,7 @@ const ShaheenOpsMapPanel = lazy(() => import('./ShaheenOpsMapPanel'));
 const BankPanel = lazy(() => import('./BankPanel'));
 const FinancePanel = lazy(() => import('./FinancePanel'));
 
-type Section = 'home' | 'inbox' | 'room' | 'control' | 'org' | 'ops' | 'patrol' | 'money';
+type Section = 'governance' | 'home' | 'inbox' | 'room' | 'control' | 'org' | 'ops' | 'patrol' | 'money';
 type Access = 'full' | 'map';
 const MAP_KEY = 'sham_owner_map_ok';
 const IDLE_MS = 30 * 60_000;
@@ -36,6 +37,7 @@ const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const SECTIONS: { id: Section; label: () => string; hint: () => string; icon: ReactNode; needs?: Access }[] = [
   { id: 'home', label: () => T('مكتبك'), hint: () => T('نظرة سريعة على كل حاجة'), icon: <LayoutDashboard className="h-4 w-4" /> },
+  { id: 'governance', label: () => T('دولة المنصة'), hint: () => T('الميثاق والهيكل وتخطيط المهام'), icon: <Network className="h-4 w-4" />, needs: 'full' },
   { id: 'inbox', label: () => T('صندوق الموافقات'), hint: () => T('اللي شاهين جهّزه ومستني رأيك'), icon: <Inbox className="h-4 w-4" /> },
   { id: 'room', label: () => T('غرفة شاهين الخاصة'), hint: () => T('إنت وشاهين والسكرتير بس'), icon: <MessagesSquare className="h-4 w-4" />, needs: 'full' },
   { id: 'control', label: () => T('مركز التحكم'), hint: () => T('وقف وتشغيل وموافقات'), icon: <Siren className="h-4 w-4" /> },
@@ -158,6 +160,7 @@ export default function OwnerSuite() {
         <Suspense fallback={<div className="flex items-center gap-2 text-stone-400"><Loader2 className="h-4 w-4 animate-spin" />…</div>}>
           {section === 'home' && <OwnerHome go={setSection} access={access} />}
           {section === 'inbox' && <OwnerInbox code={access === 'full' ? getToken() : ''} onRoom={access === 'full' ? () => setSection('room') : undefined} />}
+          {section === 'governance' && access === 'full' && <GovernancePanel />}
           {section === 'room' && access === 'full' && <OwnerRoom code={getToken()} />}
           {/* The staff panels keep their own light design inside the suite's frame. */}
           {section === 'control' && <Light><OwnerControlPanel /></Light>}
@@ -185,6 +188,10 @@ function OwnerHome({ go, access }: { go: (s: Section) => void; access: Access })
         <p className="mt-1 text-xs text-stone-300">{T('شاهين هو الوكيل المسؤول عن الموقع: بيجهّز كل حاجة، وإنت بتراجع وتوافق من «صندوق الموافقات» أو من غرفتك الخاصة. ومن هنا كمان بتوقف أو تشغل أي روبوت وتتابع الشغل والفلوس. محدش غيرك يقدر يدخل هنا.')}</p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <button type="button" disabled={access !== 'full'} onClick={() => go('governance')} className={`${tile} border-amber-800 disabled:opacity-40`}>
+          <Network className="mb-2 h-5 w-5 text-amber-300" /><div className="font-bold">{T('دولة المنصة')}</div>
+          <div className="text-xs text-stone-400">{T('ابدأ بالميثاق والهيكل ومسودات المهام — دون تنفيذ تلقائي')}</div>
+        </button>
         <button type="button" onClick={() => go('inbox')} className={`${tile} border-amber-800`}>
           <Inbox className="mb-2 h-5 w-5 text-amber-300" /><div className="font-bold">{T('صندوق الموافقات')}</div>
           <div className="text-xs text-stone-400">{controls.selfDevelopment === 'approve_all' ? T('شاهين بيجهّز كل حاجة، ومفيش حاجة بتتنفذ غير بموافقتك') : T('التصليحات الصغيرة بتدخل لوحدها، والباقي مستني موافقتك')}</div>

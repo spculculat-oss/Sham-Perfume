@@ -281,6 +281,7 @@ export interface CoreSettings {
 }
 
 export interface Collections {
+  governanceRevisions: import('../governance/service').GovernanceRevision;
   financeOrders: FinanceOrder;
   financeSessions: FinanceSession;
   financeEntries: FinanceEntry;

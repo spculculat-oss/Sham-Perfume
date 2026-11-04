@@ -3,6 +3,7 @@
  *   /api/assistant/*  public visitor API (rate limited)
  *   /api/admin/*      management API (Bearer SHAM_ADMIN_TOKEN, constant-time compare)
  */
+import { createGovernanceRouter } from '../governance/router';
 import { createOwnerRoomRouter } from '../ownerRoom';
 import { mailProvider, mailProviderLabel } from './mailer';
 import express from 'express';
@@ -233,6 +234,7 @@ export function createShamCore(options: CoreOptions = {}) {
     next();
   });
 
+  admin.use('/governance', createGovernanceRouter(store, env));
   admin.use('/finance', createFinanceRouter(finance, bank));
   // «غرفة شاهين الخاصة»: the owner, Shaheen and the secretary only — nothing is stored on the server.
   admin.use('/owner-room', createOwnerRoomRouter({ env, fetch: options.fetch, health: runtime.health }));
