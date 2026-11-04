@@ -125,7 +125,7 @@ test('Shaheen reads a cosmetic request, answers it with the formula, and the per
 
 test('cosmetics science: a track, a school expert who owns its questions, and the store sections', () => {
   const track = SCIENCE_TRACKS.find((t) => t.id === 'cosmetics');
-  assert.ok(track && track.lessons.length === COSMETIC_LESSONS.length);
+  assert.ok(track && COSMETIC_LESSONS.every((l) => track.lessons.some((x) => x.id === l.id)), 'every page lesson is in the track');
   assert.match(track.boundaryAr, /مفيش/);
   assert.ok(SCHOOL_EXPERTS.some((e) => e.field === 'cosmetics'));
   assert.equal(fieldsOf('ازاي اختار سيروم وكريم مرطب لبشرتي الدهنية؟')[0]?.field, 'cosmetics');
