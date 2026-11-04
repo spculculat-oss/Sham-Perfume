@@ -2439,9 +2439,10 @@
    "needsApproval": true,
    "createdAt": "2026-11-04T02:25:22.151Z",
    "meeting": "2026-11-04",
-   "status": "open",
+   "status": "done",
    "issue": 456,
-   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/456"
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/456",
+   "closedAt": "2026-11-04T21:50:25Z"
   }
  ],
  "toolGoals": {
