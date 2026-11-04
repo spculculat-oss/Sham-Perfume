@@ -595,6 +595,23 @@ export function findHandoffs(reports: Record<string, unknown>, checks: BotCheck[
 }
 
 /** The full check: every bot in the structure, its status, problems, fixes, ideas; then the handoffs. */
+/** What the importer heard from the contracts service on its last run (store-review.json → import.contracts). */
+export function contractsChecks(contracts: unknown): Finding[] {
+  const x = o(contracts);
+  if (!Object.keys(x).length) return [];
+  const error = String(x.error || '');
+  const approved = n(x.approved) ?? 0;
+  if (/CONTRACTS_NOT_CONFIGURED|^HTTP 503$/.test(error)) {
+    return [{ level: 'fail', problem: 'نظام التعاقدات واقف: سيرفر الموقع مالوش قاعدة بيانات، فمفيش متجر يقدر يوقّع ومفيش منتجات جديدة تتنقل', fix: 'صاحب الموقع يربط قاعدة بيانات مجانية (Neon) بمشروع Vercel من Storage ثم Connect — نفس الخطوة اللي بتشغّل الحسابات والدفع' }];
+  }
+  if (/ADMIN_NOT_CONFIGURED|UNAUTHORIZED|401/.test(error)) {
+    return [{ level: 'fail', problem: 'المستورد مش قادر يسأل نظام التعاقدات: مفتاح الإدارة ناقص أو مش مطابق', fix: 'راجع إن SHAM_ADMIN_TOKEN واحد في أسرار GitHub وفي إعدادات السيرفر' }];
+  }
+  if (error) return [{ level: 'warn', problem: `المستورد ما قدرش يقرا المتاجر الموقّعة (${error.slice(0, 60)})`, fix: 'راجع عنوان السيرفر SHAM_API_BASE وإن السيرفر شغال' }];
+  if (!approved) return [{ level: 'note', idea: 'نظام التعاقدات شغال — لسه مفيش متجر وقّع واتعتمد، فالنقل متوقف بحكم L-03 لحد أول عقد' }];
+  return [{ level: 'note', idea: `${approved} متجر موقّع ومعتمد — بيتنقل منهم بحكم L-40` }];
+}
+
 export function runPrecheck(reports: Record<string, unknown>, runs: Record<string, RunInfo | undefined>, now: number, controls?: OwnerControls): PrecheckFile {
   const bots: BotCheck[] = [];
   for (const bot of BOTS) {
@@ -655,6 +672,15 @@ export function runPrecheck(reports: Record<string, unknown>, runs: Record<strin
         if (x.status === 'fail' || (score ?? 10) < 6) c.problems.push(`تقييم ${x.nameAr || t}: ${score ?? 'فشل'}/10`);
         else if ((score ?? 10) < 8) c.ideas.push(`رفع ${x.nameAr || t} من ${score}/10`);
       }
+    }
+    // «مسؤول التعاقدات» has no robot of his own: the importer asks his service every run which stores signed
+    // (GET /api/admin/contracts/approved). When that service cannot answer, no store can sign and nothing new is
+    // imported — say it plainly instead of «سليم».
+    if (bot.id === 'contracts') for (const x of contractsChecks(o(o(reports['store-review.json']).import).contracts)) {
+      raise(x.level === 'note' ? 'ok' : x.level);
+      if (x.problem) c.problems.push(x.problem);
+      if (x.fix) c.fixes.push(x.fix);
+      if (x.idea) c.ideas.push(x.idea);
     }
     c.status = level;
     bots.push(c);
