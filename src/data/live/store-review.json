@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-04T02:25:25.169Z",
+ "updatedAt": "2026-11-04T03:22:33.015Z",
  "reviewer": "مراجع الصفحات",
  "summary": {
   "total": 1212,
@@ -12,7 +12,7 @@
   "brokenImages": 0
  },
  "import": {
-  "at": "2026-11-04T02:25:24.907Z",
+  "at": "2026-11-04T03:22:31.995Z",
   "markup": 1.5,
   "pricing": {
    "markup": 1.5
@@ -20,8 +20,7 @@
   "sources": [],
   "contracts": {
    "approved": 0,
-   "permitted": [],
-   "error": "HTTP 503 CONTRACTS_NOT_CONFIGURED"
+   "permitted": []
   },
   "blocked": "L-03",
   "prices": {
@@ -67,7 +66,7 @@
     }
    ]
   },
-  "durationMs": 286
+  "durationMs": 1043
  },
  "items": [
   {
