@@ -1,7 +1,100 @@
 {
  "version": 1,
- "updatedAt": "2026-11-03T02:56:52.612Z",
+ "updatedAt": "2026-11-04T02:25:22.151Z",
  "meetings": [
+  {
+   "date": "2026-11-04",
+   "at": "2026-11-04T02:25:22.151Z",
+   "mode": "self",
+   "summaryAr": "السكرتير (مشرف شاهين) أدار الاجتماع بالنيابة عن شاهين (مفيش محرك ذكاء اصطناعي متاح)، من تقارير الأدوات: 10 ملاحظة، منها 3 عاجلة. القرارات: إعادة فتح: تنسيق RTL وتوحيد اللغة العربية، إعادة فتح: تحسين تنسيق الاتجاه (RTL) والتباين اللغوي في واجهات الموقع، إصلاح عطل: مسؤول التعاقدات، مراجعة النصوص الإنجليزي اللي لقاها قسم التصميم.",
+   "decisions": [
+    {
+     "title": "إعادة فتح: تنسيق RTL وتوحيد اللغة العربية",
+     "detail": "المراجع الخارجي فحص الموقع الحي ولقاها لسه: الصفحة الرئيسية والمتجر وصفحات المنتج تعرض خليطاً واضحاً من العربية والإنجليزية. النصوص الإنجليزية مألوفة في قوائم التنقل مثل \"Home\" و\"Perfumes\" و\"Shop\"، كما يظهر في محتوى الهاتف. عند التصفح بعرض 390px يظهر نصوص باللغة الإنجليزية مثل \"All languages — open the list and search (100)\". التخطيط RTL لم يُطبق بشكل واضح في هذه الصفحات. (المهمة القديمة: https://github.com/spculculat-oss/Sham-Perfume/issues/346).",
+     "area": "reliability",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-11-04-1-إعادة-فتح-تنسيق-RTL-وتوح",
+     "status": "skipped",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "موجودة كمهمة #346"
+    },
+    {
+     "title": "إعادة فتح: تحسين تنسيق الاتجاه (RTL) والتباين اللغوي في واجهات الموقع",
+     "detail": "المراجع الخارجي فحص الموقع الحي ولقاها لسه: صفحة المنتج Hawas Chrome For Him by Rasasi 100ml EDP تُظهر العنوان بالإنجليزية كما في النص: \"Hawas Chrome For Him by Rasasi 100ml EDP\"، مع وجود سعر SGD 115. في العرض المحمول يظهر عنصر In cart (2) وSign in to pay، وهو ما يدل على استمرار وجود تجربة غربية/إنجليزية مع وجود عناوين عربية قليلة. كذلك يظهر تنسيق المحتوى مع فواصل ولغات متداخلة على الهاتف. (المهمة القديمة: https://github.com/spculculat-oss/Sham-Perfume/issues/397).",
+     "area": "reliability",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-11-04-2-إعادة-فتح-تحسين-تنسيق-ال",
+     "status": "skipped",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "موجودة كمهمة #397"
+    },
+    {
+     "title": "إصلاح عطل: مسؤول التعاقدات",
+     "detail": "الفحص الشامل قبل الاجتماع:\n- نظام التعاقدات واقف: سيرفر الموقع مالوش قاعدة بيانات، فمفيش متجر يقدر يوقّع ومفيش منتجات جديدة تتنقل\nالإصلاح المقترح:\n- صاحب الموقع يربط قاعدة بيانات مجانية (Neon) بمشروع Vercel من Storage ثم Connect — نفس الخطوة اللي بتشغّل الحسابات والدفع",
+     "area": "ai-tools",
+     "priority": "high",
+     "kind": "task",
+     "id": "2026-11-04-3-إصلاح-عطل-مسؤول-التعاقدا",
+     "status": "queued",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "مهمة لوكيل البرمجة"
+    },
+    {
+     "title": "مراجعة النصوص الإنجليزي اللي لقاها قسم التصميم",
+     "detail": "تدقيق التصميم (manus-audit.json) شاف النصوص دي بالإنجليزي على الموقع، ووكيل اللغات لقاها في: «Payment methods» src/bank/ProductPayMethods.tsx:58، «Payment methods» src/bank/ProductPayMethods.tsx:59، «Payment methods» src/components/Storefront.tsx:1323، «All perfume news» src/components/HomeHub.tsx:335، «direction» src/bank/shamLedger.ts:459، «direction» src/bank/worldPay.ts:125. المترجم الذكي بيغطي اللغات الناقصة تلقائياً؛ لو النص ظاهر بالإنجليزي في العربي أو في لغة أساسية، صحّح القاموس في نفس السطر.",
+     "area": "experience",
+     "priority": "medium",
+     "kind": "task",
+     "id": "2026-11-04-4-مراجعة-النصوص-الإنجليزي-",
+     "status": "skipped",
+     "needsApproval": false,
+     "by": "secretary",
+     "note": "موجودة كمهمة #348"
+    }
+   ],
+   "toolGoals": {},
+   "seats": [
+    {
+     "seat": "manager",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "store",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "content",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "experience",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "reliability",
+     "ok": false,
+     "text": ""
+    },
+    {
+     "seat": "field",
+     "ok": false,
+     "text": ""
+    }
+   ],
+   "chair": "secretary",
+   "deputyReasons": [
+    "مفيش محرك ذكاء اصطناعي متاح"
+   ]
+  },
   {
    "date": "2026-11-03",
    "at": "2026-11-03T02:56:52.612Z",
@@ -2336,6 +2429,19 @@
    "issue": 427,
    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/427",
    "closedAt": "2026-11-03T02:56:37Z"
+  },
+  {
+   "id": "2026-11-04-3-إصلاح-عطل-مسؤول-التعاقدا",
+   "title": "إصلاح عطل: مسؤول التعاقدات",
+   "detail": "الفحص الشامل قبل الاجتماع:\n- نظام التعاقدات واقف: سيرفر الموقع مالوش قاعدة بيانات، فمفيش متجر يقدر يوقّع ومفيش منتجات جديدة تتنقل\nالإصلاح المقترح:\n- صاحب الموقع يربط قاعدة بيانات مجانية (Neon) بمشروع Vercel من Storage ثم Connect — نفس الخطوة اللي بتشغّل الحسابات والدفع",
+   "area": "ai-tools",
+   "priority": "high",
+   "needsApproval": true,
+   "createdAt": "2026-11-04T02:25:22.151Z",
+   "meeting": "2026-11-04",
+   "status": "open",
+   "issue": 456,
+   "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/456"
   }
  ],
  "toolGoals": {
@@ -2428,6 +2534,19 @@
  ],
  "seeds": [],
  "delegations": [
+  {
+   "date": "2026-11-04",
+   "at": "2026-11-04T02:25:22.151Z",
+   "reasons": [
+    "مفيش محرك ذكاء اصطناعي متاح"
+   ],
+   "decisions": [
+    "إعادة فتح: تنسيق RTL وتوحيد اللغة العربية (موجودة كمهمة #346)",
+    "إعادة فتح: تحسين تنسيق الاتجاه (RTL) والتباين اللغوي في واجهات الموقع (موجودة كمهمة #397)",
+    "إصلاح عطل: مسؤول التعاقدات (مهمة لوكيل البرمجة)",
+    "مراجعة النصوص الإنجليزي اللي لقاها قسم التصميم (موجودة كمهمة #348)"
+   ]
+  },
   {
    "date": "2026-11-03",
    "at": "2026-11-03T02:56:52.612Z",
