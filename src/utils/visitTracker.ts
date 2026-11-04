@@ -46,6 +46,8 @@ function sendBeaconPayload(kind: 'visit' | 'heartbeat', info: { section: string;
   const consent = getConsent();
   if (consent && consent.analytics === false) return;
   if (isAdminHash()) return;
+  // Automated browsers (our own maneuver/inspection robots, test drivers) are not visitors.
+  if (typeof navigator !== 'undefined' && navigator.webdriver === true) return;
 
   const url = apiUrl('/api/census/visit');
   if (url.startsWith('/') && /\.github\.io$/i.test(window.location.hostname)) return;

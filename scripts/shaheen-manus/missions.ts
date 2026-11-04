@@ -12,6 +12,7 @@
  */
 import { AREAS, SEVERITIES, SITE_URL, type AuditIssue } from './audit';
 import { RERUNNABLE, type Area, type Priority } from '../shaheen-council/council';
+import { acceptLoginGate } from './loginGate';
 
 export type Mission = 'design' | 'tour' | 'verify';
 export const MISSIONS: Mission[] = ['design', 'tour', 'verify'];
@@ -128,6 +129,7 @@ export function tourPrompt(previous?: TourResult, ctx: MeetingContext = { proble
     '3. product: open one product page: name, price, photos, notes, the order button.',
     '4. cart: add the product to the cart and open the cart: price, quantity, total.',
     '5. checkout: go to the checkout/payment page and STOP there — never pay, never type card details, never submit an order or a form.',
+    '   Payment needs a verified sign-in on this site (on purpose). If the checkout asks you to sign in before paying and the sign-in window opens clearly, that step is OK (ok: true) — stop there and do not sign in. Mark it broken only if that window is blank, broken, or the cart total is lost.',
     '6. shaheen: open the expert chat and send ONE short perfume question (e.g. "عطر عود للصيف؟"); report if an answer came and how long it took.',
     'Report broken images, wrong or missing prices, buttons that do nothing, text cut off, slow steps (over 5 s), and error messages.',
     'Rules: do not buy, do not create accounts, do not fill forms, send at most one chat message. Write summaryAr, noteAr, problem and fix in Arabic.',
@@ -190,7 +192,7 @@ export function cleanTour(raw: unknown, at: string): TourResult | undefined {
     if (!x || typeof x !== 'object') return [];
     const s = x as Record<string, unknown>;
     if (!STEPS.includes(s.step as Step)) return [];
-    return [{ step: s.step as Step, ok: s.ok === true, seconds: Math.max(0, Math.min(600, Math.round(Number(s.seconds) || 0))), noteAr: clip(s.noteAr, 300) }];
+    return [acceptLoginGate({ step: s.step as Step, ok: s.ok === true, seconds: Math.max(0, Math.min(600, Math.round(Number(s.seconds) || 0))), noteAr: clip(s.noteAr, 300) })];
   }).filter((s, i, all) => all.findIndex((y) => y.step === s.step) === i);
   const summaryAr = clip(r.summaryAr, 500);
   if (!summaryAr && !journey.length) return undefined;

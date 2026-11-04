@@ -36,7 +36,25 @@ import {
   type CensusReport,
 } from '../src/utils/platformCensus';
 
-const BOT_UA_RE = /(?:googlebot|bingbot|yandexbot|duckduckbot|baiduspider|applebot|facebookexternalhit|twitterbot|linkedinbot|discordbot|telegrambot|slackbot|whatsapp|semrushbot|ahrefsbot|mj12bot|dotbot|petalbot|\bbot\b|spider|crawler|slurp|mediapartners|headlesschrome|phantomjs|lighthouse|pagespeed|pingdom|uptimerobot|statuscake|datadog|curl\/|wget\/|python-requests|go-http-client|apache-httpclient|axios\/|node-fetch|sham-state-census-bot)/i;
+const BOT_UA_RE = /(?:googlebot|bingbot|yandexbot|duckduckbot|baiduspider|applebot|facebookexternalhit|twitterbot|linkedinbot|discordbot|telegrambot|slackbot|whatsapp|semrushbot|ahrefsbot|mj12bot|dotbot|petalbot|\bbot\b|spider|crawler|slurp|mediapartners|headlesschrome|phantomjs|lighthouse|pagespeed|pingdom|uptimerobot|statuscake|datadog|curl\/|wget\/|python-requests|go-http-client|apache-httpclient|axios\/|node-fetch|sham-state-census-bot|shammaneuver|sham-robot)/i;
+
+/**
+ * One-time, publicly documented corrections of the stored ledger. `2026-11-04-own-robots`: once the database was
+ * connected (11-04) the site's own «مناورة» robot (GitHub Actions, iPhone UA tagged `ShamManeuver`) was counted as
+ * 106 US «visits». Those numbers are not real visitors, so the ledger restarts from the bundled baseline once, and the
+ * robots are now ignored (UA tag above + `navigator.webdriver` in the browser tracker).
+ */
+export const CENSUS_CORRECTIONS: readonly { id: string; noteAr: string }[] = [
+  { id: '2026-11-04-own-robots', noteAr: 'تصفير مرة واحدة: زيارات روبوت المناورة بتاع الموقع نفسه اتحسبت كزوّار بعد ربط قاعدة البيانات' },
+];
+const CORRECTION_IDS = CENSUS_CORRECTIONS.map((c) => c.id);
+
+export function needsCensusCorrection(saved: unknown): boolean {
+  if (!saved || typeof saved !== 'object') return false;
+  const applied = (saved as { corrections?: unknown }).corrections;
+  const list = Array.isArray(applied) ? applied.filter((x): x is string => typeof x === 'string') : [];
+  return CORRECTION_IDS.some((id) => !list.includes(id));
+}
 
 const ACTIVE_WINDOW_MS = 120_000; // 2 minutes for live online counter
 const FIVE_MIN_MS = 5 * 60_000;
@@ -171,7 +189,13 @@ export function createCensusService(options: CensusServiceOptions) {
 
   async function load(): Promise<CensusReport> {
     const now = nowFn();
-    const saved = await store.get('census', 'state');
+    let saved: unknown = await store.get('census', 'state');
+    if (needsCensusCorrection(saved)) {
+      const restart = readCensusReport(baseline, now);
+      await store.put('census', 'state', { ...restart, id: 'state', corrections: [...CORRECTION_IDS] });
+      console.warn(`[Census] applied ledger corrections: ${CORRECTION_IDS.join(', ')}`);
+      saved = restart;
+    }
     const storedReport = saved ? readCensusReport(saved, now) : readCensusReport(baseline, now);
     return mergeCensusReports(readCensusReport(baseline, now), storedReport, now);
   }
@@ -273,7 +297,7 @@ export function createCensusService(options: CensusServiceOptions) {
         recentVisitTimestamps.push(visitNow.getTime());
       }
       void visitDay;
-      await store.put('census', 'state', { ...updated, id: 'state' });
+      await store.put('census', 'state', { ...updated, id: 'state', corrections: [...CORRECTION_IDS] });
       return {
         recorded: true,
         country,
