@@ -47,6 +47,7 @@ import { LText, makeT, fmt, LOCALE_MAP } from '../لغات/localize';
 import { isStaticHosting } from '../utils/api';
 import { copyChatText } from '../utils/clipboard';
 import { StaticHostingNotice } from './StaticHostingNotice';
+import { FloatingDock } from './FloatingDock';
 
 
 const S = {
@@ -1014,7 +1015,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   return (
     <div style={{ display: hidden ? 'none' : 'contents' }} data-testid="floating-chat-root">
       {/* Floating Trigger Button */}
-      <div className={`fixed bottom-6 ${rtl ? 'right-6' : 'left-6'} z-40 no-print sham-floating flex items-center gap-3`}>
+      <FloatingDock id="shaheen" lang={currentLang} className={`fixed bottom-6 ${rtl ? 'right-6' : 'left-6'} z-40 no-print sham-floating flex items-center gap-3`}>
         <AnimatePresence>
           {!isOpen && (
             <motion.div
@@ -1048,7 +1049,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
             🧪
           </span>
         </button>
-      </div>
+      </FloatingDock>
 
       {/* Main Chatbot Window with Expanded Board Space */}
       <AnimatePresence>

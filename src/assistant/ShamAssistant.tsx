@@ -12,6 +12,7 @@ import { ApiError, ApiUnavailableError, isStaticHosting } from '../utils/api';
 import { followEntryCountry, formatMoney, useChatPrices, useStoreMoney } from '../utils/storeCheckout';
 import { BUNDLED_FX, priceIn } from '../utils/pricing';
 import { fmt, loc, makeT, type LText } from '../لغات/localize';
+import { FloatingDock } from '../components/FloatingDock';
 import {
   assistantApi, CONVERSATION_KEY, streamChat, type ActionCard, type AssistantConfig, type ChatReply, type FormField, type ProductCard,
   type CouncilView, type PublicService, type PublicStep, type RequestView, type UiMessage,
@@ -328,7 +329,7 @@ export function ShamAssistant({ currentLang }: Props) {
 
   return (
     <>
-      <div className={`fixed bottom-6 ${rtl ? 'left-6' : 'right-6'} z-40 no-print sham-floating flex items-center gap-2 ${rtl ? 'flex-row' : 'flex-row-reverse'}`}>
+      <FloatingDock id="assistant" lang={currentLang} className={`fixed bottom-6 ${rtl ? 'left-6' : 'right-6'} z-40 no-print sham-floating flex items-center gap-2 ${rtl ? 'flex-row' : 'flex-row-reverse'}`}>
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -344,7 +345,7 @@ export function ShamAssistant({ currentLang }: Props) {
             {L('teaser')}
           </span>
         )}
-      </div>
+      </FloatingDock>
 
       <AnimatePresence>
         {open && (

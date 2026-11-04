@@ -26,6 +26,7 @@ import { PerfumerAIChatbot } from './components/PerfumerAIChatbot';
 import { PerfumerMasterLabView } from './components/PerfumerMasterLabView';
 import { ShamAssistant } from './assistant/ShamAssistant';
 import SpecialistsHub from './components/SpecialistsHub';
+import { FloatingDockManager } from './components/FloatingDock';
 import { WorldPerfumeNews } from './components/WorldPerfumeNews';
 import { Footer } from './components/Footer';
 import { LocalizedNumberInput } from './components/LocalizedNumberInput';
@@ -1233,6 +1234,9 @@ export default function App() {
 
       {/* «مجلس المتخصصين»: استشارة علوم شاهين في أي قسم وفي أي وقت (وسط الشاشة السفلي) */}
       <SpecialistsHub section={activeTab} lang={currentLang} />
+
+      {/* «الأيقونات العائمة»: شريط جانبي يظهر بس لما أيقونة تتخفي أو تتحرك — يرجّعها أو يرجّع أماكنها */}
+      <FloatingDockManager lang={currentLang} />
 
       {/* Footer */}
       <Footer

@@ -27,6 +27,7 @@ import { useChatPrices } from '../utils/storeCheckout';
 import { SUPPORTED_LANGUAGES } from '../types/i18n';
 import { AIDisclosureBadge } from './LegalDisclaimer';
 import type { SupportedLanguage } from '../types/i18n';
+import { FloatingDock } from './FloatingDock';
 
 const AR = {
   open: 'استشير متخصصاً',
@@ -254,7 +255,7 @@ export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
   return (
     <>
       {/* #381: on a phone the pill is one short line (no wrapping, no badge) so it covers less of the store and the cart. */}
-      <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 no-print">
+      <FloatingDock id="specialists" lang={(lang || 'ar') as SupportedLanguage} className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 no-print sham-floating">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -267,7 +268,7 @@ export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
             <Sparkles className="w-3 h-3" />{t.agentLabel}
           </span>
         </button>
-      </div>
+      </FloatingDock>
 
       {open && (
         <div
