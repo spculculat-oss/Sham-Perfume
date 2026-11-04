@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-04T01:16:40.109Z",
+ "updatedAt": "2026-11-04T01:38:46.722Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7370,6 +7370,17 @@
  ],
  "runs": [
   {
+   "at": "2026-11-04T01:38:46.722Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-11-04T01:16:40.109Z",
    "mode": "self",
    "found": 0,
@@ -7725,21 +7736,6 @@
     "0 new stores found this run (own methods, no AI)",
     "  ↳ zimayaperfumes.com: CV 82/100 [age,https,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
     "✓ zimayaperfumes.com (CV 82/100): 106 perfumes, 3/6 pages read without AI, AED (1 = 15.2737 EGP) — still good"
-   ]
-  },
-  {
-   "at": "2026-10-27T18:54:26.964Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 2,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)",
-    "  ↳ perfumesclub.com: CV 87/100 [age,https,identity,returns,shipping,privacy,terms,payment,social,authentic]",
-    "✗ perfumesclub.com: صفحات المنتجات غير مقروءة بدون ذكاء اصطناعي (3/7)",
-    "  ↳ escentials.com: CV 93/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
-    "✗ escentials.com: أغلب منتجاته ليست عطوراً (38%)"
    ]
   }
  ]
