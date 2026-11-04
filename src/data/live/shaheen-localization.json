@@ -1,13 +1,13 @@
 {
  "version": 1,
  "agent": "localization-audit",
- "updatedAt": "2026-11-03T10:29:33.884Z",
+ "updatedAt": "2026-11-04T10:43:39.755Z",
  "tables": {
   "countries": 251,
   "currencies": 154,
   "languages": 100,
-  "fxUpdatedAt": "2026-11-03T00:02:31Z",
-  "fxAgeHours": 10,
+  "fxUpdatedAt": "2026-11-04T00:02:31Z",
+  "fxAgeHours": 11,
   "gateway": false
  },
  "rateGaps": [
