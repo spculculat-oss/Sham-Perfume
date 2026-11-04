@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-04T02:28:33.421Z",
+ "updatedAt": "2026-11-04T07:28:15.596Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -1680,12 +1680,12 @@
    "foundBy": "brand-site",
    "foundWith": "Armaf",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-28T07:07:31.829Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-04T07:28:15.596Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-10-28T07:07:31.829Z",
+    "at": "2026-11-04T07:28:15.596Z",
     "checks": [
      {
       "id": "age",
@@ -1693,7 +1693,7 @@
       "ok": true,
       "points": 20,
       "max": 20,
-      "detail": "15 سنة"
+      "detail": "16 سنة"
      },
      {
       "id": "https",
@@ -1786,18 +1786,18 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 56.0948,
+   "rateToEgp": 55.3706,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*armaf\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://armaf.com/sitemap_agentic_discovery.xml",
-    "https://armaf.com/sitemap_products_1.xml?from=9284842357035&to=15465902080299",
+    "https://armaf.com/sitemap_products_1.xml?from=9284842357035&to=15484578595115",
     "https://armaf.com/sitemap_pages_1.xml?from=135552237867&to=167363936555",
     "https://armaf.com/sitemap_collections_1.xml?from=473743032619&to=535786619179",
     "https://armaf.com/sitemap_blogs_1.xml",
     "https://armaf.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 500
+   "productsEstimate": 518
   },
   {
    "id": "armafperfumes-com",
@@ -7370,6 +7370,19 @@
  ],
  "runs": [
   {
+   "at": "2026-11-04T07:28:15.596Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ armaf.com: CV 90/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ armaf.com (CV 90/100): 518 perfumes, 4/6 pages read without AI, USD (1 = 55.3706 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-11-04T02:28:33.421Z",
    "mode": "self",
    "found": 0,
@@ -7718,20 +7731,6 @@
     "✓ khadlaj.com (CV 96/100): 1116 perfumes, 4/7 pages read without AI, AED (1 = 15.2737 EGP) — still good",
     "  ↳ khadlajperfumes.com: CV 96/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
     "✓ khadlajperfumes.com (CV 96/100): 1116 perfumes, 4/7 pages read without AI, AED (1 = 15.2737 EGP) — still good"
-   ]
-  },
-  {
-   "at": "2026-10-28T08:59:06.631Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 1,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "Web search: AI quota used up — the scout continues by himself",
-    "0 new stores found this run (own methods, no AI)",
-    "  ↳ volareperfumes.com: CV 80/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
-    "✓ volareperfumes.com (CV 80/100): 653 perfumes, 4/6 pages read without AI, AED (1 = 15.2737 EGP) — still good"
    ]
   }
  ]
