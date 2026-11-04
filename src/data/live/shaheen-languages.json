@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-11-03T21:47:52.698Z",
+  "updatedAt": "2026-11-04T10:07:46.537Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -23,13 +23,13 @@
     "الترجمة مش مكتملة: 10.3% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 273068 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط والأخبار الأساسية بس هي اللي مكتملة.",
     "تقليل صارم للغة إلى عربي/إنجليزي في 2 موضع — راجع إن كان المقصود زوج بيانات {ar,en} أم لغة واجهة.",
     "المترجم الذكي: 273068 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3690 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
-    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «Payment methods» src/bank/ProductPayMethods.tsx:58، «Payment methods» src/bank/ProductPayMethods.tsx:59، «Payment methods» src/components/Storefront.tsx:1323، «All perfume news» src/components/HomeHub.tsx:335، «direction» src/bank/shamLedger.ts:459، «direction» src/bank/worldPay.ts:125.",
-    "لغات بلّغ عنها قسم التصميم بتتترجم الأول: mk، be، fa."
+    "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «All perfume news» src/components/HomeHub.tsx:335، «Cosmetics» src/legal/jurisdictions.ts:198، «Cosmetics» src/legal/jurisdictions.ts:428، «Cosmetics» src/legal/jurisdictions.ts:569، «Community» src/community/CommunityApp.tsx:99، «Community» src/community/CommunityApp.tsx:180.",
+    "لغات بلّغ عنها قسم التصميم بتتترجم الأول: be، ca، fa."
   ],
   "translationCoverage": 10.3,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-11-03T21:47:53.456Z",
+    "at": "2026-11-04T10:07:47.028Z",
     "status": "quota",
     "remaining": 273068,
     "covered": 3690,
@@ -82,7 +82,7 @@
       "reviewed": false,
       "engines": [],
       "languages": [],
-      "resumeAt": "2026-11-04T08:05:00.000Z"
+      "resumeAt": "2026-11-05T08:05:00.000Z"
     },
     "rejectReasons": {},
     "rejectCounts": {
@@ -170,15 +170,50 @@
     }
   },
   "design": {
-    "at": "2026-11-03T21:47:52.698Z",
-    "auditAt": "2026-10-31T05:49:00.921Z",
-    "auditScore": 62,
+    "at": "2026-11-04T10:07:46.537Z",
+    "auditAt": "2026-11-04T06:07:22.242Z",
+    "auditScore": 58,
     "priorityLanguages": [
-      "mk",
       "be",
+      "ca",
       "fa"
     ],
     "located": [
+      {
+        "phrase": "All perfume news",
+        "file": "src/components/HomeHub.tsx",
+        "line": 335
+      },
+      {
+        "phrase": "Cosmetics",
+        "file": "src/legal/jurisdictions.ts",
+        "line": 198
+      },
+      {
+        "phrase": "Cosmetics",
+        "file": "src/legal/jurisdictions.ts",
+        "line": 428
+      },
+      {
+        "phrase": "Cosmetics",
+        "file": "src/legal/jurisdictions.ts",
+        "line": 569
+      },
+      {
+        "phrase": "Community",
+        "file": "src/community/CommunityApp.tsx",
+        "line": 99
+      },
+      {
+        "phrase": "Community",
+        "file": "src/community/CommunityApp.tsx",
+        "line": 180
+      },
+      {
+        "phrase": "Community",
+        "file": "src/community/CommunityDirectory.tsx",
+        "line": 30
+      },
       {
         "phrase": "Payment methods",
         "file": "src/bank/ProductPayMethods.tsx",
@@ -193,35 +228,13 @@
         "phrase": "Payment methods",
         "file": "src/components/Storefront.tsx",
         "line": 1323
-      },
-      {
-        "phrase": "All perfume news",
-        "file": "src/components/HomeHub.tsx",
-        "line": 335
-      },
-      {
-        "phrase": "direction",
-        "file": "src/bank/shamLedger.ts",
-        "line": 459
-      },
-      {
-        "phrase": "direction",
-        "file": "src/bank/worldPay.ts",
-        "line": 125
-      },
-      {
-        "phrase": "direction",
-        "file": "src/utils/ownerDesk.ts",
-        "line": 197
       }
     ],
     "unlocated": [
-      "SCENT STUDIO",
       "Live Sync",
       "Enter Portal",
-      "World News",
-      "Design Studio",
-      "Cosmetics Business"
+      "Live News",
+      "Log in"
     ],
     "physicalDirection": {
       "total": 300,
