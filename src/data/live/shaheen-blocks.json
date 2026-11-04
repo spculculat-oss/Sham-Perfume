@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-04T08:01:58.285Z",
+ "updatedAt": "2026-11-04T13:19:08.051Z",
  "programs": [
   {
    "id": "school-day",
@@ -8,7 +8,7 @@
    "goal": "امتحان وتسميع وحفظ في الذاكرة كل 6 ساعات",
    "schedule": "every 6 hours",
    "runner": "school",
-   "createdAt": "2026-11-04T07:31:39.979Z",
+   "createdAt": "2026-11-04T13:22:15.508Z",
    "blocks": [
     {
      "kind": "action",
@@ -68,7 +68,7 @@
    "goal": "فحص وصيانة الموقع يومياً قبل الذروة",
    "schedule": "daily 08:00",
    "runner": "patrol",
-   "createdAt": "2026-11-04T07:31:39.979Z",
+   "createdAt": "2026-11-04T13:22:15.508Z",
    "blocks": [
     {
      "kind": "note",
@@ -162,7 +162,7 @@
    "goal": "كل أداة تتطور في مجالها بالتناوب",
    "schedule": "weekly mon 09:00",
    "runner": "school",
-   "createdAt": "2026-11-04T07:31:39.979Z",
+   "createdAt": "2026-11-04T13:22:15.508Z",
    "blocks": [
     {
      "kind": "loop",
@@ -198,7 +198,7 @@
    "goal": "شاهين يدير نفسه بنفسه بدون أي تطبيق ذكاء آخر",
    "schedule": "every 12 hours",
    "runner": "patrol",
-   "createdAt": "2026-11-04T07:31:39.979Z",
+   "createdAt": "2026-11-04T13:22:15.508Z",
    "blocks": [
     {
      "kind": "note",
