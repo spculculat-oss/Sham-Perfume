@@ -1,7 +1,7 @@
 {
   "version": 1,
   "agent": "shaheen-languages",
-  "updatedAt": "2026-11-04T21:51:01.151Z",
+  "updatedAt": "2026-11-05T10:09:39.065Z",
   "languageCount": 100,
   "fullyCovered": 100,
   "incompletePacks": [],
@@ -20,58 +20,58 @@
   ],
   "score": 54,
   "notes": [
-    "الترجمة مش مكتملة: 10.3% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 273068 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط والأخبار الأساسية بس هي اللي مكتملة.",
+    "الترجمة مش مكتملة: 10.1% بس من نصوص الموقع مترجمة لكل اللغات (98 لغة غير العربي والإنجليزي، المكتمل منها 0) — 278701 نص × لغة لسه بيظهر للزائر بالإنجليزي. حزم المتجر والشريط والأخبار الأساسية بس هي اللي مكتملة.",
     "تقليل صارم للغة إلى عربي/إنجليزي في 2 موضع — راجع إن كان المقصود زوج بيانات {ar,en} أم لغة واجهة.",
-    "المترجم الذكي: 273068 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3690 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
+    "المترجم الذكي: 278701 نص × لغة لسه بالإنجليزي، والذكاء الاصطناعي غطّى 3690 — النهارده اتترجم 0 (الباقة خلصت — هيكمل بعد التجديد).",
     "قسم التصميم لقى نصوص إنجليزي ثابتة، ومكانها في الكود: «All perfume news» src/components/HomeHub.tsx:335، «Cosmetics» src/legal/jurisdictions.ts:198، «Cosmetics» src/legal/jurisdictions.ts:428، «Cosmetics» src/legal/jurisdictions.ts:569، «Community» src/community/CommunityApp.tsx:99، «Community» src/community/CommunityApp.tsx:180.",
     "لغات بلّغ عنها قسم التصميم بتتترجم الأول: be، ca، fa."
   ],
-  "translationCoverage": 10.3,
+  "translationCoverage": 10.1,
   "fullyTranslated": 0,
   "translation": {
-    "at": "2026-11-04T21:51:01.742Z",
+    "at": "2026-11-05T10:09:39.529Z",
     "status": "quota",
-    "remaining": 273068,
+    "remaining": 278701,
     "covered": 3690,
-    "total": 304486,
+    "total": 310170,
     "fullyTranslated": 0,
     "remainingByTier": {
       "1": 15719,
-      "2": 188013,
-      "3": 69336
+      "2": 193453,
+      "3": 69529
     },
     "worstLanguages": [
       {
         "lang": "my",
-        "remaining": 2940
+        "remaining": 2998
       },
       {
         "lang": "dz",
-        "remaining": 2940
+        "remaining": 2998
       },
       {
         "lang": "cs",
-        "remaining": 2938
+        "remaining": 2996
       },
       {
         "lang": "ur",
-        "remaining": 2938
+        "remaining": 2996
       },
       {
         "lang": "am",
-        "remaining": 2938
+        "remaining": 2996
       },
       {
         "lang": "ha",
-        "remaining": 2938
+        "remaining": 2996
       },
       {
         "lang": "yo",
-        "remaining": 2938
+        "remaining": 2996
       },
       {
         "lang": "zu",
-        "remaining": 2938
+        "remaining": 2996
       }
     ],
     "run": {
@@ -82,7 +82,7 @@
       "reviewed": false,
       "engines": [],
       "languages": [],
-      "resumeAt": "2026-11-05T08:05:00.000Z"
+      "resumeAt": "2026-11-06T08:05:00.000Z"
     },
     "rejectReasons": {},
     "rejectCounts": {
@@ -170,7 +170,7 @@
     }
   },
   "design": {
-    "at": "2026-11-04T21:51:01.151Z",
+    "at": "2026-11-05T10:09:39.065Z",
     "auditAt": "2026-11-04T06:07:22.242Z",
     "auditScore": 58,
     "priorityLanguages": [
@@ -237,7 +237,7 @@
       "Log in"
     ],
     "physicalDirection": {
-      "total": 300,
+      "total": 304,
       "top": [
         {
           "file": "src/components/AuthModal.tsx",
