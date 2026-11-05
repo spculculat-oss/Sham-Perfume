@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Download, Landmark, ShieldCheck } from 'lucide-react';
-import { adminRequest, send } from './adminApi';
+import { Copy, Download, KeyRound, Landmark, ShieldCheck } from 'lucide-react';
+import { AdminApiError, adminRequest, send } from './adminApi';
 import { T, TP } from './adminL10n';
 import { OPERATING_RULES, POLICY_PRINCIPLE, POLICY_VERSION, RESPONSE_TARGETS, RISK_LANES } from '../utils/platformPolicies';
 import { CHARTER, INSTITUTIONS, STATUS, emptyPlan, existingDepartments, nextStatuses, overdue, type GovernanceTask, type InstitutionId } from '../utils/platformGovernance';
@@ -8,6 +8,55 @@ import { CHARTER, INSTITUTIONS, STATUS, emptyPlan, existingDepartments, nextStat
 const card = 'rounded-2xl border border-stone-700 bg-stone-900 p-4';
 const field = 'mt-1 w-full rounded-xl border border-stone-600 bg-stone-950 p-2 text-stone-100';
 const action = 'rounded-xl border border-amber-700 px-3 py-2 text-sm text-amber-200 disabled:opacity-40';
+/** The Vercel page where the server secret is added (names only — the value never passes through the site). */
+export const VERCEL_ENV_URL = 'https://vercel.com/sham-de37/sham-perfume-49bf/settings/environment-variables';
+export const GOVERNANCE_ENV_NAME = 'SHAM_GOVERNANCE_OWNER_TOKEN';
+
+/** 32 random bytes from the browser's secure generator, as URL-safe text (43 characters). Never sent anywhere. */
+export function newGovernanceKey(): string {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  let text = '';
+  for (const b of bytes) text += String.fromCharCode(b);
+  return btoa(text).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+/** What the owner should do for each refusal from the server, in plain words. */
+export function governanceErrorText(e: unknown): string {
+  const code = e instanceof AdminApiError ? e.code : '';
+  if (code === 'OWNER_NOT_CONFIGURED') return T('الخادم لسه مفيهوش مفتاح الحوكمة (أو المفتاح أقصر من 24 حرف أو هو نفس كود الإدارة). اعمل مفتاح جديد من الزرار اللي تحت وحطه في Vercel.');
+  if (code === 'OWNER_REQUIRED') return T('المفتاح ده مش هو اللي على الخادم. اتأكد إنك نسخته كامل من غير مسافات، وإنك عملت إعادة نشر بعد ما حطيته في Vercel.');
+  if (code === 'RATE_LIMITED') return T('محاولات كتير غلط. استنى ربع ساعة وجرب تاني.');
+  if (code === 'GOVERNANCE_STORAGE_REQUIRED') return T('الخادم مش لاقي قاعدة البيانات. اتأكد إن قاعدة البيانات لسه متوصلة في Vercel (Storage).');
+  return e instanceof Error ? e.message : T('تعذر فتح سجل الحوكمة.');
+}
+
+/** Locked screen helper: makes a strong key on this device and walks the owner through adding it on the server. */
+function KeyMaker({ onUse }: { onUse: (key: string) => void }) {
+  const [key, setKey] = useState('');
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(key); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { setCopied(false); }
+  };
+  return <div className="space-y-3 rounded-xl border border-amber-900 bg-stone-950/60 p-3">
+    <div className="flex items-center gap-2 font-bold text-amber-200"><KeyRound className="h-4 w-4" />{T('أول مرة؟ اعمل مفتاح الحوكمة')}</div>
+    <p className="text-xs text-stone-300">{T('المفتاح بيتعمل على جهازك إنت بس، ومش بيتبعت لأي مكان. احفظه في مكان آمن (زي مدير كلمات السر)، ومتبعتوش لحد ولا في المحادثة.')}</p>
+    <button type="button" className={action} onClick={() => { setKey(newGovernanceKey()); setCopied(false); }}>{key ? T('اعمل مفتاح تاني بدله') : T('اعمل مفتاح جديد')}</button>
+    {key && <>
+      <div className="flex gap-2"><input readOnly dir="ltr" aria-label={T('المفتاح الجديد')} className={`${field} mt-0 font-mono text-xs`} value={key} onFocus={(e) => e.currentTarget.select()} /><button type="button" className={`${action} inline-flex items-center gap-1`} onClick={() => void copy()}><Copy className="h-4 w-4" />{copied ? T('اتنسخ') : T('انسخ')}</button></div>
+      <ol className="list-decimal space-y-1.5 ps-5 text-xs text-stone-300">
+        <li>{T('احفظ المفتاح عندك في مكان آمن الأول.')}</li>
+        <li>{T('افتح صفحة متغيرات البيئة في Vercel:')} <a className="text-sky-300 underline" href={VERCEL_ENV_URL} target="_blank" rel="noreferrer">{T('افتح Vercel')}</a></li>
+        <li>{T('دوس (Add New) — يعني إضافة جديد. في خانة الاسم (Key) اكتب:')} <code dir="ltr" className="rounded bg-stone-800 px-1 text-amber-200">{GOVERNANCE_ENV_NAME}</code></li>
+        <li>{T('في خانة القيمة (Value) الصق المفتاح، وسيب (Production) متعلّم، ودوس (Save) — يعني حفظ.')}</li>
+        <li>{T('من (Deployments) — يعني النشرات — افتح آخر نشرة ودوس (Redeploy) — يعني إعادة نشر — واستنى دقيقتين.')}</li>
+        <li>{T('ارجع هنا ودوس «استخدم المفتاح ده» وبعدين «فتح السجل الخاص».')}</li>
+      </ol>
+      <button type="button" className={action} onClick={() => onUse(key)}>{T('استخدم المفتاح ده')}</button>
+    </>}
+  </div>;
+}
+
 const blank = () => ({ title: '', institution: 'operations' as InstitutionId, responsible: '', due: '', acceptance: '', resources: '' });
 
 /** Owner-only server-backed workspace. The key and fetched data never persist in browser storage. */
@@ -27,7 +76,7 @@ export default function GovernancePanel() {
     try {
       const saved = await adminRequest<Saved>('/governance', { headers: { 'X-Sham-Owner': ownerKey } });
       setPlan(saved.plan); setRevision(saved.revision); setConnected(true);
-    } catch (e) { setConnected(false); setPlan(emptyPlan()); setError(e instanceof Error ? e.message : T('تعذر فتح سجل الحوكمة.')); }
+    } catch (e) { setConnected(false); setPlan(emptyPlan()); setError(governanceErrorText(e)); }
     finally { setBusy(false); }
   }
   async function command(body: Record<string, unknown>): Promise<boolean> {
@@ -57,6 +106,7 @@ export default function GovernancePanel() {
       <button disabled={busy || !ownerKey} className={action}>{busy ? T('جارٍ التحقق…') : T('فتح السجل الخاص')}</button>
     </form>
     {error && <p role="alert" className="text-red-200">{error}</p>}
+    <KeyMaker onUse={(key) => { setOwnerKey(key); setError(''); }} />
     <p className="text-xs text-stone-400">{T('الخدمة تتوقف بأمان إن لم يُجهّز مفتاح المالك وتخزين مركزي خاص. لا حفظ مؤقت ولا رجوع صامت للتخزين المحلي.')}</p>
   </section>;
   return <section className="space-y-4" aria-label={T('دولة المنصة')}>

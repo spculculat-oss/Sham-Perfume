@@ -265,7 +265,9 @@ export function createShamCore(options: CoreOptions = {}) {
     next();
   });
 
-  admin.use('/governance', createGovernanceRouter(store, env));
+  // The governance record needs a central database. `durable` is the core store when it is persistent, otherwise the
+  // community's database (Vercel → Storage → Neon) — so no separate SHAM_STORE switch is needed once that is connected.
+  admin.use('/governance', createGovernanceRouter(durable, env));
   admin.use('/finance', createFinanceRouter(finance, bank, sales));
   // «غرفة شاهين الخاصة»: the owner, Shaheen and the secretary only — nothing is stored on the server.
   admin.use('/owner-room', createOwnerRoomRouter({ env, fetch: options.fetch, health: runtime.health }));
