@@ -89,14 +89,14 @@ export const SALES_LESSONS: SalesLesson[] = [
   {
     id: 'platform-pricing', module: 'platform', titleAr: 'التسعير: ×1.5 وتقريب، والهامش مايتقالش للمورد', titleEn: 'Pricing: ×1.5 and rounding — the margin never leaves the store',
     handbook: ['pricing'], principles: ['value'],
-    ideaAr: 'سعر البيع = (سعر المورد + شحن وتجهيز ثابت) × 1.5 ويتقرب لأعلى لأقرب ٥ جنيه. الزائر يشوف سعر بلده وعملته ومعه الشحن. الهامش وسعر المورد للإدارة بس، وممنوع يتقال للمورد أو للعميل، وممنوع وعد بخصم مش موجود في صفحة الدفع. لما العميل يقول «غالي» بنشرح القيمة (سعر المل والبخة) ونعرض الأوفر لو موجود، بدون جدال.',
-    ideaEn: 'Selling price = (supplier price + fixed packing/shipping) × 1.5, rounded up to the next 5. Margin and supplier price stay with the owner and are never disclosed; no discount that checkout does not have. On “too expensive”, show value per ml and a cheaper road, never argue.',
-    drillAr: 'خد منتج بسعر مورد ٤٠٠ جنيه + ٢٥ شحن، احسب السعر بقاعدة المتجر بالورقة، وبعدين اكتب جملة قيمة من غير ما تذكر الهامش.',
-    drillEn: 'Take a product at 400 EGP supplier cost + 25 shipping, compute the store price on paper, then write a value line without mentioning margin.',
-    quiz: { qAr: 'منتج سعر مورده ٤٠٠ + ٢٥ شحن. السعر بقاعدة المتجر؟', qEn: 'Supplier 400 + 25 shipping. The store price?',
-      optionsAr: ['٦٣٥ جنيه', '٦٤٠ جنيه (بعد التقريب لأعلى ٥)', '٧٠٠ جنيه'],
-      optionsEn: ['635 EGP', '640 EGP (rounded up to 5)', '700 EGP'], correct: 1,
-      whyAr: '(٤٠٠ + ٢٥) × ١.٥ = ٦٣٧.٥، وبعد التقريب لأعلى لأقرب ٥ = ٦٤٠ جنيه.' },
+    ideaAr: 'سعر المنتج = تكلفة المورد + أي مصروف وصول وتجهيز ثابت للوحدة لو كان متسجلاً، ثم يطبق المحرك نسبة الـ50% على تكلفة الوحدة ويقرب السعر لأعلى لأقرب ٥ جنيه. شحن التوصيل للعميل يتحسب منفصلاً في الدفع وعلى العميل؛ مايتخصمش من نسبة الـ50%. سعر المورد والهامش للإدارة فقط، وسعر المنتج والشحن والعروض مايتغيروش من غير موافقة صاحب الموقع. ممنوع وعد بخصم مش موجود في صفحة الدفع. لما العميل يقول «غالي» بنشرح القيمة (سعر المل والبخة) ونعرض الأوفر لو موجود، بدون جدال.',
+    ideaEn: 'The product price uses the supplier cost plus any recorded fixed inbound/preparation cost per unit, then the engine applies the 50% rule and rounds up to the next 5. Customer delivery shipping is priced separately at checkout and paid by the customer; it is not deducted from the 50%. Product prices, shipping and offers never change without the owner’s approval. Never promise a discount absent from checkout. On “too expensive”, show value per ml and a cheaper option, never argue.',
+    drillAr: 'خد منتج تكلفة مورده ٤٠٠ جنيه ومصاريف وصول وتجهيز للوحدة ٢٥ جنيه، احسب سعر المنتج؛ وبعدها وضّح إن شحن التوصيل للعميل منفصل على العميل.',
+    drillEn: 'Take a product with 400 EGP supplier cost and 25 EGP fixed inbound/preparation cost per unit. Compute the product price, then state that customer delivery is separate and paid by the customer.',
+    quiz: { qAr: 'منتج تكلفته ٤٠٠ جنيه ومصاريف وصول وتجهيز ثابتة للوحدة ٢٥ جنيه. سعر المنتج قبل الشحن للعميل؟', qEn: 'A product costs 400 EGP plus 25 EGP fixed inbound/preparation cost. What is the product price before customer delivery?',
+      optionsAr: ['٦٣٥ جنيه', '٦٤٠ جنيه (بعد التقريب لأعلى ٥؛ شحن العميل منفصل)', '٧٠٠ جنيه'],
+      optionsEn: ['635 EGP', '640 EGP (rounded up to 5; customer delivery is separate)', '700 EGP'], correct: 1,
+      whyAr: '(٤٠٠ + ٢٥) × ١.٥ = ٦٣٧.٥، وبعد التقريب لأعلى لأقرب ٥ = ٦٤٠ جنيه؛ شحن التوصيل للعميل مبلغ منفصل عليه، مش داخل نسبة الـ50%.' },
   },
   {
     id: 'platform-money', module: 'platform', titleAr: 'بنك شام: البيع مايتسجلش غير لما تشوف الفلوس', titleEn: 'Sham Bank: a sale is booked only after you see the money',
@@ -304,7 +304,7 @@ export function salesCurriculumBrief(max = 900): string {
   const text = [
     `منهج إدارة المبيعات (${SALES_LESSONS.length} درساً) — ${modules}.`,
     `مصادره: «كتيب روبوتات شام» (أقسام: ${[...new Set(SALES_LESSONS.flatMap((l) => l.handbook))].join('، ')}) و«علم البيع» (${SALES_PRINCIPLES.length} مبدأ، ${SALES_PITFALLS.length} فخ).`,
-    `قواعد ثابتة: السعر ×1.5 وتقريب لأعلى ٥ · الهامش مايتقالش · البيع مايتسجلش غير بعد رؤية الفلوس في بنك شام · مفيش رقم متخمن ولا استعجال مزيف ولا بيانات تواصل في سجل المبيعات.`,
+    `قواعد ثابتة: سعر المنتج = تكلفة الوحدة المسجلة ×1.5 ويتقرب لأعلى لأقرب ٥؛ شحن التوصيل للعميل منفصل وعلى العميل، ولا يُخصم من الـ50% · السعر والشحن والعروض لا تتغير بلا موافقة صاحب الموقع · الهامش مايتقالش · البيع مايتسجلش غير بعد رؤية الفلوس في بنك شام · مفيش رقم متخمن ولا استعجال مزيف ولا بيانات تواصل في سجل المبيعات.`,
     `الروبوت المسؤول: «${BOTS.find((b) => b.id === 'sales')?.nameAr || 'مدير المبيعات'}» — درس يومي، تقرير كل ٦ ساعات، ومكتبه قسم داخل «بنك شام».`,
   ].join('\n');
   return text.length <= max ? text : `${text.slice(0, max - 1)}…`;

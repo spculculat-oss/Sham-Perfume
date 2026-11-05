@@ -12,6 +12,7 @@ import type { SeoState } from '../../src/seo/agentState';
 import type { CensusReport } from '../../src/utils/platformCensus';
 import type { LabAggregate } from '../../src/utils/labSignals';
 import type { InsightProfile } from '../../src/utils/visitorInsights';
+import type { VisitorSuggestion } from '../../src/utils/visitorVoice';
 import type { Deal as SalesDeal } from '../../src/sales/pipeline';
 import type { SalesTarget } from '../../src/sales/targets';
 import type { StudyResult as SalesStudyRecord } from '../../src/sales/playbook';
@@ -340,6 +341,8 @@ export interface Collections {
   insightProfiles: InsightProfile;
   /** «نبض الدول»: anonymous counts per country and month (no visitor id, no text). */
   insightPulse: CountryPulse;
+  /** Voluntary visitor suggestions; scrubbed text only, no visitor/account id or contact details. */
+  visitorSuggestions: VisitorSuggestion;
   /** «إدارة المبيعات» inside «بنك شام»: opportunities by label only (no contacts), monthly targets, study answers, audit. */
   salesDeals: SalesDeal;
   salesTargets: SalesTarget;

@@ -3,6 +3,7 @@ import { contactEmail, contactMailto } from '../config/contact';
 import { Newspaper, Sparkles } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { LText, makeT, fmt } from '../لغات/localize';
+import VisitorSuggestionBox from './VisitorSuggestionBox';
 
 
 const S = {
@@ -243,6 +244,7 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="text-[10px] text-stone-500">
               {currentLang === 'ar' ? 'النص العربي هو المرجع الملزم عند التعارض.' : 'Arabic is binding on conflict.'}
             </div>
+            <div className="pt-2"><VisitorSuggestionBox currentLang={currentLang} /></div>
           </div>
         </div>
 

@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-11-04",
+  "subject": "Optional visitor suggestions: privacy and security safeguards",
+  "specialist": {
+    "id": "specialist_security",
+    "name": "Eng. Seif Al-Amn — cybersecurity specialist"
+  },
+  "method": "In-repository Specialists Board, offline local mode, no external AI engine or web research.",
+  "consultation": {
+    "question": "ما هي التشريعات والخصوصية عند جمع بيانات الزوار؟",
+    "source": "Academy lesson: التشريعات والخصوصية",
+    "specialistResponse": "التشريعات والخصوصية تحدد واجباتك القانونية: موافقة المستخدم، وحدود الاحتفاظ بالبيانات، والإبلاغ عن الاختراقات، وحقوق أصحاب البيانات. الامتثال جزء من الأمن لا مقابل له.",
+    "specialistCaveat": "The specialist agent explicitly marked this as a near miss rather than an exact answer and recorded a study gap. Its recorded flag was produced against a disposable test repository, not a production store.",
+    "disposition": "Used only as general design guidance for explicit submission agreement, limited retention, and deletion controls; not treated as legal advice, security certification, or approval of this implementation."
+  },
+  "implementationChecks": [
+    "Suggestions are optional and separately confirmed; analytics consent is not required.",
+    "No visitor or account identifier is accepted into the stored record; no name or contact field is presented.",
+    "Emails, long numbers and order references are redacted; secrets and explicit personal-detail markers are refused.",
+    "Topic tags are local keywords only; suggestion text is not sent to an AI engine and no emotion profile is created.",
+    "Administrative review is manual; suggestions do not automatically change recommendations, prices or offers.",
+    "Suggestions expire at 180 days; long-running hosts clean them daily, while serverless hosts purge expired entries on the first later request. The administration can also delete a suggestion at any time."
+  ]
+}

@@ -40,6 +40,21 @@ test('every registered tool has a probe and a unique id', () => {
   for (const t of AI_TOOLS) assert.equal(typeof PROBES[t.id], 'function', `${t.id} has no probe`);
 });
 
+test('the visitor-suggestions probe checks only metadata and never sends submitted text to Shaheen', async () => {
+  const privateText = 'PRIVATE-VISITOR-SUGGESTION-SENTINEL';
+  const fetcher: typeof fetch = async () => new Response(JSON.stringify({
+    storage: { persistent: true }, retentionDays: 180, summary: { total: 1, new: 1 },
+    items: [{ id: 'suggestion-test', text: privateText, topics: ['support'] }],
+  }), { status: 200, headers: { 'content-type': 'application/json' } });
+  const [result] = await PROBES.visitor_suggestions({
+    site: 'https://example.test', fetch: fetcher, run: 0, adminToken: 'test-token', now: Date.now(),
+    liveDir: new URL('../src/data/live/', import.meta.url),
+  });
+  assert.equal(result.ok, true);
+  assert.doesNotMatch(JSON.stringify(result), new RegExp(privateText));
+  assert.match(result.answer, /لم تُقرأ أو تُرسل نصوص الاقتراحات/);
+});
+
 test('automatic checks catch empty, broken, leaking, wrong-language and slow answers', () => {
   assert.deepEqual(inspectAnswer(GOOD_AR, { language: 'ar', ms: 3000 }), []);
   assert.ok(inspectAnswer('', { language: 'ar' })[0].severe);

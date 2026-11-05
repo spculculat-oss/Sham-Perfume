@@ -77,8 +77,8 @@ export const PRICE_MARKUP = 1.5;
 export const priceInEgp = (supplierPrice: number, rate: number) => Math.round(supplierPrice * rate * 100) / 100;
 /**
  * The merchant's price rule (repository variables, all optional — the defaults are the scenario's ×1.5):
- * cost = supplier price in EGP + a fixed shipping/handling cost per bottle; profit = cost × (markup − 1),
- * but never more than maxProfitEgp; our price = cost + profit, rounded up to a clean 5 EGP.
+ * cost = supplier price in EGP + any recorded fixed inbound/preparation cost per bottle (not customer delivery);
+ * profit = cost × (markup − 1), but never more than maxProfitEgp; our price = cost + profit, rounded up to a clean 5 EGP.
  */
 export interface PriceRule { markup?: number; shippingEgp?: number; maxProfitEgp?: number }
 export const ourPriceOf = (supplierEgp: number, rule: number | PriceRule = PRICE_MARKUP) => {

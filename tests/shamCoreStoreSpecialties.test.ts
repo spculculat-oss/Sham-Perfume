@@ -78,9 +78,10 @@ test('the store documents are seeded (v3) and explain the real buying rules', ()
     assert.match(topic.id, /^kb-store-/, 'store documents use their own prefix so upgrades stay surgical');
     assert.ok(storeKnowledge().some((d) => d.id === topic.id && d.serviceId === 'store'));
   }
-  // Upgrading an existing store adds the store docs only — nothing the merchant edited is rewritten.
+  // Upgrading v2 stores adds store docs, while v3 stores receive the separate visitor-suggestions guide.
   const added = knowledgeSeedAdditions(2).map((d) => d.id);
-  assert.ok(added.length > 0 && added.every((id) => id.startsWith('kb-store-')), added.join(' · '));
+  assert.ok(added.some((id) => id.startsWith('kb-store-')), added.join(' · '));
+  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions']);
   const text = STORE_PLAYBOOK.map((t) => t.body.ar).join('\n');
   for (const fact of ['إنستاباي', 'UN1266', 'SH-', 'الإرجاع']) assert.ok(text.includes(fact), `the store playbook lost “${fact}”`);
 });

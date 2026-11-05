@@ -7,7 +7,7 @@
 export type AiToolId =
   | 'shaheen_chat' | 'sham_assistant' | 'specialists_agent' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
   | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school' | 'seo_agent' | 'shaheen_council' | 'finance_agent'
-  | 'contracts_agent' | 'design_agent' | 'language_agent' | 'owner_room' | 'platform_owner_agent';
+  | 'contracts_agent' | 'design_agent' | 'language_agent' | 'owner_room' | 'platform_owner_agent' | 'visitor_suggestions';
 
 export interface AiToolDef {
   id: AiToolId;
@@ -123,6 +123,12 @@ export const AI_TOOLS: AiToolDef[] = [
     id: 'platform_owner_agent', nameAr: 'وكيل ملك المنصة', nameEn: 'Platform Owner Agent',
     descriptionAr: 'وكيل ذكي يفهم ويستوعب أوامر صاحب المنصة (المنفردة والمجمّعة وبالعامية المصرية ومع سياق المحادثة) ويراجعها على دستور وقوانين دولة المنصة وينفذها في روبوت دولة المنصة (إيقاف/إرجاع/تشغيل فوري للروبوتات، إضافة وإلغاء القوانين، فتح مهام التطوير المعتمدة، وتقارير الحالة)، مع بديل محلي كامل يعمل بلا انقطاع وتحت رقابة دولة المنصة.',
     sources: ['server/stateAgent.ts'], routes: ['/api/admin/state-agent'], acceptsGuidance: true,
+  },
+  {
+    id: 'visitor_suggestions', nameAr: 'صوت الزائر — استقبال الاقتراحات وتحليل موضوعاتها', nameEn: 'Visitor Voice — Suggestions & Topic Analysis',
+    descriptionAr: 'قناة اختيارية للاقتراحات: تنقّي النص وترفض الأسرار، وتضع موضوعات محلية بالكلمات المفتاحية فقط. الإدارة تراجع الاقتراحات يدويًا؛ لا تجمع مشاعر أو هوية زائر، ولا ترسل النص لمحرك ذكاء، ولا تغيّر الترشيحات أو الأسعار أو العروض تلقائيًا.',
+    sources: ['src/utils/visitorVoice.ts', 'server/insights.ts', 'src/components/VisitorSuggestionBox.tsx', 'src/admin/VisitorInsightsPanel.tsx'],
+    routes: ['/api/insights/suggestions', '/api/admin/insights/suggestions'], acceptsGuidance: false,
   },
 ];
 
