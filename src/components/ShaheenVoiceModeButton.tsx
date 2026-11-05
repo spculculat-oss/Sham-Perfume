@@ -10,6 +10,8 @@ type VoiceModeState = ReturnType<typeof useShaheenVoiceMode>;
 const COPY = {
   start: { ar: 'ابدأ التحدث مع شاهين', en: 'Start voice chat with Shaheen' },
   stop: { ar: 'إنهاء وضع التحدث', en: 'Stop voice chat' },
+  voice_short: { ar: 'صوت', en: 'Voice' },
+  stop_short: { ar: 'إيقاف', en: 'Stop' },
   unsupported: { ar: 'وضع التحدث مش مدعوم في المتصفح ده. اكتب سؤالك واستخدم زر قراءة الرد.', en: 'Voice chat is not supported in this browser. Type your question and use the read-aloud button.' },
   disclosure_title: { ar: 'قبل ما تبدأ وضع التحدث', en: 'Before starting voice chat' },
   disclosure_body: { ar: 'لازم تسمح للمتصفح باستخدام الميكروفون. ممكن المتصفح أو خدمات التعرّف على الكلام أو النطق تعالج الصوت أو النص حسب إعداداتها وسياساتها؛ موقع شام نفسه لا يسجّل ملف الصوت ولا يرفعه. الكلام بعد تحويله لنص يدخل محادثة شاهين المعتادة، ويخضع لنفس معالجتها وحفظها.', en: 'You will need to allow microphone access. Your browser or its speech-recognition or speech-synthesis services may process audio or text under their own settings and policies; Sham does not record or upload the audio file. The transcript goes into your usual Shaheen conversation and follows the same processing and retention.' },
@@ -66,13 +68,15 @@ export function ShaheenVoiceModeButton({ language, voice, disabled = false }: {
           aria-label={voice.active ? L('stop') : L('start')}
           aria-pressed={voice.active}
           title={voice.active ? L('stop') : voice.supported ? L('start') : L('unsupported')}
-          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
+          data-testid="shaheen-voice-mode-button"
+          className={`flex h-10 min-w-10 shrink-0 items-center justify-center gap-1.5 rounded-full border px-2.5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
             voice.active
               ? 'border-rose-300 bg-rose-50 text-rose-700 hover:bg-rose-100'
               : 'border-stone-200 bg-white text-stone-600 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-800'
           } disabled:cursor-not-allowed disabled:opacity-45`}
         >
           {voice.active ? <MicOff className="h-4 w-4" aria-hidden="true" /> : <Mic className="h-4 w-4" aria-hidden="true" />}
+          <span className="whitespace-nowrap text-[11px] font-semibold">{L(voice.active ? 'stop_short' : 'voice_short')}</span>
         </button>
         {voice.active && (
           <div className="absolute bottom-[calc(100%+0.65rem)] end-0 z-30 w-64 max-w-[80vw] rounded-2xl border border-amber-200 bg-white p-3 text-xs text-stone-700 shadow-xl" dir={rtl ? 'rtl' : 'ltr'} aria-live="polite" role="status">
