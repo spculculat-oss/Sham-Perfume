@@ -1,8 +1,8 @@
 {
  "version": 1,
- "updatedAt": "2026-11-05T07:16:46.721Z",
+ "updatedAt": "2026-11-05T09:37:26.827Z",
  "sources": {
-  "catalogAt": "2026-11-05T06:43:18.062Z",
+  "catalogAt": "2026-11-05T09:32:48.597Z",
   "total": 1212,
   "published": 1161,
   "liveStock": true,
@@ -44,7 +44,7 @@
   },
   {
    "sku": "AFN-870",
-   "nameAr": "9 صباحاً بور فيم من أفنان",
+   "nameAr": "9 صباحاً للنساء من أفنان",
    "brand": "Afnan",
    "priority": "normal",
    "units30": 0,
@@ -123,22 +123,6 @@
    "reasonAr": "نفد"
   },
   {
-   "sku": "ARM-888",
-   "nameAr": "أرماف أوديسي أكوا إيديشن",
-   "brand": "Armaf",
-   "priority": "normal",
-   "units30": 0,
-   "reasonAr": "نفد"
-  },
-  {
-   "sku": "ARM-868",
-   "nameAr": "أرماف إمبريال",
-   "brand": "Armaf",
-   "priority": "normal",
-   "units30": 0,
-   "reasonAr": "نفد"
-  },
-  {
    "sku": "ARM-753",
    "nameAr": "أرماف بيتش بارتي",
    "brand": "Armaf",
@@ -173,14 +157,6 @@
   {
    "sku": "ARM-480",
    "nameAr": "أرماف كلوب دي نوي إنتنس إصدار خاص للرجال",
-   "brand": "Armaf",
-   "priority": "normal",
-   "units30": 0,
-   "reasonAr": "نفد"
-  },
-  {
-   "sku": "ARM-800",
-   "nameAr": "أرماف كلوب دي نوي سيلاج",
    "brand": "Armaf",
    "priority": "normal",
    "units30": 0,
@@ -259,8 +235,16 @@
    "reasonAr": "نفد"
   },
   {
+   "sku": "AFN-824",
+   "nameAr": "أفنان سوبريمسي إنسنس",
+   "brand": "Afnan",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
    "sku": "GRA-817",
-   "nameAr": "أفينتو مزيل عرق بخاخ للجسم من جراندور للرجال",
+   "nameAr": "أفينتو مزيل عرق للجسم من جراندور",
    "brand": "Grandeur",
    "priority": "normal",
    "units30": 0,
@@ -276,7 +260,7 @@
   },
   {
    "sku": "MAI-805",
-   "nameAr": "أكيلو ميسون الحمراء",
+   "nameAr": "أكيلو بور أوم من ميزون الحمبرا",
    "brand": "Maison Alhambra",
    "priority": "normal",
    "units30": 0,
@@ -395,8 +379,16 @@
    "reasonAr": "نفد"
   },
   {
+   "sku": "ARM-888",
+   "nameAr": "أوديسي أكوا إديشن من أرماف",
+   "brand": "Armaf",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
    "sku": "ARM-859",
-   "nameAr": "أوديسي أوم وايت إديشن من أرماف",
+   "nameAr": "أوديسي أوم وايت من أرماف",
    "brand": "Armaf",
    "priority": "normal",
    "units30": 0,
@@ -404,7 +396,7 @@
   },
   {
    "sku": "ARM-815",
-   "nameAr": "أوديسي تايرانت سبيشال إديشن أرماف",
+   "nameAr": "أوديسي تايرانت إصدار خاص من أرماف",
    "brand": "Armaf",
    "priority": "normal",
    "units30": 0,
@@ -412,7 +404,7 @@
   },
   {
    "sku": "ARM-860",
-   "nameAr": "أوديسي كاندي سبيشال إديشن من أرماف",
+   "nameAr": "أوديسي كاندي من أرماف",
    "brand": "Armaf",
    "priority": "normal",
    "units30": 0,
@@ -428,7 +420,7 @@
   },
   {
    "sku": "ARM-811",
-   "nameAr": "أوديسي ميغا مان أرماف",
+   "nameAr": "أوديسي ميجا مان من أرماف",
    "brand": "Armaf",
    "priority": "normal",
    "units30": 0,
@@ -499,17 +491,25 @@
    "reasonAr": "نفد"
   },
   {
-   "sku": "MAI-834",
-   "nameAr": "إثنيك عود من ميصون الحمراء",
-   "brand": "Maison Alhambra",
+   "sku": "GRA-579",
+   "nameAr": "إستنكت نوار مزيل عرق بخاخ للجسم من غراندور",
+   "brand": "Grandeur",
    "priority": "normal",
    "units30": 0,
    "reasonAr": "نفد"
   },
   {
-   "sku": "GRA-579",
-   "nameAr": "إستنكت نوار مزيل عرق بخاخ للجسم من غراندور",
-   "brand": "Grandeur",
+   "sku": "LAT-266",
+   "nameAr": "إعجاز من لطافة للرجال",
+   "brand": "Lattafa",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "RUE-675",
+   "nameAr": "إكزوتيك هيريتج من رو بروكا",
+   "brand": "Rue Broca",
    "priority": "normal",
    "units30": 0,
    "reasonAr": "نفد"
