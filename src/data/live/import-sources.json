@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-05T07:29:43.971Z",
+ "updatedAt": "2026-11-05T07:58:44.743Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -7371,6 +7371,17 @@
  ],
  "runs": [
   {
+   "at": "2026-11-05T07:58:44.743Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
    "at": "2026-11-05T07:29:43.971Z",
    "mode": "self",
    "found": 0,
@@ -7715,17 +7726,6 @@
   },
   {
    "at": "2026-10-31T01:08:16.244Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-30T18:56:24.503Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
