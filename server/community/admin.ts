@@ -6,6 +6,7 @@
 import type { Row } from './db';
 import { newId } from './crypto';
 import { SITE_STORE, USER_COLUMNS, USER_FROM, clean, fail, publicUser, type Ctx } from './service';
+import { mailDomain } from './notify';
 
 const iso = (v: unknown) => (v ? new Date(v as string).toISOString() : null);
 
@@ -274,4 +275,31 @@ export async function readConversation(ctx: Ctx, conversationId: string, reason:
 export async function auditLog(ctx: Ctx) {
   const rows = await ctx.sql.query(`SELECT * FROM audit ORDER BY id DESC LIMIT 300`);
   return rows.map((r) => ({ id: String(r.id), actor: r.actor, action: r.action, target: r.target, detail: r.detail, at: iso(r.created_at) }));
+}
+
+/* ------------------------------------------- «بريد شام» setup ------------------------------------------- */
+
+/**
+ * The «بريد شام» domain & internet-space mechanism, wide open for the administration:
+ * which provider carries outgoing letters, whether the inbound hook token is set, the hook path
+ * (the platform's own address on the internet for receiving — the UI turns it into the full URL
+ * via the engine's origin), and the owned mail domain behind «handle@domain» addresses.
+ * Honest by design: an unset piece says so instead of pretending. The raw inbound token goes only
+ * to the boss (this route) so the hook can be wired into Resend / Cloudflare — and it is audited.
+ */
+export async function mailSetup(ctx: Ctx) {
+  const env = ctx.env ?? process.env;
+  const domain = mailDomain(env);
+  const provider = env.RESEND_API_KEY?.trim() ? 'resend' : env.SENDGRID_API_KEY?.trim() ? 'sendgrid' : env.SHAM_WEBHOOK_URL?.trim() ? 'webhook' : null;
+  const token = (env.SHAM_MAIL_INBOUND_TOKEN || '').trim();
+  const configured = token.length >= 12;
+  await audit(ctx, 'mail_setup_view', 'بريد شام');
+  return {
+    /** The domain members' internet addresses answer on; '' when none is owned yet. */
+    domain,
+    ready: Boolean(domain),
+    example: domain ? `handle@${domain}` : '',
+    outbound: { ready: Boolean(provider), provider },
+    inbound: { configured, token: configured ? token : '', path: '/api/community/mail/inbound' },
+  };
 }

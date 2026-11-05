@@ -345,6 +345,7 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   /* ---------------------------------------------- administration ---------------------------------------------- */
   const A = '/admin/community';
   router.get(`${A}/overview`, boss(async (ctx) => ({ ...(await admin.overview(ctx)), store: ctx.sql.kind })));
+  router.get(`${A}/mail/setup`, boss((ctx) => admin.mailSetup(ctx)));
   router.get(`${A}/users`, boss((ctx, req) => admin.users(ctx, req.query)));
   router.get(`${A}/users/:id`, boss((ctx, req) => admin.userFile(ctx, p(req, 'id'))));
   router.post(`${A}/users/:id/status`, boss(async (ctx, req) => { await admin.setUserStatus(ctx, p(req, 'id'), req.body?.status, String(req.body?.note || '')); }));

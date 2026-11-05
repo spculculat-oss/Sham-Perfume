@@ -12,6 +12,7 @@ import * as svc from '../server/community/service';
 import * as social from '../server/community/social';
 import * as chat from '../server/community/messenger';
 import * as mail from '../server/community/mail';
+import * as admin from '../server/community/admin';
 import { createCommunity, createCommunityRouter } from '../server/community/router';
 import type { FxTable } from '../src/utils/pricing';
 
@@ -333,6 +334,34 @@ test('my address: the personal «بريد شام» identity — internal always,
   assert.equal(off.ready, false);
 });
 
+test('admin mail setup: the «بريد شام» domain mechanism reports itself honestly', async () => {
+  // Fully wired: owned domain + inbound token + a provider key
+  const full = await admin.mailSetup({ ...ctx, env: { SHAM_MAIL_DOMAIN: 'mail.shamperfumes.com', SHAM_MAIL_INBOUND_TOKEN: 'inbound-secret-token-1', RESEND_API_KEY: 're_test' } });
+  assert.equal(full.ready, true);
+  assert.equal(full.domain, 'mail.shamperfumes.com');
+  assert.equal(full.example, 'handle@mail.shamperfumes.com');
+  assert.equal(full.outbound.ready, true);
+  assert.equal(full.outbound.provider, 'resend');
+  assert.equal(full.inbound.configured, true);
+  assert.equal(full.inbound.token, 'inbound-secret-token-1');
+  assert.equal(full.inbound.path, '/api/community/mail/inbound');
+  // Bare server: nothing invented, every gap says so
+  const bare = await admin.mailSetup(ctx);
+  assert.equal(bare.ready, false);
+  assert.equal(bare.domain, '');
+  assert.equal(bare.example, '');
+  assert.equal(bare.outbound.ready, false);
+  assert.equal(bare.outbound.provider, null);
+  assert.equal(bare.inbound.configured, false);
+  assert.equal(bare.inbound.token, '', 'the raw token never leaks when unset');
+  // A short token is not a token
+  const weak = await admin.mailSetup({ ...ctx, env: { SHAM_MAIL_INBOUND_TOKEN: 'short' } });
+  assert.equal(weak.inbound.configured, false);
+  // every view is accountable
+  const log = await admin.auditLog(ctx);
+  assert.ok(log.some((a) => a.action === 'mail_setup_view'), 'reading the setup is audited');
+});
+
 test('HTTP: /api/community/mail end-to-end — sign-up seeds the welcome mail, members exchange letters', async () => {
   await withApi({ SHAM_DATA_KEY: KEY, SHAM_ADMIN_TOKEN: 'admin-token-for-tests', SHAM_MAIL_INBOUND_TOKEN: 'inbound-secret-token-1', SHAM_MAIL_DOMAIN: 'mail.shamperfumes.com' }, async (base) => {
     const senderEmail = email('httpsender');
@@ -377,6 +406,16 @@ test('HTTP: /api/community/mail end-to-end — sign-up seeds the welcome mail, m
     const after2 = await call(base, '/community/mail?folder=inbox', { token });
     assert.ok(after2.data.items.some((m: any) => m.subject === 'إشعار رسمي' && m.kind === 'system'));
     assert.equal((await call(base, '/community/mail/trash/empty', { token, body: {} })).status, 200);
+
+    // the administration reads its «بريد شام» mechanism over the boss route
+    const setup = await call(base, '/admin/community/mail/setup', { token: 'admin-token-for-tests' });
+    assert.equal(setup.status, 200);
+    assert.equal(setup.data.domain, 'mail.shamperfumes.com');
+    assert.equal(setup.data.ready, true);
+    assert.equal(setup.data.inbound.configured, true);
+    assert.equal(setup.data.outbound.ready, false, 'no provider key in this harness — said honestly');
+    assert.equal((await call(base, '/admin/community/mail/setup', { token })).status, 401, 'a member session never reads the setup');
+    assert.equal((await call(base, '/admin/community/mail/setup')).status, 401, 'guests neither');
 
     // the provider's inbound hook: token-gated, then letters land as «external»
     const noToken = await call(base, '/community/mail/inbound', { body: { from: 'a@b.co', to: ['httpsender@mail.shamperfumes.com'], subject: 'x', text: 'y' } });
