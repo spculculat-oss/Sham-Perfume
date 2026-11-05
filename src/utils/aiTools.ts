@@ -40,8 +40,8 @@ export const AI_TOOLS: AiToolDef[] = [
   },
   {
     id: 'shaheen_chat', nameAr: 'شات الخبير شاهين', nameEn: 'Master Shahin chat',
-    descriptionAr: 'المحادثة العائمة وصفحة خبير المعمل: تصميم التركيبات، الحسابات، التعتيق، التخفيف، مع روابط الأدوات والوسائط.',
-    sources: ['server/shaheen.ts'], routes: ['/api/chat'], acceptsGuidance: true,
+    descriptionAr: 'المحادثة العائمة وصفحة خبير المعمل: تصميم التركيبات والحسابات، كتابةً أو بوضع تحدث اختياري يستخدم التعرف على الكلام وقراءة الرد في المتصفح. النص المفرغ يمر بمسار المحادثة الحالي؛ لا يوجد مسار ذكاء أو رفع صوت جديد.',
+    sources: ['server/shaheen.ts', 'src/hooks/useShaheenVoiceMode.ts', 'src/utils/shaheenVoice.ts', 'src/components/ShaheenVoiceModeButton.tsx'], routes: ['/api/chat'], acceptsGuidance: true,
   },
   {
     id: 'sham_assistant', nameAr: 'مساعد شام للخدمات', nameEn: 'Sham services assistant',

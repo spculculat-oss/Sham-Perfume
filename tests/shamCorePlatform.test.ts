@@ -45,6 +45,8 @@ test('the seed ships a document for each platform feature, including the ones ad
   assert.match(docs.get('kb-platform-molecule-studio')!.tags.join(' '), /molecule studio/i);
   assert.match(docs.get('kb-platform-suggestions')!.content, /180 يوم/);
   assert.match(docs.get('kb-platform-suggestions')!.content, /لا.*مشاعر|مشاعر.*لا/);
+  assert.match(docs.get('kb-platform-shaheen-voice')!.content, /المتصفح|التعرف على الكلام/);
+  assert.match(docs.get('kb-platform-shaheen-voice')!.content, /لا يسجل أو يرفع/);
   // The model prompt gets the live map and the real shipping table, never a copied list.
   assert.match(platformCatalog('en'), /Molecule Studio/);
   assert.match(platformCatalog('ar'), /حاسبة التركيز/);
@@ -80,15 +82,30 @@ test('an existing store is upgraded once: new guides arrive, edits survive, dele
   assert.equal((await restarted.knowledge()).find((d) => d.id === 'kb-platform-books'), undefined, 'a second boot does not re-add');
 });
 
+test('a v4 store receives only the new voice guide without overwriting merchant edits', async () => {
+  const store = new MemoryStore();
+  await store.put('settings', 'core', { ...defaultSettings(), id: 'core', knowledgeSeedVersion: 4 });
+  const editedSuggestions = { ...defaultKnowledge().find((doc) => doc.id === 'kb-platform-suggestions')!, content: 'تعديل كتبه التاجر' };
+  await store.put('knowledge', editedSuggestions.id, editedSuggestions);
+
+  const repo = new Repository(store, {});
+  await repo.ready();
+  const docs = await repo.knowledge();
+  assert.ok(docs.some((doc) => doc.id === 'kb-platform-shaheen-voice'));
+  assert.equal(docs.find((doc) => doc.id === 'kb-platform-suggestions')!.content, 'تعديل كتبه التاجر');
+  assert.equal((await store.get('settings', 'core'))!.knowledgeSeedVersion, KNOWLEDGE_SEED_VERSION);
+});
+
 test('knowledgeSeedAdditions only lists what a given version introduced', () => {
   const fresh = knowledgeSeedAdditions(1);
   assert.ok(fresh.length >= 12);
   assert.ok(fresh.every((d) => d.id.startsWith('kb-platform-') || d.id.startsWith('kb-store-')), 'only the guides added after v1');
   assert.ok(fresh.some((d) => d.id.startsWith('kb-platform-')), 'the platform guide is in the upgrade');
   assert.deepEqual(knowledgeSeedAdditions(KNOWLEDGE_SEED_VERSION), []);
-  // Existing v2 stores get the v3 store guide; v3 stores receive the newly added v4 suggestion guide only.
+  // Existing v2 stores get the v3 store guide; v3 stores get the v4 suggestions and v5 voice guides.
   assert.ok(knowledgeSeedAdditions(2).some((d) => d.id.startsWith('kb-store-')), 'v3 adds the store guide');
-  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions'], 'v4 adds the visitor-suggestions guide');
+  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions', 'kb-platform-shaheen-voice']);
+  assert.deepEqual(knowledgeSeedAdditions(4).map((d) => d.id), ['kb-platform-shaheen-voice'], 'v5 adds the Shaheen voice-chat guide');
 });
 
 test('the router recognises platform questions and never reads an English word as an order reference', () => {
@@ -107,6 +124,8 @@ test('the router recognises platform questions and never reads an English word a
     ['how do I sign in with a passkey', 'account'],
     ['إزاي أبعت اقتراح للمنصة؟', 'visitor_suggestions'],
     ['how do I send feedback?', 'visitor_suggestions'],
+    ['إزاي أتكلم مع شاهين بصوت؟', 'shaheen_voice'],
+    ['how do I use Shaheen voice chat?', 'shaheen_voice'],
     ['دليل المنصة', undefined],
     ['إيه الجديد في المنصة؟', undefined],
   ];
@@ -150,6 +169,12 @@ test('a platform question is answered directly, in the visitor’s language, wit
   assert.ok(feedback.citations.some((c) => c.id === 'kb-platform-suggestions'));
   assert.equal(feedback.actions.some((a) => a.type === 'open_tab'), false, 'the footer form has no tab to open');
 
+  const voice = await bot.chat({ message: 'إزاي أتكلم مع شاهين بصوت؟', visitorId: visitor, language: 'ar' });
+  assert.match(voice.reply, /وضع التحدث/);
+  assert.match(voice.reply, /الميكروفون/);
+  assert.ok(voice.actions.some((a) => a.type === 'open_tab' && a.tab === 'master_ai'));
+  assert.ok(voice.citations.some((c) => c.id === 'kb-platform-shaheen-voice'));
+
   // Platform questions are not knowledge gaps: the guide always has an answer.
   assert.deepEqual(await repo.gaps(), []);
 });
@@ -159,7 +184,7 @@ test('the platform overview names the current tools instead of guessing', async 
   const bot = new Orchestrator(repo, { env: {} });
   const out = await bot.chat({ message: 'دليل المنصة', visitorId: visitor, language: 'ar' });
   assert.equal(out.intent, 'platform_help');
-  for (const name of ['حاسبة التركيز', 'معمل الجزيئات', 'مكتبة الكتب', 'مجتمع شام', 'المتجر']) {
+  for (const name of ['حاسبة التركيز', 'معمل الجزيئات', 'وضع التحدث مع شاهين', 'مكتبة الكتب', 'مجتمع شام', 'المتجر']) {
     assert.match(out.reply, new RegExp(name));
   }
   assert.ok(out.citations.some((c) => c.id === 'kb-platform-guide'));
