@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-05T07:47:57.018Z",
+ "updatedAt": "2026-11-05T09:43:41.706Z",
  "nodes": [
   {
    "id": "brand:Afnan",
@@ -6626,6 +6626,18 @@
    "id": "lesson:tool-store_import-dev",
    "kind": "lesson",
    "labelAr": "طرق تطوير الاستيراد",
+   "ref": "scripts/shaheen-school/curriculum.ts"
+  },
+  {
+   "id": "lesson:tool-visitor_suggestions-about",
+   "kind": "lesson",
+   "labelAr": "مجال صوت الزائر",
+   "ref": "scripts/shaheen-school/curriculum.ts"
+  },
+  {
+   "id": "lesson:tool-visitor_suggestions-dev",
+   "kind": "lesson",
+   "labelAr": "طرق تطوير صوت الزائر",
    "ref": "scripts/shaheen-school/curriculum.ts"
   },
   {
@@ -18656,6 +18668,12 @@
    "id": "topic:tool-store_import",
    "kind": "topic",
    "labelAr": "tool-store_import",
+   "ref": "scripts/shaheen-school/"
+  },
+  {
+   "id": "topic:tool-visitor_suggestions",
+   "kind": "topic",
+   "labelAr": "tool-visitor_suggestions",
    "ref": "scripts/shaheen-school/"
   },
   {
@@ -34871,6 +34889,34 @@
   },
   {
    "from": "lesson:tool-store_import-dev",
+   "to": "specialist:specialist_tech",
+   "relation": "teaches",
+   "source": "scripts/shaheen-school/curriculum.ts",
+   "confidence": 1
+  },
+  {
+   "from": "lesson:tool-visitor_suggestions-about",
+   "to": "topic:tool-visitor_suggestions",
+   "relation": "in_topic",
+   "source": "scripts/shaheen-school/curriculum.ts",
+   "confidence": 1
+  },
+  {
+   "from": "lesson:tool-visitor_suggestions-about",
+   "to": "specialist:specialist_tech",
+   "relation": "teaches",
+   "source": "scripts/shaheen-school/curriculum.ts",
+   "confidence": 1
+  },
+  {
+   "from": "lesson:tool-visitor_suggestions-dev",
+   "to": "topic:tool-visitor_suggestions",
+   "relation": "in_topic",
+   "source": "scripts/shaheen-school/curriculum.ts",
+   "confidence": 1
+  },
+  {
+   "from": "lesson:tool-visitor_suggestions-dev",
    "to": "specialist:specialist_tech",
    "relation": "teaches",
    "source": "scripts/shaheen-school/curriculum.ts",
@@ -54505,26 +54551,26 @@
   }
  ],
  "stats": {
-  "nodes": 2482,
-  "edges": 4996,
+  "nodes": 2485,
+  "edges": 5000,
   "byKind": {
    "brand": 33,
    "carrier": 2,
    "customs": 74,
    "destination": 74,
-   "lesson": 1038,
+   "lesson": 1040,
    "origin": 3,
    "product": 1161,
    "section": 21,
    "specialist": 10,
    "supplier": 3,
-   "topic": 63
+   "topic": 64
   },
   "byRelation": {
    "carried_by": 74,
    "cleared_by": 74,
-   "in_topic": 1038,
-   "teaches": 1038,
+   "in_topic": 1040,
+   "teaches": 1040,
    "applies_to": 312,
    "delivers_to": 74,
    "brand_of": 1161,
@@ -54542,7 +54588,7 @@
    {
     "id": "specialist:specialist_tech",
     "labelAr": "م. عمر الحاسوب",
-    "degree": 386
+    "degree": 388
    },
    {
     "id": "brand:Maison Alhambra",
@@ -54606,5 +54652,5 @@
   "depth": 25,
   "whyAr": "أضعف حلقات العقل: 0 وجهة من غير سعر شحن موثّق · 0 درس مش موصول بمتخصصه · 0 منتج مش موصول بمورده · 0 حافة عالمية قديمة أو بلا تاريخ"
  },
- "summaryAr": "عقل شاهين: 2482 عقدة و4996 حافة (100/100). منتج 1161 · درس 1038 · وجهة 74 · شركة شحن 2 · جمارك 74 · مورد 3 · ماركة 33 · موضوع 63 · متخصص 10."
+ "summaryAr": "عقل شاهين: 2485 عقدة و5000 حافة (100/100). منتج 1161 · درس 1040 · وجهة 74 · شركة شحن 2 · جمارك 74 · مورد 3 · ماركة 33 · موضوع 64 · متخصص 10."
 }
