@@ -6,7 +6,7 @@
  */
 import React, { useCallback, useEffect, useState } from 'react';
 import { apiUrl } from '../utils/api';
-import { CheckCircle2, ClipboardList, Eye, Flag, Loader2, Lock, Mail, RefreshCw, ScrollText, Search, ShieldAlert, Store, Users, X } from 'lucide-react';
+import { CheckCircle2, ClipboardList, Copy, Eye, EyeOff, Flag, Globe, Loader2, Lock, Mail, RefreshCw, ScrollText, Search, Send, ShieldAlert, Store, Users, X } from 'lucide-react';
 import { T } from './adminL10n';
 import { AdminApiError, adminRequest, send } from './adminApi';
 import { BUNDLED_FX, convert, tidy } from '../utils/pricing';
@@ -20,7 +20,7 @@ const sale = (price: number, currency: string) => tidy(convert(price, currency, 
 const date = (iso?: string | null) => (iso ? new Date(iso).toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' }) : '—');
 const fmt = (n: number, c: string) => { try { return new Intl.NumberFormat('ar-EG', { style: 'currency', currency: c, maximumFractionDigits: 2 }).format(n); } catch { return `${n} ${c}`; } };
 
-type Sub = 'overview' | 'users' | 'merchants' | 'products' | 'orders' | 'moderation' | 'audit';
+type Sub = 'overview' | 'users' | 'merchants' | 'products' | 'orders' | 'moderation' | 'mail' | 'audit';
 type Any = Record<string, any>;
 
 function useAdmin<T>(path: string | null, deps: unknown[] = []) {
@@ -52,6 +52,7 @@ export default function CommunityPanel() {
     ['products', T('منتجات للمراجعة'), <ClipboardList key="p" className="h-4 w-4" />, overview.data?.products_pending],
     ['orders', T('الطلبات'), <ClipboardList key="d" className="h-4 w-4" />, overview.data?.orders_to_ship],
     ['moderation', T('البلاغات والإشراف'), <Flag key="r" className="h-4 w-4" />, overview.data?.reports_open],
+    ['mail', T('بريد شام'), <Mail key="e" className="h-4 w-4" />],
     ['audit', T('سجل المراجعة'), <ScrollText key="a" className="h-4 w-4" />],
   ];
 
@@ -78,6 +79,7 @@ export default function CommunityPanel() {
       {sub === 'products' && <ProductsView onChange={overview.reload} />}
       {sub === 'orders' && <OrdersView onChange={overview.reload} />}
       {sub === 'moderation' && <ModerationView open={setUserId} onChange={overview.reload} />}
+      {sub === 'mail' && <MailSetupView />}
       {sub === 'audit' && <AuditView />}
       {userId && <UserFile id={userId} onClose={() => setUserId(null)} onChange={overview.reload} />}
     </div>
@@ -107,6 +109,61 @@ function Setup({ reason, code }: { reason: string; code: string }) {
         <li>{T('اعمل Redeploy للمشروع، وبعدها حدّث الصفحة دي. مفتاح التشفير بيتعمل لوحده أول مرة.')}</li>
         <li className="text-stone-500">{T('اختياري لحماية أعلى: أضف SHAM_DATA_KEY (24 حرف أو أكثر) في Environment Variables. السيرفر بيقفل بيه مفتاح التشفير، ولازم يفضل ثابت بعد كده.')}</li>
       </ol>
+    </div>
+  );
+}
+
+/**
+ * «بريد شام» in the admin panel — the store's own e-mail domain mechanism. One glance answers:
+ * does outgoing mail leave? can outside letters arrive? which domain answers for the members?
+ * Every piece that is not wired yet says so plainly, with the one-time activation steps below it.
+ */
+function MailSetupView() {
+  const setup = useAdmin<Any>('/community/mail/setup');
+  const [show, setShow] = useState(false);
+  const d = setup.data;
+  const dot = (ok: boolean) => <span className={`me-1.5 inline-block h-2.5 w-2.5 rounded-full ${ok ? 'bg-emerald-500' : 'bg-stone-300'}`} />;
+  const copy = async (v: string) => { try { await navigator.clipboard.writeText(v); alert(T('اتنسخ ✓')); } catch { alert(T('مقادرش أنسخ تلقائي — حدّده وانسخه بإيدك')); } };
+  if (setup.error) return <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-700">{setup.error.code}: {setup.error.message}</p>;
+  if (!d) return <Loading />;
+  const hook = d.inbound?.configured ? `${apiUrl(d.inbound.path as `/api/${string}`)}?token=${d.inbound.token}` : `${apiUrl((d.inbound?.path || '/api/community/mail/inbound') as `/api/${string}`)}?token=${T('<كلمة-سر-الاستقبال>')}`;
+  const hookShown = d.inbound?.configured && !show ? hook.replace(`token=${d.inbound.token}`, 'token=••••••••••••') : hook;
+  const providerName: Record<string, string> = { resend: 'Resend', sendgrid: 'SendGrid', webhook: T('Webhook مخصوص') };
+  return (
+    <div className="space-y-4">
+      <p className="rounded-xl bg-amber-50 px-3 py-2 text-sm leading-relaxed text-amber-900">
+        {T('ده «مكانك على الإنترنت» لاستقبال الإيميلات الحقيقية: العنوان ده شغّال على المحرك طول الوقت، وأول ما دومينك يتوجّه ليه بيوصل البريد في صندوق العضو على طول.')}
+      </p>
+      <div className="grid gap-3 md:grid-cols-3">
+        <div className={card}>
+          <p className="flex items-center gap-1 text-sm font-bold"><Globe className="h-4 w-4 text-amber-700" />{T('دومين البريد')}</p>
+          <p dir="ltr" className="mt-1 font-mono text-lg font-black text-stone-900">{d.domain || '—'}</p>
+          <p className="mt-1 text-xs text-stone-600">{dot(Boolean(d.ready))}{d.ready ? `${T('عناوين الأعضاء بتبقى زي')}: ${d.example}` : T('مش متظبط — بريد شام شغال جوه المنصة بس')}</p>
+        </div>
+        <div className={card}>
+          <p className="flex items-center gap-1 text-sm font-bold"><Send className="h-4 w-4 text-amber-700" />{T('الإرسال الخارجي')}</p>
+          <p className="mt-1 text-lg font-black text-stone-900">{d.outbound?.provider ? providerName[d.outbound.provider] || d.outbound.provider : '—'}</p>
+          <p className="mt-1 text-xs text-stone-600">{dot(Boolean(d.outbound?.ready))}{d.outbound?.ready ? T('الرسايل لجيميل/ياهو بتخرج عادي ✓') : T('مش متظبط — الرسايل الخارجية مش هتخرج (ضيف RESEND_API_KEY)')}</p>
+        </div>
+        <div className={card}>
+          <p className="flex items-center gap-1 text-sm font-bold"><Mail className="h-4 w-4 text-amber-700" />{T('الاستقبال الخارجي')}</p>
+          <p className="mt-1 text-lg font-black text-stone-900">{d.inbound?.configured ? T('متظبط ✓') : '—'}</p>
+          <p className="mt-1 text-xs text-stone-600">{dot(Boolean(d.inbound?.configured))}{d.inbound?.configured ? T('كلمة سر الاستقبال موجودة — الرابط تحت 👇') : T('مش متظبط — ضيف SHAM_MAIL_INBOUND_TOKEN (12 حرف على الأقل)')}</p>
+        </div>
+      </div>
+      <div className={card}>
+        <p className="text-sm font-bold">{T('عنوان الاستقبال (Webhook) — المكان اللي مزود الدومين يودّي الإيميلات ليه:')}</p>
+        <div className="mt-2 flex items-center gap-2 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2">
+          <code dir="ltr" className="min-w-0 flex-1 truncate text-xs text-stone-800">{hookShown}</code>
+          <button type="button" onClick={() => setShow(!show)} title={show ? T('إخفاء') : T('إظهار')} className="shrink-0 rounded-lg p-1.5 text-stone-500 hover:bg-stone-200 cursor-pointer">{show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</button>
+          <button type="button" onClick={() => void copy(hook)} title={T('نسخ')} disabled={!d.inbound?.configured} className="shrink-0 rounded-lg p-1.5 text-amber-700 hover:bg-amber-100 cursor-pointer disabled:opacity-40"><Copy className="h-4 w-4" /></button>
+        </div>
+        <ol className="mt-3 list-decimal space-y-1.5 ps-5 text-sm leading-relaxed text-stone-700">
+          <li>{T('لو مفيش دومين: اشتري واحد رخيص (حوالي 10$ في السنة) من Cloudflare أو Namecheap — مثال: shamperfumes.com — وخلي بالك: «sham.com» نفسه غالباً مأخوذ وغالي.')}</li>
+          <li>{T('في Vercel ← مشروع المحرك ← Settings ← Environment Variables: ضيف SHAM_MAIL_DOMAIN باسم دومينك، وSHAM_MAIL_INBOUND_TOKEN بكلمة سر طويلة، واعمل Redeploy.')}</li>
+          <li>{T('وجّه إيميلات دومينك للعنوان اللي فوق: Cloudflare Email Routing (مجاني، Catch-all ← Worker) أو Resend Inbound (email.received) — الكود الجاهز في README قسم «إرسال واستقبال من برّا».')}</li>
+        </ol>
+      </div>
     </div>
   );
 }
