@@ -182,6 +182,23 @@ export async function counts(ctx: Ctx, userId: string) {
 }
 
 /**
+ * The member's own «بريد شام» identity, shown above the mailbox like Gmail shows your address.
+ * `internal` («handle@sham») always exists; `address` («handle@domain») only once the server
+ * carries a real, owned mail domain (SHAM_MAIL_DOMAIN) — we never print an address on somebody
+ * else's domain, so `ready` honestly tells the member whether outside internet mail can find them.
+ */
+export async function myAddress(ctx: Ctx, userId: string) {
+  const handle = String((await userRowBy(ctx, { id: userId }))?.handle || '');
+  const domain = mailDomain(envOf(ctx));
+  return {
+    handle,
+    internal: handle ? `${handle}@sham` : '',
+    address: handle && domain ? `${handle}@${domain}` : '',
+    ready: Boolean(handle && domain),
+  };
+}
+
+/**
  * One folder of the mailbox (or search results over every folder but trash): newest first,
  * `before` pages older ones. Search = blind-index tokens must all hit, plus a sender-name match.
  */
@@ -511,6 +528,12 @@ export async function systemMail(ctx: Ctx, userId: string, mail: { subject: stri
 /** The welcome letter every new member finds in «بريد شام» after sign-up. */
 export async function welcomeMail(ctx: Ctx, userId: string, name: string, lang = 'ar') {
   const arabic = !lang || lang.toLowerCase().startsWith('ar');
+  // The member's own public address — only printed when the server truly owns a mail domain (never a bluff).
+  const handle = String((await userRowBy(ctx, { id: userId }))?.handle || '');
+  const own = handle && mailDomain(envOf(ctx)) ? `${handle}@${mailDomain(envOf(ctx))}` : '';
+  const ownLine = own ? (arabic
+    ? `\n\nوعنوانك الخاص على الإنترنت هو: ${own} — أي حد يبعتلك عليه من جيميل أو ياهو أو أي بريد تاني، رسالته هتلاقيها هنا في صندوقك.`
+    : `\n\nYour own internet address is: ${own} — anyone who e-mails it (Gmail, Yahoo, anywhere) will land right here in your mailbox.`) : '';
   return systemMail(ctx, userId, arabic
     ? {
         subject: `أهلاً بيك يا ${clean(name, 40)} في بريد شام 📬`,
@@ -519,7 +542,7 @@ export async function welcomeMail(ctx: Ctx, userId: string, name: string, lang =
 
 دي أول رسالة في بريدك الخاص على منصة شام للعطور.
 
-بريد شام ده ميل زي الجيميل بس خاص بمنصتنا: بتوصلك هنا رسايل الإدارة الرسمية (زي دي)، إشعارات الحساب المهمة، وتقدر تراسل بيه أي عضو في مجتمع شام بعنوانه «اسم_المستخدم@sham».
+بريد شام ده ميل زي الجيميل بس خاص بمنصتنا: بتوصلك هنا رسايل الإدارة الرسمية (زي دي)، إشعارات الحساب المهمة، وتقدر تراسل بيه أي عضو في مجتمع شام بعنوانه «اسم_المستخدم@sham».${ownLine}
 
 جرّب كده: دوس «رسالة جديدة» وابعت ميل لأي صديق في المجتمع — هيلاقيها فوراً في صندوق الوارد بتاعه.
 
@@ -535,7 +558,7 @@ export async function welcomeMail(ctx: Ctx, userId: string, name: string, lang =
 
 this is the first letter in your private mailbox on the Sham Perfumes platform.
 
-Sham Mail works like Gmail, but it lives entirely inside our platform: you will receive official letters from the administration (like this one), important account notices, and you can write to any member of the Sham community at their address «username@sham».
+Sham Mail works like Gmail, but it lives entirely inside our platform: you will receive official letters from the administration (like this one), important account notices, and you can write to any member of the Sham community at their address «username@sham».${ownLine}
 
 Try it: press "Compose" and write to yourself or a friend — the letter lands in their inbox instantly.
 

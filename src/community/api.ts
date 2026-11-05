@@ -142,6 +142,8 @@ export interface MailMessage extends MailSummary {
   draftTo: string[];
 }
 export interface MailCounts { inbox: number; unread: number; drafts: number; trash: number; starred: number }
+/** The member's own «بريد شام» identity; `address`/`ready` only true once the store has a real mail domain. */
+export interface MailAddress { handle: string; internal: string; address: string; ready: boolean }
 export interface MailSendResult { id: string; delivered: number; missed: string[]; external?: { to: string[]; status: 'none' | 'sent' | 'failed' | 'unconfigured' } }
 export interface AuthResult { token: string; expiresAt: string; me: Me }
 /** Two-factor accounts: the password alone opens a short pending login (Google/Meta style). */

@@ -6,11 +6,11 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  Archive, ArchiveRestore, ArrowLeft, ArrowRight, BadgeCheck, CheckCheck, FileText, Forward, Globe, ImagePlus,
+  Archive, ArchiveRestore, ArrowLeft, ArrowRight, BadgeCheck, Check, CheckCheck, Copy, FileText, Forward, Globe, ImagePlus,
   Inbox, MailOpen, Paperclip, PenLine, RefreshCw, Reply, Search, Send, ShieldCheck, Star, Trash2, Undo2, X,
 } from 'lucide-react';
 import {
-  cx, resizeImage, type MailCounts, type MailFolder, type MailList, type MailMessage, type MailParty, type MailSendResult, type MailSummary, type PublicUser,
+  cx, resizeImage, type MailAddress, type MailCounts, type MailFolder, type MailList, type MailMessage, type MailParty, type MailSendResult, type MailSummary, type PublicUser,
 } from './api';
 import { pulseNow, type SessionState } from './session';
 import { Avatar, Badge, Btn, Card, Empty, Sheet, Spinner, clock, errorText, inputClass, timeAgo, tx, type Lang } from './ui';
@@ -43,6 +43,37 @@ function partyName(p: MailParty, lang: Lang): string {
 /** The Avatar widget needs a PublicUser-ish shape (id, name, avatar). */
 const avatarUser = (p: MailParty) => ({ id: p.id || 'sham', name: partyName(p, 'ar'), avatar: p.avatar });
 
+/**
+ * «عنوانك» — the greeting card every Gmail user expects: your own Sham address, tap to copy it.
+ * The internet address (`handle@domain`) leads once the store's domain is live; before that we
+ * honestly show the inside-platform one (`handle@sham`) and say outside mail is still coming.
+ */
+function MyAddress({ mine, copied, onCopy, lang, className = '' }: { mine: MailAddress; copied: boolean; onCopy: () => void; lang: Lang; className?: string }) {
+  const t = tx(lang);
+  const shown = mine.ready ? mine.address : mine.internal;
+  if (!shown) return null;
+  return (
+    <div className={`rounded-2xl border border-amber-200/70 bg-white/80 p-2.5 ${className}`}>
+      <div className="flex items-center gap-2.5">
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-amber-100 text-amber-800"><MailOpen className="h-4 w-4" /></span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-[10px] font-bold uppercase tracking-wide text-amber-800">{t('عنوان بريد شام الخاص بيك', 'Your Sham Mail address')}</span>
+          <span dir="ltr" className="block truncate text-start font-mono text-xs font-semibold text-stone-800">{shown}</span>
+        </span>
+        <button type="button" onClick={onCopy} title={t('انسخ العنوان', 'Copy the address')}
+          className="shrink-0 rounded-lg p-1.5 text-amber-700 transition hover:bg-amber-100 cursor-pointer">
+          {copied ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
+        </button>
+      </div>
+      {!mine.ready && (
+        <p className="mt-1.5 border-t border-amber-100 pt-1.5 text-[10px] leading-relaxed text-stone-500">
+          {t('الاستقبال من الإنترنت (جيميل/ياهو…) لسه بيتفعّل من الإدارة — دلوقتي بريدك شغال كامل جوه المنصة.', 'Receiving from the internet (gmail/yahoo…) is still being switched on by the store — for now your mail works fully inside the platform.')}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function Mailbox({ lang, session, route, go, toast }: Props) {
   const t = tx(lang);
   const folder: MailFolder = (FOLDER_IDS as string[]).includes(route) ? (route as MailFolder) : 'inbox';
@@ -57,6 +88,8 @@ export default function Mailbox({ lang, session, route, go, toast }: Props) {
   const [openId, setOpenId] = useState<string | null>(null);
   const [openKey, setOpenKey] = useState(0); // bump to refetch the same message (e.g. after edits)
   const [compose, setCompose] = useState<ComposeState | null>(null);
+  const [mine, setMine] = useState<MailAddress | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const loadCounts = useCallback(async () => {
     try { setCounts(await cx<MailCounts>('/community/mail/counts')); } catch { /* keep the last snapshot */ }
@@ -75,6 +108,8 @@ export default function Mailbox({ lang, session, route, go, toast }: Props) {
 
   useEffect(() => { setList(null); setNext(null); void loadList(false); }, [loadList]);
   useEffect(() => { void loadCounts(); }, [loadCounts]);
+  // «عنوانك» — who you are in Sham Mail; loaded once per visit, kept quiet if it ever fails.
+  useEffect(() => { cx<MailAddress>('/community/mail/address').then(setMine).catch(() => {}); }, []);
   // New mail arrives with the pulse: refresh the inbox view and the counters (light, every 20 s as a floor).
   const mailPulse = session.pulse?.mail;
   useEffect(() => { if (mailPulse !== undefined) { void loadList(); void loadCounts(); } }, [mailPulse]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -134,6 +169,17 @@ export default function Mailbox({ lang, session, route, go, toast }: Props) {
     void act(m.id, { starred: !m.starred });
   }, [act]);
 
+  const copyMine = useCallback(async () => {
+    const value = mine ? (mine.ready ? mine.address : mine.internal) : '';
+    if (!value) return;
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      toast(t('عنوانك اتنسخ ✓', 'Your address is copied ✓'));
+      setTimeout(() => setCopied(false), 1800);
+    } catch (e) { toast(errorText(e, lang)); }
+  }, [mine, toast, t, lang]);
+
   return (
     <Card className="flex h-[calc(100vh-190px)] min-h-[520px] flex-col overflow-hidden md:flex-row">
       {/* ----------------------------------------- sidebar (folders) ----------------------------------------- */}
@@ -141,6 +187,7 @@ export default function Mailbox({ lang, session, route, go, toast }: Props) {
         <Btn onClick={() => setCompose({})} className="mb-3 w-full justify-start gap-2 !rounded-2xl !px-4 !py-3 shadow-md shadow-amber-900/20">
           <PenLine className="h-5 w-5" />{t('رسالة جديدة', 'Compose')}
         </Btn>
+        {mine && <MyAddress mine={mine} copied={copied} onCopy={() => void copyMine()} lang={lang} className="mb-3" />}
         {FOLDER_IDS.map((f) => (
           <div key={f} className="group relative">
             <button type="button" onClick={() => { setOpenId(null); go(f === 'inbox' ? 'mail' : `mail/${f}`); }}
@@ -207,6 +254,8 @@ export default function Mailbox({ lang, session, route, go, toast }: Props) {
                   className="rounded-full p-2 text-stone-500 hover:bg-stone-100 cursor-pointer"><CheckCheck className="h-4 w-4" /></button>
               )}
             </div>
+            {/* «عنوانك» on touch screens — same card, slim, above the folder chips */}
+            {!openId && mine && <MyAddress mine={mine} copied={copied} onCopy={() => void copyMine()} lang={lang} className="mx-2.5 mt-2 !rounded-xl md:hidden" />}
             {/* mobile folder chips */}
             <div className="flex gap-1 overflow-x-auto border-b border-stone-100 p-2 md:hidden">
               {FOLDER_IDS.map((f) => (
