@@ -319,6 +319,20 @@ const call = async (base: string, path: string, init: { method?: string; body?: 
   return { status: res.status, data: await res.json().catch(() => null) as any };
 };
 
+test('my address: the personal «بريد شام» identity — internal always, internet address only when a real domain is owned', async () => {
+  const me = await newMember('Nessma');
+  const on = await mail.myAddress({ ...ctx, env: { SHAM_MAIL_DOMAIN: 'mail.shamperfumes.com' } }, me.id);
+  assert.ok(on.handle, 'the member has a handle');
+  assert.equal(on.internal, `${on.handle}@sham`);
+  assert.equal(on.address, `${on.handle}@mail.shamperfumes.com`);
+  assert.equal(on.ready, true);
+  // Honesty: with no owned domain on the server there is NO invented internet address.
+  const off = await mail.myAddress(ctx, me.id);
+  assert.equal(off.internal, `${on.handle}@sham`);
+  assert.equal(off.address, '');
+  assert.equal(off.ready, false);
+});
+
 test('HTTP: /api/community/mail end-to-end — sign-up seeds the welcome mail, members exchange letters', async () => {
   await withApi({ SHAM_DATA_KEY: KEY, SHAM_ADMIN_TOKEN: 'admin-token-for-tests', SHAM_MAIL_INBOUND_TOKEN: 'inbound-secret-token-1', SHAM_MAIL_DOMAIN: 'mail.shamperfumes.com' }, async (base) => {
     const senderEmail = email('httpsender');
@@ -331,6 +345,14 @@ test('HTTP: /api/community/mail end-to-end — sign-up seeds the welcome mail, m
     assert.ok(inbox.data.items.some((m: any) => m.kind === 'system' && m.from.address === 'admin@sham'), 'welcome mail seeded on sign-up');
     assert.ok((await call(base, '/community/mail/counts', { token })).data.unread >= 1);
     assert.ok((await call(base, '/community/pulse', { token })).data.mail >= 1);
+
+    // «عنوانك»: the mailbox tells the member their own address on the store's domain
+    const mine = await call(base, '/community/mail/address', { token });
+    assert.equal(mine.status, 200);
+    assert.equal(mine.data.address, 'httpsender@mail.shamperfumes.com');
+    assert.equal(mine.data.internal, 'httpsender@sham');
+    assert.equal(mine.data.ready, true);
+    assert.equal((await call(base, '/community/mail/address')).status, 401, 'guests have no mailbox of their own');
 
     // member → member mail over HTTP
     const peer = await newMember('Peer');

@@ -330,6 +330,7 @@ export function createCommunityRouter(community: Community, options: { env?: Env
 
   /* ------------------------------------------------ «بريد شام» ------------------------------------------------ */
   router.get('/community/mail/counts', member((ctx, u) => mail.counts(ctx, u.id)));
+  router.get('/community/mail/address', member((ctx, u) => mail.myAddress(ctx, u.id)));
   router.get('/community/mail', member((ctx, u, req) => mail.list(ctx, u.id, { folder: req.query.folder, before: req.query.before, q: req.query.q })));
   router.post('/community/mail', member((ctx, u, req) => mail.send(ctx, u.id, req.body || {})));
   router.post('/community/mail/drafts', member((ctx, u, req) => mail.saveDraft(ctx, u.id, req.body || {})));
