@@ -197,10 +197,11 @@ export const PAGES: PageGuide[] = [
   },
   {
     id: 'master_ai', label: { ar: 'الخبير شاهين', en: 'Shaheen expert' },
-    what: { ar: 'الزائر جوه صفحة «الخبير شاهين»: بيركّب تركيبة ويسأل أسئلة عطور عميقة.', en: 'The visitor is inside the Shaheen expert page: building a formula and asking deep perfumery questions.' },
-    offer: { ar: 'ساعده في حدودك (بيانات المتجر والخدمات)، وأسئلة التركيب سيبها لشاهين نفسه اللي قدامه.', en: 'Help within your remit; leave formulation depth to Shaheen, who is right there.' },
+    what: { ar: 'الزائر جوه صفحة «الخبير شاهين»: بيركّب تركيبة أو يسأل أسئلة عطور عميقة، ويقدر يشغّل وضع التحدث الصوتي.', en: 'The visitor is inside the Shaheen expert page: building a formula, asking deep perfumery questions or starting voice chat.' },
+    offer: { ar: 'ساعده في حدودك (بيانات المتجر والخدمات)، وأسئلة التركيب سيبها لشاهين نفسه؛ ولو سأل عن الصوت اشرح الإفصاح وإذن المتصفح وأن النص يدخل نفس المحادثة.', en: 'Help within your remit and leave formulation depth to Shaheen; for voice questions, explain the disclosure, browser permission and that transcripts use the same chat.' },
     questions: [
       { ar: 'إزاي أرفع نسبة العود في التركيبة؟', en: 'How do I raise the oud ratio?', expect: 'shaheen' },
+      { ar: 'إزاي أتكلم مع شاهين بالصوت؟', en: 'How do I talk to Shaheen by voice?', expect: 'tool' },
       { ar: 'إيه أسعار المنتجات؟', en: 'What are the prices?', expect: 'prices' },
     ],
   },

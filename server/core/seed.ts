@@ -14,10 +14,11 @@ import type { CoreSettings, KnowledgeDoc, Product, ServiceDef } from './types';
  * platform already runs: `Repository.ready()` then adds the missing ones to existing stores without
  * touching a single document the merchant edited or deleted.
  */
-export const KNOWLEDGE_SEED_VERSION = 4;
+export const KNOWLEDGE_SEED_VERSION = 5;
 
-/** Which seed version introduced a document: 1 = original, 2 = platform guide, 3 = store guide, 4 = visitor suggestions. */
+/** Which seed version introduced a document: 1 = original, 2 = platform guide, 3 = store guide, 4 = visitor suggestions, 5 = Shaheen voice chat. */
 export function knowledgeDocVersion(id: string): number {
+  if (id === 'kb-platform-shaheen-voice') return 5;
   if (id === 'kb-platform-suggestions') return 4;
   if (id.startsWith('kb-platform-')) return 2;
   if (id.startsWith('kb-store-') || id.startsWith('kb-shaheen-')) return 3;
@@ -30,10 +31,12 @@ export function knowledgeDocVersion(id: string): number {
  * platform guide existed.
  */
 export function knowledgeSeedAdditions(from: number): KnowledgeDoc[] {
-  return defaultKnowledge().filter((doc) => {
-    const version = knowledgeDocVersion(doc.id);
-    return version > from && version <= KNOWLEDGE_SEED_VERSION;
-  });
+  return defaultKnowledge()
+    .filter((doc) => {
+      const version = knowledgeDocVersion(doc.id);
+      return version > from && version <= KNOWLEDGE_SEED_VERSION;
+    })
+    .sort((a, b) => knowledgeDocVersion(a.id) - knowledgeDocVersion(b.id));
 }
 
 const now = () => new Date().toISOString();

@@ -1,5 +1,5 @@
 import { useChatPrices } from '../utils/storeCheckout';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   Sparkles,
   Droplet,
@@ -44,7 +44,10 @@ import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd }
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
+import { useShaheenVoiceMode } from '../hooks/useShaheenVoiceMode';
+import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
 import { copyChatText } from '../utils/clipboard';
+import { prepareShaheenSpeech } from '../utils/shaheenVoice';
 
 interface PerfumerMasterLabViewProps {
   currentLang?: SupportedLanguage;
@@ -283,6 +286,20 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const [dripping, setDripping] = useState(false);
   const [compoundingStep, setCompoundingStep] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const voiceSendRef = useRef<(text: string) => Promise<boolean>>(async () => false);
+  const voiceMessages = useMemo(() => messages.map((message) => ({
+    id: message.id,
+    role: message.role,
+    text: message.text,
+    kind: message.kind,
+  })), [messages]);
+  const voice = useShaheenVoiceMode({
+    language: currentLang,
+    messages: voiceMessages,
+    isLoading,
+    disabled: isStaticHosting,
+    onSend: (text) => voiceSendRef.current(text),
+  });
 
   // Multi-AI Model Orchestrator State
   const [comparingMsgId, setComparingMsgId] = useState<string | null>(null);
@@ -293,6 +310,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const enabledEngineCount = (modelStatus.models || []).filter((m) => m.hasApiKey && AI_ENGINES.some((e) => e.id === m.id)).length;
 
   const handleSpeech = (text: string) => {
+    if (voice.active) voice.stop();
     if ('speechSynthesis' in window) {
       if (isSpeaking) {
         window.speechSynthesis.cancel();
@@ -300,7 +318,9 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
         return;
       }
       window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
+      const spokenText = prepareShaheenSpeech(text);
+      if (!spokenText) return;
+      const utterance = new SpeechSynthesisUtterance(spokenText);
       utterance.lang = LOCALE_MAP[currentLang] || 'ar-SA';
       utterance.rate = 0.95;
       utterance.onend = () => setIsSpeaking(false);
@@ -320,6 +340,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
 
   useEffect(() => {
     scrollChatToEnd(messagesEndRef.current);
@@ -344,22 +365,31 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     L('comp_4'),
   ];
 
-  const handleSend = async (customText?: string, overrideModel?: ShaheenModelChoice) => {
+  const handleSend = async (customText?: string, overrideModel?: ShaheenModelChoice, fromVoice = false): Promise<boolean> => {
     const text = (customText || input).trim();
-    if (!text || text.length > 4000 || isLoading || isStaticHosting) return;
+    if (!text || text.length > 4000 || isLoading || isStaticHosting) return false;
     // Only an explicit transfer command applies an earlier formula (never "…حول تركيبة…").
     if (isFormulaTransferCommand(text)) {
       for (let i = messages.length - 1; i >= 0; i--) {
         if (messages[i].role === 'assistant' && messages[i].kind !== 'error') {
           const formula = extractFormulaFromAIMessage(messages[i].text);
-          if (formula) { onApplyToConcentrationCalculator(formula); if (!customText) setInput(''); return; }
+          if (formula) { onApplyToConcentrationCalculator(formula); if (!customText) setInput(''); return false; }
         }
       }
     }
     if (!customText) setInput('');
-    await sendMessage({ text, model: overrideModel || selectedModel, language: currentLang,
-      errorText: (error) => chatErrorText(currentLang, error) });
+    const voiceTurn = !fromVoice && voice.beginOutgoingTurn();
+    try {
+      const sent = await sendMessage({ text, model: overrideModel || selectedModel, language: currentLang,
+        errorText: (error) => chatErrorText(currentLang, error) });
+      if (voiceTurn) voice.finishOutgoingTurn(sent !== false);
+      return sent !== false;
+    } catch {
+      if (voiceTurn) voice.finishOutgoingTurn(false);
+      return false;
+    }
   };
+  voiceSendRef.current = (text) => handleSend(text, undefined, true);
 
   const handleCopySingle = async (id: string, text: string) => {
     if (!await copyChatText(text)) return;
@@ -928,6 +958,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
           }}
           className="p-3.5 sm:p-4 bg-white border-t border-stone-200 flex items-center gap-3 shrink-0"
         >
+          <ShaheenVoiceModeButton language={currentLang} voice={voice} disabled={isStaticHosting} />
           <input
             ref={inputRef}
             type="text"

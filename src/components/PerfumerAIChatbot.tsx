@@ -1,5 +1,5 @@
 import { useChatPrices } from '../utils/storeCheckout';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import {
   Send,
   Sparkles,
@@ -33,6 +33,8 @@ import { extractFormulaFromAIMessage, extractFormulasFromAIMessage, isFormulaTra
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
+import { useShaheenVoiceMode } from '../hooks/useShaheenVoiceMode';
+import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
 import { ShaheenServiceStatus, ShaheenModesPanel, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
 import { ShaheenMedia } from './ShaheenMedia';
@@ -48,6 +50,7 @@ import { isStaticHosting } from '../utils/api';
 import { copyChatText } from '../utils/clipboard';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { FloatingDock } from './FloatingDock';
+import { prepareShaheenSpeech } from '../utils/shaheenVoice';
 
 
 const S = {
@@ -860,8 +863,6 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   ];
   const [isOpen, setIsOpen] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
-  useEffect(() => { if (hidden) setIsOpen(false); }, [hidden]);
-
   const { messages, setMessages, daysRemaining, isLoading, busy, sendMessage, retryLast, clearHistory } = useShaheenChat();
   const modelStatus = useShaheenModels();
   const selectedModel = modelStatus.selected;
@@ -870,6 +871,30 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const [input, setInput] = useState('');
   const [compoundingStep, setCompoundingStep] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const voiceSendRef = useRef<(text: string) => Promise<boolean>>(async () => false);
+  const voiceMessages = useMemo(() => messages.map((message) => ({
+    id: message.id,
+    role: message.role,
+    text: message.text,
+    kind: message.kind,
+  })), [messages]);
+  const voice = useShaheenVoiceMode({
+    language: currentLang,
+    messages: voiceMessages,
+    isLoading,
+    disabled: hidden || isStaticHosting || !isOpen,
+    onSend: (text) => voiceSendRef.current(text),
+  });
+  const closeChat = useCallback(() => {
+    voice.stop();
+    if (isSpeaking && typeof window !== 'undefined') window.speechSynthesis?.cancel();
+    setIsSpeaking(false);
+    setIsOpen(false);
+  }, [isSpeaking, voice.stop]);
+  useEffect(() => {
+    if (hidden) closeChat();
+    else if (!isOpen) voice.stop();
+  }, [closeChat, hidden, isOpen, voice.stop]);
 
   // Copy & Action tracking states
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -917,10 +942,11 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
 
   const handleSendMessage = async (
     textToSend?: string,
-    overrideModel?: ShaheenModelChoice
-  ) => {
+    overrideModel?: ShaheenModelChoice,
+    fromVoice = false,
+  ): Promise<boolean> => {
     const text = (textToSend || input).trim();
-    if (!text || isLoading || isStaticHosting) return;
+    if (!text || isLoading || isStaticHosting) return false;
 
     const activeModelChoice = overrideModel || selectedModel;
 
@@ -932,20 +958,29 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
           if (formula) {
             onApplyToConcentrationCalculator(formula);
             if (!textToSend) setInput('');
-            setIsOpen(false);
-            return;
+            closeChat();
+            return false;
           }
         }
       }
     }
 
-    if (text.length > 4000) return;
+    if (text.length > 4000) return false;
     // Only clear the box when its own text was sent; a calculator consult or
     // "compare" must not wipe what the visitor is typing.
     if (!textToSend) setInput('');
-    await sendMessage({ text, model: activeModelChoice, language: currentLang,
-      errorText: (error) => chatErrorText(currentLang, error) });
+    const voiceTurn = !fromVoice && voice.beginOutgoingTurn();
+    try {
+      const sent = await sendMessage({ text, model: activeModelChoice, language: currentLang,
+        errorText: (error) => chatErrorText(currentLang, error) });
+      if (voiceTurn) voice.finishOutgoingTurn(sent !== false);
+      return sent !== false;
+    } catch {
+      if (voiceTurn) voice.finishOutgoingTurn(false);
+      return false;
+    }
   };
+  voiceSendRef.current = (text) => handleSendMessage(text, undefined, true);
 
   // Always use the current history/language/loading state when a calculator asks Shahin.
   useEffect(() => {
@@ -995,6 +1030,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
 
   const handleSpeech = (text: string) => {
+    if (voice.active) voice.stop();
     if ('speechSynthesis' in window) {
       if (isSpeaking) {
         window.speechSynthesis.cancel();
@@ -1002,7 +1038,9 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
         return;
       }
       window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
+      const spokenText = prepareShaheenSpeech(text);
+      if (!spokenText) return;
+      const utterance = new SpeechSynthesisUtterance(spokenText);
       utterance.lang = LOCALE_MAP[currentLang] || 'ar-EG';
       utterance.rate = 0.95;
       utterance.onend = () => setIsSpeaking(false);
@@ -1146,7 +1184,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                 </button>
 
                 <button
-                  onClick={() => setIsOpen(false)}
+                  onClick={closeChat}
                   className="p-1.5 text-stone-400 hover:text-white rounded-lg transition-colors cursor-pointer"
                   title={L('close')}
                 >
@@ -1388,7 +1426,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                             <button
                               onClick={() => {
                                 onApplyToConcentrationCalculator(extractedFormula);
-                                setIsOpen(false);
+                                closeChat();
                               }}
                               className="p-2 bg-stone-900 hover:bg-stone-800 text-white rounded-xl font-semibold text-[11px] flex items-center justify-center gap-1.5 transition-all shadow-2xs cursor-pointer"
                               title={L('apply_conc_tip')}
@@ -1400,7 +1438,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                             <button
                               onClick={() => {
                                 onApplyToPyramidCalculator(extractedFormula);
-                                setIsOpen(false);
+                                closeChat();
                               }}
                               className="p-2 bg-white hover:bg-amber-100 text-amber-950 border border-amber-300 rounded-xl font-semibold text-[11px] flex items-center justify-center gap-1.5 transition-all shadow-2xs cursor-pointer"
                               title={L('apply_pyramid_tip')}
@@ -1434,7 +1472,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                             <button
                               onClick={() => {
                                 onCalculateCosting(extractedFormula);
-                                setIsOpen(false);
+                                closeChat();
                               }}
                               className="p-2 bg-white hover:bg-stone-100 text-stone-800 border border-stone-300 rounded-xl font-semibold text-[11px] flex items-center justify-center gap-1.5 transition-all shadow-2xs cursor-pointer"
                               title={L('cost_tip')}
@@ -1449,7 +1487,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                             <button
                               onClick={() => {
                                 onPrintSpecSheet(extractedFormula);
-                                setIsOpen(false);
+                                closeChat();
                               }}
                               className="text-amber-900 font-bold hover:underline flex items-center gap-1 cursor-pointer"
                             >
@@ -1460,7 +1498,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                         </div>
                       )}
 
-                      {toolLinks.length > 0 && <ShaheenToolLinks links={toolLinks} lang={currentLang} onOpen={(link) => { onOpenTool?.(link); setIsOpen(false); }} />}
+                      {toolLinks.length > 0 && <ShaheenToolLinks links={toolLinks} lang={currentLang} onOpen={(link) => { onOpenTool?.(link); closeChat(); }} />}
 
                       {/* Bottom Action Strip (not on error notices) */}
                       {!isError && <div
@@ -1626,6 +1664,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
               }}
               className="p-3 bg-white border-t border-stone-200 flex items-center gap-2 shrink-0"
             >
+              <ShaheenVoiceModeButton language={currentLang} voice={voice} disabled={isStaticHosting || hidden} />
               <input
                 ref={inputRef}
                 type="text"

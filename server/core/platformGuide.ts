@@ -222,6 +222,20 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     tags: ['شاهين', 'خبير', 'shaheen', 'formulation'],
   },
   {
+    id: 'shaheen_voice', group: 'workspace', tab: 'master_ai', docId: 'kb-platform-shaheen-voice',
+    name: { ar: 'وضع التحدث مع شاهين', en: 'Shaheen voice chat' },
+    summary: {
+      ar: 'تكلّم مع شاهين بدل الكتابة: المتصفح يفرّغ كلامك لنص، وشاهين يرد بصوت عبر المحادثة نفسها.',
+      en: 'Talk to Shaheen instead of typing: your browser transcribes your speech, and Shaheen replies aloud through the same chat.',
+    },
+    details: {
+      ar: 'من واجهة «الخبير شاهين» أو نافذة الشات اضغط زر الميكروفون، اقرأ الإفصاح واسمح للمتصفح. بعد ما تسكت يُرسل النص المفرغ لمحادثة شاهين المعتادة ويُقرأ الرد بصوت المتصفح. قد يعالج المتصفح أو خدمات التعرف على الكلام أو النطق الصوت أو النص حسب إعداداتها؛ شام لا يسجل أو يرفع ملف الصوت. الميزة تحتاج متصفحاً يدعم التعرف على الكلام والنطق، وإذن الميكروفون واتصالاً آمناً؛ لو مش مدعومة اكتب سؤالك واستخدم زر قراءة الرد.',
+      en: 'In the Shaheen expert page or floating chat, choose the microphone, review the disclosure and allow browser access. After you pause, the transcript goes through Shaheen’s regular conversation and the reply is spoken by your browser. Your browser or its speech-recognition or speech-synthesis services may process audio or text under their own settings; Sham does not record or upload the audio file. This needs a browser with speech recognition and speech output, microphone permission and a secure connection; if unavailable, type your question and use the read-aloud button.',
+    },
+    keywords: ['وضع التحدث مع شاهين', 'المحادثة الصوتية', 'أتكلم مع شاهين', 'كلم شاهين', 'صوت شاهين', 'voice chat', 'voice mode', 'talk to shaheen', 'speak to shaheen', 'speech with shaheen'],
+    tags: ['تحدث', 'صوت', 'ميكروفون', 'voice chat', 'speech', 'Shaheen'],
+  },
+  {
     id: 'library', group: 'workspace', tab: 'library', docId: 'kb-platform-formulas',
     name: { ar: 'دفتر الوصفات وبطاقة التصنيع', en: 'Formula library & batch sheet' },
     summary: {
