@@ -26,6 +26,13 @@ const STOP = new Set([
   'the', 'a', 'an', 'of', 'to', 'in', 'on', 'for', 'and', 'or', 'is', 'are', 'i', 'you', 'me', 'my', 'want', 'can', 'please', 'how', 'what', 'do',
 ]);
 
+export function getFallbackReply(query: string): string {
+  if (query.includes('مكياج') || query.includes('تجميل') || query.includes('مستحضرات')) {
+    return 'احنا لسه قائمين على دراسة المجال ده عشان نقدمهالك بأحسن كفاءة.';
+  }
+  return 'عذراً، مش عندي تفاصيل كافية حالياً، جرب تسأل في حاجة تخص العطور أو الأدوات المتاحة.';
+}
+
 /** Light Arabic stemmer: strips the most common prefixes/suffixes so "العطور" ≈ "عطور" ≈ "عطر". */
 function stem(token: string): string {
   if (/^[a-z0-9-]+$/.test(token)) {
