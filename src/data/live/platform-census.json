@@ -1,36 +1,56 @@
 {
  "version": 1,
- "updatedAt": "2026-11-04T22:56:54.934Z",
+ "updatedAt": "2026-11-05T01:20:40.009Z",
  "startedAt": "2026-10-23T12:00:00.000Z",
  "siteCreatedAt": "2026-10-12T05:24:11.000Z",
  "totals": {
-  "visits": 23,
-  "uniqueVisitors": 13,
-  "todayVisits": 23,
-  "todayUnique": 13,
-  "last7DaysVisits": 23,
-  "last7DaysUnique": 13,
-  "thisMonthVisits": 23,
-  "thisMonthUnique": 13,
-  "last30DaysVisits": 23,
-  "countriesCount": 2,
-  "placesCount": 2,
-  "regionsCount": 1
+  "visits": 46,
+  "uniqueVisitors": 26,
+  "todayVisits": 46,
+  "todayUnique": 26,
+  "last7DaysVisits": 46,
+  "last7DaysUnique": 26,
+  "thisMonthVisits": 46,
+  "thisMonthUnique": 26,
+  "last30DaysVisits": 46,
+  "countriesCount": 3,
+  "placesCount": 3,
+  "regionsCount": 2
  },
  "byCountry": [
   {
    "code": "EG",
-   "visits": 18,
-   "uniqueVisitors": 11,
-   "todayVisits": 18,
+   "visits": 35,
+   "uniqueVisitors": 19,
+   "todayVisits": 35,
    "todayDate": "2026-11-05",
-   "lastVisitAt": "2026-11-04T22:50:53.583Z",
+   "lastVisitAt": "2026-11-05T01:20:40.009Z",
    "sections": {
-    "community": 12,
-    "pyramid": 6
+    "community": 19,
+    "pyramid": 6,
+    "home": 4,
+    "cosmetics": 3,
+    "other": 3
    },
    "languages": {
-    "ar": 18
+    "ar": 35
+   }
+  },
+  {
+   "code": "SG",
+   "visits": 6,
+   "uniqueVisitors": 5,
+   "todayVisits": 6,
+   "todayDate": "2026-11-05",
+   "lastVisitAt": "2026-11-05T00:59:52.410Z",
+   "sections": {
+    "store": 3,
+    "home": 1,
+    "product": 1,
+    "other": 1
+   },
+   "languages": {
+    "en": 6
    }
   },
   {
@@ -61,14 +81,37 @@
    "lat": 30.06,
    "lon": 31.25,
    "precision": "edge-coords",
-   "visits": 18,
-   "uniqueVisitors": 11,
-   "todayVisits": 18,
+   "visits": 35,
+   "uniqueVisitors": 19,
+   "todayVisits": 35,
    "todayDate": "2026-11-05",
-   "lastVisitAt": "2026-11-04T22:50:53.583Z",
+   "lastVisitAt": "2026-11-05T01:20:40.009Z",
    "sections": {
-    "community": 12,
-    "pyramid": 6
+    "community": 19,
+    "pyramid": 6,
+    "home": 4,
+    "cosmetics": 3,
+    "other": 3
+   }
+  },
+  {
+   "id": "SG:singapore",
+   "country": "SG",
+   "cityAr": "سنغافورة",
+   "cityEn": "Singapore",
+   "lat": 1.29,
+   "lon": 103.85,
+   "precision": "edge-coords",
+   "visits": 6,
+   "uniqueVisitors": 5,
+   "todayVisits": 6,
+   "todayDate": "2026-11-05",
+   "lastVisitAt": "2026-11-05T00:59:52.410Z",
+   "sections": {
+    "store": 3,
+    "home": 1,
+    "product": 1,
+    "other": 1
    }
   },
   {
@@ -94,6 +137,322 @@
   }
  ],
  "recentEntries": [
+  {
+   "at": "2026-11-05T01:20:40.009Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "other",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T01:20:13.971Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "home",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T01:19:01.753Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T01:18:00.883Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T01:15:36.842Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "cosmetics",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T01:14:56.267Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "other",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T01:13:33.040Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T01:12:45.855Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T01:11:45.132Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T01:10:00.121Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T01:07:00.539Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "home",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T00:59:52.410Z",
+   "country": "SG",
+   "placeId": "SG:singapore",
+   "cityAr": "سنغافورة",
+   "cityEn": "Singapore",
+   "lat": 1.29,
+   "lon": 103.85,
+   "precision": "edge-coords",
+   "section": "other",
+   "device": "desktop",
+   "lang": "en"
+  },
+  {
+   "at": "2026-11-05T00:58:02.998Z",
+   "country": "SG",
+   "placeId": "SG:singapore",
+   "cityAr": "سنغافورة",
+   "cityEn": "Singapore",
+   "lat": 1.29,
+   "lon": 103.85,
+   "precision": "edge-coords",
+   "section": "store",
+   "device": "desktop",
+   "lang": "en"
+  },
+  {
+   "at": "2026-11-05T00:56:53.051Z",
+   "country": "SG",
+   "placeId": "SG:singapore",
+   "cityAr": "سنغافورة",
+   "cityEn": "Singapore",
+   "lat": 1.29,
+   "lon": 103.85,
+   "precision": "edge-coords",
+   "section": "product",
+   "device": "desktop",
+   "lang": "en"
+  },
+  {
+   "at": "2026-11-05T00:56:12.582Z",
+   "country": "SG",
+   "placeId": "SG:singapore",
+   "cityAr": "سنغافورة",
+   "cityEn": "Singapore",
+   "lat": 1.29,
+   "lon": 103.85,
+   "precision": "edge-coords",
+   "section": "store",
+   "device": "desktop",
+   "lang": "en"
+  },
+  {
+   "at": "2026-11-05T00:54:41.049Z",
+   "country": "SG",
+   "placeId": "SG:singapore",
+   "cityAr": "سنغافورة",
+   "cityEn": "Singapore",
+   "lat": 1.29,
+   "lon": 103.85,
+   "precision": "edge-coords",
+   "section": "store",
+   "device": "desktop",
+   "lang": "en"
+  },
+  {
+   "at": "2026-11-05T00:54:22.782Z",
+   "country": "SG",
+   "placeId": "SG:singapore",
+   "cityAr": "سنغافورة",
+   "cityEn": "Singapore",
+   "lat": 1.29,
+   "lon": 103.85,
+   "precision": "edge-coords",
+   "section": "home",
+   "device": "desktop",
+   "lang": "en"
+  },
+  {
+   "at": "2026-11-05T00:40:01.068Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "other",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T00:39:33.916Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "cosmetics",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T00:39:31.288Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "cosmetics",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-05T00:39:24.563Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "home",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T23:23:53.291Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "home",
+   "device": "tablet",
+   "lang": "ar"
+  },
+  {
+   "at": "2026-11-04T23:23:45.394Z",
+   "country": "EG",
+   "placeId": "EG:cairo",
+   "cityAr": "القاهرة",
+   "cityEn": "Cairo",
+   "regionAr": "محافظة القاهرة",
+   "lat": 30.06,
+   "lon": 31.25,
+   "precision": "edge-coords",
+   "section": "community",
+   "device": "tablet",
+   "lang": "ar"
+  },
   {
    "at": "2026-11-04T22:56:54.934Z",
    "country": "SA",
@@ -419,8 +778,8 @@
  ],
  "byRegion": {
   "arab": {
-   "visits": 23,
-   "uniqueVisitors": 13,
+   "visits": 40,
+   "uniqueVisitors": 21,
    "countries": 2
   },
   "europe": {
@@ -429,9 +788,9 @@
    "countries": 0
   },
   "asia": {
-   "visits": 0,
-   "uniqueVisitors": 0,
-   "countries": 0
+   "visits": 6,
+   "uniqueVisitors": 5,
+   "countries": 1
   },
   "africa": {
    "visits": 0,
@@ -452,17 +811,18 @@
  "byDay": [
   {
    "date": "2026-11-05",
-   "visits": 23,
-   "uniqueVisitors": 13,
+   "visits": 46,
+   "uniqueVisitors": 26,
    "byCountry": {
-    "EG": 18,
-    "SA": 5
+    "EG": 35,
+    "SA": 5,
+    "SG": 6
    },
    "hours": [
     23,
-    0,
-    0,
-    0,
+    2,
+    10,
+    11,
     0,
     0,
     0,
@@ -489,16 +849,16 @@
  "byMonth": [
   {
    "month": "2026-11",
-   "visits": 23,
-   "uniqueVisitors": 13
+   "visits": 46,
+   "uniqueVisitors": 26
   }
  ],
  "todayHoursDate": "2026-11-05",
  "todayByHour": [
   23,
-  0,
-  0,
-  0,
+  2,
+  10,
+  11,
   0,
   0,
   0,
@@ -522,9 +882,9 @@
  ],
  "allTimeByHour": [
   23,
-  0,
-  0,
-  0,
+  2,
+  10,
+  11,
   0,
   0,
   0,
@@ -547,20 +907,24 @@
   0
  ],
  "bySection": {
-  "community": 12,
+  "community": 19,
+  "home": 7,
   "pyramid": 6,
+  "other": 5,
+  "store": 3,
+  "cosmetics": 3,
   "concentration": 2,
-  "home": 2,
-  "other": 1
+  "product": 1
  },
  "byDevice": {
   "mobile": 0,
-  "desktop": 5,
-  "tablet": 18
+  "desktop": 11,
+  "tablet": 35
  },
  "byLanguage": {
-  "ar": 23
+  "ar": 40,
+  "en": 6
  },
- "checkedAt": "2026-11-04T23:19:55.885Z",
+ "checkedAt": "2026-11-05T01:23:34.306Z",
  "liveLedger": "reached"
 }
