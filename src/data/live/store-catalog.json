@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-11-05T09:32:48.597Z",
- "nextUpdateAt": "2026-11-05T21:32:48.597Z",
+ "updatedAt": "2026-11-05T09:50:53.883Z",
+ "nextUpdateAt": "2026-11-05T21:50:53.883Z",
  "editor": "shaheen",
  "entries": {
   "LAT-052": {
@@ -38470,15 +38470,14 @@
   "MAI-891": {
    "sourceHash": "t86rw7",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "شوغر مي دولسي دي ليشي من ميسون ألامبرا",
-   "nameEn": "Sugar Me Dulce de Leche by Maison Alhambra 100ml EDP",
-   "descriptionAr": "عطر شوغر مي دولسي دي ليشي من ميسون ألامبرا يقدم تجربة عطرية فريدة تجمع بين النوتات العطرية الجذابة. يمنحك هذا العطر حضوراً عذباً ومميزاً يلفت الانتباه.",
-   "descriptionEn": "Sugar Me Dulce de Leche by Maison Alhambra – 100ml Eau de Parfum with an aromatic and delightful profile.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "شوجر مي دولسي دي ليتشي باي ميسون ألامبرا",
+   "nameEn": "Sugar Me Dulce de Leche by Maison Alhambra",
+   "descriptionAr": "عطر شوجر مي دولسي دي ليتشي من ميسون ألامبرا بتركيبة عطرية أروماتيكية بحجم 100 مل.",
+   "descriptionEn": "Sugar Me Dulce de Leche by Maison Alhambra is an aromatic fragrance in a 100ml size.",
    "gender": "unisex",
    "families": [
-    "gourmand",
-    "amber"
+    "fresh"
    ],
    "notes": {
     "top": [],
@@ -38489,25 +38488,25 @@
     "all"
    ],
    "occasions": [
-    "daily",
-    "evening"
+    "daily"
    ],
    "tags": [
     "ميسون ألامبرا",
-    "شوغر مي",
-    "دولسي دي ليشي",
     "عطر مختلط",
-    "عطر حلو"
-   ]
+    "شوجر مي",
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "LAT-892": {
    "sourceHash": "b4z40c",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "حياتي للرجال من لطافة",
-   "nameEn": "Hayaati Men by Lattafa Perfumes 100ml EDP",
-   "descriptionAr": "عطر حياتي للرجال من لطافة يجمع بين الانتعاش الخشبي ولمسات العنبر الدافئة. يتميز بتوليفة متوازنة من التفاح والبرغموت والقرفة تضفي حيوية متجددة.",
-   "descriptionEn": "Hayaati Man by Lattafa – 100 ml Eau de Parfum for Men. Fragrance Family: Woody • Fresh • Amber.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "حياة مين باي لطافة",
+   "nameEn": "Hayaati Men by Lattafa Perfumes",
+   "descriptionAr": "عطر حياة مين من لطافة يجمع بين نفحات الخشب والانتعاش والعنبر في زجاجة بحجم 100 مل.",
+   "descriptionEn": "Hayaati Man by Lattafa combines woody, fresh, and amber notes in a 100ml Eau de Parfum for men.",
    "gender": "men",
    "families": [
     "woody",
@@ -38517,10 +38516,10 @@
    "notes": {
     "top": [
      "Apple",
-     "Bergamot"
+     "Bergamot",
+     "Cinnamon"
     ],
     "heart": [
-     "Cinnamon",
      "Cedarwood"
     ],
     "base": [
@@ -38530,9 +38529,7 @@
     ]
    },
    "seasons": [
-    "spring",
-    "summer",
-    "autumn"
+    "all"
    ],
    "occasions": [
     "daily",
@@ -38540,25 +38537,25 @@
    ],
    "tags": [
     "لطافة",
-    "حياتي",
     "عطر رجالي",
-    "عطر خشبي",
-    "عطر منعش"
-   ]
+    "حياة",
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "MAI-893": {
    "sourceHash": "19egzy5",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "قسمت ماجيك من ميسون ألامبرا",
-   "nameEn": "Kismet Magic by Maison Alhambra 100ml EDP Unisex",
-   "descriptionAr": "عطر قسمت ماجيك من ميسون ألامبرا يوفر تجربة عطرية ساحرة للجنسين بفضل تركيبته الغنية. يمزج بانسجام بين نفحات الكاكاو والعسل وقلب العنبر الدافئ.",
-   "descriptionEn": "Kismet Magic by Maison Alhambra – 100 ml Eau De Parfum (Unisex) featuring Cacao, Honey, Amber, and Vanilla.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "كيسميت ماجيك باي ميسون ألامبرا",
+   "nameEn": "Kismet Magic by Maison Alhambra",
+   "descriptionAr": "عطر كيسميت ماجيك من ميسون ألامبرا يتميز بمزيج الكاكاو والعسل والعنبر بحجم 100 مل.",
+   "descriptionEn": "Kismet Magic by Maison Alhambra features a blend of cacao, honey, and amber in a 100ml unisex fragrance.",
    "gender": "unisex",
    "families": [
     "gourmand",
-    "amber",
-    "spicy"
+    "amber"
    ],
    "notes": {
     "top": [
@@ -38587,24 +38584,25 @@
    ],
    "tags": [
     "ميسون ألامبرا",
-    "قسمت ماجيك",
-    "عطر للجنسين",
-    "عطر شرقي",
-    "عطر فخم"
-   ]
+    "عطر مختلط",
+    "كيسميت ماجيك",
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "MAI-894": {
    "sourceHash": "1qvk772",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "لإمبرسيو فور فيم من ميسون ألامبرا",
-   "nameEn": "L'Impressio Pour Femme by Maison Alhambra 100ml",
-   "descriptionAr": "عطر لإمبرسيو فور فيم من ميسون ألامبرا هو عطر نسائي نقي وحلو يمنحك شعوراً بالأنوثة الطاغية. يتميز برائحة خفيفة ومنعشة تناسب الاستخدام اليومي.",
-   "descriptionEn": "L'Impressio Pour Femme by Maison Alhambra 100ml EDP—a fresh, sweet & feminine fragrance that is clean and suitable for daily wear.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "لإمبريسيو بور فام باي ميسون ألامبرا",
+   "nameEn": "L'Impressio Pour Femme by Maison Alhambra",
+   "descriptionAr": "عطر لإمبريسيو بور فام من ميسون ألامبرا يضم نوتات الفواكه والزهور الناعمة بحجم 100 مل.",
+   "descriptionEn": "L'Impressio Pour Femme by Maison Alhambra features fruity notes and soft florals in a 100ml size.",
    "gender": "women",
    "families": [
-    "floral",
     "fruity",
+    "floral",
     "musk"
    ],
    "notes": {
@@ -38630,24 +38628,25 @@
    ],
    "tags": [
     "ميسون ألامبرا",
-    "لإمبرسيو",
     "عطر نسائي",
-    "عطر منعش",
-    "عطر يومي"
-   ]
+    "لإمبريسيو",
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "MAI-895": {
    "sourceHash": "ghf8he",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "أفانت من ميسون ألامبرا للرجال",
-   "nameEn": "Avant by Maison Alhambra 100ml EDP Men",
-   "descriptionAr": "عطر أفانت من ميسون ألامبرا للرجال يعكس القوة والأناقة من خلال توليفته الخشبية والتوابل الحيوية. يفتح بنفحات منعشة من البرغموي والليمون والفلفل الأسود.",
-   "descriptionEn": "Avant by Maison Alhambra – 100 ml Eau de Parfum for Men with top notes of bergamot, lemon, and black pepper.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "أفانت باي ميسون ألامبرا",
+   "nameEn": "Avant by Maison Alhambra",
+   "descriptionAr": "عطر أفانت من ميسون ألامبرا للرجال يحتوي على مزيج البرغموت والليمون والفلفل الأسود بحجم 100 مل.",
+   "descriptionEn": "Avant by Maison Alhambra for men features a blend of bergamot, lemon, and black pepper in a 100ml bottle.",
    "gender": "men",
    "families": [
-    "woody",
     "fresh",
+    "woody",
     "spicy"
    ],
    "notes": {
@@ -38669,8 +38668,7 @@
    },
    "seasons": [
     "spring",
-    "summer",
-    "autumn"
+    "summer"
    ],
    "occasions": [
     "daily",
@@ -38678,25 +38676,25 @@
    ],
    "tags": [
     "ميسون ألامبرا",
-    "أفانت",
     "عطر رجالي",
-    "عطر فخم",
-    "عطر عصري"
-   ]
+    "أفانت",
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "GRA-896": {
    "sourceHash": "1nxq2iz",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "أفينتو من غراندور للرجال",
-   "nameEn": "Avento Perfume Man 100ml EDP Grandeur",
-   "descriptionAr": "عطر أفينتو للرجال من غراندور إليت يجسد روح الثقة والأناقة العصرية. يترك انطباعاً ساحراً ومميزاً بفضل تركيبته الجذابة والفريدة.",
-   "descriptionEn": "Avento Perfume Man 100ml EDP Grandeur Elite designed to offer a captivating for men.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "أفينتو بيرفيوم مان باي جراندور",
+   "nameEn": "Avento Perfume Man by Grandeur",
+   "descriptionAr": "عطر أفينتو للرجال من جراندور ايليت بحجم 100 مل.",
+   "descriptionEn": "Avento Perfume Man by Grandeur Elite is a 100ml Eau de Parfum for men.",
    "gender": "men",
    "families": [
-    "woody",
     "fresh",
-    "amber"
+    "woody"
    ],
    "notes": {
     "top": [],
@@ -38707,25 +38705,25 @@
     "all"
    ],
    "occasions": [
-    "daily",
-    "evening"
+    "daily"
    ],
    "tags": [
-    "غراندور",
-    "أفينتو",
+    "جراندور",
     "عطر رجالي",
-    "عطر فخم",
-    "عطر مميز"
-   ]
+    "أفينتو",
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "GUL-897": {
    "sourceHash": "wgqhi",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "عطر شام للنساء من جلف أوركيد",
-   "nameEn": "Sham Perfume Woman Gulf Orchid – Her 100 ml",
-   "descriptionAr": "عطر شام للنساء من جلف أوركيد يمنحك تجربة عطرية غنية بنفحات الفواكه والزهور الحلوة. يجمع في قلبه بين الورد والياسمين والفانيليا ليضفي جاذبية.",
-   "descriptionEn": "Sham Perfume Woman – Her Cherry 100 ml Eau de Parfum. Fragrance Family: Fruity • Floral • Sweet.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "شام بيرفيوم وومان هير باي جلف أوركيد",
+   "nameEn": "Sham Perfume Woman Gulf Orchid – Her",
+   "descriptionAr": "عطر شام للنساء هير من جلف أوركيد يجمع بين الكرز والتوت والخوخ بحجم 100 مل.",
+   "descriptionEn": "Sham Perfume Woman Her by Gulf Orchid combines cherry, raspberry, and peach in a 100ml size.",
    "gender": "women",
    "families": [
     "fruity",
@@ -38754,25 +38752,25 @@
    ],
    "occasions": [
     "daily",
-    "evening",
     "gift"
    ],
    "tags": [
     "جلف أوركيد",
-    "عطر شام",
     "عطر نسائي",
-    "عطر فواكه",
-    "عطر حلو"
-   ]
+    "شام",
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "VOL-898": {
    "sourceHash": "15nv97p",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "أمازون رينفول من فولاري للرجال",
-   "nameEn": "Amazon Rainfall by Volare 100ml EDP Men",
-   "descriptionAr": "عطر أمازون رينفول من فولاري للرجال يستوحى من انتعاش الطبيعة وهدوء نسمات البحر. تركيبة مميزة تجمع بين الحمضيات ونسيم البحر مع قاعدة خشبية دافئة.",
-   "descriptionEn": "Amazon Rainfall by Volare – 100 ml Eau de Parfum for Men featuring citrus, sea breeze, and watery notes.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "أمازون رينفول باي فولاري",
+   "nameEn": "Amazon Rainfall by Volare",
+   "descriptionAr": "عطر أمازون رينفول من فولاري للرجال يضم نفحات الحمضيات ونسيم البحر بحجم 100 مل.",
+   "descriptionEn": "Amazon Rainfall by Volare for men features citrus and sea breeze notes in a 100ml size.",
    "gender": "men",
    "families": [
     "fresh",
@@ -38796,8 +38794,7 @@
     ]
    },
    "seasons": [
-    "summer",
-    "spring"
+    "summer"
    ],
    "occasions": [
     "daily",
@@ -38805,20 +38802,21 @@
    ],
    "tags": [
     "فولاري",
-    "أمازون رينفول",
     "عطر رجالي",
-    "عطر منعش",
-    "عطر صيفي"
-   ]
+    "أمازون رينفول",
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "MAI-899": {
    "sourceHash": "xe31rm",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "لافا من ميسون ألامبرا",
-   "nameEn": "Lava by Maison Alhambra 100ml EDP",
-   "descriptionAr": "عطر لافا من ميسون ألامبرا يمنحك شعوراً بالدفء والجرأة بفضل نفحاته الشرقية والتوابل الغنية. يعتبر عطراً عربياً مركزاً وثابتاً يلائم الأمسيات الباردة.",
-   "descriptionEn": "Lava by Maison Alhambra – 100 ml Eau de Parfum. Warm, spicy, smoky & bold Arabian perfume ideal for evenings.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "لافا باي ميسون ألامبرا",
+   "nameEn": "Lava by Maison Alhambra",
+   "descriptionAr": "عطر لافا من ميسون ألامبرا يتميز بنوتات التوابل الدافئة والأخشاب المدخنة بحجم 100 مل.",
+   "descriptionEn": "Lava by Maison Alhambra features warm spices and smoky woods in a 100ml size.",
    "gender": "unisex",
    "families": [
     "oriental",
@@ -38844,25 +38842,25 @@
     "autumn"
    ],
    "occasions": [
-    "evening",
-    "special"
+    "evening"
    ],
    "tags": [
     "ميسون ألامبرا",
+    "عطر مختلط",
     "لافا",
-    "عطر شرقي",
-    "عطر مسائي",
-    "عطر دافئ"
-   ]
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "ARM-900": {
    "sourceHash": "1gh2r7b",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "أوديسي ماندارين سكاي من أرماف للرجال",
-   "nameEn": "Odyssey Mandarin Sky by Armaf 100ml EDP Men",
-   "descriptionAr": "عطر أوديسي ماندارين سكاي من أرماف يمنحك انتعاشاً فريداً بفضل نفحات الماندرين والجريب فروت. يرتكز العطر على قاعدة غنية بالعنبر وحبوب التونكا ليترك أثراً منعشاً وجذاباً.",
-   "descriptionEn": "Odyssey Mandarin Sky by Armaf – 100 ml Eau de Parfum for Men with top notes of mandarin and grapefruit.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "أوديسي ماندارين سكاي باي أرماف",
+   "nameEn": "Odyssey Mandarin Sky by Armaf",
+   "descriptionAr": "عطر أوديسي ماندارين سكاي من أرماف للرجال يجمع بين الماندرين والجريب فروت بحجم 100 مل.",
+   "descriptionEn": "Odyssey Mandarin Sky by Armaf for men features mandarin and grapefruit in a 100ml size.",
    "gender": "unisex",
    "families": [
     "citrus",
@@ -38894,24 +38892,26 @@
    ],
    "tags": [
     "أرماف",
+    "عطر مختلط",
     "أوديسي ماندارين سكاي",
-    "عطر رجالي",
-    "عطر حمضيات",
-    "عطر منعش"
-   ]
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "ARM-901": {
    "sourceHash": "1si5ps6",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "فيروس من أرماف",
-   "nameEn": "Feroce by Armaf 100ml EDP Women",
-   "descriptionAr": "عطر نسائي أنيق يجمع بين نفحات الفواكه المنعشة وباقة زهرية ناعمة. يترك خلفية دافئة ومميزة تضفي لمسة من الجاذبية.",
-   "descriptionEn": "Feroce by Armaf – 100 ml Eau de Parfum for Women. Top Notes: Mandarin, Peach, Pink Pepper. Heart Notes: Rose, Jasmine, Patchouli. Base Notes: Amber, Musk, Vanilla.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "فيروس باي أرماف",
+   "nameEn": "Feroce by Armaf",
+   "descriptionAr": "عطر فيروس من أرماف للنساء يضم مزيج الماندرين والخوخ والفلفل الوردي بحجم 100 مل.",
+   "descriptionEn": "Feroce by Armaf for women features mandarin, peach, and pink pepper in a 100ml size.",
    "gender": "women",
    "families": [
     "fruity",
-    "floral"
+    "floral",
+    "amber"
    ],
    "notes": {
     "top": [
@@ -38932,7 +38932,7 @@
    },
    "seasons": [
     "spring",
-    "summer"
+    "autumn"
    ],
    "occasions": [
     "daily",
@@ -38941,18 +38941,20 @@
    "tags": [
     "أرماف",
     "عطر نسائي",
-    "عطور الفواكه",
-    "عطور الزهور"
-   ]
+    "فيروس",
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "ZIM-902": {
    "sourceHash": "1ke0f56",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "بريف هارت من زيمايا",
-   "nameEn": "Brave Heart by Zimaya EDP 100ml Unisex",
-   "descriptionAr": "عطر مفعم بالدفء والتوابل يمنحك حضوراً قوياً وجذاباً. تركيبة عطرية متوازنة تناسب الأذواق الرفيعة.",
-   "descriptionEn": "Brave Heart by Zimaya (Afnan) – 100 ml Eau de Parfum (Unisex). Fragrance Family: Warm • Spicy • Woody. Top Notes: Black Pepper, Cardamom, Bergamot. Middle Notes: Leather, Cedarwood, Clary Sage. Base Notes: Vanilla, Amber, Sandalwood, Musk.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "بريف هارت باي زيمايا",
+   "nameEn": "Brave Heart by Zimaya",
+   "descriptionAr": "عطر بريف هارت من زيمايا يجمع بين الفلفل الأسود والهيل والأخشاب بحجم 100 مل.",
+   "descriptionEn": "Brave Heart by Zimaya combines black pepper, cardamom, and woody notes in a 100ml unisex fragrance.",
    "gender": "unisex",
    "families": [
     "spicy",
@@ -38978,8 +38980,8 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
@@ -38987,23 +38989,26 @@
    ],
    "tags": [
     "زيمايا",
-    "عطر للجنسين",
-    "توابل دافئة",
-    "عطور خشبية"
-   ]
+    "عطر مختلط",
+    "بريف هارت",
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "MAI-903": {
    "sourceHash": "823x6t",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "هيركوليز من ميسون الحمراء",
-   "nameEn": "Hercules by Maison Alhambra For Him 100ml",
-   "descriptionAr": "عطر رجالي فخم يمزج ببراعة بين التوابل الحارة والأخشاب الدافئة. يعكس شخصية قوية ومميزة.",
-   "descriptionEn": "Hercules by Maison Alhambra – 100 ml Eau De Parfum for Him. Fragrance Notes: Top: Spices, Citrus, Aromatic Notes. Heart: Amber, Woods, Tonka. Base: Vanilla, Musk, Cedarwood.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "هيركوليز باي ميسون ألامبرا",
+   "nameEn": "Hercules by Maison Alhambra For Him",
+   "descriptionAr": "عطر هيركوليز من ميسون ألامبرا للرجال يحتوي على التوابل والحمضيات والأخشاب بحجم 100 مل.",
+   "descriptionEn": "Hercules by Maison Alhambra for men features spices, citrus, and woods in a 100ml bottle.",
    "gender": "men",
    "families": [
+    "spicy",
     "woody",
-    "spicy"
+    "amber"
    ],
    "notes": {
     "top": [
@@ -39023,33 +39028,34 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
     "work"
    ],
    "tags": [
-    "ميسون الحمراء",
+    "ميسون ألامبرا",
     "عطر رجالي",
-    "عطور خشبية",
-    "توابل"
-   ]
+    "هيركوليز",
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "ALW-904": {
    "sourceHash": "1ybm1da",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "تيارا من الوطنعية",
-   "nameEn": "Tiara by Al Wataniah – 100 ml for Women",
-   "descriptionAr": "عطر نسائي حلو ومنعش يزهو بنفحات الفواكه والزهور الساحرة. يمنحك شعوراً بالبهجة والأناقة.",
-   "descriptionEn": "Tiara by Al Wataniah – 100 ml Eau de Parfum for Women. Fragrance Family: Sweet • Fruity • Floral. Top Notes: Strawberry, Raspberry, Pear. Middle Notes: Rose, Jasmine, Vanilla Orchid. Base Notes: Musk, Amber, Sandalwood.",
+   "updatedAt": "2026-11-05T09:50:53.883Z",
+   "nameAr": "تيارا باي الوطنّية",
+   "nameEn": "Tiara by Al Wataniah",
+   "descriptionAr": "عطر تيارا من الوطنّية للنساء يضم الفراولة والتوت والكمثرى بحجم 100 مل.",
+   "descriptionEn": "Tiara by Al Wataniah for women features strawberry, raspberry, and pear in a 100ml size.",
    "gender": "women",
    "families": [
     "fruity",
-    "floral",
-    "gourmand"
+    "floral"
    ],
    "notes": {
     "top": [
@@ -39079,9 +39085,11 @@
    "tags": [
     "الوطنية",
     "عطر نسائي",
-    "عطور حلوة",
-    "زهور"
-   ]
+    "تيارا",
+    "100 مل",
+    "ماء عطر"
+   ],
+   "style": 2
   },
   "MAI-905": {
    "sourceHash": "7zb9su",
