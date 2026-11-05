@@ -1,7 +1,7 @@
 {
  "version": 1,
  "agent": "finance-shield",
- "updatedAt": "2026-11-04T19:29:50.678Z",
+ "updatedAt": "2026-11-05T01:45:15.743Z",
  "guard": {
   "wired": true,
   "calls": 2,
