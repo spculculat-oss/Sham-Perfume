@@ -32,6 +32,10 @@ hand in an emergency. Do not run the data-collecting ones from GitHub.
 | G. Backups | code mirror, encrypted DB dump, restore test | robots' server | GitLab + Google Drive + Supabase |
 | H. Build & deploy | tests, build, deploy | GitHub Actions (on push / PR only) | GitLab |
 
+**GitLab copy:** the `mirror` job in `pages.yml` pushes every update of `main` to
+`gitlab.com/spculculat-oss/Sham-Perfume`. It runs on pushes only, with no timetable. It needs the secret
+`GITLAB_MIRROR_TOKEN` (a GitLab token with `write_repository` only) and never force-pushes.
+
 The timetables are kept in `SCHEDULES` (`src/utils/opsLive.ts`) for the robots' server. `GITHUB_SCHEDULES` lists
 what still runs on GitHub. Until a robot runs on its server, the ops map shows it as
 «متوقف مؤقتاً على GitHub: بيتنقل لسيرفر الروبوتات».
