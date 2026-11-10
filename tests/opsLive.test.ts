@@ -9,7 +9,7 @@ import { paceMs } from '../src/admin/useOpsLive';
 import { BOTS, botOf } from '../src/utils/shaheenOrg';
 import {
   activityFeed, allLive, botLive, currentStep, dutyShort, latestByWorkflow, lastFinishedByWorkflow, LIVE_ORDER, liveScenarios, nextCron, nextRunOf,
-  SCHEDULES, stepAr, TRIGGERS_AR, type GhRun,
+  GITHUB_SCHEDULES, OFF_GITHUB, SCHEDULES, stepAr, TRIGGERS_AR, type GhRun,
 } from '../src/utils/opsLive';
 import { readControls } from '../src/utils/ownerAuthority';
 import { readStateOrders } from '../src/utils/platformState';
@@ -30,7 +30,11 @@ test('timetables match the workflow files exactly', () => {
     const crons = [...readFileSync(new URL(f, dir), 'utf8').matchAll(/^\s*- cron: '([^']+)'/gm)].map((m) => m[1]);
     if (crons.length) fromFiles[f] = crons;
   }
-  assert.deepEqual(SCHEDULES, fromFiles, 'copy the cron lines of .github/workflows into src/utils/opsLive.ts SCHEDULES');
+  assert.deepEqual(GITHUB_SCHEDULES, fromFiles, 'copy the cron lines of .github/workflows into src/utils/opsLive.ts GITHUB_SCHEDULES');
+  // GitHub Actions only builds, tests and deploys (2026-11): one daily check of the live site, no robot timetable.
+  assert.deepEqual(Object.keys(fromFiles), ['live-smoke.yml']);
+  for (const [f, crons] of Object.entries(GITHUB_SCHEDULES)) assert.deepEqual(SCHEDULES[f], crons, `${f}: same timetable in both lists`);
+  for (const f of OFF_GITHUB) assert.ok(!fromFiles[f], `${f} must not run on a schedule on GitHub`);
   // Every bot's workflow either has a timetable or a known trigger.
   for (const b of BOTS) if (b.workflow) assert.ok(SCHEDULES[b.workflow] || TRIGGERS_AR[b.workflow], `${b.id}: ${b.workflow} has no timetable or trigger text`);
 });
@@ -56,7 +60,7 @@ test('live states: running with its step, queued, stopped with the reason, waiti
     run('product-pages-check.yml', 'completed', 'skipped', 10),
     run('shaheen-patrol.yml', 'in_progress', null, 1, { head_branch: 'arena/x' }), // not main
   ];
-  const live = allLive({ runs, workflows: [{ path: '.github/workflows/shaheen-finance.yml', state: 'disabled_manually' }], now: NOW });
+  const live = allLive({ runs, workflows: [{ path: '.github/workflows/shaheen-finance.yml', state: 'disabled_manually' }], now: NOW, onRobotServer: true });
   const of = (b: string) => live.find((l) => l.id === b)!;
   assert.equal(of('importer').state, 'running'); assert.equal(of('images').state, 'running', 'bots sharing a workflow run together');
   assert.match(of('importer').noteAr, /شغالة دلوقتي \(في ميعاده\)/);
@@ -70,7 +74,7 @@ test('live states: running with its step, queued, stopped with the reason, waiti
   assert.equal(of('product_pages').state, 'unknown', 'a skipped run did no work');
 
   // Older than the live list → the pre-meeting check's last run.
-  const council = botLive(botOf('council')!, { latest: {}, finished: {}, fallback: { conclusion: 'success', status: 'completed', at: iso(NOW - 2 * 3_600_000) }, now: NOW });
+  const council = botLive(botOf('council')!, { latest: {}, finished: {}, fallback: { conclusion: 'success', status: 'completed', at: iso(NOW - 2 * 3_600_000) }, now: NOW, onRobotServer: true });
   assert.equal(council.state, 'waiting'); assert.equal(council.next, '2026-10-22T08:15:00.000Z');
 });
 
@@ -122,18 +126,18 @@ test('«خريطة عمل لحظية»: paused on purpose — by the owner, by �
   const news = BOTS.find((b) => b.workflow === 'shaheen-news.yml')!;
   const stateOrders = readStateOrders({ paused: [news.id], laws: [], log: [] });
   const runs = [run('shaheen-seo.yml', 'in_progress', null, 2)];
-  const live = allLive({ runs, now: NOW, controls, stateOrders });
+  const live = allLive({ runs, now: NOW, controls, stateOrders, onRobotServer: true });
   const of = (b: string) => live.find((l) => l.id === b)!;
   assert.equal(of('images').state, 'paused'); assert.equal(of('images').pausedBy, 'owner');
   assert.equal(of('importer').state, 'paused', 'its partner on the same workflow stops with it (the gate stops the workflow)');
   assert.equal(of(news.id).state, 'paused'); assert.equal(of(news.id).pausedBy, 'state');
   assert.match(of(news.id).noteAr, /دولة المنصة/);
-  const frozen = allLive({ runs, now: NOW, controls: { ...controls, frozen: true } });
+  const frozen = allLive({ runs, now: NOW, controls: { ...controls, frozen: true }, onRobotServer: true });
   const seo = BOTS.find((b) => b.workflow === 'shaheen-seo.yml')!;
   assert.equal(frozen.find((l) => l.id === seo.id)!.state, 'running', 'a run already going is shown as it is');
   assert.ok(frozen.filter((l) => l.state === 'paused').every((l) => l.pausedBy === 'frozen'));
   assert.equal(frozen.find((l) => l.id === news.id)!.pausedBy, 'frozen');
-  assert.equal(allLive({ runs, now: NOW }).filter((l) => l.state === 'paused').length, 0, 'nothing paused without orders');
+  assert.equal(allLive({ runs, now: NOW, onRobotServer: true }).filter((l) => l.state === 'paused').length, 0, 'nothing paused without orders');
   assert.ok(LIVE_ORDER.includes('paused'));
 });
 
@@ -170,4 +174,18 @@ test('the live work map: admin only, inside the ops map, one shared poll', () =>
   const map = readFileSync(new URL('../src/admin/LiveWorkMap.tsx', import.meta.url), 'utf8');
   assert.doesNotMatch(map, /useOpsLive\(\)/, 'no second poll');
   for (const e of ['🟢', '🔵', '⚪', '🔴', '⏸️']) assert.ok(map.includes(e), e);
+});
+
+test('robots whose timetable left GitHub show as paused while they move to the robots’ server — no fake next turn', () => {
+  const live = allLive({ runs: [run('shaheen-seo.yml', 'in_progress', null, 2, { event: 'workflow_dispatch' })], now: NOW });
+  const of = (wf: string) => live.find((l) => BOTS.find((b) => b.id === l.id)!.workflow === wf)!;
+  assert.equal(of('shaheen-import.yml').state, 'paused');
+  assert.equal(of('shaheen-import.yml').pausedBy, 'moving');
+  assert.equal(of('shaheen-import.yml').next, undefined);
+  assert.match(of('shaheen-import.yml').noteAr, /سيرفر الروبوتات/);
+  assert.equal(of('shaheen-seo.yml').state, 'running', 'a manual run is still shown as it is');
+  assert.notEqual(of('live-smoke.yml').pausedBy, 'moving', 'the daily live-site check still runs on GitHub');
+  // The owner's order still comes first.
+  const controls = readControls({ version: 1, frozen: true, paused: [], selfDevelopment: 'state', aiPlatforms: 'off', log: [] });
+  assert.equal(allLive({ runs: [], now: NOW, controls }).find((l) => l.id === of('shaheen-import.yml').id)!.pausedBy, 'frozen');
 });

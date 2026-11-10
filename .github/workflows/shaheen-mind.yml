@@ -17,31 +17,14 @@ name: Shaheen mind — the learning loop (ears, tutor, examiner, reflex)
 # No robot here changes a price or makes a promise: prices and promises stay the owner's decision.
 
 on:
-  schedule:
-    # After «سينابس» (27 */3) has refreshed the graph, and before «الفحص الشامل» (04:10) reads the reports.
-    - cron: '41 4 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
     inputs:
       no_exam:
         description: 'Skip the exam — keep the previous shaheen-exam.json (faster, for a partial run)'
         type: boolean
         default: false
-  push:
-    branches: [main, 'arena/**']
-    paths:
-      - 'scripts/shaheen-mind/**'
-      - 'tests/shaheenMindLoop.test.ts'
-      - 'src/utils/shaheenReflex.ts'
-      - 'src/utils/shaheenQuickApps.ts'
-      - 'src/data/shipping.json'
-      - 'src/data/shipping-costs.json'
-      - 'src/data/shipping-lanes.json'
-      - 'src/data/customs.json'
-      - 'src/data/live/trade-lanes.json'
-      - 'src/data/live/shaheen-graph.json'
-      - 'src/data/live/shaheen-immune.json'
-      - '.github/workflows/shaheen-mind.yml'
-
 permissions:
   contents: write
 

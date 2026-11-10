@@ -23,14 +23,9 @@ name: Shaheen's school around the clock (every hour)
 # (src/data/live/shaheen-brain.json, scripts/shaheen-brain/teacher.mts), else Qwen2.5-7B-Instruct.
 
 on:
-  schedule:
-    - cron: '47 * * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    # Branches: rehearsal only (nothing is committed).
-    branches: ['arena/**']
-    paths: ['src/data/sciences/syllabus.ts', 'scripts/shaheen-school/backlog.mts', 'scripts/shaheen-school/teacher.sh', 'scripts/shaheen-brain/teacher.mts', 'scripts/shaheen-harvest/**', 'src/data/shaheen-harvest-bank.json', '.github/workflows/shaheen-school-clock.yml']
-
 permissions:
   contents: write
   actions: write

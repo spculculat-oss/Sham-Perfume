@@ -10,19 +10,9 @@ name: Shaheen scent behaviour — the visitor's perfume choices
 # and the customer-care desk (3).
 
 on:
-  schedule:
-    - cron: '17 4 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: [main, 'arena/**']
-    paths:
-      - 'scripts/shaheen-scent/**'
-      - 'src/utils/labSignals.ts'
-      - 'src/utils/designers/perfumeMaterials.ts'
-      - 'src/data/rawMaterials.ts'
-      - 'src/data/products.json'
-      - '.github/workflows/shaheen-scent.yml'
-
 permissions:
   contents: write
 

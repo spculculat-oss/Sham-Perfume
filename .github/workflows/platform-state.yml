@@ -14,16 +14,12 @@ name: Platform State — approvals by its members' vote
 # Minute 27: clear of the patrol (52), the importer and the studio bridge (37).
 
 on:
-  schedule:
-    - cron: '27 * * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
   # An order from the State's room: an issue the owner opens from his own account (checked again in the code).
   issues:
     types: [opened]
-  push:
-    branches: ['arena/**']
-    paths: ['scripts/state/**', 'src/utils/platformState.ts', '.github/workflows/platform-state.yml']
-
 permissions:
   contents: write
   pull-requests: write

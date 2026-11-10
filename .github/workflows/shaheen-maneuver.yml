@@ -9,13 +9,9 @@ name: Shaheen — specialties field maneuver (live site, every 6 hours)
 # patrol (52). Code: scripts/shaheen-maneuver/. Result: src/data/live/shaheen-maneuver.json (admin → «دولة المنصة»).
 
 on:
-  schedule:
-    - cron: '41 1,7,13,19 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: ['arena/**']
-    paths: ['scripts/shaheen-maneuver/**', 'src/utils/maneuver.ts', 'src/utils/maneuverDrills.ts', '.github/workflows/shaheen-maneuver.yml']
-
 permissions:
   contents: write
 

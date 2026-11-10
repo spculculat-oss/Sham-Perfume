@@ -14,14 +14,9 @@ name: Shaheen news, assistant training and AI supervision (every 12 hours)
 # src/data/products.json retrains the changed products right away.
 
 on:
-  schedule:
-    # 03:07 and 15:07 UTC = 06:07 and 18:07 Cairo (summer time). The first run starts as soon as this is merged.
-    - cron: '7 3,15 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-news/**', 'scripts/shaheen-supervisor/**', 'scripts/shaheen-store/**', 'server/design/**', 'src/admin/DesignStudioPanel.tsx', 'src/types/design.ts', 'src/data/products.json', 'src/utils/storeCatalog.ts', 'src/utils/aiTools.ts', '.github/workflows/shaheen-news.yml']
-
 permissions:
   contents: write
   actions: write

@@ -16,8 +16,8 @@ name: Shaheen patrol — rotating shifts (each role monitored every 3 hours)
 # «all» for one full monitoring pass across roles and probes (it does not invoke every advisory agent).
 
 on:
-  schedule:
-    - cron: '52 * * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
     inputs:
       shift:
@@ -25,10 +25,6 @@ on:
         type: choice
         options: [auto, '0', '1', '2', all]
         default: auto
-  push:
-    branches: ['arena/**']
-    paths: ['scripts/shaheen-patrol/**', '.github/workflows/shaheen-patrol.yml']
-
 permissions:
   contents: write
   actions: write

@@ -30,14 +30,9 @@ name: Shaheen source scout and school (every 6 hours)
 # SAFE_BROWSING_API_KEY (Google Safe Browsing, free — adds «is this site dangerous?» to every store's CV).
 
 on:
-  schedule:
-    - cron: '17 */6 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    # Branches: rehearsal only (nothing is committed); main: a change to the scout or the school runs at once.
-    branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-discover/**', 'scripts/shaheen-school/**', 'scripts/shaheen-import/**', 'src/data/sciences/**', '.github/workflows/shaheen-discover.yml']
-
 permissions:
   contents: write
   actions: write

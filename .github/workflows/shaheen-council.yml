@@ -10,20 +10,14 @@ name: Shaheen council — daily development meeting
 # Without any AI key the meeting still happens, with minutes written from the reports' rules.
 
 on:
-  schedule:
-    # 08:15 UTC = 10:15 Cairo (11:15 in summer time): right after the free daily AI quota renews (midnight
-    # Pacific = 07:00–08:00 UTC), so the meeting thinks with a fresh quota; after the night's bots too.
-    - cron: '15 8 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
     inputs:
       force:
         description: 'Meet again even if today''s meeting already took place'
         type: boolean
         default: false
-  push:
-    branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-council/**', '.github/workflows/shaheen-council.yml']
-
 permissions:
   contents: write
   actions: write

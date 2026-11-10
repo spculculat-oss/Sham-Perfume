@@ -121,12 +121,16 @@ import {
 import { runPrecheck } from '../scripts/shaheen-council/precheck';
 import { buildBriefing, chairPrompt, fieldOpinion, selfMinutes } from '../scripts/shaheen-council/council';
 import { cleanAdvisor, ranToday } from '../scripts/shaheen-manus/missions';
+import { SCHEDULES as OPS_SCHEDULES } from '../src/utils/opsLive';
 
-test('each schedule runs its own mission, a manual choice wins, and a push only rehearses', () => {
+test('each schedule runs its own mission and a manual choice wins; on GitHub it runs by hand only', () => {
   const wf = readFileSync(new URL('../.github/workflows/shaheen-manus.yml', import.meta.url), 'utf8');
-  for (const cron of Object.keys(SCHEDULES)) assert.ok(wf.includes(`- cron: '${cron}'`), cron);
+  // 2026-11: the timetables move to the robots' server (same strings as opsLive SCHEDULES); none runs on GitHub.
+  assert.deepEqual(Object.keys(SCHEDULES).sort(), [...OPS_SCHEDULES['shaheen-manus.yml']].sort());
+  for (const cron of Object.keys(SCHEDULES)) assert.ok(!wf.includes(`- cron: '${cron}'`), cron);
+  assert.doesNotMatch(wf, /^\s+(schedule|workflow_run|push):/m);
+  assert.match(wf, /workflow_dispatch:/);
   assert.equal(missionFor('0 7 * * *'), 'tour');
-  assert.ok(/workflow_run:\s*\n\s*workflows: \['Shaheen pre-meeting full check'\]/.test(wf), 'the tour follows the pre-meeting check');
   const pre = readFileSync(new URL('../.github/workflows/shaheen-precheck.yml', import.meta.url), 'utf8');
   assert.match(pre, /^name: Shaheen pre-meeting full check$/m);
   assert.equal(missionFor('15 5 * * 3,6'), 'design');

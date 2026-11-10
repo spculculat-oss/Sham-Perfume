@@ -9,17 +9,9 @@ name: Shaheen catalog review — every product, every price, every day
 # src/data/live/catalog-review.json (pre-meeting check + council).
 
 on:
-  schedule:
-    - cron: '23 6 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: [main, 'arena/**']
-    paths:
-      - 'scripts/shaheen-catalog/**'
-      - 'src/data/products.json'
-      - 'src/data/shipping.json'
-      - '.github/workflows/shaheen-catalog-review.yml'
-
 permissions:
   contents: write
 

@@ -7,13 +7,9 @@ name: Shaheen's experiments lab (daily)
 # يعمل يومياً الساعة 06:20 UTC، ويدعم التشغيل اليدوي، والتجربة على فروع arena/** بدون نشر.
 
 on:
-  schedule:
-    - cron: '20 6 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: ['arena/**']
-    paths: ['src/utils/shaheenLab*.ts', 'scripts/shaheen-lab/**', '.github/workflows/shaheen-lab.yml']
-
 permissions:
   contents: write
 

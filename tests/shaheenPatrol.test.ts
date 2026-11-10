@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { BOTS, botOf } from '../src/utils/shaheenOrg';
+import { SCHEDULES } from '../src/utils/opsLive';
 import type { BotCheck, PrecheckFile } from '../scripts/shaheen-council/precheck';
 import {
   emptyPatrol, issueMarker, MAX_TRIES, parseShaheen, PATROL_RERUNNABLE, patrolIssue, probeCatalog, probeCurrency, probeFx, probeL10n, probeNewsFile,
@@ -245,12 +246,13 @@ test('rotating shifts: one group per hour, every role and probe assigned once; a
   assert.deepEqual(c.file.probes.map((p) => p.id), ['pricing', 'site']);
 });
 
-test('the patrol robot is in the structure, runs hourly, pinned, and starts only safe robots', () => {
+test('the patrol robot is in the structure, hourly on the robots’ server (not GitHub), pinned, and starts only safe robots', () => {
   const bot = botOf('patrol')!;
   assert.equal(bot.workflow, 'shaheen-patrol.yml');
   assert.equal(bot.report, 'shaheen-patrol.json');
   const wf = readFileSync(new URL('../.github/workflows/shaheen-patrol.yml', import.meta.url), 'utf8');
-  assert.match(wf, /cron: '52 \* \* \* \*'/);
+  assert.doesNotMatch(wf, /cron:/, 'no timetable on GitHub (2026-11)');
+  assert.deepEqual(SCHEDULES['shaheen-patrol.yml'], ['52 * * * *'], 'hourly on the robots’ server');
   assert.match(wf, /PATROL_SHIFT/);
   assert.match(wf, /actions: write/);
   for (const line of wf.split('\n').filter((l) => /uses:/.test(l))) assert.match(line, /@[0-9a-f]{40} #/);
