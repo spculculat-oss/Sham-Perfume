@@ -7,12 +7,12 @@ import { FinanceService } from './service';
 import type { BankService } from './bank';
 import type { SalesService } from '../sales/service';
 import { createSalesRouter } from '../sales/router';
-import { BUNDLED_FX, isFxTable, type FxTable } from '../../src/utils/pricing';
+import { BUNDLED_FX, type FxTable } from '../../src/utils/pricing';
 import { PLATFORM_HOLDER } from '../../src/bank/shamLedger';
 import { ShamBooks, readMoneyBody } from './shamBooks';
 import { WorldFirstRail } from './worldFirstRail';
 import { inquireWorldFirst } from './worldFirstInquiry';
-import { loadLive } from '../core/liveData';
+import { liveFxRates } from '../core/liveFx';
 import type { PeriodKind } from './types';
 
 function periodInput(kind: unknown, offset: unknown): { kind: PeriodKind; offset: number } {
@@ -59,7 +59,7 @@ export function createFinanceRouter(finance: FinanceService, bank?: BankService,
     // «بنك شام»: direct collection, statement matching, payables, budgets, analytics and «شاهين المحاسب».
     const bundled = { ...BUNDLED_FX, updatedAt: BUNDLED_FX.updatedAt || '1970-01-01T00:00:00Z' };
     router.get('/bank', wrap(async (_req, res) => {
-      const fx: FxTable = await loadLive('fx-rates.json', bundled, isFxTable, finance.env, fetch).catch(() => bundled);
+      const fx: FxTable = await liveFxRates(finance.env, fetch).catch(() => bundled);
       res.json(await bank.dashboard(fx));
     }));
     router.post('/bank/accounts', wrap(async (req, res) => { res.status(201).json({ item: await bank.saveAccount(undefined, req.body) }); }));
@@ -92,7 +92,7 @@ export function createFinanceRouter(finance: FinanceService, bank?: BankService,
     router.post('/bank/sham/release', wrap(async (req, res) => { res.json(await books.release(PLATFORM_HOLDER, readMoneyBody(req.body).postingId)); }));
     router.post('/bank/sham/convert', wrap(async (req, res) => {
       const body = readMoneyBody(req.body);
-      const rates: FxTable = await loadLive('fx-rates.json', bundled, isFxTable, finance.env, fetch).catch(() => bundled);
+      const rates: FxTable = await liveFxRates(finance.env, fetch).catch(() => bundled);
       res.json(await books.convert(PLATFORM_HOLDER, body, rates));
     }));
     const settlement = new WorldFirstRail(finance.store, () => new Date().toISOString(), finance.env);
