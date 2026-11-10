@@ -32,6 +32,16 @@ hand in an emergency. Do not run the data-collecting ones from GitHub.
 | G. Backups | code mirror, encrypted DB dump, restore test | robots' server | GitLab + Google Drive + Supabase |
 | H. Build & deploy | tests, build, deploy | GitHub Actions (on push / PR only) | GitLab |
 
+**Essential work that runs now, within the commitments:**
+
+- **Exchange rates.** The site's own server asks the public rates service at most every 6 hours per instance
+  (`server/core/liveFx.ts`). The checkout and «بنك شام» use these rates, and the storefront gets them from
+  `GET /api/fx` and keeps them for the next visit (`src/utils/fxBoot.ts`). Nothing is committed and nothing runs on
+  GitHub.
+- **Daily live-site check** (`live-smoke.yml`) and the **product pages check after each deploy**.
+- **Platform State** still answers the owner's orders at once: an issue from his account starts it. Only its
+  hourly timetable stopped.
+
 **GitLab copy:** the `mirror` job in `pages.yml` pushes every update of `main` to
 `gitlab.com/spculculat-oss/Sham-Perfume`. It runs on pushes only, with no timetable. It needs the secret
 `GITLAB_MIRROR_TOKEN` (a GitLab token with `write_repository` only) and never force-pushes.
