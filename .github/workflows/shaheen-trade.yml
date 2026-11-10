@@ -10,18 +10,9 @@ name: Shaheen trade lanes — who ships, from where, and at what price
 # The published carrier-cost table is generated with the report and must be published in the same commit.
 
 on:
-  schedule:
-    - cron: '47 5 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: [main, 'arena/**']
-    paths:
-      - 'scripts/shaheen-trade/**'
-      - 'src/data/shipping-lanes.json'
-      - 'src/data/customs.json'
-      - 'src/data/shipping.json'
-      - '.github/workflows/shaheen-trade.yml'
-
 permissions:
   contents: write
 

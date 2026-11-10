@@ -7,27 +7,9 @@ name: Shaheen weave — link mind to data, and curate knowledge
 # لا روبوت هنا يغيّر سعر ولا يعد بتوصيل: الأسعار والوعود قرار صاحب المتجر.
 
 on:
-  schedule:
-    # مرة واحدة في اليوم.
-    - cron: '41 5 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: [main, 'arena/**']
-    paths:
-      - 'scripts/shaheen-memory/weaver.ts'
-      - 'scripts/shaheen-memory/curator.ts'
-      - 'scripts/shaheen-memory/weave.mts'
-      - 'src/data/live/shaheen-graph.json'
-      - 'src/data/live/trade-lanes.json'
-      - 'src/data/live/shaheen-study.json'
-      - 'src/data/live/shaheen-exam.json'
-      - 'src/data/live/shaheen-reflex.json'
-      - 'src/data/live/senses-site.json'
-      - 'src/data/customs.json'
-      - 'src/data/shipping-costs.json'
-      - 'src/data/live/fx-rates.json'
-      - '.github/workflows/shaheen-weave.yml'
-
 permissions:
   contents: write
 

@@ -12,7 +12,12 @@ import { JOURNEYS, type Journey } from './opsMap';
 import type { OwnerControls } from './ownerAuthority';
 import type { StateOrders } from './platformState';
 
-// ── Schedules (UTC cron, exactly as in the workflow files) and the other triggers ───────────────────────────
+// ── Schedules (UTC cron) and the other triggers ──────────────────────────────────────────────────────────────
+/**
+ * The robots' timetables (UTC cron). Since 2026-11 they are kept for the robots' own server
+ * (docs/ROBOT_DISTRIBUTION.md): GitHub Actions only builds, tests and deploys the site, so a timetable listed
+ * here but not in GITHUB_SCHEDULES does not run on GitHub (see OFF_GITHUB).
+ */
 export const SCHEDULES: Record<string, string[]> = {
   'aistudio-bridge.yml': ['7,37 * * * *'],
   'live-smoke.yml': ['0 6 * * *'],
@@ -48,6 +53,13 @@ export const SCHEDULES: Record<string, string[]> = {
   'shaheen-seo.yml': ['23 */6 * * *'],
   'shaheen-sales.yml': ['33 */6 * * *'],
 };
+/** The cron lines still in .github/workflows — exactly as in the files (a daily check of the live site only). */
+export const GITHUB_SCHEDULES: Record<string, string[]> = {
+  'live-smoke.yml': ['0 6 * * *'],
+};
+/** Robots whose timetable no longer runs on GitHub: paused there until they move to the robots' server. */
+export const OFF_GITHUB: ReadonlySet<string> = new Set(Object.keys(SCHEDULES).filter((f) => !GITHUB_SCHEDULES[f]));
+
 /** What starts a workflow that has no timetable (or also starts it besides the timetable). */
 export const TRIGGERS_AR: Record<string, string> = {
   'pages.yml': 'بيشتغل مع كل تحديث للموقع',
@@ -136,7 +148,7 @@ export function currentStep(jobs: GhJob[]): { job: string; step?: string; done: 
 // ── Each bot's live state ─────────────────────────────────────────────────────────────────────────────────────
 /** `paused`: stopped on purpose — by the owner, by «دولة المنصة», or by the emergency brake (not a fault). */
 export type LiveState = 'running' | 'queued' | 'paused' | 'stopped' | 'waiting' | 'ondemand' | 'unknown';
-export type PausedBy = 'owner' | 'state' | 'frozen';
+export type PausedBy = 'owner' | 'state' | 'frozen' | 'moving';
 export interface BotLive {
   id: BotId;
   state: LiveState;
@@ -156,7 +168,7 @@ const ON_DEMAND_AR: Partial<Record<BotId, string>> = {
 };
 const hours = (iso: string, now: number) => (now - Date.parse(iso)) / 3_600_000;
 
-export function botLive(bot: Bot, input: { latest: Record<string, GhRun>; finished: Record<string, GhRun>; workflows?: GhWorkflow[]; fallback?: FallbackRun; now: number; pausedBy?: PausedBy }): BotLive {
+export function botLive(bot: Bot, input: { latest: Record<string, GhRun>; finished: Record<string, GhRun>; workflows?: GhWorkflow[]; fallback?: FallbackRun; now: number; pausedBy?: PausedBy; onRobotServer?: boolean }): BotLive {
   const { now } = input;
   const wf = bot.workflow;
   if (!wf) return { id: bot.id, state: 'ondemand', noteAr: ON_DEMAND_AR[bot.id] || 'بيشتغل عند الطلب' };
@@ -178,6 +190,10 @@ export function botLive(bot: Bot, input: { latest: Record<string, GhRun>; finish
   if (input.pausedBy) {
     return { id: bot.id, state: 'paused', pausedBy: input.pausedBy, noteAr: PAUSED_AR[input.pausedBy] };
   }
+  // Its timetable left GitHub (2026-11): no next turn here until it runs on the robots' server.
+  if (OFF_GITHUB.has(wf) && !input.onRobotServer) {
+    return { id: bot.id, state: 'paused', pausedBy: 'moving', noteAr: PAUSED_AR.moving };
+  }
   const done = input.finished[wf];
   const last: FallbackRun | undefined = done ? { conclusion: done.conclusion, status: done.status, at: done.updated_at, url: done.html_url }
     : input.fallback?.status === 'completed' && input.fallback.conclusion !== 'skipped' ? input.fallback : undefined;
@@ -195,6 +211,7 @@ export function botLive(bot: Bot, input: { latest: Record<string, GhRun>; finish
 
 export const PAUSED_AR: Record<PausedBy, string> = {
   owner: 'موقوف بأمر صاحب الموقع', state: 'موقوف بأمر دولة المنصة', frozen: 'موقوف: فرامل الطوارئ شغالة (كل الروبوتات واقفة)',
+  moving: 'متوقف مؤقتاً على GitHub: بيتنقل لسيرفر الروبوتات (تشغيل يدوي بس لحد كده)',
 };
 /** Who stopped a bot on purpose: its workflow's gate stops it when any robot sharing that workflow is paused. */
 export function pausedByOf(bot: Bot, controls?: OwnerControls, stateOrders?: StateOrders): PausedBy | undefined {
@@ -206,9 +223,9 @@ export function pausedByOf(bot: Bot, controls?: OwnerControls, stateOrders?: Sta
   return undefined;
 }
 
-export function allLive(input: { runs: GhRun[]; workflows?: GhWorkflow[]; fallback?: Partial<Record<BotId, FallbackRun>>; now: number; controls?: OwnerControls; stateOrders?: StateOrders }): BotLive[] {
+export function allLive(input: { runs: GhRun[]; workflows?: GhWorkflow[]; fallback?: Partial<Record<BotId, FallbackRun>>; now: number; controls?: OwnerControls; stateOrders?: StateOrders; onRobotServer?: boolean }): BotLive[] {
   const latest = latestByWorkflow(input.runs); const finished = lastFinishedByWorkflow(input.runs);
-  return BOTS.map((b) => botLive(b, { latest, finished, workflows: input.workflows, fallback: input.fallback?.[b.id], now: input.now, pausedBy: pausedByOf(b, input.controls, input.stateOrders) }));
+  return BOTS.map((b) => botLive(b, { latest, finished, workflows: input.workflows, fallback: input.fallback?.[b.id], now: input.now, pausedBy: pausedByOf(b, input.controls, input.stateOrders), onRobotServer: input.onRobotServer }));
 }
 
 // ── «بيعمل إيه دلوقتي» in plain Arabic ───────────────────────────────────────────────────────────────────────

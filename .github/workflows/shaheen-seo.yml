@@ -12,19 +12,9 @@ name: Manaret Shaheen — SEO cycle and search-engine submissions (every 6 hours
 # Var: SEO_SITE_URL (defaults to the main site on GitHub Pages — the address visitors and search engines use).
 
 on:
-  schedule:
-    # Every 6 hours, a few minutes after the hour to avoid the news bulletin's slot.
-    - cron: '23 */6 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: [main, 'arena/**']
-    paths:
-      - 'scripts/seo-agent/**'
-      - 'src/seo/**'
-      - 'server/seo/**'
-      - 'scripts/seo-build.mts'
-      - '.github/workflows/shaheen-seo.yml'
-
 permissions:
   contents: write
   actions: write

@@ -11,17 +11,9 @@ name: Shaheen finance shield — payments and commissions guard
 # and the customer-care desk (3).
 
 on:
-  schedule:
-    - cron: '35 */6 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: [main, 'arena/**']
-    paths:
-      - 'scripts/shaheen-finance/shield*.ts'
-      - 'src/finance/shield.ts'
-      - 'server/checkout.ts'
-      - '.github/workflows/shaheen-finance-shield.yml'
-
 permissions:
   contents: write
 

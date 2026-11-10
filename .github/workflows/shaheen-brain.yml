@@ -15,8 +15,8 @@ name: Shaheen's brain lab (weekly)
 # rehearsal of step 1 on arena/** branches.
 
 on:
-  schedule:
-    - cron: '20 3 * * 5'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
     inputs:
       task:
@@ -36,12 +36,6 @@ on:
         description: 'Its name (optional)'
         required: false
         default: ''
-  push:
-    # main: the training files are rebuilt and published when this lab changes (no exam).
-    # Branches: rehearsal of the training files only (nothing is published).
-    branches: ['main', 'arena/**']
-    paths: ['scripts/shaheen-brain/**', '.github/workflows/shaheen-brain.yml']
-
 permissions:
   contents: read
 

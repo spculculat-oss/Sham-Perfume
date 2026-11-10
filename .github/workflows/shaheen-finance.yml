@@ -1,9 +1,8 @@
 name: Shaheen finance — daily audit and periodic reports
 
 on:
-  schedule:
-    # 03:15 UTC, always after midnight in Cairo (DST-aware period boundaries are in the service).
-    - cron: '15 3 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
 
 permissions:

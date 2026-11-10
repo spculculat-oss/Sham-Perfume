@@ -8,13 +8,9 @@ name: Shaheen pre-meeting full check
 # No AI key is used. If the meeting time changes, keep this two hours before it.
 
 on:
-  schedule:
-    - cron: '10 6 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-council/precheck*', 'scripts/shaheen-council/runs.ts', 'src/utils/shaheenOrg.ts', '.github/workflows/shaheen-precheck.yml']
-
 permissions:
   contents: write
   actions: read

@@ -8,18 +8,9 @@ name: Shaheen sales — the sales desk inside Sham Bank
 # Minute 33: clear of the State (27), importer (37), school clock (47), patrol (52) and the pre-check (10).
 
 on:
-  schedule:
-    - cron: '33 */6 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: ['arena/**']
-    paths:
-      - 'scripts/shaheen-sales/**'
-      - 'src/sales/**'
-      - 'src/utils/salesCraft.ts'
-      - 'src/utils/botHandbook.ts'
-      - '.github/workflows/shaheen-sales.yml'
-
 permissions:
   contents: write
 

@@ -1,9 +1,8 @@
 name: Shaheen Doctor (Automated Maintenance)
 
 on:
-  schedule:
-    # Every 10 minutes
-    - cron: '*/10 * * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
     inputs:
       check_type:

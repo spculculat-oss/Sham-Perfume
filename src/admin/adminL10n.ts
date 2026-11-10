@@ -1389,6 +1389,7 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'اضغط «Run workflow» (تشغيل) واختار الأمر، ولو الأمر وقف أو رجوع اختار الروبوت.': { en: "Press «Run workflow», choose the order, and for pause/resume choose the robot." },
   'اضغط الزرار الأخضر. خلال دقيقة الأمر بيتسجل وكل الروبوتات بتمشي عليه.': { en: "Press the green button. Within a minute the order is saved and every robot follows it." },
   'فرامل الطوارئ': { en: "Emergency brake" },
+  'بيتنقل لسيرفر الروبوتات': { en: "Moving to the robots' server" },
   'شغالة: كل الروبوتات واقفة': { en: "On: every robot is stopped" },
   'مش شغالة: الروبوتات بتشتغل': { en: "Off: the robots are working" },
   'الموقع نفسه بيفضل شغال للزوار في الحالتين.': { en: "The site itself keeps serving visitors either way." },

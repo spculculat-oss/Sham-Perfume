@@ -11,18 +11,9 @@ name: Shaheen inventory — stock and sales forecast
 # customer-care desk (3).
 
 on:
-  schedule:
-    - cron: '5 */6 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: ['arena/**']
-    paths:
-      - 'scripts/shaheen-inventory/**'
-      - 'src/data/products.json'
-      - 'src/data/live/store-catalog.json'
-      - 'src/utils/storeCatalog.ts'
-      - '.github/workflows/shaheen-inventory.yml'
-
 permissions:
   contents: write
 
