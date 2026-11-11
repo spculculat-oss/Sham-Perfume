@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-05T09:53:01.331Z",
+ "updatedAt": "2026-11-11T18:40:06.990Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -656,12 +656,12 @@
    "foundBy": "brand-site",
    "foundWith": "Zimaya",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-04T01:16:40.109Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-11T18:40:06.990Z",
    "trust": {
     "score": 82,
     "verdict": "trusted",
-    "at": "2026-11-04T01:16:40.109Z",
+    "at": "2026-11-11T18:40:06.990Z",
     "checks": [
      {
       "id": "age",
@@ -762,7 +762,7 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "AED",
-   "rateToEgp": 15.0771,
+   "rateToEgp": 14.526,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*zimayaperfumes\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://zimayaperfumes.com/sitemap_agentic_discovery.xml",
@@ -921,12 +921,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-01T18:53:55.489Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-11T18:40:06.990Z",
    "trust": {
     "score": 80,
     "verdict": "trusted",
-    "at": "2026-11-01T18:53:55.489Z",
+    "at": "2026-11-11T18:40:06.990Z",
     "checks": [
      {
       "id": "age",
@@ -1024,7 +1024,7 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "SAR",
-   "rateToEgp": 14.9415,
+   "rateToEgp": 14.2258,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*niceonesa\\.com/ar/[^?#]+$",
    "sitemaps": [],
    "via": "json-ld",
@@ -1032,7 +1032,7 @@
     "https://niceonesa.com",
     "https://niceonesa.com/ar/perfume"
    ],
-   "productsEstimate": 66
+   "productsEstimate": 69
   },
   {
    "id": "goldenscent-com",
@@ -2311,12 +2311,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T15:10:56.723Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-02T01:17:41.428Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-11T18:40:06.990Z",
    "trust": {
     "score": 84,
     "verdict": "trusted",
-    "at": "2026-11-02T01:17:41.428Z",
+    "at": "2026-11-11T18:40:06.990Z",
     "checks": [
      {
       "id": "age",
@@ -2416,13 +2416,13 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "GBP",
-   "rateToEgp": 74.9879,
+   "rateToEgp": 71.4597,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*pacoperfumerias\\.co\\.uk/[^?#]+\\.html?$",
    "sitemaps": [
     "https://www.pacoperfumerias.co.uk/sitemap.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 6333
+   "productsEstimate": 6373
   },
   {
    "id": "nose-shop-jp",
@@ -4330,12 +4330,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T04:31:58.644Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-02T07:37:33.706Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-11T18:40:06.990Z",
    "trust": {
     "score": 79,
     "verdict": "trusted",
-    "at": "2026-11-02T07:37:33.706Z",
+    "at": "2026-11-11T18:40:06.990Z",
     "checks": [
      {
       "id": "age",
@@ -4435,7 +4435,7 @@
    "sampleOk": 5,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 55.9607,
+   "rateToEgp": 53.3499,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*scentsplit\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.scentsplit.com/sitemap_agentic_discovery.xml",
@@ -4447,11 +4447,11 @@
     "https://www.scentsplit.com/sitemap_products_6.xml?from=7720821391560&to=8042998530248",
     "https://www.scentsplit.com/sitemap_products_7.xml?from=8042998595784&to=8166866518216",
     "https://www.scentsplit.com/sitemap_products_8.xml?from=8166866550984&to=8229329567944",
-    "https://www.scentsplit.com/sitemap_products_9.xml?from=8229329633480&to=8310163734728",
-    "https://www.scentsplit.com/sitemap_products_10.xml?from=8310163767496&to=8334554759368"
+    "https://www.scentsplit.com/sitemap_products_9.xml?from=8229329633480&to=8310163898568",
+    "https://www.scentsplit.com/sitemap_products_10.xml?from=8310383313096&to=8334554890440"
    ],
    "via": "generic",
-   "productsEstimate": 9996
+   "productsEstimate": 9998
   },
   {
    "id": "flaconi-de",
@@ -4748,12 +4748,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-02T19:05:47.429Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-11T18:40:06.990Z",
    "trust": {
     "score": 76,
     "verdict": "trusted",
-    "at": "2026-11-02T19:05:47.429Z",
+    "at": "2026-11-11T18:40:06.990Z",
     "checks": [
      {
       "id": "age",
@@ -4853,7 +4853,7 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 55.9607,
+   "rateToEgp": 53.3499,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*lattafa-usa\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.lattafa-usa.com/sitemap_agentic_discovery.xml",
@@ -4909,12 +4909,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-02T19:05:47.429Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-11T18:40:06.990Z",
    "trust": {
     "score": 79,
     "verdict": "trusted",
-    "at": "2026-11-02T19:05:47.429Z",
+    "at": "2026-11-11T18:40:06.990Z",
     "checks": [
      {
       "id": "age",
@@ -5014,18 +5014,18 @@
    "sampleOk": 9,
    "sampleTotal": 9,
    "currency": "USD",
-   "rateToEgp": 55.9607,
+   "rateToEgp": 53.3499,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*aedes\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.aedes.com/sitemap_agentic_discovery.xml",
-    "https://www.aedes.com/sitemap_products_1.xml?from=457680521&to=7701880340559",
-    "https://www.aedes.com/sitemap_products_2.xml?from=7701945516111&to=15493921931343",
+    "https://www.aedes.com/sitemap_products_1.xml?from=457680521&to=7701966159951",
+    "https://www.aedes.com/sitemap_products_2.xml?from=7701967700047&to=15533379256399",
     "https://www.aedes.com/sitemap_pages_1.xml?from=21279921&to=117377073231",
     "https://www.aedes.com/sitemap_collections_1.xml?from=30872249&to=493411500111",
     "https://www.aedes.com/sitemap_blogs_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 1250
+   "productsEstimate": 1270
   },
   {
    "id": "ruebroca-com",
@@ -5464,12 +5464,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-02T19:05:47.429Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-11T18:40:06.990Z",
    "trust": {
     "score": 86,
     "verdict": "trusted",
-    "at": "2026-11-02T19:05:47.429Z",
+    "at": "2026-11-11T18:40:06.990Z",
     "checks": [
      {
       "id": "age",
@@ -5565,26 +5565,26 @@
     "flags": []
    },
    "region": "europe",
-   "sampleOk": 3,
-   "sampleTotal": 6,
+   "sampleOk": 8,
+   "sampleTotal": 8,
    "currency": "EUR",
-   "rateToEgp": 62.2688,
+   "rateToEgp": 59.6748,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*ausliebezumduft\\.de/products/[^?#]+$",
    "sitemaps": [
     "https://www.ausliebezumduft.de/sitemap_agentic_discovery.xml",
-    "https://www.ausliebezumduft.de/sitemap_products_1.xml?from=10143100928346&to=10143501746522",
-    "https://www.ausliebezumduft.de/sitemap_products_2.xml?from=10143502336346&to=10145457275226",
-    "https://www.ausliebezumduft.de/sitemap_products_3.xml?from=10145457307994&to=10145981301082",
-    "https://www.ausliebezumduft.de/sitemap_products_4.xml?from=10145981432154&to=10243185049946",
-    "https://www.ausliebezumduft.de/sitemap_products_5.xml?from=10243185082714&to=11056210641242",
+    "https://www.ausliebezumduft.de/sitemap_products_1.xml?from=10143100928346&to=10143502827866",
+    "https://www.ausliebezumduft.de/sitemap_products_2.xml?from=10143503253850&to=10145458946394",
+    "https://www.ausliebezumduft.de/sitemap_products_3.xml?from=10145459011930&to=10145985691994",
+    "https://www.ausliebezumduft.de/sitemap_products_4.xml?from=10145986150746&to=10265642139994",
+    "https://www.ausliebezumduft.de/sitemap_products_5.xml?from=10265642172762&to=11066626212186",
     "https://www.ausliebezumduft.de/sitemap_pages_1.xml?from=138209788250&to=161118781786",
-    "https://www.ausliebezumduft.de/sitemap_collections_1.xml?from=639574507866&to=646039667034",
-    "https://www.ausliebezumduft.de/sitemap_collections_2.xml?from=646039699802&to=680812872026",
+    "https://www.ausliebezumduft.de/sitemap_collections_1.xml?from=639574507866&to=646039699802",
+    "https://www.ausliebezumduft.de/sitemap_collections_2.xml?from=646039732570&to=682053828954",
     "https://www.ausliebezumduft.de/sitemap_blogs_1.xml",
     "https://www.ausliebezumduft.de/sitemap_articles_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 4956
+   "productsEstimate": 4942
   },
   {
    "id": "osswaldnyc-com",
@@ -5594,12 +5594,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-19T18:53:10.915Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-02T19:05:47.429Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-11T18:40:06.990Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-11-02T19:05:47.429Z",
+    "at": "2026-11-11T18:40:06.990Z",
     "checks": [
      {
       "id": "age",
@@ -5699,19 +5699,19 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 55.9607,
+   "rateToEgp": 53.3499,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*osswaldnyc\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.osswaldnyc.com/sitemap_agentic_discovery.xml",
     "https://www.osswaldnyc.com/sitemap_products_1.xml?from=131027455&to=10345840378075",
-    "https://www.osswaldnyc.com/sitemap_products_2.xml?from=10362358595803&to=10376229814491",
+    "https://www.osswaldnyc.com/sitemap_products_2.xml?from=10362358595803&to=10402195538139",
     "https://www.osswaldnyc.com/sitemap_pages_1.xml?from=125059140&to=126722638043",
     "https://www.osswaldnyc.com/sitemap_collections_1.xml?from=9704145&to=544761610459",
     "https://www.osswaldnyc.com/sitemap_blogs_1.xml",
     "https://www.osswaldnyc.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 1012
+   "productsEstimate": 1014
   },
   {
    "id": "niche-beauty-com",
@@ -6113,12 +6113,12 @@
    "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-20T00:56:49.671Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-03T01:15:26.759Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-11T18:40:06.990Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-11-03T01:15:26.759Z",
+    "at": "2026-11-11T18:40:06.990Z",
     "checks": [
      {
       "id": "age",
@@ -6218,22 +6218,22 @@
    "sampleOk": 3,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 55.4154,
+   "rateToEgp": 53.3499,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*fragranceoutlet\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://www.fragranceoutlet.com/sitemap_agentic_discovery.xml",
     "https://www.fragranceoutlet.com/sitemap_products_1.xml?from=2370653827&to=1368496767085",
-    "https://www.fragranceoutlet.com/sitemap_products_2.xml?from=1381238407277&to=3829810823277",
-    "https://www.fragranceoutlet.com/sitemap_products_3.xml?from=3851663048813&to=6549508063341",
-    "https://www.fragranceoutlet.com/sitemap_products_4.xml?from=6549508784237&to=7551578112109",
-    "https://www.fragranceoutlet.com/sitemap_products_5.xml?from=7551604031597&to=15403423989869",
+    "https://www.fragranceoutlet.com/sitemap_products_2.xml?from=1381238407277&to=3829807251565",
+    "https://www.fragranceoutlet.com/sitemap_products_3.xml?from=3829810823277&to=6549507539053",
+    "https://www.fragranceoutlet.com/sitemap_products_4.xml?from=6549508030573&to=7551569002605",
+    "https://www.fragranceoutlet.com/sitemap_products_5.xml?from=7551571984493&to=15438674985069",
     "https://www.fragranceoutlet.com/sitemap_pages_1.xml?from=67170947&to=162123743341",
-    "https://www.fragranceoutlet.com/sitemap_collections_1.xml?from=82980675&to=512318210157",
+    "https://www.fragranceoutlet.com/sitemap_collections_1.xml?from=82980675&to=512714145901",
     "https://www.fragranceoutlet.com/sitemap_blogs_1.xml",
     "https://www.fragranceoutlet.com/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 4784
+   "productsEstimate": 4814
   },
   {
    "id": "marionnaud-fr",
@@ -6830,6 +6830,117 @@
    },
    "region": "europe",
    "reason": "ملف الثقة ضعيف (41/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، سياسة الإرجاع والاسترداد، سياسة الشحن"
+  },
+  {
+   "id": "perfume-store-com",
+   "host": "perfume-store.com",
+   "name": "Spaceship",
+   "base": "https://perfume-store.com",
+   "status": "candidate",
+   "foundBy": "council",
+   "foundWith": "اجتماع شاهين اليومي",
+   "foundAt": "2026-11-11T18:40:06.990Z",
+   "attempts": 1,
+   "vettedAt": "2026-11-11T18:40:06.990Z",
+   "trust": {
+    "score": 38,
+    "verdict": "weak",
+    "at": "2026-11-11T18:40:06.990Z",
+    "checks": [
+     {
+      "id": "age",
+      "label": "عمر النطاق",
+      "ok": true,
+      "points": 16,
+      "max": 20,
+      "detail": "4 سنة"
+     },
+     {
+      "id": "https",
+      "label": "اتصال آمن (https)",
+      "ok": true,
+      "points": 5,
+      "max": 5
+     },
+     {
+      "id": "contact",
+      "label": "بيانات التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 10,
+      "detail": "لا توجد"
+     },
+     {
+      "id": "identity",
+      "label": "هوية الشركة (سجل/رقم ضريبي/عنوان)",
+      "ok": false,
+      "points": 5,
+      "max": 15,
+      "detail": "عنوان"
+     },
+     {
+      "id": "returns",
+      "label": "سياسة الإرجاع والاسترداد",
+      "ok": false,
+      "points": 0,
+      "max": 10
+     },
+     {
+      "id": "shipping",
+      "label": "سياسة الشحن",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "privacy",
+      "label": "سياسة الخصوصية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "terms",
+      "label": "الشروط والأحكام",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "payment",
+      "label": "وسائل دفع معروفة",
+      "ok": true,
+      "points": 10,
+      "max": 10,
+      "detail": "Visa، Mastercard، American Express، PayPal، Apple Pay، Google Pay"
+     },
+     {
+      "id": "platform",
+      "label": "منصة متاجر معروفة",
+      "ok": null,
+      "points": 2,
+      "max": 5
+     },
+     {
+      "id": "social",
+      "label": "حسابات رسمية على التواصل",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     },
+     {
+      "id": "authentic",
+      "label": "يضمن أن المنتجات أصلية",
+      "ok": false,
+      "points": 0,
+      "max": 5
+     }
+    ],
+    "flags": [],
+    "registeredAt": "2021-11-30T19:08:01.000Z"
+   },
+   "region": "global",
+   "reason": "ملف الثقة ضعيف (38/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، سياسة الإرجاع والاسترداد"
   }
  ],
  "queries": [
@@ -7371,6 +7482,28 @@
  ],
  "runs": [
   {
+   "at": "2026-11-11T18:40:06.990Z",
+   "mode": "self",
+   "found": 1,
+   "vetted": 10,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "  ↳ lattafa-usa.com: CV 76/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ lattafa-usa.com (CV 76/100): 284 perfumes, 4/6 pages read without AI, USD (1 = 53.3499 EGP) — still good",
+    "  ↳ aedes.com: CV 79/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✓ aedes.com (CV 79/100): 1270 perfumes, 9/9 pages read without AI, USD (1 = 53.3499 EGP) — still good",
+    "  ↳ ausliebezumduft.de: CV 86/100 [https,contact,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ ausliebezumduft.de (CV 86/100): 4942 perfumes, 8/8 pages read without AI, EUR (1 = 59.6748 EGP) — still good",
+    "  ↳ osswaldnyc.com: CV 83/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social] on Shopify",
+    "✓ osswaldnyc.com (CV 83/100): 1014 perfumes, 3/6 pages read without AI, USD (1 = 53.3499 EGP) — still good",
+    "  ↳ fragranceoutlet.com: CV 90/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ fragranceoutlet.com (CV 90/100): 4814 perfumes, 3/6 pages read without AI, USD (1 = 53.3499 EGP) — still good",
+    "  ↳ zimayaperfumes.com: CV 82/100 [age,https,identity,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ zimayaperfumes.com (CV 82/100): 106 perfumes, 3/6 pages read without AI, AED (1 = 14.526 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-11-05T09:53:01.331Z",
    "mode": "self",
    "found": 0,
@@ -7721,18 +7854,6 @@
    "activated": 0,
    "rejected": 0,
    "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-31T08:56:17.460Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "Web search: AI quota used up — the scout continues by himself",
     "0 new stores found this run (own methods, no AI)"
    ]
   }
