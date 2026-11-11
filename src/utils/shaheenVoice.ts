@@ -71,3 +71,43 @@ export function splitShaheenSpeech(text: string, maxChars = 220): string[] {
   flush();
   return chunks;
 }
+
+/** The little a speech engine exposes about one of its voices (a subset of SpeechSynthesisVoice). */
+export interface ShaheenVoiceCandidate {
+  readonly name: string;
+  readonly lang: string;
+  readonly localService?: boolean;
+  readonly default?: boolean;
+}
+
+/** Engines name their best, most human-sounding voices with these words. */
+const NATURAL_VOICE = /natural|neural|online|premium|enhanced|wavenet|studio|google|siri/i;
+/** Novelty and low-quality voices that should never read Shaheen's replies. */
+const NOVELTY_VOICE = /compact|espeak|whisper|zarvox|trinoids|bells|bubbles|bad news|good news|boing|cellos|organ|jester|superstar|wobble|albert|fred|junior|ralph|kathy/i;
+
+/**
+ * Choose the most natural voice the visitor's own device offers for the reply language: the exact locale
+ * (ar-EG) beats the same language in another region (ar-SA), and voices named as natural/neural/online beat
+ * the robotic defaults. Returns undefined when the device has no voice for that language, so the engine
+ * falls back to its own choice for the `lang` set on the utterance.
+ */
+export function pickShaheenVoice<V extends ShaheenVoiceCandidate>(voices: readonly V[], locale: string, language: string): V | undefined {
+  const wanted = locale.toLowerCase().replace(/_/g, '-');
+  const base = (language || wanted.split('-')[0]).toLowerCase();
+  let best: V | undefined;
+  let bestScore = -Infinity;
+  for (const voice of voices) {
+    const lang = (voice.lang || '').toLowerCase().replace(/_/g, '-');
+    if (!lang) continue;
+    let score: number;
+    if (lang === wanted) score = 100;
+    else if (lang === base || lang.startsWith(`${base}-`)) score = 60;
+    else continue;
+    if (NATURAL_VOICE.test(voice.name)) score += 25;
+    if (NOVELTY_VOICE.test(voice.name)) score -= 50;
+    if (voice.default) score += 3;
+    if (voice.localService === false) score += 2;
+    if (score > bestScore) { best = voice; bestScore = score; }
+  }
+  return best;
+}
