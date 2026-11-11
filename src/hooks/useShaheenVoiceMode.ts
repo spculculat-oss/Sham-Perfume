@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { SupportedLanguage } from '../types/i18n';
-import { shaheenSpeechLocale, splitShaheenSpeech } from '../utils/shaheenVoice';
+import { pickShaheenVoice, shaheenSpeechLocale, splitShaheenSpeech } from '../utils/shaheenVoice';
 
 export interface ShaheenVoiceMessage {
   id: string;
@@ -35,6 +35,8 @@ interface SpeechRecognitionLike {
   onresult: ((event: RecognitionEventLike) => void) | null;
   onerror: ((event: RecognitionErrorLike) => void) | null;
   onend: (() => void) | null;
+  onspeechstart?: (() => void) | null;
+  onspeechend?: (() => void) | null;
   start(): void;
   stop(): void;
   abort(): void;
@@ -88,6 +90,14 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const [interim, setInterim] = useState('');
   const [error, setError] = useState<VoiceError | null>(null);
   const [replyReady, setReplyReady] = useState(false);
+  // The full-screen voice stage: a muted microphone keeps the conversation open without listening; `hearing`
+  // is true while the engine detects speech; `spokenText` is the sentence being read aloud now and
+  // `speechBeat` ticks on every spoken word so the stage can move with Shaheen's voice.
+  const [muted, setMuted] = useState(false);
+  const [hearing, setHearing] = useState(false);
+  const [spokenText, setSpokenText] = useState('');
+  const [speechBeat, setSpeechBeat] = useState(0);
+  const [lastHeard, setLastHeard] = useState('');
 
   const activeRef = useRef(false);
   const listeningRef = useRef(false);
@@ -103,10 +113,21 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const listenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const speechSequenceRef = useRef(0);
   const startListeningRef = useRef<() => void>(() => undefined);
+  const mutedRef = useRef(false);
+  const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
 
   // Browser APIs are checked after mount so this hook remains safe during server rendering.
   useEffect(() => {
     setSupported(shaheenVoiceSupported());
+  }, []);
+  // Engines load their voice list late (Chrome fills it after the first `voiceschanged`), so keep it fresh.
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return undefined;
+    const synth = window.speechSynthesis;
+    const load = () => { try { voicesRef.current = synth.getVoices(); } catch { voicesRef.current = []; } };
+    load();
+    try { synth.addEventListener('voiceschanged', load); } catch { return undefined; }
+    return () => { try { synth.removeEventListener('voiceschanged', load); } catch { /* Already gone. */ } };
   }, []);
   useEffect(() => { disabledRef.current = disabled; }, [disabled]);
   useEffect(() => { loadingRef.current = isLoading; }, [isLoading]);
@@ -126,6 +147,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     recognitionRef.current = null;
     listeningRef.current = false;
     setListening(false);
+    setHearing(false);
     if (!recognition) return;
     recognition.onstart = null;
     recognition.onresult = null;
@@ -138,6 +160,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     speechSequenceRef.current += 1;
     speakingRef.current = false;
     setSpeaking(false);
+    setSpokenText('');
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       try { window.speechSynthesis.cancel(); } catch { /* A browser may not have a speech queue. */ }
     }
@@ -161,6 +184,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     }
     clearPendingTurn();
     setInterim('');
+    setLastHeard('');
+    mutedRef.current = false;
+    setMuted(false);
     setError(null);
   }, [cancelRecognition, cancelSpeech, clearListenTimer, clearPendingTurn]);
 
@@ -187,8 +213,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     cancelSpeech();
     const sequence = speechSequenceRef.current;
     const locale = shaheenSpeechLocale(languageRef.current);
-    const voice = window.speechSynthesis.getVoices().find((candidate) => candidate.lang.toLowerCase() === locale.toLowerCase())
-      || window.speechSynthesis.getVoices().find((candidate) => candidate.lang.toLowerCase().startsWith(`${languageRef.current}-`));
+    let voices = voicesRef.current;
+    if (!voices.length) { try { voices = window.speechSynthesis.getVoices(); } catch { voices = []; } }
+    const voice = pickShaheenVoice(voices, locale, languageRef.current);
     let index = 0;
     let finished = false;
     speakingRef.current = true;
@@ -199,6 +226,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       finished = true;
       speakingRef.current = false;
       setSpeaking(false);
+      setSpokenText('');
       if (failed) setError('speech');
       onComplete();
     };
@@ -210,6 +238,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
         utterance.lang = locale;
         utterance.rate = 0.96;
         if (voice) utterance.voice = voice;
+        utterance.onstart = () => { if (sequence === speechSequenceRef.current) setSpokenText(chunks[index] || ''); };
+        utterance.onboundary = () => { if (sequence === speechSequenceRef.current) setSpeechBeat((beat) => (beat + 1) % 1_000_000); };
         utterance.onend = () => { index += 1; speakNext(); };
         utterance.onerror = () => finish(true);
         window.speechSynthesis.speak(utterance);
@@ -222,7 +252,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
 
   const scheduleListening = useCallback((delay = 250) => {
     clearListenTimer();
-    if (!activeRef.current || disabledRef.current || loadingRef.current || waitingRef.current || speakingRef.current) return;
+    if (!activeRef.current || mutedRef.current || disabledRef.current || loadingRef.current || waitingRef.current || speakingRef.current) return;
     listenTimerRef.current = setTimeout(() => {
       listenTimerRef.current = null;
       startListeningRef.current();
@@ -268,6 +298,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     }
     const started = beginOutgoingTurn();
     if (!started) return;
+    setLastHeard(text);
     try {
       const accepted = await onSendRef.current(text);
       finishOutgoingTurn(accepted !== false);
@@ -277,7 +308,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   }, [beginOutgoingTurn, finishOutgoingTurn, scheduleListening]);
 
   const startListening = useCallback(() => {
-    if (!activeRef.current || disabledRef.current || loadingRef.current || waitingRef.current || speakingRef.current || recognitionRef.current) return;
+    if (!activeRef.current || mutedRef.current || disabledRef.current || loadingRef.current || waitingRef.current || speakingRef.current || recognitionRef.current) return;
     const Recognition = recognitionConstructor();
     if (!Recognition) { fail('unsupported'); return; }
 
@@ -298,6 +329,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       listeningRef.current = true;
       setListening(true);
     };
+    recognition.onspeechstart = () => setHearing(true);
+    recognition.onspeechend = () => setHearing(false);
     recognition.onresult = (event) => {
       setError(null);
       finalText = '';
@@ -322,6 +355,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       recognitionRef.current = null;
       listeningRef.current = false;
       setListening(false);
+      setHearing(false);
       if (!activeRef.current) return;
       const heard = (finalText || interimText).replace(/\s+/g, ' ').trim();
       setInterim(heard);
@@ -356,11 +390,42 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setError(null);
     activeRef.current = true;
     setActive(true);
+    mutedRef.current = false;
+    setMuted(false);
     setInterim('');
+    setLastHeard('');
     // This runs from the user's confirmation click, which is required by browser microphone permission.
     startListeningRef.current();
     return true;
   }, [cancelSpeech, clearListenTimer, clearPendingTurn]);
+
+  /** Mute or unmute the microphone without ending the conversation (a reply being read keeps playing). */
+  const toggleMute = useCallback(() => {
+    if (!activeRef.current) return;
+    const next = !mutedRef.current;
+    mutedRef.current = next;
+    setMuted(next);
+    if (next) {
+      clearListenTimer();
+      cancelRecognition();
+      setInterim('');
+    } else {
+      setError(null);
+      // Called from the visitor's tap, so the engine may open the microphone straight away.
+      startListeningRef.current();
+    }
+  }, [cancelRecognition, clearListenTimer]);
+
+  /** Cut Shaheen off mid-reply and listen at once (tap on the orb). */
+  const interrupt = useCallback(() => {
+    if (!activeRef.current || !speakingRef.current) return;
+    cancelSpeech();
+    if (mutedRef.current) {
+      mutedRef.current = false;
+      setMuted(false);
+    }
+    startListeningRef.current();
+  }, [cancelSpeech]);
 
   useEffect(() => {
     if (disabled && activeRef.current) stop();
@@ -427,8 +492,15 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     waiting,
     interim,
     error,
+    muted,
+    hearing,
+    spokenText,
+    speechBeat,
+    lastHeard,
     start,
     stop,
+    toggleMute,
+    interrupt,
     beginOutgoingTurn,
     finishOutgoingTurn,
   };

@@ -1664,7 +1664,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
               }}
               className="p-3 bg-white border-t border-stone-200 flex items-center gap-2 shrink-0"
             >
-              <ShaheenVoiceModeButton language={currentLang} voice={voice} disabled={isStaticHosting || hidden} />
+              <ShaheenVoiceModeButton language={currentLang} voice={voice} disabled={isStaticHosting || hidden} avatarSrc={perfumerImg} />
               <input
                 ref={inputRef}
                 type="text"
