@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-11-05T09:50:53.883Z",
- "nextUpdateAt": "2026-11-05T21:50:53.883Z",
+ "updatedAt": "2026-11-11T18:28:57.373Z",
+ "nextUpdateAt": "2026-11-12T06:28:57.373Z",
  "editor": "shaheen",
  "entries": {
   "LAT-052": {
@@ -39094,15 +39094,15 @@
   "MAI-905": {
    "sourceHash": "7zb9su",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "أوليفيا من ميسون الحمراء",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "أوليفيا من مايسون ألامبرا",
    "nameEn": "Olivia by Maison Alhambra 80ml EDP",
-   "descriptionAr": "عطر نسائي شرقي راقٍ يجمع بين حيوية الفواكه ونعومة الزهور. يضفي لمسة ساحرة ومميزة على إطلالتك.",
-   "descriptionEn": "Olivia by Maison Alhambra – 80 ml Eau De Parfum for Women (Arabian). Fragrance Notes: Top: Pear, Black Currant, Pink Pepper. Heart: Rose, Jasmine. Base: Vanilla, Musk, Cedarwood.",
+   "descriptionAr": "عطر نسائي يجمع بين نفحات الكمثرى والكشمش الأسود والفلفل. يرتكز على قاعدة دافئة من الفانيليا والمسك وخشب الأرز.",
+   "descriptionEn": "Olivia by Maison Alhambra is an 80 ml Eau De Parfum for women featuring notes of pear, black currant, pink pepper, rose, jasmine, vanilla, musk, and cedarwood.",
    "gender": "women",
    "families": [
-    "fruity",
-    "floral"
+    "floral",
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -39122,30 +39122,33 @@
    },
    "seasons": [
     "spring",
+    "summer",
     "all"
    ],
    "occasions": [
     "daily",
-    "evening"
+    "work"
    ],
    "tags": [
-    "ميسون الحمراء",
+    "مايسون ألامبرا",
     "عطر نسائي",
-    "فواكه وزهور",
-    "عطور شرقية"
-   ]
+    "أوليفيا",
+    "Maison Alhambra"
+   ],
+   "style": 2
   },
   "OSM-906": {
    "sourceHash": "vlva7t",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
    "nameAr": "أوسما أمبري إيه فريش آند فلاي",
    "nameEn": "Osma Ambry A Fresh & Fly 75ml EDP",
-   "descriptionAr": "عطر منعش ومفعم بالحيوية يجسد الطاقة والأناقة العصرية. يترك انطباعاً نظيفاً ودافئاً يناسب كل الأوقات.",
-   "descriptionEn": "Osma Ambry A – Fresh and Fly 75 ml Eau de Parfum. Osma Ambry A is a refreshing unisex fragrance that captures the spirit of energy and elegance.",
+   "descriptionAr": "عطر منعش للجنسين بحجم 75 مل، يقدم تركيبة عصرية نابضة بالحيوية والأناقة تناسب مختلف الأوقات.",
+   "descriptionEn": "Osma Ambry A is a refreshing unisex fragrance in a 75 ml Eau de Parfum offering a modern and energetic composition.",
    "gender": "unisex",
    "families": [
-    "fresh"
+    "fresh",
+    "citrus"
    ],
    "notes": {
     "top": [],
@@ -39154,7 +39157,8 @@
    },
    "seasons": [
     "summer",
-    "spring"
+    "spring",
+    "all"
    ],
    "occasions": [
     "daily",
@@ -39162,24 +39166,24 @@
    ],
    "tags": [
     "أوسما",
-    "عطر منعش",
-    "عطور للجنسين",
-    "عطور صيفية"
-   ]
+    "عطر للجنسين",
+    "فريش",
+    "Osma"
+   ],
+   "style": 2
   },
   "TAD-907": {
    "sourceHash": "1ijvou9",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "ديناستي من تاد أنجل",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "ديناستي من تادانجيل",
    "nameEn": "Dynasty by TADangel 100ml EDP Men",
-   "descriptionAr": "عطر رجالي يجمع بين الانتعاش العطري والنفحات الدافئة والحلوة. خيار مناسب للأمسيات والمناسبات الخاصة.",
-   "descriptionEn": "Dynasty by TADangel blends aromatic freshness with warm sweetness in a 100ml Eau de Parfum for men. Top: Pink Pepper, Juniper, Violet. Heart: Cinnamon, Lavender, Sage. Base: Vanilla, Amber, Tonka.",
+   "descriptionAr": "عطر رجالي يجمع بين انتعاش التوابل ودفء الفانيليا والعنبر في زجاجة بحجم 100 مل.",
+   "descriptionEn": "Dynasty by TADangel is a 100ml Eau de Parfum for men featuring pink pepper, juniper, violet, cinnamon, lavender, sage, vanilla, amber, and tonka.",
    "gender": "men",
    "families": [
     "spicy",
-    "oriental",
-    "fresh"
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -39199,32 +39203,34 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "تاد أنجل",
+    "تادانجيل",
     "عطر رجالي",
-    "عطور شرقية",
-    "توابل دافئة"
-   ]
+    "ديناستي",
+    "TADangel"
+   ],
+   "style": 2
   },
   "TAD-908": {
    "sourceHash": "11spvio",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "ثاواي من تاد أنجل",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "باثواي من تادانجيل",
    "nameEn": "Pathway by TADangel 100ml EDP Men",
-   "descriptionAr": "عطر رجالي بارد ومنعش يميل نحو النوتات العشبية والخضراء النابضة بالحياة. يناسب الأوقات النهارية وأوقات العمل.",
-   "descriptionEn": "Pathway by TADangel explores a cooler, greener direction for a men's 100ml Eau de Parfum. Top: Mint, Pink Pepper, Lemon, Coriander. Heart: Ginger, Melon, Incense. Base: Violet Leaf, Bergamot, Patchouli.",
+   "descriptionAr": "عطر رجالي بتركيبة منعشة تضم النعناع والليمون مع لمسات عشبية وخشبية بحجم 100 مل.",
+   "descriptionEn": "Pathway by TADangel is a 100ml Eau de Parfum for men featuring mint, lemon, pink pepper, ginger, melon, and patchouli.",
    "gender": "men",
    "families": [
     "fresh",
-    "spicy"
+    "spicy",
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -39245,28 +39251,29 @@
     ]
    },
    "seasons": [
-    "spring",
-    "summer"
+    "summer",
+    "spring"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "تاد أنجل",
+    "تادانجيل",
     "عطر رجالي",
-    "عطور منعشة",
-    "عطور نهارية"
-   ]
+    "منعش",
+    "Pathway"
+   ],
+   "style": 2
   },
   "TAD-909": {
    "sourceHash": "wnqig3",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "ماجيك بلوسوم من تاد أنجل",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "ماجيك بلوسوم من تادانجيل",
    "nameEn": "Magic Blossom by TADangel 100ml EDP Women",
-   "descriptionAr": "عطر نسائي فريد يوازن بين الحلاوة الكريمية واللمسات الهوائية المنعشة. يضفي حضوراً جذاباً في الأمسيات.",
-   "descriptionEn": "Magic Blossom by TADangel suits fragrance lovers who like sweetness with an unexpected airy edge. Top: Vanilla, Salt, Ozonic Notes. Heart: Rose, Praline. Base: Amber, Patchouli, Vanilla.",
+   "descriptionAr": "عطر نسائي يوازن بين الحلاوة واللمسات المالحة المنعشة مع قلوب زهرية وقاعدة دافئة من العنبر والباتشولي.",
+   "descriptionEn": "Magic Blossom by TADangel is a 100ml Eau de Parfum for women featuring vanilla, salt, ozonic notes, rose, praline, amber, and patchouli.",
    "gender": "women",
    "families": [
     "floral",
@@ -39289,32 +39296,34 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "spring",
+    "summer",
+    "all"
    ],
    "occasions": [
     "evening",
-    "special"
+    "daily"
    ],
    "tags": [
-    "تاد أنجل",
+    "تادانجيل",
     "عطر نسائي",
-    "عطور حلوة",
-    "زهور"
-   ]
+    "ماجيك بلوسوم",
+    "Magic Blossom"
+   ],
+   "style": 2
   },
   "TAD-910": {
    "sourceHash": "1ie317x",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "تاد أنجل بينك بلوسوم",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "تادانجيل بينك بلوسوم",
    "nameEn": "TADangel Pink Blossom 100ml EDP Women",
-   "descriptionAr": "عطر نسائي بتركيبة زهرية وفاكهية مبهجة وخفيفة. يمنحك شعوراً بالانتعاش والأنوثة.",
-   "descriptionEn": "TADangel Pink Blossom 100ml Eau de Parfum offers a cheerful fruity floral style. Top: Raspberry, Orange, Floral Notes. Heart: Jasmine, Orange Blossom, Musk. Base: Cedar, Sandalwood, Amber.",
+   "descriptionAr": "عطر نسائي بعبير الفواكه والزهور المنعشة يضم التوت والبرتقال مع قاعدة خشبية دافئة بحجم 100 مل.",
+   "descriptionEn": "TADangel Pink Blossom 100ml Eau de Parfum features raspberry, orange, floral notes, jasmine, orange blossom, musk, cedar, sandalwood, and amber.",
    "gender": "women",
    "families": [
-    "fruity",
-    "floral"
+    "floral",
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -39342,20 +39351,21 @@
     "work"
    ],
    "tags": [
-    "تاد أنجل",
+    "تادانجيل",
     "عطر نسائي",
-    "فواكه وزهور",
-    "عطور نهارية"
-   ]
+    "بينك بلوسوم",
+    "Pink Blossom"
+   ],
+   "style": 2
   },
   "TAD-911": {
    "sourceHash": "lgs8ys",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "ستاتس من تاد أنجل",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "ستيتوس من تادانجيل",
    "nameEn": "Status by TADangel 100ml EDP Men",
-   "descriptionAr": "عطر رجالي يجمع بين الفواكه العصيرة والتوابل الخفيفة مع قاعدة خشبية دافئة. يعكس طابعاً ناضجاً وأنيقاً.",
-   "descriptionEn": "Status by TADangel brings together juicy fruit, gentle spice and dry woods in a 100ml Eau de Parfum for men. Top: Plum, Bergamot, Lemon. Heart: Cinnamon, Mahogany, Carnation. Base: Sandalwood, Cedar, Olive.",
+   "descriptionAr": "عطر رجالي يجمع بين نكهات الفواكه المنعشة والتوابل الدافئة والأخشاب بحجم 100 مل.",
+   "descriptionEn": "Status by TADangel 100ml Eau de Parfum for men features plum, bergamot, lemon, cinnamon, mahogany, carnation, sandalwood, cedar, and olive.",
    "gender": "men",
    "families": [
     "citrus",
@@ -39381,6 +39391,7 @@
    },
    "seasons": [
     "autumn",
+    "winter",
     "all"
    ],
    "occasions": [
@@ -39388,23 +39399,25 @@
     "work"
    ],
    "tags": [
-    "تاد أنجل",
+    "تادانجيل",
     "عطر رجالي",
-    "عطور خشبية",
-    "عطور حمضية"
-   ]
+    "ستيتوس",
+    "Status"
+   ],
+   "style": 2
   },
   "TAD-912": {
    "sourceHash": "1sjyj94",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "روز ديفاين من تاد أنجل",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "روز ديفاين من تادانجيل",
    "nameEn": "Rose Divine by TADangel 100ml EDP Women",
-   "descriptionAr": "عطر نسائي يبرز جمال الورد بلمسات عصرية منعشة وحارة مع قاعدة دافئة وعميقة. خيار مناسب للمناسبات الخاصة.",
-   "descriptionEn": "Rose Divine by TADangel is a floral Eau de Parfum for women that gives rose a lively, modern contrast. Top: Nutmeg, Bergamot, Grapefruit, Rhubarb. Heart: Jasmine, Rose. Base: Musk, Ambergris, Vanilla, Vetiver, Woody Accords.",
+   "descriptionAr": "عطر نسائي يبرز زهرة الورد بلمسات منعشة من الحمضيات والتوابل مع قاعدة خشبية دافئة بحجم 100 مل.",
+   "descriptionEn": "Rose Divine by TADangel 100ml Eau de Parfum for women features nutmeg, bergamot, grapefruit, rhubarb, jasmine, rose, musk, ambergris, vanilla, vetiver, and woody accords.",
    "gender": "women",
    "families": [
-    "floral"
+    "floral",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -39427,30 +39440,33 @@
    },
    "seasons": [
     "spring",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "تاد أنجل",
+    "تادانجيل",
     "عطر نسائي",
-    "عطور الورد",
-    "زهور"
-   ]
+    "روز ديفاين",
+    "Rose Divine"
+   ],
+   "style": 2
   },
   "TAD-913": {
    "sourceHash": "za5dj1",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "فلور بلوسوم من تاد أنجل",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "فلور بلوسوم من تادانجيل",
    "nameEn": "Fleur Blossom by TADangel 100ml EDP Women",
-   "descriptionAr": "عطر نسائي يركز على الزهور البيضاء الناعمة مع قاعدة خشبية كريمية هادئة. يناسب أوقات العمل واللقاءات اليومية.",
-   "descriptionEn": "Fleur Blossom by TADangel is a 100ml Eau de Parfum for women who enjoy white flowers with a soft, warm finish. Top: Orange Blossom, Bergamot. Heart: Tuberose, Jasmine. Base: Musk, Vanilla, Cedar.",
+   "descriptionAr": "عطر نسائي يرتكز على الزهور البيضاء مثل الياسمين ومسك الروم مع لمسة خشبية ناعمة بحجم 100 مل.",
+   "descriptionEn": "Fleur Blossom by TADangel 100ml Eau de Parfum for women features orange blossom, bergamot, tuberose, jasmine, musk, vanilla, and cedar.",
    "gender": "women",
    "families": [
-    "floral"
+    "floral",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -39469,32 +39485,34 @@
    },
    "seasons": [
     "spring",
-    "summer"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "تاد أنجل",
+    "تادانجيل",
     "عطر نسائي",
-    "زهور بيضاء",
-    "ياسمين"
-   ]
+    "فلور بلوسوم",
+    "Fleur Blossom"
+   ],
+   "style": 2
   },
   "TAD-914": {
    "sourceHash": "ejiank",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "إنتريج بور هوم من تاد أنجل",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "إنتريج پور هوم من تادانجيل",
    "nameEn": "Intrigue Pour Homme by TADangel 100ml EDP Men",
-   "descriptionAr": "عطر رجالي يجمع بين الفواكه المقرمشة والأعشاب العطرية والأخشاب الدافئة. مناسب للاستخدام اليومي والأوقات الكاجوال.",
-   "descriptionEn": "Intrigue Pour Homme by TADangel is a 100ml Eau de Parfum for men built around crisp fruit, aromatic herbs and warm woods. Top: Apple, Ginger, Bergamot. Heart: Juniper Berries, Sage, Geranium. Base: Amberwood, Cedar, Vetiver, Olibanum.",
+   "descriptionAr": "عطر رجالي يجمع بين الفواكه المنعشة والأعشاب العطرية والأخشاب الدافئة بحجم 100 مل.",
+   "descriptionEn": "Intrigue Pour Homme by TADangel 100ml Eau de Parfum for men features apple, ginger, bergamot, juniper berries, sage, geranium, amberwood, cedar, vetiver, and olibanum.",
    "gender": "men",
    "families": [
-    "fresh",
     "woody",
-    "spicy"
+    "spicy",
+    "fresh"
    ],
    "notes": {
     "top": [
@@ -39516,31 +39534,33 @@
    },
    "seasons": [
     "spring",
-    "summer"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "تاد أنجل",
+    "تادانجيل",
     "عطر رجالي",
-    "عطور خشبية",
-    "عطور عشبية"
-   ]
+    "إنتريج",
+    "Intrigue Pour Homme"
+   ],
+   "style": 2
   },
   "TAD-915": {
    "sourceHash": "zyhrvx",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "انترغ أُكوَاتيك باي تادانجل",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "إنتريج أكواتيك من تادانجيل",
    "nameEn": "Intrigue Aquatic by TADangel 100ml EDP Unisex",
-   "descriptionAr": "عطر يمنحك انتعاشاً بحرياً ساطعاً بلمسات الحمضيات والمسك. يوازن بين دفء العنبر والملح البحري ليناسب أوقاتك اليومية بحيوية.",
-   "descriptionEn": "Intrigue Aquatic by TADangel offers a bright marine style in a 100ml Eau de Parfum for men and women with orange, musk, bergamot, apple, sea salt, and ambergris.",
+   "descriptionAr": "عطر بحري منعش للجنسين يجمع بين الحمضيات والملح البحري والعنبر الرمادي بحجم 100 مل.",
+   "descriptionEn": "Intrigue Aquatic by TADangel 100ml Eau de Parfum for men and women features orange, musk, bergamot, apple, sea salt, and ambergris.",
    "gender": "unisex",
    "families": [
-    "fresh",
     "aquatic",
+    "fresh",
     "citrus"
    ],
    "notes": {
@@ -39566,20 +39586,21 @@
     "work"
    ],
    "tags": [
-    "عطر بحري",
-    "تادانجل",
-    "عطر منعش",
-    "انترغ أكوَاتيك"
-   ]
+    "تادانجيل",
+    "عطر للجنسين",
+    "أكواتيك",
+    "Intrigue Aquatic"
+   ],
+   "style": 2
   },
   "FRE-916": {
    "sourceHash": "qrfun3",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "أرش بلاك آيس باي فرينش أفنيو",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "ارش بلاك آيس من فرنش أفينيو",
    "nameEn": "Arsh Black Ice by French Avenue Man",
-   "descriptionAr": "عطر رجالي يجمع بين انتعاش الحمضيات ودفء الأخشاب بطابع منعش وبارد. يتميز بنفحات البرغموت والليمون مع اللوز والأخشاب.",
-   "descriptionEn": "Arsh Black Ice by French Avenue is a 2026 aromatic fragrance for men with fresh citrus, bergamot, orange, lemon, almond, icy accord, and woody facets.",
+   "descriptionAr": "عطر رجالي من فرنش أفينيو يجمع بين الحمضيات المنعشة واللوز والأخشاب بتركيبة عصرية.",
+   "descriptionEn": "Arsh Black Ice by French Avenue is a men's fragrance featuring bergamot, orange, lemon, almond, icy accord, floral notes, and woody notes.",
    "gender": "men",
    "families": [
     "fresh",
@@ -39587,48 +39608,40 @@
     "woody"
    ],
    "notes": {
-    "top": [
-     "Bergamot",
-     "Orange",
-     "Lemon"
-    ],
-    "heart": [
-     "Almond",
-     "Floral Notes",
-     "Icy Accord"
-    ],
-    "base": [
-     "Woody Notes"
-    ]
+    "top": [],
+    "heart": [],
+    "base": []
    },
    "seasons": [
     "summer",
-    "spring"
+    "spring",
+    "all"
    ],
    "occasions": [
     "daily",
-    "work"
+    "evening"
    ],
    "tags": [
-    "أرش بلاك آيس",
-    "فرينش أفنيو",
+    "فرنش أفينيو",
     "عطر رجالي",
-    "عطر منعش"
-   ]
+    "ارش بلاك آيس",
+    "French Avenue"
+   ],
+   "style": 2
   },
   "PAR-917": {
    "sourceHash": "fezu74",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "قصة بلو باي باريس كورنر",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "قصة بلو من باريس كورنر",
    "nameEn": "Qissa Blue by Paris Corner 100ml EDP Unisex",
-   "descriptionAr": "عطر يمزج بين انتعاش الحمضيات والتوابل العطرية مع قاعدة دافئة من العنبر والمسك. يناسب الأوقات اليومية وأوقات العمل بلمسة أنيقة.",
-   "descriptionEn": "Qissa Blue brings a lively contrast of fresh citrus, aromatic spice, leather, incense, and a warm amber finish to your fragrance collection.",
+   "descriptionAr": "عطر للجنسين بحجم 100 مل يجمع بين الحمضيات والتوابل والجلود مع قاعدة دافئة من العنبر والمسك.",
+   "descriptionEn": "Qissa Blue by Paris Corner 100ml Eau de Parfum Unisex features citrus, bergamot, lemon, leather, incense, sweet orange, ginger, jasmine, magnolia, patchouli, musk, oakmoss, saffron, and amber.",
    "gender": "unisex",
    "families": [
-    "floral",
     "amber",
-    "citrus"
+    "floral",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -39655,35 +39668,35 @@
     ]
    },
    "seasons": [
-    "spring",
     "autumn",
-    "winter"
+    "winter",
+    "all"
    ],
    "occasions": [
-    "daily",
-    "work",
-    "evening"
+    "evening",
+    "daily"
    ],
    "tags": [
-    "قصة بلو",
     "باريس كورنر",
     "عطر للجنسين",
-    "عطر عنبري"
-   ]
+    "قصة بلو",
+    "Qissa Blue"
+   ],
+   "style": 2
   },
   "KEN-918": {
    "sourceHash": "vmvm0m",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "هاواس ديزاير فور هير باي كنز ديه رساسي",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "هاواس ديزاير فور هر من كينز دي رصاصي",
    "nameEn": "Hawas Desire For Her by Kenz de Rasasi 100ml Women",
-   "descriptionAr": "عطر نسائي ناعم يتميز بنفحات زهرية وفواكهية جذابة مع قاعدة غنية بالفانيليا. يمنحك حضوراً أنثوياً دافئاً ومريحاً.",
-   "descriptionEn": "Hawas Desire For Her by Kenz de Rasasi is a fragrance for women built around floral notes, fruity accords, and a smooth vanilla finish.",
+   "descriptionAr": "عطر نسائي بحجم 100 مل يجمع بين النفحات الزهرية والفواكه مع قاعدة ناعمة من الفانيليا.",
+   "descriptionEn": "Hawas Desire For Her by Kenz de Rasasi is a 100ml fragrance for women featuring floral notes, fruity accords, and vanilla.",
    "gender": "women",
    "families": [
+    "gourmand",
     "floral",
-    "fruity",
-    "gourmand"
+    "fruity"
    ],
    "notes": {
     "top": [
@@ -39698,27 +39711,29 @@
    },
    "seasons": [
     "spring",
-    "summer"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
-    "gift"
+    "evening"
    ],
    "tags": [
-    "هاواس ديزاير",
-    "كنز ديه رساسي",
+    "كينز دي رصاصي",
     "عطر نسائي",
-    "عطر فانيليا"
-   ]
+    "هاواس ديزاير",
+    "Hawas Desire"
+   ],
+   "style": 2
   },
   "KEN-919": {
    "sourceHash": "1fb7m1v",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "هاواس ديزاير فيرست لوك باي كنز ديه رساسي",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "هاواس دزاير فيرست لوك من كينز دي رساصي 100 مل",
    "nameEn": "Hawas Desire First Look by Kenz de Rasasi 100ml",
-   "descriptionAr": "عطر نسائي يبرز بنفحات مشرقة من الحمضيات والعنبر والأخشاب الدافئة. يضفي لمسة عصرية متوازنة على إطلالتك اليومية.",
-   "descriptionEn": "Hawas Desire First Look by Kenz de Rasasi is a women's fragrance with a bright citrus, warm amber, and woody scent profile.",
+   "descriptionAr": "عطر نسائي يجمع بين نفحات الحمضيات المشرقة، والكهرمان الدافئ، والخشب الناعم. يبرز بتركيبة عطرية متوازنة تناسب الاستخدام اليومي.",
+   "descriptionEn": "Hawas Desire First Look by Kenz de Rasasi is a women's fragrance featuring citrus, warm amber, and woody accords.",
    "gender": "women",
    "families": [
     "citrus",
@@ -39728,9 +39743,7 @@
    "notes": {
     "top": [],
     "heart": [],
-    "base": [
-     "Woody Notes"
-    ]
+    "base": []
    },
    "seasons": [
     "spring",
@@ -39741,20 +39754,23 @@
     "work"
    ],
    "tags": [
-    "هاواس فيرست لوك",
-    "كنز ديه رساسي",
+    "هاواس",
+    "كينز دي رساصي",
     "عطر نسائي",
-    "عطر حمضيات"
-   ]
+    "حَمضيات",
+    "كهرمان",
+    "عطور 100 مل"
+   ],
+   "style": 2
   },
   "KEN-920": {
    "sourceHash": "1dc91pe",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "هاواس ديزاير فيرست كيس باي كنز ديه رساسي",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "هاواس دزاير فيرست كيس من كينز دي رساصي 100 مل",
    "nameEn": "Hawas Desire First Kiss by Kenz de Rasasi 100ml",
-   "descriptionAr": "عطر نسائي يجمع بين انتعاش الحمضيات ودفء الأخشاب والعنبر. خيار رائع يمنحك شعوراً بالانتعاش والجاذبية.",
-   "descriptionEn": "Hawas Desire First Kiss by Kenz de Rasasi is a women's fragrance highlighting fresh citrus, warm amber, and smooth woody notes.",
+   "descriptionAr": "عطر نسائي يتميز بطابع منعش يمزج بين الحمضيات المنعشة، والكهرمان الدافئ، والأخشاب الهادئة.",
+   "descriptionEn": "Hawas Desire First Kiss by Kenz de Rasasi is a women's fragrance with a fresh citrus, warm amber, and smooth woody profile.",
    "gender": "women",
    "families": [
     "citrus",
@@ -39764,9 +39780,7 @@
    "notes": {
     "top": [],
     "heart": [],
-    "base": [
-     "Woody Notes"
-    ]
+    "base": []
    },
    "seasons": [
     "spring",
@@ -39774,38 +39788,39 @@
    ],
    "occasions": [
     "daily",
-    "evening"
+    "work"
    ],
    "tags": [
-    "هاواس فيرست كيس",
-    "كنز ديه رساسي",
+    "هاواس",
+    "كينز دي رساصي",
     "عطر نسائي",
-    "عطر عنبر"
-   ]
+    "حمضيات",
+    "خشبي",
+    "عطور نسائية"
+   ],
+   "style": 2
   },
   "KEN-921": {
    "sourceHash": "uwtb3o",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "هاواس آيس ألترا دوس باي كنز ديه رساسي",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "هاواس آيس ألترا دوز من كينز دي رساصي 100 مل للرجال",
    "nameEn": "Hawas Ice Ultradose by Kenz de Rasasi 100ml Men",
-   "descriptionAr": "عطر رجالي بارد ومنعش يرتكز على نفحات الحمضيات والنعناع والأخشاب. يمنحك طابعاً عطورياً حيوياً يناسب الأيام الحارة.",
-   "descriptionEn": "Hawas Ice Ultradose by Kenz de Rasasi is a men's fragrance with an aromatic profile shaped by citrus, minty, and woody facets.",
+   "descriptionAr": "عطر رجالي يتميز بتركيبة عطرية منعشة تجمع بين الحمضيات، والنعناع، والنفحات الخشبية.",
+   "descriptionEn": "Hawas Ice Ultradose by Kenz de Rasasi is a men's fragrance shaped by citrus, minty, and woody facets.",
    "gender": "men",
    "families": [
-    "fresh",
     "citrus",
     "woody"
    ],
    "notes": {
-    "top": [
-     "Mint"
-    ],
+    "top": [],
     "heart": [],
     "base": []
    },
    "seasons": [
-    "summer"
+    "summer",
+    "spring"
    ],
    "occasions": [
     "daily",
@@ -39813,24 +39828,27 @@
    ],
    "tags": [
     "هاواس آيس",
-    "كنز ديه رساسي",
+    "كينز دي رساصي",
     "عطر رجالي",
-    "عطر منعش"
-   ]
+    "نعناع",
+    "حمضيات",
+    "عطور رجالية"
+   ],
+   "style": 2
   },
   "KEN-922": {
    "sourceHash": "k03ppm",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "هاواس أبيكس جي تي باي كنز ديه رساسي",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "هاواس أبيكس جي تي من كينز دي رساصي 100 مل للجنسين",
    "nameEn": "Hawas Apex GT by Kenz de Rasasi 100ml Unisex",
-   "descriptionAr": "عطر للجنسين يجمع بين البرغموت والأناناس والجريب فروت مع قلب خشبي وأساس من طحلب السنديان والأمبر. يضفي حضوراً متميزاً وحيوياً.",
-   "descriptionEn": "Hawas Apex GT by Kenz de Rasasi is a unisex fragrance with an aromatic, citrus, floral, and woody profile featuring bergamot, pineapple, and oakmoss.",
+   "descriptionAr": "عطر للجنسين يفتح بنوتات البرغموت والأناناس والجريب فروت، ويليها قلب من الباتشولي والأسطواني والياسمين، مع قاعدة من طحلب السنديان والأخشاب والكهرمان.",
+   "descriptionEn": "Hawas Apex GT by Kenz de Rasasi is a unisex fragrance with an aromatic, citrus, floral, and woody profile.",
    "gender": "unisex",
    "families": [
     "citrus",
-    "floral",
-    "woody"
+    "woody",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -39851,7 +39869,8 @@
    },
    "seasons": [
     "spring",
-    "summer"
+    "summer",
+    "autumn"
    ],
    "occasions": [
     "daily",
@@ -39859,19 +39878,22 @@
    ],
    "tags": [
     "هاواس أبيكس",
-    "كنز ديه رساسي",
+    "كينز دي رساصي",
     "عطر للجنسين",
-    "عطر فواكه"
-   ]
+    "أناناس",
+    "برغموت",
+    "باتشولي"
+   ],
+   "style": 2
   },
   "FRE-923": {
    "sourceHash": "1cvza3",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "فولكان فوكس باي فرينش أفنيو",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "فولكان فوكس من فرنش أفنيو 100 مل إي دي بي للجنسين",
    "nameEn": "Vulcan Vox by French Avenue 100ml EDP Unisex",
-   "descriptionAr": "عطر حلو وفاكهي يفتح بنفحات الكرز وينتقل إلى قلب كريمي من اللوز مع قاعدة بودرية بالفانيليا. يمنحك شعوراً دافئاً وجذاباً.",
-   "descriptionEn": "Vulcan Vox by French Avenue is a gourmand fragrance for women and men with a sweet, fruity, cherry, almond, powdery, and vanilla profile.",
+   "descriptionAr": "عطر حلو وجورماند للجنسين يفتتح بنوتات الكرز، ويتوسطه قلب من اللوز الكريمي، ويستقر على قاعدة من النوتات البودرية والفانيليا.",
+   "descriptionEn": "Vulcan Vox by French Avenue is a gourmand fragrance for women and men featuring a sweet, fruity, and powdery profile.",
    "gender": "unisex",
    "families": [
     "gourmand",
@@ -39891,28 +39913,31 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special"
+    "daily"
    ],
    "tags": [
     "فولكان فوكس",
-    "فرينش أفنيو",
+    "فرنش أفنيو",
     "عطر جورماند",
-    "عطر فانيليا"
-   ]
+    "كريز",
+    "لوز",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "PAR-924": {
    "sourceHash": "5p2exl",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "بلاك أوبترا باي باريس كورنر بيندورا سنتس",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "بلاك أوبترا من باريس كورنر بيندورا سنتس 100 مل نسائي",
    "nameEn": "Black Optra by Paris Corner Pendora Scents – 100 ml Women",
-   "descriptionAr": "عطر نسائي غني بنفحات الكمثرى والقهوة مع لمسات دافئة من الفانيليا والأخشاب. يناسب الأوقات المسائية ويضفي سحراً خاصاً.",
-   "descriptionEn": "Black Optra by Paris Corner Pendora Scents is a gourmand and woody fragrance featuring pear, coffee, bitter almond, vanilla, and cashmere wood.",
+   "descriptionAr": "عطر نسائي يجمع بين توليفة جورماند وخشبية وزهرية، يفتتح بالكمثرى والفلفل الوردي وزهر البرتقال، مع قلب من القهوة والياسمين واللوز المر، وقاعدة من الفانيليا والباتشولي والأخشاب.",
+   "descriptionEn": "Black Optra by Paris Corner Pendora Scents is a women's fragrance with a gourmand, woody, and floral profile.",
    "gender": "women",
    "families": [
     "gourmand",
@@ -39939,8 +39964,8 @@
     ]
    },
    "seasons": [
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
     "evening",
@@ -39950,21 +39975,24 @@
     "بلاك أوبترا",
     "باريس كورنر",
     "بيندورا سنتس",
-    "عطر نسائي"
-   ]
+    "عطر نسائي",
+    "قهوة",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "KEN-925": {
    "sourceHash": "zruwgw",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "هاواس فور هيم لي بارفان باي كنز ديه رساسي",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "هاواس فور هيم لي بارفان من كينز دي رساصي 100 مل للرجال",
    "nameEn": "Hawas For Him Le Parfum by Kenz de Rasasi 100ml Men",
-   "descriptionAr": "عطر رجالي قوي وعميق بطابع بحري وتوابل دافئة. يجمع بين التفاح والقرفة والعنبر الرمادي لثبات وحضور طاغٍ.",
-   "descriptionEn": "Hawas For Him Le Parfum by Kenz de Rasasi is an Aromatic Aquatic fragrance for men featuring apple, bergamot, cinnamon, watery notes, and driftwood.",
+   "descriptionAr": "عطر رجالي مائي أروماتك يفتتح بالتفاح والبرغموت والليمون والقرفة، مع قلب من النوتات المائية والخوخ وزهر البرتقال، وقاعدة من العنبر الرمادي والمسك والباتشولي وخشب الأخشاب.",
+   "descriptionEn": "Hawas For Him Le Parfum by Kenz de Rasasi is an aromatic aquatic fragrance for men with a rich fruity and woody finish.",
    "gender": "men",
    "families": [
     "aquatic",
-    "spicy",
+    "citrus",
     "woody"
    ],
    "notes": {
@@ -39989,34 +40017,35 @@
    },
    "seasons": [
     "summer",
-    "spring",
-    "autumn"
+    "spring"
    ],
    "occasions": [
     "daily",
-    "evening",
-    "work"
+    "evening"
    ],
    "tags": [
     "هاواس لي بارفان",
-    "كنز ديه رساسي",
+    "كينز دي رساصي",
     "عطر رجالي",
-    "عطر بحري"
-   ]
+    "مائي",
+    "تفاح",
+    "عطور رجالية"
+   ],
+   "style": 2
   },
   "KEN-926": {
    "sourceHash": "1trrh72",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "هاواس أبيكس هايبريد باي كنز ديه رساسي",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "هاواس أبيكس هايبريد من كينز دي رساصي 100 مل للجنسين",
    "nameEn": "Hawas Apex Hybrid by Kenz de Rasasi 100ml EDP Unisex",
-   "descriptionAr": "عطر للجنسين منعش وعشبي يرتكز على النعناع والليمون والخزامى. يمنحك طابعاً نظيفاً وحيوياً يناسب الاستخدام اليومي.",
-   "descriptionEn": "Hawas Apex Hybrid by Kenz de Rasasi is an aromatic citrus woody fragrance with mint, lemon, basil, lavender, blackcurrant, and musk.",
+   "descriptionAr": "عطر أروماتك حمضي خشبي للجنسين، يفتتح بالنعناع والليمون والريحان والزعتر، مع قلب من الكشمش الأسود والخزامى وإكليل الجبل والياسمين، وقاعدة من المسك والفيربينا.",
+   "descriptionEn": "Hawas Apex Hybrid by Kenz de Rasasi is an aromatic citrus woody unisex fragrance.",
    "gender": "unisex",
    "families": [
-    "fresh",
     "citrus",
-    "woody"
+    "woody",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -40045,25 +40074,28 @@
     "work"
    ],
    "tags": [
-    "هاواس هايبريد",
-    "كنز ديه رساسي",
+    "هاواس أبيكس هايبريد",
+    "كينز دي رساصي",
     "عطر للجنسين",
-    "عطر عشبي"
-   ]
+    "نعناع",
+    "ليمون",
+    "خزامى"
+   ],
+   "style": 2
   },
   "KEN-927": {
    "sourceHash": "f96gzm",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "هاواس أبيكس باي كنز ديه رساسي",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "هاواس أبيكس من كينز دي رساصي 100 مل للجنسين",
    "nameEn": "Hawas Apex by Kenz de Rasasi",
-   "descriptionAr": "عطر للجنسين ذو طابع توابلي وعشبي منعش يبدأ بالنعناع والبرغموت وينتهي بقاعدة ناعمة من التين والأخشاب.",
-   "descriptionEn": "Hawas Apex by Kenz de Rasasi is a unisex fragrance with mint, mandarin, bergamot, blackcurrant, carrot, jasmine, fig, and woody notes.",
+   "descriptionAr": "عطر للجنسين ذو طابع توابل وأروماتك، يفتتح بالنعناع واليوسفي والبرغموت، ويتوسطه الكشمش الأسود والجزر والياسمين، ويستقر على قاعدة من التين والأخشاب والعنبر.",
+   "descriptionEn": "Hawas Apex by Kenz de Rasasi is a unisex fragrance with a spicy, aromatic, and green profile.",
    "gender": "unisex",
    "families": [
     "spicy",
-    "fresh",
-    "woody"
+    "woody",
+    "amber"
    ],
    "notes": {
     "top": [
@@ -40084,28 +40116,30 @@
    },
    "seasons": [
     "spring",
-    "summer",
     "autumn"
    ],
    "occasions": [
     "daily",
-    "work"
+    "evening"
    ],
    "tags": [
     "هاواس أبيكس",
-    "كنز ديه رساسي",
+    "كينز دي رساصي",
     "عطر للجنسين",
-    "عطر توابلي"
-   ]
+    "توابل",
+    "أروماتك",
+    "عطور للجنسين"
+   ],
+   "style": 2
   },
   "OSM-928": {
    "sourceHash": "195byij",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "رومانس باي أوسما بيرفومز",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "رومانس من أوسما بيرفيومز 150 مل نسائي",
    "nameEn": "Romance by Osma Perfumes 150ml EDP Women",
-   "descriptionAr": "عطر نسائي ناعم يمزج بين الفواكه والزهور مع مسك وخشب صندل دافئ. يضفي طابعاً أنثوياً أنيقاً ونقياً.",
-   "descriptionEn": "Romance by Osma Perfumes is a soft fruity-floral fragrance for women with peach, rose, Turkish rose, iris, white flowers, musk, and sandalwood.",
+   "descriptionAr": "عطر نسائي زهري فواكه يضم نفحات الخوخ والورد في المقدمة، مع قلب من الورد التركي والسوسن والزهور البيضاء، وقاعدة ناعمة من المسك وخشب الصندل.",
+   "descriptionEn": "Romance by Osma Perfumes is a soft fruity-floral fragrance for women with a powdery, musky character.",
    "gender": "women",
    "families": [
     "floral",
@@ -40133,29 +40167,31 @@
    ],
    "occasions": [
     "daily",
-    "gift",
-    "evening"
+    "work"
    ],
    "tags": [
     "رومانس",
-    "أوسما بيرفومز",
+    "أوسما",
     "عطر نسائي",
-    "عطر زهري"
-   ]
+    "زهري",
+    "خوخ",
+    "مسك"
+   ],
+   "style": 2
   },
   "FRE-929": {
    "sourceHash": "15bo4s8",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "ليكيد برون فرينش أفينيو",
-   "nameEn": "Liquid Brun French Avenue",
-   "descriptionAr": "عطر رجالي دافئ يجمع بين التوابل الغنية والحلاوة الساحرة. يقدم تجربة عطرية عميقة وجذابة تناسب الأوقات الباردة.",
-   "descriptionEn": "Liquid Brun by French Avenue is a warm Amber fragrance for men with a rich spicy-sweet profile, featuring notes of cinnamon, Bourbon vanilla, and praline.",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "ليكويد برون من فرنش أفنيو 100 مل للرجال",
+   "nameEn": "Liquid Brun French Avenue 100ml EDP Men",
+   "descriptionAr": "عطر رجالي شرقي دافئ يفتتح بالتوابل والبرغموت والهيل وزهر البرتقال، مع قلب من فانيليا بوربون والإليمي، وقاعدة غنية بالمسك والبرالين والأمبروكسان وخشب الغاياك.",
+   "descriptionEn": "Liquid Brun by French Avenue is a warm amber fragrance for men with a rich spicy-sweet profile.",
    "gender": "men",
    "families": [
+    "oriental",
     "amber",
-    "spicy",
-    "gourmand"
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -40184,25 +40220,28 @@
     "special"
    ],
    "tags": [
-    "فرينش أفينيو",
+    "ليكويد برون",
+    "فرنش أفنيو",
     "عطر رجالي",
+    "شرقي",
     "فانيليا",
-    "توابل",
-    "ليكيد برون"
-   ]
+    "قرفة"
+   ],
+   "style": 2
   },
   "PAR-930": {
    "sourceHash": "11qid99",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "تاسكين كاراميل كاسكيد باريس كورنر",
-   "nameEn": "Taskeen Caramel Cascade Paris Corner",
-   "descriptionAr": "عطر نسائي غورماند يفيض بحلاوة الكراميل والحليب الغني. يمنحك شعوراً بالدفء والجاذبية.",
-   "descriptionEn": "Taskeen Caramel Cascade opens with caramel, milk, and buttery sweetness, settling into a rich base of vanilla, praline, musk, and amber.",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "تسكين كاراميل كاسكيد 100 مل من باريس كورنر",
+   "nameEn": "Taskeen Caramel Cascade 100ml by Paris Corner",
+   "descriptionAr": "عطر جورماند نسائي يفتتح بنوتات الكراميل والحليب، مع قلب من حبوب التونكا والعسل والزهور البيضاء، وقاعدة غنية بالفانيليا والبرالين والمسك والعنبر.",
+   "descriptionEn": "Taskeen Caramel Cascade by Paris Corner is a warm gourmand fragrance with caramel, milk, and vanilla notes.",
    "gender": "women",
    "families": [
     "gourmand",
-    "amber"
+    "amber",
+    "musk"
    ],
    "notes": {
     "top": [
@@ -40226,76 +40265,77 @@
     "autumn"
    ],
    "occasions": [
-    "daily",
-    "evening"
+    "evening",
+    "daily"
    ],
    "tags": [
+    "تسكين كاراميل كاسكيد",
     "باريس كورنر",
+    "عطر جورماند",
     "كاراميل",
-    "عطر نسائي",
     "فانيليا",
-    "تاسكين"
-   ]
+    "عطور نسائية"
+   ],
+   "style": 2
   },
   "PAR-931": {
    "sourceHash": "1g4r4lh",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "دار العود إنتنس باريس كورنر",
-   "nameEn": "Daar Al Oud Intense Paris Corner",
-   "descriptionAr": "عطر شرقي خشبي يجمع بين فخامة العود والتوابل الدافئة. يقدم حضوراً قوياً يناسب جميع الأوقات.",
-   "descriptionEn": "Daar Al Oud Intense opens with saffron, lavender, and nutmeg, revealing a rich heart of oud and patchouli with a warm, woody finish.",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "دار العود إنتنس 100 مل من باريس كورنر",
+   "nameEn": "Daar Al Oud Intense 100ml by Paris Corner",
+   "descriptionAr": "عطر شرقي خشبي للجنسين يفتتح بالعود والزعفران والخزامى وجوزة الطيب، مع قلب من الباتشولي، وقاعدة دافئة من المسك والعود.",
+   "descriptionEn": "Daar Al Oud Intense by Paris Corner is an oriental woody fragrance with oud, saffron, and spices.",
    "gender": "unisex",
    "families": [
-    "oud",
+    "oriental",
     "woody",
-    "oriental"
+    "spicy"
    ],
    "notes": {
     "top": [
+     "Oud",
      "Saffron",
      "Lavender",
      "Nutmeg"
     ],
     "heart": [
-     "Oud",
      "Patchouli"
     ],
     "base": [
-     "Musk",
-     "Oud",
-     "Patchouli"
+     "Musk"
     ]
    },
    "seasons": [
     "winter",
-    "autumn",
-    "spring"
+    "autumn"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "دار العود",
+    "دار العود إنتنس",
     "باريس كورنر",
-    "عود",
     "عطر شرقي",
-    "عطر مختلط"
-   ]
+    "عود",
+    "زعفران",
+    "عطور للجنسين"
+   ],
+   "style": 2
   },
   "PAR-932": {
    "sourceHash": "bar9je",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T14:57:07.595Z",
-   "nameAr": "أوتوجراف باريس كورنر",
-   "nameEn": "Autograph Paris Corner",
-   "descriptionAr": "عطر رجالي خشبي أروماتك ينبض بالحيوية والانتعاش. يمزج بين الحمضيات والتوابل والأخشاب الدافئة.",
-   "descriptionEn": "Autograph opens with bergamot, grapefruit, and black pepper, featuring an aromatic heart and a rich woody base of amber, patchouli, and vetiver.",
+   "updatedAt": "2026-11-11T18:28:57.373Z",
+   "nameAr": "أوتوجراف 100 مل من باريس كورنر",
+   "nameEn": "Autograph 100ml by Paris Corner",
+   "descriptionAr": "عطر رجالي خشبي أروماتك يفتتح بالبرغموت والجريب فروت والفلفل الأسود، مع قلب من الخزامى وإبرة الراعي وخشب الأرز، وقاعدة من العنبر والباتشولي ونجيل الهند والمسك.",
+   "descriptionEn": "Autograph by Paris Corner is a woody aromatic fragrance for men.",
    "gender": "men",
    "families": [
     "woody",
-    "fresh",
+    "citrus",
     "spicy"
    ],
    "notes": {
@@ -40317,9 +40357,8 @@
     ]
    },
    "seasons": [
-    "spring",
-    "summer",
-    "autumn"
+    "autumn",
+    "spring"
    ],
    "occasions": [
     "daily",
@@ -40329,9 +40368,11 @@
     "أوتوجراف",
     "باريس كورنر",
     "عطر رجالي",
-    "أخشاب",
-    "انتعاش"
-   ]
+    "خشبي",
+    "برغموت",
+    "عطور رجالية"
+   ],
+   "style": 2
   },
   "PAR-933": {
    "sourceHash": "1tppn3r",
