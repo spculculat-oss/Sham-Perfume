@@ -45,12 +45,12 @@ import { AIDisclosureBadge } from './LegalDisclaimer';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
-import { LText, makeT, fmt, LOCALE_MAP } from '../لغات/localize';
+import { LText, makeT, fmt } from '../لغات/localize';
 import { isStaticHosting } from '../utils/api';
 import { copyChatText } from '../utils/clipboard';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { FloatingDock } from './FloatingDock';
-import { prepareShaheenSpeech } from '../utils/shaheenVoice';
+import { readAloud } from '../utils/readAloud';
 import { askMessages, lookingUpLine } from '../utils/heardFix';
 
 
@@ -873,12 +873,13 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const [compoundingStep, setCompoundingStep] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const voiceSendRef = useRef<(text: string, turn?: ShaheenVoiceTurn) => Promise<boolean>>(async () => false);
+  // Spoken replies carry the prices the visitor sees (his country's currency), not the stored Egyptian ones.
   const voiceMessages = useMemo(() => messages.map((message) => ({
     id: message.id,
     role: message.role,
-    text: message.text,
+    text: message.role === 'assistant' ? prices.show(message.text) : message.text,
     kind: message.kind,
-  })), [messages]);
+  })), [messages, prices.currency]);
   const voice = useShaheenVoiceMode({
     language: currentLang,
     messages: voiceMessages,
@@ -1042,16 +1043,9 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
         setIsSpeaking(false);
         return;
       }
-      window.speechSynthesis.cancel();
-      const spokenText = prepareShaheenSpeech(text);
-      if (!spokenText) return;
-      const utterance = new SpeechSynthesisUtterance(spokenText);
-      utterance.lang = LOCALE_MAP[currentLang] || 'ar-EG';
-      utterance.rate = 0.95;
-      utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
+      // Said the way Shaheen talks (numbers, prices and lists as people say them), in the visitor's dialect.
       setIsSpeaking(true);
-      window.speechSynthesis.speak(utterance);
+      readAloud(text, { language: currentLang, dialect: voice.dialect, onEnd: () => setIsSpeaking(false) });
     }
   };
 

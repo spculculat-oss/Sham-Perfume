@@ -68,7 +68,9 @@ export interface ChatRequest {
   /** «التحدث مع شاهين»: the reply will be read aloud; `interrupted` = what he had said when the visitor cut in. */
   voice?: { interrupted?: string;
     /** «شاهين يصحح اللي اتسمع غلط»: heard words read as others before sending; `confirmed` = the visitor said yes to «قصدك …؟». */
-    heard?: { from: string; to: string; confirmed?: boolean }[] };
+    heard?: { from: string; to: string; confirmed?: boolean }[];
+    /** Set by the server only: short spoken replies the platforms gave before in this dialect (his style examples). */
+    examples?: string[] };
 }
 export class ChatError extends Error {
   constructor(public status: number, public code: string, message: string, public retryAfterMs?: number) { super(message); }
@@ -226,9 +228,17 @@ export function isComplaintTurn(message: string): boolean {
  */
 export function voiceInstruction(voice: ChatRequest['voice']): string {
   if (!voice) return '';
-  const spoken = 'المحادثة دي صوتية: ردك هيتقري بصوت عالي للزائر. خليه قصير وطبيعي زي الكلام بين الناس (من جملتين لأربع جمل، وأقل من 70 كلمة) إلا لو طلب تفاصيل، ومن غير جداول أو عناوين أو نقاط أو رموز أو روابط. ممكن تختم بسؤال قصير واحد بس لو بيكمّل النقاش. سياج sham-formula أو sham-tool لو لازم يفضل في آخر الرد زي ما هو (مش هيتقري).';
-  if (!voice.interrupted) return `\n${spoken}`;
-  return `\n${spoken}\nالزائر قاطعك وإنت بتقول: «${voice.interrupted.replace(/[«»]/g, '"')}». ما تكمّلش الكلام القديم ولا تعيده؛ رد على كلامه الجديد على طول. لو طلب منك تسكت أو تختصر أو تغيّر الموضوع، نفّذ ده.`;
+  const spoken = 'المحادثة دي صوتية: ردك هيتقال بصوت عالي للزائر، فاكتبه كلام يتقال مش كلام يتقري — زي ما خبير عطور بيكلم زبون قدامه. '
+    + 'خليه قصير وطبيعي (من جملتين لأربع جمل، وأقل من 70 كلمة) إلا لو طلب تفاصيل. ابدأ بالإجابة نفسها على طول، وجمل قصيرة سهلة، بنفس لهجته العامية، '
+    + 'وكلمات الكلام الطبيعية في مكانها من غير مبالغة (بص، يعني، بصراحة، طيب). اكتب الأرقام والأسعار بالحروف زي ما بتتقال («خمسمية جنيه»، «تلاتين مللي»، «عشرين في المية»). '
+    + 'من غير جداول أو عناوين أو نقاط أو ترقيم أو رموز أو إيموجي أو روابط أو أقواس؛ ولو عندك كذا اختيار قول أهمهم وبس واسأله يحب يعرف الباقي. '
+    + 'ممكن تختم بسؤال قصير واحد بس لو بيكمّل النقاش. سياج sham-formula أو sham-tool لو لازم يفضل في آخر الرد زي ما هو (مش هيتقال).';
+  // «شاهين بيتعلم من المنصات»: how the platforms answered spoken questions in this dialect before (style only).
+  const examples = voice.examples?.length
+    ? `\nأمثلة لأسلوب ردودك الصوتية قبل كده (للأسلوب والطول بس، مش للمعلومة): ${voice.examples.map((e) => `«${e.replace(/[«»]/g, '"')}»`).join(' ')}`
+    : '';
+  if (!voice.interrupted) return `\n${spoken}${examples}`;
+  return `\n${spoken}${examples}\nالزائر قاطعك وإنت بتقول: «${voice.interrupted.replace(/[«»]/g, '"')}». ما تكمّلش الكلام القديم ولا تعيده؛ رد على كلامه الجديد على طول. لو طلب منك تسكت أو تختصر أو تغيّر الموضوع، نفّذ ده.`;
 }
 
 export function systemInstruction(language: SupportedLanguage, extra = '', style?: 'fast' | 'deep', talk?: Pick<ChatRequest, 'dialect' | 'voice'>): string {
@@ -712,6 +722,11 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       if (!limiter.allow(visitor) || !ipLimiter.allow(ip)) throw new ChatError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
       // A word the visitor confirmed («قصدك عود؟» → «أيوه») is learned — counted once per visitor, so one person
       // repeating it cannot teach everyone a wrong word.
+      // «شاهين بيتعلم من المنصات»: two short spoken replies in his dialect, as examples of how to talk.
+      if (input.voice && memory) {
+        const examples = await memory.spokenExamples(input.language, input.language === 'ar' ? input.dialect || 'egyptian' : undefined).catch(() => [] as string[]);
+        if (examples.length) input.voice.examples = examples;
+      }
       for (const fix of input.voice?.heard || []) {
         const key = `${visitor}|${fix.from}|${fix.to}`;
         if (!fix.confirmed || !memory || confirmedPairs.has(key)) continue;
@@ -793,7 +808,8 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       if (!input.conversationHistory.length && capacity.cacheTtlMs > 0 && capacity.cacheEntries > 0) {
         // Opening question: answered from the shared cache, or by ONE provider call shared by everyone
         // asking it right now. That call must not follow one visitor's disconnect, so it gets no signal.
-        const key = cacheKey([normalizeQuestion(input.message), input.language, input.model, shaheen]);
+        // A spoken reply (short, said the way people talk) and a written one are different answers, and so is each dialect.
+        const key = cacheKey([normalizeQuestion(input.message), input.language, input.model, shaheen, input.dialect || '', input.voice ? 'voice' : 'text']);
         result = await abortable(answers.getOrLoad(key, () => run(), (r) => Boolean(r.reply)), controller.signal);
       } else {
         result = await run(controller.signal);

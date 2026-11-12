@@ -83,6 +83,8 @@ export interface ShaheenVoiceCandidate {
 
 /** Engines name their best, most human-sounding voices with these words. */
 const NATURAL_VOICE = /natural|neural|online|premium|enhanced|wavenet|studio|google|siri/i;
+/** Male voices by name (Microsoft natural voices, Apple and Google): Shaheen sounds like himself when one exists. */
+const MALE_VOICE = /\b(?:shakir|hamed|hamdan|fahed|ali|ismael|bassel|taim|rami|omar|jamal|abdullah|moaz|laith|hedi|saleh|maged|majed|tarik|naayf|guy|davis|andrew|brian|christopher|eric|roger|ryan|thomas|henri|remy|alvaro|diego|giuseppe|conrad|killian|dmitry|ahmet|farid|yunxi|yunjian|daniel|aaron|male)\b/i;
 /** Novelty and low-quality voices that should never read Shaheen's replies. */
 const NOVELTY_VOICE = /compact|espeak|whisper|zarvox|trinoids|bells|bubbles|bad news|good news|boing|cellos|organ|jester|superstar|wobble|albert|fred|junior|ralph|kathy/i;
 
@@ -105,6 +107,8 @@ export function pickShaheenVoice<V extends ShaheenVoiceCandidate>(voices: readon
     else if (lang === base || lang.startsWith(`${base}-`)) score = 60;
     else continue;
     if (NATURAL_VOICE.test(voice.name)) score += 25;
+    // «الخبير شاهين» is a man: among equally good voices, a male one.
+    if (MALE_VOICE.test(voice.name)) score += 6;
     if (NOVELTY_VOICE.test(voice.name)) score -= 50;
     if (voice.default) score += 3;
     if (voice.localService === false) score += 2;

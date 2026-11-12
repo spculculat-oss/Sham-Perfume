@@ -32,7 +32,7 @@ import { extractFormulaFromAIMessage, extractFormulasFromAIMessage, isFormulaTra
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
-import { LText, makeT, fmt, loc, LOCALE_MAP } from '../لغات/localize';
+import { LText, makeT, fmt, loc } from '../لغات/localize';
 import { isStaticHosting } from '../utils/api';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { ShaheenModesPanel, ShaheenServiceStatus, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
@@ -47,7 +47,7 @@ import { useShaheenModels } from '../hooks/useShaheenModels';
 import { useShaheenVoiceMode, type ShaheenVoiceTurn } from '../hooks/useShaheenVoiceMode';
 import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
 import { copyChatText } from '../utils/clipboard';
-import { prepareShaheenSpeech } from '../utils/shaheenVoice';
+import { readAloud } from '../utils/readAloud';
 import { askMessages, lookingUpLine } from '../utils/heardFix';
 
 interface PerfumerMasterLabViewProps {
@@ -288,12 +288,13 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const [compoundingStep, setCompoundingStep] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const voiceSendRef = useRef<(text: string, turn?: ShaheenVoiceTurn) => Promise<boolean>>(async () => false);
+  // Spoken replies carry the prices the visitor sees (his country's currency), not the stored Egyptian ones.
   const voiceMessages = useMemo(() => messages.map((message) => ({
     id: message.id,
     role: message.role,
-    text: message.text,
+    text: message.role === 'assistant' ? prices.show(message.text) : message.text,
     kind: message.kind,
-  })), [messages]);
+  })), [messages, prices.currency]);
   const voice = useShaheenVoiceMode({
     language: currentLang,
     messages: voiceMessages,
@@ -321,16 +322,9 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
         setIsSpeaking(false);
         return;
       }
-      window.speechSynthesis.cancel();
-      const spokenText = prepareShaheenSpeech(text);
-      if (!spokenText) return;
-      const utterance = new SpeechSynthesisUtterance(spokenText);
-      utterance.lang = LOCALE_MAP[currentLang] || 'ar-SA';
-      utterance.rate = 0.95;
-      utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
+      // Said the way Shaheen talks (numbers, prices and lists as people say them), in the visitor's dialect.
       setIsSpeaking(true);
-      window.speechSynthesis.speak(utterance);
+      readAloud(text, { language: currentLang, dialect: voice.dialect, onEnd: () => setIsSpeaking(false) });
     }
   };
 
