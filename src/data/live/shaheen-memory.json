@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-12T08:37:26.500Z",
+ "updatedAt": "2026-11-12T23:38:07.432Z",
  "entries": [
   {
    "id": "ar|auto|ازاي اخلي ريحة العطر تثبت علي الهدوم",
@@ -34,6 +34,36 @@
    "hits": 1,
    "source": "study",
    "lastUsed": "2026-10-22T11:05:06.645Z"
+  },
+  {
+   "id": "ar|auto|ايه افضل خلطة شتوية دافية",
+   "question": "ايه أفضل خلطة شتوية دافية؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "أحلى خلطة شتوية دافية ومميزة بتجمع بين فخامة العود ودفء العنبر ولمسة الفانيليا الناعمة اللي بتدّي إحساس بالراحة والخصوصية في الأيام الباردة.\n\n### مقترحات تركيبة العطر الشتوي (حجم 50 مل، تركيز EDP بنسبة 20 بالمئة):\n\n| المكون العطري | التصنيف | النسبة من الزيت العطري |\n|:--- |:--- |:--- |\n| عود هندي ناعم | قاعدة | 35 بالمئة |\n| عنبر دافئ | قاعدة | 25 بالمئة |\n| فانيليا مدغشقر | قلب | 20 بالمئة |\n| باتشولي | قلب | 10 بالمئة |\n| هيل وبرغموت | مقدمة | 10 بالمئة |\n\nده مقترح تجريبي ممتاز هيديك ثبات عالي وحضور قوي يناسب السهرات والتجمعات. تحب نظبط معاك التركيبة دي ولا عندك مكون تاني حابب نضيفه؟",
+   "at": "2026-11-12T23:38:07.432Z",
+   "hits": 0,
+   "source": "chat"
+  },
+  {
+   "id": "ar|auto|احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
+   "question": "احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "عشان نحسب تكلفة 100 زجاجة بالمواصفات دي، تعال نحسب زجاجة واحدة الأول وبعدين نضربها في 100:\n\n### حساب زجاجة واحدة (50 مل - تركيز 20%)\n* **كمية الزيت العطري (20%):** 50 × 20 ÷ 100 = 10 مل\n* **تلفة الزيت:** 10 مل × ‏0.06 US$ = ‏0.56 US$\n* **كمية الكحول (80% المتبقية):** 50 × 80 ÷ 100 = 40 مل\n* **تلفة الكحول:** 40 مل × ‏0 US$ = ‏0.15 US$\n* **إجمالي تكلفة الزجاجة الواحدة:** 30 + 8 = ‏0.71 US$\n\n---\n\n### إجمالي تكلفة الـ 100 زجاجة\n* 100 زجاجة × ‏0.71 US$ = **‏71.50 US$**\n\nالرقم ده بيمثل تكلفة المواد الأساسية (الزيت والكحول) للكمية دي، وتحت أمرك لو حابب نضيف حسابات التعبئة أو الزجاجات نفسها.",
+   "at": "2026-11-12T23:38:07.432Z",
+   "hits": 0,
+   "source": "chat"
+  },
+  {
+   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
+   "question": "What fixative works best for a citrus cologne, and at what percentage?",
+   "lang": "en",
+   "style": "auto",
+   "answer": "For a citrus cologne that evaporates quickly, the best fixatives are those that support the scent without masking the lightness and freshness of the citrus. The top two choices are:\n\n1. **Ambrofix / Ambroxan** or **Iso E Super**: They provide a soft, lightly woody base note fixation without ruining the refreshing cologne character.\n2. **Benzyl Benzoate**: An excellent fixative that acts as a solvent and a gentle fixative for light aromatic notes.\n\n### Suggested Ratio\nUsually, base fixatives in light colognes make up between **1 to 3 percent** of the total fragrance oil (or the total perfume bottle depending on the formula), so the citrus remains the star without getting too heavy.\n\n---\n\n```sham-tool\n{\"tools\":[{\"tool\":\"guide\"}]}\n```",
+   "at": "2026-11-12T23:38:07.432Z",
+   "hits": 0,
+   "source": "chat"
   },
   {
    "id": "ar|auto|ايه هي تصميم تركيبة شتوية شرقية",
@@ -306,16 +336,6 @@
    "source": "chat"
   },
   {
-   "id": "ar|auto|ايه افضل خلطة شتوية دافية",
-   "question": "ايه أفضل خلطة شتوية دافية؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "### خلطة الشتاء الدافية\n\nأفضل تركيبة شتوية تجمع بين فخامة العود ودفء العنبر ولمسة الفانيليا الناعمة، وهي مثالية للأجواء الباردة والمناسبات المسائية.\n\nالتركيبة المقترحة لعطر حجمه 50 مل بتركيز إكستريه (25%):\n- كمية الزيت العطري = 12.5 مل\n- كمية الكحول (96%) = 37.5 مل\n\n### نسب الزيت العطري (الإجمالي 12.5 مل):\n| النوتة العطرية | المكون | النسبة من الزيت |\n|:--- |:--- |:--- |\n| **القاعدة** | دهن العود الهندي | 40% |\n| **القاعدة** | عنبر أبيض | 30% |\n| **القلب** | فانيليا مدغشقر | 20% |\n| **المقدمة** | قرفة خفيفة | 10% |\n\nهذه التركيبة تجريبية وتحتاج لمراجعة السلامة واختبار تطابق صغير قبل الاستخدام النهائي.\n\nحبّيت أضيف لك لمسة من الهيل أو القرفة عشان تكسر ثقل العود في الأول؟",
-   "at": "2026-11-04T22:29:34.378Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
    "id": "ar|auto|اديني مكونات التركيبة",
    "question": "ادينى مكونات التركيبة",
    "lang": "ar",
@@ -414,26 +434,6 @@
    "at": "2026-11-04T04:41:19.475Z",
    "hits": 0,
    "source": "study"
-  },
-  {
-   "id": "ar|auto|احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
-   "question": "احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "حساب تكلفة إنتاج 100 زجاجة عطر سعة الواحدة 50 مل بتركيز 20% يتم بطريقة دقيقة بناءً على الأسعار والمقادير التالية:\n\n### تفاصيل الحسبة للزجاجة الواحدة (50 مل):\n* **كمية الزيت العطري (20%)** = 50 × 20 ÷ 100 = 10 مل\n* **كمية الكحول والماء (80%)** = 50 × 80 ÷ 100 = 40 مل\n\n### تكلفة الزجاجة الواحدة:\n* **تكلفة الزيت** = 10 مل × 3 جنيه = 30 جنيه\n* **تكلفة الكحول** = 40 مل × 0.2 جنيه = 8 جنيه\n* **إجمالي تكلفة المحتوى للزجاجة الواحدة** = 30 + 8 = 38 جنيه\n\n### إجمالي التكلفة لعدد 100 زجاجة:\n* **التكلفة الإجمالية** = 38 جنيه × 100 زجاجة = 3800 جنيه\n\n*(ملاحظة: هذه الحسبة تخص السوائل والمحتوى العطري فقط، ولا تشمل تكلفة الزجاجات الفارغة أو العبوات أو التغليف).*",
-   "at": "2026-11-04T03:53:08.354Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
-   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
-   "question": "What fixative works best for a citrus cologne, and at what percentage?",
-   "lang": "en",
-   "style": "auto",
-   "answer": "For a citrus cologne, fixatives that anchor the volatile top notes without muddying the bright, crisp character work best. Materials like **Iso E Super**, **Ambroxan**, or **Benzyl Acetate** are excellent choices because they add longevity and a modern diffusive quality while letting the lemon, bergamot, and orange shine.\n\nIn a standard citrus Eau de Cologne or Eau de Toilette, fixatives and modifiers are typically used at **1 to 3 percent** of the total formula weight, depending on the desired tenacity and IFRA guidelines for specific aroma chemicals.\n\nHere is an experimental 50 ml citrus cologne formula featuring Iso E Super as a soft, woody-amber fixative:\n\n### مقترح تجريبي: عطر كولونيا الحمضيات\n| المكون | النسبة من الزيت | الكمية (لـ 50 مل / تركيز 10%) |\n|:--- |:--- |:--- |\n| زيت البرغموت الأساسي (Bergamot Essential Oil) | 35.0% | 1.75 مل |\n| زيت الليمون الأساسي (Lemon Essential Oil) | 30.0% | 1.50 مل |\n| زيت البرتقال الحلو (Sweet Orange Essential Oil) | 15.0% | 0.75 مل |\n| زهرة البرتقال / نيرولي (Neroli / Petitgrain) | 10.0% | 0.50 مل |\n| إيزو إي سوبر (Iso E Super - مثبت) | 10.0% | 0.50 مل |\n| **المجموع** | **100%** | **5.0 مل (زيت عطري)** |\n\n*ملاحظة الحسابات: الحجم الإجمالي 50 مل، والتركيز 10% (Eau de Cologne)، وتكملة الزجاجة بالكحول (96%) حوالي 45 مل. هذه التركيبة تجريبية وتحتاج لاختبار الثبات والتوافق.*\n\n```sham-formula\n{\n  \"title\": \"عطر كولونيا الحمضيات المثبت\",\n  \"author\": \"شاهين — مقترح تجريبي\",\n  \"concentrationPercent\": 10,\n  \"concentrationType\": \"edc\",\n  \"bottleVolumeMl\": 50,\n  \"alcoholPercentage\": 96,\n  \"waterPercent\": 0,\n  \"fixativePercent\": 1,\n  \"macerationDays\": 21,\n  \"summary\": \"مقترح تجريبي لحمضيات مثبتة بإيزو إي سوبر يحتاج مراجعة السلامة\",\n  \"pyramidNotes\": [\n    {\n      \"id\": \"note-1\",\n      \"nameAr\": \"البرغموت\",\n      \"nameEn\": \"Bergamot Essential Oil\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 35\n    },\n    {\n      \"id\": \"note-2\",\n      \"nameAr\": \"الليمون\",\n      \"nameEn\": \"Lemon Essential Oil\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 30\n    },\n    {\n      \"id\": \"note-3\",\n      \"nameAr\": \"البرتقال الحلو\",\n      \"nameEn\": \"Sweet Orange Essential Oil\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 15\n    },\n    {\n      \"id\": \"note-4\",\n      \"nameAr\": \"النيرولي\",\n      \"nameEn\": \"Neroli\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 10\n    },\n    {\n      \"id\": \"note-5\",\n      \"nameAr\": \"إيزو إي سوبر\",\n      \"nameEn\": \"Iso E Super\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 10\n    }\n  ]\n}\n```\n\n```sham-tool\n{\n  \"tools\": [\n    {\n      \"tool\": \"concentration\",\n      \"bottleVolumeMl\": 50,\n      \"concentrationPercent\": 10,\n      \"concentrationType\": \"edc\",\n      \"alcoholPercentage\": 96,\n      \"waterPercent\": 0,\n      \"fixativePercent\": 1\n    },\n    {\n      \"tool\": \"maceration\",\n      \"macerationDays\": 21\n    }\n  ]\n}\n```\n\nهل تفضل تعديل نسبة المثبت أو تجربة بديل مسكي خفيف مثل الهابانوليد بدلاً من إيزو إي سوبر؟",
-   "at": "2026-11-04T03:53:06.925Z",
-   "hits": 0,
-   "source": "chat"
   },
   {
    "id": "en|auto|what is the maximum ifra concentration for galaxolide",
