@@ -1,6 +1,6 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { Ear, EarOff, Keyboard, Languages, Mic, MicOff, X } from 'lucide-react';
+import { Ear, EarOff, Fingerprint, Keyboard, Languages, Mic, MicOff, Trash2, VolumeX, X } from 'lucide-react';
 import { DIALECT_INFO, DIALECTS, isDialectChoice } from '../utils/arabicDialect';
 import type { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
@@ -31,6 +31,23 @@ const COPY = {
   end: { ar: 'إنهاء المحادثة الصوتية', en: 'End voice chat', fr: 'Terminer la conversation vocale', es: 'Terminar chat de voz', it: 'Termina chat vocale', de: 'Sprachchat beenden', ru: 'Завершить голосовой чат', zh: '结束语音对话', tr: 'Sesli sohbeti bitir', fa: 'پایان گفتگوی صوتی' },
   orb_listen: { ar: 'شاهين بيسمعك', en: 'Shaheen is listening', fr: 'Shaheen vous écoute', es: 'Shaheen te escucha', it: 'Shaheen ti ascolta', de: 'Shaheen hört zu', ru: 'Шахин слушает', zh: 'Shaheen 正在聆听', tr: 'Shaheen dinliyor', fa: 'شاهین گوش می‌دهد' },
   private: { ar: 'الصوت مش بيتسجّل ولا بيترفع؛ الكلام بيتحول لنص بس.', en: 'Audio is never recorded or uploaded — only the text is used.', fr: 'L’audio n’est ni enregistré ni envoyé : seul le texte est utilisé.', es: 'El audio no se graba ni se sube; solo se usa el texto.', it: 'L’audio non viene registrato né caricato: si usa solo il testo.', de: 'Audio wird weder aufgezeichnet noch hochgeladen – nur der Text zählt.', ru: 'Звук не записывается и не загружается — используется только текст.', zh: '不会录制或上传音频，只使用转写的文字。', tr: 'Ses kaydedilmez ve yüklenmez; yalnızca metin kullanılır.', fa: 'صدا ضبط یا بارگذاری نمی‌شود؛ فقط متن استفاده می‌شود.' },
+  print_button: { ar: 'بصمتي', en: 'My voice print', fr: 'Mon empreinte vocale', es: 'Mi huella de voz', it: 'La mia impronta vocale', de: 'Mein Stimmabdruck', ru: 'Мой голосовой отпечаток', zh: '我的声纹', tr: 'Ses izim', fa: 'اثر صدای من' },
+  print_title: { ar: 'بصمة صوتك', en: 'Your voice print', fr: 'Votre empreinte vocale', es: 'Tu huella de voz', it: 'La tua impronta vocale', de: 'Dein Stimmabdruck', ru: 'Ваш голосовой отпечаток', zh: '你的声纹', tr: 'Ses iziniz', fa: 'اثر صدای شما' },
+  print_consent: { ar: 'شاهين يقدر يحفظ بصمة لصوتك عشان الأصوات اللي حواليك (التلفزيون، ناس جنبك) متقاطعهوش ومتتحسبش كلامك. البصمة أرقام بس عن طبقة صوتك، بتتحفظ على الجهاز ده بس ومش بتتبعت لأي حد، وتقدر تمسحها بضغطة. مش مضمونة ١٠٠٪: لو شاهين مش متأكد هيعتبر الصوت صوتك.', en: 'Shaheen can keep a print of your voice so sounds around you (a TV, people nearby) don’t interrupt him or count as you. It is only numbers about how your voice sounds, kept on this device only, never sent anywhere, and deleted with one tap. It isn’t 100% sure: when in doubt, Shaheen treats the voice as yours.', fr: 'Shaheen peut garder une empreinte de votre voix pour que les sons autour de vous (télé, personnes à côté) ne l’interrompent pas et ne comptent pas comme vous. Ce ne sont que des chiffres sur votre voix, gardés sur cet appareil uniquement, jamais envoyés, supprimables d’un geste. Ce n’est pas fiable à 100 % : en cas de doute, la voix est considérée comme la vôtre.', es: 'Shaheen puede guardar una huella de tu voz para que los sonidos de alrededor (la tele, gente cerca) no lo interrumpan ni cuenten como tú. Son solo números sobre cómo suena tu voz, guardados solo en este dispositivo, nunca enviados, y se borran con un toque. No es 100 % segura: si hay duda, la voz cuenta como tuya.', it: 'Shaheen può conservare un’impronta della tua voce, così i suoni intorno (la TV, persone vicine) non lo interrompono e non contano come te. Sono solo numeri su come suona la tua voce, salvati solo su questo dispositivo, mai inviati, e si cancellano con un tocco. Non è sicura al 100%: nel dubbio la voce conta come tua.', de: 'Shaheen kann einen Abdruck deiner Stimme speichern, damit Geräusche um dich herum (Fernseher, Leute in der Nähe) ihn nicht unterbrechen oder als du zählen. Es sind nur Zahlen über deinen Stimmklang, nur auf diesem Gerät gespeichert, nie gesendet und mit einem Tippen gelöscht. Nicht 100 % sicher: Im Zweifel zählt die Stimme als deine.', ru: 'Шахин может сохранить отпечаток вашего голоса, чтобы звуки вокруг (телевизор, люди рядом) не перебивали его и не считались вами. Это только числа о звучании голоса, хранятся только на этом устройстве, никуда не отправляются и удаляются одним нажатием. Не на 100 % надёжно: при сомнении голос считается вашим.', zh: 'Shaheen 可以保存你的声纹，让周围的声音（电视、旁人）不会打断他或被当成你说的话。声纹只是描述你声音特征的数字，只保存在这台设备上，绝不上传，一键即可删除。它并非百分之百准确：不确定时，Shaheen 会当作是你的声音。', tr: 'Shaheen sesinin bir izini saklayabilir; böylece etraftaki sesler (televizyon, yanındaki kişiler) onu bölmez ve senin sözün sayılmaz. Bu yalnızca sesinle ilgili sayılardır, sadece bu cihazda tutulur, hiçbir yere gönderilmez ve tek dokunuşla silinir. %100 kesin değildir: emin olmadığında ses senin sayılır.', fa: 'شاهین می‌تواند اثری از صدای شما نگه دارد تا صداهای اطراف (تلویزیون، افراد نزدیک) حرفش را قطع نکنند و حرف شما حساب نشوند. فقط چند عدد دربارهٔ صدای شماست، فقط روی همین دستگاه می‌ماند، به هیچ‌جا فرستاده نمی‌شود و با یک لمس پاک می‌شود. صددرصد مطمئن نیست: در صورت تردید، صدا مال شما حساب می‌شود.' },
+  print_agree: { ar: 'موافق، يلا نبدأ', en: 'I agree, let’s start', fr: 'J’accepte, on commence', es: 'Acepto, empecemos', it: 'Accetto, iniziamo', de: 'Einverstanden, los geht’s', ru: 'Согласен, начнём', zh: '同意，开始', tr: 'Kabul ediyorum, başlayalım', fa: 'موافقم، شروع کنیم' },
+  print_no: { ar: 'لا شكرًا', en: 'No thanks', fr: 'Non merci', es: 'No, gracias', it: 'No, grazie', de: 'Nein danke', ru: 'Нет, спасибо', zh: '不用了', tr: 'Hayır, teşekkürler', fa: 'نه، ممنون' },
+  print_step: { ar: 'الجملة {n} من ٣ — اقراها بصوتك العادي', en: 'Sentence {n} of 3 — read it in your normal voice', fr: 'Phrase {n} sur 3 — lisez-la avec votre voix habituelle', es: 'Frase {n} de 3 — léela con tu voz normal', it: 'Frase {n} di 3 — leggila con la tua voce normale', de: 'Satz {n} von 3 – lies ihn mit deiner normalen Stimme', ru: 'Фраза {n} из 3 — прочитайте обычным голосом', zh: '第 {n} 句，共 3 句——用平常的声音读出来', tr: 'Cümle {n}/3 — normal sesinle oku', fa: 'جملهٔ {n} از ۳ — با صدای معمولی بخوانید' },
+  print_record: { ar: 'اضغط واقرا الجملة', en: 'Tap and read the sentence', fr: 'Touchez et lisez la phrase', es: 'Toca y lee la frase', it: 'Tocca e leggi la frase', de: 'Tippe und lies den Satz', ru: 'Нажмите и прочитайте фразу', zh: '点按后朗读这句话', tr: 'Dokun ve cümleyi oku', fa: 'بزنید و جمله را بخوانید' },
+  print_recording: { ar: 'بسمعك… اقرا الجملة', en: 'Listening… read the sentence', fr: 'J’écoute… lisez la phrase', es: 'Te escucho… lee la frase', it: 'Ti ascolto… leggi la frase', de: 'Ich höre… lies den Satz', ru: 'Слушаю… читайте фразу', zh: '正在聆听…请朗读', tr: 'Dinliyorum… cümleyi oku', fa: 'گوش می‌دهم… جمله را بخوانید' },
+  print_short: { ar: 'ماسمعتش كفاية، جرّب تاني بصوت أوضح.', en: 'I didn’t hear enough — try again a bit clearer.', fr: 'Je n’ai pas assez entendu, réessayez plus clairement.', es: 'No oí lo suficiente; inténtalo de nuevo más claro.', it: 'Non ho sentito abbastanza, riprova più chiaramente.', de: 'Nicht genug gehört – versuch es etwas deutlicher.', ru: 'Недостаточно слышно — попробуйте ещё раз чётче.', zh: '没听清楚，请再清楚地读一次。', tr: 'Yeterince duyamadım, biraz daha net tekrar dene.', fa: 'به اندازهٔ کافی نشنیدم؛ دوباره واضح‌تر امتحان کنید.' },
+  print_mic: { ar: 'الميكروفون مش متاح للبصمة على الجهاز ده.', en: 'The microphone isn’t available for a voice print on this device.', fr: 'Le micro n’est pas disponible pour l’empreinte sur cet appareil.', es: 'El micrófono no está disponible para la huella en este dispositivo.', it: 'Il microfono non è disponibile per l’impronta su questo dispositivo.', de: 'Das Mikrofon ist auf diesem Gerät für den Abdruck nicht verfügbar.', ru: 'Микрофон недоступен для отпечатка на этом устройстве.', zh: '此设备无法使用麦克风录制声纹。', tr: 'Bu cihazda ses izi için mikrofon kullanılamıyor.', fa: 'میکروفون برای اثر صدا روی این دستگاه در دسترس نیست.' },
+  print_done: { ar: 'بصمتك اتحفظت على الجهاز ده بس.', en: 'Your print is saved on this device only.', fr: 'Votre empreinte est enregistrée sur cet appareil uniquement.', es: 'Tu huella se guardó solo en este dispositivo.', it: 'La tua impronta è salvata solo su questo dispositivo.', de: 'Dein Abdruck ist nur auf diesem Gerät gespeichert.', ru: 'Отпечаток сохранён только на этом устройстве.', zh: '声纹只保存在这台设备上。', tr: 'İzin yalnızca bu cihaza kaydedildi.', fa: 'اثر صدای شما فقط روی همین دستگاه ذخیره شد.' },
+  print_on: { ar: 'البصمة شغالة', en: 'Voice print on', fr: 'Empreinte activée', es: 'Huella activada', it: 'Impronta attiva', de: 'Abdruck an', ru: 'Отпечаток: вкл.', zh: '声纹：开', tr: 'Ses izi açık', fa: 'اثر صدا روشن' },
+  print_off: { ar: 'البصمة مقفولة', en: 'Voice print off', fr: 'Empreinte désactivée', es: 'Huella desactivada', it: 'Impronta disattivata', de: 'Abdruck aus', ru: 'Отпечаток: выкл.', zh: '声纹：关', tr: 'Ses izi kapalı', fa: 'اثر صدا خاموش' },
+  print_delete: { ar: 'امسح البصمة', en: 'Delete the print', fr: 'Supprimer l’empreinte', es: 'Borrar la huella', it: 'Elimina l’impronta', de: 'Abdruck löschen', ru: 'Удалить отпечаток', zh: '删除声纹', tr: 'İzi sil', fa: 'پاک کردن اثر صدا' },
+  print_redo: { ar: 'سجّلها من جديد', en: 'Record it again', fr: 'L’enregistrer à nouveau', es: 'Grabarla de nuevo', it: 'Registrala di nuovo', de: 'Neu aufnehmen', ru: 'Записать заново', zh: '重新录制', tr: 'Yeniden kaydet', fa: 'دوباره ضبط کنید' },
+  print_close: { ar: 'قفل', en: 'Close', fr: 'Fermer', es: 'Cerrar', it: 'Chiudi', de: 'Schließen', ru: 'Закрыть', zh: '关闭', tr: 'Kapat', fa: 'بستن' },
+  print_ignored: { ar: 'تجاهلت صوت تاني مش صوتك', en: 'I ignored a voice that isn’t yours', fr: 'J’ai ignoré une voix qui n’est pas la vôtre', es: 'Ignoré una voz que no es la tuya', it: 'Ho ignorato una voce che non è la tua', de: 'Eine fremde Stimme ignoriert', ru: 'Проигнорировал чужой голос', zh: '已忽略不是你的声音', tr: 'Senin olmayan bir sesi yok saydım', fa: 'صدایی را که مال شما نبود نادیده گرفتم' },
 } satisfies Record<string, LText>;
 
 type StagePhase = 'muted' | 'speaking' | 'thinking' | 'listening';
@@ -106,7 +123,18 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
   const phase = stagePhase(voice);
   const stageRef = useRef<HTMLDivElement>(null);
   const endRef = useRef<HTMLButtonElement>(null);
-  const micLevel = useMicrophoneLevel(voice.active && !voice.muted);
+  // The hook's own ear already reads the microphone on a computer: its level is used then (one microphone, not two).
+  const micLevel = useMicrophoneLevel(voice.active && !voice.muted && !voice.earActive);
+  const earLevel = useRef(voice.micLevel);
+  earLevel.current = voice.micLevel;
+  const [printPanel, setPrintPanel] = useState(false);
+  const [ignoredNote, setIgnoredNote] = useState(false);
+  useEffect(() => {
+    if (!voice.ignoredVoices) return undefined;
+    setIgnoredNote(true);
+    const timer = setTimeout(() => setIgnoredNote(false), 2600);
+    return () => clearTimeout(timer);
+  }, [voice.ignoredVoices]);
 
   // Everything the animation loop reads lives in refs so the loop never restarts on a re-render.
   const live = useRef({ phase, hearing: voice.hearing });
@@ -135,7 +163,8 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
       else if (current === 'thinking') target = 0.16 + 0.06 * Math.sin(t * 3.2);
       else if (current === 'speaking') target = 0.24 + 0.1 * Math.sin(t * 7) + energy.current * 0.6;
       else {
-        const measured = micLevel.current;
+        const fromEar = earLevel.current();
+        const measured = fromEar !== null ? Math.min(1, fromEar * 5) : micLevel.current;
         target = measured !== null
           ? 0.08 + measured * 0.9
           : (hearing ? 0.42 + 0.18 * Math.sin(t * 9) : 0.1 + 0.05 * Math.sin(t * 2.2)) + energy.current * 0.35;
@@ -219,6 +248,7 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
         <div className="min-h-[5.5rem] w-full max-w-xl text-center" aria-live="polite">
           {caption && <div className="sham-voice-caption line-clamp-4 break-words">{caption}</div>}
           {phase === 'speaking' && <p className="mt-3 text-xs text-amber-200/70">{voice.bargeEnabled ? L('barge_hint') : L('interrupt_hint')}</p>}
+          {ignoredNote && <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs text-stone-200"><VolumeX className="h-3.5 w-3.5" aria-hidden="true" />{L('print_ignored')}</p>}
         </div>
       </div>
 
@@ -249,6 +279,17 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
             {voice.bargeEnabled ? <Ear className="h-3.5 w-3.5" aria-hidden="true" /> : <EarOff className="h-3.5 w-3.5" aria-hidden="true" />}
             {voice.bargeEnabled ? L('barge_on') : L('barge_off')}
           </button>
+          {voice.print.supported && (
+            <button
+              type="button"
+              onClick={() => setPrintPanel(true)}
+              aria-haspopup="dialog"
+              className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 backdrop-blur transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 ${voice.print.saved && voice.print.on ? 'border-emerald-300/40 bg-emerald-300/10 text-emerald-100' : 'border-white/15 bg-white/5 text-stone-300'}`}
+            >
+              <Fingerprint className="h-3.5 w-3.5" aria-hidden="true" />
+              {L('print_button')}
+            </button>
+          )}
         </div>
         <div className="flex items-center justify-center gap-5">
           <button type="button" onClick={voice.stop} className="grid h-14 w-14 place-items-center rounded-full bg-white/10 text-stone-100 backdrop-blur transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300" aria-label={L('type')} title={L('type')}>
@@ -263,8 +304,80 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
         </div>
         <p className="text-center text-[11px] text-stone-400">{L('private')}</p>
       </footer>
+
+      {printPanel && (
+        <VoicePrintPanel
+          L={L}
+          voice={voice}
+          onClose={() => { if (voice.enrolment) voice.closeEnrolment(); setPrintPanel(false); }}
+        />
+      )}
     </div>
   );
 
   return typeof document === 'undefined' ? stage : createPortal(stage, document.body);
+}
+
+/**
+ * «بصمتي»: consent first (what it is, where it stays, that it is not 100%), then three sentences read aloud, then on/off
+ * and a one-tap delete. Only numbers about the voice are kept, in this browser; no sound is recorded or sent.
+ */
+function VoicePrintPanel({ L, voice, onClose }: { L: (key: keyof typeof COPY & string) => string; voice: VoiceModeState; onClose: () => void }) {
+  const { enrolment, print } = voice;
+  const button = 'rounded-full px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300';
+  let body: ReactNode;
+  if (enrolment && !enrolment.done) {
+    const sentence = voice.enrolSentences[Math.min(enrolment.step, 2)];
+    body = (
+      <>
+        <p className="text-xs text-amber-200/80">{L('print_step').replace('{n}', String(enrolment.step + 1))}</p>
+        <div className="flex gap-1.5" aria-hidden="true">
+          {[0, 1, 2].map((step) => <span key={step} className={`h-1.5 flex-1 rounded-full ${step < enrolment.step ? 'bg-emerald-400' : step === enrolment.step ? 'bg-amber-300' : 'bg-white/15'}`} />)}
+        </div>
+        <p className="rounded-2xl bg-white/5 p-4 text-center text-lg leading-relaxed text-white">{sentence}</p>
+        {enrolment.error && <p className="text-sm text-rose-200" role="alert">{enrolment.error === 'microphone' ? L('print_mic') : L('print_short')}</p>}
+        <div className="flex flex-wrap justify-center gap-2">
+          <button type="button" onClick={voice.recordEnrolment} disabled={enrolment.recording} className={`${button} flex items-center gap-2 bg-amber-300 text-stone-900 hover:bg-amber-200 disabled:opacity-80`}>
+            <Mic className={`h-4 w-4 ${enrolment.recording ? 'motion-safe:animate-pulse' : ''}`} aria-hidden="true" />
+            {enrolment.recording ? L('print_recording') : L('print_record')}
+          </button>
+          <button type="button" onClick={onClose} className={`${button} bg-white/10 text-stone-200 hover:bg-white/20`}>{L('print_close')}</button>
+        </div>
+      </>
+    );
+  } else if (print.saved) {
+    body = (
+      <>
+        {enrolment?.done && <p className="text-sm text-emerald-200" role="status">{L('print_done')}</p>}
+        <div className="flex flex-wrap justify-center gap-2">
+          <button type="button" onClick={() => voice.setPrintOn(!print.on)} aria-pressed={print.on} className={`${button} border ${print.on ? 'border-emerald-300/40 bg-emerald-300/10 text-emerald-100' : 'border-white/15 bg-white/5 text-stone-300'}`}>
+            {print.on ? L('print_on') : L('print_off')}
+          </button>
+          <button type="button" onClick={voice.startEnrolment} className={`${button} bg-white/10 text-stone-200 hover:bg-white/20`}>{L('print_redo')}</button>
+          <button type="button" onClick={voice.deletePrint} className={`${button} flex items-center gap-1.5 bg-rose-600 text-white hover:bg-rose-500`}>
+            <Trash2 className="h-4 w-4" aria-hidden="true" />{L('print_delete')}
+          </button>
+        </div>
+        <button type="button" onClick={onClose} className={`${button} mx-auto bg-white/10 text-stone-200 hover:bg-white/20`}>{L('print_close')}</button>
+      </>
+    );
+  } else {
+    body = (
+      <>
+        <p className="text-sm leading-relaxed text-stone-200">{L('print_consent')}</p>
+        <div className="flex flex-wrap justify-center gap-2">
+          <button type="button" onClick={voice.startEnrolment} className={`${button} bg-amber-300 text-stone-900 hover:bg-amber-200`}>{L('print_agree')}</button>
+          <button type="button" onClick={onClose} className={`${button} bg-white/10 text-stone-200 hover:bg-white/20`}>{L('print_no')}</button>
+        </div>
+      </>
+    );
+  }
+  return (
+    <div className="absolute inset-0 z-10 flex items-end justify-center bg-black/60 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" aria-label={L('print_title')}>
+      <div className="flex w-full max-w-md flex-col gap-4 rounded-3xl border border-white/10 bg-stone-900/95 p-5 shadow-2xl">
+        <p className="flex items-center gap-2 text-base font-bold text-amber-100"><Fingerprint className="h-5 w-5" aria-hidden="true" />{L('print_title')}</p>
+        {body}
+      </div>
+    </div>
+  );
 }

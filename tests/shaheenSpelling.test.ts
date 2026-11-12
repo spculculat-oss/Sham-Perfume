@@ -97,9 +97,12 @@ test('the browser with no server: the English keyboard is shown converted; the l
   const store = createChatStore(offline, async () => {}, mem, async () => undefined);
   await store.send({ model: 'fast', language: 'ar', errorText: () => 'unavailable', text: 'زهرة الوتس' });
   assert.deepEqual(libraryAsked, ['زهرة اللوتس']);
-  assert.match(store.getSnapshot().messages.at(-1)!.text, /فهمت سؤالك كده: «زهرة اللوتس»[\s\S]*زهرة مائية/);
+  // Read again before anything else: what he understood is shown under the visitor's own message.
+  assert.equal(store.getSnapshot().messages.at(-2)!.text, 'زهرة الوتس\n\n✍️ فهمت سؤالك كده: «زهرة اللوتس»');
+  assert.match(store.getSnapshot().messages.at(-1)!.text, /زهرة مائية/);
   await store.send({ model: 'fast', language: 'ar', errorText: () => 'unavailable', text: '.ivm hgg,js' });
-  assert.equal(store.getSnapshot().messages.at(-2)!.text, 'زهرة اللوتس', 'the visitor sees what Shaheen read');
+  assert.equal(store.getSnapshot().messages.at(-2)!.text, '.ivm hgg,js\n\n✍️ فهمت سؤالك كده: «زهرة اللوتس»', 'the visitor sees what Shaheen read');
+  assert.deepEqual(libraryAsked, ['زهرة اللوتس', 'زهرة اللوتس']);
 });
 
 test('research: a word Wikipedia knows better is searched with its own spelling suggestion', async () => {
