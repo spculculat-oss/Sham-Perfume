@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-12T23:38:07.432Z",
+ "updatedAt": "2026-11-12T23:49:57.068Z",
  "entries": [
   {
    "id": "ar|auto|ازاي اخلي ريحة العطر تثبت علي الهدوم",
@@ -40,8 +40,8 @@
    "question": "ايه أفضل خلطة شتوية دافية؟",
    "lang": "ar",
    "style": "auto",
-   "answer": "أحلى خلطة شتوية دافية ومميزة بتجمع بين فخامة العود ودفء العنبر ولمسة الفانيليا الناعمة اللي بتدّي إحساس بالراحة والخصوصية في الأيام الباردة.\n\n### مقترحات تركيبة العطر الشتوي (حجم 50 مل، تركيز EDP بنسبة 20 بالمئة):\n\n| المكون العطري | التصنيف | النسبة من الزيت العطري |\n|:--- |:--- |:--- |\n| عود هندي ناعم | قاعدة | 35 بالمئة |\n| عنبر دافئ | قاعدة | 25 بالمئة |\n| فانيليا مدغشقر | قلب | 20 بالمئة |\n| باتشولي | قلب | 10 بالمئة |\n| هيل وبرغموت | مقدمة | 10 بالمئة |\n\nده مقترح تجريبي ممتاز هيديك ثبات عالي وحضور قوي يناسب السهرات والتجمعات. تحب نظبط معاك التركيبة دي ولا عندك مكون تاني حابب نضيفه؟",
-   "at": "2026-11-12T23:38:07.432Z",
+   "answer": "الخلطة الشتوية المضبوطة بتبدأ بعود دافي يكسر البرد، معاه مسك يثبت على الجاكيت، ورشة عنبر تنور القاعدة وتدّي الإحساس بالفخامة.\n\nالنسب المقترحة لتجربة 50 مل بتركيز 20 بالمئة:\n\n| المكون | التصنيف | النسبة من الزيت | الكمية لزجاجة 50 مل |\n|:--- |:--- |:--- |:--- |\n| دهن عود هندي | قاعدة | 40 بالمئة | 4.0 مل |\n| مسك أبيض فاخر | قلب | 35 بالمئة | 3.5 مل |\n| عنبر خام | قلب | 25 بالمئة | 2.5 مل |\n\nكمية الكحول اللازمة (بتركيز 96 بالمئة) تقريباً 40 مل عشان يكملوا زجاجة 50 مل تماماً.\n\nعايزني أجهزلك التركيبة دي وتجربها؟",
+   "at": "2026-11-12T23:49:57.068Z",
    "hits": 0,
    "source": "chat"
   },
@@ -50,8 +50,8 @@
    "question": "احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
    "lang": "ar",
    "style": "auto",
-   "answer": "عشان نحسب تكلفة 100 زجاجة بالمواصفات دي، تعال نحسب زجاجة واحدة الأول وبعدين نضربها في 100:\n\n### حساب زجاجة واحدة (50 مل - تركيز 20%)\n* **كمية الزيت العطري (20%):** 50 × 20 ÷ 100 = 10 مل\n* **تلفة الزيت:** 10 مل × ‏0.06 US$ = ‏0.56 US$\n* **كمية الكحول (80% المتبقية):** 50 × 80 ÷ 100 = 40 مل\n* **تلفة الكحول:** 40 مل × ‏0 US$ = ‏0.15 US$\n* **إجمالي تكلفة الزجاجة الواحدة:** 30 + 8 = ‏0.71 US$\n\n---\n\n### إجمالي تكلفة الـ 100 زجاجة\n* 100 زجاجة × ‏0.71 US$ = **‏71.50 US$**\n\nالرقم ده بيمثل تكلفة المواد الأساسية (الزيت والكحول) للكمية دي، وتحت أمرك لو حابب نضيف حسابات التعبئة أو الزجاجات نفسها.",
-   "at": "2026-11-12T23:38:07.432Z",
+   "answer": "عشان نحسب التكلفة الإجمالية لـ 100 زجاجة، هنحسب الأول الكميات المطلوبة للزجاجة الواحدة وبعدين نضرب في العدد:\n\n- حجم الزجاجة: 50 مل\n- تركيز الزيت: 20%\n- كمية الزيت للزجاجة الواحدة = 50 × 20 ÷ 100 = 10 مل\n- كمية الكحول للزجاجة الواحدة = 50 - 10 = 40 مل\n\nدلوقتي نحسب تكلفة الزجاجة الواحدة:\n- تكلفة الزيت = 10 مل × ‏0.06 US$ = ‏0.56 US$\n- تكلفة الكحول = 40 مل × ‏0 US$ = ‏0.15 US$\n- إجمالي تكلفة الزجاجة الواحدة = 30 + 8 = ‏0.71 US$\n\nإجمالي تكلفة الـ 100 زجاجة:\n- التكلفة الكلية = ‏0.71 US$ × 100 زجاجة = ‏71.50 US$\n\nالتكلفة الإجمالية بتطلع ‏71.50 US$ للـ 100 زجاجة (مش شاملة سعر الزجاجة نفسها أو العبوات الفارغة). تحب نحسب حساب تكلفة الزجاجات الفارغة والعلب كمان؟",
+   "at": "2026-11-12T23:49:57.068Z",
    "hits": 0,
    "source": "chat"
   },
@@ -60,8 +60,8 @@
    "question": "What fixative works best for a citrus cologne, and at what percentage?",
    "lang": "en",
    "style": "auto",
-   "answer": "For a citrus cologne that evaporates quickly, the best fixatives are those that support the scent without masking the lightness and freshness of the citrus. The top two choices are:\n\n1. **Ambrofix / Ambroxan** or **Iso E Super**: They provide a soft, lightly woody base note fixation without ruining the refreshing cologne character.\n2. **Benzyl Benzoate**: An excellent fixative that acts as a solvent and a gentle fixative for light aromatic notes.\n\n### Suggested Ratio\nUsually, base fixatives in light colognes make up between **1 to 3 percent** of the total fragrance oil (or the total perfume bottle depending on the formula), so the citrus remains the star without getting too heavy.\n\n---\n\n```sham-tool\n{\"tools\":[{\"tool\":\"guide\"}]}\n```",
-   "at": "2026-11-12T23:38:07.432Z",
+   "answer": "For a citrus cologne, the best fixatives are those that anchor the volatile top notes without weighing down the clean, bright character of the fragrance.\n\n### Best Fixatives for Citrus Colognes\n\n*   **Ambroxan:** Adds a modern, clean, slightly woody-amber warmth. It extends the fresh opening beautifully.\n*   **Iso E Super:** Imparts a velvety, transparent cedarwood nuance that lifts citrus notes and adds diffusion.\n*   **Benzyl Benzoate:** A classic, odorless solvent and fixative that slows down evaporation without altering the scent profile.\n\n### Recommended Percentage\nFixatives in a citrus cologne are typically used at **1 to 3 percent** of the total formula volume to maintain the refreshing, airy nature of the scent.\n\n```sham-formula\n{\n  \"title\": \"Citrus Cologne Base\",\n  \"author\": \"شاهين — مقترح تجريبي\",\n  \"concentrationPercent\": 15,\n  \"concentrationType\": \"edc\",\n  \"bottleVolumeMl\": 50,\n  \"alcoholPercentage\": 96,\n  \"waterPercent\": 0,\n  \"fixativePercent\": 2,\n  \"macerationDays\": 14,\n  \"summary\": \"مقترح تجريبي يوازن بين الانتعاش والثبات\",\n  \"pyramidNotes\": [\n    {\n      \"id\": \"note-1\",\n      \"nameEn\": \"Bergamot\",\n      \"nameAr\": \"برغموت\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 40\n    },\n    {\n      \"id\": \"note-2\",\n      \"nameEn\": \"Lemon\",\n      \"nameAr\": \"ليمون\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 30\n    },\n    {\n      \"id\": \"note-3\",\n      \"nameEn\": \"Neroli\",\n      \"nameAr\": \"نيرولي\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 20\n    },\n    {\n      \"id\": \"note-4\",\n      \"nameEn\": \"Ambroxan\",\n      \"nameAr\": \"أمبروكسان\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 10\n    }\n  ]\n}\n```\n\n```sham-tool\n{\n  \"tools\": [\n    {\n      \"tool\": \"guide\"\n    }\n  ]\n}\n```",
+   "at": "2026-11-12T23:49:57.068Z",
    "hits": 0,
    "source": "chat"
   },
