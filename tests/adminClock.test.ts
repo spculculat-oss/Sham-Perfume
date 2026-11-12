@@ -22,3 +22,13 @@ test('the overview shortcuts lead to existing robot-help workflows', () => {
   assert.match(source, /data-testid="admin-robot-help"/);
   assert.match(source, /data-testid="admin-clock-robot-link" type="button" onClick=\{\(\) => go\('opsmap'\)\}/);
 });
+
+test('the owner office has its own live clock and shortcuts to Shaheen and robot work', () => {
+  const source = readFileSync(new URL('../src/admin/OwnerSuite.tsx', import.meta.url), 'utf8');
+  for (const section of ['room', 'org', 'governance', 'inbox']) {
+    assert.match(source, new RegExp(`section: '${section}'`), `missing owner-office robot route to ${section}`);
+  }
+  assert.match(source, /data-testid="owner-date-time"/);
+  assert.match(source, /data-testid="owner-robot-help"/);
+  assert.match(source, /data-testid="owner-clock-robot-link" type="button" onClick=\{\(\) => go\('ops'\)\}/);
+});

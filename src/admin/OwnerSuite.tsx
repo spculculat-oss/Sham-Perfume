@@ -1,8 +1,9 @@
 import { Suspense, lazy, useCallback, useEffect, useState, type ReactNode } from 'react';
 import {
-  Activity, Banknote, Crown, ExternalLink, Globe, Inbox, KeyRound, Landmark, LayoutDashboard, Loader2, Lock, LogOut, MessagesSquare, Network, ShieldCheck, Siren,
+  Activity, Banknote, Bot, CalendarDays, Clock3, Crown, ExternalLink, Globe, Inbox, KeyRound, Landmark, LayoutDashboard, Loader2, Lock, LogOut, MessagesSquare, Network, ShieldCheck, Siren,
 } from 'lucide-react';
-import { T, TP, adminDir, useAdminLanguage } from './adminL10n';
+import { T, TP, adminDir, adminLocale, useAdminLanguage } from './adminL10n';
+import { formatAdminClock } from './adminClock';
 import { AdminApiError, adminRequest, getToken, setToken } from './adminApi';
 import { isStaticHosting } from '../utils/api';
 import { OPS_CODE, verifyOpsCode } from '../utils/opsCode';
@@ -189,8 +190,54 @@ function OwnerHome({ go, access }: { go: (s: Section) => void; access: Access })
   const paused = BOTS.filter((b) => b.workflow && stoppedByOwner(controls, b.id)).length;
   const precheck = bundledPrecheck as { health?: number; counts?: Record<string, number>; updatedAt?: string };
   const tile = 'rounded-2xl border border-stone-800 bg-stone-900/70 p-4 text-start hover:border-amber-700';
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const clock = formatAdminClock(now, adminLocale());
+  const robotPaths: { section: Section; title: string; description: string; icon: ReactNode; locked?: boolean }[] = [
+    { section: 'room', title: T('غرفة شاهين الخاصة'), description: T('مساعدة شاهين مباشرة في غرفتك الخاصة.'), icon: <MessagesSquare className="h-4 w-4" />, locked: access !== 'full' },
+    { section: 'org', title: T('إدارة الروبوتات'), description: T('تابع الهيكل والروبوتات ومجلس الخبراء.'), icon: <Network className="h-4 w-4" /> },
+    { section: 'governance', title: T('دولة المنصة'), description: T('خطّط مهام الروبوتات وراجع قراراتها.'), icon: <Landmark className="h-4 w-4" />, locked: access !== 'full' },
+    { section: 'inbox', title: T('صندوق الموافقات'), description: T('راجع ما جهّزه شاهين واتخذ قرارك.'), icon: <Inbox className="h-4 w-4" /> },
+  ];
   return (
     <div className="space-y-4">
+      <section className="grid gap-3 xl:grid-cols-[minmax(250px,0.8fr)_2fr]" aria-label={T('الوقت ومسارات مساعدة الروبوتات')}>
+        <div data-testid="owner-date-time" className="rounded-3xl border border-amber-900/60 bg-gradient-to-br from-stone-900 via-stone-900 to-amber-950 p-4 text-white shadow-sm">
+          <div className="flex items-center gap-2 text-amber-200">
+            <CalendarDays className="h-4 w-4" aria-hidden="true" />
+            <h2 className="text-sm font-bold">{T('التاريخ والوقت')}</h2>
+          </div>
+          <time dateTime={clock.dateTime} className="mt-4 block text-base font-semibold leading-relaxed">{clock.date}</time>
+          <div className="mt-3 flex items-center gap-2 border-t border-white/10 pt-3">
+            <Clock3 className="h-4 w-4 shrink-0 text-amber-300" aria-hidden="true" />
+            <time dateTime={clock.dateTime} aria-label={T('الوقت الحالي')} aria-live="off" dir="ltr" className="font-mono text-2xl font-bold tabular-nums">{clock.time}</time>
+          </div>
+          <p className="mt-1 text-[11px] text-stone-300">{T('توقيت القاهرة، مصر')}</p>
+          <button data-testid="owner-clock-robot-link" type="button" onClick={() => go('ops')} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-amber-200/30 bg-white/10 px-3 py-2 text-xs font-semibold text-amber-100 transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300">
+            <Activity className="h-4 w-4" aria-hidden="true" />{T('عرض حركة الروبوتات')}
+          </button>
+        </div>
+        <div data-testid="owner-robot-help" className="rounded-3xl border border-stone-800 bg-stone-900/70 p-4">
+          <div className="flex items-start gap-2">
+            <span className="rounded-xl bg-amber-950/70 p-2 text-amber-300"><Bot className="h-4 w-4" aria-hidden="true" /></span>
+            <div>
+              <h2 className="text-sm font-bold">{T('طرق الاستعانة بالروبوتات')}</h2>
+              <p className="mt-1 text-[11px] leading-relaxed text-stone-400">{T('من مكتبك، افتح غرفة شاهين أو تابع الروبوتات والمهام وموافقاتك.')}</p>
+            </div>
+          </div>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            {robotPaths.map((path) => (
+              <button key={path.section} type="button" disabled={path.locked} onClick={() => go(path.section)} className="flex min-h-20 items-start gap-2 rounded-xl border border-stone-700 bg-stone-950/60 p-2.5 text-start transition hover:border-amber-600 hover:bg-stone-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 disabled:cursor-not-allowed disabled:opacity-40">
+                <span className="mt-0.5 shrink-0 text-amber-300">{path.icon}</span>
+                <span className="min-w-0"><span className="block text-xs font-bold text-stone-100">{path.title}</span><span className="mt-1 block text-[10px] leading-relaxed text-stone-400">{path.description}</span></span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
       <div className="rounded-3xl border border-amber-900/60 bg-gradient-to-br from-amber-950/60 to-stone-900 p-5">
         <div className="text-sm text-amber-200">{T('أهلاً بيك في جناحك 👑')}</div>
         <p className="mt-1 text-xs text-stone-300">{T('شاهين هو الوكيل المسؤول عن الموقع: بيجهّز كل حاجة، وإنت بتراجع وتوافق من «صندوق الموافقات» أو من غرفتك الخاصة. ومن هنا كمان بتوقف أو تشغل أي روبوت وتتابع الشغل والفلوس. محدش غيرك يقدر يدخل هنا.')}</p>
