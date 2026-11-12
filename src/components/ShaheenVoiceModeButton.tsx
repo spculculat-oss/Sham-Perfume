@@ -11,6 +11,8 @@ type VoiceModeState = ReturnType<typeof useShaheenVoiceMode>;
 const COPY = {
   start: { ar: 'ابدأ التحدث مع شاهين', en: 'Start voice chat with Shaheen', fr: 'Parler avec Shaheen', es: 'Hablar con Shaheen', it: 'Parla con Shaheen', de: 'Mit Shaheen sprechen', ru: 'Поговорить с Шахином', zh: '与 Shaheen 语音对话', tr: 'Shaheen ile sesli konuş', fa: 'گفتگوی صوتی با شاهین' },
   stop: { ar: 'إنهاء وضع التحدث', en: 'Stop voice chat', fr: 'Arrêter la conversation vocale', es: 'Detener chat de voz', it: 'Interrompi chat vocale', de: 'Sprachchat beenden', ru: 'Остановить голосовой чат', zh: '结束语音对话', tr: 'Sesli sohbeti durdur', fa: 'توقف گفتگوی صوتی' },
+  voice_short: { ar: 'صوت', en: 'Voice', fr: 'Voix', es: 'Voz', it: 'Voce', de: 'Sprache', ru: 'Голос', zh: '语音', tr: 'Ses', fa: 'صوت' },
+  stop_short: { ar: 'إيقاف', en: 'Stop', fr: 'Stop', es: 'Parar', it: 'Stop', de: 'Stopp', ru: 'Стоп', zh: '停止', tr: 'Durdur', fa: 'توقف' },
   unsupported: { ar: 'وضع التحدث مش مدعوم في المتصفح ده. جرّب Chrome أو Edge، أو اكتب سؤالك واستخدم زر قراءة الرد.', en: 'Voice chat is not supported in this browser. Try Chrome or Edge, or type your question and use the read-aloud button.', fr: 'Le mode vocal n’est pas pris en charge par ce navigateur. Essayez Chrome ou Edge, ou écrivez votre question.', es: 'Este navegador no admite el chat de voz. Prueba Chrome o Edge, o escribe tu pregunta.', it: 'Questo browser non supporta la chat vocale. Prova Chrome o Edge, oppure scrivi la domanda.', de: 'Dieser Browser unterstützt den Sprachchat nicht. Versuche Chrome oder Edge oder tippe deine Frage.', ru: 'Этот браузер не поддерживает голосовой чат. Попробуйте Chrome или Edge либо напишите вопрос.', zh: '此浏览器不支持语音对话。请使用 Chrome 或 Edge，或直接输入问题。', tr: 'Bu tarayıcı sesli sohbeti desteklemiyor. Chrome veya Edge dene ya da sorunu yaz.', fa: 'این مرورگر از گفتگوی صوتی پشتیبانی نمی‌کند. Chrome یا Edge را امتحان کنید یا سؤال را بنویسید.' },
   disclosure_title: { ar: 'قبل ما تبدأ وضع التحدث', en: 'Before starting voice chat', fr: 'Avant de commencer', es: 'Antes de empezar el chat de voz', it: 'Prima di iniziare la chat vocale', de: 'Bevor du den Sprachchat startest', ru: 'Перед началом голосового чата', zh: '开始语音对话之前', tr: 'Sesli sohbete başlamadan önce', fa: 'پیش از شروع گفتگوی صوتی' },
   disclosure_body: {
@@ -79,14 +81,15 @@ export function ShaheenVoiceModeButton({ language, voice, disabled = false, avat
           aria-label={voice.active ? L('stop') : L('start')}
           aria-pressed={voice.active}
           title={voice.active ? L('stop') : voice.supported ? L('start') : L('unsupported')}
-          className={`group relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
+          className={`group relative flex h-10 min-w-10 shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-full border px-2.5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
             voice.active
               ? 'border-amber-400 bg-stone-900 text-amber-200'
               : 'border-amber-300/70 bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 text-white shadow-sm shadow-amber-900/20 hover:shadow-md hover:shadow-amber-900/30'
           } disabled:cursor-not-allowed disabled:opacity-45`}
         >
           <span className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,.55),transparent_45%)]" aria-hidden="true" />
-          <AudioLines className="relative h-[18px] w-[18px] transition-transform group-hover:scale-110" aria-hidden="true" />
+          <AudioLines className="relative h-[18px] w-[18px] shrink-0 transition-transform group-hover:scale-110" aria-hidden="true" />
+          <span className="relative whitespace-nowrap text-[11px] font-semibold">{L(voice.active ? 'stop_short' : 'voice_short')}</span>
         </button>
       </div>
 
