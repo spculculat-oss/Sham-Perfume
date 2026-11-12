@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-12T23:32:00.736Z",
+ "updatedAt": "2026-11-12T23:35:36.191Z",
  "programs": [
   {
    "id": "school-day",
@@ -265,14 +265,14 @@
  "runs": [
   {
    "program": "ai-self",
-   "at": "2026-11-12T23:32:00.736Z",
+   "at": "2026-11-12T23:35:36.191Z",
    "ok": true,
    "steps": 8,
    "failed": 0
   },
   {
    "program": "site-care",
-   "at": "2026-11-12T23:32:00.736Z",
+   "at": "2026-11-12T23:35:36.191Z",
    "ok": true,
    "steps": 12,
    "failed": 0
