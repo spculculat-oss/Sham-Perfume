@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { SupportedLanguage } from '../types/i18n';
 import { bargeIn, mergeHeard, shaheenSpeechLocale, speechWindow, splitShaheenSpeech } from '../utils/shaheenVoice';
 import { chosenVoice, saveVoiceChoice, savedVoiceChoice, voiceOptions, type VoiceChoice } from '../utils/voiceChoice';
+import { tunedVoice, type VoiceMood } from '../utils/voiceMood';
 import { dialectLocale, resolveDialect, saveDialectChoice, savedDialectChoice, type Dialect, type DialectChoice } from '../utils/arabicDialect';
 import { currentStoreCountry } from '../utils/storeCheckout';
 import { learnablePair, planVoiceTurn, readingsFrom, type PendingConfirm } from '../utils/heardFix';
@@ -233,6 +234,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const [voiceChoice, setVoiceChoiceState] = useState<VoiceChoice>(() => savedVoiceChoice());
   const voiceChoiceRef = useRef<VoiceChoice>(voiceChoice);
   const [voiceList, setVoiceList] = useState<SpeechSynthesisVoice[]>([]);
+  const [voiceMood, setVoiceMood] = useState<VoiceMood>('neutral');
   // «ترتيب الحوار»: the pieces of the visitor's turn so far, whether Shaheen asked «خلصت ولا لسه؟», whether he is
   // listening for the rest of a sentence, and the timer that decides a silence.
   const turnPartsRef = useRef<string[]>([]);
@@ -558,6 +560,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     if (!voices.length) { try { voices = window.speechSynthesis.getVoices(); } catch { voices = []; } }
     const choice = voiceChoiceRef.current;
     const voice = chosenVoice(voices, locale, languageRef.current, choice);
+    // «مزاج الكلام»: calmer for someone upset, quicker for someone in a hurry (his chosen voice, nudged a little).
+    const tune = tunedVoice(choice, messagesRef.current.filter((message) => message.role === 'user').map((message) => message.text));
+    setVoiceMood(tune.mood);
     let index = 0;
     let finished = false;
     speakingRef.current = true;
@@ -579,8 +584,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       try {
         const utterance = new window.SpeechSynthesisUtterance(chunks[index]);
         utterance.lang = locale;
-        utterance.rate = choice.rate;
-        utterance.pitch = choice.pitch;
+        utterance.rate = tune.rate;
+        utterance.pitch = tune.pitch;
         if (voice) utterance.voice = voice;
         utterance.onstart = () => {
           if (sequence !== speechSequenceRef.current) return;
@@ -1301,5 +1306,6 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setVoiceChoice,
     previewVoice,
     currentVoiceName: chosenVoice(voiceList, localeRef.current, language, voiceChoice)?.name,
+    voiceMood,
   };
 }
