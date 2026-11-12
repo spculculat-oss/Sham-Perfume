@@ -5,6 +5,7 @@ import { removeMediaBlocks } from './mediaBlock';
 import { removeFormulaBlocks } from './aiFormulaExtractor';
 import { removeToolBlocks } from './shaheenTools';
 import { plainMath } from './shaheenText';
+import { normalizeArabic } from './arabicDialect';
 
 /** Use the site's locale map, with Egyptian Arabic as the Arabic default. */
 export function shaheenSpeechLocale(language: SupportedLanguage): string {
@@ -110,4 +111,42 @@ export function pickShaheenVoice<V extends ShaheenVoiceCandidate>(voices: readon
     if (score > bestScore) { best = voice; bestScore = score; }
   }
   return best;
+}
+
+/** Words that mean «stop, let me talk» in the site's main languages (normalized spelling). */
+const STOP_WORDS = new Set([
+  'استني', 'استنا', 'لحظه', 'ثانيه', 'ثواني', 'وقف', 'اسكت', 'بس بس', 'لا لا', 'خلاص', 'دقيقه', 'اصبر', 'شوي شوي',
+  'stop', 'wait', 'hold', 'sorry', 'hang', 'pardon', 'attends', 'arrête', 'espera', 'para', 'aspetta', 'warte', 'stopp',
+  'стоп', 'подожди', 'dur', 'bekle', 'صبر', 'وایسا',
+]);
+
+/**
+ * «المقاطعة بالصوت»: while Shaheen speaks the microphone keeps listening, and also hears Shaheen himself through
+ * the speakers. What it heard is a real interruption only when it is not his own words: at least two words he is
+ * not saying (and most of what was heard), or a clear «stop/wait». `said` = the visitor's own words to keep.
+ */
+export function bargeIn(heard: string, reply: string): { barge: boolean; said: string } {
+  const words = heard.replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
+  const normalizedWords = words.map((word) => normalizeArabic(word)).filter(Boolean);
+  if (!normalizedWords.length) return { barge: false, said: '' };
+  const own = new Set(normalizeArabic(prepareShaheenSpeech(reply)).split(' ').filter(Boolean));
+  const novel = words.filter((word) => { const normal = normalizeArabic(word); return normal.length > 1 && !own.has(normal); });
+  const heardNormal = normalizeArabic(heard);
+  const stop = [...STOP_WORDS].some((word) => (` ${heardNormal} `).includes(` ${word} `) && !word.split(' ').every((part) => own.has(part)));
+  const ratio = novel.length / normalizedWords.length;
+  const barge = stop || (novel.length >= 2 && ratio >= 0.5);
+  return { barge, said: barge ? (ratio >= 0.7 ? words.join(' ') : novel.join(' ')) : '' };
+}
+
+/** The interrupting words and the rest of the sentence heard right after, without saying any word twice. */
+export function mergeHeard(prefix: string, heard: string): string {
+  const head = prefix.replace(/\s+/g, ' ').trim();
+  const rest = heard.replace(/\s+/g, ' ').trim();
+  if (!head) return rest;
+  if (!rest) return head;
+  const normalHead = normalizeArabic(head);
+  const normalRest = normalizeArabic(rest);
+  if (normalRest.startsWith(normalHead) || normalRest.includes(normalHead)) return rest;
+  if (normalHead.includes(normalRest)) return head;
+  return `${head} ${rest}`;
 }

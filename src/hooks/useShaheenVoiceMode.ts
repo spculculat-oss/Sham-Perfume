@@ -1,12 +1,33 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { SupportedLanguage } from '../types/i18n';
-import { pickShaheenVoice, shaheenSpeechLocale, splitShaheenSpeech } from '../utils/shaheenVoice';
+import { bargeIn, mergeHeard, pickShaheenVoice, shaheenSpeechLocale, splitShaheenSpeech } from '../utils/shaheenVoice';
+import { dialectLocale, resolveDialect, saveDialectChoice, savedDialectChoice, type Dialect, type DialectChoice } from '../utils/arabicDialect';
+import { currentStoreCountry } from '../utils/storeCheckout';
 
 export interface ShaheenVoiceMessage {
   id: string;
   role: 'user' | 'assistant';
   text: string;
   kind?: string;
+}
+
+/** What a spoken turn tells the server: what Shaheen had said when the visitor cut in (if he did). */
+export interface ShaheenVoiceTurn {
+  interrupted?: string;
+}
+
+const BARGE_KEY = 'sham_voice_barge_v1';
+/**
+ * On by default, except on iPhone/iPad: there the microphone takes over the audio session and turns Shaheen's own
+ * voice down, so the visitor turns it on himself if he wants it (the tap on the orb always interrupts).
+ */
+function savedBargeIn(): boolean {
+  if (typeof window === 'undefined') return true;
+  const apple = /iPhone|iPad|iPod/i.test(navigator.userAgent || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  try {
+    const saved = window.localStorage.getItem(BARGE_KEY);
+    return saved ? saved !== 'off' : !apple;
+  } catch { return !apple; }
 }
 
 type VoiceError = 'unsupported' | 'permission' | 'microphone' | 'network' | 'recognition' | 'speech' | 'too_long';
@@ -58,7 +79,7 @@ export interface UseShaheenVoiceModeOptions {
   messages: readonly ShaheenVoiceMessage[];
   isLoading: boolean;
   disabled?: boolean;
-  onSend: (text: string) => Promise<boolean | void>;
+  onSend: (text: string, turn?: ShaheenVoiceTurn) => Promise<boolean | void>;
 }
 
 function recognitionConstructor(): SpeechRecognitionConstructor | undefined {
@@ -98,6 +119,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const [spokenText, setSpokenText] = useState('');
   const [speechBeat, setSpeechBeat] = useState(0);
   const [lastHeard, setLastHeard] = useState('');
+  // «المقاطعة بالصوت» (on unless the visitor turned it off) and «لهجات شاهين» (his pick, or 'auto').
+  const [bargeEnabled, setBargeEnabledState] = useState(true);
+  const [dialectChoice, setDialectChoiceState] = useState<DialectChoice>('auto');
+  const [bargedIn, setBargedIn] = useState(0);
 
   const activeRef = useRef(false);
   const listeningRef = useRef(false);
@@ -115,11 +140,32 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const startListeningRef = useRef<() => void>(() => undefined);
   const mutedRef = useRef(false);
   const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
+  const localeRef = useRef(shaheenSpeechLocale(language));
+  const bargeEnabledRef = useRef(true);
+  const bargeRecognitionRef = useRef<SpeechRecognitionLike | null>(null);
+  const bargeRestartsRef = useRef(0);
+  const bargePrefixRef = useRef('');
+  const interruptedRef = useRef('');
+  const replyTextRef = useRef('');
+  const spokenSoFarRef = useRef('');
 
   // Browser APIs are checked after mount so this hook remains safe during server rendering.
   useEffect(() => {
     setSupported(shaheenVoiceSupported());
+    const barge = savedBargeIn();
+    bargeEnabledRef.current = barge;
+    setBargeEnabledState(barge);
+    setDialectChoiceState(savedDialectChoice());
   }, []);
+  // The dialect this conversation is in: his pick → his own words → his Arab country → Egyptian.
+  const dialect: Dialect | undefined = useMemo(() => {
+    if (language !== 'ar') return undefined;
+    const said = messages.filter((message) => message.role === 'user').slice(-4).reverse().map((message) => message.text);
+    return resolveDialect({ choice: dialectChoice, texts: said, country: currentStoreCountry() });
+  }, [dialectChoice, language, messages]);
+  useEffect(() => {
+    localeRef.current = dialect ? dialectLocale(dialect, currentStoreCountry()) : shaheenSpeechLocale(language);
+  }, [dialect, language]);
   // Engines load their voice list late (Chrome fills it after the first `voiceschanged`), so keep it fresh.
   useEffect(() => {
     if (typeof window === 'undefined' || !window.speechSynthesis) return undefined;
@@ -156,7 +202,20 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     try { recognition.abort(); } catch { /* It may already have ended. */ }
   }, []);
 
+  /** Stop the microphone that listens for an interruption while Shaheen speaks. */
+  const stopBargeWatch = useCallback(() => {
+    const watch = bargeRecognitionRef.current;
+    bargeRecognitionRef.current = null;
+    if (!watch) return;
+    watch.onstart = null;
+    watch.onresult = null;
+    watch.onerror = null;
+    watch.onend = null;
+    try { watch.abort(); } catch { /* Already ended. */ }
+  }, []);
+
   const cancelSpeech = useCallback(() => {
+    stopBargeWatch();
     speechSequenceRef.current += 1;
     speakingRef.current = false;
     setSpeaking(false);
@@ -164,7 +223,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       try { window.speechSynthesis.cancel(); } catch { /* A browser may not have a speech queue. */ }
     }
-  }, []);
+  }, [stopBargeWatch]);
 
   const clearPendingTurn = useCallback(() => {
     pendingTurnRef.current = null;
@@ -187,6 +246,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setLastHeard('');
     mutedRef.current = false;
     setMuted(false);
+    bargePrefixRef.current = '';
+    interruptedRef.current = '';
     setError(null);
   }, [cancelRecognition, cancelSpeech, clearListenTimer, clearPendingTurn]);
 
@@ -201,6 +262,56 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setError(reason);
   }, [cancelRecognition, cancelSpeech, clearListenTimer, clearPendingTurn]);
 
+  /**
+   * «المقاطعة بالصوت»: while Shaheen speaks, a second listener runs. Hearing only Shaheen's own words (through
+   * the speakers) changes nothing; hearing the visitor stops Shaheen at once and hands the turn to him, keeping
+   * the words he already said and what Shaheen had said up to that moment (the server is told he was cut off).
+   */
+  const startBargeWatch = useCallback(() => {
+    if (!activeRef.current || !speakingRef.current || mutedRef.current || !bargeEnabledRef.current || bargeRecognitionRef.current) return;
+    const Recognition = recognitionConstructor();
+    if (!Recognition) return;
+    let watch: SpeechRecognitionLike;
+    try { watch = new Recognition(); } catch { return; }
+    const sequence = speechSequenceRef.current;
+    watch.lang = localeRef.current;
+    watch.continuous = true;
+    watch.interimResults = true;
+    watch.maxAlternatives = 1;
+    watch.onresult = (event) => {
+      if (bargeRecognitionRef.current !== watch || sequence !== speechSequenceRef.current) return;
+      let heard = '';
+      for (let index = event.resultIndex; index < event.results.length; index += 1) heard += ` ${event.results[index]?.[0]?.transcript || ''}`;
+      const check = bargeIn(heard, replyTextRef.current);
+      if (!check.barge) return;
+      interruptedRef.current = spokenSoFarRef.current;
+      bargePrefixRef.current = check.said;
+      setInterim(check.said);
+      setBargedIn((count) => count + 1);
+      cancelSpeech();
+      // Straight into his turn (the microphone permission is already granted for this page); the short pause lets
+      // the engine release the interruption listener first.
+      setTimeout(() => startListeningRef.current(), 120);
+    };
+    watch.onerror = (event) => {
+      // A refused microphone ends the watching for this conversation; the tap on the orb still interrupts.
+      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') bargeRestartsRef.current = Number.POSITIVE_INFINITY;
+    };
+    watch.onend = () => {
+      if (bargeRecognitionRef.current !== watch) return;
+      bargeRecognitionRef.current = null;
+      // Engines stop after a pause; keep watching while he is still speaking (with a limit per reply).
+      if (speakingRef.current && activeRef.current && sequence === speechSequenceRef.current && bargeRestartsRef.current < 12) {
+        bargeRestartsRef.current += 1;
+        setTimeout(() => { if (sequence === speechSequenceRef.current) startBargeWatchRef.current(); }, 150);
+      }
+    };
+    bargeRecognitionRef.current = watch;
+    try { watch.start(); } catch { bargeRecognitionRef.current = null; }
+  }, [cancelSpeech]);
+  const startBargeWatchRef = useRef<() => void>(() => undefined);
+  useEffect(() => { startBargeWatchRef.current = startBargeWatch; }, [startBargeWatch]);
+
   const speakReply = useCallback((text: string, onComplete: () => void) => {
     if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) {
       setError('speech');
@@ -212,7 +323,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
 
     cancelSpeech();
     const sequence = speechSequenceRef.current;
-    const locale = shaheenSpeechLocale(languageRef.current);
+    const locale = localeRef.current;
+    replyTextRef.current = text;
+    spokenSoFarRef.current = '';
+    bargeRestartsRef.current = 0;
     let voices = voicesRef.current;
     if (!voices.length) { try { voices = window.speechSynthesis.getVoices(); } catch { voices = []; } }
     const voice = pickShaheenVoice(voices, locale, languageRef.current);
@@ -224,6 +338,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     const finish = (failed = false) => {
       if (finished || sequence !== speechSequenceRef.current) return;
       finished = true;
+      stopBargeWatch();
       speakingRef.current = false;
       setSpeaking(false);
       setSpokenText('');
@@ -238,8 +353,18 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
         utterance.lang = locale;
         utterance.rate = 0.96;
         if (voice) utterance.voice = voice;
-        utterance.onstart = () => { if (sequence === speechSequenceRef.current) setSpokenText(chunks[index] || ''); };
-        utterance.onboundary = () => { if (sequence === speechSequenceRef.current) setSpeechBeat((beat) => (beat + 1) % 1_000_000); };
+        utterance.onstart = () => {
+          if (sequence !== speechSequenceRef.current) return;
+          setSpokenText(chunks[index] || '');
+          spokenSoFarRef.current = chunks.slice(0, index + 1).join(' ');
+        };
+        utterance.onboundary = (event) => {
+          if (sequence !== speechSequenceRef.current) return;
+          setSpeechBeat((beat) => (beat + 1) % 1_000_000);
+          // Where he is in the sentence, so an interruption tells the server exactly what he had said.
+          const at = typeof event?.charIndex === 'number' ? event.charIndex : -1;
+          if (at > 0) spokenSoFarRef.current = [...chunks.slice(0, index), (chunks[index] || '').slice(0, at)].join(' ').trim();
+        };
         utterance.onend = () => { index += 1; speakNext(); };
         utterance.onerror = () => finish(true);
         window.speechSynthesis.speak(utterance);
@@ -248,7 +373,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       }
     };
     speakNext();
-  }, [cancelSpeech]);
+    // Give the engine a moment to start talking before the interruption listener opens.
+    setTimeout(() => { if (sequence === speechSequenceRef.current) startBargeWatchRef.current(); }, 400);
+  }, [cancelSpeech, stopBargeWatch]);
 
   const scheduleListening = useCallback((delay = 250) => {
     clearListenTimer();
@@ -299,8 +426,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     const started = beginOutgoingTurn();
     if (!started) return;
     setLastHeard(text);
+    const turn: ShaheenVoiceTurn = interruptedRef.current ? { interrupted: interruptedRef.current } : {};
+    interruptedRef.current = '';
     try {
-      const accepted = await onSendRef.current(text);
+      const accepted = await onSendRef.current(text, turn);
       finishOutgoingTurn(accepted !== false);
     } catch {
       finishOutgoingTurn(false);
@@ -321,7 +450,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       fail('recognition');
       return;
     }
-    recognition.lang = shaheenSpeechLocale(languageRef.current);
+    recognition.lang = localeRef.current;
     recognition.continuous = false;
     recognition.interimResults = true;
     recognition.maxAlternatives = 1;
@@ -341,7 +470,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
         if (result?.isFinal) finalText += ` ${transcript}`;
         else interimText += ` ${transcript}`;
       }
-      setInterim((finalText || interimText).replace(/\s+/g, ' ').trim());
+      setInterim(mergeHeard(bargePrefixRef.current, (finalText || interimText).replace(/\s+/g, ' ').trim()));
     };
     recognition.onerror = (event) => {
       if (event.error === 'no-speech' || event.error === 'aborted') return;
@@ -357,7 +486,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       setListening(false);
       setHearing(false);
       if (!activeRef.current) return;
-      const heard = (finalText || interimText).replace(/\s+/g, ' ').trim();
+      // After a spoken interruption, his first words were heard by the interruption listener.
+      const heard = mergeHeard(bargePrefixRef.current, (finalText || interimText).replace(/\s+/g, ' ').trim());
+      bargePrefixRef.current = '';
       setInterim(heard);
       if (heard) void sendRecognizedText(heard);
       else scheduleListening(350);
@@ -408,24 +539,41 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     if (next) {
       clearListenTimer();
       cancelRecognition();
+      stopBargeWatch();
       setInterim('');
     } else {
       setError(null);
       // Called from the visitor's tap, so the engine may open the microphone straight away.
       startListeningRef.current();
     }
-  }, [cancelRecognition, clearListenTimer]);
+  }, [cancelRecognition, clearListenTimer, stopBargeWatch]);
 
   /** Cut Shaheen off mid-reply and listen at once (tap on the orb). */
   const interrupt = useCallback(() => {
     if (!activeRef.current || !speakingRef.current) return;
+    interruptedRef.current = spokenSoFarRef.current;
     cancelSpeech();
     if (mutedRef.current) {
       mutedRef.current = false;
       setMuted(false);
     }
-    startListeningRef.current();
+    setTimeout(() => startListeningRef.current(), 120);
   }, [cancelSpeech]);
+
+  /** Turn «المقاطعة بالصوت» on or off (kept in this browser). */
+  const setBargeEnabled = useCallback((on: boolean) => {
+    bargeEnabledRef.current = on;
+    setBargeEnabledState(on);
+    try { window.localStorage.setItem(BARGE_KEY, on ? 'on' : 'off'); } catch { /* Private mode. */ }
+    if (!on) stopBargeWatch();
+    else startBargeWatchRef.current();
+  }, [stopBargeWatch]);
+
+  /** His own dialect pick ('auto' = from his words and country), kept in this browser for chat and voice. */
+  const setDialectChoice = useCallback((choice: DialectChoice) => {
+    saveDialectChoice(choice);
+    setDialectChoiceState(choice);
+  }, []);
 
   useEffect(() => {
     if (disabled && activeRef.current) stop();
@@ -478,11 +626,12 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       recognition.onend = null;
       try { recognition.abort(); } catch { /* The recognition session already ended. */ }
     }
+    stopBargeWatch();
     speechSequenceRef.current += 1;
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       try { window.speechSynthesis.cancel(); } catch { /* The browser has no active speech queue. */ }
     }
-  }, [clearListenTimer]);
+  }, [clearListenTimer, stopBargeWatch]);
 
   return {
     supported,
@@ -497,6 +646,12 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     spokenText,
     speechBeat,
     lastHeard,
+    bargeEnabled,
+    bargedIn,
+    dialect,
+    dialectChoice,
+    setBargeEnabled,
+    setDialectChoice,
     start,
     stop,
     toggleMute,
