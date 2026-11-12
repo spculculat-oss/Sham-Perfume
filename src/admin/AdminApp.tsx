@@ -3,9 +3,9 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Search,
   Activity, ArrowRight, ArrowDownToLine, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
-  BellRing, CheckCircle2, CircleAlert, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
+  BellRing, CheckCircle2, CircleAlert, Eye, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
   Settings2, Stethoscope, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
-  ChevronUp, ChevronDown, Mail, Eye, ExternalLink, Check, Sparkles,
+  ChevronUp, ChevronDown, Mail, ExternalLink, Check, Sparkles,
   Handshake, Palette, Crown, Globe, Brain,
 } from 'lucide-react';
 import UpdatesPanel from './UpdatesPanel';
@@ -29,7 +29,7 @@ import type {
   Conversation, CoreSettings, CouncilMember, CouncilRole, CouncilTranscript, EngineId, KnowledgeDoc, KnowledgeGap, ModelEngineId, Product, RequestStatus, ServiceDef, ServiceRequest, ShaheenSettings,
 } from '../../server/core/types';
 import type { AgentResult } from '../../server/core/adminAgent';
-import { AdminApiError, adminRequest, getToken, send, setToken } from './adminApi';
+import { AdminApiError, adminRequest, cleanToken, getToken, send, setToken } from './adminApi';
 import { apiUrl, isStaticHosting } from '../utils/api';
 import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
@@ -121,16 +121,20 @@ export default function AdminApp() {
   const [authed, setAuthed] = useState(false);
   const [checking, setChecking] = useState(Boolean(token));
   const [loginError, setLoginError] = useState('');
+  const [showToken, setShowToken] = useState(false);
   const [tab, setTab] = useState<Tab>('overview');
 
   const login = useCallback(async (candidate: string) => {
     setChecking(true); setLoginError('');
+    // Spaces and line breaks can never be part of the server's token (it trims its own value), so a
+    // pasted line break or the keyboard's automatic space is not "a wrong password".
+    const clean = cleanToken(candidate);
     try {
-      await adminRequest('/overview', {}, candidate);
-      setToken(candidate); setTok(candidate); setAuthed(true);
+      await adminRequest('/overview', {}, clean);
+      setToken(clean); setTok(clean); setAuthed(true);
     } catch (e) {
       setToken('');
-      setLoginError(e instanceof AdminApiError ? (e.status === 401 ? T('رمز الإدارة غير صحيح.') : e.status === 503 ? T('لوحة الإدارة غير مفعلة: اضبط SHAM_ADMIN_TOKEN (12 حرفاً على الأقل) في متغيرات الخادم.') : e.status === 429 ? T('محاولات كثيرة فاشلة. انتظر 15 دقيقة.') : e.message) : T('تعذّر الاتصال بالخادم.'));
+      setLoginError(e instanceof AdminApiError ? (e.status === 401 ? T('رمز الإدارة غير صحيح. راجع الرمز حرفاً حرفاً — ولو مش متأكد منه، اضبط SHAM_ADMIN_TOKEN من جديد في فيرسال (Environment Variables) ثم أعد النشر.') : e.status === 503 ? T('لوحة الإدارة غير مفعلة: اضبط SHAM_ADMIN_TOKEN (12 حرفاً على الأقل) في متغيرات الخادم.') : e.status === 429 ? T('محاولات كثيرة فاشلة. انتظر 15 دقيقة.') : e.message) : T('تعذّر الاتصال بالخادم.'));
     } finally { setChecking(false); }
   }, []);
 
@@ -147,7 +151,13 @@ export default function AdminApp() {
         <form className={`${card} max-w-sm mx-auto mt-24 space-y-4`} onSubmit={(e) => { e.preventDefault(); void login(token.trim()); }}>
           <div className="flex items-center gap-2"><KeyRound className="w-5 h-5 text-amber-700" /><h1 className="font-bold text-lg">{T('إدارة شام — Sham Core')}</h1></div>
           <p className="text-xs text-stone-500">{T('أدخل رمز الإدارة المضبوط في متغير الخادم')} <code dir="ltr">SHAM_ADMIN_TOKEN</code>{T('. يُحفظ الرمز في هذه الجلسة فقط.')}</p>
-          <input className={input} type="password" dir="ltr" autoComplete="current-password" value={token} onChange={(e) => setTok(e.target.value)} placeholder="Admin token" aria-label={T('رمز الإدارة')} />
+          <div className="relative">
+            <input className={`${input} pe-11`} type={showToken ? 'text' : 'password'} dir="ltr" autoComplete="current-password" spellCheck={false} autoCapitalize="none" autoCorrect="off" value={token} onChange={(e) => setTok(e.target.value)} placeholder="Admin token" aria-label={T('رمز الإدارة')} />
+            <button type="button" onClick={() => setShowToken((v) => !v)} aria-label={showToken ? T('إخفاء الرمز') : T('إظهار الرمز')} title={showToken ? T('إخفاء الرمز') : T('إظهار الرمز')}
+              className="absolute inset-y-0 end-0 flex w-10 items-center justify-center text-stone-500 hover:text-stone-900">
+              {showToken ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
           {loginError && <p role="alert" className="text-xs text-red-700">{loginError}</p>}
           <button disabled={checking || !token.trim()} className={`${btn} w-full bg-stone-900 text-amber-100`}>{checking ? <Loader2 className="w-4 h-4 animate-spin" /> : T('دخول')}</button>
           <a href="#home" className="block text-center text-xs text-stone-500 hover:underline">{T('العودة إلى الموقع')}</a>
