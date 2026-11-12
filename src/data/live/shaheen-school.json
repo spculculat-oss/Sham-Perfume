@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-11-11T18:46:48.569Z",
+ "updatedAt": "2026-11-12T08:30:09.951Z",
  "reliance": {
   "score": 100,
   "covered": 1352,
-  "total": 1352,
+  "total": 1353,
   "fromMemory": 1352,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
     "covered": 1331,
-    "total": 1331
+    "total": 1332
    },
    "en": {
     "covered": 21,
@@ -21,6 +21,12 @@
  "studiedTotal": 142,
  "selfTaughtTotal": 1086,
  "history": [
+  {
+   "at": "2026-11-12T08:30:09.951Z",
+   "score": 100,
+   "studied": 0,
+   "mode": "self"
+  },
   {
    "at": "2026-11-11T18:46:48.569Z",
    "score": 100,
@@ -374,12 +380,6 @@
    "score": 100,
    "studied": 0,
    "mode": "self"
-  },
-  {
-   "at": "2026-11-03T11:36:46.613Z",
-   "score": 100,
-   "studied": 0,
-   "mode": "self"
   }
  ],
  "lastStudied": [
@@ -504,7 +504,13 @@
    "variants": 4
   }
  ],
- "pending": [],
+ "pending": [
+  {
+   "q": "بقول لك يا شاهين هي الامبروكسان بيطلع من البترول الني لا انت كده",
+   "lang": "ar",
+   "topic": "expert:perfume"
+  }
+ ],
  "importer": {
   "localShare": 100,
   "aiReadings": 0,
@@ -512,7 +518,7 @@
  },
  "localTaughtTotal": 85,
  "spelling": {
-  "at": "2026-11-11T18:46:48.569Z",
+  "at": "2026-11-12T08:30:09.951Z",
   "tried": 744,
   "understood": 707,
   "score": 95,
@@ -528,7 +534,7 @@
   }
  },
  "practice": {
-  "at": "2026-11-11T18:46:48.569Z",
+  "at": "2026-11-12T08:30:09.951Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -628,8 +634,8 @@
  "tracks": {
   "perfume": {
    "covered": 184,
-   "total": 184,
-   "score": 100
+   "total": 185,
+   "score": 99
   },
   "prog_langs": {
    "covered": 106,
@@ -848,7 +854,7 @@
   }
  },
  "tools": {
-  "at": "2026-11-11T18:46:48.569Z",
+  "at": "2026-11-12T08:30:09.951Z",
   "items": [
    {
     "id": "finance_agent",
@@ -1021,18 +1027,18 @@
   ]
  },
  "blocks": {
-  "at": "2026-11-11T18:46:48.569Z",
+  "at": "2026-11-12T08:30:09.951Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-11-12T00:46:48.569Z"
+    "next": "2026-11-12T14:30:09.951Z"
    },
    {
     "id": "site-care",
-    "next": "2026-11-12T08:00:00.000Z"
+    "next": "2026-11-13T08:00:00.000Z"
    },
    {
     "id": "tool-dev",
@@ -1040,7 +1046,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-11-12T06:46:48.569Z"
+    "next": "2026-11-12T20:30:09.951Z"
    }
   ]
  }

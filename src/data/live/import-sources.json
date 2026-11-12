@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-11T18:40:06.990Z",
+ "updatedAt": "2026-11-12T08:27:06.830Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -1680,12 +1680,12 @@
    "foundBy": "brand-site",
    "foundWith": "Armaf",
    "foundAt": "2026-10-18T14:22:29.042Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-04T07:28:15.596Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-12T08:27:06.830Z",
    "trust": {
     "score": 90,
     "verdict": "trusted",
-    "at": "2026-11-04T07:28:15.596Z",
+    "at": "2026-11-12T08:27:06.830Z",
     "checks": [
      {
       "id": "age",
@@ -1786,13 +1786,13 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "USD",
-   "rateToEgp": 55.3706,
+   "rateToEgp": 53.5502,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*armaf\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://armaf.com/sitemap_agentic_discovery.xml",
     "https://armaf.com/sitemap_products_1.xml?from=9284842357035&to=15484578595115",
     "https://armaf.com/sitemap_pages_1.xml?from=135552237867&to=167363936555",
-    "https://armaf.com/sitemap_collections_1.xml?from=473743032619&to=535786619179",
+    "https://armaf.com/sitemap_collections_1.xml?from=473743032619&to=537137250603",
     "https://armaf.com/sitemap_blogs_1.xml",
     "https://armaf.com/sitemap_articles_1.xml"
    ],
@@ -2800,12 +2800,12 @@
    "foundBy": "brand-site",
    "foundWith": "Volare",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-04T13:16:08.670Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-12T08:27:06.830Z",
    "trust": {
     "score": 80,
     "verdict": "trusted",
-    "at": "2026-11-04T13:16:08.670Z",
+    "at": "2026-11-12T08:27:06.830Z",
     "checks": [
      {
       "id": "age",
@@ -2905,7 +2905,7 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "AED",
-   "rateToEgp": 15.0771,
+   "rateToEgp": 14.5809,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*volareperfumes\\.com/[^?#]+$",
    "sitemaps": [
     "https://volareperfumes.com/sitemap_agentic_discovery.xml",
@@ -2919,7 +2919,7 @@
     "https://volareperfumes.com/ar/sitemap_blogs_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 742
+   "productsEstimate": 744
   },
   {
    "id": "volareparfums-com",
@@ -3056,12 +3056,12 @@
    "foundBy": "brand-site",
    "foundWith": "Shama",
    "foundAt": "2026-10-18T23:21:13.356Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-04T13:16:08.670Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-12T08:27:06.830Z",
    "trust": {
     "score": 83,
     "verdict": "trusted",
-    "at": "2026-11-04T13:16:08.670Z",
+    "at": "2026-11-12T08:27:06.830Z",
     "checks": [
      {
       "id": "age",
@@ -3161,7 +3161,7 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "INR",
-   "rateToEgp": 0.5841,
+   "rateToEgp": 0.5715,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*shamaperfumes\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://shamaperfumes.com/sitemap_agentic_discovery.xml",
@@ -3933,12 +3933,12 @@
    "foundBy": "brand-site",
    "foundWith": "Osma",
    "foundAt": "2026-10-19T00:56:02.060Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-04T13:16:08.670Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-12T08:27:06.830Z",
    "trust": {
     "score": 68,
     "verdict": "trusted",
-    "at": "2026-11-04T13:16:08.670Z",
+    "at": "2026-11-12T08:27:06.830Z",
     "checks": [
      {
       "id": "age",
@@ -4038,7 +4038,7 @@
    "sampleOk": 4,
    "sampleTotal": 6,
    "currency": "SAR",
-   "rateToEgp": 14.7655,
+   "rateToEgp": 14.2795,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*osmaperfumes\\.com/en/(?:[^?#]*/)?p\\d+/?$",
    "sitemaps": [
     "https://osmaperfumes.com/en/sitemap-1.xml",
@@ -5062,12 +5062,12 @@
    "foundBy": "brand-site",
    "foundWith": "Rue Broca",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-04T13:16:08.670Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-12T08:27:06.830Z",
    "trust": {
     "score": 74,
     "verdict": "trusted",
-    "at": "2026-11-04T13:16:08.670Z",
+    "at": "2026-11-12T08:27:06.830Z",
     "checks": [
      {
       "id": "age",
@@ -5166,7 +5166,7 @@
    "sampleOk": 7,
    "sampleTotal": 7,
    "currency": "AED",
-   "rateToEgp": 15.0771,
+   "rateToEgp": 14.5809,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*ruebrocaparfums\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://ruebrocaparfums.com/sitemap_agentic_discovery.xml",
@@ -5188,12 +5188,12 @@
    "foundBy": "brand-site",
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-04T13:16:08.670Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-12T08:27:06.830Z",
    "trust": {
-    "score": 96,
+    "score": 89,
     "verdict": "trusted",
-    "at": "2026-11-04T13:16:08.670Z",
+    "at": "2026-11-12T08:27:06.830Z",
     "checks": [
      {
       "id": "age",
@@ -5237,9 +5237,9 @@
       "id": "shipping",
       "label": "سياسة الشحن",
       "ok": true,
-      "points": 5,
+      "points": 3,
       "max": 5,
-      "detail": "يشحن دولياً"
+      "detail": "محلي أو غير مذكور"
      },
      {
       "id": "privacy",
@@ -5274,8 +5274,8 @@
      {
       "id": "social",
       "label": "حسابات رسمية على التواصل",
-      "ok": true,
-      "points": 5,
+      "ok": false,
+      "points": 0,
       "max": 5
      },
      {
@@ -5283,33 +5283,34 @@
       "label": "يضمن أن المنتجات أصلية",
       "ok": true,
       "points": 5,
-      "max": 5
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
      }
     ],
     "flags": [],
     "registeredAt": "2017-09-23T17:40:37.000Z"
    },
    "region": "arab",
-   "sampleOk": 4,
-   "sampleTotal": 7,
+   "sampleOk": 3,
+   "sampleTotal": 6,
    "currency": "AED",
-   "rateToEgp": 15.0771,
+   "rateToEgp": 14.5809,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*khadlaj-perfumes\\.com/[^?#]+$",
    "sitemaps": [
     "https://khadlaj-perfumes.com/sitemap_agentic_discovery.xml",
-    "https://khadlaj-perfumes.com/sitemap_products_1.xml?from=7554095022279&to=15453041852615",
+    "https://khadlaj-perfumes.com/sitemap_products_1.xml?from=7554095022279&to=15490206531783",
     "https://khadlaj-perfumes.com/sitemap_pages_1.xml?from=91005419719&to=165762957511",
-    "https://khadlaj-perfumes.com/sitemap_collections_1.xml?from=290774778055&to=490811654343",
+    "https://khadlaj-perfumes.com/sitemap_collections_1.xml?from=290774778055&to=515614146759",
     "https://khadlaj-perfumes.com/sitemap_blogs_1.xml",
     "https://khadlaj-perfumes.com/sitemap_articles_1.xml",
-    "https://khadlaj-perfumes.com/ar/sitemap_products_1.xml?from=7554095022279&to=15453041852615",
+    "https://khadlaj-perfumes.com/ar/sitemap_products_1.xml?from=7554095022279&to=15490206531783",
     "https://khadlaj-perfumes.com/ar/sitemap_pages_1.xml?from=91005419719&to=165762957511",
-    "https://khadlaj-perfumes.com/ar/sitemap_collections_1.xml?from=290774778055&to=490811654343",
+    "https://khadlaj-perfumes.com/ar/sitemap_collections_1.xml?from=290774778055&to=515614146759",
     "https://khadlaj-perfumes.com/ar/sitemap_blogs_1.xml",
     "https://khadlaj-perfumes.com/ar/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 1138
+   "productsEstimate": 1058
   },
   {
    "id": "khadlajperfumes-com",
@@ -5320,12 +5321,12 @@
    "foundBy": "brand-site",
    "foundWith": "Khadlaj",
    "foundAt": "2026-10-19T12:55:05.997Z",
-   "attempts": 3,
-   "vettedAt": "2026-11-04T13:16:08.670Z",
+   "attempts": 4,
+   "vettedAt": "2026-11-12T08:27:06.830Z",
    "trust": {
-    "score": 96,
+    "score": 89,
     "verdict": "trusted",
-    "at": "2026-11-04T13:16:08.670Z",
+    "at": "2026-11-12T08:27:06.830Z",
     "checks": [
      {
       "id": "age",
@@ -5369,9 +5370,9 @@
       "id": "shipping",
       "label": "سياسة الشحن",
       "ok": true,
-      "points": 5,
+      "points": 3,
       "max": 5,
-      "detail": "يشحن دولياً"
+      "detail": "محلي أو غير مذكور"
      },
      {
       "id": "privacy",
@@ -5406,8 +5407,8 @@
      {
       "id": "social",
       "label": "حسابات رسمية على التواصل",
-      "ok": true,
-      "points": 5,
+      "ok": false,
+      "points": 0,
       "max": 5
      },
      {
@@ -5415,33 +5416,34 @@
       "label": "يضمن أن المنتجات أصلية",
       "ok": true,
       "points": 5,
-      "max": 5
+      "max": 5,
+      "detail": "الماركة نفسها تبيع منتجاتها"
      }
     ],
     "flags": [],
     "registeredAt": "2017-09-24T13:15:44.000Z"
    },
    "region": "arab",
-   "sampleOk": 4,
-   "sampleTotal": 7,
+   "sampleOk": 3,
+   "sampleTotal": 6,
    "currency": "AED",
-   "rateToEgp": 15.0771,
+   "rateToEgp": 14.5809,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*khadlaj-perfumes\\.com/[^?#]+$",
    "sitemaps": [
     "https://khadlaj-perfumes.com/sitemap_agentic_discovery.xml",
-    "https://khadlaj-perfumes.com/sitemap_products_1.xml?from=7554095022279&to=15453041852615",
+    "https://khadlaj-perfumes.com/sitemap_products_1.xml?from=7554095022279&to=15490206531783",
     "https://khadlaj-perfumes.com/sitemap_pages_1.xml?from=91005419719&to=165762957511",
-    "https://khadlaj-perfumes.com/sitemap_collections_1.xml?from=290774778055&to=490811654343",
+    "https://khadlaj-perfumes.com/sitemap_collections_1.xml?from=290774778055&to=515614146759",
     "https://khadlaj-perfumes.com/sitemap_blogs_1.xml",
     "https://khadlaj-perfumes.com/sitemap_articles_1.xml",
-    "https://khadlaj-perfumes.com/ar/sitemap_products_1.xml?from=7554095022279&to=15453041852615",
+    "https://khadlaj-perfumes.com/ar/sitemap_products_1.xml?from=7554095022279&to=15490206531783",
     "https://khadlaj-perfumes.com/ar/sitemap_pages_1.xml?from=91005419719&to=165762957511",
-    "https://khadlaj-perfumes.com/ar/sitemap_collections_1.xml?from=290774778055&to=490811654343",
+    "https://khadlaj-perfumes.com/ar/sitemap_collections_1.xml?from=290774778055&to=515614146759",
     "https://khadlaj-perfumes.com/ar/sitemap_blogs_1.xml",
     "https://khadlaj-perfumes.com/ar/sitemap_articles_1.xml"
    ],
    "via": "json-ld",
-   "productsEstimate": 1138
+   "productsEstimate": 1058
   },
   {
    "id": "khadlajparfums-com",
@@ -6840,12 +6842,12 @@
    "foundBy": "council",
    "foundWith": "اجتماع شاهين اليومي",
    "foundAt": "2026-11-11T18:40:06.990Z",
-   "attempts": 1,
-   "vettedAt": "2026-11-11T18:40:06.990Z",
+   "attempts": 2,
+   "vettedAt": "2026-11-12T08:27:06.830Z",
    "trust": {
     "score": 38,
     "verdict": "weak",
-    "at": "2026-11-11T18:40:06.990Z",
+    "at": "2026-11-12T08:27:06.830Z",
     "checks": [
      {
       "id": "age",
@@ -7482,6 +7484,28 @@
  ],
  "runs": [
   {
+   "at": "2026-11-12T08:27:06.830Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 8,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "  ↳ volareperfumes.com: CV 80/100 [age,https,contact,returns,shipping,privacy,terms,payment,platform,social,authentic] on Shopify",
+    "✓ volareperfumes.com (CV 80/100): 744 perfumes, 4/6 pages read without AI, AED (1 = 14.5809 EGP) — still good",
+    "  ↳ shamaperfumes.com: CV 83/100 [age,https,contact,identity,returns,shipping,privacy,terms,platform,authentic] on Shopify",
+    "✓ shamaperfumes.com (CV 83/100): 491 perfumes, 4/6 pages read without AI, INR (1 = 0.5715 EGP) — still good",
+    "  ↳ osmaperfumes.com: CV 68/100 [age,https,identity,returns,shipping,privacy,terms,platform,authentic] on Salla",
+    "✓ osmaperfumes.com (CV 68/100): 92 perfumes, 4/6 pages read without AI, SAR (1 = 14.2795 EGP) — still good",
+    "  ↳ ruebrocaparfums.com: CV 74/100 [age,https,identity,returns,privacy,platform,social,authentic] on Shopify",
+    "✓ ruebrocaparfums.com (CV 74/100): 44 perfumes, 7/7 pages read without AI, AED (1 = 14.5809 EGP) — still good",
+    "  ↳ khadlaj.com: CV 89/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,authentic] on Shopify",
+    "✓ khadlaj.com (CV 89/100): 1058 perfumes, 3/6 pages read without AI, AED (1 = 14.5809 EGP) — still good",
+    "  ↳ khadlajperfumes.com: CV 89/100 [age,https,contact,identity,returns,shipping,privacy,terms,payment,platform,authentic] on Shopify",
+    "✓ khadlajperfumes.com (CV 89/100): 1058 perfumes, 3/6 pages read without AI, AED (1 = 14.5809 EGP) — still good"
+   ]
+  },
+  {
    "at": "2026-11-11T18:40:06.990Z",
    "mode": "self",
    "found": 1,
@@ -7837,17 +7861,6 @@
   },
   {
    "at": "2026-10-31T18:53:55.916Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-31T12:57:48.636Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
