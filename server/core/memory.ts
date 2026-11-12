@@ -12,8 +12,9 @@ import { createHash } from 'node:crypto';
 import bundledMemory from '../../src/data/live/shaheen-memory.json';
 import {
   emptyMemory, isMemoryFile, isPersonal, isTimeBound, memoryId, mergeMemory, recall, recallSimilar, remember, touch,
-  type MemoryEntry, type MemoryFile,
+  type MemoryEntry, type MemoryFile, type RecallPreference,
 } from '../../src/utils/shaheenMemory';
+import { learnablePair } from '../../src/utils/heardFix';
 import { liveDataEnabled, loadLive } from './liveData';
 import type { Store } from './store';
 
@@ -62,9 +63,9 @@ export class ShaheenMemory {
   async all(): Promise<MemoryFile> { return mergeMemory(await this.learned(), await this.shared()); }
 
   /** When no engine answers: the closest remembered question (learned or shared, any style). */
-  async recallSimilar(question: string, lang: string, threshold?: number): Promise<MemoryHit | undefined> {
+  async recallSimilar(question: string, lang: string, threshold?: number, prefer?: RecallPreference): Promise<MemoryHit | undefined> {
     const all = mergeMemory(await this.learned(), await this.shared());
-    const best = recallSimilar(all, question, lang, threshold);
+    const best = recallSimilar(all, question, lang, threshold, prefer);
     if (!best) return undefined;
     await this.used({ ...best.entry });
     return { entry: best.entry, from: 'learned', exact: best.score >= 1, score: best.score };
@@ -82,7 +83,7 @@ export class ShaheenMemory {
   }
 
   /** Keeps an answer Shaheen just gave (ignored when not worth remembering). */
-  async learn(input: { question: string; lang: string; mode: string; answer: string }): Promise<boolean> {
+  async learn(input: { question: string; lang: string; mode: string; answer: string; dialect?: string; spoken?: boolean }): Promise<boolean> {
     const file = emptyMemory();
     if (!remember(file, { ...input, source: 'chat' })) return false;
     const entry = file.entries[0];
@@ -91,6 +92,33 @@ export class ShaheenMemory {
     await this.store.put('memory', docId(entry.id), entry).catch(() => undefined);
     if (this.durable && this.durable !== this.store) void this.durable.put('memory', docId(entry.id), entry).catch(() => undefined);
     return true;
+  }
+
+  /**
+   * «شاهين يصحح اللي اتسمع غلط»: a heard word a visitor CONFIRMED meant another («عوض» → «عود» after «قصدك عود؟»).
+   * Only a single word into a word he already knows (never a name, a number or anything personal) is kept, and it is
+   * shared with every visitor only after several confirmations (see corrections()).
+   */
+  async learnCorrection(from: unknown, to: unknown): Promise<boolean> {
+    const pair = learnablePair(from, to);
+    if (!pair) return false;
+    const id = docId(`heard|${pair.from}|${pair.to}`);
+    const old = await this.store.get('heardFixes', id).catch(() => undefined);
+    const entry = { id, from: pair.from, to: pair.to, hits: (old?.hits || 0) + 1, at: new Date().toISOString() };
+    await this.store.put('heardFixes', id, entry).catch(() => undefined);
+    if (this.durable && this.durable !== this.store) void this.durable.put('heardFixes', id, entry).catch(() => undefined);
+    return true;
+  }
+
+  /** The corrections confirmed often enough to use for everyone: heard word → meant word (the most confirmed wins). */
+  async corrections(min = 3): Promise<Record<string, string>> {
+    const all = await this.store.list('heardFixes').catch(() => []);
+    const best: Record<string, { to: string; hits: number }> = {};
+    for (const fix of all) {
+      if (!fix || fix.hits < min || typeof fix.from !== 'string' || typeof fix.to !== 'string') continue;
+      if (!best[fix.from] || best[fix.from]!.hits < fix.hits) best[fix.from] = { to: fix.to, hits: fix.hits };
+    }
+    return Object.fromEntries(Object.entries(best).slice(0, 500).map(([from, fix]) => [from, fix.to]));
   }
 
   /** A remembered answer was used: it rises (and the use reaches the shared file through the bots). */

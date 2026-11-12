@@ -48,6 +48,7 @@ import { useShaheenVoiceMode, type ShaheenVoiceTurn } from '../hooks/useShaheenV
 import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
 import { copyChatText } from '../utils/clipboard';
 import { prepareShaheenSpeech } from '../utils/shaheenVoice';
+import { askMessages, lookingUpLine } from '../utils/heardFix';
 
 interface PerfumerMasterLabViewProps {
   currentLang?: SupportedLanguage;
@@ -299,7 +300,10 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     isLoading,
     disabled: isStaticHosting,
     onSend: (text, turn) => voiceSendRef.current(text, turn),
+    onAsk: (heard, question) => setMessages((list) => [...list, ...askMessages(heard, question, currentLang)]),
   });
+  // «ثواني أشوفلك البيانات»: while he really looks the question up (store, prices, stock…), he says so.
+  const lookingUp = isLoading ? lookingUpLine(messages, currentLang, voice.dialect) : undefined;
 
   // Multi-AI Model Orchestrator State
   const [comparingMsgId, setComparingMsgId] = useState<string | null>(null);
@@ -915,8 +919,8 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                   <span className="animate-spin text-base">🧪</span>
                   <span>{L('loading_status')}</span>
                 </div>
-                <p className="text-xs text-amber-800 leading-relaxed">
-                  {compoundingPhrases[compoundingStep]}
+                <p className="text-xs text-amber-800 leading-relaxed" aria-live="polite">
+                  {lookingUp || compoundingPhrases[compoundingStep]}
                 </p>
                 {busy && (
                   <p role="status" className="rounded-lg bg-amber-100/80 px-2 py-1.5 text-[11px] font-semibold leading-relaxed text-amber-900">{busyNoteText(currentLang)}</p>

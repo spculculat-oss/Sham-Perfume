@@ -66,7 +66,9 @@ export interface ChatRequest {
   /** «لهجات شاهين»: the Arabic he answers in (Arabic conversations only). */
   dialect?: Dialect;
   /** «التحدث مع شاهين»: the reply will be read aloud; `interrupted` = what he had said when the visitor cut in. */
-  voice?: { interrupted?: string };
+  voice?: { interrupted?: string;
+    /** «شاهين يصحح اللي اتسمع غلط»: heard words read as others before sending; `confirmed` = the visitor said yes to «قصدك …؟». */
+    heard?: { from: string; to: string; confirmed?: boolean }[] };
 }
 export class ChatError extends Error {
   constructor(public status: number, public code: string, message: string, public retryAfterMs?: number) { super(message); }
@@ -82,6 +84,9 @@ export const ENGINE_INFO: Record<ModelEngineId, { name: string; color: string }>
   openrouter: { name: 'OpenRouter', color: 'sky' },
   perplexity: { name: 'Perplexity', color: 'teal' },
 };
+
+/** How this visitor talks (for picking, among close remembered answers, the one said the same way). */
+const saidAs = (input: ChatRequest) => ({ ...(input.language === 'ar' ? { dialect: input.dialect || 'egyptian' } : {}), spoken: Boolean(input.voice) });
 
 export function validateChatRequest(body: unknown, country?: string): ChatRequest {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
@@ -125,6 +130,13 @@ export function validateChatRequest(body: unknown, country?: string): ChatReques
   if (voice && typeof voice === 'object' && !Array.isArray(voice)) {
     const cut = (voice as Record<string, unknown>).interrupted;
     request.voice = typeof cut === 'string' && cut.trim() ? { interrupted: maskSensitive(cut.trim().slice(-1500)) } : {};
+    const heard = (voice as Record<string, unknown>).heard;
+    const fixes = Array.isArray(heard) ? heard.slice(0, 5).flatMap((fix) => {
+      const { from, to, confirmed } = (fix && typeof fix === 'object' ? fix : {}) as Record<string, unknown>;
+      return typeof from === 'string' && typeof to === 'string' && from.length <= 32 && to.length <= 32 && from.trim() && to.trim()
+        ? [{ from: from.trim(), to: to.trim(), ...(confirmed === true ? { confirmed: true } : {}) }] : [];
+    }) : [];
+    if (fixes.length) request.voice.heard = fixes;
   }
   return request;
 }
@@ -565,6 +577,13 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
     return settingsCache.value;
   };
 
+  // «شاهين يصحح اللي اتسمع غلط»: the heard→meant words visitors confirmed often enough (no visitor data).
+  const confirmedPairs = new Set<string>();
+  router.get('/heard-fixes', async (_req, res) => {
+    res.setHeader('Cache-Control', 'public, max-age=1800');
+    res.json({ fixes: memory ? await memory.corrections().catch(() => ({})) : {} });
+  });
+
   router.get('/models', async (_req, res) => {
     res.setHeader('Cache-Control', 'no-store');
     try {
@@ -691,6 +710,15 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       const browser = req.get('x-sham-visitor') || (typeof req.body?.visitorId === 'string' ? req.body.visitorId : undefined);
       const visitor = browser && VISITOR_ID.test(browser) ? `${ip}|${browser}` : ip;
       if (!limiter.allow(visitor) || !ipLimiter.allow(ip)) throw new ChatError(429, 'RATE_LIMITED', 'Too many messages, please wait a minute');
+      // A word the visitor confirmed («قصدك عود؟» → «أيوه») is learned — counted once per visitor, so one person
+      // repeating it cannot teach everyone a wrong word.
+      for (const fix of input.voice?.heard || []) {
+        const key = `${visitor}|${fix.from}|${fix.to}`;
+        if (!fix.confirmed || !memory || confirmedPairs.has(key)) continue;
+        if (confirmedPairs.size > 5000) confirmedPairs.clear();
+        confirmedPairs.add(key);
+        void memory.learnCorrection(fix.from, fix.to).catch(() => undefined);
+      }
       const { shaheen, council } = await settings();
       if (input.model === 'council' && shaheen.allowVisitorChoice && !councilLimiter.allow(visitor)) {
         throw new ChatError(429, 'RATE_LIMITED', 'Too many expert-council questions, try the other modes');
@@ -738,7 +766,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         // The usual answers first: the same question, or one worded almost the same («العطر بيثبت ازاي؟» after «ازاي
         // العطر يثبت؟») — the platforms are kept for questions that are really new.
         const hit = await memory.recall(input.message, input.language, mode).catch(() => undefined)
-          || (mode === 'auto' && !isTimeBound(input.message) ? await memory.recallSimilar(input.message, input.language, NEAR_SAME).catch(() => undefined) : undefined);
+          || (mode === 'auto' && !isTimeBound(input.message) ? await memory.recallSimilar(input.message, input.language, NEAR_SAME, saidAs(input)).catch(() => undefined) : undefined);
         if (hit) {
           if (!res.destroyed) res.json({ ...publicChatResult({ reply: hit.entry.answer, mode }, input.message), memory: hit.exact ? 'exact' : 'similar' });
           runtime?.record({ ms: Date.now() - started, status: 200 });
@@ -777,7 +805,10 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       // Follow-ups are kept under the question as Shaheen understood it («طب وللصيف؟» → the whole question).
       if (memory && mode !== 'council' && result.reply && result.engine.provider !== 'perplexity') {
         const asked = opening ? input.message : learnedQuestion(input.message, input.conversationHistory);
-        if (asked) await memory.learn({ question: asked, lang: input.language, mode, answer: publicChatResult(result, input.message).reply }).catch(() => undefined);
+        // «شاهين بيتعلم من المنصات»: kept with how it was said (the dialect, and a short spoken reply for voice), so the
+        // day the platforms are down he still answers a Gulf visitor in Gulf Arabic and a spoken turn briefly.
+        if (asked) await memory.learn({ question: asked, lang: input.language, mode, answer: publicChatResult(result, input.message).reply,
+          ...(input.language === 'ar' ? { dialect: input.dialect || 'egyptian' } : {}), spoken: Boolean(input.voice) }).catch(() => undefined);
       }
     } catch (error) {
       if (res.destroyed) return;
@@ -807,7 +838,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
             return;
           }
         }
-        let hit = await memory?.recallSimilar(input.message, input.language).catch(() => undefined);
+        let hit = await memory?.recallSimilar(input.message, input.language, undefined, saidAs(input)).catch(() => undefined);
         // «فهم شاهين للغلطات»: nothing close as typed — the question as he understands it (a mistyped word read as
         // the word meant, from everything he knows), shown with the answer so a wrong guess is visible.
         let sources: LibrarySources | undefined;
@@ -815,7 +846,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
         if (!hit) {
           sources = await library().catch(() => ({ lessons: [], materials: [] }));
           understood = understandQuestion(input.message, buildLexicon(sources));
-          if (understood.changed) hit = await memory?.recallSimilar(understood.text, input.language).catch(() => undefined);
+          if (understood.changed) hit = await memory?.recallSimilar(understood.text, input.language, undefined, saidAs(input)).catch(() => undefined);
         }
         const asked = understood?.changed ? understood.text : input.message;
         const note = understood ? understoodNote(input.language, understood) : '';
