@@ -6,6 +6,7 @@ import { dialectLocale, resolveDialect, saveDialectChoice, savedDialectChoice, t
 import { currentStoreCountry } from '../utils/storeCheckout';
 import { learnablePair, planVoiceTurn, readingsFrom, type PendingConfirm } from '../utils/heardFix';
 import { spokenReply, wantsMore } from '../utils/spokenReply';
+import { addressee, askDoneLine, finishedAnswer, joinTurn, learnBarge, patienceLine, restOfReply, saveBargeMemory, savedBargeMemory, settleUnsure, turnState, type BargeMemory } from '../utils/turnTaking';
 import { baseLexicon, buildLexicon, type Lexicon } from '../utils/shaheenSpelling';
 import { isStaticHosting, requestApi } from '../utils/api';
 import { activeVoicePrint, bargeDecision, deleteVoicePrint, earSupported, openEar, otherVoice, savedVoicePrint, saveVoicePrint,
@@ -74,7 +75,6 @@ function savedBargeIn(): boolean {
 }
 
 /** Android's engine cannot pause and resume speech (it stops instead), so Shaheen is only stopped there. */
-const canPauseSpeech = () => typeof navigator === 'undefined' || !/Android/i.test(navigator.userAgent || '');
 
 /** «بصمتي»: the three sentences read to make it — where it is in them, and whether one is being recorded. */
 export interface VoiceEnrolment { step: number; recording: boolean; done?: boolean; error?: 'short' | 'microphone' }
@@ -233,6 +233,22 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const [voiceChoice, setVoiceChoiceState] = useState<VoiceChoice>(() => savedVoiceChoice());
   const voiceChoiceRef = useRef<VoiceChoice>(voiceChoice);
   const [voiceList, setVoiceList] = useState<SpeechSynthesisVoice[]>([]);
+  // «ترتيب الحوار»: the pieces of the visitor's turn so far, whether Shaheen asked «خلصت ولا لسه؟», whether he is
+  // listening for the rest of a sentence, and the timer that decides a silence.
+  const turnPartsRef = useRef<string[]>([]);
+  const askedDoneRef = useRef(false);
+  const waitingMoreRef = useRef(false);
+  const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const speechHeardRef = useRef(false);
+  const patienceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // «القطع المناسب»: someone talking while Shaheen talks is judged after about a second; what he learned about this
+  // visitor's interruptions; the last «said to someone else» decision and the last cut (to learn from mistakes and to
+  // go on with the answer after a stop for nothing); and where he is in the reply.
+  const bargeMemoryRef = useRef<BargeMemory>({ bias: 0, words: {} });
+  const candidateRef = useRef<{ since: number; said: string; timer: ReturnType<typeof setTimeout> | null } | null>(null);
+  const asideRef = useRef<{ said: string; at: number } | null>(null);
+  const cutRef = useRef<{ said: string; rest: string; at: number } | null>(null);
+  const speechPosRef = useRef<{ chunks: string[]; index: number; at: number } | null>(null);
 
   // Browser APIs are checked after mount so this hook remains safe during server rendering.
   useEffect(() => {
@@ -243,6 +259,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setDialectChoiceState(savedDialectChoice());
     setPrintSaved(Boolean(savedVoicePrint()));
     setPrintOnState(voicePrintOn());
+    bargeMemoryRef.current = savedBargeMemory();
   }, []);
   // The dialect this conversation is in: his pick → his own words → his Arab country → Egyptian.
   const dialect: Dialect | undefined = useMemo(() => {
@@ -303,8 +320,28 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     try { watch.abort(); } catch { /* Already ended. */ }
   }, []);
 
+  const dropCandidate = useCallback(() => {
+    const candidate = candidateRef.current;
+    if (candidate?.timer) clearTimeout(candidate.timer);
+    candidateRef.current = null;
+  }, []);
+  const clearPatience = useCallback(() => {
+    if (patienceTimerRef.current !== null) { clearTimeout(patienceTimerRef.current); patienceTimerRef.current = null; }
+  }, []);
+  const clearSilenceTimer = useCallback(() => {
+    if (silenceTimerRef.current !== null) { clearTimeout(silenceTimerRef.current); silenceTimerRef.current = null; }
+  }, []);
+  /** «يتدرب على القطع»: one mistake learned (kept on this device). */
+  const learnCut = useCallback((said: string, mistake: 'missed' | 'false') => {
+    if (!said.trim()) return;
+    bargeMemoryRef.current = learnBarge(bargeMemoryRef.current, said, mistake);
+    saveBargeMemory(bargeMemoryRef.current);
+  }, []);
+
   const cancelSpeech = useCallback(() => {
     stopBargeWatch();
+    dropCandidate();
+    clearPatience();
     speechSequenceRef.current += 1;
     speakingRef.current = false;
     setSpeaking(false);
@@ -317,7 +354,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       // A paused engine stays paused for the next reply too (Chrome) unless it is resumed.
       if (wasPaused) { try { window.speechSynthesis.resume(); } catch { /* Nothing to resume. */ } }
     }
-  }, [stopBargeWatch]);
+  }, [clearPatience, dropCandidate, stopBargeWatch]);
 
   /** Close the microphone the ear listens with. */
   const closeEar = useCallback(() => {
@@ -365,12 +402,18 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     interruptedRef.current = '';
     confirmRef.current = null;
     restRef.current = '';
+    turnPartsRef.current = [];
+    askedDoneRef.current = false;
+    waitingMoreRef.current = false;
+    clearSilenceTimer();
+    asideRef.current = null;
+    cutRef.current = null;
     enrollingRef.current = false;
     takeRef.current = null;
     setEnrolment(null);
     closeEar();
     setError(null);
-  }, [cancelRecognition, cancelSpeech, clearListenTimer, clearPendingTurn, closeEar]);
+  }, [cancelRecognition, cancelSpeech, clearListenTimer, clearPendingTurn, clearSilenceTimer, closeEar]);
 
   const fail = useCallback((reason: VoiceError) => {
     activeRef.current = false;
@@ -387,9 +430,67 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   }, [cancelRecognition, cancelSpeech, clearListenTimer, clearPendingTurn, closeEar]);
 
   /**
+   * «القطع المناسب»: the visitor is talking to Shaheen — he stops, keeps what was heard and what he had said (the
+   * server is told he was cut off) and listens. What was left of the answer is kept, in case it was a stop for nothing.
+   */
+  const cutIn = useCallback((said: string) => {
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    const pos = speechPosRef.current;
+    // He had decided «not to me» a moment ago and the visitor is still at him: that was a miss — learned.
+    const aside = asideRef.current;
+    if (aside && now - aside.at < 6000) learnCut(aside.said, 'missed');
+    asideRef.current = null;
+    cutRef.current = { said, rest: pos ? restOfReply(pos.chunks, pos.index, pos.at) : '', at: now };
+    interruptedRef.current = spokenSoFarRef.current;
+    bargePrefixRef.current = said;
+    setInterim(said);
+    setBargedIn((count) => count + 1);
+    cancelSpeech();
+    // Straight into his turn (the microphone permission is already granted for this page); the short pause lets
+    // the engine release the interruption listener first.
+    setTimeout(() => startListeningRef.current(), 100);
+  }, [cancelSpeech, learnCut]);
+
+  /** About a second after someone started talking over him: to him → stop; to someone else → go on. */
+  const judgeCandidate = useCallback(() => {
+    const candidate = candidateRef.current;
+    if (!candidate || !speakingRef.current || !activeRef.current) { dropCandidate(); return; }
+    candidate.timer = null;
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    const memory = bargeMemoryRef.current;
+    const verdict = addressee(candidate.said, memory);
+    if (verdict.to === 'shaheen') { cutIn(candidate.said); return; }
+    const elapsed = now - candidate.since;
+    // Not clear yet: a little longer (up to about two seconds) for more of his words.
+    if (verdict.to === 'unsure' && elapsed < 2100) { candidate.timer = setTimeout(() => judgeCandidateRef.current(), 2200 - elapsed); return; }
+    const final = verdict.to === 'unsure' ? settleUnsure(memory) : verdict.to;
+    if (final === 'shaheen') { cutIn(candidate.said); return; }
+    // Said to someone else (or nothing clear): he goes on with the answer. The listener starts afresh, so the same
+    // words are not judged again.
+    dropCandidate();
+    if (!candidate.said) return;
+    asideRef.current = { said: candidate.said, at: now };
+    stopBargeWatch();
+    setTimeout(() => startBargeWatchRef.current(), 60);
+  }, [cutIn, dropCandidate, stopBargeWatch]);
+  const judgeCandidateRef = useRef<() => void>(() => undefined);
+  useEffect(() => { judgeCandidateRef.current = judgeCandidate; }, [judgeCandidate]);
+
+  /** Someone is talking while Shaheen talks: words that plainly stop him do at once; anything else is judged in a second. */
+  const considerBarge = useCallback((said: string) => {
+    if (!speakingRef.current || !activeRef.current || mutedRef.current || !bargeEnabledRef.current || otherVoiceRef.current) return;
+    if (said && addressee(said, bargeMemoryRef.current).strong) { dropCandidate(); cutIn(said); return; }
+    const candidate = candidateRef.current;
+    if (candidate) { if (said) candidate.said = said; return; }
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    candidateRef.current = { since: now, said, timer: setTimeout(() => judgeCandidateRef.current(), 1000) };
+  }, [cutIn, dropCandidate]);
+  const considerBargeRef = useRef<(said: string) => void>(() => undefined);
+  useEffect(() => { considerBargeRef.current = considerBarge; }, [considerBarge]);
+
+  /**
    * «المقاطعة بالصوت»: while Shaheen speaks, a second listener runs. Hearing only Shaheen's own words (through
-   * the speakers) changes nothing; hearing the visitor stops Shaheen at once and hands the turn to him, keeping
-   * the words he already said and what Shaheen had said up to that moment (the server is told he was cut off).
+   * the speakers) changes nothing; the visitor's words are judged (to him, or to someone near him).
    */
   const startBargeWatch = useCallback(() => {
     if (!activeRef.current || !speakingRef.current || mutedRef.current || !bargeEnabledRef.current || bargeRecognitionRef.current) return;
@@ -402,28 +503,18 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     watch.continuous = true;
     watch.interimResults = true;
     watch.maxAlternatives = 1;
-    let eager = false;
-    // The engine noticed someone starting to talk: from now on one clear word of the visitor is enough to stop him
-    // (on phones, where the microphone's loudness cannot be read directly, this is the fastest sign there is).
-    watch.onspeechstart = () => { eager = true; };
+    watch.onspeechstart = () => { if (bargeRecognitionRef.current === watch) considerBargeRef.current(''); };
     watch.onresult = (event) => {
       if (bargeRecognitionRef.current !== watch || sequence !== speechSequenceRef.current) return;
       let heard = '';
-      for (let index = event.resultIndex; index < event.results.length; index += 1) heard += ` ${event.results[index]?.[0]?.transcript || ''}`;
+      for (let index = 0; index < event.results.length; index += 1) heard += ` ${event.results[index]?.[0]?.transcript || ''}`;
       watchHeardRef.current = heard;
       // The voice print said this sound is someone else (a television, a person nearby): not an interruption.
       if (otherVoiceRef.current) return;
       // Only what he is saying around now can come back through the speakers (the rest of the reply cannot).
-      const check = bargeIn(heard, replyTextRef.current, { near: speechWindow(replyTextRef.current, spokenSoFarRef.current), eager });
-      if (!check.barge) return;
-      interruptedRef.current = spokenSoFarRef.current;
-      bargePrefixRef.current = check.said;
-      setInterim(check.said);
-      setBargedIn((count) => count + 1);
-      cancelSpeech();
-      // Straight into his turn (the microphone permission is already granted for this page); the short pause lets
-      // the engine release the interruption listener first.
-      setTimeout(() => startListeningRef.current(), 120);
+      const check = bargeIn(heard, replyTextRef.current, { near: speechWindow(replyTextRef.current, spokenSoFarRef.current), eager: true });
+      if (!check.barge || !check.said) return;
+      considerBargeRef.current(check.said);
     };
     watch.onerror = (event) => {
       // A refused microphone ends the watching for this conversation; the tap on the orb still interrupts.
@@ -440,7 +531,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     };
     bargeRecognitionRef.current = watch;
     try { watch.start(); } catch { bargeRecognitionRef.current = null; }
-  }, [cancelSpeech]);
+  }, []);
   const startBargeWatchRef = useRef<() => void>(() => undefined);
   useEffect(() => { startBargeWatchRef.current = startBargeWatch; }, [startBargeWatch]);
 
@@ -458,6 +549,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     const locale = localeRef.current;
     replyTextRef.current = text;
     spokenSoFarRef.current = '';
+    speechPosRef.current = { chunks, index: 0, at: 0 };
     bargeRestartsRef.current = 0;
     watchHeardRef.current = '';
     speakStartRef.current = typeof performance !== 'undefined' ? performance.now() : 0;
@@ -492,6 +584,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
         if (voice) utterance.voice = voice;
         utterance.onstart = () => {
           if (sequence !== speechSequenceRef.current) return;
+          speechPosRef.current = { chunks, index, at: 0 };
           setSpokenText(chunks[index] || '');
           spokenSoFarRef.current = chunks.slice(0, index + 1).join(' ');
         };
@@ -500,7 +593,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
           setSpeechBeat((beat) => (beat + 1) % 1_000_000);
           // Where he is in the sentence, so an interruption tells the server exactly what he had said.
           const at = typeof event?.charIndex === 'number' ? event.charIndex : -1;
-          if (at > 0) spokenSoFarRef.current = [...chunks.slice(0, index), (chunks[index] || '').slice(0, at)].join(' ').trim();
+          if (at > 0) {
+            spokenSoFarRef.current = [...chunks.slice(0, index), (chunks[index] || '').slice(0, at)].join(' ').trim();
+            speechPosRef.current = { chunks, index, at };
+          }
         };
         utterance.onend = () => { index += 1; speakNext(); };
         utterance.onerror = () => finish(true);
@@ -531,6 +627,11 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     // A typed message (or the answer itself) ends a «قصدك …؟» question and drops the rest of the last reply.
     confirmRef.current = null;
     restRef.current = '';
+    turnPartsRef.current = [];
+    askedDoneRef.current = false;
+    waitingMoreRef.current = false;
+    clearSilenceTimer();
+    cutRef.current = null;
     pendingTurnRef.current = {
       previousUserId: latestMessageId(messagesRef.current, 'user'),
       previousAssistantId: latestMessageId(messagesRef.current, 'assistant'),
@@ -540,7 +641,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setReplyReady(false);
     setInterim('');
     return true;
-  }, [cancelRecognition, cancelSpeech, clearListenTimer]);
+  }, [cancelRecognition, cancelSpeech, clearListenTimer, clearSilenceTimer]);
 
   const finishOutgoingTurn = useCallback((sent: boolean) => {
     if (!waitingRef.current) return;
@@ -594,7 +695,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       cancelRecognition();
       setLastHeard(said);
       setInterim('');
-      const next = spokenReply(more, { language: languageRef.current, dialect: dialectRef.current });
+      const next = spokenReply(more, { language: languageRef.current, dialect: dialectRef.current, words: 90 });
       restRef.current = next.rest;
       speakReply(next.say || more, () => scheduleListening(350));
       return;
@@ -635,6 +736,14 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     const text = plan.text;
     setLastHeard(text);
     if (plan.filler) sayWhileLooking(plan.filler);
+    // «اصبر عليا هراجع البيانات»: the answer is taking a while — he says so (once), and the answer cuts it off.
+    clearPatience();
+    if (!plan.filler) {
+      patienceTimerRef.current = setTimeout(() => {
+        patienceTimerRef.current = null;
+        if (waitingRef.current && activeRef.current && !speakingRef.current) sayWhileLooking(patienceLine(languageRef.current, dialectRef.current));
+      }, 2600);
+    }
     const turn: ShaheenVoiceTurn = {
       ...(interruptedRef.current ? { interrupted: interruptedRef.current } : {}),
       ...(plan.heard.length ? { heard: plan.heard } : {}),
@@ -646,7 +755,88 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     } catch {
       finishOutgoingTurn(false);
     }
-  }, [beginOutgoingTurn, cancelRecognition, clearListenTimer, finishOutgoingTurn, sayWhileLooking, scheduleListening, speakReply]);
+  }, [beginOutgoingTurn, cancelRecognition, clearListenTimer, clearPatience, finishOutgoingTurn, sayWhileLooking, scheduleListening, speakReply]);
+
+  /** The visitor's turn is complete: all its pieces, in order, gathered into one message. */
+  const sendTurn = useCallback((confidence?: number) => {
+    clearSilenceTimer();
+    const parts = turnPartsRef.current;
+    const whole = joinTurn(parts);
+    turnPartsRef.current = [];
+    askedDoneRef.current = false;
+    waitingMoreRef.current = false;
+    if (whole) void sendRecognizedText(whole, parts.length === 1 ? confidence : undefined);
+    else scheduleListening(300);
+  }, [clearSilenceTimer, scheduleListening, sendRecognizedText]);
+
+  /** A silence decides: nothing more within a few seconds. */
+  const armSilence = useCallback((ms: number, then: () => void) => {
+    clearSilenceTimer();
+    speechHeardRef.current = false;
+    silenceTimerRef.current = setTimeout(() => {
+      silenceTimerRef.current = null;
+      if (speechHeardRef.current || !activeRef.current) return;
+      cancelRecognition();
+      then();
+    }, ms);
+  }, [cancelRecognition, clearSilenceTimer]);
+
+  /** «خلصت ولا لسه؟» — and if he says nothing, he is taken to be finished. */
+  const askIfDone = useCallback(() => {
+    askedDoneRef.current = true;
+    waitingMoreRef.current = false;
+    clearListenTimer();
+    cancelRecognition();
+    setInterim(joinTurn(turnPartsRef.current));
+    speakReply(askDoneLine(languageRef.current, dialectRef.current), () => {
+      scheduleListening(150);
+      armSilence(4500, () => { if (askedDoneRef.current) sendTurn(); });
+    });
+  }, [armSilence, cancelRecognition, clearListenTimer, scheduleListening, sendTurn, speakReply]);
+
+  /** He paused in the middle of a sentence: keep listening quietly for the rest; a silence → «خلصت ولا لسه؟». */
+  const listenForMore = useCallback(() => {
+    waitingMoreRef.current = true;
+    scheduleListening(60);
+    armSilence(3000, () => {
+      if (!waitingMoreRef.current) return;
+      waitingMoreRef.current = false;
+      if (turnPartsRef.current.length) askIfDone();
+      else scheduleListening(300);
+    });
+  }, [armSilence, askIfDone, scheduleListening]);
+
+  /**
+   * «ترتيب الحوار»: one piece of what he said. Answers to Shaheen's own short questions go straight on; otherwise the
+   * pieces are gathered until the turn is clearly over, he says he is done, or a silence after «خلصت ولا لسه؟».
+   */
+  const handleTurnPiece = useCallback((heard: string, confidence?: number) => {
+    clearSilenceTimer();
+    // «قصدك …؟» and «تحب أكمّلك الباقي؟» are answered in a word: no gathering.
+    if (confirmRef.current || restRef.current) {
+      turnPartsRef.current = [];
+      askedDoneRef.current = false;
+      waitingMoreRef.current = false;
+      void sendRecognizedText(heard, confidence);
+      return;
+    }
+    if (askedDoneRef.current) {
+      askedDoneRef.current = false;
+      const answer = finishedAnswer(heard);
+      if (answer === 'done') { sendTurn(); return; }
+      if (answer === 'more') { listenForMore(); return; }
+    }
+    waitingMoreRef.current = false;
+    turnPartsRef.current = [...turnPartsRef.current, heard].slice(-12);
+    const whole = joinTurn(turnPartsRef.current);
+    setInterim(whole);
+    // Answering his question («رجالي ولا حريمي؟» → «رجالي»): a short answer is a whole turn.
+    const lastReply = [...messagesRef.current].reverse().find((message) => message.role === 'assistant')?.text || '';
+    const state = turnState(whole, { answering: /[?؟]\s*$/u.test(lastReply.trim()) });
+    if (state === 'done') { sendTurn(confidence); return; }
+    if (state === 'more') { listenForMore(); return; }
+    askIfDone();
+  }, [askIfDone, clearSilenceTimer, listenForMore, sendRecognizedText, sendTurn]);
 
   const startListening = useCallback(() => {
     if (!activeRef.current || mutedRef.current || disabledRef.current || loadingRef.current || waitingRef.current || speakingRef.current || recognitionRef.current || enrollingRef.current) return;
@@ -673,9 +863,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       listeningRef.current = true;
       setListening(true);
     };
-    recognition.onspeechstart = () => setHearing(true);
+    recognition.onspeechstart = () => { speechHeardRef.current = true; setHearing(true); };
     recognition.onspeechend = () => setHearing(false);
     recognition.onresult = (event) => {
+      speechHeardRef.current = true;
       setError(null);
       finalText = '';
       interimText = '';
@@ -713,8 +904,32 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       setHearing(false);
       if (!activeRef.current) return;
       // After a spoken interruption, his first words were heard by the interruption listener.
-      const heard = mergeHeard(bargePrefixRef.current, (finalText || interimText).replace(/\s+/g, ' ').trim());
+      const own = (finalText || interimText).replace(/\s+/g, ' ').trim();
+      const prefix = bargePrefixRef.current;
+      const heard = mergeHeard(prefix, own);
       bargePrefixRef.current = '';
+      // Just after Shaheen stopped for him: nothing more said (or «كمّل») means it was not for Shaheen — learned, and
+      // he goes on with the answer from the word he was on. «استنى» alone means wait: he waits quietly.
+      const cut = cutRef.current;
+      cutRef.current = null;
+      if (cut && cut.rest) {
+        const goOn = /(?:^|\s)(?:كمل|كمّل|كملي|اكمل|أكمل|كمل كلامك|continue|go on|carry on|continue please)(?:\s|$)/iu.test(own);
+        const waitOnly = !own && addressee(prefix, bargeMemoryRef.current).strong;
+        if (goOn || (!own && !waitOnly && turnState(prefix) !== 'done')) {
+          learnCut(cut.said, 'false');
+          interruptedRef.current = '';
+          setInterim('');
+          speakReply(cut.rest, () => scheduleListening(350));
+          return;
+        }
+        if (waitOnly) {
+          // Ready when he is: «كمّل» later still goes on with the answer.
+          cutRef.current = cut;
+          setInterim('');
+          scheduleListening(300);
+          return;
+        }
+      }
       const voiced = voicedRef.current;
       voicedRef.current = [];
       // «بصمتي»: a sentence the print clearly says was someone else's (the television, a person nearby) is not his.
@@ -737,8 +952,16 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       setInterim(heard);
       // The engine's own sureness only counts when the visitor's words were all heard by it (not merged with the
       // interruption listener's).
-      if (heard) void sendRecognizedText(heard, finalText.trim() && heard === finalText.replace(/\s+/g, ' ').trim() ? confidence : undefined);
-      else scheduleListening(350);
+      const sureness = finalText.trim() && heard === finalText.replace(/\s+/g, ' ').trim() ? confidence : undefined;
+      if (heard) { handleTurnPiece(heard, sureness); return; }
+      // Nothing said: a silence after a paused sentence or after «خلصت ولا لسه؟» decides the turn.
+      if (askedDoneRef.current) { sendTurn(); return; }
+      if (waitingMoreRef.current) {
+        clearSilenceTimer();
+        waitingMoreRef.current = false;
+        if (turnPartsRef.current.length) { askIfDone(); return; }
+      }
+      scheduleListening(350);
     };
     recognitionRef.current = recognition;
     try {
@@ -752,7 +975,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       setListening(false);
       fail('microphone');
     }
-  }, [fail, scheduleListening, sendRecognizedText]);
+  }, [askIfDone, clearSilenceTimer, fail, handleTurnPiece, learnCut, scheduleListening, sendTurn, speakReply]);
 
   useEffect(() => { startListeningRef.current = startListening; }, [startListening]);
 
@@ -806,6 +1029,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   /** Cut Shaheen off mid-reply and listen at once (tap on the orb). */
   const interrupt = useCallback(() => {
     if (!activeRef.current || !speakingRef.current) return;
+    // He had just decided «not to me»: the tap says it was — learned.
+    const aside = asideRef.current;
+    if (aside && (typeof performance !== 'undefined' ? performance.now() : Date.now()) - aside.at < 6000) learnCut(aside.said, 'missed');
+    asideRef.current = null;
     interruptedRef.current = spokenSoFarRef.current;
     cancelSpeech();
     if (mutedRef.current) {
@@ -813,12 +1040,12 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       setMuted(false);
     }
     setTimeout(() => startListeningRef.current(), 120);
-  }, [cancelSpeech]);
+  }, [cancelSpeech, learnCut]);
 
   /**
-   * «ودن شاهين»: every 40 ms slice from the microphone. While Shaheen talks, a voice starting makes him go quiet at
-   * once (paused, not stopped); then it is decided: the visitor talking → he stops and listens; a short noise (a cough,
-   * a knock) → he goes on from the same word; another voice by the print (a television, someone nearby) → he goes on.
+   * «ودن شاهين»: every 40 ms slice from the microphone. While Shaheen talks, a voice starting is judged (he keeps
+   * talking meanwhile): a short noise (a cough, a knock) or another voice by the print (a television, someone nearby)
+   * → nothing; words → judged about a second later (to him → he stops; to someone else → he goes on).
    */
   const handleSlice = useCallback((slice: EarSlice) => {
     const gate = gateRef.current;
@@ -841,38 +1068,26 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       return;
     }
     if (!bargeEnabledRef.current) return;
-    const synth = typeof window !== 'undefined' ? window.speechSynthesis : undefined;
-    const goOn = () => {
-      duckRef.current = null;
-      try { synth?.resume(); } catch { /* Nothing to resume. */ }
-    };
-    if (event?.type === 'start' && !ducked) {
-      if (otherVoiceRef.current) return;
-      duckRef.current = { at: slice.t };
-      if (canPauseSpeech()) { try { synth?.pause(); } catch { /* He keeps talking until it is decided. */ } }
+    // «القطع المناسب»: a voice starting does not cut him any more — he keeps talking while it is judged (about a
+    // second). The ear only says what the words cannot: a short noise, or a voice that is clearly not the visitor's.
+    if (event?.type === 'start') {
+      if (!otherVoiceRef.current) considerBargeRef.current('');
       return;
     }
-    if (!ducked) return;
+    const candidate = candidateRef.current;
+    if (!candidate) return;
     const burst = event?.type === 'end' ? event.burst : gate.current(slice.t);
-    if (!burst) { goOn(); return; }
-    const decision = bargeDecision(burst, event?.type === 'end', printRef.current, slice.t - ducked.at);
-    if (decision === 'wait') return;
-    if (decision === 'resume') { goOn(); return; }
+    if (!burst) return;
+    const decision = bargeDecision(burst, event?.type === 'end', printRef.current, slice.t - candidate.since);
     if (decision === 'ignore') {
       otherVoiceRef.current = event?.type !== 'end';
       setIgnoredVoices((count) => count + 1);
-      goOn();
+      dropCandidate();
       return;
     }
-    // The visitor is talking: what the interruption listener already caught of his words is kept.
-    const check = bargeIn(watchHeardRef.current, replyTextRef.current);
-    interruptedRef.current = spokenSoFarRef.current;
-    bargePrefixRef.current = check.barge ? check.said : '';
-    setInterim(bargePrefixRef.current);
-    setBargedIn((count) => count + 1);
-    cancelSpeech();
-    setTimeout(() => startListeningRef.current(), 60);
-  }, [cancelSpeech]);
+    // A cough, a knock: no words came with it — nothing to judge.
+    if (decision === 'resume' && !candidate.said) dropCandidate();
+  }, [dropCandidate]);
   useEffect(() => { sliceRef.current = handleSlice; }, [handleSlice]);
 
   /** «بصمتي»: start making the print (after he agreed): the microphone stops listening for questions meanwhile. */
@@ -1017,7 +1232,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setReplyReady(false);
     setInterim('');
     // «شاهين بيتكلم مش بيقرا»: the reply said the way people talk, and a long one only up to «تحب أكمّلك الباقي؟».
-    const spoken = spokenReply(response.text, { language: languageRef.current, dialect: dialectRef.current });
+    // A whole answer (about 90 words) before «تحب أكمّلك الباقي؟» — a shorter cut felt like he stopped mid-answer.
+    const spoken = spokenReply(response.text, { language: languageRef.current, dialect: dialectRef.current, words: 90 });
     restRef.current = spoken.rest;
     speakReply(spoken.say || response.text, () => scheduleListening(350));
   }, [active, clearPendingTurn, isLoading, messages, replyReady, scheduleListening, speakReply, waiting]);

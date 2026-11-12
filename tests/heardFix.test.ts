@@ -213,3 +213,9 @@ test('«لا، فيتيفر» that sounds like what was heard is learned as his 
   const learned = planVoiceTurn('no, vetiver', { language: 'en', pending: { ...asked.pending, to: 'vanilla', corrected: 'I want a perfume with vanilla' } });
   assert.equal(learned.action === 'send' && learned.heard.at(-1)?.confirmed, true);
 });
+
+test('a known word with its usual beginning or ending is never asked about («وثباته»، «حلوة»، «عطوره»)', () => {
+  for (const said of ['انا عايز عطر يكون هادي للشغل وثباته عالي', 'ريحته حلوة وثباتها عالي', 'عطوره حلوة']) {
+    assert.deepEqual(planVoiceTurn(said, { language: 'ar' }), { action: 'send', text: said, heard: [] }, said);
+  }
+});
