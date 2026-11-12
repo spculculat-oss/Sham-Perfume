@@ -3,6 +3,9 @@ import type { SupportedLanguage } from '../types/i18n';
 import { bargeIn, mergeHeard, pickShaheenVoice, shaheenSpeechLocale, splitShaheenSpeech } from '../utils/shaheenVoice';
 import { dialectLocale, resolveDialect, saveDialectChoice, savedDialectChoice, type Dialect, type DialectChoice } from '../utils/arabicDialect';
 import { currentStoreCountry } from '../utils/storeCheckout';
+import { learnablePair, planVoiceTurn, readingsFrom, type PendingConfirm } from '../utils/heardFix';
+import { baseLexicon, buildLexicon, type Lexicon } from '../utils/shaheenSpelling';
+import { isStaticHosting, requestApi } from '../utils/api';
 
 export interface ShaheenVoiceMessage {
   id: string;
@@ -14,6 +17,41 @@ export interface ShaheenVoiceMessage {
 /** What a spoken turn tells the server: what Shaheen had said when the visitor cut in (if he did). */
 export interface ShaheenVoiceTurn {
   interrupted?: string;
+  /** «شاهين يصحح اللي اتسمع غلط»: words heard as others and read as the word meant (`confirmed` = he said yes). */
+  heard?: { from: string; to: string; confirmed?: boolean }[];
+}
+
+const HEARD_KEY = 'sham_heard_fixes_v1';
+/** The words this visitor confirmed («قصدك «عود»؟» → «أيوه»): heard word → meant word, kept in this browser. */
+function savedHeardFixes(): Record<string, string> {
+  try {
+    const data: unknown = JSON.parse(window.localStorage.getItem(HEARD_KEY) || '{}');
+    if (!data || typeof data !== 'object' || Array.isArray(data)) return {};
+    return Object.fromEntries(Object.entries(data as Record<string, unknown>).filter((pair): pair is [string, string] => typeof pair[1] === 'string').slice(-200));
+  } catch { return {}; }
+}
+function saveHeardFix(from: string, to: string) {
+  const pair = learnablePair(from, to);
+  if (!pair) return;
+  try { window.localStorage.setItem(HEARD_KEY, JSON.stringify({ ...savedHeardFixes(), [pair.from]: pair.to })); } catch { /* Private mode. */ }
+}
+
+/**
+ * The words he compares what he heard with: the perfume dictionary + the store's product names and notes, and the
+ * corrections visitors confirmed (shared by the server once several people confirmed the same one). Loaded once,
+ * in the background, when the voice conversation starts; until then the built-in words are used.
+ */
+let voiceWords: Promise<{ lexicon: Lexicon; shared: Record<string, string> }> | undefined;
+function loadVoiceWords() {
+  voiceWords ??= Promise.all([
+    import('../utils/liveStore').then((store) => store.storeProducts()).then((products) => products.flatMap((product) => [
+      product.nameAr || '', product.nameEn || '', product.brand || '',
+      ...(product.notes ? [...(product.notes.top || []), ...(product.notes.heart || []), ...(product.notes.base || [])] : []),
+    ]).filter(Boolean)).catch(() => [] as string[]),
+    isStaticHosting ? Promise.resolve({}) : requestApi<{ fixes?: Record<string, string> }>('/api/heard-fixes', undefined, 8000).then((data) => data?.fixes || {}).catch(() => ({})),
+  ]).then(([names, shared]) => ({ lexicon: names.length ? buildLexicon({ extra: names }) : baseLexicon(), shared: shared as Record<string, string> }));
+  voiceWords.catch(() => { voiceWords = undefined; });
+  return voiceWords;
 }
 
 const BARGE_KEY = 'sham_voice_barge_v1';
@@ -80,6 +118,8 @@ export interface UseShaheenVoiceModeOptions {
   isLoading: boolean;
   disabled?: boolean;
   onSend: (text: string, turn?: ShaheenVoiceTurn) => Promise<boolean | void>;
+  /** «قصدك «عود»؟»: what he heard and the question he asked about it, shown in the chat (nothing is sent yet). */
+  onAsk?: (heard: string, question: string) => void;
 }
 
 function recognitionConstructor(): SpeechRecognitionConstructor | undefined {
@@ -102,7 +142,7 @@ export function shaheenVoiceSupported(): boolean {
     && typeof window.SpeechSynthesisUtterance !== 'undefined';
 }
 
-export function useShaheenVoiceMode({ language, messages, isLoading, disabled = false, onSend }: UseShaheenVoiceModeOptions) {
+export function useShaheenVoiceMode({ language, messages, isLoading, disabled = false, onSend, onAsk }: UseShaheenVoiceModeOptions) {
   const [supported, setSupported] = useState(false);
   const [active, setActive] = useState(false);
   const [listening, setListening] = useState(false);
@@ -148,6 +188,14 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const interruptedRef = useRef('');
   const replyTextRef = useRef('');
   const spokenSoFarRef = useRef('');
+  const onAskRef = useRef(onAsk);
+  // «شاهين يصحح اللي اتسمع غلط»: the engine's other readings of the last sentence, the question he is waiting on,
+  // the words he compares with, and the dialect for his short lines.
+  const alternativesRef = useRef<string[]>([]);
+  const confirmRef = useRef<PendingConfirm | null>(null);
+  const lexiconRef = useRef<Lexicon | undefined>(undefined);
+  const sharedFixesRef = useRef<Record<string, string>>({});
+  const dialectRef = useRef<Dialect | undefined>(undefined);
 
   // Browser APIs are checked after mount so this hook remains safe during server rendering.
   useEffect(() => {
@@ -163,6 +211,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     const said = messages.filter((message) => message.role === 'user').slice(-4).reverse().map((message) => message.text);
     return resolveDialect({ choice: dialectChoice, texts: said, country: currentStoreCountry() });
   }, [dialectChoice, language, messages]);
+  useEffect(() => { dialectRef.current = dialect; }, [dialect]);
   useEffect(() => {
     localeRef.current = dialect ? dialectLocale(dialect, currentStoreCountry()) : shaheenSpeechLocale(language);
   }, [dialect, language]);
@@ -180,6 +229,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   useEffect(() => { languageRef.current = language; }, [language]);
   useEffect(() => { messagesRef.current = messages; }, [messages]);
   useEffect(() => { onSendRef.current = onSend; }, [onSend]);
+  useEffect(() => { onAskRef.current = onAsk; }, [onAsk]);
 
   const clearListenTimer = useCallback(() => {
     if (listenTimerRef.current !== null) {
@@ -248,6 +298,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setMuted(false);
     bargePrefixRef.current = '';
     interruptedRef.current = '';
+    confirmRef.current = null;
     setError(null);
   }, [cancelRecognition, cancelSpeech, clearListenTimer, clearPendingTurn]);
 
@@ -391,6 +442,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     clearListenTimer();
     cancelRecognition();
     cancelSpeech();
+    // A typed message (or the answer itself) ends a «قصدك …؟» question.
+    confirmRef.current = null;
     pendingTurnRef.current = {
       previousUserId: latestMessageId(messagesRef.current, 'user'),
       previousAssistantId: latestMessageId(messagesRef.current, 'assistant'),
@@ -412,21 +465,65 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setReplyReady(true);
   }, [clearPendingTurn, scheduleListening]);
 
+  /**
+   * «استنى شوية هدخل أشوف البيانات»: one short line said while he really looks something up (the store, prices,
+   * stock, delivery…). Not a reply: the reply cuts it off as soon as it is ready.
+   */
+  const sayWhileLooking = useCallback((line: string) => {
+    if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
+    try {
+      const utterance = new window.SpeechSynthesisUtterance(line);
+      utterance.lang = localeRef.current;
+      utterance.rate = 1;
+      let voices = voicesRef.current;
+      if (!voices.length) { try { voices = window.speechSynthesis.getVoices(); } catch { voices = []; } }
+      const voice = pickShaheenVoice(voices, localeRef.current, languageRef.current);
+      if (voice) utterance.voice = voice;
+      setSpokenText(line);
+      utterance.onend = () => setSpokenText((now) => (now === line ? '' : now));
+      window.speechSynthesis.speak(utterance);
+    } catch { /* Silence is fine: the chat shows the same line. */ }
+  }, []);
+
   const sendRecognizedText = useCallback(async (rawText: string) => {
-    const text = rawText.replace(/\s+/g, ' ').trim();
-    if (!text || !activeRef.current) {
+    const said = rawText.replace(/\s+/g, ' ').trim();
+    const alternatives = alternativesRef.current;
+    alternativesRef.current = [];
+    if (!said || !activeRef.current) {
       scheduleListening();
       return;
     }
-    if (text.length > 4000) {
+    if (said.length > 4000) {
       setError('too_long');
       scheduleListening();
       return;
     }
+    // «شاهين يصحح اللي اتسمع غلط»: the sentence is read again before anything is sent — the engine's readings
+    // compared, a word that makes no sense replaced by the closest one that does, and an unsure perfume word asked.
+    const plan = planVoiceTurn(said, {
+      pending: confirmRef.current, alternatives, learned: { ...sharedFixesRef.current, ...savedHeardFixes() },
+      lexicon: lexiconRef.current, language: languageRef.current, dialect: dialectRef.current,
+    });
+    if (plan.action === 'ask') {
+      clearListenTimer();
+      cancelRecognition();
+      confirmRef.current = plan.pending;
+      setLastHeard(said);
+      setInterim('');
+      onAskRef.current?.(said, plan.say);
+      speakReply(plan.say, () => scheduleListening(350));
+      return;
+    }
     const started = beginOutgoingTurn();
     if (!started) return;
+    for (const fix of plan.heard) if (fix.confirmed) saveHeardFix(fix.from, fix.to);
+    const text = plan.text;
     setLastHeard(text);
-    const turn: ShaheenVoiceTurn = interruptedRef.current ? { interrupted: interruptedRef.current } : {};
+    if (plan.filler) sayWhileLooking(plan.filler);
+    const turn: ShaheenVoiceTurn = {
+      ...(interruptedRef.current ? { interrupted: interruptedRef.current } : {}),
+      ...(plan.heard.length ? { heard: plan.heard } : {}),
+    };
     interruptedRef.current = '';
     try {
       const accepted = await onSendRef.current(text, turn);
@@ -434,7 +531,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     } catch {
       finishOutgoingTurn(false);
     }
-  }, [beginOutgoingTurn, finishOutgoingTurn, scheduleListening]);
+  }, [beginOutgoingTurn, cancelRecognition, clearListenTimer, finishOutgoingTurn, sayWhileLooking, scheduleListening, speakReply]);
 
   const startListening = useCallback(() => {
     if (!activeRef.current || mutedRef.current || disabledRef.current || loadingRef.current || waitingRef.current || speakingRef.current || recognitionRef.current) return;
@@ -453,7 +550,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     recognition.lang = localeRef.current;
     recognition.continuous = false;
     recognition.interimResults = true;
-    recognition.maxAlternatives = 1;
+    // A few readings of each sentence: when the first one makes no sense, another one may.
+    recognition.maxAlternatives = 4;
     recognition.onstart = () => {
       listeningRef.current = true;
       setListening(true);
@@ -464,12 +562,18 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       setError(null);
       finalText = '';
       interimText = '';
+      const parts: string[][] = [];
       for (let index = 0; index < event.results.length; index += 1) {
         const result = event.results[index];
         const transcript = result?.[0]?.transcript || '';
         if (result?.isFinal) finalText += ` ${transcript}`;
         else interimText += ` ${transcript}`;
+        const readings: string[] = [];
+        for (let k = 0; k < (result?.length || 0) && k < 4; k += 1) readings.push(result?.[k]?.transcript || '');
+        parts.push(readings);
       }
+      // The other readings, as whole sentences (with what the interruption listener heard first, if anything).
+      alternativesRef.current = readingsFrom(parts).slice(1).map((reading) => mergeHeard(bargePrefixRef.current, reading));
       setInterim(mergeHeard(bargePrefixRef.current, (finalText || interimText).replace(/\s+/g, ' ').trim()));
     };
     recognition.onerror = (event) => {
@@ -525,6 +629,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setMuted(false);
     setInterim('');
     setLastHeard('');
+    confirmRef.current = null;
+    void loadVoiceWords().then(({ lexicon, shared }) => { lexiconRef.current = lexicon; sharedFixesRef.current = shared; }).catch(() => undefined);
     // This runs from the user's confirmation click, which is required by browser microphone permission.
     startListeningRef.current();
     return true;

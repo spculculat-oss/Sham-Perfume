@@ -331,6 +331,8 @@ export interface Collections {
   visitors: VisitorProfile;
   /** «ذاكرة شاهين»: answers Shaheen gave, reused for repeated questions and when no AI engine answers. */
   memory: MemoryEntry;
+  /** «شاهين يصحح اللي اتسمع غلط»: heard word → meant word, counted each time a visitor confirmed it (no visitor id). */
+  heardFixes: { id: string; from: string; to: string; hits: number; at: string };
   /** «منارة شاهين»: SEO/media agent state and learning history (one record: id 'state'). */
   seo: SeoState;
   /** «روبوت التعداد — دولة المنصة»: aggregated, privacy-safe platform visit ledger (one record: id 'state'). */

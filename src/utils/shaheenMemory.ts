@@ -27,6 +27,13 @@ export interface MemoryEntry {
    * harvest = «حصّاد شاهين»: answered ahead of time (visitors' questions and everyday ones) while a package had room.
    */
   source: 'chat' | 'probe' | 'seed' | 'study' | 'harvest';
+  /**
+   * «شاهين بيتعلم من المنصات»: how the answer was said — the Arabic dialect a connected AI platform answered in
+   * (Egyptian when absent) and whether it was a spoken reply (short, natural, for the voice conversation). When the
+   * platforms are down he answers a visitor of that dialect, by voice, with the closest answer said the same way.
+   */
+  dialect?: string;
+  spoken?: boolean;
 }
 export interface MemoryFile { version: 1; updatedAt: string; entries: MemoryEntry[] }
 
@@ -144,26 +151,41 @@ export function recall(file: MemoryFile | undefined, question: string, lang: str
 }
 
 /** When no engine answers: the closest question Shaheen answered before (any style), if close enough. */
-export function recallSimilar(file: MemoryFile | undefined, question: string, lang: string, threshold = MEMORY_LIMITS.offlineSimilarity): { entry: MemoryEntry; score: number } | undefined {
+export interface RecallPreference { dialect?: string; spoken?: boolean }
+/** How well an entry was said for this visitor: the same dialect, and a spoken reply for a spoken turn. */
+const saidFit = (entry: MemoryEntry, prefer?: RecallPreference) => !prefer ? 0
+  : ((entry.dialect || 'egyptian') === (prefer.dialect || 'egyptian') ? 0.04 : 0) + (prefer.spoken && entry.spoken ? 0.02 : 0);
+
+export function recallSimilar(file: MemoryFile | undefined, question: string, lang: string, threshold = MEMORY_LIMITS.offlineSimilarity,
+  prefer?: RecallPreference): { entry: MemoryEntry; score: number } | undefined {
   if (!file || isPersonal(question)) return undefined;
   const norm = normalizeQuestion(question);
-  let best: { entry: MemoryEntry; score: number } | undefined;
+  let best: { entry: MemoryEntry; score: number; rank: number } | undefined;
   for (const entry of file.entries) {
     if (entry.lang !== lang) continue;
     const score = normalizeQuestion(entry.question) === norm ? 1 : similarity(question, entry.question);
-    if (score >= threshold && (!best || score > best.score || (score === best.score && entry.hits > best.entry.hits))) best = { entry, score };
+    if (score < threshold) continue;
+    // The meaning decides whether it is close enough; how it was said only breaks near-ties (a visitor from the Gulf
+    // gets the answer a platform gave in Gulf Arabic before the Egyptian one, never a worse answer).
+    const rank = score + saidFit(entry, prefer);
+    if (!best || rank > best.rank || (rank === best.rank && entry.hits > best.entry.hits)) best = { entry, score, rank };
   }
-  return best;
+  return best && { entry: best.entry, score: best.score };
 }
 
 /** Adds (or refreshes) an answer; an answer that is not worth remembering is ignored. Returns whether it was kept. */
-export function remember(file: MemoryFile, input: { question: string; lang: string; mode: string; answer: string; source?: MemoryEntry['source'] }, now = new Date()): boolean {
+export function remember(file: MemoryFile, input: { question: string; lang: string; mode: string; answer: string; source?: MemoryEntry['source']; dialect?: string; spoken?: boolean }, now = new Date()): boolean {
   if (input.mode === 'council' || !worthRemembering(input.question, input.answer)) return false;
   const id = memoryId(input.question, input.lang, input.mode);
   const at = now.toISOString();
   const old = file.entries.find((e) => e.id === id);
-  if (old) Object.assign(old, { answer: input.answer.trim(), at, question: input.question.trim(), source: old.source === 'chat' ? 'chat' : input.source || old.source });
-  else file.entries.push({ id, question: input.question.trim(), lang: input.lang, style: memoryStyle(input.mode), answer: input.answer.trim(), at, hits: 0, source: input.source || 'chat' });
+  // Egyptian / written is the default and is not stored, so old files and new ones read the same.
+  const said = { ...(input.dialect && input.dialect !== 'egyptian' ? { dialect: input.dialect } : {}), ...(input.spoken ? { spoken: true } : {}) };
+  if (old) {
+    Object.assign(old, { answer: input.answer.trim(), at, question: input.question.trim(), source: old.source === 'chat' ? 'chat' : input.source || old.source });
+    delete old.dialect; delete old.spoken;
+    Object.assign(old, said);
+  } else file.entries.push({ id, question: input.question.trim(), lang: input.lang, style: memoryStyle(input.mode), answer: input.answer.trim(), at, hits: 0, source: input.source || 'chat', ...said });
   file.updatedAt = at;
   return true;
 }
