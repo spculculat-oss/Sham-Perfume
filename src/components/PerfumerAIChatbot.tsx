@@ -33,7 +33,7 @@ import { extractFormulaFromAIMessage, extractFormulasFromAIMessage, isFormulaTra
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
-import { useShaheenVoiceMode } from '../hooks/useShaheenVoiceMode';
+import { useShaheenVoiceMode, type ShaheenVoiceTurn } from '../hooks/useShaheenVoiceMode';
 import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
 import { ShaheenServiceStatus, ShaheenModesPanel, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
@@ -871,7 +871,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const [input, setInput] = useState('');
   const [compoundingStep, setCompoundingStep] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const voiceSendRef = useRef<(text: string) => Promise<boolean>>(async () => false);
+  const voiceSendRef = useRef<(text: string, turn?: ShaheenVoiceTurn) => Promise<boolean>>(async () => false);
   const voiceMessages = useMemo(() => messages.map((message) => ({
     id: message.id,
     role: message.role,
@@ -883,7 +883,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     messages: voiceMessages,
     isLoading,
     disabled: hidden || isStaticHosting || !isOpen,
-    onSend: (text) => voiceSendRef.current(text),
+    onSend: (text, turn) => voiceSendRef.current(text, turn),
   });
   const closeChat = useCallback(() => {
     voice.stop();
@@ -944,6 +944,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     textToSend?: string,
     overrideModel?: ShaheenModelChoice,
     fromVoice = false,
+    voiceTurnInfo?: ShaheenVoiceTurn,
   ): Promise<boolean> => {
     const text = (textToSend || input).trim();
     if (!text || isLoading || isStaticHosting) return false;
@@ -972,7 +973,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     const voiceTurn = !fromVoice && voice.beginOutgoingTurn();
     try {
       const sent = await sendMessage({ text, model: activeModelChoice, language: currentLang,
-        errorText: (error) => chatErrorText(currentLang, error) });
+        errorText: (error) => chatErrorText(currentLang, error), ...(fromVoice ? { voice: voiceTurnInfo || {} } : {}) });
       if (voiceTurn) voice.finishOutgoingTurn(sent !== false);
       return sent !== false;
     } catch {
@@ -980,7 +981,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
       return false;
     }
   };
-  voiceSendRef.current = (text) => handleSendMessage(text, undefined, true);
+  voiceSendRef.current = (text, turn) => handleSendMessage(text, undefined, true, turn);
 
   // Always use the current history/language/loading state when a calculator asks Shahin.
   useEffect(() => {

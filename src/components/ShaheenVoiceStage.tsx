@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { Keyboard, Mic, MicOff, X } from 'lucide-react';
+import { Ear, EarOff, Keyboard, Languages, Mic, MicOff, X } from 'lucide-react';
+import { DIALECT_INFO, DIALECTS, isDialectChoice } from '../utils/arabicDialect';
 import type { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
 import { makeT, type LText } from '../لغات/localize';
@@ -14,6 +15,12 @@ const COPY = {
   speak_now: { ar: 'اتكلم براحتك، وأول ما تسكت هبعت كلامك.', en: 'Speak naturally — I’ll send it when you pause.', fr: 'Parlez naturellement, j’envoie dès que vous faites une pause.', es: 'Habla con calma; lo envío cuando hagas una pausa.', it: 'Parla con calma: invio quando fai una pausa.', de: 'Sprich ganz normal – ich sende, sobald du eine Pause machst.', ru: 'Говорите спокойно — отправлю, когда вы замолчите.', zh: '请自然地说话，停顿后我会发送。', tr: 'Rahatça konuş; durduğunda gönderirim.', fa: 'راحت صحبت کنید؛ وقتی مکث کنید می‌فرستم.' },
   thinking: { ar: 'شاهين بيفكّر…', en: 'Shaheen is thinking…', fr: 'Shaheen réfléchit…', es: 'Shaheen está pensando…', it: 'Shaheen sta pensando…', de: 'Shaheen denkt nach…', ru: 'Шахин думает…', zh: 'Shaheen 正在思考…', tr: 'Shaheen düşünüyor…', fa: 'شاهین در حال فکر کردن است…' },
   speaking: { ar: 'شاهين بيتكلم', en: 'Shaheen is speaking', fr: 'Shaheen parle', es: 'Shaheen está hablando', it: 'Shaheen sta parlando', de: 'Shaheen spricht', ru: 'Шахин говорит', zh: 'Shaheen 正在说话', tr: 'Shaheen konuşuyor', fa: 'شاهین صحبت می‌کند' },
+  barge_hint: { ar: 'اتكلم في أي وقت عشان تقاطعه، أو اضغط عليه', en: 'Just start talking to interrupt, or tap Shaheen', fr: 'Parlez à tout moment pour l’interrompre, ou touchez Shaheen', es: 'Habla cuando quieras para interrumpir, o toca a Shaheen', it: 'Parla quando vuoi per interromperlo, o tocca Shaheen', de: 'Sprich einfach los, um zu unterbrechen, oder tippe auf Shaheen', ru: 'Просто начните говорить, чтобы перебить, или нажмите на Шахина', zh: '随时开口即可打断，或点按 Shaheen', tr: 'Sözünü kesmek için konuşmaya başla ya da Shaheen’e dokun', fa: 'هر وقت خواستید حرف بزنید تا قطع شود، یا روی شاهین بزنید' },
+  barge_on: { ar: 'المقاطعة بالصوت شغالة', en: 'Voice interruption on', fr: 'Interruption vocale activée', es: 'Interrupción por voz activada', it: 'Interruzione vocale attiva', de: 'Unterbrechen per Stimme an', ru: 'Перебивать голосом: вкл.', zh: '语音打断：开', tr: 'Sesle araya girme açık', fa: 'قطع با صدا روشن' },
+  barge_off: { ar: 'المقاطعة بالصوت مقفولة', en: 'Voice interruption off', fr: 'Interruption vocale désactivée', es: 'Interrupción por voz desactivada', it: 'Interruzione vocale disattivata', de: 'Unterbrechen per Stimme aus', ru: 'Перебивать голосом: выкл.', zh: '语音打断：关', tr: 'Sesle araya girme kapalı', fa: 'قطع با صدا خاموش' },
+  barge_tip: { ar: 'لو شاهين بيقف لوحده من صوته هو، اقفلها أو استخدم سماعة أذن.', en: 'If Shaheen stops on his own voice, turn this off or use earphones.', fr: 'Si Shaheen s’arrête à cause de sa propre voix, désactivez ou utilisez des écouteurs.', es: 'Si Shaheen se detiene por su propia voz, desactívalo o usa auriculares.', it: 'Se Shaheen si ferma per la sua stessa voce, disattiva o usa gli auricolari.', de: 'Wenn Shaheen bei seiner eigenen Stimme stoppt, schalte es aus oder nutze Kopfhörer.', ru: 'Если Шахин останавливается от собственного голоса, выключите это или наденьте наушники.', zh: '如果 Shaheen 被自己的声音打断，请关闭此项或使用耳机。', tr: 'Shaheen kendi sesiyle duruyorsa bunu kapat veya kulaklık kullan.', fa: 'اگر شاهین با صدای خودش متوقف می‌شود، این را خاموش کنید یا از هدفون استفاده کنید.' },
+  dialect: { ar: 'اللهجة', en: 'Dialect', fr: 'Dialecte', es: 'Dialecto', it: 'Dialetto', de: 'Dialekt', ru: 'Диалект', zh: '方言', tr: 'Lehçe', fa: 'لهجه' },
+  dialect_auto: { ar: 'تلقائي', en: 'Automatic', fr: 'Automatique', es: 'Automático', it: 'Automatico', de: 'Automatisch', ru: 'Авто', zh: '自动', tr: 'Otomatik', fa: 'خودکار' },
   interrupt_hint: { ar: 'اضغط على شاهين عشان تقاطعه وتتكلم', en: 'Tap Shaheen to interrupt and speak', fr: 'Touchez Shaheen pour l’interrompre et parler', es: 'Toca a Shaheen para interrumpir y hablar', it: 'Tocca Shaheen per interromperlo e parlare', de: 'Tippe auf Shaheen, um zu unterbrechen und zu sprechen', ru: 'Нажмите на Шахина, чтобы перебить и говорить', zh: '点按 Shaheen 即可打断并开始说话', tr: 'Sözünü kesip konuşmak için Shaheen’e dokun', fa: 'برای قطع کردن و صحبت، روی شاهین بزنید' },
   muted: { ar: 'الميكروفون مقفول', en: 'Microphone muted', fr: 'Micro coupé', es: 'Micrófono silenciado', it: 'Microfono disattivato', de: 'Mikrofon stumm', ru: 'Микрофон выключен', zh: '麦克风已静音', tr: 'Mikrofon kapalı', fa: 'میکروفون خاموش است' },
   muted_hint: { ar: 'اضغط على الميكروفون أو على شاهين عشان تكمّل الكلام.', en: 'Tap the microphone or Shaheen to keep talking.', fr: 'Touchez le micro ou Shaheen pour reprendre.', es: 'Toca el micrófono o a Shaheen para seguir hablando.', it: 'Tocca il microfono o Shaheen per continuare.', de: 'Tippe auf das Mikrofon oder Shaheen, um weiterzusprechen.', ru: 'Нажмите на микрофон или Шахина, чтобы продолжить.', zh: '点按麦克风或 Shaheen 继续对话。', tr: 'Devam etmek için mikrofona veya Shaheen’e dokun.', fa: 'برای ادامه روی میکروفون یا شاهین بزنید.' },
@@ -108,6 +115,7 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
   const energy = useRef(0);
   useEffect(() => { energy.current = Math.max(energy.current, 0.85); }, [voice.speechBeat]);
   useEffect(() => { if (voice.interim) energy.current = Math.max(energy.current, 0.55); }, [voice.interim]);
+  useEffect(() => { if (voice.bargedIn) energy.current = 1; }, [voice.bargedIn]);
 
   useEffect(() => {
     const node = stageRef.current;
@@ -210,11 +218,38 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
 
         <div className="min-h-[5.5rem] w-full max-w-xl text-center" aria-live="polite">
           {caption && <div className="sham-voice-caption line-clamp-4 break-words">{caption}</div>}
-          {phase === 'speaking' && <p className="mt-3 text-xs text-amber-200/70">{L('interrupt_hint')}</p>}
+          {phase === 'speaking' && <p className="mt-3 text-xs text-amber-200/70">{voice.bargeEnabled ? L('barge_hint') : L('interrupt_hint')}</p>}
         </div>
       </div>
 
       <footer className="relative flex w-full max-w-xl flex-col items-center gap-4">
+        <div className="flex flex-wrap items-center justify-center gap-2 text-xs">
+          {voice.dialect && (
+            <label className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 py-1 pe-1 ps-3 text-stone-200 backdrop-blur">
+              <Languages className="h-3.5 w-3.5 text-amber-200" aria-hidden="true" />
+              <span>{L('dialect')}</span>
+              <select
+                value={voice.dialectChoice}
+                onChange={(event) => { if (isDialectChoice(event.target.value)) voice.setDialectChoice(event.target.value); }}
+                className="rounded-full border-0 bg-white/10 px-2 py-1 text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 [&>option]:text-stone-900"
+                aria-label={L('dialect')}
+              >
+                <option value="auto">{`${L('dialect_auto')} (${DIALECT_INFO[voice.dialect].ar})`}</option>
+                {DIALECTS.map((code) => <option key={code} value={code}>{DIALECT_INFO[code].ar}</option>)}
+              </select>
+            </label>
+          )}
+          <button
+            type="button"
+            onClick={() => voice.setBargeEnabled(!voice.bargeEnabled)}
+            aria-pressed={voice.bargeEnabled}
+            title={L('barge_tip')}
+            className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 backdrop-blur transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 ${voice.bargeEnabled ? 'border-amber-300/40 bg-amber-300/10 text-amber-100' : 'border-white/15 bg-white/5 text-stone-400'}`}
+          >
+            {voice.bargeEnabled ? <Ear className="h-3.5 w-3.5" aria-hidden="true" /> : <EarOff className="h-3.5 w-3.5" aria-hidden="true" />}
+            {voice.bargeEnabled ? L('barge_on') : L('barge_off')}
+          </button>
+        </div>
         <div className="flex items-center justify-center gap-5">
           <button type="button" onClick={voice.stop} className="grid h-14 w-14 place-items-center rounded-full bg-white/10 text-stone-100 backdrop-blur transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300" aria-label={L('type')} title={L('type')}>
             <Keyboard className="h-6 w-6" aria-hidden="true" />

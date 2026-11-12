@@ -12,6 +12,7 @@ import { isSourcesFollowUp, requestedSourcesReply } from './chatSources';
 import { offlineNote } from './shaheenMemory';
 import { keyboardFix, understoodNote } from './shaheenSpelling';
 import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } from './api';
+import { savedDialectChoice } from './arabicDialect';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
   loadStoredChatSession, saveChatSession, type ChatMessage, type ShaheenProvider } from './chatStorage';
 
@@ -49,6 +50,8 @@ const wait = (ms: number, signal: AbortSignal) => new Promise<void>((resolve, re
 interface SendOptions {
   text: string; model: ShaheenModelChoice; language: SupportedLanguage;
   errorText: (error: unknown) => string;
+  /** «التحدث مع شاهين»: a spoken turn (the reply is read aloud); `interrupted` = what he had said when cut off. */
+  voice?: { interrupted?: string };
 }
 
 /**
@@ -267,11 +270,15 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       // «دولة الدخول قبل الرد»: the page's country and currency travel too; the server checks where he is entering
       // from and writes the reply's prices in that country's currency (and tells us which country it was).
       const money = chatMoney(options.language);
+      // «لهجات شاهين»: his own dialect pick ('auto' = the server reads it from his words and his country), and
+      // whether this turn is spoken.
+      const talk = { ...(options.language === 'ar' ? { dialect: savedDialectChoice() } : {}),
+        ...(options.voice ? { voice: options.voice.interrupted ? { interrupted: options.voice.interrupted.slice(-1500) } : {} } : {}) };
       try {
         // The anonymous visitor id travels in the body, not in a custom header: a custom header needs CORS approval,
         // and a server one deploy behind would then block every question from the GitHub Pages site.
         const body = JSON.stringify({ message: brainText, model: options.model, language: options.language,
-          conversationHistory: history, visitorId: visitorId(), ...money });
+          conversationHistory: history, visitorId: visitorId(), ...money, ...talk });
         let data: ChatResponse | undefined;
         for (let attempt = 0; ; attempt++) {
           try {
@@ -305,7 +312,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
           try {
             const fast = await request<ChatResponse>('/api/chat', {
               method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
-              body: JSON.stringify({ message: brainText, model: 'fast', language: options.language, conversationHistory: history, visitorId: visitorId(), ...money }),
+              body: JSON.stringify({ message: brainText, model: 'fast', language: options.language, conversationHistory: history, visitorId: visitorId(), ...money, ...talk }),
             }, 30_000);
             if (generation !== token) return false;
             followEntryCountry(fast?.country);

@@ -44,7 +44,7 @@ import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd }
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
-import { useShaheenVoiceMode } from '../hooks/useShaheenVoiceMode';
+import { useShaheenVoiceMode, type ShaheenVoiceTurn } from '../hooks/useShaheenVoiceMode';
 import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
 import { copyChatText } from '../utils/clipboard';
 import { prepareShaheenSpeech } from '../utils/shaheenVoice';
@@ -286,7 +286,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const [dripping, setDripping] = useState(false);
   const [compoundingStep, setCompoundingStep] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const voiceSendRef = useRef<(text: string) => Promise<boolean>>(async () => false);
+  const voiceSendRef = useRef<(text: string, turn?: ShaheenVoiceTurn) => Promise<boolean>>(async () => false);
   const voiceMessages = useMemo(() => messages.map((message) => ({
     id: message.id,
     role: message.role,
@@ -298,7 +298,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     messages: voiceMessages,
     isLoading,
     disabled: isStaticHosting,
-    onSend: (text) => voiceSendRef.current(text),
+    onSend: (text, turn) => voiceSendRef.current(text, turn),
   });
 
   // Multi-AI Model Orchestrator State
@@ -365,7 +365,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     L('comp_4'),
   ];
 
-  const handleSend = async (customText?: string, overrideModel?: ShaheenModelChoice, fromVoice = false): Promise<boolean> => {
+  const handleSend = async (customText?: string, overrideModel?: ShaheenModelChoice, fromVoice = false, voiceTurnInfo?: ShaheenVoiceTurn): Promise<boolean> => {
     const text = (customText || input).trim();
     if (!text || text.length > 4000 || isLoading || isStaticHosting) return false;
     // Only an explicit transfer command applies an earlier formula (never "…حول تركيبة…").
@@ -381,7 +381,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     const voiceTurn = !fromVoice && voice.beginOutgoingTurn();
     try {
       const sent = await sendMessage({ text, model: overrideModel || selectedModel, language: currentLang,
-        errorText: (error) => chatErrorText(currentLang, error) });
+        errorText: (error) => chatErrorText(currentLang, error), ...(fromVoice ? { voice: voiceTurnInfo || {} } : {}) });
       if (voiceTurn) voice.finishOutgoingTurn(sent !== false);
       return sent !== false;
     } catch {
@@ -389,7 +389,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
       return false;
     }
   };
-  voiceSendRef.current = (text) => handleSend(text, undefined, true);
+  voiceSendRef.current = (text, turn) => handleSend(text, undefined, true, turn);
 
   const handleCopySingle = async (id: string, text: string) => {
     if (!await copyChatText(text)) return;
