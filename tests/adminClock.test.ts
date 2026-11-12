@@ -14,10 +14,11 @@ test('the admin overview clock shows localized Cairo date and time regardless of
 
 test('the overview shortcuts lead to existing robot-help workflows', () => {
   const source = readFileSync(new URL('../src/admin/AdminApp.tsx', import.meta.url), 'utf8');
-  for (const tab of ['agent', 'sandbox', 'shaheen', 'opsmap']) {
+  for (const tab of ['agent', 'sandbox', 'supervisor']) {
     assert.match(source, new RegExp(`tab: '${tab}'`), `missing admin help route to ${tab}`);
   }
   assert.match(source, /onClick=\{\(\) => go\(path\.tab\)\}/);
   assert.match(source, /data-testid="admin-date-time"/);
   assert.match(source, /data-testid="admin-robot-help"/);
+  assert.match(source, /data-testid="admin-clock-robot-link" type="button" onClick=\{\(\) => go\('opsmap'\)\}/);
 });
