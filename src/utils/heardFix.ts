@@ -9,7 +9,7 @@
  * Pure (no DOM, no Node): used by the voice hook in the browser and by tests.
  */
 import type { SupportedLanguage } from '../types/i18n';
-import { baseLexicon, SCENT_WORDS, wordKey, type Lexicon } from './shaheenSpelling';
+import { baseLexicon, SCENT_WORDS, withAffix, wordKey, type Lexicon } from './shaheenSpelling';
 import type { Dialect } from './arabicDialect';
 
 export interface HeardFix { from: string; to: string; sure: boolean }
@@ -124,6 +124,9 @@ export function fixHeard(heard: string, { alternatives = [], learned = {}, lexic
     const article = and ? '' : word.match(ARTICLE)?.[1] || '';
     const own = and ? key.slice(1) : key;
     const learnedWord = learned[own];
+    // «وثباته»، «حلوة»، «عطوره»: a known word with its usual «و/ب/ال…» before or «ه/ها/ة/كم…» after is a real word —
+    // never «corrected» and never asked about (asking about it is how the conversation gets muddled).
+    if (!learnedWord && withAffix(lexicon, key)) return part;
     if (learnedWord) {
       fixes.push({ from: word, to: `${and}${article}${learnedWord}`, sure: true });
       return `${match[1]}${and}${article}${learnedWord}${match[3]}`;
