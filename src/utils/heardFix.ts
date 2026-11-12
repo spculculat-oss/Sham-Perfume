@@ -139,7 +139,7 @@ export function fixHeard(heard: string, { alternatives = [], learned = {}, lexic
 
 /** The visitor's answer to «قصدك …؟»: yes, no, or something else (a new sentence). */
 export function confirmAnswer(text: string): 'yes' | 'no' | undefined {
-  const t = ` ${text.toLowerCase().replace(/[^\p{L}\s]/gu, ' ').replace(/\s+/g, ' ').trim()} `;
+  const t = ` ${text.toLowerCase().replace(/\p{M}/gu, '').replace(/[^\p{L}\s]/gu, ' ').replace(/\s+/g, ' ').trim()} `;
   if (/ (لا|لأ|لاء|لاا|مش كده|مش كدا|مو|مب|لا مش|no|nope|non|nein|нет|hayır|نه) /u.test(t)) return 'no';
   if (/ (ايوه|أيوه|ايوا|أيوة|ايوة|اه|آه|ايه|إيه|اي|إي|نعم|صح|صحيح|بالظبط|بالضبط|اكيد|أكيد|تمام|مظبوط|هو ده|هي دي|يب|yes|yeah|yep|right|exactly|oui|sí|si|ja|да|evet|بله|آره) /u.test(t)) return 'yes';
   return undefined;

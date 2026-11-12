@@ -4,6 +4,7 @@ import { bargeIn, mergeHeard, pickShaheenVoice, shaheenSpeechLocale, splitShahee
 import { dialectLocale, resolveDialect, saveDialectChoice, savedDialectChoice, type Dialect, type DialectChoice } from '../utils/arabicDialect';
 import { currentStoreCountry } from '../utils/storeCheckout';
 import { learnablePair, planVoiceTurn, readingsFrom, type PendingConfirm } from '../utils/heardFix';
+import { spokenReply, wantsMore } from '../utils/spokenReply';
 import { baseLexicon, buildLexicon, type Lexicon } from '../utils/shaheenSpelling';
 import { isStaticHosting, requestApi } from '../utils/api';
 
@@ -196,6 +197,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const lexiconRef = useRef<Lexicon | undefined>(undefined);
   const sharedFixesRef = useRef<Record<string, string>>({});
   const dialectRef = useRef<Dialect | undefined>(undefined);
+  // «تحب أكمّلك الباقي؟»: what he has not said yet of a long reply (already in spoken form).
+  const restRef = useRef('');
 
   // Browser APIs are checked after mount so this hook remains safe during server rendering.
   useEffect(() => {
@@ -299,6 +302,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     bargePrefixRef.current = '';
     interruptedRef.current = '';
     confirmRef.current = null;
+    restRef.current = '';
     setError(null);
   }, [cancelRecognition, cancelSpeech, clearListenTimer, clearPendingTurn]);
 
@@ -442,8 +446,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     clearListenTimer();
     cancelRecognition();
     cancelSpeech();
-    // A typed message (or the answer itself) ends a «قصدك …؟» question.
+    // A typed message (or the answer itself) ends a «قصدك …؟» question and drops the rest of the last reply.
     confirmRef.current = null;
+    restRef.current = '';
     pendingTurnRef.current = {
       previousUserId: latestMessageId(messagesRef.current, 'user'),
       previousAssistantId: latestMessageId(messagesRef.current, 'assistant'),
@@ -496,6 +501,19 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     if (said.length > 4000) {
       setError('too_long');
       scheduleListening();
+      return;
+    }
+    // «أيوه / كمّل» after «تحب أكمّلك الباقي؟»: he goes on from where he stopped (no new question to the server).
+    const more = restRef.current;
+    restRef.current = '';
+    if (more && !confirmRef.current && wantsMore(said)) {
+      clearListenTimer();
+      cancelRecognition();
+      setLastHeard(said);
+      setInterim('');
+      const next = spokenReply(more, { language: languageRef.current, dialect: dialectRef.current });
+      restRef.current = next.rest;
+      speakReply(next.say || more, () => scheduleListening(350));
       return;
     }
     // «شاهين يصحح اللي اتسمع غلط»: the sentence is read again before anything is sent — the engine's readings
@@ -717,7 +735,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setWaiting(false);
     setReplyReady(false);
     setInterim('');
-    speakReply(response.text, () => scheduleListening(350));
+    // «شاهين بيتكلم مش بيقرا»: the reply said the way people talk, and a long one only up to «تحب أكمّلك الباقي؟».
+    const spoken = spokenReply(response.text, { language: languageRef.current, dialect: dialectRef.current });
+    restRef.current = spoken.rest;
+    speakReply(spoken.say || response.text, () => scheduleListening(350));
   }, [active, clearPendingTurn, isLoading, messages, replyReady, scheduleListening, speakReply, waiting]);
 
   useEffect(() => () => {

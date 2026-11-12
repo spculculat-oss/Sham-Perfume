@@ -95,6 +95,27 @@ export class ShaheenMemory {
   }
 
   /**
+   * «شاهين بيتعلم من المنصات»: up to two short spoken replies the platforms gave in this language and dialect — the
+   * most used first — handed to the platforms as examples of how Shaheen talks by voice. Plain talk only (no lists,
+   * links, prices or numbers, so no old fact travels as an example). Kept for 10 minutes per server.
+   */
+  async spokenExamples(lang: string, dialect?: string, count = 2): Promise<string[]> {
+    const key = `${lang}|${dialect || ''}`;
+    const cached = this.examples.get(key);
+    if (cached && cached.at > Date.now() - 10 * 60_000) return cached.list.slice(0, count);
+    const all = await this.all();
+    const list = all.entries
+      .filter((e) => e.spoken && e.lang === lang && (lang !== 'ar' || (e.dialect || 'egyptian') === (dialect || 'egyptian')))
+      .filter((e) => e.answer.length >= 40 && e.answer.length <= 320 && !/[\d٠-٩#*|`\[\]<>]|https?:|^\s*[-•]/m.test(e.answer))
+      .sort((a, b) => b.hits - a.hits || Date.parse(b.at) - Date.parse(a.at))
+      .slice(0, 4)
+      .map((e) => e.answer.replace(/\s+/g, ' ').trim());
+    this.examples.set(key, { at: Date.now(), list });
+    return list.slice(0, count);
+  }
+  private examples = new Map<string, { at: number; list: string[] }>();
+
+  /**
    * «شاهين يصحح اللي اتسمع غلط»: a heard word a visitor CONFIRMED meant another («عوض» → «عود» after «قصدك عود؟»).
    * Only a single word into a word he already knows (never a name, a number or anything personal) is kept, and it is
    * shared with every visitor only after several confirmations (see corrections()).
