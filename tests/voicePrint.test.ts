@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { BAND_CENTRES, ENROL_SENTENCES, enrolPrint, frameFeatures, isVoicePrint, matchScore, pitchOf, samePerson, summarize, type VoiceFrame } from '../src/utils/voicePrint';
+import { adaptPrint, BAND_CENTRES, ENROL_SENTENCES, enrolPrint, frameFeatures, isVoicePrint, matchScore, pitchOf, samePerson, summarize, type VoiceFrame } from '../src/utils/voicePrint';
 
 // Synthetic voices: a pitch with its harmonics, shaped by three formants (where a voice's vowels put their energy).
 const SR = 48000; const N = 2048;
@@ -51,4 +51,18 @@ test('enrolment needs enough voice, and a stored print is checked before use', (
   assert.equal(isVoicePrint(null), false);
   for (const [lang, sentences] of Object.entries(ENROL_SENTENCES)) assert.equal(sentences.length, 3, lang);
   assert.equal(Object.keys(ENROL_SENTENCES).length, 10);
+});
+
+test('the print slowly follows his voice today, and still tells another voice apart', () => {
+  const me = enrolPrint([voice(120, [500, 1500, 2500], 30), voice(125, [520, 1450, 2450], 30, 11)])!;
+  let print = me;
+  // A hoarse evening: a little lower, the same vowels — each sentence that is clearly him moves the print a little.
+  for (let k = 0; k < 8; k += 1) {
+    const now = summarize(voice(108, [490, 1470, 2480], 30, 40 + k))!;
+    assert.equal(samePerson(print, now), 'yes');
+    print = adaptPrint(print, now);
+  }
+  assert.ok(isVoicePrint(print));
+  assert.ok(print.f0 < me.f0 && print.f0 > 108, 'moved towards today, not jumped to it');
+  assert.equal(samePerson(print, summarize(voice(210, [800, 1200, 2800], 30, 29))), 'no', 'another voice is still not him');
 });

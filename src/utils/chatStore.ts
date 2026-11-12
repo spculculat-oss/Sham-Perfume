@@ -11,7 +11,7 @@ import { browserMemory, type OfflineAnswer, type OfflineMemory } from './browser
 import { isSourcesFollowUp, requestedSourcesReply } from './chatSources';
 import { offlineNote } from './shaheenMemory';
 import { understoodNote } from './shaheenSpelling';
-import { meantText, planTypedTurn, typedNote, type TypedPending } from './typedFix';
+import { meantText, planTypedTurn, savedTypedFixes, saveTypedFix, typedNote, type TypedPending } from './typedFix';
 import { heardNote } from './heardFix';
 import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } from './api';
 import { savedDialectChoice } from './arabicDialect';
@@ -239,7 +239,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       let text = typedText; let typedRead = '';
       if (!options.voice) {
         const choice = options.language === 'ar' ? savedDialectChoice() : 'auto';
-        const plan = planTypedTurn(typedText, { pending: typedPending, language: options.language, ...(choice !== 'auto' ? { dialect: choice } : {}) });
+        const plan = planTypedTurn(typedText, { pending: typedPending, language: options.language, learned: savedTypedFixes(), ...(choice !== 'auto' ? { dialect: choice } : {}) });
         typedPending = null;
         if (plan.action === 'ask') {
           typedPending = plan.pending;
@@ -249,6 +249,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
               aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } }] });
           return true;
         }
+        if (plan.learn) saveTypedFix(plan.learn.from, plan.learn.to);
         text = plan.text || typedText;
         if (plan.changed) typedRead = typedNote(options.language, text);
       }

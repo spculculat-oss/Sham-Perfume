@@ -9,7 +9,7 @@
  */
 import type { SupportedLanguage } from '../types/i18n';
 import type { Dialect } from './arabicDialect';
-import { confirmAnswer, confirmQuestion } from './heardFix';
+import { confirmAnswer, confirmQuestion, learnablePair } from './heardFix';
 import { baseLexicon, keyboardFix, SCENT_WORDS, understandQuestion, withAffix, wordKey, type Lexicon } from './shaheenSpelling';
 
 // ── Keys next to each other on the Arabic keyboard: a finger slipping one key over ───────────────────────────────
@@ -60,13 +60,16 @@ function closeEnough(key: string, word: string): number | undefined {
   const distance = typedDistance(key, word);
   return distance <= (key.length <= 6 ? 1.5 : 2) ? distance : undefined;
 }
+/** A word without its long vowels: «ثابت» and «ثبات» (or «زيوت» and «زيت») are one root in two forms, not a slip. */
+export const skeleton = (key: string) => key.replace(/[اويىآأإ]/gu, '');
+
 /** The perfume word a typed word that he does not know may be (only when one is clearly the closest). */
 function maybeScent(lex: Lexicon, raw: string): string | undefined {
   const key = wordKey(raw);
   if (key.length < 3 || lex.words.has(key) || withAffix(lex, key) || DIALECT_VERB.test(key) || /[^\u0600-\u06FF]/u.test(key)) return undefined;
   let best: { word: string; distance: number; weight: number }[] = [];
   for (const word of SCENT_KEYS) {
-    if (Math.abs(word.length - key.length) > 1 || word.length < 3) continue;
+    if (Math.abs(word.length - key.length) > 1 || word.length < 3 || skeleton(word) === skeleton(key)) continue;
     const distance = closeEnough(key, word);
     if (distance === undefined) continue;
     if (!best.length || distance < best[0]!.distance - 1e-9) best = [{ word, distance, weight: lex.words.get(word) || 0 }];
@@ -92,7 +95,7 @@ export interface TypedPending {
 }
 export type TypedPlan =
   | { action: 'ask'; say: string; pending: TypedPending }
-  | { action: 'send'; text: string; changed: boolean };
+  | { action: 'send'; text: string; changed: boolean; learn?: { from: string; to: string } };
 
 const NO_WORDS = /^(لا|لأ|لاء|لاا|مش|كده|كدا|قصدي|قصدى|اقصد|أقصد|انا|أنا|no|nope|i|mean|meant|non)$/iu;
 
@@ -100,13 +103,16 @@ const NO_WORDS = /^(لا|لأ|لاء|لاا|مش|كده|كدا|قصدي|قصدى
  * What to do with a typed message: ask about one unsure perfume word first, or send it with the sure corrections.
  * `pending` = the «قصدك …؟» question he is answering now.
  */
-export function planTypedTurn(typed: string, { pending, language, dialect, lexicon = baseLexicon() }: {
+export function planTypedTurn(typed: string, { pending, language, dialect, lexicon = baseLexicon(), learned = {} }: {
   pending?: TypedPending | null; language: SupportedLanguage; dialect?: Dialect; lexicon?: Lexicon;
+  /** «شاهين بيتعلم منك»: his own slips he confirmed before (typed word key → the word meant), fixed at once. */
+  learned?: Record<string, string>;
 }): TypedPlan {
   const clean = typed.replace(/\s+/g, ' ').trim();
   if (pending) {
     const answer = confirmAnswer(clean);
-    if (answer === 'yes') return { action: 'send', text: pending.corrected, changed: true };
+    // «أيوه»: this slip is his — learned, so next time it is fixed without asking.
+    if (answer === 'yes') return { action: 'send', text: pending.corrected, changed: true, learn: { from: pending.from, to: pending.to } };
     const sent = (text: string): TypedPlan => ({ action: 'send', text, changed: text !== pending.typed });
     if (answer === 'no') {
       // «لا، عنبر»: the word he meant, typed right after the no.
@@ -120,6 +126,16 @@ export function planTypedTurn(typed: string, { pending, language, dialect, lexic
   }
   // Long texts (a pasted formula, a list) and code are left alone.
   if (!clean || clean.length > 600 || /```|https?:\/\//.test(clean)) return { action: 'send', text: clean, changed: false };
+  // His own slips he confirmed before: fixed first (no question this time).
+  const ownFixed = Object.keys(learned).length ? clean.split(' ').map((part) => {
+    const match = part.match(/^([^\p{L}]*)(\p{L}+)([^\p{L}]*)$/u);
+    const meant = match && learned[wordKey(match[2]!)];
+    return match && meant ? `${match[1]}${meant}${match[3]}` : part;
+  }).join(' ') : clean;
+  if (ownFixed !== clean) {
+    const rest = planTypedTurn(ownFixed, { language, ...(dialect ? { dialect } : {}), lexicon });
+    return rest.action === 'send' ? { ...rest, changed: rest.text !== clean } : { ...rest, pending: { ...rest.pending, typed: clean } };
+  }
   const understood = understandQuestion(clean, lexicon);
   // A right word with «ب/و/ل…» before it or a pronoun after it («بريحة»، «عندكم») is not a typo: kept as typed.
   let text = (understood.keyboard ? keyboardFix(clean, lexicon) ?? understood.text : clean).replace(/\s+/g, ' ').trim();
@@ -154,6 +170,21 @@ const READ_AS: Record<string, (text: string) => string> = {
 export function typedNote(language: SupportedLanguage, text: string): string {
   return (READ_AS[language] || READ_AS.en!)(text);
 }
+const TYPED_KEY = 'sham_typed_fixes_v1';
+/** The typing slips this visitor confirmed («قصدك «عنبر»؟» → «أيوه»), kept in this browser only. */
+export function savedTypedFixes(): Record<string, string> {
+  try {
+    const data: unknown = JSON.parse(globalThis.localStorage?.getItem(TYPED_KEY) || '{}');
+    if (!data || typeof data !== 'object' || Array.isArray(data)) return {};
+    return Object.fromEntries(Object.entries(data as Record<string, unknown>).filter((pair): pair is [string, string] => typeof pair[1] === 'string').slice(-200));
+  } catch { return {}; }
+}
+export function saveTypedFix(from: string, to: string) {
+  const pair = learnablePair(from, to.replace(ARTICLE, ''));
+  if (!pair) return;
+  try { globalThis.localStorage?.setItem(TYPED_KEY, JSON.stringify({ ...savedTypedFixes(), [pair.from]: pair.to })); } catch { /* Private mode. */ }
+}
+
 /** The visitor's own words without the «🎧 …» / «✍️ …» line under them (that line is for him, not part of his message). */
 export const withoutNote = (text: string) => text.replace(/\n\n(?:🎧|✍️) [^\n]*$/u, '');
 /** What the visitor meant: the corrected message in the «✍️ …» line when there is one, else his words. */
