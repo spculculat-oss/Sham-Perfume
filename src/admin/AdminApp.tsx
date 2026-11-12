@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Search,
   Activity, ArrowRight, ArrowDownToLine, BookOpen, Bot, Boxes, ClipboardList, Cpu, Database, Download, FlaskConical, Headset, KeyRound,
-  BellRing, CheckCircle2, CircleAlert, Eye, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
+  BellRing, CalendarDays, CheckCircle2, CircleAlert, Clock3, Eye, EyeOff, LayoutDashboard, Lightbulb, Loader2, LogOut, MessagesSquare, Plus, RefreshCw, Save, Send,
   Settings2, Stethoscope, ThumbsDown, ThumbsUp, Trash2, TriangleAlert, Users, Wand2,
   ChevronUp, ChevronDown, Mail, ExternalLink, Check, Sparkles,
   Handshake, Palette, Crown, Globe, Brain,
@@ -33,6 +33,7 @@ import { AdminApiError, adminRequest, cleanToken, getToken, send, setToken } fro
 import { apiUrl, isStaticHosting } from '../utils/api';
 import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
+import { formatAdminClock } from './adminClock';
 
 type Tab = 'owner' | 'census' | 'insights' | 'finance' | 'overview' | 'opsmap' | 'community' | 'contracts' | 'agent' | 'quality' | 'requests' | 'conversations' | 'products' | 'knowledge' | 'services' | 'engines' | 'shaheen' | 'design' | 'emails' | 'doctor' | 'supervisor' | 'seo' | 'sandbox' | 'updates';
 interface EngineStatus { id: EngineId; name: string; model: string; configured: boolean; kind: string }
@@ -248,11 +249,63 @@ function Bars({ data, labels }: { data: Record<string, number>; labels?: Record<
   );
 }
 
+function AdminClockAndRobotHelp({ go }: { go: (t: Tab) => void }) {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const clock = formatAdminClock(now, adminLocale());
+  const helpPaths: { tab: Tab; title: string; description: string; icon: React.ReactNode }[] = [
+    { tab: 'agent', title: T('المساعد الإداري'), description: T('تقارير تشغيلية وخطوات قابلة للتنفيذ، مع صلاحيات قراءة فقط.'), icon: <Wand2 className="h-4 w-4" /> },
+    { tab: 'sandbox', title: T('مختبر المساعد'), description: T('جرّب سؤالاً أو فعّل استشارة المجلس.'), icon: <MessagesSquare className="h-4 w-4" /> },
+    { tab: 'shaheen', title: T('الخبير شاهين'), description: T('استعن به في أسئلة العطور والتخصصات.'), icon: <FlaskConical className="h-4 w-4" /> },
+    { tab: 'opsmap', title: T('خريطة التشغيل'), description: T('تابع المهام الجارية وعمل الروبوتات.'), icon: <Activity className="h-4 w-4" /> },
+  ];
+
+  return (
+    <section className="mb-4 grid gap-3 xl:grid-cols-[minmax(240px,0.8fr)_2fr]" aria-label={T('الوقت ومسارات مساعدة الروبوتات')}>
+      <div data-testid="admin-date-time" className="overflow-hidden rounded-2xl border border-stone-700 bg-gradient-to-br from-stone-900 via-stone-900 to-amber-950 p-4 text-white shadow-sm">
+        <div className="flex items-center gap-2 text-amber-200">
+          <CalendarDays className="h-4 w-4" aria-hidden="true" />
+          <h2 className="text-sm font-bold">{T('التاريخ والوقت')}</h2>
+        </div>
+        <time dateTime={clock.dateTime} className="mt-4 block text-base font-semibold leading-relaxed">{clock.date}</time>
+        <div className="mt-3 flex items-center gap-2 border-t border-white/10 pt-3">
+          <Clock3 className="h-4 w-4 shrink-0 text-amber-300" aria-hidden="true" />
+          <time dateTime={clock.dateTime} aria-label={T('الوقت الحالي')} aria-live="off" dir="ltr" className="font-mono text-2xl font-bold tabular-nums">{clock.time}</time>
+        </div>
+        <p className="mt-1 text-[11px] text-stone-300">{T('توقيت القاهرة، مصر')}</p>
+      </div>
+
+      <div data-testid="admin-robot-help" className={`${card} min-w-0`}>
+        <div className="flex items-start gap-2">
+          <span className="rounded-xl bg-amber-100 p-2 text-amber-800"><Bot className="h-4 w-4" aria-hidden="true" /></span>
+          <div>
+            <h2 className="text-sm font-bold">{T('طرق الاستعانة بالروبوتات')}</h2>
+            <p className="mt-1 text-[11px] leading-relaxed text-stone-500">{T('اختَر المسار المناسب: تقرير إداري، استشارة للمجلس، سؤال لخبير شاهين، أو متابعة التشغيل.')}</p>
+          </div>
+        </div>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          {helpPaths.map((path) => (
+            <button key={path.tab} type="button" onClick={() => go(path.tab)} className="flex min-h-20 items-start gap-2 rounded-xl border border-stone-200 bg-stone-50 p-2.5 text-start transition hover:border-amber-400 hover:bg-amber-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">
+              <span className="mt-0.5 shrink-0 text-amber-800">{path.icon}</span>
+              <span className="min-w-0"><span className="block text-xs font-bold text-stone-800">{path.title}</span><span className="mt-1 block text-[10px] leading-relaxed text-stone-500">{path.description}</span></span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function OverviewPanel({ go }: { go: (t: Tab) => void }) {
   const { data, error, loading, reload } = useLoad<Overview>('/overview');
   return (
     <>
       <Header title={T('نظرة عامة')} subtitle={T('حالة المساعد والخدمات والطلبات')} actions={<button onClick={reload} className={`${btn} bg-white border border-stone-300`}><RefreshCw className="w-4 h-4" />{T('تحديث')}</button>} />
+      <AdminClockAndRobotHelp go={go} />
       <Feedback error={error} loading={loading && !data} />
       {data && (
         <div className="space-y-4">
