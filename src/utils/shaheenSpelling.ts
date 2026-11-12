@@ -166,6 +166,29 @@ export function keyboardFix(text: string, lex: Lexicon = baseLexicon()): string 
   return converted.replace(/\s+/g, ' ').trim();
 }
 
+const PREFIX = /^[وفبلك]/u;
+const SUFFIXES = ['تهم', 'تها', 'ته', 'تك', 'تي', 'هم', 'هن', 'ها', 'كم', 'كن', 'نا', 'ه', 'ك', 'ي'];
+/**
+ * The word is a known word with one Arabic prefix and/or one attached pronoun («بريحة»، «ريحته»، «عندكم»): right as
+ * typed, even though the search may use its bare form.
+ */
+export function withAffix(lex: Lexicon, key: string): boolean {
+  if (!/^[\u0600-\u06FF]+$/u.test(key)) return false;
+  const stems = new Set<string>();
+  const bare = key.replace(PREFIX, '');
+  for (const k of new Set([key, bare])) {
+    stems.add(k);
+    for (const end of SUFFIXES) {
+      if (!k.endsWith(end) || k.length - end.length < 2) continue;
+      const cut = k.slice(0, -end.length);
+      stems.add(cut); stems.add(`${cut}ه`); // «ريحته» → «ريح» / «ريحه»
+      if (end.length > 1) stems.add(`${cut}${end[0]}`); // «عندكم» → «عندك»
+    }
+  }
+  stems.delete(key);
+  return [...stems].some((stem) => stem.length >= 3 && known(lex, stem));
+}
+
 // ── The question, understood ───────────────────────────────────────────────────────────────────────────────
 /** One word: known as is, or the word meant (with its «ال» kept), or two words written together. */
 function fixWord(lex: Lexicon, raw: string): { text: string; how: SpellingFix['how'] } | undefined {

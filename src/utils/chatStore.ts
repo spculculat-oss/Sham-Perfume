@@ -10,7 +10,8 @@ import { maskSensitive } from './ownerAuthority';
 import { browserMemory, type OfflineAnswer, type OfflineMemory } from './browserMemory';
 import { isSourcesFollowUp, requestedSourcesReply } from './chatSources';
 import { offlineNote } from './shaheenMemory';
-import { keyboardFix, understoodNote } from './shaheenSpelling';
+import { understoodNote } from './shaheenSpelling';
+import { meantText, planTypedTurn, typedNote, type TypedPending } from './typedFix';
 import { heardNote } from './heardFix';
 import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } from './api';
 import { savedDialectChoice } from './arabicDialect';
@@ -74,8 +75,9 @@ export function chatHistory(messages: ChatMessage[]) {
   for (const message of [...messages].reverse()) {
     if (message.id === 'welcome' || message.kind === 'error' || message.id.startsWith('bot-err-') ||
       message.id.startsWith('err-') || message.id.startsWith('expired-notice-')) continue;
-    // The «🎧 سمعت … وفهمتها …» line under a spoken message is for the visitor, not part of what he said.
-    const said = message.role === 'user' ? message.text.replace(/\n\n🎧 [^\n]*$/u, '') : message.text;
+    // The «🎧 سمعت … وفهمتها …» line under a spoken message is for the visitor, not part of what he said; under a typed
+    // one, «✍️ فهمت سؤالك كده: «…»» holds what he meant (that is what the conversation carries).
+    const said = message.role === 'user' ? meantText(message.text) : message.text;
     const text = compactTurn(said.trim());
     if (!text || size + text.length > 16000 || history.length === 24) break;
     const sources = message.role === 'assistant' && !latestAssistantSeen ? message.sources : undefined;
@@ -154,6 +156,8 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
   let controller: AbortController | undefined;
   let generation = 0;
   let sequence = 0;
+  /** «قصدك «عنبر»؟» asked about a typed word: the answer («أيوه» / «لا») decides what is sent. */
+  let typedPending: TypedPending | null = null;
   const listeners = new Set<() => void>();
   const getSnapshot = (): Snapshot => snapshot ??= { ...loadStoredChatSession(), isLoading: false };
   const publish = (next: Snapshot, persist = true) => {
@@ -206,7 +210,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       if (messages !== current.messages) publish({ ...current, messages });
     },
     clear() {
-      controller?.abort(); generation++;
+      controller?.abort(); generation++; typedPending = null;
       clearChatSession();
       publish({ ...loadStoredChatSession(), messages: [DEFAULT_WELCOME_MESSAGE], isLoading: false });
     },
@@ -219,21 +223,38 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       const question = current.messages[userIndex];
       if (!question || question.role !== 'user') return false;
       publish({ ...current, messages: current.messages.slice(0, userIndex) });
-      return store.send({ ...options, text: question.text.replace(/\n\n🎧 [^\n]*$/u, '') });
+      return store.send({ ...options, text: meantText(question.text) });
     },
     async send(options: SendOptions) {
       expire();
       const current = getSnapshot();
       const typedText = options.text.trim();
       if (!typedText || typedText.length > 4000 || current.isLoading) return false;
-      // «فهم شاهين للغلطات»: Arabic typed with the English keyboard on («.ivm hgg,js») becomes the Arabic meant
-      // («زهرة اللوتس») — shown as the visitor's message, so he sees what Shaheen read.
-      const text = keyboardFix(typedText) ?? typedText;
       const timestamp = () => new Date().toLocaleTimeString(options.language, { hour: '2-digit', minute: '2-digit' });
       const id = (role: string) => `${role}-${Date.now()}-${++sequence}`;
+      // «شاهين يتدارك أخطاء الكتابة»: a typed message is read again first — the English keyboard («u'v ukfv» → «عطر
+      // عنبر»), a missing, extra or doubled letter («ياسمبن» → «ياسمين») — and the visitor sees what Shaheen understood
+      // under his message. Not sure about a perfume word: «قصدك «عنبر»؟» first, and nothing is sent until he answers.
+      // (A spoken turn was already read by the voice mode.)
+      let text = typedText; let typedRead = '';
+      if (!options.voice) {
+        const choice = options.language === 'ar' ? savedDialectChoice() : 'auto';
+        const plan = planTypedTurn(typedText, { pending: typedPending, language: options.language, ...(choice !== 'auto' ? { dialect: choice } : {}) });
+        typedPending = null;
+        if (plan.action === 'ask') {
+          typedPending = plan.pending;
+          publish({ ...current, messages: [...current.messages,
+            { id: id('user'), role: 'user', text: typedText, timestamp: timestamp() },
+            { id: id('bot-ask'), role: 'assistant', text: plan.say, timestamp: timestamp(),
+              aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } }] });
+          return true;
+        }
+        text = plan.text || typedText;
+        if (plan.changed) typedRead = typedNote(options.language, text);
+      }
       // A spoken message whose words Shaheen corrected shows what he heard and what he understood under it.
       const heard = options.voice?.heard || [];
-      const shown = heard.length ? `${text}\n\n${heardNote(options.language, heard)}` : text;
+      const shown = heard.length ? `${text}\n\n${heardNote(options.language, heard)}` : typedRead ? `${typedText}\n\n${typedRead}` : text;
       // A bare greeting is answered here: instant, identical on every site, and no AI quota spent on «هاي».
       const greeting = greetingKind(text);
       if (greeting) {

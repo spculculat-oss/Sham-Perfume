@@ -7,6 +7,9 @@ import { learnablePair, planVoiceTurn, readingsFrom, type PendingConfirm } from 
 import { spokenReply, wantsMore } from '../utils/spokenReply';
 import { baseLexicon, buildLexicon, type Lexicon } from '../utils/shaheenSpelling';
 import { isStaticHosting, requestApi } from '../utils/api';
+import { activeVoicePrint, bargeDecision, deleteVoicePrint, earSupported, openEar, otherVoice, savedVoicePrint, saveVoicePrint,
+  setVoicePrintOn, voicePrintOn, VoiceGate, type Ear, type EarSlice } from '../utils/voiceEar';
+import { ENROL_SENTENCES, enrolPrint, type VoiceFrame, type VoicePrint } from '../utils/voicePrint';
 
 export interface ShaheenVoiceMessage {
   id: string;
@@ -68,6 +71,12 @@ function savedBargeIn(): boolean {
     return saved ? saved !== 'off' : !apple;
   } catch { return !apple; }
 }
+
+/** Android's engine cannot pause and resume speech (it stops instead), so Shaheen is only stopped there. */
+const canPauseSpeech = () => typeof navigator === 'undefined' || !/Android/i.test(navigator.userAgent || '');
+
+/** «بصمتي»: the three sentences read to make it — where it is in them, and whether one is being recorded. */
+export interface VoiceEnrolment { step: number; recording: boolean; done?: boolean; error?: 'short' | 'microphone' }
 
 type VoiceError = 'unsupported' | 'permission' | 'microphone' | 'network' | 'recognition' | 'speech' | 'too_long';
 
@@ -199,6 +208,26 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const dialectRef = useRef<Dialect | undefined>(undefined);
   // «تحب أكمّلك الباقي؟»: what he has not said yet of a long reply (already in spoken form).
   const restRef = useRef('');
+  // «ودن شاهين»: the microphone's loudness read directly (computers only), so he goes quiet the moment the visitor
+  // starts talking; `duckRef` = when he paused for a sound that is not decided yet. «بصمتي»: the visitor's voice print.
+  const [earActive, setEarActive] = useState(false);
+  const [ignoredVoices, setIgnoredVoices] = useState(0);
+  const [printSaved, setPrintSaved] = useState(false);
+  const [printOn, setPrintOnState] = useState(true);
+  const [enrolment, setEnrolment] = useState<VoiceEnrolment | null>(null);
+  const earRef = useRef<Ear | null>(null);
+  const earOpeningRef = useRef(false);
+  const gateRef = useRef(new VoiceGate());
+  const duckRef = useRef<{ at: number } | null>(null);
+  const printRef = useRef<VoicePrint | undefined>(undefined);
+  const voicedRef = useRef<VoiceFrame[]>([]);
+  const otherVoiceRef = useRef(false);
+  const watchHeardRef = useRef('');
+  const speakStartRef = useRef(0);
+  const enrollingRef = useRef(false);
+  const takesRef = useRef<VoiceFrame[][]>([]);
+  const takeRef = useRef<{ frames: VoiceFrame[]; done: () => void } | null>(null);
+  const sliceRef = useRef<(slice: EarSlice) => void>(() => undefined);
 
   // Browser APIs are checked after mount so this hook remains safe during server rendering.
   useEffect(() => {
@@ -207,6 +236,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     bargeEnabledRef.current = barge;
     setBargeEnabledState(barge);
     setDialectChoiceState(savedDialectChoice());
+    setPrintSaved(Boolean(savedVoicePrint()));
+    setPrintOnState(voicePrintOn());
   }, []);
   // The dialect this conversation is in: his pick → his own words → his Arab country → Egyptian.
   const dialect: Dialect | undefined = useMemo(() => {
@@ -273,10 +304,36 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     speakingRef.current = false;
     setSpeaking(false);
     setSpokenText('');
+    const wasPaused = Boolean(duckRef.current);
+    duckRef.current = null;
+    otherVoiceRef.current = false;
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       try { window.speechSynthesis.cancel(); } catch { /* A browser may not have a speech queue. */ }
+      // A paused engine stays paused for the next reply too (Chrome) unless it is resumed.
+      if (wasPaused) { try { window.speechSynthesis.resume(); } catch { /* Nothing to resume. */ } }
     }
   }, [stopBargeWatch]);
+
+  /** Close the microphone the ear listens with. */
+  const closeEar = useCallback(() => {
+    earRef.current?.close();
+    earRef.current = null;
+    duckRef.current = null;
+    setEarActive(false);
+  }, []);
+  /** Open it (computers only; from the visitor's tap that started the conversation). */
+  const openVoiceEar = useCallback(() => {
+    if (earRef.current || earOpeningRef.current || !earSupported()) return;
+    earOpeningRef.current = true;
+    gateRef.current = new VoiceGate();
+    void openEar((slice) => sliceRef.current(slice), () => gateRef.current.floor * 1.5).then((ear) => {
+      earOpeningRef.current = false;
+      if (!ear) return;
+      if (!activeRef.current) { ear.close(); return; }
+      earRef.current = ear;
+      setEarActive(true);
+    });
+  }, []);
 
   const clearPendingTurn = useCallback(() => {
     pendingTurnRef.current = null;
@@ -303,8 +360,12 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     interruptedRef.current = '';
     confirmRef.current = null;
     restRef.current = '';
+    enrollingRef.current = false;
+    takeRef.current = null;
+    setEnrolment(null);
+    closeEar();
     setError(null);
-  }, [cancelRecognition, cancelSpeech, clearListenTimer, clearPendingTurn]);
+  }, [cancelRecognition, cancelSpeech, clearListenTimer, clearPendingTurn, closeEar]);
 
   const fail = useCallback((reason: VoiceError) => {
     activeRef.current = false;
@@ -314,8 +375,11 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     cancelSpeech();
     clearPendingTurn();
     setInterim('');
+    enrollingRef.current = false;
+    setEnrolment(null);
+    closeEar();
     setError(reason);
-  }, [cancelRecognition, cancelSpeech, clearListenTimer, clearPendingTurn]);
+  }, [cancelRecognition, cancelSpeech, clearListenTimer, clearPendingTurn, closeEar]);
 
   /**
    * «المقاطعة بالصوت»: while Shaheen speaks, a second listener runs. Hearing only Shaheen's own words (through
@@ -337,6 +401,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       if (bargeRecognitionRef.current !== watch || sequence !== speechSequenceRef.current) return;
       let heard = '';
       for (let index = event.resultIndex; index < event.results.length; index += 1) heard += ` ${event.results[index]?.[0]?.transcript || ''}`;
+      watchHeardRef.current = heard;
+      // The voice print said this sound is someone else (a television, a person nearby): not an interruption.
+      if (otherVoiceRef.current) return;
       const check = bargeIn(heard, replyTextRef.current);
       if (!check.barge) return;
       interruptedRef.current = spokenSoFarRef.current;
@@ -382,6 +449,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     replyTextRef.current = text;
     spokenSoFarRef.current = '';
     bargeRestartsRef.current = 0;
+    watchHeardRef.current = '';
+    speakStartRef.current = typeof performance !== 'undefined' ? performance.now() : 0;
+    gateRef.current.startSpeaking();
     let voices = voicesRef.current;
     if (!voices.length) { try { voices = window.speechSynthesis.getVoices(); } catch { voices = []; } }
     const voice = pickShaheenVoice(voices, locale, languageRef.current);
@@ -434,7 +504,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
 
   const scheduleListening = useCallback((delay = 250) => {
     clearListenTimer();
-    if (!activeRef.current || mutedRef.current || disabledRef.current || loadingRef.current || waitingRef.current || speakingRef.current) return;
+    if (!activeRef.current || mutedRef.current || disabledRef.current || loadingRef.current || waitingRef.current || speakingRef.current || enrollingRef.current) return;
     listenTimerRef.current = setTimeout(() => {
       listenTimerRef.current = null;
       startListeningRef.current();
@@ -552,9 +622,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   }, [beginOutgoingTurn, cancelRecognition, clearListenTimer, finishOutgoingTurn, sayWhileLooking, scheduleListening, speakReply]);
 
   const startListening = useCallback(() => {
-    if (!activeRef.current || mutedRef.current || disabledRef.current || loadingRef.current || waitingRef.current || speakingRef.current || recognitionRef.current) return;
+    if (!activeRef.current || mutedRef.current || disabledRef.current || loadingRef.current || waitingRef.current || speakingRef.current || recognitionRef.current || enrollingRef.current) return;
     const Recognition = recognitionConstructor();
     if (!Recognition) { fail('unsupported'); return; }
+    voicedRef.current = [];
 
     let finalText = '';
     let interimText = '';
@@ -611,6 +682,15 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       // After a spoken interruption, his first words were heard by the interruption listener.
       const heard = mergeHeard(bargePrefixRef.current, (finalText || interimText).replace(/\s+/g, ' ').trim());
       bargePrefixRef.current = '';
+      const voiced = voicedRef.current;
+      voicedRef.current = [];
+      // «بصمتي»: a sentence the print clearly says was someone else's (the television, a person nearby) is not his.
+      if (heard && earRef.current && otherVoice(printRef.current, voiced)) {
+        setIgnoredVoices((count) => count + 1);
+        setInterim('');
+        scheduleListening(350);
+        return;
+      }
       setInterim(heard);
       if (heard) void sendRecognizedText(heard);
       else scheduleListening(350);
@@ -648,11 +728,13 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setInterim('');
     setLastHeard('');
     confirmRef.current = null;
+    printRef.current = activeVoicePrint();
+    openVoiceEar();
     void loadVoiceWords().then(({ lexicon, shared }) => { lexiconRef.current = lexicon; sharedFixesRef.current = shared; }).catch(() => undefined);
     // This runs from the user's confirmation click, which is required by browser microphone permission.
     startListeningRef.current();
     return true;
-  }, [cancelSpeech, clearListenTimer, clearPendingTurn]);
+  }, [cancelSpeech, clearListenTimer, clearPendingTurn, openVoiceEar]);
 
   /** Mute or unmute the microphone without ending the conversation (a reply being read keeps playing). */
   const toggleMute = useCallback(() => {
@@ -664,13 +746,17 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       clearListenTimer();
       cancelRecognition();
       stopBargeWatch();
+      // Muted means the microphone is really closed (the browser's microphone light goes off).
+      if (duckRef.current) { duckRef.current = null; try { window.speechSynthesis?.resume(); } catch { /* Nothing paused. */ } }
+      closeEar();
       setInterim('');
     } else {
       setError(null);
+      openVoiceEar();
       // Called from the visitor's tap, so the engine may open the microphone straight away.
       startListeningRef.current();
     }
-  }, [cancelRecognition, clearListenTimer, stopBargeWatch]);
+  }, [cancelRecognition, clearListenTimer, closeEar, openVoiceEar, stopBargeWatch]);
 
   /** Cut Shaheen off mid-reply and listen at once (tap on the orb). */
   const interrupt = useCallback(() => {
@@ -683,6 +769,130 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     }
     setTimeout(() => startListeningRef.current(), 120);
   }, [cancelSpeech]);
+
+  /**
+   * «ودن شاهين»: every 40 ms slice from the microphone. While Shaheen talks, a voice starting makes him go quiet at
+   * once (paused, not stopped); then it is decided: the visitor talking → he stops and listens; a short noise (a cough,
+   * a knock) → he goes on from the same word; another voice by the print (a television, someone nearby) → he goes on.
+   */
+  const handleSlice = useCallback((slice: EarSlice) => {
+    const gate = gateRef.current;
+    const take = takeRef.current;
+    if (take) {
+      // «بصمتي»: reading a sentence — only his voiced slices are kept (as numbers), until he stops.
+      if (slice.frame.f0 && take.frames.length < 600) take.frames.push(slice.frame);
+      const event = gate.push(slice, false);
+      if (event?.type === 'end' && event.burst.voicedMs >= 1200) take.done();
+      return;
+    }
+    if (!activeRef.current || mutedRef.current || enrollingRef.current) return;
+    const talking = speakingRef.current;
+    if (talking && slice.t - speakStartRef.current < 450) { gate.learnEcho(slice.frame.rms); return; }
+    const ducked = duckRef.current;
+    const event = gate.push(slice, talking && !ducked);
+    if (event?.type === 'end') otherVoiceRef.current = false;
+    if (!talking) {
+      if (listeningRef.current && slice.frame.f0 && voicedRef.current.length < 600) voicedRef.current.push(slice.frame);
+      return;
+    }
+    if (!bargeEnabledRef.current) return;
+    const synth = typeof window !== 'undefined' ? window.speechSynthesis : undefined;
+    const goOn = () => {
+      duckRef.current = null;
+      try { synth?.resume(); } catch { /* Nothing to resume. */ }
+    };
+    if (event?.type === 'start' && !ducked) {
+      if (otherVoiceRef.current) return;
+      duckRef.current = { at: slice.t };
+      if (canPauseSpeech()) { try { synth?.pause(); } catch { /* He keeps talking until it is decided. */ } }
+      return;
+    }
+    if (!ducked) return;
+    const burst = event?.type === 'end' ? event.burst : gate.current(slice.t);
+    if (!burst) { goOn(); return; }
+    const decision = bargeDecision(burst, event?.type === 'end', printRef.current, slice.t - ducked.at);
+    if (decision === 'wait') return;
+    if (decision === 'resume') { goOn(); return; }
+    if (decision === 'ignore') {
+      otherVoiceRef.current = event?.type !== 'end';
+      setIgnoredVoices((count) => count + 1);
+      goOn();
+      return;
+    }
+    // The visitor is talking: what the interruption listener already caught of his words is kept.
+    const check = bargeIn(watchHeardRef.current, replyTextRef.current);
+    interruptedRef.current = spokenSoFarRef.current;
+    bargePrefixRef.current = check.barge ? check.said : '';
+    setInterim(bargePrefixRef.current);
+    setBargedIn((count) => count + 1);
+    cancelSpeech();
+    setTimeout(() => startListeningRef.current(), 60);
+  }, [cancelSpeech]);
+  useEffect(() => { sliceRef.current = handleSlice; }, [handleSlice]);
+
+  /** «بصمتي»: start making the print (after he agreed): the microphone stops listening for questions meanwhile. */
+  const startEnrolment = useCallback(() => {
+    if (!activeRef.current) return;
+    clearListenTimer();
+    cancelRecognition();
+    cancelSpeech();
+    enrollingRef.current = true;
+    takesRef.current = [];
+    takeRef.current = null;
+    if (!earRef.current) openVoiceEar();
+    setEnrolment({ step: 0, recording: false });
+  }, [cancelRecognition, cancelSpeech, clearListenTimer, openVoiceEar]);
+
+  /** Record one sentence (he reads it aloud; it ends when he stops, or after 9 seconds). */
+  const recordEnrolment = useCallback(() => {
+    if (!enrollingRef.current || takeRef.current) return;
+    if (!earRef.current) { setEnrolment((now) => (now ? { ...now, error: 'microphone' } : now)); return; }
+    gateRef.current.reset();
+    setEnrolment((now) => (now ? { step: now.step, recording: true } : now));
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const take = { frames: [] as VoiceFrame[], done: () => {
+      if (takeRef.current !== take) return;
+      takeRef.current = null;
+      clearTimeout(timer);
+      if (take.frames.length < 20) { setEnrolment((now) => (now ? { step: now.step, recording: false, error: 'short' } : now)); return; }
+      takesRef.current = [...takesRef.current, take.frames];
+      const step = takesRef.current.length;
+      if (step < 3) { setEnrolment({ step, recording: false }); return; }
+      const print = enrolPrint(takesRef.current);
+      takesRef.current = [];
+      if (!print) { setEnrolment({ step: 0, recording: false, error: 'short' }); return; }
+      saveVoicePrint(print);
+      printRef.current = print;
+      setPrintSaved(true);
+      setPrintOnState(true);
+      setEnrolment({ step: 3, recording: false, done: true });
+    } };
+    takeRef.current = take;
+    timer = setTimeout(() => take.done(), 9000);
+  }, []);
+
+  /** Close the print panel (a print half made is thrown away) and go back to listening. */
+  const closeEnrolment = useCallback(() => {
+    enrollingRef.current = false;
+    takeRef.current = null;
+    takesRef.current = [];
+    setEnrolment(null);
+    scheduleListening(300);
+  }, [scheduleListening]);
+
+  /** «بصمتي» on or off (kept), and the one-tap delete (it was only ever in this browser). */
+  const setPrintOn = useCallback((on: boolean) => {
+    setVoicePrintOn(on);
+    setPrintOnState(on);
+    printRef.current = on ? savedVoicePrint() : undefined;
+  }, []);
+  const deletePrint = useCallback(() => {
+    deleteVoicePrint();
+    printRef.current = undefined;
+    setPrintSaved(false);
+    setPrintOnState(true);
+  }, []);
+  const micLevel = useCallback(() => (earRef.current ? earRef.current.level() : null), []);
 
   /** Turn «المقاطعة بالصوت» on or off (kept in this browser). */
   const setBargeEnabled = useCallback((on: boolean) => {
@@ -754,6 +964,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       try { recognition.abort(); } catch { /* The recognition session already ended. */ }
     }
     stopBargeWatch();
+    earRef.current?.close();
+    earRef.current = null;
     speechSequenceRef.current += 1;
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       try { window.speechSynthesis.cancel(); } catch { /* The browser has no active speech queue. */ }
@@ -785,5 +997,16 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     interrupt,
     beginOutgoingTurn,
     finishOutgoingTurn,
+    earActive,
+    micLevel,
+    ignoredVoices,
+    print: { supported: earActive || earSupported(), saved: printSaved, on: printOn },
+    enrolment,
+    enrolSentences: ENROL_SENTENCES[language] || ENROL_SENTENCES.en!,
+    startEnrolment,
+    recordEnrolment,
+    closeEnrolment,
+    setPrintOn,
+    deletePrint,
   };
 }
