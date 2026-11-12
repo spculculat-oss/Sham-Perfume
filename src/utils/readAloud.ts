@@ -6,7 +6,8 @@
  */
 import type { SupportedLanguage } from '../types/i18n';
 import { dialectLocale, type Dialect } from './arabicDialect';
-import { pickShaheenVoice, shaheenSpeechLocale, splitShaheenSpeech } from './shaheenVoice';
+import { shaheenSpeechLocale, splitShaheenSpeech } from './shaheenVoice';
+import { chosenVoice, savedVoiceChoice } from './voiceChoice';
 import { spokenReply } from './spokenReply';
 import { currentStoreCountry } from './storeCheckout';
 
@@ -21,7 +22,9 @@ export function readAloud(text: string, { language, dialect, onEnd }: { language
   const locale = language === 'ar' && dialect ? dialectLocale(dialect, currentStoreCountry()) : shaheenSpeechLocale(language);
   let voices: SpeechSynthesisVoice[] = [];
   try { voices = synth.getVoices(); } catch { /* No voice list yet: the engine picks one for the locale. */ }
-  const voice = pickShaheenVoice(voices, locale, language);
+  // «صوت شاهين»: the voice, pitch and pace the visitor chose (or Shaheen's usual voice).
+  const choice = savedVoiceChoice();
+  const voice = chosenVoice(voices, locale, language, choice);
   let index = 0;
   const next = () => {
     if (done) return;
@@ -29,7 +32,8 @@ export function readAloud(text: string, { language, dialect, onEnd }: { language
     try {
       const utterance = new window.SpeechSynthesisUtterance(chunks[index]!);
       utterance.lang = locale;
-      utterance.rate = 0.97;
+      utterance.rate = choice.rate;
+      utterance.pitch = choice.pitch;
       if (voice) utterance.voice = voice;
       utterance.onend = () => { index += 1; next(); };
       utterance.onerror = () => end();

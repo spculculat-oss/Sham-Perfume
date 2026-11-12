@@ -38,7 +38,7 @@ export class VoiceGate {
 
   /** The level a slice must pass to count as someone speaking. */
   threshold(speaking: boolean): number {
-    const room = Math.max(0.012, this.floor * 3);
+    const room = Math.max(0.009, this.floor * 3);
     return speaking ? Math.max(room, this.echo * 1.4) : room;
   }
 

@@ -144,6 +144,22 @@ export function samePerson(saved: VoicePrint, heard: VoicePrint | undefined): 'y
   return 'unsure';
 }
 
+/**
+ * «بصمتي بتتعلم»: a sentence that was clearly him (a 'yes') moves the print a little towards how he sounds today — a
+ * cold, a tired evening, another microphone — so it keeps recognising him. Only ever from his own 'yes' sentences, so it
+ * cannot drift towards someone else.
+ */
+export function adaptPrint(saved: VoicePrint, heard: VoicePrint, weight = 0.1): VoicePrint {
+  const w = Math.min(0.3, Math.max(0, weight));
+  return {
+    v: 1,
+    bands: saved.bands.map((value, i) => value * (1 - w) + (heard.bands[i] ?? value) * w),
+    f0: Math.exp(Math.log(saved.f0) * (1 - w) + Math.log(heard.f0) * w),
+    spread: Math.max(1, saved.spread * (1 - w) + heard.spread * w),
+    frames: Math.min(5000, saved.frames + heard.frames),
+  };
+}
+
 /** Several enrolment sentences into one print (their slices together). */
 export function enrolPrint(takes: readonly (readonly VoiceFrame[])[]): VoicePrint | undefined {
   return summarize(takes.flat(), 40);

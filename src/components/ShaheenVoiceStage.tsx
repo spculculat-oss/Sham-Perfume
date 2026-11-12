@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { Ear, EarOff, Fingerprint, Keyboard, Languages, Mic, MicOff, Trash2, VolumeX, X } from 'lucide-react';
+import { AudioLines, Ear, EarOff, Fingerprint, Keyboard, Languages, Mic, MicOff, Play, Trash2, VolumeX, X } from 'lucide-react';
+import { DEFAULT_VOICE_CHOICE, type VoiceGender } from '../utils/voiceChoice';
 import { DIALECT_INFO, DIALECTS, isDialectChoice } from '../utils/arabicDialect';
 import type { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
@@ -47,6 +48,18 @@ const COPY = {
   print_delete: { ar: 'امسح البصمة', en: 'Delete the print', fr: 'Supprimer l’empreinte', es: 'Borrar la huella', it: 'Elimina l’impronta', de: 'Abdruck löschen', ru: 'Удалить отпечаток', zh: '删除声纹', tr: 'İzi sil', fa: 'پاک کردن اثر صدا' },
   print_redo: { ar: 'سجّلها من جديد', en: 'Record it again', fr: 'L’enregistrer à nouveau', es: 'Grabarla de nuevo', it: 'Registrala di nuovo', de: 'Neu aufnehmen', ru: 'Записать заново', zh: '重新录制', tr: 'Yeniden kaydet', fa: 'دوباره ضبط کنید' },
   print_close: { ar: 'قفل', en: 'Close', fr: 'Fermer', es: 'Cerrar', it: 'Chiudi', de: 'Schließen', ru: 'Закрыть', zh: '关闭', tr: 'Kapat', fa: 'بستن' },
+  voice_button: { ar: 'صوت شاهين', en: 'Shaheen’s voice', fr: 'La voix de Shaheen', es: 'La voz de Shaheen', it: 'La voce di Shaheen', de: 'Shaheens Stimme', ru: 'Голос Шахина', zh: 'Shaheen 的声音', tr: 'Shaheen’in sesi', fa: 'صدای شاهین' },
+  voice_title: { ar: 'اختار الصوت اللي تحبه', en: 'Choose the voice you like', fr: 'Choisissez la voix que vous aimez', es: 'Elige la voz que te guste', it: 'Scegli la voce che preferisci', de: 'Wähle die Stimme, die dir gefällt', ru: 'Выберите голос, который вам нравится', zh: '选择你喜欢的声音', tr: 'Sevdiğin sesi seç', fa: 'صدایی را که دوست دارید انتخاب کنید' },
+  voice_all: { ar: 'الكل', en: 'All', fr: 'Toutes', es: 'Todas', it: 'Tutte', de: 'Alle', ru: 'Все', zh: '全部', tr: 'Tümü', fa: 'همه' },
+  voice_male: { ar: 'رجالي', en: 'Male', fr: 'Homme', es: 'Hombre', it: 'Uomo', de: 'Männlich', ru: 'Мужской', zh: '男声', tr: 'Erkek', fa: 'مردانه' },
+  voice_female: { ar: 'حريمي', en: 'Female', fr: 'Femme', es: 'Mujer', it: 'Donna', de: 'Weiblich', ru: 'Женский', zh: '女声', tr: 'Kadın', fa: 'زنانه' },
+  voice_listen: { ar: 'اسمع', en: 'Listen', fr: 'Écouter', es: 'Escuchar', it: 'Ascolta', de: 'Anhören', ru: 'Послушать', zh: '试听', tr: 'Dinle', fa: 'گوش بده' },
+  voice_pitch: { ar: 'طبقة الصوت', en: 'Pitch', fr: 'Hauteur', es: 'Tono', it: 'Tono', de: 'Tonhöhe', ru: 'Высота', zh: '音调', tr: 'Ses tonu', fa: 'زیر و بمی' },
+  voice_rate: { ar: 'سرعة الكلام', en: 'Speed', fr: 'Vitesse', es: 'Velocidad', it: 'Velocità', de: 'Tempo', ru: 'Скорость', zh: '语速', tr: 'Hız', fa: 'سرعت' },
+  voice_default: { ar: 'رجّع الافتراضي', en: 'Back to default', fr: 'Par défaut', es: 'Volver al predeterminado', it: 'Torna al predefinito', de: 'Zurück zum Standard', ru: 'По умолчанию', zh: '恢复默认', tr: 'Varsayılana dön', fa: 'بازگشت به پیش‌فرض' },
+  voice_none: { ar: 'الجهاز ده مفيهوش أصوات للغة دي غير الصوت العادي.', en: 'This device has no other voices for this language.', fr: 'Cet appareil n’a pas d’autres voix pour cette langue.', es: 'Este dispositivo no tiene otras voces para este idioma.', it: 'Questo dispositivo non ha altre voci per questa lingua.', de: 'Dieses Gerät hat keine weiteren Stimmen für diese Sprache.', ru: 'На этом устройстве нет других голосов для этого языка.', zh: '此设备没有该语言的其他声音。', tr: 'Bu cihazda bu dil için başka ses yok.', fa: 'این دستگاه صدای دیگری برای این زبان ندارد.' },
+  voice_hint: { ar: 'الأصوات من جهازك نفسه، ولو عايز أصوات أكتر نزّلها من إعدادات الجهاز (الكلام / تحويل النص لكلام).', en: 'Voices come from your own device; to get more, add them in your device settings (Speech / Text-to-speech).', fr: 'Les voix viennent de votre appareil ; pour en avoir plus, ajoutez-les dans les réglages (Synthèse vocale).', es: 'Las voces vienen de tu dispositivo; para tener más, añádelas en los ajustes (Texto a voz).', it: 'Le voci vengono dal tuo dispositivo; per averne altre, aggiungile nelle impostazioni (Sintesi vocale).', de: 'Die Stimmen kommen von deinem Gerät; weitere kannst du in den Einstellungen hinzufügen (Sprachausgabe).', ru: 'Голоса берутся с вашего устройства; добавить новые можно в настройках (Синтез речи).', zh: '声音来自你的设备；如需更多，请在设备设置（文字转语音）中添加。', tr: 'Sesler cihazının kendisinden gelir; daha fazlası için cihaz ayarlarından ekle (Metin okuma).', fa: 'صداها از خود دستگاه شماست؛ برای صداهای بیشتر از تنظیمات دستگاه (تبدیل متن به گفتار) اضافه کنید.' },
+  voice_sample: { ar: 'أهلاً بيك، أنا شاهين. تحب أساعدك تختار عطر النهارده؟', en: 'Hi, I’m Shaheen. Shall I help you choose a perfume today?', fr: 'Bonjour, je suis Shaheen. Je vous aide à choisir un parfum ?', es: 'Hola, soy Shaheen. ¿Te ayudo a elegir un perfume hoy?', it: 'Ciao, sono Shaheen. Ti aiuto a scegliere un profumo oggi?', de: 'Hallo, ich bin Shaheen. Soll ich dir heute bei einem Parfum helfen?', ru: 'Привет, я Шахин. Помочь вам выбрать аромат?', zh: '你好，我是 Shaheen。今天要我帮你挑一款香水吗？', tr: 'Merhaba, ben Shaheen. Bugün parfüm seçmene yardım edeyim mi?', fa: 'سلام، من شاهین هستم. کمکتان کنم امروز عطری انتخاب کنید؟' },
   print_ignored: { ar: 'تجاهلت صوت تاني مش صوتك', en: 'I ignored a voice that isn’t yours', fr: 'J’ai ignoré une voix qui n’est pas la vôtre', es: 'Ignoré una voz que no es la tuya', it: 'Ho ignorato una voce che non è la tua', de: 'Eine fremde Stimme ignoriert', ru: 'Проигнорировал чужой голос', zh: '已忽略不是你的声音', tr: 'Senin olmayan bir sesi yok saydım', fa: 'صدایی را که مال شما نبود نادیده گرفتم' },
 } satisfies Record<string, LText>;
 
@@ -128,6 +141,16 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
   const earLevel = useRef(voice.micLevel);
   earLevel.current = voice.micLevel;
   const [printPanel, setPrintPanel] = useState(false);
+  const [voicePanel, setVoicePanel] = useState(false);
+  // «بصمتي»: offered once, with one tap, when the voice conversation opens (never again after a yes or a no).
+  useEffect(() => {
+    if (!voice.active || !voice.print.supported || voice.print.saved) return;
+    try {
+      if (localStorage.getItem(PRINT_ASKED)) return;
+      localStorage.setItem(PRINT_ASKED, '1');
+    } catch { return; }
+    setPrintPanel(true);
+  }, [voice.active, voice.print.supported, voice.print.saved]);
   const [ignoredNote, setIgnoredNote] = useState(false);
   useEffect(() => {
     if (!voice.ignoredVoices) return undefined;
@@ -279,6 +302,15 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
             {voice.bargeEnabled ? <Ear className="h-3.5 w-3.5" aria-hidden="true" /> : <EarOff className="h-3.5 w-3.5" aria-hidden="true" />}
             {voice.bargeEnabled ? L('barge_on') : L('barge_off')}
           </button>
+          <button
+            type="button"
+            onClick={() => setVoicePanel(true)}
+            aria-haspopup="dialog"
+            className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-stone-300 backdrop-blur transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
+          >
+            <AudioLines className="h-3.5 w-3.5" aria-hidden="true" />
+            {L('voice_button')}
+          </button>
           {voice.print.supported && (
             <button
               type="button"
@@ -305,6 +337,7 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
         <p className="text-center text-[11px] text-stone-400">{L('private')}</p>
       </footer>
 
+      {voicePanel && <VoicePickerPanel L={L} voice={voice} onClose={() => setVoicePanel(false)} />}
       {printPanel && (
         <VoicePrintPanel
           L={L}
@@ -316,6 +349,80 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
   );
 
   return typeof document === 'undefined' ? stage : createPortal(stage, document.body);
+}
+
+const PRINT_ASKED = 'sham_voice_print_asked_v1';
+
+/**
+ * «صوت شاهين»: every voice the device has for this language, male and female, each with «اسمع» to hear it first, plus
+ * how high and how fast he talks. Kept in this browser.
+ */
+function VoicePickerPanel({ L, voice, onClose }: { L: (key: keyof typeof COPY & string) => string; voice: VoiceModeState; onClose: () => void }) {
+  const [show, setShow] = useState<VoiceGender | 'all'>(voice.voiceChoice.gender || 'all');
+  const { voiceChoice: choice, setVoiceChoice } = voice;
+  const base = voice.language;
+  const list = voice.voices.filter((option) => show === 'all' || option.gender === show);
+  const chip = (active: boolean) => `rounded-full px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 ${active ? 'bg-amber-300 text-stone-900' : 'bg-white/10 text-stone-200 hover:bg-white/20'}`;
+  const pickGender = (gender: VoiceGender | 'all') => {
+    setShow(gender);
+    const { gender: _old, ...rest } = choice;
+    const names = { ...choice.names };
+    // A gender chosen: his picked voice stays only if it is that gender.
+    const current = voice.voices.find((option) => option.name === names[base]);
+    if (gender !== 'all' && current && current.gender !== gender) delete names[base];
+    setVoiceChoice(gender === 'all' ? { ...rest, names } : { ...rest, names, gender });
+  };
+  return (
+    <div className="absolute inset-0 z-10 flex items-end justify-center bg-black/60 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" aria-label={L('voice_title')}>
+      <div className="flex max-h-[85vh] w-full max-w-md flex-col gap-3 rounded-3xl border border-white/10 bg-stone-900/95 p-5 shadow-2xl">
+        <p className="flex items-center gap-2 text-base font-bold text-amber-100"><AudioLines className="h-5 w-5" aria-hidden="true" />{L('voice_title')}</p>
+        <div className="flex flex-wrap gap-2" role="group">
+          {(['all', 'male', 'female'] as const).map((gender) => (
+            <button key={gender} type="button" aria-pressed={show === gender} onClick={() => pickGender(gender)} className={chip(show === gender)}>
+              {L(gender === 'all' ? 'voice_all' : gender === 'male' ? 'voice_male' : 'voice_female')}
+            </button>
+          ))}
+        </div>
+        <ul className="flex min-h-0 flex-col gap-1.5 overflow-y-auto pe-1" role="radiogroup" aria-label={L('voice_title')}>
+          {list.length === 0 && <li className="text-sm text-stone-300">{L('voice_none')}</li>}
+          {list.map((option) => {
+            const selected = option.name === voice.currentVoiceName;
+            return (
+              <li key={option.name} className={`flex items-center gap-2 rounded-2xl border px-3 py-2 ${selected ? 'border-amber-300/60 bg-amber-300/10' : 'border-white/10 bg-white/5'}`}>
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  onClick={() => setVoiceChoice({ ...choice, names: { ...choice.names, [base]: option.name } })}
+                  className="flex min-w-0 flex-1 items-center gap-2 text-start text-sm text-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
+                >
+                  <span className={`h-3 w-3 shrink-0 rounded-full border ${selected ? 'border-amber-300 bg-amber-300' : 'border-stone-400'}`} aria-hidden="true" />
+                  <span className="truncate" dir="ltr">{option.label}</span>
+                  {option.gender && <span className="shrink-0 text-[11px] text-stone-400">{L(option.gender === 'male' ? 'voice_male' : 'voice_female')}</span>}
+                </button>
+                <button type="button" onClick={() => voice.previewVoice(option.name, L('voice_sample'))} className="flex shrink-0 items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-xs text-stone-100 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300">
+                  <Play className="h-3 w-3" aria-hidden="true" />{L('voice_listen')}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+        <label className="flex flex-col gap-1 text-xs text-stone-300">
+          {L('voice_pitch')}
+          <input type="range" min={0.6} max={1.5} step={0.05} value={choice.pitch} onChange={(event) => setVoiceChoice({ ...choice, pitch: Number(event.target.value) })} className="accent-amber-300" />
+        </label>
+        <label className="flex flex-col gap-1 text-xs text-stone-300">
+          {L('voice_rate')}
+          <input type="range" min={0.7} max={1.3} step={0.02} value={choice.rate} onChange={(event) => setVoiceChoice({ ...choice, rate: Number(event.target.value) })} className="accent-amber-300" />
+        </label>
+        <p className="text-[11px] leading-relaxed text-stone-400">{L('voice_hint')}</p>
+        <div className="flex flex-wrap justify-center gap-2">
+          <button type="button" onClick={() => { setShow('all'); setVoiceChoice({ ...DEFAULT_VOICE_CHOICE, names: {} }); }} className={chip(false)}>{L('voice_default')}</button>
+          <button type="button" onClick={onClose} className={chip(false)}>{L('print_close')}</button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 /**

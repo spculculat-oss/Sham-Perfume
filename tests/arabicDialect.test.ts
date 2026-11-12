@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { detectDialect, dialectForCountry, dialectInstruction, dialectLocale, normalizeArabic, resolveDialect } from '../src/utils/arabicDialect';
-import { bargeIn, mergeHeard } from '../src/utils/shaheenVoice';
+import { bargeIn, mergeHeard, speechWindow } from '../src/utils/shaheenVoice';
 import { systemInstruction, validateChatRequest, voiceInstruction } from '../server/shaheen';
 
 test('the way a visitor writes gives his dialect away', () => {
@@ -77,4 +77,20 @@ test('an interruption is the visitor talking, not Shaheen heard through the spea
   assert.equal(mergeHeard('استنى', 'عايز حاجة أرخص'), 'استنى عايز حاجة أرخص');
   assert.equal(mergeHeard('', 'عايز حاجة'), 'عايز حاجة');
   assert.equal(mergeHeard('بكام', ''), 'بكام');
+  assert.equal(mergeHeard('بكام الزجاجة', 'الزجاجة الصغيرة'), 'بكام الزجاجة الصغيرة');
+});
+
+test('the interruption is faster and never mistakes Shaheen for the visitor', () => {
+  const reply = 'أنصحك بعطر فيه عود وصندل مع لمسة فانيليا، ثباته عالي ومناسب جداً لليالي الشتا.';
+  // What he is saying around now (the speakers can only bring back that part).
+  const long = `${reply} وكمان عندنا اختيار تاني أخف شوية للنهار فيه برغموت وليمون وورد طائفي ومسك أبيض بسعر أقل.`;
+  assert.match(speechWindow(long, 'أنصحك بعطر فيه عود'), /عود وصندل/);
+  assert.doesNotMatch(speechWindow(long, 'أنصحك بعطر فيه عود'), /برغموت/);
+  // Once the visitor was heard starting to talk, one clear word of his is enough.
+  assert.equal(bargeIn('أرخص', reply).barge, false);
+  assert.equal(bargeIn('أرخص', reply, { eager: true }).barge, true);
+  // But his own word coming back is still not the visitor.
+  assert.equal(bargeIn('صندل', reply, { eager: true }).barge, false);
+  // A slightly misheard echo («فانيلا» for «فانيليا») is still his.
+  assert.equal(bargeIn('مع لمسة فانيلا', reply).barge, false);
 });

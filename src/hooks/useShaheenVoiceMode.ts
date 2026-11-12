@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { SupportedLanguage } from '../types/i18n';
-import { bargeIn, mergeHeard, pickShaheenVoice, shaheenSpeechLocale, splitShaheenSpeech } from '../utils/shaheenVoice';
+import { bargeIn, mergeHeard, shaheenSpeechLocale, speechWindow, splitShaheenSpeech } from '../utils/shaheenVoice';
+import { chosenVoice, saveVoiceChoice, savedVoiceChoice, voiceOptions, type VoiceChoice } from '../utils/voiceChoice';
 import { dialectLocale, resolveDialect, saveDialectChoice, savedDialectChoice, type Dialect, type DialectChoice } from '../utils/arabicDialect';
 import { currentStoreCountry } from '../utils/storeCheckout';
 import { learnablePair, planVoiceTurn, readingsFrom, type PendingConfirm } from '../utils/heardFix';
@@ -9,7 +10,7 @@ import { baseLexicon, buildLexicon, type Lexicon } from '../utils/shaheenSpellin
 import { isStaticHosting, requestApi } from '../utils/api';
 import { activeVoicePrint, bargeDecision, deleteVoicePrint, earSupported, openEar, otherVoice, savedVoicePrint, saveVoicePrint,
   setVoicePrintOn, voicePrintOn, VoiceGate, type Ear, type EarSlice } from '../utils/voiceEar';
-import { ENROL_SENTENCES, enrolPrint, type VoiceFrame, type VoicePrint } from '../utils/voicePrint';
+import { adaptPrint, ENROL_SENTENCES, enrolPrint, samePerson, summarize, type VoiceFrame, type VoicePrint } from '../utils/voicePrint';
 
 export interface ShaheenVoiceMessage {
   id: string;
@@ -83,7 +84,7 @@ type VoiceError = 'unsupported' | 'permission' | 'microphone' | 'network' | 'rec
 interface RecognitionResultLike {
   readonly isFinal: boolean;
   readonly length: number;
-  [index: number]: { readonly transcript: string };
+  [index: number]: { readonly transcript: string; readonly confidence?: number };
 }
 
 interface RecognitionEventLike {
@@ -228,6 +229,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const takesRef = useRef<VoiceFrame[][]>([]);
   const takeRef = useRef<{ frames: VoiceFrame[]; done: () => void } | null>(null);
   const sliceRef = useRef<(slice: EarSlice) => void>(() => undefined);
+  // «صوت شاهين»: the voice the visitor chose (by name per language, or a gender), how high and how fast.
+  const [voiceChoice, setVoiceChoiceState] = useState<VoiceChoice>(() => savedVoiceChoice());
+  const voiceChoiceRef = useRef<VoiceChoice>(voiceChoice);
+  const [voiceList, setVoiceList] = useState<SpeechSynthesisVoice[]>([]);
 
   // Browser APIs are checked after mount so this hook remains safe during server rendering.
   useEffect(() => {
@@ -253,7 +258,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   useEffect(() => {
     if (typeof window === 'undefined' || !window.speechSynthesis) return undefined;
     const synth = window.speechSynthesis;
-    const load = () => { try { voicesRef.current = synth.getVoices(); } catch { voicesRef.current = []; } };
+    const load = () => { try { voicesRef.current = synth.getVoices(); } catch { voicesRef.current = []; } setVoiceList(voicesRef.current); };
     load();
     try { synth.addEventListener('voiceschanged', load); } catch { return undefined; }
     return () => { try { synth.removeEventListener('voiceschanged', load); } catch { /* Already gone. */ } };
@@ -397,6 +402,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     watch.continuous = true;
     watch.interimResults = true;
     watch.maxAlternatives = 1;
+    let eager = false;
+    // The engine noticed someone starting to talk: from now on one clear word of the visitor is enough to stop him
+    // (on phones, where the microphone's loudness cannot be read directly, this is the fastest sign there is).
+    watch.onspeechstart = () => { eager = true; };
     watch.onresult = (event) => {
       if (bargeRecognitionRef.current !== watch || sequence !== speechSequenceRef.current) return;
       let heard = '';
@@ -404,7 +413,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       watchHeardRef.current = heard;
       // The voice print said this sound is someone else (a television, a person nearby): not an interruption.
       if (otherVoiceRef.current) return;
-      const check = bargeIn(heard, replyTextRef.current);
+      // Only what he is saying around now can come back through the speakers (the rest of the reply cannot).
+      const check = bargeIn(heard, replyTextRef.current, { near: speechWindow(replyTextRef.current, spokenSoFarRef.current), eager });
       if (!check.barge) return;
       interruptedRef.current = spokenSoFarRef.current;
       bargePrefixRef.current = check.said;
@@ -423,9 +433,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       if (bargeRecognitionRef.current !== watch) return;
       bargeRecognitionRef.current = null;
       // Engines stop after a pause; keep watching while he is still speaking (with a limit per reply).
-      if (speakingRef.current && activeRef.current && sequence === speechSequenceRef.current && bargeRestartsRef.current < 12) {
+      if (speakingRef.current && activeRef.current && sequence === speechSequenceRef.current && bargeRestartsRef.current < 40) {
         bargeRestartsRef.current += 1;
-        setTimeout(() => { if (sequence === speechSequenceRef.current) startBargeWatchRef.current(); }, 150);
+        setTimeout(() => { if (sequence === speechSequenceRef.current) startBargeWatchRef.current(); }, 60);
       }
     };
     bargeRecognitionRef.current = watch;
@@ -454,7 +464,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     gateRef.current.startSpeaking();
     let voices = voicesRef.current;
     if (!voices.length) { try { voices = window.speechSynthesis.getVoices(); } catch { voices = []; } }
-    const voice = pickShaheenVoice(voices, locale, languageRef.current);
+    const choice = voiceChoiceRef.current;
+    const voice = chosenVoice(voices, locale, languageRef.current, choice);
     let index = 0;
     let finished = false;
     speakingRef.current = true;
@@ -476,7 +487,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       try {
         const utterance = new window.SpeechSynthesisUtterance(chunks[index]);
         utterance.lang = locale;
-        utterance.rate = 0.96;
+        utterance.rate = choice.rate;
+        utterance.pitch = choice.pitch;
         if (voice) utterance.voice = voice;
         utterance.onstart = () => {
           if (sequence !== speechSequenceRef.current) return;
@@ -549,10 +561,11 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     try {
       const utterance = new window.SpeechSynthesisUtterance(line);
       utterance.lang = localeRef.current;
-      utterance.rate = 1;
+      utterance.rate = Math.min(1.3, voiceChoiceRef.current.rate + 0.04);
+      utterance.pitch = voiceChoiceRef.current.pitch;
       let voices = voicesRef.current;
       if (!voices.length) { try { voices = window.speechSynthesis.getVoices(); } catch { voices = []; } }
-      const voice = pickShaheenVoice(voices, localeRef.current, languageRef.current);
+      const voice = chosenVoice(voices, localeRef.current, languageRef.current, voiceChoiceRef.current);
       if (voice) utterance.voice = voice;
       setSpokenText(line);
       utterance.onend = () => setSpokenText((now) => (now === line ? '' : now));
@@ -560,7 +573,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     } catch { /* Silence is fine: the chat shows the same line. */ }
   }, []);
 
-  const sendRecognizedText = useCallback(async (rawText: string) => {
+  const sendRecognizedText = useCallback(async (rawText: string, confidence?: number) => {
     const said = rawText.replace(/\s+/g, ' ').trim();
     const alternatives = alternativesRef.current;
     alternativesRef.current = [];
@@ -588,10 +601,24 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     }
     // «شاهين يصحح اللي اتسمع غلط»: the sentence is read again before anything is sent — the engine's readings
     // compared, a word that makes no sense replaced by the closest one that does, and an unsure perfume word asked.
+    // «التخمين من سياق الكلام»: his last reply and the visitor's last sentences — a misheard word is most likely one of these.
+    const recent = messagesRef.current.slice(-6);
+    const lastReply = [...recent].reverse().find((message) => message.role === 'assistant')?.text || '';
+    const context = [lastReply.slice(0, 2000), ...recent.filter((message) => message.role === 'user').slice(-2).map((message) => message.text.replace(/\n\n(?:🎧|✍️) [^\n]*$/u, ''))];
     const plan = planVoiceTurn(said, {
       pending: confirmRef.current, alternatives, learned: { ...sharedFixesRef.current, ...savedHeardFixes() },
-      lexicon: lexiconRef.current, language: languageRef.current, dialect: dialectRef.current,
+      lexicon: lexiconRef.current, language: languageRef.current, dialect: dialectRef.current, context,
+      ...(confidence !== undefined ? { confidence } : {}),
     });
+    if (plan.action === 'repeat') {
+      // «ممكن تعيد؟»: nothing is sent (a guess is how a conversation jumps to another topic).
+      clearListenTimer();
+      cancelRecognition();
+      setLastHeard(said);
+      setInterim('');
+      speakReply(plan.say, () => scheduleListening(300));
+      return;
+    }
     if (plan.action === 'ask') {
       clearListenTimer();
       cancelRecognition();
@@ -629,6 +656,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
 
     let finalText = '';
     let interimText = '';
+    let confidence: number | undefined;
     let recognition: SpeechRecognitionLike;
     try {
       recognition = new Recognition();
@@ -651,16 +679,21 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       setError(null);
       finalText = '';
       interimText = '';
+      const sure: number[] = [];
       const parts: string[][] = [];
       for (let index = 0; index < event.results.length; index += 1) {
         const result = event.results[index];
         const transcript = result?.[0]?.transcript || '';
-        if (result?.isFinal) finalText += ` ${transcript}`;
-        else interimText += ` ${transcript}`;
+        if (result?.isFinal) {
+          finalText += ` ${transcript}`;
+          const value = result?.[0]?.confidence;
+          if (typeof value === 'number' && value > 0) sure.push(value);
+        } else interimText += ` ${transcript}`;
         const readings: string[] = [];
         for (let k = 0; k < (result?.length || 0) && k < 4; k += 1) readings.push(result?.[k]?.transcript || '');
         parts.push(readings);
       }
+      confidence = sure.length ? sure.reduce((a, b) => a + b, 0) / sure.length : undefined;
       // The other readings, as whole sentences (with what the interruption listener heard first, if anything).
       alternativesRef.current = readingsFrom(parts).slice(1).map((reading) => mergeHeard(bargePrefixRef.current, reading));
       setInterim(mergeHeard(bargePrefixRef.current, (finalText || interimText).replace(/\s+/g, ' ').trim()));
@@ -691,8 +724,20 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
         scheduleListening(350);
         return;
       }
+      // «بصمتي بتتعلم»: a sentence clearly his makes the print a little more like his voice today (on this device only).
+      const print = printRef.current;
+      if (heard && print && earRef.current) {
+        const now = summarize(voiced, 25);
+        if (now && samePerson(print, now) === 'yes') {
+          const better = adaptPrint(print, now);
+          printRef.current = better;
+          saveVoicePrint(better);
+        }
+      }
       setInterim(heard);
-      if (heard) void sendRecognizedText(heard);
+      // The engine's own sureness only counts when the visitor's words were all heard by it (not merged with the
+      // interruption listener's).
+      if (heard) void sendRecognizedText(heard, finalText.trim() && heard === finalText.replace(/\s+/g, ' ').trim() ? confidence : undefined);
       else scheduleListening(350);
     };
     recognitionRef.current = recognition;
@@ -894,6 +939,32 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   }, []);
   const micLevel = useCallback(() => (earRef.current ? earRef.current.level() : null), []);
 
+  /** «صوت شاهين»: keep his choice (voice, pitch, pace); the next sentence Shaheen says uses it. */
+  const setVoiceChoice = useCallback((choice: VoiceChoice) => {
+    voiceChoiceRef.current = choice;
+    setVoiceChoiceState(choice);
+    saveVoiceChoice(choice);
+  }, []);
+  /** «اسمع»: one short sentence in a voice, so he can hear it before choosing (not while Shaheen is talking). */
+  const previewVoice = useCallback((name: string, sample: string) => {
+    if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance || speakingRef.current) return;
+    const voice = voicesRef.current.find((item) => item.name === name);
+    try {
+      cancelRecognition();
+      clearListenTimer();
+      window.speechSynthesis.cancel();
+      const utterance = new window.SpeechSynthesisUtterance(sample);
+      utterance.lang = voice?.lang || localeRef.current;
+      if (voice) utterance.voice = voice;
+      utterance.rate = voiceChoiceRef.current.rate;
+      utterance.pitch = voiceChoiceRef.current.pitch;
+      utterance.onend = () => scheduleListening(300);
+      utterance.onerror = () => scheduleListening(300);
+      window.speechSynthesis.speak(utterance);
+    } catch { /* The engine could not say it: nothing else changes. */ }
+  }, [cancelRecognition, clearListenTimer, scheduleListening]);
+  const voices = useMemo(() => voiceOptions(voiceList, localeRef.current, language), [voiceList, language, dialect]);
+
   /** Turn «المقاطعة بالصوت» on or off (kept in this browser). */
   const setBargeEnabled = useCallback((on: boolean) => {
     bargeEnabledRef.current = on;
@@ -1008,5 +1079,11 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     closeEnrolment,
     setPrintOn,
     deletePrint,
+    language,
+    voices,
+    voiceChoice,
+    setVoiceChoice,
+    previewVoice,
+    currentVoiceName: chosenVoice(voiceList, localeRef.current, language, voiceChoice)?.name,
   };
 }

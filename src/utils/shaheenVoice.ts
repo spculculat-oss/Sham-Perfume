@@ -129,17 +129,50 @@ const STOP_WORDS = new Set([
  * the speakers. What it heard is a real interruption only when it is not his own words: at least two words he is
  * not saying (and most of what was heard), or a clear «stop/wait». `said` = the visitor's own words to keep.
  */
-export function bargeIn(heard: string, reply: string): { barge: boolean; said: string } {
+export function bargeIn(heard: string, reply: string, { near, eager = false }: {
+  /** What he is saying around this moment (his words a few seconds back and ahead): only these can echo back now. */
+  near?: string;
+  /** The microphone already noticed someone starting to talk: one clear word of the visitor is enough. */
+  eager?: boolean;
+} = {}): { barge: boolean; said: string } {
   const words = heard.replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
   const normalizedWords = words.map((word) => normalizeArabic(word)).filter(Boolean);
   if (!normalizedWords.length) return { barge: false, said: '' };
   const own = new Set(normalizeArabic(prepareShaheenSpeech(reply)).split(' ').filter(Boolean));
-  const novel = words.filter((word) => { const normal = normalizeArabic(word); return normal.length > 1 && !own.has(normal); });
+  const ownNow = near ? new Set(normalizeArabic(prepareShaheenSpeech(near)).split(' ').filter(Boolean)) : own;
+  // A word of his own, or the engine's slightly wrong reading of one («لمسه» for «لمسة», «عوض» for «عود»).
+  const echoes = (normal: string, words: Set<string>) => words.has(normal) || (normal.length >= 4 && [...words].some((word) => Math.abs(word.length - normal.length) <= 1 && wordsDiffer(word, normal) <= 1));
+  const novel = words.filter((word) => { const normal = normalizeArabic(word); return normal.length > 1 && !echoes(normal, ownNow); });
   const heardNormal = normalizeArabic(heard);
-  const stop = [...STOP_WORDS].some((word) => (` ${heardNormal} `).includes(` ${word} `) && !word.split(' ').every((part) => own.has(part)));
+  const stop = [...STOP_WORDS].some((word) => (` ${heardNormal} `).includes(` ${word} `) && !word.split(' ').every((part) => ownNow.has(part)));
   const ratio = novel.length / normalizedWords.length;
-  const barge = stop || (novel.length >= 2 && ratio >= 0.5);
-  return { barge, said: barge ? (ratio >= 0.7 ? words.join(' ') : novel.join(' ')) : '' };
+  const clearWord = novel.some((word) => normalizeArabic(word).length >= 3);
+  const barge = stop || (novel.length >= 2 && ratio >= 0.5) || (eager && clearWord && ratio >= 0.5);
+  if (!barge) return { barge, said: '' };
+  // His words to keep: never one Shaheen said anywhere in this reply (that is his echo, and it would change the topic).
+  const mine = words.filter((word) => { const normal = normalizeArabic(word); return normal.length > 0 && !echoes(normal, own); });
+  return { barge, said: mine.length / normalizedWords.length >= 0.7 ? words.join(' ') : mine.join(' ') };
+}
+
+/** Plain edit distance between two short words (for «is this just his own word, misheard?»). */
+function wordsDiffer(a: string, b: string): number {
+  let previous = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i += 1) {
+    const row = [i];
+    for (let j = 1; j <= b.length; j += 1) row[j] = Math.min(previous[j]! + 1, row[j - 1]! + 1, previous[j - 1]! + (a[i - 1] === b[j - 1] ? 0 : 1));
+    previous = row;
+  }
+  return previous[b.length]!;
+}
+
+/**
+ * The words Shaheen is saying around this moment: `span` words before where he is in the reply and `span` after
+ * (what the microphone can hear of him right now; the rest of the reply cannot be an echo).
+ */
+export function speechWindow(reply: string, spokenSoFar: string, span = 14): string {
+  const words = reply.replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
+  const at = spokenSoFar.replace(/\s+/g, ' ').trim().split(' ').filter(Boolean).length;
+  return words.slice(Math.max(0, at - span), at + span).join(' ');
 }
 
 /** The interrupting words and the rest of the sentence heard right after, without saying any word twice. */
@@ -152,5 +185,13 @@ export function mergeHeard(prefix: string, heard: string): string {
   const normalRest = normalizeArabic(rest);
   if (normalRest.startsWith(normalHead) || normalRest.includes(normalHead)) return rest;
   if (normalHead.includes(normalRest)) return head;
+  // «بكام الزجاجة» + «الزجاجة الصغيرة»: the two listeners overlap — the words are said once, and the full listener's
+  // reading (the newer, clearer one) wins for the shared part.
+  const headWords = head.split(' ');
+  const restKeys = rest.split(' ').map((word) => normalizeArabic(word));
+  for (let take = Math.min(headWords.length, restKeys.length); take > 0; take -= 1) {
+    const tail = headWords.slice(-take).map((word) => normalizeArabic(word));
+    if (tail.every((key, i) => key === restKeys[i])) return [...headWords.slice(0, -take), rest].join(' ');
+  }
   return `${head} ${rest}`;
 }

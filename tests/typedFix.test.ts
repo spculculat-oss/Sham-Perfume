@@ -51,7 +51,9 @@ test('not sure about a perfume word: «قصدك «عنبر»؟» first, then «�
   assert.equal(plan.say, 'قصدك «عنبر»؟');
   assert.equal((planTypedTurn('عطر فيه عمبل', { language: 'ar', dialect: 'gulf' }) as { say?: string }).say, 'تقصد «عنبر»؟');
   const pending = plan.pending;
-  assert.deepEqual(planTypedTurn('أيوه', { language: 'ar', pending }), { action: 'send', text: 'عطر فيه عنبر', changed: true });
+  assert.deepEqual(planTypedTurn('أيوه', { language: 'ar', pending }), { action: 'send', text: 'عطر فيه عنبر', changed: true, learn: { from: 'عمبل', to: 'عنبر' } });
+  // Learned: next time his own slip is fixed at once, without asking.
+  assert.deepEqual(planTypedTurn('عايز عمبل', { language: 'ar', learned: { عمبل: 'عنبر' } }), { action: 'send', text: 'عايز عنبر', changed: true });
   assert.deepEqual(planTypedTurn('لا', { language: 'ar', pending }), { action: 'send', text: 'عطر فيه عمبل', changed: false });
   assert.deepEqual(planTypedTurn('لا مسك', { language: 'ar', pending }), { action: 'send', text: 'عطر فيه مسك', changed: true });
   // Something else: a new message (the question is dropped).
@@ -89,6 +91,9 @@ test('the chat: a mistyped word is corrected before the server sees it; an unsur
   await store.send({ ...ask, text: 'ايوه' });
   assert.deepEqual(sent, ['عايز عطر فيه ياسمين', 'عطر فيه عنبر']);
   assert.equal(store.getSnapshot().messages.at(-2)!.text, 'ايوه\n\n✍️ فهمت سؤالك كده: «عطر فيه عنبر»');
+  // The confirmed slip is kept in this browser: asked once, then fixed straight away.
+  assert.equal(await store.send({ ...ask, text: 'عمبل ثابت' }), true);
+  assert.equal(sent.at(-1), 'عنبر ثابت');
 
   // A spoken turn was already read by the voice mode: sent as it is.
   await store.send({ ...ask, text: 'عطر فيه عمبل', voice: {} });

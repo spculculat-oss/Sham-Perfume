@@ -184,3 +184,32 @@ test('the heard corrections travel safely in the request', () => {
   const request = validateChatRequest({ message: 'عايز عطر عود', voice: { heard: [{ from: 'عوض', to: 'عود', confirmed: true }, { from: 1 }, { from: 'x'.repeat(40), to: 'y' }] } });
   assert.deepEqual(request.voice, { heard: [{ from: 'عوض', to: 'عود', confirmed: true }] });
 });
+
+test('a misheard word is guessed from the conversation just now', () => {
+  const context = ['عندنا عطر لطافة بديع العود وعطر أمير العرب، الاتنين ثباتهم عالي.'];
+  const guessed = planVoiceTurn('عايز بديأ العود', { language: 'ar', context });
+  assert.deepEqual(guessed, { action: 'send', text: 'عايز بديع العود', heard: [{ from: 'بديأ', to: 'بديع' }] });
+  // Without the conversation it is not guessed (nothing to go on).
+  assert.equal(planVoiceTurn('عايز بديأ العود', { language: 'ar' }).action === 'send' && (planVoiceTurn('عايز بديأ العود', { language: 'ar' }) as { text: string }).text, 'عايز بديأ العود');
+  // Everyday sentences are left exactly as said.
+  for (const said of ['انا عايز عطر للشغل يكون هادي', 'الريحه دي بتفضل قد ايه على الهدوم', 'انا مش فاهم قصدك', 'عايز اشتري هدية لصاحبي']) {
+    const plan = planVoiceTurn(said, { language: 'ar', context });
+    assert.equal(plan.action === 'send' && plan.text, said, said);
+  }
+});
+
+test('the engine unsure and the sentence makes no sense: «ممكن تعيد؟» instead of a guess', () => {
+  assert.deepEqual(planVoiceTurn('غفص لمحب شطر', { language: 'ar', confidence: 0.3 }), { action: 'repeat', say: 'معلش ماسمعتكش كويس، ممكن تعيد تاني؟' });
+  assert.equal(planVoiceTurn('غفص لمحب شطر', { language: 'ar', dialect: 'gulf', confidence: 0.3 }).action === 'repeat', true);
+  // A sentence that makes sense is answered even when the engine was unsure; an unknown sureness never asks.
+  assert.equal(planVoiceTurn('عايز عطر عود', { language: 'ar', confidence: 0.3 }).action, 'send');
+  assert.equal(planVoiceTurn('غفص لمحب شطر', { language: 'ar' }).action, 'send');
+});
+
+test('«لا، فيتيفر» that sounds like what was heard is learned as his way of saying it; a change of mind is not', () => {
+  const asked = planVoiceTurn('I want a perfume with vetivr', { language: 'en' });
+  assert.equal(asked.action, 'ask');
+  if (asked.action !== 'ask') return;
+  const learned = planVoiceTurn('no, vetiver', { language: 'en', pending: { ...asked.pending, to: 'vanilla', corrected: 'I want a perfume with vanilla' } });
+  assert.equal(learned.action === 'send' && learned.heard.at(-1)?.confirmed, true);
+});
