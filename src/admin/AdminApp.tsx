@@ -260,8 +260,7 @@ function AdminClockAndRobotHelp({ go }: { go: (t: Tab) => void }) {
   const helpPaths: { tab: Tab; title: string; description: string; icon: React.ReactNode }[] = [
     { tab: 'agent', title: T('المساعد الإداري'), description: T('تقارير تشغيلية وخطوات قابلة للتنفيذ، مع صلاحيات قراءة فقط.'), icon: <Wand2 className="h-4 w-4" /> },
     { tab: 'sandbox', title: T('مختبر المساعد'), description: T('جرّب سؤالاً أو فعّل استشارة المجلس.'), icon: <MessagesSquare className="h-4 w-4" /> },
-    { tab: 'shaheen', title: T('الخبير شاهين'), description: T('استعن به في أسئلة العطور والتخصصات.'), icon: <FlaskConical className="h-4 w-4" /> },
-    { tab: 'opsmap', title: T('خريطة التشغيل'), description: T('تابع المهام الجارية وعمل الروبوتات.'), icon: <Activity className="h-4 w-4" /> },
+    { tab: 'supervisor', title: T('إدارة الروبوتات'), description: T('تابع مهام الروبوتات ومجلس الخبراء وإشراف شاهين.'), icon: <Bot className="h-4 w-4" /> },
   ];
 
   return (
@@ -277,6 +276,9 @@ function AdminClockAndRobotHelp({ go }: { go: (t: Tab) => void }) {
           <time dateTime={clock.dateTime} aria-label={T('الوقت الحالي')} aria-live="off" dir="ltr" className="font-mono text-2xl font-bold tabular-nums">{clock.time}</time>
         </div>
         <p className="mt-1 text-[11px] text-stone-300">{T('توقيت القاهرة، مصر')}</p>
+        <button data-testid="admin-clock-robot-link" type="button" onClick={() => go('opsmap')} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-amber-200/30 bg-white/10 px-3 py-2 text-xs font-semibold text-amber-100 transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300">
+          <Activity className="h-4 w-4" aria-hidden="true" />{T('عرض حركة الروبوتات')}
+        </button>
       </div>
 
       <div data-testid="admin-robot-help" className={`${card} min-w-0`}>
@@ -284,10 +286,10 @@ function AdminClockAndRobotHelp({ go }: { go: (t: Tab) => void }) {
           <span className="rounded-xl bg-amber-100 p-2 text-amber-800"><Bot className="h-4 w-4" aria-hidden="true" /></span>
           <div>
             <h2 className="text-sm font-bold">{T('طرق الاستعانة بالروبوتات')}</h2>
-            <p className="mt-1 text-[11px] leading-relaxed text-stone-500">{T('اختَر المسار المناسب: تقرير إداري، استشارة للمجلس، سؤال لخبير شاهين، أو متابعة التشغيل.')}</p>
+            <p className="mt-1 text-[11px] leading-relaxed text-stone-500">{T('اختَر المسار المناسب: تقرير إداري، تجربة المساعد أو استشارة المجلس، أو إدارة الروبوتات.')}</p>
           </div>
         </div>
-        <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
           {helpPaths.map((path) => (
             <button key={path.tab} type="button" onClick={() => go(path.tab)} className="flex min-h-20 items-start gap-2 rounded-xl border border-stone-200 bg-stone-50 p-2.5 text-start transition hover:border-amber-400 hover:bg-amber-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">
               <span className="mt-0.5 shrink-0 text-amber-800">{path.icon}</span>
