@@ -7,14 +7,9 @@ name: Shaheen language agent (وكيل اللغات)
 # package waits for its renewal). Branch pushes rehearse with 2 requests (nothing committed).
 
 on:
-  schedule:
-    - cron: '11 9 * * *' # after the doctor and memory runs
-    - cron: '11 21 * * *' # second translation round of the day
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-languages/**', '.github/workflows/shaheen-languages.yml']
-
 permissions:
   contents: write
   actions: write

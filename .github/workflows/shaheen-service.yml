@@ -10,17 +10,9 @@ name: Shaheen customer care — automatic service desk
 # Minute 3: clear of the State (27), importer (37), school clock (47), patrol (52) and the pre-check (10).
 
 on:
-  schedule:
-    - cron: '3 */6 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: ['arena/**']
-    paths:
-      - 'scripts/shaheen-service/**'
-      - 'server/core/storeGuide.ts'
-      - 'src/utils/pricing.ts'
-      - '.github/workflows/shaheen-service.yml'
-
 permissions:
   contents: write
 

@@ -15,6 +15,7 @@ import { corsMiddleware } from './cors';
 import { createCommunity, createCommunityRouter } from './community/router';
 import { createContractsRouter } from './contracts/router';
 import { productsForCheckout, recordCheckout, markPaid } from './community/service';
+import { liveFxRates } from './core/liveFx';
 
 dotenv.config();
 
@@ -44,6 +45,14 @@ app.get('/api/health', (_req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   // `version` = deployed commit: the maintenance agent compares it with main to spot a stale deploy.
   res.json({ service: 'sham-perfume', status: 'ok', version: shamCore.runtime.version, uptimeS: Math.round((Date.now() - shamCore.runtime.startedAt) / 1000) });
+});
+
+// «أسعار الصرف الحية»: the server's newest rates (server/core/liveFx.ts) for the storefront, which keeps them for
+// the next visit so the prices a visitor sees match the checkout without a GitHub robot committing them.
+app.get('/api/fx', async (_req, res) => {
+  const table = await liveFxRates();
+  res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=3600');
+  res.json({ base: table.base, source: table.source, updatedAt: table.updatedAt, rates: table.rates });
 });
 
 // «الخبير شاهين»: GET /api/models + POST /api/chat. Settings come from server/config/shaheen.ts and the

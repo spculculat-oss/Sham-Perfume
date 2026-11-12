@@ -8,24 +8,9 @@ name: Shaheen senses — site data and world data
 # لا روبوت هنا يغيّر سعر ولا يعد بتوصيل: الأسعار والوعود قرار صاحب المتجر.
 
 on:
-  schedule:
-    # كل 6 ساعات، بعد سينابس وب sebelum الفحص الشامل.
-    - cron: '13 0,6,12,18 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: [main, 'arena/**']
-    paths:
-      - 'scripts/shaheen-senses/**'
-      - 'src/data/shipping.json'
-      - 'src/data/shipping-costs.json'
-      - 'src/data/shipping-lanes.json'
-      - 'src/data/customs.json'
-      - 'src/data/live/fx-rates.json'
-      - 'src/data/live/trade-lanes.json'
-      - 'src/data/products.json'
-      - 'src/data/carrier-candidates.json'
-      - '.github/workflows/shaheen-senses.yml'
-
 permissions:
   contents: write
 

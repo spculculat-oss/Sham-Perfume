@@ -33,7 +33,7 @@ import { extractFormulaFromAIMessage, extractFormulasFromAIMessage, isFormulaTra
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
-import { useShaheenVoiceMode } from '../hooks/useShaheenVoiceMode';
+import { useShaheenVoiceMode, type ShaheenVoiceTurn } from '../hooks/useShaheenVoiceMode';
 import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
 import { ShaheenServiceStatus, ShaheenModesPanel, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
@@ -45,12 +45,13 @@ import { AIDisclosureBadge } from './LegalDisclaimer';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
-import { LText, makeT, fmt, LOCALE_MAP } from '../لغات/localize';
+import { LText, makeT, fmt } from '../لغات/localize';
 import { isStaticHosting } from '../utils/api';
 import { copyChatText } from '../utils/clipboard';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { FloatingDock } from './FloatingDock';
-import { prepareShaheenSpeech } from '../utils/shaheenVoice';
+import { readAloud } from '../utils/readAloud';
+import { askMessages, lookingUpLine } from '../utils/heardFix';
 
 
 const S = {
@@ -871,20 +872,24 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const [input, setInput] = useState('');
   const [compoundingStep, setCompoundingStep] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const voiceSendRef = useRef<(text: string) => Promise<boolean>>(async () => false);
+  const voiceSendRef = useRef<(text: string, turn?: ShaheenVoiceTurn) => Promise<boolean>>(async () => false);
+  // Spoken replies carry the prices the visitor sees (his country's currency), not the stored Egyptian ones.
   const voiceMessages = useMemo(() => messages.map((message) => ({
     id: message.id,
     role: message.role,
-    text: message.text,
+    text: message.role === 'assistant' ? prices.show(message.text) : message.text,
     kind: message.kind,
-  })), [messages]);
+  })), [messages, prices.currency]);
   const voice = useShaheenVoiceMode({
     language: currentLang,
     messages: voiceMessages,
     isLoading,
     disabled: hidden || isStaticHosting || !isOpen,
-    onSend: (text) => voiceSendRef.current(text),
+    onSend: (text, turn) => voiceSendRef.current(text, turn),
+    onAsk: (heard, question) => setMessages((list) => [...list, ...askMessages(heard, question, currentLang)]),
   });
+  // «ثواني أشوفلك البيانات»: while he really looks the question up (store, prices, stock…), he says so.
+  const lookingUp = isLoading ? lookingUpLine(messages, currentLang, voice.dialect) : undefined;
   const closeChat = useCallback(() => {
     voice.stop();
     if (isSpeaking && typeof window !== 'undefined') window.speechSynthesis?.cancel();
@@ -944,6 +949,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     textToSend?: string,
     overrideModel?: ShaheenModelChoice,
     fromVoice = false,
+    voiceTurnInfo?: ShaheenVoiceTurn,
   ): Promise<boolean> => {
     const text = (textToSend || input).trim();
     if (!text || isLoading || isStaticHosting) return false;
@@ -972,7 +978,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     const voiceTurn = !fromVoice && voice.beginOutgoingTurn();
     try {
       const sent = await sendMessage({ text, model: activeModelChoice, language: currentLang,
-        errorText: (error) => chatErrorText(currentLang, error) });
+        errorText: (error) => chatErrorText(currentLang, error), ...(fromVoice ? { voice: voiceTurnInfo || {} } : {}) });
       if (voiceTurn) voice.finishOutgoingTurn(sent !== false);
       return sent !== false;
     } catch {
@@ -980,7 +986,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
       return false;
     }
   };
-  voiceSendRef.current = (text) => handleSendMessage(text, undefined, true);
+  voiceSendRef.current = (text, turn) => handleSendMessage(text, undefined, true, turn);
 
   // Always use the current history/language/loading state when a calculator asks Shahin.
   useEffect(() => {
@@ -1037,16 +1043,9 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
         setIsSpeaking(false);
         return;
       }
-      window.speechSynthesis.cancel();
-      const spokenText = prepareShaheenSpeech(text);
-      if (!spokenText) return;
-      const utterance = new SpeechSynthesisUtterance(spokenText);
-      utterance.lang = LOCALE_MAP[currentLang] || 'ar-EG';
-      utterance.rate = 0.95;
-      utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
+      // Said the way Shaheen talks (numbers, prices and lists as people say them), in the visitor's dialect.
       setIsSpeaking(true);
-      window.speechSynthesis.speak(utterance);
+      readAloud(text, { language: currentLang, dialect: voice.dialect, onEnd: () => setIsSpeaking(false) });
     }
   };
 
@@ -1138,7 +1137,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                   <div className="text-[10px] text-amber-300/80 flex items-center gap-1" aria-live="polite">
                     <span className={`w-1.5 h-1.5 rounded-full ${isLoading ? 'bg-amber-400 animate-pulse' : enabledEngineCount > 0 && modelStatus.enabled ? 'bg-emerald-400' : 'bg-stone-500'}`} />
                     <span>
-                      {isLoading ? compoundingMessages[compoundingStep]
+                      {isLoading ? lookingUp || compoundingMessages[compoundingStep]
                         : enabledEngineCount > 0 && modelStatus.enabled ? fmt(L('status_ready_tpl'), { n: enabledEngineCount })
                         : modelStatus.models ? L('status_offline') : '…'}
                     </span>
@@ -1611,8 +1610,8 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                       <span className="animate-spin text-base">🧪</span>
                       <span>{L('loading_title')}</span>
                     </div>
-                    <div className="text-[11px] text-amber-800 leading-relaxed">
-                      {compoundingMessages[compoundingStep]}
+                    <div className="text-[11px] text-amber-800 leading-relaxed" aria-live="polite">
+                      {lookingUp || compoundingMessages[compoundingStep]}
                     </div>
                     {busy && (
                       <p role="status" className="rounded-lg bg-amber-100/80 px-2 py-1.5 text-[11px] font-semibold leading-relaxed text-amber-900">{busyNoteText(currentLang)}</p>
@@ -1664,7 +1663,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
               }}
               className="p-3 bg-white border-t border-stone-200 flex items-center gap-2 shrink-0"
             >
-              <ShaheenVoiceModeButton language={currentLang} voice={voice} disabled={isStaticHosting || hidden} />
+              <ShaheenVoiceModeButton language={currentLang} voice={voice} disabled={isStaticHosting || hidden} avatarSrc={perfumerImg} />
               <input
                 ref={inputRef}
                 type="text"

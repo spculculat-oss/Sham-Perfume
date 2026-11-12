@@ -46,7 +46,7 @@ const FEED: Record<FeedKind, { emoji: string; verb: () => string; tone: string }
   failed: { emoji: '🔴', verb: () => T('فشلت'), tone: 'text-red-300' },
   cancelled: { emoji: '⏹️', verb: () => T('اتلغى تشغيلها'), tone: 'text-stone-400' },
 };
-const PAUSED_BY = { owner: () => T('بأمر صاحب الموقع'), state: () => T('بأمر دولة المنصة'), frozen: () => T('فرامل الطوارئ') };
+const PAUSED_BY = { owner: () => T('بأمر صاحب الموقع'), state: () => T('بأمر دولة المنصة'), frozen: () => T('فرامل الطوارئ'), moving: () => T('بيتنقل لسيرفر الروبوتات') };
 
 /** One tile's second line: what it is doing now, when it wakes, or why it stopped. */
 function statusLine(l: BotLive, st: Step | undefined, now: number): string {

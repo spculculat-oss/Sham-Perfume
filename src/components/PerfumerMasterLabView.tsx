@@ -32,7 +32,7 @@ import { extractFormulaFromAIMessage, extractFormulasFromAIMessage, isFormulaTra
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
-import { LText, makeT, fmt, loc, LOCALE_MAP } from '../لغات/localize';
+import { LText, makeT, fmt, loc } from '../لغات/localize';
 import { isStaticHosting } from '../utils/api';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { ShaheenModesPanel, ShaheenServiceStatus, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
@@ -44,10 +44,11 @@ import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd }
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
-import { useShaheenVoiceMode } from '../hooks/useShaheenVoiceMode';
+import { useShaheenVoiceMode, type ShaheenVoiceTurn } from '../hooks/useShaheenVoiceMode';
 import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
 import { copyChatText } from '../utils/clipboard';
-import { prepareShaheenSpeech } from '../utils/shaheenVoice';
+import { readAloud } from '../utils/readAloud';
+import { askMessages, lookingUpLine } from '../utils/heardFix';
 
 interface PerfumerMasterLabViewProps {
   currentLang?: SupportedLanguage;
@@ -286,20 +287,24 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const [dripping, setDripping] = useState(false);
   const [compoundingStep, setCompoundingStep] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const voiceSendRef = useRef<(text: string) => Promise<boolean>>(async () => false);
+  const voiceSendRef = useRef<(text: string, turn?: ShaheenVoiceTurn) => Promise<boolean>>(async () => false);
+  // Spoken replies carry the prices the visitor sees (his country's currency), not the stored Egyptian ones.
   const voiceMessages = useMemo(() => messages.map((message) => ({
     id: message.id,
     role: message.role,
-    text: message.text,
+    text: message.role === 'assistant' ? prices.show(message.text) : message.text,
     kind: message.kind,
-  })), [messages]);
+  })), [messages, prices.currency]);
   const voice = useShaheenVoiceMode({
     language: currentLang,
     messages: voiceMessages,
     isLoading,
     disabled: isStaticHosting,
-    onSend: (text) => voiceSendRef.current(text),
+    onSend: (text, turn) => voiceSendRef.current(text, turn),
+    onAsk: (heard, question) => setMessages((list) => [...list, ...askMessages(heard, question, currentLang)]),
   });
+  // «ثواني أشوفلك البيانات»: while he really looks the question up (store, prices, stock…), he says so.
+  const lookingUp = isLoading ? lookingUpLine(messages, currentLang, voice.dialect) : undefined;
 
   // Multi-AI Model Orchestrator State
   const [comparingMsgId, setComparingMsgId] = useState<string | null>(null);
@@ -317,16 +322,9 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
         setIsSpeaking(false);
         return;
       }
-      window.speechSynthesis.cancel();
-      const spokenText = prepareShaheenSpeech(text);
-      if (!spokenText) return;
-      const utterance = new SpeechSynthesisUtterance(spokenText);
-      utterance.lang = LOCALE_MAP[currentLang] || 'ar-SA';
-      utterance.rate = 0.95;
-      utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
+      // Said the way Shaheen talks (numbers, prices and lists as people say them), in the visitor's dialect.
       setIsSpeaking(true);
-      window.speechSynthesis.speak(utterance);
+      readAloud(text, { language: currentLang, dialect: voice.dialect, onEnd: () => setIsSpeaking(false) });
     }
   };
 
@@ -365,7 +363,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     L('comp_4'),
   ];
 
-  const handleSend = async (customText?: string, overrideModel?: ShaheenModelChoice, fromVoice = false): Promise<boolean> => {
+  const handleSend = async (customText?: string, overrideModel?: ShaheenModelChoice, fromVoice = false, voiceTurnInfo?: ShaheenVoiceTurn): Promise<boolean> => {
     const text = (customText || input).trim();
     if (!text || text.length > 4000 || isLoading || isStaticHosting) return false;
     // Only an explicit transfer command applies an earlier formula (never "…حول تركيبة…").
@@ -381,7 +379,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     const voiceTurn = !fromVoice && voice.beginOutgoingTurn();
     try {
       const sent = await sendMessage({ text, model: overrideModel || selectedModel, language: currentLang,
-        errorText: (error) => chatErrorText(currentLang, error) });
+        errorText: (error) => chatErrorText(currentLang, error), ...(fromVoice ? { voice: voiceTurnInfo || {} } : {}) });
       if (voiceTurn) voice.finishOutgoingTurn(sent !== false);
       return sent !== false;
     } catch {
@@ -389,7 +387,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
       return false;
     }
   };
-  voiceSendRef.current = (text) => handleSend(text, undefined, true);
+  voiceSendRef.current = (text, turn) => handleSend(text, undefined, true, turn);
 
   const handleCopySingle = async (id: string, text: string) => {
     if (!await copyChatText(text)) return;
@@ -915,8 +913,8 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                   <span className="animate-spin text-base">🧪</span>
                   <span>{L('loading_status')}</span>
                 </div>
-                <p className="text-xs text-amber-800 leading-relaxed">
-                  {compoundingPhrases[compoundingStep]}
+                <p className="text-xs text-amber-800 leading-relaxed" aria-live="polite">
+                  {lookingUp || compoundingPhrases[compoundingStep]}
                 </p>
                 {busy && (
                   <p role="status" className="rounded-lg bg-amber-100/80 px-2 py-1.5 text-[11px] font-semibold leading-relaxed text-amber-900">{busyNoteText(currentLang)}</p>

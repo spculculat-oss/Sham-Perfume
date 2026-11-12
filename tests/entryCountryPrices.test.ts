@@ -114,7 +114,8 @@ test('POST /api/chat: a platform answer in pounds reaches a Saudi visitor in riy
     assert.equal(s.country, 'SA', 'the server checked where he enters from (not the stale page country)');
     assert.equal(s.currency, 'SAR');
     // The same question again (from the answer cache): the cache kept the pounds, so Egypt still reads pounds.
-    const egypt = await ask('ما الفرق بين EDP و EDT', { 'x-vercel-ip-country': 'EG', 'x-forwarded-for': '10.9.0.2' });
+    // (The cache is per dialect, so this Egyptian visitor picked the Gulf dialect to share the Saudi answer.)
+    const egypt = await ask('ما الفرق بين EDP و EDT', { 'x-vercel-ip-country': 'EG', 'x-forwarded-for': '10.9.0.2' }, { dialect: 'gulf' });
     const e = await egypt.json() as { reply: string; currency?: string };
     assert.equal(e.currency, 'EGP');
     assert.match(e.reply, /EGP 1,420/);

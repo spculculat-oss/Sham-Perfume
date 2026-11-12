@@ -5,13 +5,9 @@ name: Platform census & world visit ledger (every 6 hours)
 # (src/data/live/platform-census.json) وخريطة العالم الحرارية التفاعلية بدون أي أرقام وهمية أو بيانات شخصية.
 
 on:
-  schedule:
-    - cron: '15 */6 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: ['arena/**']
-    paths: ['src/utils/platformCensus.ts', 'scripts/state/census.mts', '.github/workflows/platform-census.yml']
-
 permissions:
   contents: write
 

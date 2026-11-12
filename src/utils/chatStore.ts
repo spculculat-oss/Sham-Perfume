@@ -11,7 +11,9 @@ import { browserMemory, type OfflineAnswer, type OfflineMemory } from './browser
 import { isSourcesFollowUp, requestedSourcesReply } from './chatSources';
 import { offlineNote } from './shaheenMemory';
 import { keyboardFix, understoodNote } from './shaheenSpelling';
+import { heardNote } from './heardFix';
 import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } from './api';
+import { savedDialectChoice } from './arabicDialect';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
   loadStoredChatSession, saveChatSession, type ChatMessage, type ShaheenProvider } from './chatStorage';
 
@@ -49,6 +51,10 @@ const wait = (ms: number, signal: AbortSignal) => new Promise<void>((resolve, re
 interface SendOptions {
   text: string; model: ShaheenModelChoice; language: SupportedLanguage;
   errorText: (error: unknown) => string;
+  /** «التحدث مع شاهين»: a spoken turn (the reply is read aloud); `interrupted` = what he had said when cut off. */
+  voice?: { interrupted?: string;
+    /** «شاهين يصحح اللي اتسمع غلط»: words heard as others and read as the word meant (shown under his message). */
+    heard?: { from: string; to: string; confirmed?: boolean }[] };
 }
 
 /**
@@ -68,7 +74,9 @@ export function chatHistory(messages: ChatMessage[]) {
   for (const message of [...messages].reverse()) {
     if (message.id === 'welcome' || message.kind === 'error' || message.id.startsWith('bot-err-') ||
       message.id.startsWith('err-') || message.id.startsWith('expired-notice-')) continue;
-    const text = compactTurn(message.text.trim());
+    // The «🎧 سمعت … وفهمتها …» line under a spoken message is for the visitor, not part of what he said.
+    const said = message.role === 'user' ? message.text.replace(/\n\n🎧 [^\n]*$/u, '') : message.text;
+    const text = compactTurn(said.trim());
     if (!text || size + text.length > 16000 || history.length === 24) break;
     const sources = message.role === 'assistant' && !latestAssistantSeen ? message.sources : undefined;
     if (message.role === 'assistant') latestAssistantSeen = true;
@@ -211,7 +219,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       const question = current.messages[userIndex];
       if (!question || question.role !== 'user') return false;
       publish({ ...current, messages: current.messages.slice(0, userIndex) });
-      return store.send({ ...options, text: question.text });
+      return store.send({ ...options, text: question.text.replace(/\n\n🎧 [^\n]*$/u, '') });
     },
     async send(options: SendOptions) {
       expire();
@@ -223,11 +231,14 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       const text = keyboardFix(typedText) ?? typedText;
       const timestamp = () => new Date().toLocaleTimeString(options.language, { hour: '2-digit', minute: '2-digit' });
       const id = (role: string) => `${role}-${Date.now()}-${++sequence}`;
+      // A spoken message whose words Shaheen corrected shows what he heard and what he understood under it.
+      const heard = options.voice?.heard || [];
+      const shown = heard.length ? `${text}\n\n${heardNote(options.language, heard)}` : text;
       // A bare greeting is answered here: instant, identical on every site, and no AI quota spent on «هاي».
       const greeting = greetingKind(text);
       if (greeting) {
         publish({ ...current, messages: [...current.messages,
-          { id: id('user'), role: 'user', text, timestamp: timestamp() },
+          { id: id('user'), role: 'user', text: shown, timestamp: timestamp() },
           { id: id('bot'), role: 'assistant', text: greetingReply(greeting, options.language), timestamp: timestamp(),
             aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } }] });
         return true;
@@ -237,7 +248,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         const sources = previousAnswer?.sources || [];
         if (sources.length || isStaticHosting) {
           publish({ ...current, messages: [...current.messages,
-            { id: id('user'), role: 'user', text, timestamp: timestamp() },
+            { id: id('user'), role: 'user', text: shown, timestamp: timestamp() },
             { id: id('bot'), role: 'assistant', text: requestedSourcesReply(sources, options.language), timestamp: timestamp(), ...(sources.length ? { sources } : {}),
               aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } }] });
           return true;
@@ -249,7 +260,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       if (quick) {
         publish({ ...current, messages: [...current.messages,
           // A card/ID number is not even kept in this browser's chat history (it would travel with the next turn).
-          { id: id('user'), role: 'user', text: quick.app === 'privacy' ? maskSensitive(text) : text, timestamp: timestamp() },
+          { id: id('user'), role: 'user', text: quick.app === 'privacy' ? maskSensitive(text) : shown, timestamp: timestamp() },
           { id: id('bot'), role: 'assistant', text: quick.reply, timestamp: timestamp(),
             aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } }] });
         return true;
@@ -258,7 +269,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       const token = ++generation;
       controller = new AbortController();
       publish({ ...current, isLoading: true,
-        messages: [...current.messages, { id: id('user'), role: 'user', text, timestamp: timestamp() }] });
+        messages: [...current.messages, { id: id('user'), role: 'user', text: shown, timestamp: timestamp() }] });
       const signal = controller.signal;
       const history = chatHistory(current.messages);
       // «شاهين بعملة بلدك»: the visitor's own money («moins de 30 €») reaches the brain in the store's pounds.
@@ -267,11 +278,16 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       // «دولة الدخول قبل الرد»: the page's country and currency travel too; the server checks where he is entering
       // from and writes the reply's prices in that country's currency (and tells us which country it was).
       const money = chatMoney(options.language);
+      // «لهجات شاهين»: his own dialect pick ('auto' = the server reads it from his words and his country), and
+      // whether this turn is spoken.
+      const talk = { ...(options.language === 'ar' ? { dialect: savedDialectChoice() } : {}),
+        ...(options.voice ? { voice: { ...(options.voice.interrupted ? { interrupted: options.voice.interrupted.slice(-1500) } : {}),
+          ...(heard.length ? { heard: heard.slice(0, 5) } : {}) } } : {}) };
       try {
         // The anonymous visitor id travels in the body, not in a custom header: a custom header needs CORS approval,
         // and a server one deploy behind would then block every question from the GitHub Pages site.
         const body = JSON.stringify({ message: brainText, model: options.model, language: options.language,
-          conversationHistory: history, visitorId: visitorId(), ...money });
+          conversationHistory: history, visitorId: visitorId(), ...money, ...talk });
         let data: ChatResponse | undefined;
         for (let attempt = 0; ; attempt++) {
           try {
@@ -305,7 +321,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
           try {
             const fast = await request<ChatResponse>('/api/chat', {
               method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
-              body: JSON.stringify({ message: brainText, model: 'fast', language: options.language, conversationHistory: history, visitorId: visitorId(), ...money }),
+              body: JSON.stringify({ message: brainText, model: 'fast', language: options.language, conversationHistory: history, visitorId: visitorId(), ...money, ...talk }),
             }, 30_000);
             if (generation !== token) return false;
             followEntryCountry(fast?.country);

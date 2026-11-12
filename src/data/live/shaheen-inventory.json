@@ -1,8 +1,8 @@
 {
  "version": 1,
- "updatedAt": "2026-11-05T09:37:26.827Z",
+ "updatedAt": "2026-11-11T18:40:07.473Z",
  "sources": {
-  "catalogAt": "2026-11-05T09:32:48.597Z",
+  "catalogAt": "2026-11-11T18:32:23.373Z",
   "total": 1212,
   "published": 1161,
   "liveStock": true,
@@ -219,16 +219,16 @@
    "reasonAr": "نفد"
   },
   {
-   "sku": "MAI-380",
-   "nameAr": "أفانت روبي",
+   "sku": "MAI-895",
+   "nameAr": "أفانت باي ميسون ألامبرا",
    "brand": "Maison Alhambra",
    "priority": "normal",
    "units30": 0,
    "reasonAr": "نفد"
   },
   {
-   "sku": "MAI-895",
-   "nameAr": "أفانت من ميسون ألامبرا للرجال",
+   "sku": "MAI-380",
+   "nameAr": "أفانت روبي",
    "brand": "Maison Alhambra",
    "priority": "normal",
    "units30": 0,
@@ -412,7 +412,7 @@
   },
   {
    "sku": "ARM-900",
-   "nameAr": "أوديسي ماندارين سكاي من أرماف للرجال",
+   "nameAr": "أوديسي ماندارين سكاي باي أرماف",
    "brand": "Armaf",
    "priority": "normal",
    "units30": 0,
@@ -444,7 +444,7 @@
   },
   {
    "sku": "OSM-941",
-   "nameAr": "أوسما إس – بيبر أند صندل وود أوسما",
+   "nameAr": "أوسما إس – فلفل آند صندل",
    "brand": "Osma",
    "priority": "normal",
    "units30": 0,
@@ -452,7 +452,7 @@
   },
   {
    "sku": "OSM-946",
-   "nameAr": "أوسما بونجور أورينتال بلوسومز 150 مل",
+   "nameAr": "أوسما بونجور أوريانتال بلوسومز",
    "brand": "Osma",
    "priority": "normal",
    "units30": 0,
@@ -468,7 +468,7 @@
   },
   {
    "sku": "MAI-905",
-   "nameAr": "أوليفيا من ميسون الحمراء",
+   "nameAr": "أوليفيا من ميزون أهلامبرا",
    "brand": "Maison Alhambra",
    "priority": "normal",
    "units30": 0,

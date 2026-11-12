@@ -104,3 +104,38 @@ jobs:
       - name: Deploy checked artifact
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  # «نسخة GitLab»: every update of main is copied to the owner's GitLab project (a second home for the code, see
+  # docs/ROBOT_DISTRIBUTION.md). It follows pushes only, no timetable, and it does not wait for the build: a backup
+  # must not depend on the tests. Secret GITLAB_MIRROR_TOKEN (GitLab token with write_repository only); optional
+  # variable GITLAB_REPO (default spculculat-oss/Sham-Perfume). Without the secret the job just says so.
+  mirror:
+    name: Copy main to GitLab
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    concurrency:
+      group: gitlab-mirror
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Push main to GitLab
+        env:
+          GITLAB_MIRROR_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_REPO: ${{ vars.GITLAB_REPO || 'spculculat-oss/Sham-Perfume' }}
+        run: |
+          if [[ -z "$GITLAB_MIRROR_TOKEN" ]]; then
+            echo "::notice::GITLAB_MIRROR_TOKEN is not set, so the GitLab copy was skipped."
+            exit 0
+          fi
+          if ! git push --quiet "https://oauth2:${GITLAB_MIRROR_TOKEN}@gitlab.com/${GITLAB_REPO}.git" "HEAD:refs/heads/main" 2>push.err; then
+            sed "s/${GITLAB_MIRROR_TOKEN}/***/g" push.err
+            echo "::error::Could not copy main to GitLab (${GITLAB_REPO}). Check the token (write_repository, not expired) and that main there is not ahead of GitHub."
+            exit 1
+          fi
+          echo "Copied $(git rev-parse --short HEAD) to gitlab.com/${GITLAB_REPO}" >> "$GITHUB_STEP_SUMMARY"

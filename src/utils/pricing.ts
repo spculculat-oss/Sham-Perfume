@@ -6,7 +6,8 @@
  *   shipping      = the visitor's zone in src/data/shipping.json (USD: first bottle + each extra bottle)
  *   shown in      = the official currency of the visitor's country (src/data/country-currency.json,
  *                   from the MIT package «country-to-currency»), converted with the day's USD rates
- *                   (src/data/live/fx-rates.json, refreshed by the importer every two hours).
+ *                   (src/data/live/fx-rates.json in the build; since 2026-11 the server reads the day's rates
+ *                   itself — server/core/liveFx.ts, GET /api/fx — and the storefront keeps them: src/utils/fxBoot.ts).
  *
  * A currency without a known rate is shown in US dollars. Pure functions: tables are parameters.
  */

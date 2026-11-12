@@ -1,5 +1,10 @@
 # Instructions for coding agents
 
+> **GitHub Actions rule (2026-11, after the account suspension):** never add a `schedule:` (only the daily
+> `live-smoke.yml` stays) or a robot `workflow_run:`/`push:` trigger to `.github/workflows/`. Never make robots commit their results or collect data from other
+> websites through Actions. Actions only build, test and deploy the site. Robots run on their own server. Read
+> `docs/ROBOT_DISTRIBUTION.md` first; `tests/opsLive.test.ts` enforces it.
+
 ## «نفذ مهام شاهين» — the bridge between Shaheen and the chat
 
 **مكانك في الهيكل** (`src/utils/shaheenOrg.ts`): **«وكيل البرمجة في الشات — منفّذ مهام شاهين»**، تحت

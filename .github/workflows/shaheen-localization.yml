@@ -8,19 +8,9 @@ name: Shaheen localization audit — money and words in every language
 # src/data/live/shaheen-localization.json (pre-meeting check + council).
 
 on:
-  schedule:
-    - cron: '41 9 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: [main, 'arena/**']
-    paths:
-      - 'scripts/shaheen-localization/**'
-      - 'src/utils/displayCurrency.ts'
-      - 'src/utils/pricing.ts'
-      - 'src/data/live/fx-rates.json'
-      - 'src/data/country-currency.json'
-      - '.github/workflows/shaheen-localization.yml'
-
 permissions:
   contents: write
 

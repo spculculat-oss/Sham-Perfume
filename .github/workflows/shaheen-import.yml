@@ -19,23 +19,14 @@ name: Shaheen product importer and page reviewer (every 2 hours)
 # IMPORT_MAX_PROFIT_EGP (cap on the profit per bottle, default none). A changed rule reprices every product.
 
 on:
-  schedule:
-    # Every 2 hours (minute 37). The AI packages are used as far as they go: when a quota runs out the run
-    # records when it renews (src/data/live/ai-quota.json) and a later run continues from there.
-    - cron: '37 */2 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
     inputs:
       max_new:
         description: 'New products to import this run'
         required: false
         default: '150'
-  push:
-    # main: a change to the importer, or a merchant's own edit of products.json, is imported/reviewed at once
-    # (the bot's own commits use GITHUB_TOKEN, which starts no workflow, so there is no loop).
-    # Branches: rehearsal only.
-    branches: [main, 'arena/**']
-    paths: ['scripts/shaheen-import/**', 'scripts/shaheen-images/**', 'src/data/products.json', '.github/workflows/shaheen-import.yml']
-
 permissions:
   contents: write
   actions: write

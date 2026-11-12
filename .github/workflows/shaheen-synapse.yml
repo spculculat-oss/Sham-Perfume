@@ -12,21 +12,9 @@ name: Shaheen synapse — the mind graph, and the contradictions in it
 # Neither changes a price or promises anything: they connect, count, and report.
 
 on:
-  schedule:
-    - cron: '27 */3 * * *'
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
   workflow_dispatch:
-  push:
-    branches: [main, 'arena/**']
-    paths:
-      - 'scripts/shaheen-synapse/**'
-      - 'src/utils/shaheenGraph.ts'
-      - 'src/data/products.json'
-      - 'src/data/customs.json'
-      - 'src/data/shipping-lanes.json'
-      - 'src/data/shipping-costs.json'
-      - 'src/data/live/trade-lanes.json'
-      - '.github/workflows/shaheen-synapse.yml'
-
 permissions:
   contents: write
 

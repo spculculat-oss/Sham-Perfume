@@ -10,8 +10,6 @@ on:
     workflows: ['Build, test and deploy Pages']
     types: [completed]
     branches: [main]
-  schedule:
-    - cron: '50 5 * * *'
   workflow_dispatch:
   push:
     branches: ['arena/**']
