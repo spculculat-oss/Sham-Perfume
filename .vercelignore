@@ -1,0 +1,19 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# ملفات مش بتترفع على فيرسال خالص.
+#
+# api/ = نسخة FastAPI قديمة للتشغيل المحلي بس (API_README.md: uvicorn api.main:app).
+# فيرسال بيكتشف أي ملف .py جوّه api/ تلقائياً كدالة Python وينزّل api/requirements.txt
+# (fastapi + uvicorn[standard] + pydantic + starlette) → الحزمة تعدّي 250 ميجا:
+#   Error: [LAMBDA_SIZE_EXCEEDED] Total bundle size (235.01 MB) exceeds the maximum size
+# (نشر 14 نوفمبر 2026 — 193 سطر، البناء نجح والدالة البايثون هي اللي وقّعت).
+#
+# الـ API الحقيقي على فيرسال هو server/vercel-entry.cts → .vercel/output/functions/api.func
+# (بيبني بـ scripts/build-vercel.mjs). مفيش أي كود في الموقع بيستورد api/،
+# والملف بيفضل في المستودع للتشغيل المحلي.
+# الحرس: tests/vercelIgnore.test.ts بيتأكد إن السطر ده موجود.
+# ─────────────────────────────────────────────────────────────────────────────
+api/
+
+# سكربتات Python للتجربة المحلية (مش وظايف على فيرسال ومش جزء من الموقع)
+test_scraper.py
+test_order_manager.py

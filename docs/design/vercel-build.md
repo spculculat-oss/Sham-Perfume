@@ -60,11 +60,42 @@ npx esbuild src/admin/ContractsPanel.tsx --outfile=/tmp/check.js
 | `Cannot find module …` | حزمة مش مثبّتة أو مش في `bun.lock` | ضيف الاعتماد + `bun install` وارفع `bun.lock` معاه |
 | `error TS####` | خطأ أنواع (مش بيوقف Vite عادةً لكن بيوقف `npm run lint`) | `npm run lint` |
 | `Command "npm run build:vercel" exited with 1` | ده غلاف Vercel — السبب الحقيقي فوقه في اللوج | اقرأ أول خطأ فوق السطر ده |
+| `[LAMBDA_SIZE_EXCEEDED] Total bundle size (…) exceeds the maximum` | فيرسال بنى دالة زيادة (زي Python من `api/`) فالحزمة عدّت 250 ميجا | شوف القسم اللي تحت — الحل `.vercelignore` |
 | `ENOSPC` / `Killed` | ذاكرة أو مساحة | أعد النشر؛ لو اتكرر راجع حجم الأصول |
 
 ---
 
-## 4. حادثة 2026‑10‑20 (مرجع)
+## 4. حد الـ 250 ميجا — `LAMBDA_SIZE_EXCEEDED` (حادثة 2026‑11‑14)
+
+```text
+23:02:29  Vercel output ready: static React site + isolated Node.js API function.   ← الموقع نجح
+23:02:30  Installing required dependencies from api/requirements.txt...
+23:02:31  Error: [LAMBDA_SIZE_EXCEEDED] Total bundle size (235.01 MB) exceeds the maximum size
+```
+
+**السبب:** فيرسال بيكتشف تلقائياً أي `.py` جوّه `api/` كـ Python Serverless Function، وينزّل
+`api/requirements.txt` (`fastapi` + `uvicorn[standard]` + `pydantic` + `starlette`). والموقع مش بيستخدم
+الفولدر ده أصلاً: `api/main.py` هو سيرفر FastAPI للتشغيل المحلي بس (`API_README.md`)، والـ API الحقيقي
+هو `server/vercel-entry.cts` → `.vercel/output/functions/api.func`.
+
+**الإصلاح:** `.vercelignore` في جذر المستودع بيمنع رفع `api/` خالص:
+
+```gitignore
+api/
+test_scraper.py
+test_order_manager.py
+```
+
+- الملفات بتفضل في المستودع (التشغيل المحلي شغال زي ما هو)، بس مش بتترفع على فيرسال.
+- `.vercelignore` شغّال بمنطق `.gitignore`، والاستثناءات الافتراضية (`node_modules`, `.git`) بتفضل مطبقة.
+- الحرس: `tests/vercelIgnore.test.ts` بيتأكد إن `api/` في الملف وإن مدخل الدالة على فيرسال لسه Node.
+
+**قاعدة:** أي فولدر `.py` جديد في الجذر أو في `api/` لازم يتضاف لـ `.vercelignore` أو يتنقل لاسم
+مش `api/` — وإلا الدالة البايثون ترجع والحزمة تعدّي الحد تاني.
+
+---
+
+## 5. حادثة 2026‑10‑20 (مرجع)
 
 - **الدفعة اللي فشلت:** `06b235a` (دمج PR #165) — `src/admin/ContractsPanel.tsx:232` وسم `</section>` ناقص
   (ضاع أثناء حل تعارض الدمج)، فالبناء وقع في 2.2 ثانية عند `vite build`.
@@ -76,7 +107,7 @@ npx esbuild src/admin/ContractsPanel.tsx --outfile=/tmp/check.js
 
 ---
 
-## 5. منع التكرار
+## 6. منع التكرار
 
 1. أي PR مايتدمجش قبل ما يبقى «Build, test and deploy Pages / Check and build React» **أخضر**
    (Settings → Branches → Branch protection rules → Require status checks to pass).
