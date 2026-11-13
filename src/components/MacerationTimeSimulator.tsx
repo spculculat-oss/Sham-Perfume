@@ -1,3 +1,5 @@
+import { LegalDisclaimer } from './LegalDisclaimer';
+import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState, useMemo, useEffect } from 'react';
 import {
   Calendar,
@@ -20,8 +22,8 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
-import { isRTL } from '../utils/localizedContent';
-import { LText, loc, makeT, fmt, localeDate } from '../utils/localize';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, loc, makeT, fmt, localeDate } from '../لغات/localize';
 
 interface MacerationTimeSimulatorProps {
   currentLang?: SupportedLanguage;
@@ -1316,7 +1318,7 @@ export const MacerationTimeSimulator: React.FC<MacerationTimeSimulatorProps> = (
       'CALSCALE:GREGORIAN',
       'METHOD:PUBLISH',
       'BEGIN:VEVENT',
-      `UID:maceration-${Date.now()}@shamperfumes.com`,
+      `UID:maceration-${Date.now()}@spculculat-oss.github.io`,
       `DTSTAMP:${icsDate}T090000Z`,
       `DTSTART;VALUE=DATE:${icsDate}`,
       `SUMMARY:${title}`,
@@ -1477,12 +1479,13 @@ ${calculation.isFinished ? L('tag_status_done') : fmt(L('tag_status_progress_tpl
                     {macerationDays} {L('days_unit')}
                   </span>
                 </div>
-                <input
-                  type="number"
-                  min="3"
-                  max="365"
+                <LocalizedNumberInput
+                  lang={currentLang}
+                  integer
+                  min={3}
+                  max={365}
                   value={macerationDays}
-                  onChange={(e) => updateDays(parseInt(e.target.value) || 1)}
+                  onValue={(n) => updateDays(Math.trunc(n) || 1)}
                   className="w-full p-2.5 bg-white border border-stone-300 rounded-xl text-xs font-bold font-mono-numbers text-stone-900 focus:outline-none focus:ring-2 focus:ring-amber-800/20 focus:border-amber-800"
                 />
                 <input
@@ -1935,6 +1938,7 @@ ${calculation.isFinished ? L('tag_status_done') : fmt(L('tag_status_progress_tpl
         )}
       </div>
 
+      <LegalDisclaimer type="chemical" lang={currentLang as SupportedLanguage} />
     </div>
   );
 };

@@ -45,15 +45,36 @@ jobs:
         run: bun run build:vercel
       - name: Test isolated Vercel function and routes
         run: bun run test:vercel
+      - name: Verify Tencent EdgeOne build (Cloud Function + persistent state)
+        run: bun run check:edgeone
+      - name: Operations map code (salted hash only)
+        # «خريطة التشغيل» on Pages checks its own code in the browser: only a slow salted hash of the owner's
+        # SHAM_OPS_CODE secret reaches the build (VITE_OPS_CODE); the code itself is never printed or bundled.
+        env:
+          SHAM_OPS_CODE: ${{ secrets.SHAM_OPS_CODE }}
+        run: node scripts/ci/ops-code-hash.mjs
       - name: Build current source for Pages
+        # GitHub Pages is static: the chatbots call the deployed Vercel API cross-origin.
+        # Override with the PAGES_API_BASE_URL repository variable ("none" = no server features).
+        env:
+          VITE_API_BASE_URL: ${{ vars.PAGES_API_BASE_URL || 'https://sham-perfume-49bf.vercel.app' }}
+          # Public verification tokens (not secrets): the build writes google<token>.html / BingSiteAuth.xml.
+          GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
+          BING_SITE_VERIFICATION: ${{ vars.BING_SITE_VERIFICATION }}
         run: bun run build:pages
       - name: Verify published paths and fallback
+        env:
+          # Same value as the build step, so the check confirms the bundle really calls this backend.
+          VITE_API_BASE_URL: ${{ vars.PAGES_API_BASE_URL || 'https://sham-perfume-49bf.vercel.app' }}
         run: bun run check:pages
+      - name: SEO check of every built page
+        # The live SEO agent samples ~10 pages; this reads all of them (critical findings stop the deploy).
+        run: bun run check:seo
       - name: Upload Pages artifact
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
-          path: docs
+          path: pages-dist
 
   deploy:
     name: Deploy to GitHub Pages
@@ -83,3 +104,38 @@ jobs:
       - name: Deploy checked artifact
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  # «نسخة GitLab»: every update of main is copied to the owner's GitLab project (a second home for the code, see
+  # docs/ROBOT_DISTRIBUTION.md). It follows pushes only, no timetable, and it does not wait for the build: a backup
+  # must not depend on the tests. Secret GITLAB_MIRROR_TOKEN (GitLab token with write_repository only); optional
+  # variable GITLAB_REPO (default spculculat-oss/Sham-Perfume). Without the secret the job just says so.
+  mirror:
+    name: Copy main to GitLab
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    concurrency:
+      group: gitlab-mirror
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Push main to GitLab
+        env:
+          GITLAB_MIRROR_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_REPO: ${{ vars.GITLAB_REPO || 'spculculat-oss/Sham-Perfume' }}
+        run: |
+          if [[ -z "$GITLAB_MIRROR_TOKEN" ]]; then
+            echo "::notice::GITLAB_MIRROR_TOKEN is not set, so the GitLab copy was skipped."
+            exit 0
+          fi
+          if ! git push --quiet "https://oauth2:${GITLAB_MIRROR_TOKEN}@gitlab.com/${GITLAB_REPO}.git" "HEAD:refs/heads/main" 2>push.err; then
+            sed "s/${GITLAB_MIRROR_TOKEN}/***/g" push.err
+            echo "::error::Could not copy main to GitLab (${GITLAB_REPO}). Check the token (write_repository, not expired) and that main there is not ahead of GitHub."
+            exit 1
+          fi
+          echo "Copied $(git rev-parse --short HEAD) to gitlab.com/${GITLAB_REPO}" >> "$GITHUB_STEP_SUMMARY"

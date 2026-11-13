@@ -1,0 +1,23 @@
+{
+  "recordedAt": "2026-11-05",
+  "subject": "Optional Shaheen voice mode: browser audio processing and privacy controls",
+  "specialist": {
+    "id": "specialist_security",
+    "name": "م. سيف الأمن — cybersecurity specialist"
+  },
+  "method": "In-repository Specialists Board, offline local mode; no external AI engine or web research. The local memory/library adapters returned no matching lesson.",
+  "consultation": {
+    "question": "مراجعة خصوصية وأمن وضع التحدث مع شاهين: هل يرسل الموقع ملف الصوت أو يخزنه، وما الإفصاح والضوابط اللازمة؟",
+    "source": "gap",
+    "specialistResponse": "سؤالك ده لسه مش في ذاكرة شاهين ولا في مكتبته، والتخمين ممنوع. «م. سيف الأمن» (الأمن السيبراني وعلوم الهاكينج) هيذاكره ويترد عليك بعدين. جرّب تعيد صياغته بكلمات أوضح. يستشاره الزائر وأقسام الموقع كلها في أي وقت حتى من غير إنترنت؛ يرد من علوم مدرسة شاهين وذاكرته ومكتبته ومكتوب على رده مصده. لو الإجابة مش موجودة يقول بصراحة إنه هيذاكر السؤال — الصراحة أحسن من التخمين.",
+    "specialistCaveat": "The offline specialist board explicitly returned a study gap, not advice or approval. No security or legal conclusion was attributed to the specialist.",
+    "disposition": "No specialist answer was used. The feature was implemented as a browser-only speech input/output adapter to the existing Shaheen chat, with an explicit browser-processing disclosure, no application audio-upload endpoint, normal chat handling for transcripts, stop-on-close cleanup and a typing fallback. This is not a legal review or security certification."
+  },
+  "implementationChecks": [
+    "The browser must support speech recognition and speech synthesis; unsupported browsers receive a visible typing/read-aloud fallback.",
+    "The microphone disclosure states that browser speech-recognition or speech-synthesis services may process audio or text, and that Sham does not record or upload the audio file.",
+    "Recognized text is sent through the existing Shaheen conversation path; no new AI API or provider is introduced.",
+    "Voice recognition and speech synthesis are stopped when voice mode stops, the floating chat closes, or the lab view unmounts.",
+    "The transcript is sanitized before speech output, and locale selection follows LOCALE_MAP."
+  ]
+}

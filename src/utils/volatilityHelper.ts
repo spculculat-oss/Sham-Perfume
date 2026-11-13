@@ -1,3 +1,5 @@
+import type { SupportedLanguage } from '../types/i18n';
+import { noteMetric } from '../لغات/noteL10n';
 import { PyramidNote } from '../types/perfume';
 
 export interface EnrichedPyramidNote extends PyramidNote {
@@ -8,28 +10,28 @@ export interface EnrichedPyramidNote extends PyramidNote {
   qualityGrade?: string;
 }
 
-export function enrichPyramidNote(note: PyramidNote): EnrichedPyramidNote {
+export function enrichPyramidNote(note: PyramidNote, lang: SupportedLanguage = 'ar'): EnrichedPyramidNote {
   let volatilityRank = 5;
-  let evaporationTime = '2 - 4 ساعات';
-  let diffusionRadius = 'نصف قطر متوسط (~1.5م)';
-  let scentFamily = 'زهري أروماتيك';
-  let qualityGrade = 'نقاء معملي فاخر (Cosmetic Grade A)';
+  let evaporationTime = noteMetric('evap_default', lang);
+  let diffusionRadius = noteMetric('radius_default', lang);
+  let scentFamily = noteMetric('family_default', lang);
+  const qualityGrade = noteMetric('grade_a', lang);
 
   if (note.category === 'top') {
     volatilityRank = 2;
-    evaporationTime = '15 - 45 دقيقة';
-    diffusionRadius = 'إشعاع فوري عريض (~3م)';
-    scentFamily = 'حمضيات وأروماتيك متطاير';
+    evaporationTime = noteMetric('evap_top', lang);
+    diffusionRadius = noteMetric('radius_top', lang);
+    scentFamily = noteMetric('family_top', lang);
   } else if (note.category === 'heart') {
     volatilityRank = 5;
-    evaporationTime = '2 - 5 ساعات';
-    diffusionRadius = 'هالة متوسطة (~2م)';
-    scentFamily = 'زهور وتوابل دافئة';
+    evaporationTime = noteMetric('evap_heart', lang);
+    diffusionRadius = noteMetric('radius_heart', lang);
+    scentFamily = noteMetric('family_heart', lang);
   } else if (note.category === 'base') {
     volatilityRank = 9;
-    evaporationTime = '12 - 24+ ساعة';
-    diffusionRadius = 'ثبات حميمي ملتصق (~1م)';
-    scentFamily = 'أخشاب وعنبر وراتنجات';
+    evaporationTime = noteMetric('evap_base', lang);
+    diffusionRadius = noteMetric('radius_base', lang);
+    scentFamily = noteMetric('family_base', lang);
   }
 
   return {
@@ -229,3 +231,129 @@ export function getNoteActivityAtMinute(volatilityRank: number, currentMinutes: 
     statusBadgeClass,
   };
 }
+
+export interface EvaporationKinetics {
+  alcoholRemainingPct: number;
+  oilRemainingOnSkinPct: number;
+  evaporationRateMgPerHour: number;
+  sillageRadiusMeters: number;
+  skinAdsorptionPercent: number;
+  topActivePct: number;
+  heartActivePct: number;
+  baseActivePct: number;
+  vaporComposition: {
+    topPct: number;
+    heartPct: number;
+    basePct: number;
+  };
+  dominantVaporTier: 'top' | 'heart' | 'base';
+  phaseStage: 'flash' | 'top_bloom' | 'heart_unfold' | 'base_anchored' | 'drydown_intimate';
+}
+
+export function calculateEvaporationKinetics(
+  minutes: number,
+  concentrationPercent: number = 20,
+  skinTempCelsius: number = 36.5,
+  topRatio: number = 30,
+  heartRatio: number = 50,
+  baseRatio: number = 20
+): EvaporationKinetics {
+  // Arrhenius temperature scaling relative to 36.5°C normal body temperature
+  const tempDelta = skinTempCelsius - 36.5;
+  const tempSpeedFactor = Math.pow(1.08, tempDelta); // ~8% speed change per °C
+
+  // Concentration damping factor: higher concentration = more viscous oil film & fixative retention
+  const concDamping = 1 + (concentrationPercent - 20) * 0.012;
+
+  // 1. Alcohol Flash-Off: 100% at 0m, drops to 0% by minute 1.5 - 2.0
+  const alcoholRemainingPct = minutes <= 0 ? 100 : Math.max(0, Math.round(100 * Math.pow(Math.max(0, 1 - minutes / 1.5), 2)));
+
+  // 2. Individual Tier Remaining fractions (on skin & active)
+  const topHalfLife = (32 * concDamping) / tempSpeedFactor;
+  const heartHalfLife = (160 * concDamping) / tempSpeedFactor;
+  const baseHalfLife = (620 * concDamping) / tempSpeedFactor;
+
+  const topActivePct = Math.round(100 * Math.pow(0.5, minutes / topHalfLife));
+  const heartActivePct = Math.round(100 * Math.pow(0.5, minutes / heartHalfLife));
+  const baseActivePct = Math.round(100 * Math.pow(0.5, minutes / baseHalfLife));
+
+  // 3. Total Perfume Oil remaining on skin (weighted by formulation tier ratio)
+  const totalRatio = (topRatio + heartRatio + baseRatio) || 100;
+  const normalizedTop = topRatio / totalRatio;
+  const normalizedHeart = heartRatio / totalRatio;
+  const normalizedBase = baseRatio / totalRatio;
+
+  const oilRemainingOnSkinPct = Math.max(
+    2,
+    Math.round(
+      normalizedTop * topActivePct +
+      normalizedHeart * heartActivePct +
+      normalizedBase * baseActivePct
+    )
+  );
+
+  // 4. Skin Adsorption / Fixation rate:
+  // Starts at 20% right upon spraying (floating liquid droplets), quickly reaches 90-98% as alcohol flashes off and base notes anchor to skin sebum/lipids
+  const skinAdsorptionPercent = minutes < 1
+    ? Math.round(20 + minutes * 55)
+    : Math.min(99, Math.round(75 + (1 - Math.exp(-minutes / 15)) * 24));
+
+  // 5. Instantaneous Evaporation Rate (mg/cm²/h):
+  // Formula based on Langmuir-Knudsen evaporation model:
+  // High initial rate (~2.8 mg/cm²/h) dropping exponentially to a steady skin diffusion (~0.05 mg/cm²/h)
+  const initialPeakRate = 2.4 * tempSpeedFactor * (concentrationPercent / 20);
+  const evaporationRateMgPerHour = parseFloat(
+    Math.max(
+      0.02,
+      (initialPeakRate * (normalizedTop * (topActivePct / 100) * 1.8 +
+       normalizedHeart * (heartActivePct / 100) * 0.6 +
+       normalizedBase * (baseActivePct / 100) * 0.12))
+    ).toFixed(2)
+  );
+
+  // 6. Sillage Projection Radius (meters in 3D air)
+  // Explodes to 3.2m at minute 0, gradually contract to skin scent (0.2m)
+  const rawRadius = 3.2 * (topActivePct * 0.006 + heartActivePct * 0.003 + baseActivePct * 0.001);
+  const sillageRadiusMeters = parseFloat(Math.max(0.15, Math.min(3.5, rawRadius)).toFixed(2));
+
+  // 7. Vapor phase composition in the air right now
+  const topVaporWeight = normalizedTop * (topActivePct / 100) * 4.0;
+  const heartVaporWeight = normalizedHeart * (heartActivePct / 100) * 1.5;
+  const baseVaporWeight = normalizedBase * (baseActivePct / 100) * 0.3;
+  const totalVaporWeight = (topVaporWeight + heartVaporWeight + baseVaporWeight) || 1;
+
+  const vaporComposition = {
+    topPct: Math.round((topVaporWeight / totalVaporWeight) * 100),
+    heartPct: Math.round((heartVaporWeight / totalVaporWeight) * 100),
+    basePct: Math.max(0, 100 - Math.round((topVaporWeight / totalVaporWeight) * 100) - Math.round((heartVaporWeight / totalVaporWeight) * 100)),
+  };
+
+  let dominantVaporTier: 'top' | 'heart' | 'base' = 'top';
+  if (vaporComposition.basePct > vaporComposition.topPct && vaporComposition.basePct > vaporComposition.heartPct) {
+    dominantVaporTier = 'base';
+  } else if (vaporComposition.heartPct > vaporComposition.topPct) {
+    dominantVaporTier = 'heart';
+  }
+
+  let phaseStage: EvaporationKinetics['phaseStage'] = 'flash';
+  if (minutes < 5) phaseStage = 'flash';
+  else if (minutes < 30) phaseStage = 'top_bloom';
+  else if (minutes < 180) phaseStage = 'heart_unfold';
+  else if (minutes < 480) phaseStage = 'base_anchored';
+  else phaseStage = 'drydown_intimate';
+
+  return {
+    alcoholRemainingPct,
+    oilRemainingOnSkinPct,
+    evaporationRateMgPerHour,
+    sillageRadiusMeters,
+    skinAdsorptionPercent,
+    topActivePct,
+    heartActivePct,
+    baseActivePct,
+    vaporComposition,
+    dominantVaporTier,
+    phaseStage,
+  };
+}
+

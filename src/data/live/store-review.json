@@ -1,0 +1,5943 @@
+{
+ "version": 1,
+ "updatedAt": "2026-11-11T18:28:04.341Z",
+ "reviewer": "مراجع الصفحات",
+ "summary": {
+  "total": 1212,
+  "imported": 1161,
+  "ok": 645,
+  "warn": 516,
+  "hidden": 51,
+  "imagesChecked": 80,
+  "brokenImages": 0
+ },
+ "import": {
+  "at": "2026-11-11T18:28:03.126Z",
+  "markup": 1.5,
+  "pricing": {
+   "markup": 1.5
+  },
+  "sources": [],
+  "contracts": {
+   "approved": 0,
+   "permitted": []
+  },
+  "blocked": "L-03",
+  "prices": {
+   "count": 1161,
+   "min": 750,
+   "median": 3300,
+   "max": 7830,
+   "top": [
+    {
+     "sku": "AFN-214",
+     "name": "Lynked Freedom by Afnan 100ml Eau De Parfum",
+     "price": 7830,
+     "supplierEgp": 5219.32,
+     "sizeMl": 100
+    },
+    {
+     "sku": "AFN-879",
+     "name": "Lynked Forever by Afnan 100ml Eau De Parfum",
+     "price": 7830,
+     "supplierEgp": 5219.32,
+     "sizeMl": 100
+    },
+    {
+     "sku": "ARM-480",
+     "name": "Club De Nuit Intense Limited by Armaf 105ml EDP Men CDNI",
+     "price": 7755,
+     "supplierEgp": 5169.17,
+     "sizeMl": 105
+    },
+    {
+     "sku": "BUJ-1054",
+     "name": "Too Damn Clean by Bujairami 100ml Extrait de Parfum",
+     "price": 7460,
+     "supplierEgp": 4970.78,
+     "sizeMl": 100
+    },
+    {
+     "sku": "AFN-824",
+     "name": "Supremacy Incense by Afnan Perfumes – 100 ml (Unisex)",
+     "price": 7245,
+     "supplierEgp": 4826.89,
+     "sizeMl": 100
+    }
+   ]
+  },
+  "durationMs": 1235
+ },
+ "items": [
+  {
+   "sku": "LAT-001",
+   "id": 1,
+   "name": "Lattafa Black Oud",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج"
+   ],
+   "page": "p/lattafa-black-oud-1.html"
+  },
+  {
+   "sku": "LAT-002",
+   "id": 2,
+   "name": "Lattafa Fakhar Black",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج"
+   ],
+   "page": "p/lattafa-fakhar-black-2.html"
+  },
+  {
+   "sku": "LAT-003",
+   "id": 3,
+   "name": "Lattafa White Oud",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج"
+   ],
+   "page": "p/lattafa-white-oud-3.html"
+  },
+  {
+   "sku": "LAT-004",
+   "id": 4,
+   "name": "Lattafa Ameer Al Oudh",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/lattafa-ameer-al-oudh-4.html"
+  },
+  {
+   "sku": "LAT-005",
+   "id": 5,
+   "name": "Lattafa Noir",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج"
+   ],
+   "page": "p/lattafa-noir-5.html"
+  },
+  {
+   "sku": "LAT-006",
+   "id": 6,
+   "name": "Rasasi La Yuya",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/rasasi-la-yuya-6.html"
+  },
+  {
+   "sku": "LAT-007",
+   "id": 7,
+   "name": "Rasasi Hawas",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/rasasi-hawas-7.html"
+  },
+  {
+   "sku": "LAT-008",
+   "id": 8,
+   "name": "De Pronom Mon Guerlain",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/de-pronom-mon-guerlain-8.html"
+  },
+  {
+   "sku": "ALR-001",
+   "id": 9,
+   "name": "Al-Rehab Malika",
+   "status": "hidden",
+   "issues": [
+    "سعر غير منطقي (22.5 جنيه)",
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج"
+   ],
+   "page": "p/al-rehab-malika-9.html"
+  },
+  {
+   "sku": "ALR-002",
+   "id": 10,
+   "name": "Al-Rehab Rumman",
+   "status": "hidden",
+   "issues": [
+    "سعر غير منطقي (18 جنيه)",
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/al-rehab-rumman-10.html"
+  },
+  {
+   "sku": "ALR-003",
+   "id": 11,
+   "name": "Al-Rehab Dubai",
+   "status": "hidden",
+   "issues": [
+    "سعر غير منطقي (15 جنيه)",
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/al-rehab-dubai-11.html"
+  },
+  {
+   "sku": "ALR-004",
+   "id": 12,
+   "name": "Al-Rehab Honey Glow",
+   "status": "hidden",
+   "issues": [
+    "سعر غير منطقي (19.5 جنيه)",
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/al-rehab-honey-glow-12.html"
+  },
+  {
+   "sku": "ALR-005",
+   "id": 13,
+   "name": "Al-Rehab Rose",
+   "status": "hidden",
+   "issues": [
+    "سعر غير منطقي (16.5 جنيه)",
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/al-rehab-rose-13.html"
+  },
+  {
+   "sku": "UNI-001",
+   "id": 14,
+   "name": "Baccarat Rouge 540",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/baccarat-rouge-540-14.html"
+  },
+  {
+   "sku": "UNI-002",
+   "id": 15,
+   "name": "Dior Sauvage",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج"
+   ],
+   "page": "p/dior-sauvage-15.html"
+  },
+  {
+   "sku": "UNI-003",
+   "id": 16,
+   "name": "Yves Saint Laurent Libre",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/yves-saint-laurent-libre-16.html"
+  },
+  {
+   "sku": "GEN-017",
+   "id": 17,
+   "name": "عطر عربى جديد 1",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "منتج احتياطي أضافه السكرابر القديم عند فشل الاتصال — ليس منتجاً حقيقياً من المورد",
+    "الوصف عام"
+   ],
+   "page": "p/gen-017-17.html"
+  },
+  {
+   "sku": "GEN-018",
+   "id": 18,
+   "name": "عطر انجليزى فاخر 2",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "منتج احتياطي أضافه السكرابر القديم عند فشل الاتصال — ليس منتجاً حقيقياً من المورد",
+    "الوصف عام"
+   ],
+   "page": "p/gen-018-18.html"
+  },
+  {
+   "sku": "GEN-019",
+   "id": 19,
+   "name": "عطر اسبانى متميز 3",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "منتج احتياطي أضافه السكرابر القديم عند فشل الاتصال — ليس منتجاً حقيقياً من المورد",
+    "الوصف عام"
+   ],
+   "page": "p/gen-019-19.html"
+  },
+  {
+   "sku": "SHM-020",
+   "id": 20,
+   "name": "Dahab",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dahab-20.html"
+  },
+  {
+   "sku": "SHM-021",
+   "id": 21,
+   "name": "Layl",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/layl-21.html"
+  },
+  {
+   "sku": "SHM-022",
+   "id": 22,
+   "name": "Amiri",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/amiri-22.html"
+  },
+  {
+   "sku": "SHM-023",
+   "id": 23,
+   "name": "Mirage",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/mirage-23.html"
+  },
+  {
+   "sku": "SHM-024",
+   "id": 24,
+   "name": "Khanjar",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/khanjar-24.html"
+  },
+  {
+   "sku": "SHM-025",
+   "id": 25,
+   "name": "Fidji",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/fidji-25.html"
+  },
+  {
+   "sku": "SHM-026",
+   "id": 26,
+   "name": "White Oud",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/white-oud-26.html"
+  },
+  {
+   "sku": "SHM-027",
+   "id": 27,
+   "name": "Reem",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/reem-27.html"
+  },
+  {
+   "sku": "SHM-028",
+   "id": 28,
+   "name": "Khalifa",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/khalifa-28.html"
+  },
+  {
+   "sku": "SHM-029",
+   "id": 29,
+   "name": "No.5",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/shama-shm-029-29.html"
+  },
+  {
+   "sku": "SHM-030",
+   "id": 30,
+   "name": "Safwa",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/safwa-30.html"
+  },
+  {
+   "sku": "SHM-031",
+   "id": 31,
+   "name": "Wadi",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/wadi-31.html"
+  },
+  {
+   "sku": "SHM-032",
+   "id": 32,
+   "name": "Sama",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/sama-32.html"
+  },
+  {
+   "sku": "SHM-033",
+   "id": 33,
+   "name": "1977",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/shama-shm-033-33.html"
+  },
+  {
+   "sku": "SHM-034",
+   "id": 34,
+   "name": "Taif",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/taif-34.html"
+  },
+  {
+   "sku": "SHM-035",
+   "id": 35,
+   "name": "Sougha",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/sougha-35.html"
+  },
+  {
+   "sku": "SHM-036",
+   "id": 36,
+   "name": "Raghad",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/raghad-36.html"
+  },
+  {
+   "sku": "SHM-037",
+   "id": 37,
+   "name": "Oud Ma'attar Shama",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/oud-ma-attar-shama-37.html"
+  },
+  {
+   "sku": "SHM-038",
+   "id": 38,
+   "name": "Hindi Digga Saghir Khas",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/hindi-digga-saghir-khas-38.html"
+  },
+  {
+   "sku": "SHM-039",
+   "id": 39,
+   "name": "Hindi Digga Saghir VIP",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/hindi-digga-saghir-vip-39.html"
+  },
+  {
+   "sku": "SHM-040",
+   "id": 40,
+   "name": "Hindi Syufi Khas",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/hindi-syufi-khas-40.html"
+  },
+  {
+   "sku": "SHM-041",
+   "id": 41,
+   "name": "Hindi Syufi Khas VIP",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/hindi-syufi-khas-vip-41.html"
+  },
+  {
+   "sku": "SHM-042",
+   "id": 42,
+   "name": "Hindi Digga Khas",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/hindi-digga-khas-42.html"
+  },
+  {
+   "sku": "SHM-043",
+   "id": 43,
+   "name": "Dehnal Oud Asli",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dehnal-oud-asli-43.html"
+  },
+  {
+   "sku": "SHM-044",
+   "id": 44,
+   "name": "Dehnal Oud Khussusi Kadim",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dehnal-oud-khussusi-kadim-44.html"
+  },
+  {
+   "sku": "SHM-045",
+   "id": 45,
+   "name": "Dehnal Oud Kalakasi",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dehnal-oud-kalakasi-45.html"
+  },
+  {
+   "sku": "SHM-046",
+   "id": 46,
+   "name": "Dehnal Oud Silani",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dehnal-oud-silani-46.html"
+  },
+  {
+   "sku": "SHM-047",
+   "id": 47,
+   "name": "Dehnal Oud Hindi Ateeq",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dehnal-oud-hindi-ateeq-47.html"
+  },
+  {
+   "sku": "SHM-048",
+   "id": 48,
+   "name": "Dehnal Oud Royal Philippini",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/dehnal-oud-royal-philippini-48.html"
+  },
+  {
+   "sku": "SHM-049",
+   "id": 49,
+   "name": "Oud Discovery Set",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/oud-discovery-set-49.html"
+  },
+  {
+   "sku": "SHM-050",
+   "id": 50,
+   "name": "Royal Oil Gift Set",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/royal-oil-gift-set-50.html"
+  },
+  {
+   "sku": "SHM-051",
+   "id": 51,
+   "name": "Legacy Mukhallat Box",
+   "status": "hidden",
+   "issues": [
+    "بدون مصدر حقيقي (لا يوجد رابط لصفحة المنتج عند المورد)",
+    "الصورة توضيحية من بنك صور وليست صورة المنتج",
+    "الوصف عام"
+   ],
+   "page": "p/legacy-mukhallat-box-51.html"
+  },
+  {
+   "sku": "RAS-055",
+   "id": 55,
+   "name": "Hawas Verde by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-verde-by-rasasi-100ml-edp-55.html"
+  },
+  {
+   "sku": "RAS-071",
+   "id": 71,
+   "name": "Hawas Lava Gold by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-lava-gold-by-rasasi-100ml-edp-71.html"
+  },
+  {
+   "sku": "RAS-074",
+   "id": 74,
+   "name": "Hawas Ice Freeze by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-ice-freeze-by-rasasi-100ml-edp-74.html"
+  },
+  {
+   "sku": "RAS-075",
+   "id": 75,
+   "name": "Hawas Highness by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-highness-by-rasasi-100ml-edp-75.html"
+  },
+  {
+   "sku": "RAS-077",
+   "id": 77,
+   "name": "Hawas Addiction by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-addiction-by-rasasi-100ml-edp-77.html"
+  },
+  {
+   "sku": "RAS-080",
+   "id": 80,
+   "name": "Hawas Love For Her by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-love-for-her-by-rasasi-100ml-edp-80.html"
+  },
+  {
+   "sku": "RAS-082",
+   "id": 82,
+   "name": "Hawas For Him by Rasasi 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/hawas-for-him-by-rasasi-100ml-edp-82.html"
+  },
+  {
+   "sku": "LAT-096",
+   "id": 96,
+   "name": "Fearless by Lattafa 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/fearless-by-lattafa-100ml-edp-men-96.html"
+  },
+  {
+   "sku": "LAT-098",
+   "id": 98,
+   "name": "Blue Oud Elixir by Lattafa 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/blue-oud-elixir-by-lattafa-100ml-edp-unisex-98.html"
+  },
+  {
+   "sku": "LAT-099",
+   "id": 99,
+   "name": "Beyond Precious by Lattafa 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/beyond-precious-by-lattafa-100ml-edp-women-99.html"
+  },
+  {
+   "sku": "LAT-101",
+   "id": 101,
+   "name": "Jouri Lattafa Women 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jouri-lattafa-women-100ml-edp-101.html"
+  },
+  {
+   "sku": "LAT-102",
+   "id": 102,
+   "name": "Opulent Milano by Lattafa 100ml Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/opulent-milano-by-lattafa-100ml-men-102.html"
+  },
+  {
+   "sku": "LAT-110",
+   "id": 110,
+   "name": "Ana Abiyedh Poudree by Lattafa 60ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ana-abiyedh-poudree-by-lattafa-60ml-110.html"
+  },
+  {
+   "sku": "ALR-114",
+   "id": 114,
+   "name": "Spanish Vanilla Eau De Parfum 100ml by Al Rehab",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/spanish-vanilla-eau-de-parfum-100ml-by-al-rehab-114.html"
+  },
+  {
+   "sku": "LAT-121",
+   "id": 121,
+   "name": "Najdia Intense Lattafa Men 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/najdia-intense-lattafa-men-100ml-edp-121.html"
+  },
+  {
+   "sku": "LAT-122",
+   "id": 122,
+   "name": "Dalal Lattafa Women 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/dalal-lattafa-women-100ml-edp-122.html"
+  },
+  {
+   "sku": "LAT-123",
+   "id": 123,
+   "name": "Fakhar Silver by Lattafa 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/fakhar-silver-by-lattafa-100ml-edp-men-123.html"
+  },
+  {
+   "sku": "LAT-124",
+   "id": 124,
+   "name": "Ajwad Pink 2 Pink Creamy Elixir Lattafa 60ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ajwad-pink-2-pink-creamy-elixir-lattafa-60ml-124.html"
+  },
+  {
+   "sku": "LAT-127",
+   "id": 127,
+   "name": "Angham Second Song by Lattafa 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/angham-second-song-by-lattafa-100ml-127.html"
+  },
+  {
+   "sku": "LAT-132",
+   "id": 132,
+   "name": "Qaed Al Fursan Lattafa 90ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/qaed-al-fursan-lattafa-90ml-for-men-132.html"
+  },
+  {
+   "sku": "LAT-134",
+   "id": 134,
+   "name": "Afeef by Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/afeef-by-lattafa-100ml-edp-134.html"
+  },
+  {
+   "sku": "LAT-138",
+   "id": 138,
+   "name": "Dynasty by Lattafa 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/dynasty-by-lattafa-100ml-edp-unisex-138.html"
+  },
+  {
+   "sku": "ALR-143",
+   "id": 143,
+   "name": "French Coffee Al Rehab 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/french-coffee-al-rehab-100ml-edp-women-143.html"
+  },
+  {
+   "sku": "LAT-144",
+   "id": 144,
+   "name": "Angel by LaMuse (Lattafa) – 100 ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/angel-by-lamuse-lattafa-100-ml-for-women-144.html"
+  },
+  {
+   "sku": "LAT-145",
+   "id": 145,
+   "name": "Al Nashama Caprice by Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/al-nashama-caprice-by-lattafa-100ml-edp-145.html"
+  },
+  {
+   "sku": "LAT-148",
+   "id": 148,
+   "name": "Maahir Honor 100ml by Lattafa",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/maahir-honor-100ml-by-lattafa-148.html"
+  },
+  {
+   "sku": "LAT-149",
+   "id": 149,
+   "name": "Al Qiam Gold by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/al-qiam-gold-by-lattafa-pride-100ml-edp-149.html"
+  },
+  {
+   "sku": "LAT-161",
+   "id": 161,
+   "name": "Thouq by Lattafa Pride 80ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/thouq-by-lattafa-pride-80ml-edp-161.html"
+  },
+  {
+   "sku": "LAT-166",
+   "id": 166,
+   "name": "Shahd by Lattafa Perfumes 100 ml Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/shahd-by-lattafa-perfumes-100-ml-women-166.html"
+  },
+  {
+   "sku": "LAT-172",
+   "id": 172,
+   "name": "Mazaaji by Lattafa 100ml EDP for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/mazaaji-by-lattafa-100ml-edp-for-women-172.html"
+  },
+  {
+   "sku": "LAT-174",
+   "id": 174,
+   "name": "Maahir by Lattafa 100ml EDP for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/maahir-by-lattafa-100ml-edp-for-men-174.html"
+  },
+  {
+   "sku": "LAT-176",
+   "id": 176,
+   "name": "Ana Abiyedh by Lattafa 60ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/ana-abiyedh-by-lattafa-60ml-edp-unisex-176.html"
+  },
+  {
+   "sku": "LAT-178",
+   "id": 178,
+   "name": "Raghba for Men Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/raghba-for-men-lattafa-100ml-edp-178.html"
+  },
+  {
+   "sku": "LAT-179",
+   "id": 179,
+   "name": "Queen Of Arabia by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/queen-of-arabia-by-lattafa-pride-100ml-edp-179.html"
+  },
+  {
+   "sku": "LAT-180",
+   "id": 180,
+   "name": "Atheeri by Lattafa – 100 ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/atheeri-by-lattafa-100-ml-for-women-180.html"
+  },
+  {
+   "sku": "LAT-181",
+   "id": 181,
+   "name": "Teriaq Intense by Lattafa 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/teriaq-intense-by-lattafa-100ml-eau-de-parfum-181.html"
+  },
+  {
+   "sku": "MAI-194",
+   "id": 194,
+   "name": "B.A.D. Femme by Maison Alhambra 100 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/b-a-d-femme-by-maison-alhambra-100-ml-194.html"
+  },
+  {
+   "sku": "GRA-195",
+   "id": 195,
+   "name": "Oud Elixir by Grandeur Elite – 100 ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/oud-elixir-by-grandeur-elite-100-ml-eau-de-parfum-for-men-195.html"
+  },
+  {
+   "sku": "ARD-197",
+   "id": 197,
+   "name": "Oud 24 Hours Ard Al Zaafaran 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/oud-24-hours-ard-al-zaafaran-100ml-edp-197.html"
+  },
+  {
+   "sku": "ARD-199",
+   "id": 199,
+   "name": "Arabian Night – 100 ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/arabian-night-100-ml-eau-de-parfum-for-men-199.html"
+  },
+  {
+   "sku": "ZIM-211",
+   "id": 211,
+   "name": "Reverie Aqua by Zimaya 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/reverie-aqua-by-zimaya-100ml-edp-men-211.html"
+  },
+  {
+   "sku": "MAI-212",
+   "id": 212,
+   "name": "Treasure by Maison Asrar 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/treasure-by-maison-asrar-100ml-edp-unisex-212.html"
+  },
+  {
+   "sku": "MAI-213",
+   "id": 213,
+   "name": "Megara 50ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/megara-50ml-by-maison-alhambra-213.html"
+  },
+  {
+   "sku": "AFN-214",
+   "id": 214,
+   "name": "Lynked Freedom by Afnan 100ml Eau De Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/lynked-freedom-by-afnan-100ml-eau-de-parfum-214.html"
+  },
+  {
+   "sku": "MAI-215",
+   "id": 215,
+   "name": "Encode By Maison Alhambra 100ml for Man",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/encode-by-maison-alhambra-100ml-for-man-215.html"
+  },
+  {
+   "sku": "AFN-216",
+   "id": 216,
+   "name": "Supremacy Collector’s Edition by Afnan 100ml Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/supremacy-collector-s-edition-by-afnan-100ml-men-216.html"
+  },
+  {
+   "sku": "GRA-217",
+   "id": 217,
+   "name": "Cadet Blue Deodorant Body Spray 200ml Grandeur Man",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/cadet-blue-deodorant-body-spray-200ml-grandeur-man-217.html"
+  },
+  {
+   "sku": "MAI-218",
+   "id": 218,
+   "name": "Sceptre Oceana by Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sceptre-oceana-by-maison-alhambra-100ml-218.html"
+  },
+  {
+   "sku": "ARM-219",
+   "id": 219,
+   "name": "Armaf Club De Nuit Milestone 105ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-club-de-nuit-milestone-105ml-edp-219.html"
+  },
+  {
+   "sku": "ALW-220",
+   "id": 220,
+   "name": "House Of Oud Al Wataniah Eternal Perfume 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/house-of-oud-al-wataniah-eternal-perfume-100ml-220.html"
+  },
+  {
+   "sku": "GRA-221",
+   "id": 221,
+   "name": "Pacific Wood Deodorant Body Spray 200mL Grandeur Man lather",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pacific-wood-deodorant-body-spray-200ml-grandeur-man-lather-221.html"
+  },
+  {
+   "sku": "RUE-222",
+   "id": 222,
+   "name": "Rue Broca On Time Pour Homme EDP Men 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rue-broca-on-time-pour-homme-edp-men-100ml-222.html"
+  },
+  {
+   "sku": "RUE-223",
+   "id": 223,
+   "name": "Nexa Musee by Rue Broca – 100 ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/nexa-musee-by-rue-broca-100-ml-for-women-223.html"
+  },
+  {
+   "sku": "ZIM-224",
+   "id": 224,
+   "name": "Rose of Dreams by Zimaya 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rose-of-dreams-by-zimaya-100ml-edp-women-224.html"
+  },
+  {
+   "sku": "MAI-225",
+   "id": 225,
+   "name": "Karat by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/karat-by-maison-alhambra-100ml-edp-225.html"
+  },
+  {
+   "sku": "ARM-226",
+   "id": 226,
+   "name": "Island Bliss by Armaf 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/island-bliss-by-armaf-100ml-edp-women-226.html"
+  },
+  {
+   "sku": "ALW-227",
+   "id": 227,
+   "name": "Massad by Al Wataniah For Him 100ml Extract",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/massad-by-al-wataniah-for-him-100ml-extract-227.html"
+  },
+  {
+   "sku": "MAI-228",
+   "id": 228,
+   "name": "La Voie by Maison Alhambra 100ml for Her",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/la-voie-by-maison-alhambra-100ml-for-her-228.html"
+  },
+  {
+   "sku": "LAT-229",
+   "id": 229,
+   "name": "Emeer By Lattafa Woody Scent 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/emeer-by-lattafa-woody-scent-100ml-229.html"
+  },
+  {
+   "sku": "LAT-234",
+   "id": 234,
+   "name": "Oud Lail Maleki by Lattafa 100 ml Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/oud-lail-maleki-by-lattafa-100-ml-unisex-234.html"
+  },
+  {
+   "sku": "LAT-245",
+   "id": 245,
+   "name": "Oudain by Lattafa Perfumes 100ml EDP for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/oudain-by-lattafa-perfumes-100ml-edp-for-men-245.html"
+  },
+  {
+   "sku": "LAT-250",
+   "id": 250,
+   "name": "Musk Al Aroos by Lattafa 80ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/musk-al-aroos-by-lattafa-80ml-edp-250.html"
+  },
+  {
+   "sku": "LAT-254",
+   "id": 254,
+   "name": "Vintage Radio by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/vintage-radio-by-lattafa-pride-100ml-edp-254.html"
+  },
+  {
+   "sku": "LAT-255",
+   "id": 255,
+   "name": "Musamam Black Intense 100ml by Lattafa",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/musamam-black-intense-100ml-by-lattafa-255.html"
+  },
+  {
+   "sku": "LAT-256",
+   "id": 256,
+   "name": "Maharjan Silver by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/maharjan-silver-by-lattafa-pride-100ml-edp-256.html"
+  },
+  {
+   "sku": "LAT-260",
+   "id": 260,
+   "name": "La Collection d'Antiquites 1910 (Bike) by Lattafa Pride 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/la-collection-d-antiquites-1910-bike-by-lattafa-pride-100ml-260.html"
+  },
+  {
+   "sku": "LAT-263",
+   "id": 263,
+   "name": "Fire On Ice by Lattafa 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/fire-on-ice-by-lattafa-100ml-edp-unisex-263.html"
+  },
+  {
+   "sku": "LAT-265",
+   "id": 265,
+   "name": "Victoria by Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/victoria-by-lattafa-100ml-edp-265.html"
+  },
+  {
+   "sku": "LAT-266",
+   "id": 266,
+   "name": "Ejaazi by Lattafa Perfume 100 ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ejaazi-by-lattafa-perfume-100-ml-for-men-266.html"
+  },
+  {
+   "sku": "LAT-267",
+   "id": 267,
+   "name": "Mashrabya by Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/mashrabya-by-lattafa-100ml-edp-267.html"
+  },
+  {
+   "sku": "LAT-268",
+   "id": 268,
+   "name": "Qaaed Intense by Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/qaaed-intense-by-lattafa-100ml-edp-268.html"
+  },
+  {
+   "sku": "LAT-270",
+   "id": 270,
+   "name": "Ansaam Silver by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ansaam-silver-by-lattafa-pride-100ml-edp-270.html"
+  },
+  {
+   "sku": "LAT-276",
+   "id": 276,
+   "name": "Ansaam Gold by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ansaam-gold-by-lattafa-pride-100ml-edp-276.html"
+  },
+  {
+   "sku": "LAT-281",
+   "id": 281,
+   "name": "Oud Al Sahraa by Lattafa Perfumes – 100 ml Unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/oud-al-sahraa-by-lattafa-perfumes-100-ml-unisex-281.html"
+  },
+  {
+   "sku": "LAT-282",
+   "id": 282,
+   "name": "Musamam Intense by Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/musamam-intense-by-lattafa-100ml-edp-282.html"
+  },
+  {
+   "sku": "LAT-285",
+   "id": 285,
+   "name": "Badee Al Oud by Lattafa Oud for Glory 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/badee-al-oud-by-lattafa-oud-for-glory-100ml-edp-285.html"
+  },
+  {
+   "sku": "LAT-286",
+   "id": 286,
+   "name": "Mohra by Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/mohra-by-lattafa-100ml-edp-286.html"
+  },
+  {
+   "sku": "LAT-287",
+   "id": 287,
+   "name": "Art of Universe by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/art-of-universe-by-lattafa-pride-100ml-edp-287.html"
+  },
+  {
+   "sku": "LAT-289",
+   "id": 289,
+   "name": "Sapphire Royal by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/sapphire-royal-by-lattafa-pride-100ml-edp-289.html"
+  },
+  {
+   "sku": "LAT-290",
+   "id": 290,
+   "name": "Raed Luxe by Lattafa 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/raed-luxe-by-lattafa-100ml-edp-unisex-290.html"
+  },
+  {
+   "sku": "LAT-291",
+   "id": 291,
+   "name": "Charm 100ml EDP for Women by LaMuse Lattafa",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/charm-100ml-edp-for-women-by-lamuse-lattafa-291.html"
+  },
+  {
+   "sku": "LAT-293",
+   "id": 293,
+   "name": "Al Areeq Gold by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/al-areeq-gold-by-lattafa-pride-100ml-edp-293.html"
+  },
+  {
+   "sku": "LAT-295",
+   "id": 295,
+   "name": "Nasheet by Lattafa Perfume 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/nasheet-by-lattafa-perfume-100ml-edp-unisex-295.html"
+  },
+  {
+   "sku": "LAT-296",
+   "id": 296,
+   "name": "La Collection 1886 (Car) by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/la-collection-1886-car-by-lattafa-pride-100ml-edp-296.html"
+  },
+  {
+   "sku": "LAT-299",
+   "id": 299,
+   "name": "King of Arabia by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/king-of-arabia-by-lattafa-pride-100ml-edp-299.html"
+  },
+  {
+   "sku": "LAT-301",
+   "id": 301,
+   "name": "Lattafa Petra Eau De Parfum 100 ml Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/lattafa-petra-eau-de-parfum-100-ml-unisex-301.html"
+  },
+  {
+   "sku": "LAT-304",
+   "id": 304,
+   "name": "Liam Grey by Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/liam-grey-by-lattafa-100ml-edp-304.html"
+  },
+  {
+   "sku": "LAT-305",
+   "id": 305,
+   "name": "Eclaire Pistache by Lattafa 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/eclaire-pistache-by-lattafa-100ml-edp-unisex-305.html"
+  },
+  {
+   "sku": "LAT-306",
+   "id": 306,
+   "name": "Ramz Silver by Lattafa 100ml EDP for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ramz-silver-by-lattafa-100ml-edp-for-men-306.html"
+  },
+  {
+   "sku": "LAT-307",
+   "id": 307,
+   "name": "Mayar by Lattafa EDP 100ml Woman",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/mayar-by-lattafa-edp-100ml-woman-307.html"
+  },
+  {
+   "sku": "LAT-312",
+   "id": 312,
+   "name": "Layaan by Lattafa Perfume 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/layaan-by-lattafa-perfume-75ml-edp-312.html"
+  },
+  {
+   "sku": "LAT-313",
+   "id": 313,
+   "name": "Ishq Al Shuyukh Gold by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ishq-al-shuyukh-gold-by-lattafa-pride-100ml-edp-313.html"
+  },
+  {
+   "sku": "LAT-314",
+   "id": 314,
+   "name": "Ishq Al Shuyukh Silver by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ishq-al-shuyukh-silver-by-lattafa-pride-100ml-edp-314.html"
+  },
+  {
+   "sku": "LAT-315",
+   "id": 315,
+   "name": "Pisa by Lattafa Pride 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pisa-by-lattafa-pride-100ml-edp-315.html"
+  },
+  {
+   "sku": "LAT-316",
+   "id": 316,
+   "name": "Opulent Red by Lattafa 100ml Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/opulent-red-by-lattafa-100ml-unisex-316.html"
+  },
+  {
+   "sku": "LAT-319",
+   "id": 319,
+   "name": "Yara Elixir by Lattafa 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/yara-elixir-by-lattafa-100ml-edp-319.html"
+  },
+  {
+   "sku": "LAT-321",
+   "id": 321,
+   "name": "Yara Tous by Lattafa 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/yara-tous-by-lattafa-100ml-edp-women-321.html"
+  },
+  {
+   "sku": "LAT-322",
+   "id": 322,
+   "name": "Azeezah by Lattafa 100ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/azeezah-by-lattafa-100ml-for-women-322.html"
+  },
+  {
+   "sku": "MAI-341",
+   "id": 341,
+   "name": "Last Night in Miami by Maison Alhambra 100ml Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/last-night-in-miami-by-maison-alhambra-100ml-unisex-341.html"
+  },
+  {
+   "sku": "MAI-342",
+   "id": 342,
+   "name": "IT by Maison Alhambra 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/it-by-maison-alhambra-100ml-edp-men-342.html"
+  },
+  {
+   "sku": "MAI-343",
+   "id": 343,
+   "name": "Last Night in Paris by Maison Alhambra 100ml Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/last-night-in-paris-by-maison-alhambra-100ml-unisex-343.html"
+  },
+  {
+   "sku": "GUL-356",
+   "id": 356,
+   "name": "Shumookh Parfum 100ml by Gulf Orchid",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/shumookh-parfum-100ml-by-gulf-orchid-356.html"
+  },
+  {
+   "sku": "MAI-360",
+   "id": 360,
+   "name": "Delilah Viola 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/delilah-viola-100ml-by-maison-alhambra-360.html"
+  },
+  {
+   "sku": "MAI-363",
+   "id": 363,
+   "name": "Candid Tonight by Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/candid-tonight-by-maison-alhambra-100ml-363.html"
+  },
+  {
+   "sku": "MAI-365",
+   "id": 365,
+   "name": "Floral Bloom by Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/floral-bloom-by-maison-alhambra-100ml-365.html"
+  },
+  {
+   "sku": "ARD-370",
+   "id": 370,
+   "name": "Yara Eau De Parfum 50ml by Ard Al Zaafaran",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/yara-eau-de-parfum-50ml-by-ard-al-zaafaran-370.html"
+  },
+  {
+   "sku": "ALW-372",
+   "id": 372,
+   "name": "Al Wataniah Rawaee Monarch Eau De Parfum 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/al-wataniah-rawaee-monarch-eau-de-parfum-100ml-372.html"
+  },
+  {
+   "sku": "MAI-375",
+   "id": 375,
+   "name": "Leonie Intense by Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/leonie-intense-by-maison-alhambra-100ml-375.html"
+  },
+  {
+   "sku": "MAI-376",
+   "id": 376,
+   "name": "Jean Lowe Summer Vibes 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jean-lowe-summer-vibes-100ml-376.html"
+  },
+  {
+   "sku": "MAI-378",
+   "id": 378,
+   "name": "Glacier Heaven 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/glacier-heaven-100ml-378.html"
+  },
+  {
+   "sku": "MAI-379",
+   "id": 379,
+   "name": "Jean Lowe Verde Aura 100ml",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jean-lowe-verde-aura-100ml-379.html"
+  },
+  {
+   "sku": "MAI-380",
+   "id": 380,
+   "name": "Avant Ruby Eau De Parfum 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/avant-ruby-eau-de-parfum-100ml-by-maison-alhambra-380.html"
+  },
+  {
+   "sku": "ZIM-381",
+   "id": 381,
+   "name": "Modhesh Noble 100ml by Zimaya",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/modhesh-noble-100ml-by-zimaya-381.html"
+  },
+  {
+   "sku": "GUL-385",
+   "id": 385,
+   "name": "Pomegranate Musk Gulf Orchid 60ml For Her",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pomegranate-musk-gulf-orchid-60ml-for-her-385.html"
+  },
+  {
+   "sku": "GRA-386",
+   "id": 386,
+   "name": "jreve Body Spray Woman For Her 200ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jreve-body-spray-woman-for-her-200ml-386.html"
+  },
+  {
+   "sku": "MAI-389",
+   "id": 389,
+   "name": "Maison Alhambra Delilah Pour Femme EDP 100ml – Women’s Perfume",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/maison-alhambra-delilah-pour-femme-edp-100ml-women-s-perfume-389.html"
+  },
+  {
+   "sku": "ARD-398",
+   "id": 398,
+   "name": "Rose Paris Ard Al Zaafaran 100 ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/rose-paris-ard-al-zaafaran-100-ml-edp-women-398.html"
+  },
+  {
+   "sku": "MAI-402",
+   "id": 402,
+   "name": "Kismet for Women 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/kismet-for-women-100ml-by-maison-alhambra-402.html"
+  },
+  {
+   "sku": "MAI-406",
+   "id": 406,
+   "name": "Belgravia by Maison Asrar Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/belgravia-by-maison-asrar-eau-de-parfum-406.html"
+  },
+  {
+   "sku": "AFN-411",
+   "id": 411,
+   "name": "Supremacy Gold by Afnan Perfumes – 100 ml (Women)",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/supremacy-gold-by-afnan-perfumes-100-ml-women-411.html"
+  },
+  {
+   "sku": "AFN-412",
+   "id": 412,
+   "name": "Supremacy Silver by Afnan 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/supremacy-silver-by-afnan-100ml-edp-men-412.html"
+  },
+  {
+   "sku": "AFN-413",
+   "id": 413,
+   "name": "Supremacy Noir by Afnan 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/supremacy-noir-by-afnan-100ml-edp-men-413.html"
+  },
+  {
+   "sku": "MAI-414",
+   "id": 414,
+   "name": "Your Touch Intense by Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/your-touch-intense-by-maison-alhambra-100ml-414.html"
+  },
+  {
+   "sku": "ARM-421",
+   "id": 421,
+   "name": "Armaf Club de Nuit Untold 10ml EDP – Unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/armaf-club-de-nuit-untold-10ml-edp-unisex-421.html"
+  },
+  {
+   "sku": "VOL-423",
+   "id": 423,
+   "name": "Amber Lychee Kenzie by Volare – 100 ml for Her",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/amber-lychee-kenzie-by-volare-100-ml-for-her-423.html"
+  },
+  {
+   "sku": "GRA-426",
+   "id": 426,
+   "name": "Ultra Famous Deodorant Body Spray 200mL Grandeur Man",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ultra-famous-deodorant-body-spray-200ml-grandeur-man-426.html"
+  },
+  {
+   "sku": "GRA-429",
+   "id": 429,
+   "name": "Candy White by Grandeur – 100 ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/candy-white-by-grandeur-100-ml-for-women-429.html"
+  },
+  {
+   "sku": "MAI-431",
+   "id": 431,
+   "name": "Mindset by Maison Alhambra – 100 ml For Man",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/mindset-by-maison-alhambra-100-ml-for-man-431.html"
+  },
+  {
+   "sku": "ARM-433",
+   "id": 433,
+   "name": "Armaf Club De Nuit Urban Man 105ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/armaf-club-de-nuit-urban-man-105ml-edp-433.html"
+  },
+  {
+   "sku": "ARM-434",
+   "id": 434,
+   "name": "Armaf Club De Nuit Man 105ml EDT",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-club-de-nuit-man-105ml-edt-434.html"
+  },
+  {
+   "sku": "ALW-438",
+   "id": 438,
+   "name": "Rose Mystery Intense Al Wataniah 100 ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rose-mystery-intense-al-wataniah-100-ml-edp-438.html"
+  },
+  {
+   "sku": "ALW-441",
+   "id": 441,
+   "name": "Ain Emarat Al Wataniah Eternal Extrait Perfume 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ain-emarat-al-wataniah-eternal-extrait-perfume-100ml-441.html"
+  },
+  {
+   "sku": "ZIM-443",
+   "id": 443,
+   "name": "Icon by Zimaya 100ml EDP for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/icon-by-zimaya-100ml-edp-for-men-443.html"
+  },
+  {
+   "sku": "MAI-444",
+   "id": 444,
+   "name": "Victorioso Legacy by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/victorioso-legacy-by-maison-alhambra-100ml-edp-444.html"
+  },
+  {
+   "sku": "MAI-450",
+   "id": 450,
+   "name": "Sugar Me Carrot Cake by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sugar-me-carrot-cake-by-maison-alhambra-100ml-edp-450.html"
+  },
+  {
+   "sku": "MAI-452",
+   "id": 452,
+   "name": "La Rouge Baroque 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/la-rouge-baroque-100ml-by-maison-alhambra-452.html"
+  },
+  {
+   "sku": "MAI-453",
+   "id": 453,
+   "name": "Florenza (Florence) 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/florenza-florence-100ml-by-maison-alhambra-453.html"
+  },
+  {
+   "sku": "MAI-455",
+   "id": 455,
+   "name": "Papillon D'Or 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/papillon-d-or-100ml-by-maison-alhambra-455.html"
+  },
+  {
+   "sku": "MAI-456",
+   "id": 456,
+   "name": "Jean Lowe Fantasme 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jean-lowe-fantasme-100ml-456.html"
+  },
+  {
+   "sku": "MAI-457",
+   "id": 457,
+   "name": "Glacier Flora 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/glacier-flora-100ml-by-maison-alhambra-457.html"
+  },
+  {
+   "sku": "MAI-458",
+   "id": 458,
+   "name": "Moondrift Blue Intense 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/moondrift-blue-intense-100ml-458.html"
+  },
+  {
+   "sku": "ZIM-462",
+   "id": 462,
+   "name": "Rabab Pulp by Zimaya 100 ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rabab-pulp-by-zimaya-100-ml-edp-unisex-462.html"
+  },
+  {
+   "sku": "MAI-463",
+   "id": 463,
+   "name": "Philos Pura by Maison Alhambra 100ml EDP Man",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/philos-pura-by-maison-alhambra-100ml-edp-man-463.html"
+  },
+  {
+   "sku": "MAI-464",
+   "id": 464,
+   "name": "Opera Noir by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/opera-noir-by-maison-alhambra-100ml-edp-464.html"
+  },
+  {
+   "sku": "VOL-466",
+   "id": 466,
+   "name": "Savour Blast Extreme by Volare 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/savour-blast-extreme-by-volare-100ml-edp-men-466.html"
+  },
+  {
+   "sku": "MAI-468",
+   "id": 468,
+   "name": "Glacier Bold by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/glacier-bold-by-maison-alhambra-100ml-edp-468.html"
+  },
+  {
+   "sku": "MAI-470",
+   "id": 470,
+   "name": "Yeah! Parfum Man by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/yeah-parfum-man-by-maison-alhambra-100ml-edp-470.html"
+  },
+  {
+   "sku": "ALW-471",
+   "id": 471,
+   "name": "Special Oud by Al Wataniah – 100 ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/special-oud-by-al-wataniah-100-ml-eau-de-parfum-471.html"
+  },
+  {
+   "sku": "ALW-476",
+   "id": 476,
+   "name": "Sabah Al Ward Al Wataniah 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sabah-al-ward-al-wataniah-100ml-edp-women-476.html"
+  },
+  {
+   "sku": "ARM-480",
+   "id": 480,
+   "name": "Club De Nuit Intense Limited by Armaf 105ml EDP Men CDNI",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/club-de-nuit-intense-limited-by-armaf-105ml-edp-men-cdni-480.html"
+  },
+  {
+   "sku": "ZIM-481",
+   "id": 481,
+   "name": "Fatima by Zimaya 100ml Extrait de Parfum Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/fatima-by-zimaya-100ml-extrait-de-parfum-women-481.html"
+  },
+  {
+   "sku": "ARM-483",
+   "id": 483,
+   "name": "Tres Nuit by Armaf 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/tres-nuit-by-armaf-100ml-edp-men-483.html"
+  },
+  {
+   "sku": "VOL-489",
+   "id": 489,
+   "name": "Santorini Beaches by Volare – 100 ml for Her",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/santorini-beaches-by-volare-100-ml-for-her-489.html"
+  },
+  {
+   "sku": "ARD-492",
+   "id": 492,
+   "name": "Satwa by Ard Al Zaafaran 100 ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/satwa-by-ard-al-zaafaran-100-ml-edp-unisex-492.html"
+  },
+  {
+   "sku": "MAI-494",
+   "id": 494,
+   "name": "Exclusif Oud by Maison Alhambra 100 ml Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/exclusif-oud-by-maison-alhambra-100-ml-unisex-494.html"
+  },
+  {
+   "sku": "ARD-500",
+   "id": 500,
+   "name": "Desert Sultan Sapphire Ard Al Zaafaran 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/desert-sultan-sapphire-ard-al-zaafaran-100ml-500.html"
+  },
+  {
+   "sku": "MAI-502",
+   "id": 502,
+   "name": "Jorge Di Profumo Deep Blue by Maison Alhambra 100ml Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jorge-di-profumo-deep-blue-by-maison-alhambra-100ml-men-502.html"
+  },
+  {
+   "sku": "MAI-504",
+   "id": 504,
+   "name": "Minerale Gold by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/minerale-gold-by-maison-alhambra-100ml-edp-504.html"
+  },
+  {
+   "sku": "MAI-506",
+   "id": 506,
+   "name": "Your Touch Amber by Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/your-touch-amber-by-maison-alhambra-100ml-506.html"
+  },
+  {
+   "sku": "MAI-510",
+   "id": 510,
+   "name": "Renee Carmine EDP 100 ml Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/renee-carmine-edp-100-ml-maison-alhambra-510.html"
+  },
+  {
+   "sku": "MAI-512",
+   "id": 512,
+   "name": "Exclusif Tabac by Maison Alhambra – 100 ml Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/exclusif-tabac-by-maison-alhambra-100-ml-unisex-512.html"
+  },
+  {
+   "sku": "RUE-514",
+   "id": 514,
+   "name": "Carino White Pour Femme Rue Broca 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/carino-white-pour-femme-rue-broca-100ml-edp-514.html"
+  },
+  {
+   "sku": "ARD-515",
+   "id": 515,
+   "name": "Shams Al Emarat Khususi 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/shams-al-emarat-khususi-100ml-edp-unisex-515.html"
+  },
+  {
+   "sku": "GRA-518",
+   "id": 518,
+   "name": "Strawberry by Grandeur Tubbees 50ml Woman",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/strawberry-by-grandeur-tubbees-50ml-woman-518.html"
+  },
+  {
+   "sku": "MAI-520",
+   "id": 520,
+   "name": "B.A.D. Homme by Maison Alhambra 100 ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/b-a-d-homme-by-maison-alhambra-100-ml-for-men-520.html"
+  },
+  {
+   "sku": "MAI-526",
+   "id": 526,
+   "name": "Musk Vanille by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/musk-vanille-by-maison-alhambra-100ml-edp-526.html"
+  },
+  {
+   "sku": "ALW-529",
+   "id": 529,
+   "name": "Ain Emarat by Al Wataniah 100ml EDP – Intense Perfume",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ain-emarat-by-al-wataniah-100ml-edp-intense-perfume-529.html"
+  },
+  {
+   "sku": "RUE-530",
+   "id": 530,
+   "name": "R U Serious Him Rue Broca 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/r-u-serious-him-rue-broca-100ml-edp-men-530.html"
+  },
+  {
+   "sku": "AFN-532",
+   "id": 532,
+   "name": "Rare Passion by Afnan 100ml EDP Woman",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rare-passion-by-afnan-100ml-edp-woman-532.html"
+  },
+  {
+   "sku": "MAI-543",
+   "id": 543,
+   "name": "Galactic Man Elixir by Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/galactic-man-elixir-by-maison-alhambra-100ml-543.html"
+  },
+  {
+   "sku": "GRA-545",
+   "id": 545,
+   "name": "Saviour Wood Deodorant Body Spray 200mL Grandeur Man",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/saviour-wood-deodorant-body-spray-200ml-grandeur-man-545.html"
+  },
+  {
+   "sku": "ARD-546",
+   "id": 546,
+   "name": "Riqqa by Ard Al Zaafaran 100 ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/riqqa-by-ard-al-zaafaran-100-ml-edp-men-546.html"
+  },
+  {
+   "sku": "ARM-547",
+   "id": 547,
+   "name": "Armaf Club de Nuit Iconic 10ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-club-de-nuit-iconic-10ml-edp-547.html"
+  },
+  {
+   "sku": "ZIM-562",
+   "id": 562,
+   "name": "Inekas Luna by Zimaya 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/inekas-luna-by-zimaya-100ml-edp-men-562.html"
+  },
+  {
+   "sku": "GRA-566",
+   "id": 566,
+   "name": "Snow White 200ml For Man Silver Mountain",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/snow-white-200ml-for-man-silver-mountain-566.html"
+  },
+  {
+   "sku": "AFN-571",
+   "id": 571,
+   "name": "Supremacy In Heaven by Afnan Perfumes – 100 ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/supremacy-in-heaven-by-afnan-perfumes-100-ml-for-men-571.html"
+  },
+  {
+   "sku": "MAI-574",
+   "id": 574,
+   "name": "Alpine Homme Sport By Maison Alhambra Men 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/alpine-homme-sport-by-maison-alhambra-men-100ml-574.html"
+  },
+  {
+   "sku": "AFN-576",
+   "id": 576,
+   "name": "9 AM by Afnan 100 ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/9-am-by-afnan-100-ml-edp-unisex-576.html"
+  },
+  {
+   "sku": "GRA-579",
+   "id": 579,
+   "name": "Instinct Noir Deodorant Body Spray 200mL Grandeur unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/instinct-noir-deodorant-body-spray-200ml-grandeur-unisex-579.html"
+  },
+  {
+   "sku": "MAI-580",
+   "id": 580,
+   "name": "Leyden by Maison Alhambra Eau De Parfum 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/leyden-by-maison-alhambra-eau-de-parfum-100ml-580.html"
+  },
+  {
+   "sku": "MAI-581",
+   "id": 581,
+   "name": "Chic Velvet Pink Secret for Women 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/chic-velvet-pink-secret-for-women-100ml-581.html"
+  },
+  {
+   "sku": "MAI-582",
+   "id": 582,
+   "name": "Opera Rouge by Maison Alhambra for Women 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/opera-rouge-by-maison-alhambra-for-women-100ml-582.html"
+  },
+  {
+   "sku": "ARD-583",
+   "id": 583,
+   "name": "Rave Now 50ml EDP for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rave-now-50ml-edp-for-men-583.html"
+  },
+  {
+   "sku": "RUE-587",
+   "id": 587,
+   "name": "Pride Pour Homme Rue Broca 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pride-pour-homme-rue-broca-100ml-edp-587.html"
+  },
+  {
+   "sku": "VOL-588",
+   "id": 588,
+   "name": "Arome de Reverie by Volare – 100 ml for Her",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/arome-de-reverie-by-volare-100-ml-for-her-588.html"
+  },
+  {
+   "sku": "GRA-590",
+   "id": 590,
+   "name": "Levin Angel Deodorant Body Spray 200mL Grandeur unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/levin-angel-deodorant-body-spray-200ml-grandeur-unisex-590.html"
+  },
+  {
+   "sku": "GRA-591",
+   "id": 591,
+   "name": "Noire Deodorant Body Spray 200mL Grandeur Man lather",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/noire-deodorant-body-spray-200ml-grandeur-man-lather-591.html"
+  },
+  {
+   "sku": "GRA-593",
+   "id": 593,
+   "name": "League Deodorant Body Spray 200mL Grandeur Man",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/league-deodorant-body-spray-200ml-grandeur-man-593.html"
+  },
+  {
+   "sku": "GRA-594",
+   "id": 594,
+   "name": "Madrone 200ml For Her deodorant",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/madrone-200ml-for-her-deodorant-594.html"
+  },
+  {
+   "sku": "MAI-595",
+   "id": 595,
+   "name": "Brulant Oud Maison Alhambra for Men 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/brulant-oud-maison-alhambra-for-men-100ml-595.html"
+  },
+  {
+   "sku": "VOL-596",
+   "id": 596,
+   "name": "Above the Clouds by Volare 100 ml Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/above-the-clouds-by-volare-100-ml-men-596.html"
+  },
+  {
+   "sku": "GRA-597",
+   "id": 597,
+   "name": "La Vie Femme Pink Deodorant Body Spray 200mL Grandeur woman",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/la-vie-femme-pink-deodorant-body-spray-200ml-grandeur-woman-597.html"
+  },
+  {
+   "sku": "MAI-599",
+   "id": 599,
+   "name": "Maitre De Blue by Maison Alhambra 100ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/maitre-de-blue-by-maison-alhambra-100ml-for-men-599.html"
+  },
+  {
+   "sku": "ARM-600",
+   "id": 600,
+   "name": "Armaf Odyssey Homme 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-odyssey-homme-100ml-edp-men-600.html"
+  },
+  {
+   "sku": "MAI-604",
+   "id": 604,
+   "name": "Infini Musk by Maison Alhambra – 100 ml Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/infini-musk-by-maison-alhambra-100-ml-unisex-604.html"
+  },
+  {
+   "sku": "ARM-607",
+   "id": 607,
+   "name": "Rugir Lions Club by Armaf 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rugir-lions-club-by-armaf-100ml-edp-men-607.html"
+  },
+  {
+   "sku": "ARM-608",
+   "id": 608,
+   "name": "Club De Nuit Woman by Armaf 105ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/club-de-nuit-woman-by-armaf-105ml-edp-608.html"
+  },
+  {
+   "sku": "MAI-612",
+   "id": 612,
+   "name": "Pacific Blue by Maison Alhambra 80ml Man",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pacific-blue-by-maison-alhambra-80ml-man-612.html"
+  },
+  {
+   "sku": "RUE-615",
+   "id": 615,
+   "name": "Pride Intense Rue Broca 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pride-intense-rue-broca-100ml-edp-men-615.html"
+  },
+  {
+   "sku": "MAI-618",
+   "id": 618,
+   "name": "The Tux by Maison Alhambra 90ml EDP for Men",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/the-tux-by-maison-alhambra-90ml-edp-for-men-618.html"
+  },
+  {
+   "sku": "AFN-619",
+   "id": 619,
+   "name": "Rare Carbon by Afnan Perfumes – 100 ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rare-carbon-by-afnan-perfumes-100-ml-for-men-619.html"
+  },
+  {
+   "sku": "MAI-621",
+   "id": 621,
+   "name": "Dark Aoud by Maison Alhambra 80ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/dark-aoud-by-maison-alhambra-80ml-edp-621.html"
+  },
+  {
+   "sku": "GRA-622",
+   "id": 622,
+   "name": "Dakota by Grandeur Elite 100ml EDP – Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/dakota-by-grandeur-elite-100ml-edp-women-622.html"
+  },
+  {
+   "sku": "MAI-628",
+   "id": 628,
+   "name": "Fortnight by Maison Alhambra 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/fortnight-by-maison-alhambra-100ml-edp-men-628.html"
+  },
+  {
+   "sku": "ARM-629",
+   "id": 629,
+   "name": "Armaf Aoud Odyssey 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-aoud-odyssey-100ml-edp-men-629.html"
+  },
+  {
+   "sku": "KHA-630",
+   "id": 630,
+   "name": "Magnate Noble by Khadlaj 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/magnate-noble-by-khadlaj-100ml-edp-630.html"
+  },
+  {
+   "sku": "MAI-631",
+   "id": 631,
+   "name": "Opulence Leather by Maison Alhambra – 100 ml Man",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/opulence-leather-by-maison-alhambra-100-ml-man-631.html"
+  },
+  {
+   "sku": "VOL-634",
+   "id": 634,
+   "name": "Society 974 Volare 100 ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/society-974-volare-100-ml-edp-unisex-634.html"
+  },
+  {
+   "sku": "ARM-637",
+   "id": 637,
+   "name": "Hunter Intense Armaf 100ml EDP Perfume for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/hunter-intense-armaf-100ml-edp-perfume-for-men-637.html"
+  },
+  {
+   "sku": "MAI-644",
+   "id": 644,
+   "name": "Black Wood 60ml by Maison Alhambra EDP for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/black-wood-60ml-by-maison-alhambra-edp-for-men-644.html"
+  },
+  {
+   "sku": "RUE-646",
+   "id": 646,
+   "name": "Touche Pour Homme Rue Broca 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/touche-pour-homme-rue-broca-100ml-edp-646.html"
+  },
+  {
+   "sku": "ZIM-648",
+   "id": 648,
+   "name": "Tiramisu Caramel By Zimaya 100 ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/tiramisu-caramel-by-zimaya-100-ml-edp-648.html"
+  },
+  {
+   "sku": "ZIM-649",
+   "id": 649,
+   "name": "Siada Regal by Zimaya 100 ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/siada-regal-by-zimaya-100-ml-edp-649.html"
+  },
+  {
+   "sku": "AFN-651",
+   "id": 651,
+   "name": "Pure Musk by Afnan 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pure-musk-by-afnan-100ml-edp-unisex-651.html"
+  },
+  {
+   "sku": "RUE-652",
+   "id": 652,
+   "name": "Nexa Immortal by Rue Broca 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/nexa-immortal-by-rue-broca-100ml-edp-men-652.html"
+  },
+  {
+   "sku": "MAI-653",
+   "id": 653,
+   "name": "Victorioso by Maison Alhambra 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/victorioso-by-maison-alhambra-100ml-edp-men-653.html"
+  },
+  {
+   "sku": "ZIM-654",
+   "id": 654,
+   "name": "Reflect by Zimaya 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/reflect-by-zimaya-100ml-edp-unisex-654.html"
+  },
+  {
+   "sku": "ARM-655",
+   "id": 655,
+   "name": "Armaf Club De Nuit Intense Man Parfum 150ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-club-de-nuit-intense-man-parfum-150ml-655.html"
+  },
+  {
+   "sku": "VOL-656",
+   "id": 656,
+   "name": "Amara by Volare 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/amara-by-volare-100ml-edp-656.html"
+  },
+  {
+   "sku": "AFN-657",
+   "id": 657,
+   "name": "9 PM - Pour Femme Afnan Perfumes 100 ml Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/9-pm-pour-femme-afnan-perfumes-100-ml-women-657.html"
+  },
+  {
+   "sku": "MAI-659",
+   "id": 659,
+   "name": "Decadent Dream by Maison Alhambra – 100 ml Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/decadent-dream-by-maison-alhambra-100-ml-women-659.html"
+  },
+  {
+   "sku": "MAI-662",
+   "id": 662,
+   "name": "Panther Pour Homme Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/panther-pour-homme-maison-alhambra-100ml-662.html"
+  },
+  {
+   "sku": "ARM-663",
+   "id": 663,
+   "name": "Armaf Odyssey Mega Man 10ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/armaf-odyssey-mega-man-10ml-edp-663.html"
+  },
+  {
+   "sku": "ARD-665",
+   "id": 665,
+   "name": "Musk White Perfume Musk Original EDP 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/musk-white-perfume-musk-original-edp-100ml-665.html"
+  },
+  {
+   "sku": "MAI-672",
+   "id": 672,
+   "name": "La Charmante by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/la-charmante-by-maison-alhambra-100ml-edp-672.html"
+  },
+  {
+   "sku": "MAI-673",
+   "id": 673,
+   "name": "My Party Maison Alhambra 100ml EDP Woman",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/my-party-maison-alhambra-100ml-edp-woman-673.html"
+  },
+  {
+   "sku": "RUE-675",
+   "id": 675,
+   "name": "Exotic Heritage by Rue Broca 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/exotic-heritage-by-rue-broca-100ml-edp-men-675.html"
+  },
+  {
+   "sku": "MAI-692",
+   "id": 692,
+   "name": "Kismet Lunar Magic 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/kismet-lunar-magic-100ml-by-maison-alhambra-692.html"
+  },
+  {
+   "sku": "ARD-699",
+   "id": 699,
+   "name": "Sultan Al Quloub Ard Al Zaafaran 100 ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/sultan-al-quloub-ard-al-zaafaran-100-ml-edp-men-699.html"
+  },
+  {
+   "sku": "GRA-702",
+   "id": 702,
+   "name": "Liberty EDP Grandeur Elite Perfume For Her Spray 60ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/liberty-edp-grandeur-elite-perfume-for-her-spray-60ml-702.html"
+  },
+  {
+   "sku": "ZIM-707",
+   "id": 707,
+   "name": "Royal Paragon by Zimaya EDP 100ml Man",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/royal-paragon-by-zimaya-edp-100ml-man-707.html"
+  },
+  {
+   "sku": "ARM-726",
+   "id": 726,
+   "name": "Armaf La Rosa Eau De Parfum 10ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/armaf-la-rosa-eau-de-parfum-10ml-726.html"
+  },
+  {
+   "sku": "MAI-729",
+   "id": 729,
+   "name": "Jorge Di Profumo Aqua Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jorge-di-profumo-aqua-maison-alhambra-100ml-729.html"
+  },
+  {
+   "sku": "GRA-734",
+   "id": 734,
+   "name": "Soaked Sun Exclusif by Grandeur Elite EDP 100 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/soaked-sun-exclusif-by-grandeur-elite-edp-100-ml-734.html"
+  },
+  {
+   "sku": "MAI-739",
+   "id": 739,
+   "name": "Narissa Ruby (Rouge) Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/narissa-ruby-rouge-maison-alhambra-100ml-739.html"
+  },
+  {
+   "sku": "ZIM-741",
+   "id": 741,
+   "name": "Al Embratur Elixir by Zimaya 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/al-embratur-elixir-by-zimaya-100ml-edp-741.html"
+  },
+  {
+   "sku": "MAI-742",
+   "id": 742,
+   "name": "Pink Shimmer Secret 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pink-shimmer-secret-100ml-by-maison-alhambra-742.html"
+  },
+  {
+   "sku": "MAI-743",
+   "id": 743,
+   "name": "Your Touch Oud by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/your-touch-oud-by-maison-alhambra-100ml-edp-743.html"
+  },
+  {
+   "sku": "ARD-744",
+   "id": 744,
+   "name": "Jazzab Gold by Ard Al Zaafaran Eau De Parfum 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jazzab-gold-by-ard-al-zaafaran-eau-de-parfum-100ml-744.html"
+  },
+  {
+   "sku": "MAI-746",
+   "id": 746,
+   "name": "Expose Blanc by Maison Alhambra 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/expose-blanc-by-maison-alhambra-100ml-edp-men-746.html"
+  },
+  {
+   "sku": "MAI-748",
+   "id": 748,
+   "name": "Jean Lowe Azure by Maison Alhambra EDP 100 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jean-lowe-azure-by-maison-alhambra-edp-100-ml-748.html"
+  },
+  {
+   "sku": "ARM-752",
+   "id": 752,
+   "name": "Armaf King Checkmate 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-king-checkmate-100ml-edp-752.html"
+  },
+  {
+   "sku": "ARM-753",
+   "id": 753,
+   "name": "Armaf Beach Party Eau De Parfum 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-beach-party-eau-de-parfum-100ml-753.html"
+  },
+  {
+   "sku": "ALW-769",
+   "id": 769,
+   "name": "Shagaf Al Ward by Al Wataniah 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/shagaf-al-ward-by-al-wataniah-100ml-edp-women-769.html"
+  },
+  {
+   "sku": "KHA-777",
+   "id": 777,
+   "name": "Karus Amber Gold by Khadlaj 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/karus-amber-gold-by-khadlaj-100ml-edp-unisex-777.html"
+  },
+  {
+   "sku": "KHA-783",
+   "id": 783,
+   "name": "La Fede Elegant Kis s of Rose 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/la-fede-elegant-kis-s-of-rose-100ml-edp-783.html"
+  },
+  {
+   "sku": "MAI-788",
+   "id": 788,
+   "name": "Perseus Exclusif by Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/perseus-exclusif-by-maison-alhambra-100ml-788.html"
+  },
+  {
+   "sku": "ZIM-796",
+   "id": 796,
+   "name": "Cult by Zimaya 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/cult-by-zimaya-100ml-edp-men-796.html"
+  },
+  {
+   "sku": "ARM-800",
+   "id": 800,
+   "name": "Club De Nuit Sillage by Armaf 105ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/club-de-nuit-sillage-by-armaf-105ml-edp-men-800.html"
+  },
+  {
+   "sku": "MAI-802",
+   "id": 802,
+   "name": "Paris Garden Maison Alhambra 100ml EDP Woman",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/paris-garden-maison-alhambra-100ml-edp-woman-802.html"
+  },
+  {
+   "sku": "RUE-804",
+   "id": 804,
+   "name": "Luminus Pour Femme Rue Broca 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/luminus-pour-femme-rue-broca-100ml-edp-804.html"
+  },
+  {
+   "sku": "MAI-805",
+   "id": 805,
+   "name": "Aquilo Pour Homme Maison Alhambra 100 ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/aquilo-pour-homme-maison-alhambra-100-ml-edp-805.html"
+  },
+  {
+   "sku": "GRA-807",
+   "id": 807,
+   "name": "Musk Rouge Deodorant Body Spray 200ml Grandeur unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/musk-rouge-deodorant-body-spray-200ml-grandeur-unisex-807.html"
+  },
+  {
+   "sku": "GRA-809",
+   "id": 809,
+   "name": "Black Whispers 200ml for Her Spray Body Perfume",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/black-whispers-200ml-for-her-spray-body-perfume-809.html"
+  },
+  {
+   "sku": "ARM-811",
+   "id": 811,
+   "name": "Odyssey Mega Man by Armaf 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/odyssey-mega-man-by-armaf-100ml-edp-men-811.html"
+  },
+  {
+   "sku": "MAI-813",
+   "id": 813,
+   "name": "Sugar Me Pistachio Chocolate by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sugar-me-pistachio-chocolate-by-maison-alhambra-100ml-edp-813.html"
+  },
+  {
+   "sku": "ALW-814",
+   "id": 814,
+   "name": "Tibyan by Al Wataniah 100 ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/tibyan-by-al-wataniah-100-ml-edp-women-814.html"
+  },
+  {
+   "sku": "ARM-815",
+   "id": 815,
+   "name": "Odyssey Tyrant Special Edition by Armaf 100ml Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/odyssey-tyrant-special-edition-by-armaf-100ml-men-815.html"
+  },
+  {
+   "sku": "GRA-817",
+   "id": 817,
+   "name": "Avento Deodorant Body Spray 200ml Grandeur Man",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/avento-deodorant-body-spray-200ml-grandeur-man-817.html"
+  },
+  {
+   "sku": "MAI-819",
+   "id": 819,
+   "name": "Salvo by Maison Alhambra For Him 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/salvo-by-maison-alhambra-for-him-100ml-819.html"
+  },
+  {
+   "sku": "MAI-822",
+   "id": 822,
+   "name": "Unknown No Deep Woods by Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/unknown-no-deep-woods-by-maison-alhambra-100ml-822.html"
+  },
+  {
+   "sku": "ZIM-823",
+   "id": 823,
+   "name": "Taraf White by Zimaya 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/taraf-white-by-zimaya-100ml-edp-women-823.html"
+  },
+  {
+   "sku": "AFN-824",
+   "id": 824,
+   "name": "Supremacy Incense by Afnan Perfumes – 100 ml (Unisex)",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/supremacy-incense-by-afnan-perfumes-100-ml-unisex-824.html"
+  },
+  {
+   "sku": "MAI-825",
+   "id": 825,
+   "name": "Baroque Satin Oud 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/baroque-satin-oud-100ml-by-maison-alhambra-825.html"
+  },
+  {
+   "sku": "MAI-826",
+   "id": 826,
+   "name": "Chants Tenderina by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/chants-tenderina-by-maison-alhambra-100ml-edp-826.html"
+  },
+  {
+   "sku": "VOL-830",
+   "id": 830,
+   "name": "Megadose Man Atlas Volare EDP For Him 80 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/megadose-man-atlas-volare-edp-for-him-80-ml-830.html"
+  },
+  {
+   "sku": "MAI-832",
+   "id": 832,
+   "name": "Flower Addiction by Maison Alhambra for Him 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/flower-addiction-by-maison-alhambra-for-him-100ml-832.html"
+  },
+  {
+   "sku": "MAI-834",
+   "id": 834,
+   "name": "Ethnic Oud by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ethnic-oud-by-maison-alhambra-100ml-edp-834.html"
+  },
+  {
+   "sku": "GRA-837",
+   "id": 837,
+   "name": "Kyoto Selective Angel Deodorant Body 200ml Grandeur Unisex",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/kyoto-selective-angel-deodorant-body-200ml-grandeur-unisex-837.html"
+  },
+  {
+   "sku": "MAI-839",
+   "id": 839,
+   "name": "Glacier Gold by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/glacier-gold-by-maison-alhambra-100ml-edp-839.html"
+  },
+  {
+   "sku": "MAI-842",
+   "id": 842,
+   "name": "Exclusif Rose Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/exclusif-rose-maison-alhambra-100ml-edp-842.html"
+  },
+  {
+   "sku": "ZIM-845",
+   "id": 845,
+   "name": "Wameed by Zimaya 100ml Unisex EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/wameed-by-zimaya-100ml-unisex-edp-845.html"
+  },
+  {
+   "sku": "RUE-848",
+   "id": 848,
+   "name": "Pride Pour Femme Rue Broca 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pride-pour-femme-rue-broca-100ml-edp-848.html"
+  },
+  {
+   "sku": "MAI-849",
+   "id": 849,
+   "name": "Cassius 100ml by Maison Alhambra",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/cassius-100ml-by-maison-alhambra-849.html"
+  },
+  {
+   "sku": "ALW-850",
+   "id": 850,
+   "name": "Kayaan Classic by Al Wataniah Homme Intense 100ml For Man",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/kayaan-classic-by-al-wataniah-homme-intense-100ml-for-man-850.html"
+  },
+  {
+   "sku": "MAI-851",
+   "id": 851,
+   "name": "Versencia Noir by Maison Alhambra – 100 ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/versencia-noir-by-maison-alhambra-100-ml-for-women-851.html"
+  },
+  {
+   "sku": "MAI-852",
+   "id": 852,
+   "name": "Camille by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/camille-by-maison-alhambra-100ml-edp-852.html"
+  },
+  {
+   "sku": "AFN-853",
+   "id": 853,
+   "name": "Turathi Brown by Afnan Perfumes – 100 ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/turathi-brown-by-afnan-perfumes-100-ml-for-men-853.html"
+  },
+  {
+   "sku": "MAI-854",
+   "id": 854,
+   "name": "Como Moiselle by Maison Alhambra 100ml for Her",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/como-moiselle-by-maison-alhambra-100ml-for-her-854.html"
+  },
+  {
+   "sku": "ARM-858",
+   "id": 858,
+   "name": "Armaf Odyssey Mandarin Sky 10ml for Men",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/armaf-odyssey-mandarin-sky-10ml-for-men-858.html"
+  },
+  {
+   "sku": "ARM-859",
+   "id": 859,
+   "name": "Odyssey Homme White by Armaf 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/odyssey-homme-white-by-armaf-100ml-edp-men-859.html"
+  },
+  {
+   "sku": "ARM-860",
+   "id": 860,
+   "name": "Odyssey Candee Special Edition by Armaf 100 ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/odyssey-candee-special-edition-by-armaf-100-ml-for-women-860.html"
+  },
+  {
+   "sku": "MAI-862",
+   "id": 862,
+   "name": "Ebene by Maison Alhambra Perfume 90 ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ebene-by-maison-alhambra-perfume-90-ml-edp-862.html"
+  },
+  {
+   "sku": "KHA-864",
+   "id": 864,
+   "name": "Stellar Oud by Khadlaj 100ml EDP Man",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/stellar-oud-by-khadlaj-100ml-edp-man-864.html"
+  },
+  {
+   "sku": "MAI-865",
+   "id": 865,
+   "name": "Winsome by Maison Alhambra 90ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/winsome-by-maison-alhambra-90ml-edp-865.html"
+  },
+  {
+   "sku": "MAI-867",
+   "id": 867,
+   "name": "Exquisite Prive Maison Alhambra 100 ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/exquisite-prive-maison-alhambra-100-ml-edp-men-867.html"
+  },
+  {
+   "sku": "ARM-868",
+   "id": 868,
+   "name": "Armaf Imperiale Eau De Parfum Armaf 105ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-imperiale-eau-de-parfum-armaf-105ml-868.html"
+  },
+  {
+   "sku": "MAI-869",
+   "id": 869,
+   "name": "Salvo Intense by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/salvo-intense-by-maison-alhambra-100ml-edp-869.html"
+  },
+  {
+   "sku": "AFN-870",
+   "id": 870,
+   "name": "9 AM – Pour Femme by Afnan Perfumes – 100 ml for Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/9-am-pour-femme-by-afnan-perfumes-100-ml-for-women-870.html"
+  },
+  {
+   "sku": "ZIM-871",
+   "id": 871,
+   "name": "Fatima Velvet Love by Zimaya 100ml Extrait Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/fatima-velvet-love-by-zimaya-100ml-extrait-women-871.html"
+  },
+  {
+   "sku": "GRA-872",
+   "id": 872,
+   "name": "Illusion by Grandeur 100 ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/illusion-by-grandeur-100-ml-edp-men-872.html"
+  },
+  {
+   "sku": "GRA-873",
+   "id": 873,
+   "name": "Iconic Nuit Pour Homme 100ml EDP for Men by Grandeur",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/iconic-nuit-pour-homme-100ml-edp-for-men-by-grandeur-873.html"
+  },
+  {
+   "sku": "GRA-874",
+   "id": 874,
+   "name": "Voyage Exclusif by Grandeur Elite – 100 ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/voyage-exclusif-by-grandeur-elite-100-ml-for-men-874.html"
+  },
+  {
+   "sku": "MAI-877",
+   "id": 877,
+   "name": "Jean Lowe Noir Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/jean-lowe-noir-maison-alhambra-100ml-edp-877.html"
+  },
+  {
+   "sku": "ZIM-878",
+   "id": 878,
+   "name": "Al Barari Shore by Zimaya 100 ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/al-barari-shore-by-zimaya-100-ml-edp-878.html"
+  },
+  {
+   "sku": "MAI-880",
+   "id": 880,
+   "name": "La Charmante Eclatant by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/la-charmante-eclatant-by-maison-alhambra-100ml-edp-880.html"
+  },
+  {
+   "sku": "MAI-882",
+   "id": 882,
+   "name": "Rose Origami by Maison Alhambra 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rose-origami-by-maison-alhambra-100ml-882.html"
+  },
+  {
+   "sku": "ARD-884",
+   "id": 884,
+   "name": "Maraseem Al Malaki by Ard Al Zaafaran 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/maraseem-al-malaki-by-ard-al-zaafaran-100ml-edp-884.html"
+  },
+  {
+   "sku": "ARM-888",
+   "id": 888,
+   "name": "Armaf Odyssey Aqua Edition 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/armaf-odyssey-aqua-edition-100ml-edp-men-888.html"
+  },
+  {
+   "sku": "GRA-889",
+   "id": 889,
+   "name": "Midnight Angel Deodorant Body Spray 200mL Grandeur Woman",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/midnight-angel-deodorant-body-spray-200ml-grandeur-woman-889.html"
+  },
+  {
+   "sku": "MAI-891",
+   "id": 891,
+   "name": "Sugar Me Dulce de Leche by Maison Alhambra 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/sugar-me-dulce-de-leche-by-maison-alhambra-100ml-edp-891.html"
+  },
+  {
+   "sku": "LAT-892",
+   "id": 892,
+   "name": "Hayaati Men by Lattafa Perfumes100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hayaati-men-by-lattafa-perfumes100ml-edp-892.html"
+  },
+  {
+   "sku": "MAI-895",
+   "id": 895,
+   "name": "Avant by Maison Alhambra 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/avant-by-maison-alhambra-100ml-edp-men-895.html"
+  },
+  {
+   "sku": "GRA-896",
+   "id": 896,
+   "name": "Avento Perfume Man 100ml EDP Grandeur",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/avento-perfume-man-100ml-edp-grandeur-896.html"
+  },
+  {
+   "sku": "GUL-897",
+   "id": 897,
+   "name": "Sham Perfume Woman Gulf Orchid – Her 100 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sham-perfume-woman-gulf-orchid-her-100-ml-897.html"
+  },
+  {
+   "sku": "ARM-900",
+   "id": 900,
+   "name": "Odyssey Mandarin Sky by Armaf 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/odyssey-mandarin-sky-by-armaf-100ml-edp-men-900.html"
+  },
+  {
+   "sku": "ARM-901",
+   "id": 901,
+   "name": "Feroce by Armaf 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/feroce-by-armaf-100ml-edp-women-901.html"
+  },
+  {
+   "sku": "MAI-903",
+   "id": 903,
+   "name": "Hercules by Maison Alhambra For Him 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/hercules-by-maison-alhambra-for-him-100ml-903.html"
+  },
+  {
+   "sku": "MAI-905",
+   "id": 905,
+   "name": "Olivia by Maison Alhambra 80ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/olivia-by-maison-alhambra-80ml-edp-905.html"
+  },
+  {
+   "sku": "OSM-906",
+   "id": 906,
+   "name": "Osma Ambry A Fresh & Fly 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/osma-ambry-a-fresh-and-fly-75ml-edp-906.html"
+  },
+  {
+   "sku": "FRE-916",
+   "id": 916,
+   "name": "Arsh Black Ice by French Avenue Man",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/arsh-black-ice-by-french-avenue-man-916.html"
+  },
+  {
+   "sku": "KEN-919",
+   "id": 919,
+   "name": "Hawas Desire First Look by Kenz de Rasasi 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-desire-first-look-by-kenz-de-rasasi-100ml-919.html"
+  },
+  {
+   "sku": "KEN-920",
+   "id": 920,
+   "name": "Hawas Desire First Kiss by Kenz de Rasasi 100ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-desire-first-kiss-by-kenz-de-rasasi-100ml-920.html"
+  },
+  {
+   "sku": "KEN-921",
+   "id": 921,
+   "name": "Hawas Ice Ultradose by Kenz de Rasasi 100ml Men",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/hawas-ice-ultradose-by-kenz-de-rasasi-100ml-men-921.html"
+  },
+  {
+   "sku": "PAR-933",
+   "id": 933,
+   "name": "Rich Santal Emir by Paris Corner 100 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rich-santal-emir-by-paris-corner-100-ml-933.html"
+  },
+  {
+   "sku": "OSM-934",
+   "id": 934,
+   "name": "White F Berries & Flowers 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/white-f-berries-and-flowers-75ml-edp-934.html"
+  },
+  {
+   "sku": "OSM-939",
+   "id": 939,
+   "name": "Woody W Bergamot Leather 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/woody-w-bergamot-leather-75ml-edp-939.html"
+  },
+  {
+   "sku": "FRE-940",
+   "id": 940,
+   "name": "Ghost Spectre by French Avenue 80ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ghost-spectre-by-french-avenue-80ml-940.html"
+  },
+  {
+   "sku": "OSM-941",
+   "id": 941,
+   "name": "Osma S – Pepper & Sandalwood EDP 150 ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/osma-s-pepper-and-sandalwood-edp-150-ml-941.html"
+  },
+  {
+   "sku": "OSM-946",
+   "id": 946,
+   "name": "Osma Bonjour Oriental Blossoms 150ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/osma-bonjour-oriental-blossoms-150ml-edp-946.html"
+  },
+  {
+   "sku": "OSM-949",
+   "id": 949,
+   "name": "Osma Citrus F 75ml Eau de Parfum - Fruity & Rose",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/osma-citrus-f-75ml-eau-de-parfum-fruity-and-rose-949.html"
+  },
+  {
+   "sku": "OSM-951",
+   "id": 951,
+   "name": "Amber A Amber & Leather 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/amber-a-amber-and-leather-75ml-edp-951.html"
+  },
+  {
+   "sku": "OSM-954",
+   "id": 954,
+   "name": "Osma Portofino Summer Purity 150ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/osma-portofino-summer-purity-150ml-edp-954.html"
+  },
+  {
+   "sku": "OSM-959",
+   "id": 959,
+   "name": "Osma Floral A Ginger Blossom 75ml",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/osma-floral-a-ginger-blossom-75ml-959.html"
+  },
+  {
+   "sku": "FRE-964",
+   "id": 964,
+   "name": "Axis by French Avenue 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/axis-by-french-avenue-100ml-964.html"
+  },
+  {
+   "sku": "FRE-971",
+   "id": 971,
+   "name": "Aromatix Magnetiq by French Avenue 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/aromatix-magnetiq-by-french-avenue-100ml-971.html"
+  },
+  {
+   "sku": "FRE-972",
+   "id": 972,
+   "name": "Aromatix Teas Me by French Avenue 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/aromatix-teas-me-by-french-avenue-100ml-972.html"
+  },
+  {
+   "sku": "FRE-973",
+   "id": 973,
+   "name": "Imperial Ocean French Avenue 100ml for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/imperial-ocean-french-avenue-100ml-for-men-973.html"
+  },
+  {
+   "sku": "PAR-974",
+   "id": 974,
+   "name": "Khair Pistachio by Paris Corner 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/khair-pistachio-by-paris-corner-100ml-edp-974.html"
+  },
+  {
+   "sku": "PAR-975",
+   "id": 975,
+   "name": "The Blue by Paris Corner 100ml EDP Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/the-blue-by-paris-corner-100ml-edp-men-975.html"
+  },
+  {
+   "sku": "PAR-976",
+   "id": 976,
+   "name": "Lueur D Espoir Ambre by Emir Paris Corner 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/lueur-d-espoir-ambre-by-emir-paris-corner-100ml-976.html"
+  },
+  {
+   "sku": "OSM-977",
+   "id": 977,
+   "name": "Paudree F Roses & Musk 75ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/paudree-f-roses-and-musk-75ml-edp-977.html"
+  },
+  {
+   "sku": "PAR-980",
+   "id": 980,
+   "name": "Fayora Paris Corner EDP 100ml Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/fayora-paris-corner-edp-100ml-women-980.html"
+  },
+  {
+   "sku": "PAR-984",
+   "id": 984,
+   "name": "Just Bergamot Emir Factory Edition 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/just-bergamot-emir-factory-edition-100ml-edp-984.html"
+  },
+  {
+   "sku": "BUJ-986",
+   "id": 986,
+   "name": "Oud Money by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/oud-money-by-bujairami-100ml-extrait-de-parfum-986.html"
+  },
+  {
+   "sku": "ASD-987",
+   "id": 987,
+   "name": "Sougha by Asdaaf 100ml EDP Women",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sougha-by-asdaaf-100ml-edp-women-987.html"
+  },
+  {
+   "sku": "BUJ-988",
+   "id": 988,
+   "name": "Dead Serious Bujairami 100ml Extrait Perfume Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/dead-serious-bujairami-100ml-extrait-perfume-unisex-988.html"
+  },
+  {
+   "sku": "RAY-994",
+   "id": 994,
+   "name": "Wood Noir by Rayhaan 100ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/wood-noir-by-rayhaan-100ml-eau-de-parfum-for-men-994.html"
+  },
+  {
+   "sku": "RAY-995",
+   "id": 995,
+   "name": "Wolf by Rayhaan 100ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/wolf-by-rayhaan-100ml-eau-de-parfum-for-men-995.html"
+  },
+  {
+   "sku": "RAY-996",
+   "id": 996,
+   "name": "Adonis Icarus by Rayhaan 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/adonis-icarus-by-rayhaan-100ml-eau-de-parfum-996.html"
+  },
+  {
+   "sku": "RAY-997",
+   "id": 997,
+   "name": "Imperia by Rayhaan 100ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/imperia-by-rayhaan-100ml-eau-de-parfum-for-men-997.html"
+  },
+  {
+   "sku": "RAY-998",
+   "id": 998,
+   "name": "Pacific by Rayhaan 100ml Eau de Parfum for Men",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pacific-by-rayhaan-100ml-eau-de-parfum-for-men-998.html"
+  },
+  {
+   "sku": "RAY-1002",
+   "id": 1002,
+   "name": "Tropical Vibe by Rayhaan 100ml Eau de Parfum Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/tropical-vibe-by-rayhaan-100ml-eau-de-parfum-unisex-1002.html"
+  },
+  {
+   "sku": "BUJ-1003",
+   "id": 1003,
+   "name": "Boss Life by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/boss-life-by-bujairami-100ml-extrait-de-parfum-1003.html"
+  },
+  {
+   "sku": "BUJ-1005",
+   "id": 1005,
+   "name": "Mafia Boss by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/mafia-boss-by-bujairami-100ml-extrait-de-parfum-1005.html"
+  },
+  {
+   "sku": "BUJ-1006",
+   "id": 1006,
+   "name": "Breathless by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/breathless-by-bujairami-100ml-extrait-de-parfum-1006.html"
+  },
+  {
+   "sku": "BUJ-1007",
+   "id": 1007,
+   "name": "Billion Dollar by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/billion-dollar-by-bujairami-100ml-extrait-de-parfum-1007.html"
+  },
+  {
+   "sku": "BUJ-1008",
+   "id": 1008,
+   "name": "Born Nomad by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/born-nomad-by-bujairami-100ml-extrait-de-parfum-1008.html"
+  },
+  {
+   "sku": "BUJ-1009",
+   "id": 1009,
+   "name": "Amber Eclipse by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/amber-eclipse-by-bujairami-100ml-extrait-de-parfum-1009.html"
+  },
+  {
+   "sku": "BUJ-1010",
+   "id": 1010,
+   "name": "Boujee by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/boujee-by-bujairami-100ml-eau-de-parfum-1010.html"
+  },
+  {
+   "sku": "BUJ-1011",
+   "id": 1011,
+   "name": "World Power by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/world-power-by-bujairami-100ml-extrait-de-parfum-1011.html"
+  },
+  {
+   "sku": "BUJ-1012",
+   "id": 1012,
+   "name": "Imperial Oud by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/imperial-oud-by-bujairami-100ml-extrait-de-parfum-1012.html"
+  },
+  {
+   "sku": "BUJ-1013",
+   "id": 1013,
+   "name": "Cartel by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/cartel-by-bujairami-100ml-extrait-de-parfum-1013.html"
+  },
+  {
+   "sku": "BUJ-1014",
+   "id": 1014,
+   "name": "Sacred Skin by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sacred-skin-by-bujairami-100ml-extrait-de-parfum-1014.html"
+  },
+  {
+   "sku": "BUJ-1015",
+   "id": 1015,
+   "name": "Soul Fusion Intense by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/soul-fusion-intense-by-bujairami-100ml-eau-de-parfum-1015.html"
+  },
+  {
+   "sku": "BUJ-1016",
+   "id": 1016,
+   "name": "Madness by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/madness-by-bujairami-100ml-eau-de-parfum-1016.html"
+  },
+  {
+   "sku": "BUJ-1017",
+   "id": 1017,
+   "name": "Only Ever by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/only-ever-by-bujairami-100ml-eau-de-parfum-1017.html"
+  },
+  {
+   "sku": "BUJ-1018",
+   "id": 1018,
+   "name": "Non Stop by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/non-stop-by-bujairami-100ml-extrait-de-parfum-1018.html"
+  },
+  {
+   "sku": "BUJ-1019",
+   "id": 1019,
+   "name": "New York by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/new-york-by-bujairami-100ml-eau-de-parfum-1019.html"
+  },
+  {
+   "sku": "BUJ-1020",
+   "id": 1020,
+   "name": "Silent Halo by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/silent-halo-by-bujairami-100ml-extrait-de-parfum-1020.html"
+  },
+  {
+   "sku": "BUJ-1021",
+   "id": 1021,
+   "name": "Sugar Rush by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sugar-rush-by-bujairami-100ml-eau-de-parfum-1021.html"
+  },
+  {
+   "sku": "BUJ-1022",
+   "id": 1022,
+   "name": "Sacred Order by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sacred-order-by-bujairami-100ml-extrait-de-parfum-1022.html"
+  },
+  {
+   "sku": "BUJ-1023",
+   "id": 1023,
+   "name": "Freeze by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/freeze-by-bujairami-100ml-eau-de-parfum-1023.html"
+  },
+  {
+   "sku": "BUJ-1024",
+   "id": 1024,
+   "name": "Mad Love by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/mad-love-by-bujairami-100ml-extrait-de-parfum-1024.html"
+  },
+  {
+   "sku": "BUJ-1025",
+   "id": 1025,
+   "name": "Lolita by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/lolita-by-bujairami-100ml-extrait-de-parfum-1025.html"
+  },
+  {
+   "sku": "BUJ-1026",
+   "id": 1026,
+   "name": "Ya Habibi by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ya-habibi-by-bujairami-100ml-extrait-de-parfum-1026.html"
+  },
+  {
+   "sku": "BUJ-1027",
+   "id": 1027,
+   "name": "Too Damn Good by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/too-damn-good-by-bujairami-100ml-extrait-de-parfum-1027.html"
+  },
+  {
+   "sku": "BUJ-1028",
+   "id": 1028,
+   "name": "Legacy by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/legacy-by-bujairami-100ml-extrait-de-parfum-1028.html"
+  },
+  {
+   "sku": "BUJ-1029",
+   "id": 1029,
+   "name": "Vanilla Dream by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/vanilla-dream-by-bujairami-100ml-eau-de-parfum-1029.html"
+  },
+  {
+   "sku": "BUJ-1030",
+   "id": 1030,
+   "name": "Vibration by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/vibration-by-bujairami-100ml-extrait-de-parfum-1030.html"
+  },
+  {
+   "sku": "BUJ-1031",
+   "id": 1031,
+   "name": "Chroma by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/chroma-by-bujairami-100ml-eau-de-parfum-1031.html"
+  },
+  {
+   "sku": "BUJ-1032",
+   "id": 1032,
+   "name": "Kingsman by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/kingsman-by-bujairami-100ml-extrait-de-parfum-1032.html"
+  },
+  {
+   "sku": "BUJ-1033",
+   "id": 1033,
+   "name": "Executor by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/executor-by-bujairami-100ml-extrait-de-parfum-1033.html"
+  },
+  {
+   "sku": "BUJ-1034",
+   "id": 1034,
+   "name": "Ibiza by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ibiza-by-bujairami-100ml-extrait-de-parfum-1034.html"
+  },
+  {
+   "sku": "BUJ-1035",
+   "id": 1035,
+   "name": "Hectic by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/hectic-by-bujairami-100ml-extrait-de-parfum-1035.html"
+  },
+  {
+   "sku": "BUJ-1036",
+   "id": 1036,
+   "name": "Next Level by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/next-level-by-bujairami-100ml-extrait-de-parfum-1036.html"
+  },
+  {
+   "sku": "BUJ-1037",
+   "id": 1037,
+   "name": "No Limit by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/no-limit-by-bujairami-100ml-eau-de-parfum-1037.html"
+  },
+  {
+   "sku": "BUJ-1038",
+   "id": 1038,
+   "name": "Emperor by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/emperor-by-bujairami-100ml-eau-de-parfum-1038.html"
+  },
+  {
+   "sku": "BUJ-1039",
+   "id": 1039,
+   "name": "Houdini by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/houdini-by-bujairami-100ml-extrait-de-parfum-1039.html"
+  },
+  {
+   "sku": "BUJ-1040",
+   "id": 1040,
+   "name": "First Class by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/first-class-by-bujairami-100ml-extrait-de-parfum-1040.html"
+  },
+  {
+   "sku": "BUJ-1041",
+   "id": 1041,
+   "name": "Shadow Script by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/shadow-script-by-bujairami-100ml-extrait-de-parfum-1041.html"
+  },
+  {
+   "sku": "BUJ-1042",
+   "id": 1042,
+   "name": "Resolution by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/resolution-by-bujairami-100ml-eau-de-parfum-1042.html"
+  },
+  {
+   "sku": "BUJ-1043",
+   "id": 1043,
+   "name": "Ghost by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ghost-by-bujairami-100ml-eau-de-parfum-1043.html"
+  },
+  {
+   "sku": "BUJ-1044",
+   "id": 1044,
+   "name": "Real Deal by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/real-deal-by-bujairami-100ml-extrait-de-parfum-1044.html"
+  },
+  {
+   "sku": "BUJ-1045",
+   "id": 1045,
+   "name": "Psycho by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/psycho-by-bujairami-100ml-extrait-de-parfum-1045.html"
+  },
+  {
+   "sku": "BUJ-1046",
+   "id": 1046,
+   "name": "Perfect Life by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/perfect-life-by-bujairami-100ml-eau-de-parfum-1046.html"
+  },
+  {
+   "sku": "BUJ-1047",
+   "id": 1047,
+   "name": "Pulse Fiction by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pulse-fiction-by-bujairami-100ml-eau-de-parfum-1047.html"
+  },
+  {
+   "sku": "BUJ-1048",
+   "id": 1048,
+   "name": "Drip No. 7 by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/drip-no-7-by-bujairami-100ml-eau-de-parfum-1048.html"
+  },
+  {
+   "sku": "BUJ-1049",
+   "id": 1049,
+   "name": "Rizz by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/rizz-by-bujairami-100ml-extrait-de-parfum-1049.html"
+  },
+  {
+   "sku": "BUJ-1050",
+   "id": 1050,
+   "name": "Woodlands by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/woodlands-by-bujairami-100ml-extrait-de-parfum-1050.html"
+  },
+  {
+   "sku": "BUJ-1051",
+   "id": 1051,
+   "name": "Blush by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/blush-by-bujairami-100ml-eau-de-parfum-1051.html"
+  },
+  {
+   "sku": "BUJ-1052",
+   "id": 1052,
+   "name": "The Rock Intensely by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/the-rock-intensely-by-bujairami-100ml-eau-de-parfum-1052.html"
+  },
+  {
+   "sku": "BUJ-1053",
+   "id": 1053,
+   "name": "Sovereign by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/sovereign-by-bujairami-100ml-eau-de-parfum-1053.html"
+  },
+  {
+   "sku": "BUJ-1054",
+   "id": 1054,
+   "name": "Too Damn Clean by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/too-damn-clean-by-bujairami-100ml-extrait-de-parfum-1054.html"
+  },
+  {
+   "sku": "BUJ-1055",
+   "id": 1055,
+   "name": "Ocean Eyes by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ocean-eyes-by-bujairami-100ml-extrait-de-parfum-1055.html"
+  },
+  {
+   "sku": "BUJ-1056",
+   "id": 1056,
+   "name": "Red Static by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/red-static-by-bujairami-100ml-eau-de-parfum-1056.html"
+  },
+  {
+   "sku": "BUJ-1057",
+   "id": 1057,
+   "name": "Unforgettable by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/unforgettable-by-bujairami-100ml-eau-de-parfum-1057.html"
+  },
+  {
+   "sku": "BUJ-1058",
+   "id": 1058,
+   "name": "Enforcer by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/enforcer-by-bujairami-100ml-eau-de-parfum-1058.html"
+  },
+  {
+   "sku": "BUJ-1059",
+   "id": 1059,
+   "name": "Red Eclipse by Bujairami 100ml Eau de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/red-eclipse-by-bujairami-100ml-eau-de-parfum-1059.html"
+  },
+  {
+   "sku": "BUJ-1060",
+   "id": 1060,
+   "name": "Drip by Bujairami 100ml Extrait de Parfum",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/drip-by-bujairami-100ml-extrait-de-parfum-1060.html"
+  },
+  {
+   "sku": "PEN-1061",
+   "id": 1061,
+   "name": "Destined Red 100ml by Pendora Scents",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/destined-red-100ml-by-pendora-scents-1061.html"
+  },
+  {
+   "sku": "VEL-1063",
+   "id": 1063,
+   "name": "Velixir Concordia 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-concordia-100ml-edp-1063.html"
+  },
+  {
+   "sku": "VEL-1065",
+   "id": 1065,
+   "name": "Velixir Persephone 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-persephone-100ml-edp-1065.html"
+  },
+  {
+   "sku": "VEL-1066",
+   "id": 1066,
+   "name": "Velixir Orion 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-orion-100ml-edp-1066.html"
+  },
+  {
+   "sku": "VEL-1067",
+   "id": 1067,
+   "name": "Velixir Hera 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-hera-100ml-edp-1067.html"
+  },
+  {
+   "sku": "VEL-1068",
+   "id": 1068,
+   "name": "Velixir Morpheus 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-morpheus-100ml-edp-1068.html"
+  },
+  {
+   "sku": "VEL-1069",
+   "id": 1069,
+   "name": "Velixir Artemis 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-artemis-100ml-edp-1069.html"
+  },
+  {
+   "sku": "VEL-1070",
+   "id": 1070,
+   "name": "Velixir Uranus 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-uranus-100ml-edp-1070.html"
+  },
+  {
+   "sku": "VEL-1071",
+   "id": 1071,
+   "name": "Velixir Icarus 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-icarus-100ml-edp-1071.html"
+  },
+  {
+   "sku": "MOO-1072",
+   "id": 1072,
+   "name": "Aroma Mood 100ml EDP Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/aroma-mood-100ml-edp-unisex-1072.html"
+  },
+  {
+   "sku": "VEL-1074",
+   "id": 1074,
+   "name": "Velixir Athena 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-athena-100ml-edp-1074.html"
+  },
+  {
+   "sku": "VEL-1075",
+   "id": 1075,
+   "name": "Velixir Poseidon 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-poseidon-100ml-edp-1075.html"
+  },
+  {
+   "sku": "VEL-1079",
+   "id": 1079,
+   "name": "Velixir Adonis 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-adonis-100ml-edp-1079.html"
+  },
+  {
+   "sku": "ASD-1081",
+   "id": 1081,
+   "name": "Marj Perfume 100ml Lattafa Asdaaf Arabic For Women",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/marj-perfume-100ml-lattafa-asdaaf-arabic-for-women-1081.html"
+  },
+  {
+   "sku": "RAV-1082",
+   "id": 1082,
+   "name": "Nuit Parfaite by Rave 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/nuit-parfaite-by-rave-100ml-edp-1082.html"
+  },
+  {
+   "sku": "RAV-1083",
+   "id": 1083,
+   "name": "Pure Desire Gold by Rave 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/pure-desire-gold-by-rave-100ml-edp-1083.html"
+  },
+  {
+   "sku": "ASD-1084",
+   "id": 1084,
+   "name": "Ameerat Al Arab Prive Rose by Lattafa 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ameerat-al-arab-prive-rose-by-lattafa-100ml-1084.html"
+  },
+  {
+   "sku": "VEL-1088",
+   "id": 1088,
+   "name": "Velixir Asteria 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-asteria-100ml-edp-1088.html"
+  },
+  {
+   "sku": "VEL-1090",
+   "id": 1090,
+   "name": "Velixir Himeros 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-himeros-100ml-edp-1090.html"
+  },
+  {
+   "sku": "VEL-1091",
+   "id": 1091,
+   "name": "Velixir Galatea 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-galatea-100ml-edp-1091.html"
+  },
+  {
+   "sku": "VEL-1092",
+   "id": 1092,
+   "name": "Velixir Apollo 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-apollo-100ml-edp-1092.html"
+  },
+  {
+   "sku": "VEL-1093",
+   "id": 1093,
+   "name": "Velixir Helios 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر",
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-helios-100ml-edp-1093.html"
+  },
+  {
+   "sku": "VEL-1094",
+   "id": 1094,
+   "name": "Velixir Paladin 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-paladin-100ml-edp-1094.html"
+  },
+  {
+   "sku": "PEN-1095",
+   "id": 1095,
+   "name": "Ultra Marine 100ml by Pendora Scents",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/ultra-marine-100ml-by-pendora-scents-1095.html"
+  },
+  {
+   "sku": "VEL-1096",
+   "id": 1096,
+   "name": "Nyx Velixir Parfums 100ml for Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/nyx-velixir-parfums-100ml-for-unisex-1096.html"
+  },
+  {
+   "sku": "VEL-1097",
+   "id": 1097,
+   "name": "Velixir Ares 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-ares-100ml-edp-1097.html"
+  },
+  {
+   "sku": "VEL-1098",
+   "id": 1098,
+   "name": "Velixir Aphrodite 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-aphrodite-100ml-edp-1098.html"
+  },
+  {
+   "sku": "VEL-1100",
+   "id": 1100,
+   "name": "Selene Velixir Parfums 100ml",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/selene-velixir-parfums-100ml-1100.html"
+  },
+  {
+   "sku": "VEL-1101",
+   "id": 1101,
+   "name": "Velixir Narcisus 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-narcisus-100ml-edp-1101.html"
+  },
+  {
+   "sku": "RAV-1102",
+   "id": 1102,
+   "name": "Now Intense by Rave 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/now-intense-by-rave-100ml-edp-1102.html"
+  },
+  {
+   "sku": "RAV-1103",
+   "id": 1103,
+   "name": "Now Rouge Perfume EDP 100ml by RAVE",
+   "status": "warn",
+   "issues": [
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/now-rouge-perfume-edp-100ml-by-rave-1103.html"
+  },
+  {
+   "sku": "VEL-1104",
+   "id": 1104,
+   "name": "Harmonia Velixir Parfums 100ml for Unisex",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/harmonia-velixir-parfums-100ml-for-unisex-1104.html"
+  },
+  {
+   "sku": "VEL-1105",
+   "id": 1105,
+   "name": "Velixir Demeter 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/velixir-demeter-100ml-edp-1105.html"
+  },
+  {
+   "sku": "RAV-1106",
+   "id": 1106,
+   "name": "Au Soleil by Rave 100ml EDP",
+   "status": "warn",
+   "issues": [
+    "بيانات المورد قليلة (وصف قصير وبدون نوتات) — الصفحة بتعرض الحقائق المنشورة بس"
+   ],
+   "page": "p/au-soleil-by-rave-100ml-edp-1106.html"
+  },
+  {
+   "sku": "NIC-1111",
+   "id": 1111,
+   "name": "Khanjar by Niche Emarati 85ml EDP",
+   "status": "warn",
+   "issues": [
+    "غير متوفر عند المورد"
+   ],
+   "page": "p/khanjar-by-niche-emarati-85ml-edp-1111.html"
+  },
+  {
+   "sku": "IMP-1115",
+   "id": 1115,
+   "name": "MIRSAAL OF TRUST",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/mirsaal-of-trust-1115.html"
+  },
+  {
+   "sku": "IMP-1116",
+   "id": 1116,
+   "name": "ORNAMENT POUR FEMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/ornament-pour-femme-1116.html"
+  },
+  {
+   "sku": "IMP-1117",
+   "id": 1117,
+   "name": "MIRSAAL WITH LOVE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/mirsaal-with-love-1117.html"
+  },
+  {
+   "sku": "IMP-1118",
+   "id": 1118,
+   "name": "RARE CARBON",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/rare-carbon-1118.html"
+  },
+  {
+   "sku": "IMP-1119",
+   "id": 1119,
+   "name": "ORNAMENT POUR HOMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/ornament-pour-homme-1119.html"
+  },
+  {
+   "sku": "IMP-1120",
+   "id": 1120,
+   "name": "SOUVENIR DESERT ROSE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/souvenir-desert-rose-1120.html"
+  },
+  {
+   "sku": "IMP-1121",
+   "id": 1121,
+   "name": "SOUVENIR FLORAL BOUQUET",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/souvenir-floral-bouquet-1121.html"
+  },
+  {
+   "sku": "IMP-1122",
+   "id": 1122,
+   "name": "SUPREMACY GOLD",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-gold-1122.html"
+  },
+  {
+   "sku": "IMP-1123",
+   "id": 1123,
+   "name": "SUPREMACY IN HEAVEN",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-in-heaven-1123.html"
+  },
+  {
+   "sku": "IMP-1124",
+   "id": 1124,
+   "name": "SUPREMACY INCENSE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-incense-1124.html"
+  },
+  {
+   "sku": "IMP-1125",
+   "id": 1125,
+   "name": "SUPREMACY NOIR",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-noir-1125.html"
+  },
+  {
+   "sku": "IMP-1126",
+   "id": 1126,
+   "name": "SUPREMACY PINK",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-pink-1126.html"
+  },
+  {
+   "sku": "IMP-1127",
+   "id": 1127,
+   "name": "SUPREMACY PURPLE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-purple-1127.html"
+  },
+  {
+   "sku": "IMP-1128",
+   "id": 1128,
+   "name": "SUPREMACY SILVER",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-silver-1128.html"
+  },
+  {
+   "sku": "IMP-1129",
+   "id": 1129,
+   "name": "TRIBUTE BLUE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/tribute-blue-1129.html"
+  },
+  {
+   "sku": "IMP-1130",
+   "id": 1130,
+   "name": "VIOLET BOUQUET",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/violet-bouquet-1130.html"
+  },
+  {
+   "sku": "IMP-1131",
+   "id": 1131,
+   "name": "GIFT SET SUPREMACY SILVER & PINK",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-supremacy-silver-and-pink-1131.html"
+  },
+  {
+   "sku": "IMP-1132",
+   "id": 1132,
+   "name": "GIFT SET DEHN AL OUD ABIYAD",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-dehn-al-oud-abiyad-1132.html"
+  },
+  {
+   "sku": "IMP-1133",
+   "id": 1133,
+   "name": "GIFT SET SUPREMACY NOIR & PURPLE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-supremacy-noir-and-purple-1133.html"
+  },
+  {
+   "sku": "IMP-1139",
+   "id": 1139,
+   "name": "SUPREMACY NOT ONLY INTENSE - LUXURY COLLECTION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-not-only-intense-luxury-collection-1139.html"
+  },
+  {
+   "sku": "IMP-1140",
+   "id": 1140,
+   "name": "SUPREMACY IN OUD - LUXURY COLLECTION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-in-oud-luxury-collection-1140.html"
+  },
+  {
+   "sku": "IMP-1141",
+   "id": 1141,
+   "name": "LA FLEUR BOUQUET",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/la-fleur-bouquet-1141.html"
+  },
+  {
+   "sku": "IMP-1142",
+   "id": 1142,
+   "name": "ORNAMENT PURPLE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/ornament-purple-1142.html"
+  },
+  {
+   "sku": "IMP-1144",
+   "id": 1144,
+   "name": "TRIBUTE PINK",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/tribute-pink-1144.html"
+  },
+  {
+   "sku": "IMP-1148",
+   "id": 1148,
+   "name": "PATCHOULI ON FIRE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/patchouli-on-fire-1148.html"
+  },
+  {
+   "sku": "IMP-1149",
+   "id": 1149,
+   "name": "TOBACCO RUSH",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/tobacco-rush-1149.html"
+  },
+  {
+   "sku": "IMP-1150",
+   "id": 1150,
+   "name": "HISTORIC DORIA",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/historic-doria-1150.html"
+  },
+  {
+   "sku": "IMP-1151",
+   "id": 1151,
+   "name": "HISTORIC OLMEDA",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/historic-olmeda-1151.html"
+  },
+  {
+   "sku": "IMP-1152",
+   "id": 1152,
+   "name": "EDICT MUSCTIQUE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/edict-musctique-1152.html"
+  },
+  {
+   "sku": "IMP-1153",
+   "id": 1153,
+   "name": "EDICT AMBERYTHME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/edict-amberythme-1153.html"
+  },
+  {
+   "sku": "IMP-1154",
+   "id": 1154,
+   "name": "EDICT OUDDICTION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/edict-ouddiction-1154.html"
+  },
+  {
+   "sku": "IMP-1155",
+   "id": 1155,
+   "name": "9 PM - Pour Femme",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/9-pm-pour-femme-1155.html"
+  },
+  {
+   "sku": "IMP-1156",
+   "id": 1156,
+   "name": "9 AM - Pour Femme",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/9-am-pour-femme-1156.html"
+  },
+  {
+   "sku": "IMP-1157",
+   "id": 1157,
+   "name": "RARE PASSION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/rare-passion-1157.html"
+  },
+  {
+   "sku": "IMP-1158",
+   "id": 1158,
+   "name": "GIFT SET SUPREMACY SILVER",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-supremacy-silver-1158.html"
+  },
+  {
+   "sku": "IMP-1159",
+   "id": 1159,
+   "name": "GIFT SET SOUVENIR FLORAL BOUQUET",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-souvenir-floral-bouquet-1159.html"
+  },
+  {
+   "sku": "IMP-1160",
+   "id": 1160,
+   "name": "GIFT SET SUPREMACY FEMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-supremacy-femme-1160.html"
+  },
+  {
+   "sku": "IMP-1161",
+   "id": 1161,
+   "name": "GIFT SET 9PM HOMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-9pm-homme-1161.html"
+  },
+  {
+   "sku": "IMP-1162",
+   "id": 1162,
+   "name": "GIFT SET ORNAMENT FEMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/gift-set-ornament-femme-1162.html"
+  },
+  {
+   "sku": "IMP-1163",
+   "id": 1163,
+   "name": "GIFT SET SOUVENIR DESERT ROSE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-souvenir-desert-rose-1163.html"
+  },
+  {
+   "sku": "IMP-1164",
+   "id": 1164,
+   "name": "GIFT SET SUPREMACY NOT ONLY INTENSE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-supremacy-not-only-intense-1164.html"
+  },
+  {
+   "sku": "IMP-1165",
+   "id": 1165,
+   "name": "PORTRAIT ABSTRACT",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/portrait-abstract-1165.html"
+  },
+  {
+   "sku": "IMP-1166",
+   "id": 1166,
+   "name": "PORTRAIT REVIVAL",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/portrait-revival-1166.html"
+  },
+  {
+   "sku": "IMP-1167",
+   "id": 1167,
+   "name": "OUD RISING",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/oud-rising-1167.html"
+  },
+  {
+   "sku": "IMP-1168",
+   "id": 1168,
+   "name": "MYSTIQUE BOUQUET",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/mystique-bouquet-1168.html"
+  },
+  {
+   "sku": "IMP-1169",
+   "id": 1169,
+   "name": "SUPREMACY TAPIS ROUGE - LUXURY COLLECTION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/supremacy-tapis-rouge-luxury-collection-1169.html"
+  },
+  {
+   "sku": "IMP-1170",
+   "id": 1170,
+   "name": "SUPREMACY GALA - LUXURY COLLECTION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-gala-luxury-collection-1170.html"
+  },
+  {
+   "sku": "IMP-1171",
+   "id": 1171,
+   "name": "SUPREMACY SILVER - 150 ML",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/supremacy-silver-150-ml-1171.html"
+  },
+  {
+   "sku": "IMP-1172",
+   "id": 1172,
+   "name": "SUPREMACY NOT ONLY INTENSE - LUXURY COLLECTION - 150 ML",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-not-only-intense-luxury-collection-150-ml-1172.html"
+  },
+  {
+   "sku": "IMP-1173",
+   "id": 1173,
+   "name": "SUPREMACY IN OUD - LUXURY COLLECTION - 150ML",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-in-oud-luxury-collection-150ml-1173.html"
+  },
+  {
+   "sku": "IMP-1174",
+   "id": 1174,
+   "name": "CHERRY BOUQUET",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/cherry-bouquet-1174.html"
+  },
+  {
+   "sku": "IMP-1175",
+   "id": 1175,
+   "name": "GIFT SET SUPREMACY IN OUD",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-supremacy-in-oud-1175.html"
+  },
+  {
+   "sku": "IMP-1176",
+   "id": 1176,
+   "name": "SOUVENIR BLOOMING BLISS",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/souvenir-blooming-bliss-1176.html"
+  },
+  {
+   "sku": "IMP-1177",
+   "id": 1177,
+   "name": "GIFT SET 9 AM DIVE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-9-am-dive-1177.html"
+  },
+  {
+   "sku": "IMP-1178",
+   "id": 1178,
+   "name": "GIFT SET TURATHI BLUE",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-turathi-blue-1178.html"
+  },
+  {
+   "sku": "IMP-1179",
+   "id": 1179,
+   "name": "GIFT SET 9 AM POUR FEMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-9-am-pour-femme-1179.html"
+  },
+  {
+   "sku": "IMP-1180",
+   "id": 1180,
+   "name": "GIFT SET 9 PM POUR FEMME",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/gift-set-9-pm-pour-femme-1180.html"
+  },
+  {
+   "sku": "IMP-1181",
+   "id": 1181,
+   "name": "9 AM",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/9-am-1181.html"
+  },
+  {
+   "sku": "IMP-1182",
+   "id": 1182,
+   "name": "9 AM Dive",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/9-am-dive-1182.html"
+  },
+  {
+   "sku": "IMP-1183",
+   "id": 1183,
+   "name": "9 PM",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/9-pm-1183.html"
+  },
+  {
+   "sku": "IMP-1192",
+   "id": 1192,
+   "name": "Kiaana Angel",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/kiaana-angel-1192.html"
+  },
+  {
+   "sku": "IMP-1193",
+   "id": 1193,
+   "name": "Kiaana Crush",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/kiaana-crush-1193.html"
+  },
+  {
+   "sku": "IMP-1194",
+   "id": 1194,
+   "name": "9 PM Rebel",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/9-pm-rebel-1194.html"
+  },
+  {
+   "sku": "IMP-1195",
+   "id": 1195,
+   "name": "Delicious Bouquet",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/delicious-bouquet-1195.html"
+  },
+  {
+   "sku": "IMP-1196",
+   "id": 1196,
+   "name": "Turathi Electric",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/turathi-electric-1196.html"
+  },
+  {
+   "sku": "IMP-1197",
+   "id": 1197,
+   "name": "Rare Reef",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/rare-reef-1197.html"
+  },
+  {
+   "sku": "IMP-1198",
+   "id": 1198,
+   "name": "9 PM Elixir",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/9-pm-elixir-1198.html"
+  },
+  {
+   "sku": "IMP-1199",
+   "id": 1199,
+   "name": "Historic Sahara",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط"
+   ],
+   "page": "p/historic-sahara-1199.html"
+  },
+  {
+   "sku": "IMP-1200",
+   "id": 1200,
+   "name": "GIFT SET COLLECTOR'S EDITION",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/gift-set-collector-s-edition-1200.html"
+  },
+  {
+   "sku": "IMP-1201",
+   "id": 1201,
+   "name": "Lynked Freedom",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/lynked-freedom-1201.html"
+  },
+  {
+   "sku": "IMP-1202",
+   "id": 1202,
+   "name": "Lynked Forever",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/lynked-forever-1202.html"
+  },
+  {
+   "sku": "IMP-1203",
+   "id": 1203,
+   "name": "9 PM Night Out",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/9-pm-night-out-1203.html"
+  },
+  {
+   "sku": "IMP-1204",
+   "id": 1204,
+   "name": "Kiaana Vibes",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/kiaana-vibes-1204.html"
+  },
+  {
+   "sku": "IMP-1205",
+   "id": 1205,
+   "name": "Ebdaa Concentrated Perfume Oil",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/ebdaa-concentrated-perfume-oil-1205.html"
+  },
+  {
+   "sku": "IMP-1206",
+   "id": 1206,
+   "name": "Malak",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/malak-1206.html"
+  },
+  {
+   "sku": "IMP-1207",
+   "id": 1207,
+   "name": "9 Series Discovery Kit",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/9-series-discovery-kit-1207.html"
+  },
+  {
+   "sku": "IMP-1208",
+   "id": 1208,
+   "name": "Supremacy Femme Series Discovery Kit",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-femme-series-discovery-kit-1208.html"
+  },
+  {
+   "sku": "IMP-1209",
+   "id": 1209,
+   "name": "Bouquet Series Discovery Kit",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/bouquet-series-discovery-kit-1209.html"
+  },
+  {
+   "sku": "IMP-1210",
+   "id": 1210,
+   "name": "Supremacy Homme Series Discovery Kit",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/supremacy-homme-series-discovery-kit-1210.html"
+  },
+  {
+   "sku": "IMP-1211",
+   "id": 1211,
+   "name": "Mens Series Discovery Kit",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/mens-series-discovery-kit-1211.html"
+  },
+  {
+   "sku": "IMP-1212",
+   "id": 1212,
+   "name": "Stardust",
+   "status": "warn",
+   "issues": [
+    "صورة واحدة فقط",
+    "المورد لم ينشر نوتات العطر"
+   ],
+   "page": "p/stardust-1212.html"
+  }
+ ]
+}

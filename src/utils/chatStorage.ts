@@ -1,9 +1,13 @@
 import { validAgentReport, type AgentReport } from '../types/agent';
+import { safeChatSources, type ChatSource } from './chatSources';
+
+export type ShaheenProvider = 'gemini' | 'deepseek' | 'openai' | 'claude' | 'self_hosted' | 'openrouter' | 'perplexity';
+
 export interface ModelPerspective {
-  modelId: 'gemini' | 'deepseek' | 'openai' | 'claude';
+  modelId: ShaheenProvider;
   name: string;
   badge: string;
-  provider: 'gemini' | 'deepseek' | 'openai' | 'claude';
+  provider: ShaheenProvider;
   color: string;
   reply: string;
 }
@@ -14,14 +18,18 @@ export interface ChatMessage {
   text: string;
   timestamp: string;
   kind?: 'error';
-  agent?: AgentReport;
+  toolReport?: AgentReport;
   aiEngine?: {
     id: string;
     name: string;
     badge: string;
-    provider: 'gemini' | 'deepseek' | 'openai' | 'claude' | 'ensemble';
+    /** 'shaheen' for current replies (visitors never get engine names); older saved chats may hold an engine id. */
+    provider: ShaheenProvider | 'ensemble' | 'shaheen';
+    model?: string;
   };
   perspectives?: ModelPerspective[];
+  /** Kept out of the visible reply; sent back only so sources can be shown if the visitor asks. */
+  sources?: ChatSource[];
   activePerspectiveTab?: string;
 }
 
@@ -51,7 +59,7 @@ export const DEFAULT_WELCOME_MESSAGE: ChatMessage = {
 };
 
 export const CHAT_STORAGE_KEY = 'miyaar_perfumer_chat_session';
-const PROVIDERS = ['gemini', 'deepseek', 'openai', 'claude', 'ensemble'];
+const PROVIDERS = ['gemini', 'deepseek', 'openai', 'claude', 'self_hosted', 'openrouter', 'perplexity', 'ensemble', 'shaheen'];
 
 export function isChatMessage(value: unknown): value is ChatMessage {
   if (!value || typeof value !== 'object') return false;
@@ -60,12 +68,13 @@ export function isChatMessage(value: unknown): value is ChatMessage {
     (message.role === 'user' || message.role === 'assistant') &&
     typeof message.text === 'string' && message.text.trim().length > 0 && message.text.length <= 32000 &&
     typeof message.timestamp === 'string' &&
-    (message.agent === undefined || validAgentReport(message.agent)) &&
+    (message.toolReport === undefined || validAgentReport(message.toolReport)) &&
     (message.kind === undefined || message.kind === 'error') &&
     (message.aiEngine === undefined || Boolean(message.aiEngine &&
       typeof message.aiEngine.id === 'string' && typeof message.aiEngine.name === 'string' &&
       typeof message.aiEngine.badge === 'string' && PROVIDERS.includes(message.aiEngine.provider))) &&
     (message.activePerspectiveTab === undefined || typeof message.activePerspectiveTab === 'string') &&
+    (message.sources === undefined || safeChatSources(message.sources) !== undefined) &&
     (message.perspectives === undefined || (Array.isArray(message.perspectives) && message.perspectives.every((p) =>
       p && PROVIDERS.includes(p.provider) && PROVIDERS.includes(p.modelId) &&
       typeof p.name === 'string' && typeof p.badge === 'string' && typeof p.color === 'string' &&

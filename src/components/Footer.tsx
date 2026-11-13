@@ -1,8 +1,9 @@
 import React from 'react';
-import { Newspaper, Sparkles, Award, Globe, Check, Languages } from 'lucide-react';
-import { SupportedLanguage, SUPPORTED_LANGUAGES, LanguageConfig } from '../types/i18n';
-import { LText, makeT, fmt } from '../utils/localize';
-import { isRTL } from '../utils/localizedContent';
+import { contactEmail, contactMailto } from '../config/contact';
+import { Newspaper, Sparkles } from 'lucide-react';
+import { SupportedLanguage } from '../types/i18n';
+import { LText, makeT, fmt } from '../لغات/localize';
+import VisitorSuggestionBox from './VisitorSuggestionBox';
 
 
 const S = {
@@ -14,9 +15,9 @@ const S = {
   link_news: { ar: 'آخر أخبار العطور في العالم (ميلانو، دبي، غراس)', en: 'World Fragrance News (Milan, Dubai, Grasse)', fr: 'Actualités mondiales (Milan, Dubaï, Grasse)', es: 'Noticias globales (Milán, Dubái, Grasse)', it: 'Notizie mondiali (Milano, Dubai, Grasse)', de: 'Weltweite Duftnews (Mailand, Dubai, Grasse)', ru: 'Мировые новости парфюмерии (Милан, Дубай, Грас)', zh: '全球香水资讯（米兰、迪拜、格拉斯）', tr: 'Küresel parfüm haberleri (Milano, Dubai, Grasse)', fa: 'اخبار جهانی عطر (میلان، دبی، گراس)' },
   link_world: { ar: 'أشهر العطور العالمية (بكرات روج، أفينتوس، توم فورد)', en: 'Iconic World Perfumes (Baccarat Rouge, Aventus, Tom Ford)', fr: 'Parfums iconiques (Baccarat Rouge, Aventus, Tom Ford)', es: 'Perfumes icónicos (Baccarat Rouge, Aventus, Tom Ford)', it: 'Profumi iconici (Baccarat Rouge, Aventus, Tom Ford)', de: 'Ikoniche Parfüms (Baccarat Rouge, Aventus, Tom Ford)', ru: 'Знаменитые ароматы (Baccarat Rouge, Aventus, Tom Ford)', zh: '世界名香（Baccarat Rouge、Aventus、Tom Ford）', tr: 'İkonik parfümler (Baccarat Rouge, Aventus, Tom Ford)', fa: 'عطرهای مشهور جهان (باکارا روژ، آونتوس، تام فورد)' },
   link_raw: { ar: 'موسوعة المواد الخام، المذيبات، والأمبروكسان', en: 'Raw Materials, Solvents & Ambroxan Encyclopedia', fr: 'Encyclopédie des matières premières, solvants et ambroxan', es: 'Enciclopedia de materias primas, disolventes y ambroxán', it: 'Enciclopedia di materie prime, solventi e ambroxan', de: 'Enzyklopädie: Rohstoffe, Lösemittel & Ambroxan', ru: 'Энциклопедия сырья, растворителей и амброксана', zh: '原料、溶剂与龙涎香醚百科', tr: 'Hammadde, çözücü ve ambroksan ansiklopedisi', fa: 'دانشنامه مواد اولیه، حلال‌ها و آمبروکسان' },
-  link_ai: { ar: 'مجلس الخبير شاهين · استشارة الذكاء الاصطناعي', en: 'Master Shahin Council · AI Consultation', fr: 'Conseil du Maître Shahin · consultation IA', es: 'Consejo del Maestro Shahin · consulta IA', it: 'Consiglio del Maestro Shahin · consulenza IA', de: 'Meister-Shahin-Rat · KI-Beratung', ru: 'Совет мастера Шахина · ИИ-консультации', zh: 'Shahin 大师议会 · AI 咨询', tr: 'Usta Shahin konseyi · YZ danışmanı', fa: 'شورای استاد شاهین · مشاوره هوش مصنوعی' },
+  link_ai: { ar: 'الخبير شاهين · استشارة عطرية ذكية', en: 'Master Shahin · smart perfume advice', fr: 'Maître Shahin · conseil parfum', es: 'Maestro Shahin · asesoría de perfumes', it: 'Maestro Shahin · consulenza profumi', de: 'Meister Shahin · Duftberatung', ru: 'Мастер Шахин · советы по ароматам', zh: 'Shahin 大师 · 香水咨询', tr: 'Usta Shahin · parfüm danışmanlığı', fa: 'استاد شاهین · مشاوره عطر' },
   tools_title: { ar: 'الحاسبات والمعايير المعملية', en: 'Lab Calculators & Standards', fr: 'Calculateurs et normes de laboratoire', es: 'Calculadoras y normas de laboratorio', it: 'Calcolatori e norme di laboratorio', de: 'Laborrechner & Normen', ru: 'Калькуляторы и лабораторные стандарты', zh: '实验室计算器与标准', tr: 'Laboratuvar hesaplayıcıları ve standartlar', fa: 'ماشین‌حساب‌ها و استانداردهای آزمایشگاهی' },
-  link_conc: { ar: 'حاسبة نسب التركيز وتعبئة الزجاجات (Extrait, EDP, EDT)', en: 'Concentration & Bottling Calculator (Extrait, EDP, EDT)', fr: 'Calculateur de concentration et embouteillage (Extrait, EDP, EDT)', es: 'Calculadora de concentración y embotellado (Extrait, EDP, EDT)', it: 'Calcolatore di concentrazione e imbottigliamento (Extrait, EDP, EDT)', de: 'Konzentrations- & Abfüllrechner (Extrait, EDP, EDT)', ru: 'Калькулятор концентрации и розлива (Extrait, EDP, EDT)', zh: '浓度与灌装计算器（Extrait、EDP、EDT）', tr: 'Konsantrasyon ve dolum hesaplayıcısı (Extrait, EDP, EDT)', fa: 'ماشین‌حساب غلظت و پرکردن بطری (Extrait, EDP, EDT)' },
+  link_conc: { ar: 'حاسبة نسب التركيز وتعبئة الزجاجات (مستخلص عطر، ماء عطر، ماء تواليت)', en: 'Concentration & Bottling Calculator (Extrait, EDP, EDT)', fr: 'Calculateur de concentration et embouteillage (Extrait, EDP, EDT)', es: 'Calculadora de concentración y embotellado (Extrait, EDP, EDT)', it: 'Calcolatore di concentrazione e imbottigliamento (Extrait, EDP, EDT)', de: 'Konzentrations- & Abfüllrechner (Extrait, EDP, EDT)', ru: 'Калькулятор концентрации и розлива (Extrait, EDP, EDT)', zh: '浓度与灌装计算器（Extrait、EDP、EDT）', tr: 'Konsantrasyon ve dolum hesaplayıcısı (Extrait, EDP, EDT)', fa: 'ماشین‌حساب غلظت و پرکردن بطری (Extrait, EDP, EDT)' },
   link_pyramid: { ar: 'حاسبة الهرم العطري وتوافق النوتات', en: 'Fragrance Pyramid & Note Compatibility Calculator', fr: 'Calculateur de pyramide olfactive et compatibilité', es: 'Calculadora de pirámide olfativa y compatibilidad', it: 'Calcolatore di piramide olfattiva e compatibilità', de: 'Duftpyramiden- & Kompatibilitätsrechner', ru: 'Калькулятор пирамиды и совместимости нот', zh: '香调金字塔与香气协调计算器', tr: 'Koku piramidi ve nota uyum hesaplayıcısı', fa: 'ماشین‌حساب هرم عطری و سازگاری نت‌ها' },
   link_alcohol: { ar: 'حاسبة تخفيف تركيز الكحول (قانون التخفيف C₁V₁)', en: 'Alcohol Dilution Calculator (C₁V₁ Rule)', fr: 'Calculateur de dilution d’alcool (règle C₁V₁)', es: 'Calculadora de dilución de alcohol (regla C₁V₁)', it: 'Calcolatore di diluzione dell’alcol (regola C₁V₁)', de: 'Alkoholverdünnungsrechner (C₁V₁-Regel)', ru: 'Калькулятор разбавления спирта (правило C₁V₁)', zh: '酒精稀释计算器（C₁V₁ 法则）', tr: 'Alkol seyreltme hesaplayıcısı (C₁V₁ kuralı)', fa: 'ماشین‌حساب رقیق‌سازی الکل (قانون C₁V₁)' },
   link_costing: { ar: 'حاسبة التكاليف الصناعية وهوامش الأرباح', en: 'Industrial Costing & Profit Margin Calculator', fr: 'Calculateur de coûts industriels et marges', es: 'Calculadora de costes industriales y márgenes', it: 'Calcolatore di costi industriali e margini', de: 'Industriekosten- & Margenrechner', ru: 'Калькулятор себестоимости и маржи', zh: '工业成本与利润率计算器', tr: 'Endüstriyel maliyet ve kâr marjı hesaplayıcısı', fa: 'ماشین‌حساب هزینه‌های صنعتی و حاشیه سود' },
@@ -25,7 +26,9 @@ const S = {
   new_badge: { ar: 'جديد', en: 'New', fr: 'Nouveau', es: 'Nuevo', it: 'Nuovo', de: 'Neu', ru: 'Новое', zh: '新', tr: 'Yeni', fa: 'جدید' },
   lang_title: { ar: 'خانة تغيير لغة المنصة', en: 'Platform Language Selector', fr: 'Sélecteur de langue de la plateforme', es: 'Selector de idioma de la plataforma', it: 'Selettore lingua della piattaforma', de: 'Sprachauswahl der Plattform', ru: 'Выбор языка платформы', zh: '平台语言选择器', tr: 'Platform dil seçici', fa: 'انتخابگر زبان پلتفرم' },
   lang_sub: { ar: 'اختر لغة العرض المناسبة لك مع التبديل التلقائي لاتجاه النصوص والواجهة (RTL ⇄ LTR)', en: 'Choose your display language with automatic text and layout direction switching (RTL ⇄ LTR)', fr: 'Choisissez votre langue d’affichage avec bascule automatique du sens du texte (RTL ⇄ LTR)', es: 'Elige tu idioma de visualización con cambio automático de dirección (RTL ⇄ LTR)', it: 'Scegli la lingua di visualizzazione con inversione automatica della direzione (RTL ⇄ LTR)', de: 'Wählen Sie Ihre Anzeigesprache mit automatischer Richtungsänderung (RTL ⇄ LTR)', ru: 'Выберите язык интерфейса с автоматическим переключением направления текста (RTL ⇄ LTR)', zh: '选择您的显示语言，自动切换文字与界面方向（RTL ⇄ LTR）', tr: 'Yön otomatik değişimiyle (RTL ⇄ LTR) görüntüleme dilinizi seçin', fa: 'زبان نمایش خود را با تغییر خودکار جهت متن و رابط (RTL ⇄ LTR) انتخاب کنید' },
-  copyright_tpl: { ar: 'جميع الحقوق محفوظة © {y} صمم عطرك مع شام (Sham Perfume Suite).', en: 'All rights reserved © {y} Design Your Perfume with Sham (Sham Perfume Suite).', fr: 'Tous droits réservés © {y} Créez votre parfum avec Sham (Sham Perfume Suite).', es: 'Todos los derechos reservados © {y} Diseña tu perfume con Sham (Sham Perfume Suite).', it: 'Tutti i diritti riservati © {y} Crea il tuo profumo con Sham (Sham Perfume Suite).', de: 'Alle Rechte vorbehalten © {y} Gestalten Sie Ihr Parfüm mit Sham (Sham Perfume Suite).', ru: 'Все права защищены © {y} Создайте свой аромат с Sham (Sham Perfume Suite).', zh: '版权所有 © {y} 与 Sham 一同设计您的香水（Sham Perfume Suite）。', tr: 'Tüm hakları saklıdır © {y} Parfümünüzü Sham ile tasarlayın (Sham Perfume Suite).', fa: 'همه حقوق محفوظ است © {y} عطر خود را با شام بسازید (Sham Perfume Suite).' },
+  copyright_tpl: { ar: 'جميع الحقوق محفوظة © {y} صمم عطرك مع شام.', en: 'All rights reserved © {y} Design Your Perfume with Sham (Sham Perfume Suite).', fr: 'Tous droits réservés © {y} Créez votre parfum avec Sham (Sham Perfume Suite).', es: 'Todos los derechos reservados © {y} Diseña tu perfume con Sham (Sham Perfume Suite).', it: 'Tutti i diritti riservati © {y} Crea il tuo profumo con Sham (Sham Perfume Suite).', de: 'Alle Rechte vorbehalten © {y} Gestalten Sie Ihr Parfüm mit Sham (Sham Perfume Suite).', ru: 'Все права защищены © {y} Создайте свой аромат с Sham (Sham Perfume Suite).', zh: '版权所有 © {y} 与 Sham 一同设计您的香水（Sham Perfume Suite）。', tr: 'Tüm hakları saklıdır © {y} Parfümünüzü Sham ile tasarlayın (Sham Perfume Suite).', fa: 'همه حقوق محفوظ است © {y} عطر خود را با شام بسازید.' },
+  fx_credit: { ar: 'أسعار الصرف من', en: 'Exchange rates by', fr: 'Taux de change par', es: 'Tipos de cambio de', it: 'Tassi di cambio da', de: 'Wechselkurse von', ru: 'Курсы валют от', zh: '汇率来源', tr: 'Döviz kurları:', fa: 'نرخ ارز از' },
+  owner_entry: { ar: 'دخول الإدارة', en: 'Management sign-in', fr: 'Accès gestion', es: 'Acceso de gestión', it: 'Accesso gestione', de: 'Verwaltungs-Login', ru: 'Вход для управления', zh: '管理登录', tr: 'Yönetim girişi', fa: 'ورود مدیریت' },
   badge_scale: { ar: 'دقة ميزان المعمل (0.01g)', en: 'Lab scale precision (0.01g)', fr: 'Précision de balance (0,01 g)', es: 'Precisión de balanza (0.01g)', it: 'Precisione della bilancia (0.01g)', de: 'Waagengenauigkeit (0,01 g)', ru: 'Точность весов (0.01 г)', zh: '实验室天平精度（0.01g）', tr: 'Terazi hassasiyeti (0.01g)', fa: 'دقت ترازوی آزمایشگاه (۰.۰۱ گرم)' },
   badge_ifra: { ar: 'معايير IFRA 51 الدولية', en: 'IFRA 51 International Standards', fr: 'Normes internationales IFRA 51', es: 'Normas internacionales IFRA 51', it: 'Norme internazionali IFRA 51', de: 'IFRA 51 internationale Normen', ru: 'Международные стандарты IFRA 51', zh: 'IFRA 51 国际标准', tr: 'IFRA 51 uluslararası standartları', fa: 'استانداردهای بین‌المللی IFRA 51' },
   badge_encyclopedia: { ar: 'موسوعة الخامات العالمية', en: 'World Raw Materials Encyclopedia', fr: 'Encyclopédie mondiale des matières premières', es: 'Enciclopedia mundial de materias primas', it: 'Enciclopedia mondiale delle materie prime', de: 'Weltweite Rohstoff-Enzyklopädie', ru: 'Мировая энциклопедия сырья', zh: '世界原料百科', tr: 'Dünya hammadde ansiklopedisi', fa: 'دانشنامه جهانی مواد اولیه' },
@@ -35,16 +38,19 @@ const S = {
 interface FooterProps {
   setActiveTab: (tab: string) => void;
   currentLang?: SupportedLanguage;
-  onSelectLanguage?: (lang: SupportedLanguage) => void;
+  onOpenLegal?: (tab: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   setActiveTab,
   currentLang = 'ar',
-  onSelectLanguage,
+  onOpenLegal,
 }) => {
-  const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
+  const openLegal = (tab: string) => {
+    if (onOpenLegal) onOpenLegal(tab);
+    else window.dispatchEvent(new CustomEvent('open-legal-center', { detail: tab }));
+  };
   return (
     <footer className="bg-stone-950 text-stone-300 border-t border-stone-800 mt-20 pt-14 pb-12 no-print">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
@@ -185,57 +191,61 @@ export const Footer: React.FC<FooterProps> = ({
 
         </div>
 
-        {/* Dedicated Language Switcher Section: خانة تغيير لغة المنصة */}
-        <div className="py-7 border-b border-stone-850">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30 shrink-0">
-                <Languages className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="text-sm font-bold text-white flex items-center gap-2">
-                  <span>{L('lang_title')}</span>
-                  <span className="text-[10px] text-amber-400 font-normal border border-amber-500/30 px-1.5 py-0.2 rounded-full">
-                    Platform Language (10 Languages)
-                  </span>
-                </span>
-                <span className="text-xs text-stone-400 block mt-0.5">
-                  {L('lang_sub')}
-                </span>
-              </div>
+        {/* Legal Center Bar — L-08..L-20, L-37 Fix: روابط قانونية واضحة + شكاوى حكومية */}
+        <div className="py-6 border-b border-stone-850 grid grid-cols-1 md:grid-cols-12 gap-6 text-xs">
+          <div className="md:col-span-8">
+            <div className="font-bold text-white text-xs tracking-wider uppercase mb-3 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>{currentLang === 'ar' ? 'المركز القانوني — حقوقك وشروطنا' : 'Legal Center — Your Rights & Our Terms'}</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { id: 'terms', ar: 'الشروط والأحكام', en: 'Terms' },
+                { id: 'privacy', ar: 'سياسة الخصوصية', en: 'Privacy' },
+                { id: 'returns', ar: 'الإرجاع والاسترداد', en: 'Returns' },
+                { id: 'shipping', ar: 'الشحن UN1266', en: 'Shipping UN1266' },
+                { id: 'cookies', ar: 'الكوكيز', en: 'Cookies' },
+                { id: 'ai', ar: 'الذكاء الاصطناعي', en: 'AI Disclosure' },
+                { id: 'contact', ar: 'اتصل بنا قانونيًا', en: 'Legal Contact' },
+              ].map((link) => (
+                <button
+                  key={link.id}
+                  onClick={() => openLegal(link.id)}
+                  className="px-3 py-1.5 rounded-full bg-stone-900 hover:bg-stone-800 text-stone-300 hover:text-white border border-stone-800 text-[11px] font-medium transition-colors cursor-pointer"
+                >
+                  {currentLang === 'ar' ? link.ar : link.en}
+                </button>
+              ))}
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2 text-[10px] text-stone-500">
+              <span className="font-semibold text-stone-400">{currentLang === 'ar' ? 'شكاوى حكومية:' : 'Gov complaints:'}</span>
+              <a href="https://maroof.sa" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇸🇦 معروف</a>
+              <a href="https://www.cpa.gov.eg" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇪🇬 حماية المستهلك</a>
+              <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇪🇺 {currentLang === 'ar' ? 'الاتحاد الأوروبي' : 'EU ODR'}</a>
+              <a href="https://u.ae/en/information-and-services/social-affairs/having-a-consumer-complaint" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇦🇪 {currentLang === 'ar' ? 'الإمارات' : 'UAE'}</a>
+            </div>
+            <div className="mt-2 flex flex-wrap gap-2 text-[10px] items-center">
+              <button onClick={() => window.dispatchEvent(new CustomEvent("open-cookie-settings"))} className="text-stone-400 hover:text-white underline cursor-pointer">🍪 {currentLang === 'ar' ? 'إعدادات الكوكيز' : 'Cookie Settings'}</button>
+              <span className="text-stone-600">·</span>
+              <a href={contactMailto('dpo', currentLang)} dir="ltr" className="text-stone-500 hover:text-amber-400 underline">{currentLang === 'ar' ? 'حماية البيانات' : 'Data protection'}: {contactEmail('dpo')}</a>
             </div>
           </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
-            {SUPPORTED_LANGUAGES.map((lang: LanguageConfig) => {
-              const isActive = lang.code === currentLang;
-              return (
-                <button
-                  key={lang.code}
-                  onClick={() => onSelectLanguage && onSelectLanguage(lang.code)}
-                  className={`p-2.5 rounded-xl border ${rtl ? 'text-right' : 'text-left'} transition-all flex items-center justify-between cursor-pointer group ${
-                    isActive
-                      ? 'bg-amber-950/60 border-amber-500 text-white shadow-sm ring-1 ring-amber-500/30'
-                      : 'bg-stone-900/60 hover:bg-stone-900 border-stone-800 hover:border-amber-700/60 text-stone-300 hover:text-white'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 truncate">
-                    <span className="text-base group-hover:scale-110 transition-transform">
-                      {lang.flag}
-                    </span>
-                    <div className="truncate">
-                      <div className="font-bold text-xs truncate">{lang.nativeName}</div>
-                      <div className="text-[10px] text-stone-500 truncate font-mono">
-                        {lang.name} · {lang.dir.toUpperCase()}
-                      </div>
-                    </div>
-                  </div>
-                  {isActive && (
-                    <Check className="w-3.5 h-3.5 text-amber-400 shrink-0 stroke-[3]" />
-                  )}
-                </button>
-              );
-            })}
+          <div className="md:col-span-4 bg-stone-900 rounded-xl border border-stone-800 p-3 space-y-1">
+            <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">⚖️ {currentLang === 'ar' ? 'معلومات قانونية' : 'Legal Info'}</div>
+            <div className="text-[11px] text-stone-400 leading-relaxed">
+              {currentLang === 'ar'
+                ? `السجل التجاري: [يُعبأ] | الرقم الضريبي: [يُعبأ] | ${contactEmail('privacy')}`
+                : `CR: [fill] | VAT: [fill] | ${contactEmail('privacy')}`}
+            </div>
+            <div className="text-[10px] text-stone-500">
+              {currentLang === 'ar'
+                ? '🤖 ردود شاهين مولدة بالذكاء الاصطناعي — ليست نصيحة مهنية. العطور UN1266 قابل للاشتعال.'
+                : '🤖 Shaheen replies are AI-generated — not professional advice. Perfumes UN1266 flammable.'}
+            </div>
+            <div className="text-[10px] text-stone-500">
+              {currentLang === 'ar' ? 'النص العربي هو المرجع الملزم عند التعارض.' : 'Arabic is binding on conflict.'}
+            </div>
+            <div className="pt-2"><VisitorSuggestionBox currentLang={currentLang} /></div>
           </div>
         </div>
 
@@ -243,15 +253,16 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
           <div>
             {fmt(L('copyright_tpl'), { y: new Date().getFullYear() })}
+            <div className="mt-1 text-[10px] text-stone-600">
+              {L('fx_credit')} <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-stone-400">ExchangeRate-API</a>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-4 text-stone-400">
-            <span>{L('badge_scale')}</span>
-            <span aria-hidden="true">·</span>
-            <span>{L('badge_ifra')}</span>
-            <span aria-hidden="true">·</span>
-            <span>{L('badge_encyclopedia')}</span>
-            <span aria-hidden="true">·</span>
-            <span>{L('badge_observatory')}</span>
+          <div className="flex items-center gap-2 text-[10px]">
+            {/* «جناح صاحب الموقع»: a quiet key — it only opens with the owner's secret code. */}
+            <a href="#owner" title={L('owner_entry')} aria-label={L('owner_entry')} className="px-2 py-1 rounded-full border border-stone-800 text-stone-600 hover:text-amber-400 hover:border-amber-700 transition-colors">🔑</a>
+            <span className="px-2 py-1 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-300 font-mono">✓ GDPR/PDPL</span>
+            <span className="px-2 py-1 rounded-full bg-blue-950 border border-blue-800 text-blue-300 font-mono">✓ IFRA 51</span>
+            <span className="px-2 py-1 rounded-full bg-amber-950 border border-amber-800 text-amber-300 font-mono">✓ UN1266</span>
           </div>
         </div>
       </div>

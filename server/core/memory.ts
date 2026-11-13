@@ -1,0 +1,150 @@
+/**
+ * «ذاكرة شاهين» on the server. Two layers:
+ *  - learned: every answer this server gives is kept in the Sham Core store (collection `memory`): durable
+ *    with Firestore or the file store, per instance with the memory store. GET /api/admin/shaheen-memory
+ *    hands it to the bots, which merge it into the shared file.
+ *  - shared: src/data/live/shaheen-memory.json — what all instances and the bots learned, shipped in the
+ *    build and refreshed from the repository every 30 minutes (server/core/liveData.ts).
+ * A repeated opening question is answered from memory without calling any AI engine; when no engine
+ * answers at all, the closest remembered question is used (with a short note to the visitor).
+ */
+import { createHash } from 'node:crypto';
+import bundledMemory from '../../src/data/live/shaheen-memory.json';
+import {
+  emptyMemory, isMemoryFile, isPersonal, isTimeBound, memoryId, mergeMemory, recall, recallSimilar, remember, touch,
+  type MemoryEntry, type MemoryFile, type RecallPreference,
+} from '../../src/utils/shaheenMemory';
+import { learnablePair } from '../../src/utils/heardFix';
+import { liveDataEnabled, loadLive } from './liveData';
+import type { Store } from './store';
+
+type Env = Record<string, string | undefined>;
+const recallable = (question: string, mode: string) => mode !== 'council' && !isTimeBound(question) && !isPersonal(question);
+const docId = (id: string) => createHash('sha256').update(id).digest('base64url').slice(0, 32);
+
+export interface MemoryHit { entry: MemoryEntry; from: 'learned' | 'shared'; exact: boolean; score: number }
+
+export class ShaheenMemory {
+  constructor(private store: Store, private env: Env = process.env, private request: typeof fetch = fetch,
+    /** Tests inject the shared file; in dev and tests the bundled copy is never used (no hidden test data). */
+    private sharedOverride?: MemoryFile,
+    /**
+     * A durable copy (the database, when the site has one) of what he learns. On Vercel the main store is often
+     * temporary memory, so every instance forgot its visitors' answers before the bots could collect them; the
+     * answers are now also written there (never waited on by the visitor) and handed to the bots from there.
+     */
+    private durable?: Store) {}
+
+  /** What everyone learned (the shared file); empty in tests and dev unless injected. */
+  async shared(): Promise<MemoryFile> {
+    if (this.sharedOverride) return this.sharedOverride;
+    if (!liveDataEnabled(this.env)) return emptyMemory();
+    const file = await loadLive('shaheen-memory.json', bundledMemory as unknown as MemoryFile, isMemoryFile, this.env, this.request).catch(() => undefined);
+    return file && isMemoryFile(file) ? file : emptyMemory();
+  }
+
+  async learned(): Promise<MemoryFile> {
+    const entries = await this.store.list('memory').catch(() => [] as MemoryEntry[]);
+    return { version: 1, updatedAt: entries.map((e) => e.lastUsed || e.at).sort().pop() || new Date(0).toISOString(), entries };
+  }
+
+  /** The remembered answer to this exact question (same language and style), counting the use. */
+  async recall(question: string, lang: string, mode: string): Promise<MemoryHit | undefined> {
+    if (!recallable(question, mode)) return undefined;
+    const own = await this.store.get('memory', docId(memoryId(question, lang, mode))).catch(() => undefined);
+    const learned = own && recall({ version: 1, updatedAt: '', entries: [own] }, question, lang, mode);
+    if (learned) { await this.used(learned); return { entry: learned, from: 'learned', exact: true, score: 1 }; }
+    const shared = recall(await this.shared(), question, lang, mode);
+    if (shared) { await this.used({ ...shared }); return { entry: shared, from: 'shared', exact: true, score: 1 }; }
+    return undefined;
+  }
+
+  /** Everything he remembers (this server's answers and the shared file): «مكتبة شاهين» searches it too. */
+  async all(): Promise<MemoryFile> { return mergeMemory(await this.learned(), await this.shared()); }
+
+  /** When no engine answers: the closest remembered question (learned or shared, any style). */
+  async recallSimilar(question: string, lang: string, threshold?: number, prefer?: RecallPreference): Promise<MemoryHit | undefined> {
+    const all = mergeMemory(await this.learned(), await this.shared());
+    const best = recallSimilar(all, question, lang, threshold, prefer);
+    if (!best) return undefined;
+    await this.used({ ...best.entry });
+    return { entry: best.entry, from: 'learned', exact: best.score >= 1, score: best.score };
+  }
+
+  /** What the bots collect (GET /api/admin/shaheen-memory): this instance's answers plus the durable copy. */
+  async exported(): Promise<MemoryFile> {
+    const mine = await this.learned();
+    if (!this.durable || this.durable === this.store) return mine;
+    const kept = await Promise.race([
+      this.durable.list('memory').catch(() => [] as MemoryEntry[]),
+      new Promise<MemoryEntry[]>((done) => setTimeout(() => done([]), 8000)),
+    ]);
+    return mergeMemory(mine, { version: 1, updatedAt: kept.map((e) => e.lastUsed || e.at).sort().pop() || new Date(0).toISOString(), entries: kept });
+  }
+
+  /** Keeps an answer Shaheen just gave (ignored when not worth remembering). */
+  async learn(input: { question: string; lang: string; mode: string; answer: string; dialect?: string; spoken?: boolean }): Promise<boolean> {
+    const file = emptyMemory();
+    if (!remember(file, { ...input, source: 'chat' })) return false;
+    const entry = file.entries[0];
+    const old = await this.store.get('memory', docId(entry.id)).catch(() => undefined);
+    if (old) { entry.hits = old.hits; entry.lastUsed = old.lastUsed; }
+    await this.store.put('memory', docId(entry.id), entry).catch(() => undefined);
+    if (this.durable && this.durable !== this.store) void this.durable.put('memory', docId(entry.id), entry).catch(() => undefined);
+    return true;
+  }
+
+  /**
+   * «شاهين بيتعلم من المنصات»: up to two short spoken replies the platforms gave in this language and dialect — the
+   * most used first — handed to the platforms as examples of how Shaheen talks by voice. Plain talk only (no lists,
+   * links, prices or numbers, so no old fact travels as an example). Kept for 10 minutes per server.
+   */
+  async spokenExamples(lang: string, dialect?: string, count = 2): Promise<string[]> {
+    const key = `${lang}|${dialect || ''}`;
+    const cached = this.examples.get(key);
+    if (cached && cached.at > Date.now() - 10 * 60_000) return cached.list.slice(0, count);
+    const all = await this.all();
+    const list = all.entries
+      .filter((e) => e.spoken && e.lang === lang && (lang !== 'ar' || (e.dialect || 'egyptian') === (dialect || 'egyptian')))
+      .filter((e) => e.answer.length >= 40 && e.answer.length <= 320 && !/[\d٠-٩#*|`\[\]<>]|https?:|^\s*[-•]/m.test(e.answer))
+      .sort((a, b) => b.hits - a.hits || Date.parse(b.at) - Date.parse(a.at))
+      .slice(0, 4)
+      .map((e) => e.answer.replace(/\s+/g, ' ').trim());
+    this.examples.set(key, { at: Date.now(), list });
+    return list.slice(0, count);
+  }
+  private examples = new Map<string, { at: number; list: string[] }>();
+
+  /**
+   * «شاهين يصحح اللي اتسمع غلط»: a heard word a visitor CONFIRMED meant another («عوض» → «عود» after «قصدك عود؟»).
+   * Only a single word into a word he already knows (never a name, a number or anything personal) is kept, and it is
+   * shared with every visitor only after several confirmations (see corrections()).
+   */
+  async learnCorrection(from: unknown, to: unknown): Promise<boolean> {
+    const pair = learnablePair(from, to);
+    if (!pair) return false;
+    const id = docId(`heard|${pair.from}|${pair.to}`);
+    const old = await this.store.get('heardFixes', id).catch(() => undefined);
+    const entry = { id, from: pair.from, to: pair.to, hits: (old?.hits || 0) + 1, at: new Date().toISOString() };
+    await this.store.put('heardFixes', id, entry).catch(() => undefined);
+    if (this.durable && this.durable !== this.store) void this.durable.put('heardFixes', id, entry).catch(() => undefined);
+    return true;
+  }
+
+  /** The corrections confirmed often enough to use for everyone: heard word → meant word (the most confirmed wins). */
+  async corrections(min = 3): Promise<Record<string, string>> {
+    const all = await this.store.list('heardFixes').catch(() => []);
+    const best: Record<string, { to: string; hits: number }> = {};
+    for (const fix of all) {
+      if (!fix || fix.hits < min || typeof fix.from !== 'string' || typeof fix.to !== 'string') continue;
+      if (!best[fix.from] || best[fix.from]!.hits < fix.hits) best[fix.from] = { to: fix.to, hits: fix.hits };
+    }
+    return Object.fromEntries(Object.entries(best).slice(0, 500).map(([from, fix]) => [from, fix.to]));
+  }
+
+  /** A remembered answer was used: it rises (and the use reaches the shared file through the bots). */
+  private async used(entry: MemoryEntry) {
+    touch(entry);
+    await this.store.put('memory', docId(entry.id), entry).catch(() => undefined);
+  }
+}

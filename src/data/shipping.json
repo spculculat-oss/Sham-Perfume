@@ -1,0 +1,31 @@
+{
+  "currency": "USD",
+  "note": "مصاريف الشحن بالدولار لكل منطقة: firstItem = أول زجاجة، extraItem = كل زجاجة زيادة في نفس الطلب (0 = سعر ثابت للطلب). عدّل الأرقام هنا وارفع على main — الموقعان والسيرفر يقرؤون نفس الملف. الشحن المجاني اختياري وهو قرارك: لو وافقت عليه، ضيف مفتاح «freeShippingAboveEgp» بالجنيه المصري (مثال: 500) — الحساب والسيرفر بيخصموا الشحن أوتوماتيك فوق المبلغ ده، وإعلان البانر بيظهر لوحده بالمبلغ بعملة الزائر. طول ما المفتاح مش موجود: مفيش أي وعد شحن مجاني في الموقع ولا في الدفع.",
+  "dangerousGoods": {
+    "unNumber": "UN1266",
+    "class": "Class 3 — Flammable Liquid",
+    "packingGroup": "II/III",
+    "noteAr": "العطور سائل قابل للاشتعال (UN1266, Class 3, PG II/III) وفق IATA DGR/IMDG. الشحن الجوي محدود: 60L للشحن الجوي (Cargo Aircraft)، 5L للركاب (Passenger Aircraft)، كمية مستثناة E1. بعض الدول تحظر استيراد عطور كحولية أو مواد معينة (مثلاً خشب العود CITES Appendix II). العميل مسؤول عن الامتثال الجمركي والاستيرادي في بلده. التأخير بسبب الجمارك ليس مسؤولية المنصة/التاجر.",
+    "noteEn": "Perfumes are flammable liquid (UN1266, Class 3, PG II/III) per IATA DGR/IMDG. Air limited: 60L Cargo Aircraft, 5L Passenger Aircraft, Excepted Quantity E1. Some countries ban alcohol perfumes or specific materials (e.g., agarwood CITES Appendix II). Customer is responsible for customs/import compliance. Customs delays are not platform/merchant liability.",
+    "restrictedCountries": ["SY", "IR", "KP", "RU"],
+    "restrictedNoteAr": "يُحظر الشحن لبلدان خاضعة لعقوبات (سوريا، إيران، كوريا الشمالية، روسيا لبعض السلع ذات الاستخدام المزدوج) وفق OFAC/EU.",
+    "restrictedNoteEn": "Shipping prohibited to sanctioned countries (Syria, Iran, NK, Russia for dual-use) per OFAC/EU."
+  },
+  "taxDisclaimer": {
+    "ar": "الأسعار لا تشمل ضريبة القيمة المضافة (VAT) أو الرسوم الجمركية في بلدك. مثال: مصر 14%، السعودية 15%، الإمارات 5%، أوروبا ~20%. الفاتورة الضريبية تُصدر إلكترونيًا (مصر EDA، السعودية ZATCA). الرسوم الجمركية تقديرية عند الدفع، والعميل يتحمل الفرق.",
+    "en": "Prices exclude VAT/customs in your country. e.g., Egypt 14%, Saudi 15%, UAE 5%, EU ~20%. E-invoice issued (Egypt EDA, Saudi ZATCA). Customs duties are estimates at checkout; customer bears difference."
+  },
+  "netMarginPercent": 50,
+  "netNoteAr": "قاعدة صاحب المتجر (2026-10-26): الـ50% مكسب صافي — الشحن ماياكلش منها حاجة. عشان كده الشحن لوجهة معروفة التكلفة بيتحسب: تكلفة الشركة الحقيقية (src/data/shipping-costs.json، تعريفة منشورة بتاريخها) + هامش التجهيز اللي تحت. الوجهة اللي مفيش لها تعريفة منشورة بتاخد سعر منطقتها اللي تحت، ومافيش وعد إنه يغطي التكلفة.",
+  "handling": { "percent": 10, "capUsd": 5 },
+  "handlingNoteAr": "هامش التجهيز على الشحن: 10% من التكلفة الحقيقية بحد أقصى 5 دولار للطرد (تغليف + ورق + إجراءات الشحن). ده اللي بيخلي الشحن مصدر مكسب صغير مش عبء على الـ50%. غيّر percent أو capUsd هنا في أي وقت — الأسعار كلها بتتحدّث لوحدها.",
+  "zones": [
+    { "id": "egypt", "name": { "ar": "مصر", "en": "Egypt" }, "countries": ["EG"], "firstItem": 15, "extraItem": 3, "days": "7-14" },
+    { "id": "gulf", "name": { "ar": "دول الخليج", "en": "Gulf countries" }, "countries": ["SA", "AE", "KW", "QA", "BH", "OM"], "firstItem": 14, "extraItem": 3, "days": "5-10" },
+    { "id": "arab", "name": { "ar": "باقي الدول العربية", "en": "Other Arab countries" }, "countries": ["JO", "LB", "IQ", "SY", "PS", "YE", "LY", "TN", "DZ", "MA", "SD", "MR", "SO", "DJ", "KM"], "firstItem": 18, "extraItem": 4, "days": "7-15" },
+    { "id": "southeast_asia", "name": { "ar": "جنوب شرق آسيا", "en": "Southeast Asia" }, "countries": ["MY", "SG", "BN", "ID", "TH", "PH", "VN", "KH", "LA", "MM"], "firstItem": 6, "extraItem": 1.5, "days": "3-7" },
+    { "id": "europe", "name": { "ar": "أوروبا", "en": "Europe" }, "countries": ["GB", "IE", "FR", "DE", "IT", "ES", "PT", "NL", "BE", "LU", "AT", "CH", "SE", "NO", "DK", "FI", "IS", "PL", "CZ", "SK", "HU", "RO", "BG", "GR", "HR", "SI", "RS", "BA", "ME", "MK", "AL", "EE", "LV", "LT", "CY", "MT", "UA", "MD", "TR"], "firstItem": 22, "extraItem": 5, "days": "7-14" },
+    { "id": "north_america", "name": { "ar": "أمريكا الشمالية", "en": "North America" }, "countries": ["US", "CA", "MX"], "firstItem": 25, "extraItem": 5, "days": "7-14" }
+  ],
+  "default": { "id": "world", "name": { "ar": "باقي دول العالم", "en": "Rest of the world" }, "firstItem": 28, "extraItem": 6, "days": "10-20" }
+}

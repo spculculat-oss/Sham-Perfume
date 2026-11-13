@@ -21,8 +21,8 @@ import {
 import { PyramidNote } from '../types/perfume';
 import { ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { useLanguage } from '../context/LanguageContext';
-import { LText, makeT, fmt, pickArEn } from '../utils/localize';
-import { isRTL } from '../utils/localizedContent';
+import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
+import { isRTL } from '../لغات/localizedContent';
 
 
 const S = {

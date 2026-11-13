@@ -1,0 +1,169 @@
+name: Shaheen product importer and page reviewer (every 2 hours)
+
+# «مستورد شاهين»: every 2 hours «الخبير شاهين» transfers the supplier's products into «متجر شام» with
+# all their data and photos (sitemap + schema.org Product data on each product page; when a page has no
+# structured data, Shaheen reads it and his answer is checked against the page). Prices follow the store's
+# scenario: supplier price → EGP at today's rate → × 1.5. Then «مراجع الصفحات» reviews every product
+# (photos load, price formula, clean name, real description, source still sold) and hides broken ones.
+# Shaheen then writes the Arabic names/descriptions (scripts/shaheen-store) and GitHub Pages is rebuilt,
+# which generates a standalone page for every product (p/<slug>.html). Code: scripts/shaheen-import/.
+# «منقّح الصور» (scripts/shaheen-images/, no AI service): every product photo is read (OCR) once; a photo
+# that carries another source's contact marks (a store's website/watermark, phone, WhatsApp, @account) is
+# repainted where the mark was (LaMa inpainting), checked again, saved in the site (public/store-images/)
+# and used instead of the supplier's link — also when the importer refreshes the product later. The
+# manufacturer's own print on the bottle/box is kept. Each run works for a time budget, so a big backlog
+# is finished over a few runs; src/data/live/image-clean.json remembers every photo already checked.
+# Settings (repository variables, all optional): IMPORT_MAX_NEW (default 150 new products per run),
+# IMPORT_MAX_REFRESH (default 25), IMPORT_RATE_MYR_EGP (fallback exchange rate), and the price rule:
+# IMPORT_MARKUP (default 1.5), IMPORT_SHIPPING_EGP (fixed cost added per bottle, default 0) and
+# IMPORT_MAX_PROFIT_EGP (cap on the profit per bottle, default none). A changed rule reprices every product.
+
+on:
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
+  workflow_dispatch:
+    inputs:
+      max_new:
+        description: 'New products to import this run'
+        required: false
+        default: '150'
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: shaheen-import-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner can pause this robot or freeze every robot (src/data/owner/controls.json,
+  # changed only from his GitHub account through «مكتب صاحب الموقع»). Branch and pull-request runs are not affected.
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs importer images
+
+  import:
+    name: Import supplier products and review every page
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      # Branch pushes rehearse only: the result is shown in the job summary, nothing is committed.
+      IMPORT_COMMIT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      # 150 new products per run until the supplier's whole catalog (1060) is in — about 7 runs (~14 h);
+      # after that each run only picks up the supplier's new arrivals. Shaheen's Arabic text follows as the
+      # AI quota allows (products wait with the supplier's own text until then).
+      IMPORT_MAX_NEW: ${{ github.event.inputs.max_new || vars.IMPORT_MAX_NEW || (github.ref == 'refs/heads/main' && '150' || '6') }}
+      IMPORT_MAX_REFRESH: ${{ vars.IMPORT_MAX_REFRESH || (github.ref == 'refs/heads/main' && '25' || '2') }}
+      IMPORT_RATE_MYR_EGP: ${{ vars.IMPORT_RATE_MYR_EGP }}
+      # All sources together (the original supplier + the stores «كشّاف المصادر» approved) and per source.
+      IMPORT_MAX_TOTAL: ${{ vars.IMPORT_MAX_TOTAL || '5000' }}
+      IMPORT_MAX_PER_SOURCE: ${{ vars.IMPORT_MAX_PER_SOURCE || '1500' }}
+      IMPORT_SOURCE: ${{ vars.IMPORT_SOURCE }}
+      # L-03 legal guard: set the repository variable SHAM_ALLOW_SCRAPE=1 only once the supplier's written
+      # permission is in docs/legal/scraper-permission.md (see SCRAPER_LEGAL_NOTICE.md).
+      SHAM_ALLOW_SCRAPE: ${{ vars.SHAM_ALLOW_SCRAPE }}
+      # L-40: without that file, only the stores whose agreement was signed and approved in «التعاقدات» are read
+      # (GET /api/admin/contracts/approved on the engine, with the admin token).
+      SHAM_API_BASE: ${{ vars.SHAM_API_BASE || 'https://sham-perfume-49bf.vercel.app' }}
+      SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
+      IMPORT_MARKUP: ${{ vars.IMPORT_MARKUP || '1.5' }}
+      IMPORT_SHIPPING_EGP: ${{ vars.IMPORT_SHIPPING_EGP }}
+      IMPORT_MAX_PROFIT_EGP: ${{ vars.IMPORT_MAX_PROFIT_EGP }}
+      # Arabic text for up to 8 × 14 products per run, while the AI quota lasts.
+      STORE_MAX_BATCHES: ${{ vars.STORE_MAX_BATCHES || '8' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # A run that waited in the queue (concurrency) starts from the latest main, not from the commit that
+          # triggered it — otherwise it re-imports what the previous run already published and cannot push.
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || github.sha }}
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Shaheen imports the products and «مراجع الصفحات» reviews them
+        run: node --import tsx scripts/shaheen-import/run.mts
+      - name: Set up the photo cleaner's model cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/lama
+          key: big-lama-v0.1.0
+      - name: «منقّح الصور» removes other sources' contact marks from the product photos
+        # Never blocks the import: a photo not checked this time is checked by a later run.
+        continue-on-error: true
+        timeout-minutes: 25
+        env:
+          # Seconds of work per run (main): 4000+ photos are read once, then only new photos.
+          IMAGE_TIME_BUDGET_S: ${{ vars.IMAGE_TIME_BUDGET_S || (github.ref == 'refs/heads/main' && '900' || '120') }}
+        run: |
+          pip install -q rapidocr_onnxruntime pillow numpy
+          python3 scripts/shaheen-images/test_detect.py
+          python3 scripts/shaheen-images/clean.py
+      - name: «تسعير شام» refreshes the exchange rates (prices in each visitor's currency)
+        continue-on-error: true
+        run: node --import tsx scripts/shaheen-store/fx.mts
+      - name: Shaheen writes the Arabic names and descriptions of the new products
+        continue-on-error: true
+        run: node --import tsx scripts/shaheen-store/run.mts
+      - name: «ذاكرة شاهين» collects and curates what Shaheen learned (no AI call)
+        continue-on-error: true
+        env:
+          # Optional: with it, the visitors' answers the live server learned join the shared memory.
+          SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
+        run: node --import tsx scripts/shaheen-memory/run.mts
+      - name: Every product gets its own page (build check)
+        run: node --import tsx scripts/product-pages.mts dist && ls dist/p | wc -l
+      - name: Regression tests with the new products
+        # Never publish products that would turn main red (failing tests are listed as annotations).
+        run: |
+          set -o pipefail
+          bun run test 2>&1 | tee /tmp/test.log || { grep -B2 -A12 '^not ok\|^    not ok\|^  not ok' /tmp/test.log | grep -E 'not ok|error:|expected|actual|message' | head -8 | sed 's/^/::error title=test::/'; exit 1; }
+      - name: Publish on main and rebuild Pages
+        if: env.IMPORT_COMMIT == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen importer bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          before=$(git rev-parse HEAD)
+          # Other bots (news, supervisor) write some of the same generated files: scripts/ci/publish.mjs
+          # resolves that instead of failing (a half-done rebase used to lose the whole import).
+          node scripts/ci/publish.mjs "مستورد شاهين: نقل منتجات المورد ومراجعة الصفحات $(date -u +%Y-%m-%dT%H:%MZ)" src/data/products.json src/data/live public/store-images \
+            || { echo "::error::Could not push the imported products"; exit 1; }
+          if [ "$(git rev-parse HEAD)" = "$before" ]; then exit 0; fi
+          # Pushes made with this token start no workflows: rebuild GitHub Pages (store + product pages).
+          gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started"

@@ -1,0 +1,63 @@
+name: Live Shaheen check
+
+# Asks the deployed site real visitor questions and checks the whole site from a visitor's point of
+# view (the dev sandbox cannot reach it). Runs daily too, so a broken deploy or an overwritten main
+# shows up as a failed run. Results: job summary + annotations. It is «فحص شاهين على الموقع الحي»
+# in Shaheen's organisation (src/utils/shaheenOrg.ts).
+on:
+  workflow_dispatch:
+    inputs:
+      site_url:
+        description: Site to test
+        default: https://sham-perfume-49bf.vercel.app
+  schedule:
+    - cron: '0 6 * * *'
+  push:
+    branches: ['arena/**']
+    paths: ['scripts/live-smoke.mjs', 'scripts/live-site-check.mjs', '.github/workflows/live-smoke.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner can pause this robot or freeze every robot (src/data/owner/controls.json,
+  # changed only from his GitHub account through «مكتب صاحب الموقع»). Branch and pull-request runs are not affected.
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs live_check
+
+  ask:
+    name: Ask Shaheen
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SITE_URL: ${{ inputs.site_url || 'https://sham-perfume-49bf.vercel.app' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - name: Site, API and CORS
+        run: node scripts/live-site-check.mjs
+      - name: Ask live questions
+        if: always()
+        run: node scripts/live-smoke.mjs

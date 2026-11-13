@@ -1,8 +1,9 @@
+import type { AgentModelCall } from '../server/agentModel';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { executeAgent } from '../server/agent';
 import { agentCapabilities, runTool, validateDocuments } from '../server/agentTools';
-import { validateChatRequest, executeChat, type Provider } from '../server/shaheen';
+import { validateChatRequest, type Provider } from '../server/shaheen';
 import { validAgentReport } from '../src/types/agent';
 import { isChatMessage } from '../src/utils/chatStorage';
 
@@ -11,7 +12,7 @@ const engine = { id: 'gemini', provider: 'gemini' as const, name: 'Google Gemini
 const context = () => ({ documents: [], artifacts: [], signal: new AbortController().signal, env: {}, fetch });
 const scripted = (actions: unknown[]) => {
   let index = 0;
-  return (async () => ({ reply: JSON.stringify(actions[index++]), engine })) as typeof executeChat;
+  return (async () => ({ reply: JSON.stringify(actions[index++]), engine })) as AgentModelCall;
 };
 const final = { type: 'final', reply: 'تم حساب 10 مل زيت و40 مل كحول. التقرير جاهز للتنزيل، وليس محفوظاً على جهازك.' };
 
@@ -25,7 +26,7 @@ test('agent observes actual tool output then produces a report with user-control
     if (calls === 2) return { reply: JSON.stringify({ type: 'tool', tool: 'create_file', arguments: { name: 'report.md', content: 'Oil: 10 ml. Alcohol: 40 ml.' } }), engine };
     assert.match(request.message, /"savedToDevice":false/);
     return { reply: JSON.stringify(final), engine };
-  }) as typeof executeChat });
+  }) as AgentModelCall });
   assert.equal(calls, 3);
   assert.equal(result.agent.steps.length, 2);
   assert.ok(result.agent.steps.every((step) => step.status === 'completed'));
@@ -87,7 +88,7 @@ test('cancellation prevents any additional model calls', async () => {
   const controller = new AbortController(); controller.abort();
   let calls = 0;
   await assert.rejects(executeAgent(input, [], { signal: controller.signal,
-    callModel: (async () => { calls++; return { reply: JSON.stringify(final), engine }; }) as typeof executeChat }), { code: 'PROVIDER_TIMEOUT' });
+    callModel: (async () => { calls++; return { reply: JSON.stringify(final), engine }; }) as AgentModelCall }), { code: 'PROVIDER_TIMEOUT' });
   assert.equal(calls, 0);
 });
 
@@ -165,9 +166,9 @@ test('configured, consented search uses only the fixed search endpoint and sanit
 });
 
 test('stored agent metadata rejects executable filenames and oversized traces', () => {
-  const message = { id: 'agent', role: 'assistant', text: 'Hi', timestamp: 'now', agent: { steps: [], artifacts: [{ name: 'a.txt', content: 'safe' }] } };
+  const message = { id: 'agent', role: 'assistant', text: 'Hi', timestamp: 'now', toolReport: { steps: [], artifacts: [{ name: 'a.txt', content: 'safe' }] } };
   assert.ok(isChatMessage(message));
-  assert.equal(isChatMessage({ ...message, agent: { steps: [], artifacts: [{ name: 'a.html', content: 'bad' }] } }), false);
+  assert.equal(isChatMessage({ ...message, toolReport: { steps: [], artifacts: [{ name: 'a.html', content: 'bad' }] } }), false);
   assert.equal(validAgentReport({ steps: Array(6).fill({ tool: 'calculate', status: 'completed' }), artifacts: [] }), false);
 });
 

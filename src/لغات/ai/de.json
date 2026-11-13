@@ -1,0 +1,20 @@
+{
+ "ui": {
+  "nav_ai_master_short": "Shahin KI",
+  "nav_alcohol_short": "Alkohol",
+  "nav_calc_short": "Formel",
+  "nav_costing_short": "Kosten",
+  "nav_explore": "Entdecken",
+  "nav_explore_short": "Entdecken",
+  "nav_guide_short": "Leitfaden",
+  "nav_home_short": "Startseite",
+  "nav_library_short": "Bibliothek",
+  "nav_maceration_short": "Reifung",
+  "nav_news_short": "News",
+  "nav_pyramid_short": "Duftpyramide",
+  "nav_raw_materials_short": "Rohstoffe",
+  "nav_tools": "Tools",
+  "nav_tools_short": "Tools",
+  "nav_world_perfumes_short": "Ikonische Düfte"
+ }
+}

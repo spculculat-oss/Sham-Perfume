@@ -15,8 +15,8 @@ import {
 import { SavedFormula } from '../types/perfume';
 import { CURATED_FORMULA_PRESETS } from '../data/presets';
 import { SupportedLanguage } from '../types/i18n';
-import { getCommonLabel, isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt, localeDate } from '../utils/localize';
+import { getCommonLabel, isRTL } from '../لغات/localizedContent';
+import { LText, makeT, fmt, localeDate } from '../لغات/localize';
 
 interface FormulaLibraryProps {
   currentLang?: SupportedLanguage;

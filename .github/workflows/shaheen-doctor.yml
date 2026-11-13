@@ -1,0 +1,77 @@
+name: Shaheen Doctor (Automated Maintenance)
+
+on:
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: 'Type of check to perform'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - products
+          - images
+          - store
+          - deploy
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner can pause this robot or freeze every robot (src/data/owner/controls.json,
+  # changed only from his GitHub account through «مكتب صاحب الموقع»). Branch and pull-request runs are not affected.
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs doctor
+
+  doctor-check:
+    name: Shaheen Doctor Check
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          
+      - name: Install dependencies
+        run: |
+          pip install requests --quiet
+          
+      - name: Run Shaheen Doctor
+        env:
+          DOCTOR_DAEMON: '0'
+          CHECK_TYPE: ${{ github.event.inputs.check_type || 'full' }}
+        run: |
+          python scripts/doctor/shaheen_doctor.py
+          
+      - name: Summary
+        run: |
+          echo "## Shaheen Doctor Results" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ✅ Check completed" >> $GITHUB_STEP_SUMMARY
+          echo "- Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- Next check: in 10 minutes" >> $GITHUB_STEP_SUMMARY

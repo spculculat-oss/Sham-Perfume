@@ -1,0 +1,769 @@
+{
+ "updatedAt": "2026-11-05T08:38:20.738Z",
+ "run": {
+  "ms": 139417,
+  "browser": true,
+  "pages": 20,
+  "drills": 21,
+  "live": 5,
+  "ai": true
+ },
+ "sections": [
+  {
+   "id": "home",
+   "titleAr": "الرئيسية",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 4200
+  },
+  {
+   "id": "store",
+   "titleAr": "المتجر",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 3928
+  },
+  {
+   "id": "perfumes",
+   "titleAr": "قسم العطور",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 3008
+  },
+  {
+   "id": "cosmetics",
+   "titleAr": "قسم مستحضرات التجميل",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2835
+  },
+  {
+   "id": "productDetail",
+   "titleAr": "صفحة المنتج",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2960
+  },
+  {
+   "id": "concentration",
+   "titleAr": "حاسبة التركيز",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2899
+  },
+  {
+   "id": "pyramid",
+   "titleAr": "حاسبة الهرم العطري",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 3087
+  },
+  {
+   "id": "costing",
+   "titleAr": "حاسبة التكلفة",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2936
+  },
+  {
+   "id": "guide",
+   "titleAr": "دليل صناعة العطور",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2902
+  },
+  {
+   "id": "alcohol",
+   "titleAr": "الكحول في العطور",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2889
+  },
+  {
+   "id": "maceration_simulator",
+   "titleAr": "محاكي التخمير والنضج",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2849
+  },
+  {
+   "id": "master_ai",
+   "titleAr": "الخبير شاهين",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2887
+  },
+  {
+   "id": "perfume_news",
+   "titleAr": "أخبار العطور",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2933
+  },
+  {
+   "id": "raw_materials",
+   "titleAr": "المواد الخام",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2892
+  },
+  {
+   "id": "world_perfumes",
+   "titleAr": "عطور العالم",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 3103
+  },
+  {
+   "id": "perfume_designers",
+   "titleAr": "قسم المصممين — عطور",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2930
+  },
+  {
+   "id": "cosmetic_designers",
+   "titleAr": "قسم المصممين — تجميل",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2880
+  },
+  {
+   "id": "molecule_studio",
+   "titleAr": "استوديو الجزيئات",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 3158
+  },
+  {
+   "id": "library",
+   "titleAr": "مكتبة شاهين",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2872
+  },
+  {
+   "id": "community",
+   "titleAr": "المجتمع",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1,
+   "loadMs": 2592
+  },
+  {
+   "id": "shaheen_chat",
+   "titleAr": "شات الخبير شاهين",
+   "status": "ok",
+   "errors": 0,
+   "ideas": 1
+  }
+ ],
+ "findings": [
+  {
+   "id": "alcohol:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "alcohol",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "الكحول في العطور",
+   "examinerAr": "د. هند العلوم",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "community:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "community",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (1) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "المجتمع",
+   "examinerAr": "أ. مريم المجتمع",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "concentration:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "concentration",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "حاسبة التركيز",
+   "examinerAr": "د. ليان العطور",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "cosmetic_designers:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "cosmetic_designers",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "قسم المصممين — تجميل",
+   "examinerAr": "د. سلمى الحياة",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "cosmetics:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "cosmetics",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "قسم مستحضرات التجميل",
+   "examinerAr": "د. سلمى الحياة",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "costing:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "costing",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "حاسبة التكلفة",
+   "examinerAr": "أ. طارق التجارة",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "costing:ai-idea:إضافةزرحفظالحسبةبصيغةPDF",
+   "kind": "idea",
+   "code": "ai-idea",
+   "section": "costing",
+   "titleAr": "إضافة زر 'حفظ الحسبة' بصيغة PDF",
+   "detailAr": "يساعد الزائر على الاحتفاظ بتركيبته وتكاليفها للرجوع إليها لاحقاً دون الحاجة لإعادة الحساب.",
+   "severity": "low",
+   "sources": [
+    "ai"
+   ],
+   "sectionAr": "حاسبة التكلفة",
+   "examinerAr": "أ. طارق التجارة",
+   "firstSeen": "2026-11-05T08:38:20.738Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 1
+  },
+  {
+   "id": "guide:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "guide",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "دليل صناعة العطور",
+   "examinerAr": "د. ليان العطور",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "home:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "home",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "الرئيسية",
+   "examinerAr": "د. ليان العطور",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "library:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "library",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "مكتبة شاهين",
+   "examinerAr": "أ. مريم المجتمع",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "maceration_simulator:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "maceration_simulator",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "محاكي التخمير والنضج",
+   "examinerAr": "د. هند العلوم",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "maceration_simulator:ai-idea:تنبيهاتذكيةلمواعيدالتعتي",
+   "kind": "idea",
+   "code": "ai-idea",
+   "section": "maceration_simulator",
+   "titleAr": "تنبيهات ذكية لمواعيد التعتيق",
+   "detailAr": "تذكير الزائر بمراحل التعتيق يضمن جودة العطر النهائي ويقلل من احتمالية الخطأ في التوقيت.",
+   "severity": "low",
+   "sources": [
+    "ai"
+   ],
+   "sectionAr": "محاكي التخمير والنضج",
+   "examinerAr": "د. هند العلوم",
+   "firstSeen": "2026-11-05T08:38:20.738Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 1
+  },
+  {
+   "id": "master_ai:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "master_ai",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "molecule_studio:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "molecule_studio",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "استوديو الجزيئات",
+   "examinerAr": "د. هند العلوم",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "perfume_designers:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "perfume_designers",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "قسم المصممين — عطور",
+   "examinerAr": "د. ليان العطور",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "perfume_news:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "perfume_news",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "أخبار العطور",
+   "examinerAr": "أ. مريم المجتمع",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "perfumes:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "perfumes",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "قسم العطور",
+   "examinerAr": "د. ليان العطور",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "productDetail:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "productDetail",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "صفحة المنتج",
+   "examinerAr": "د. ليان العطور",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "productDetail:ai-idea:ميزةمقارنةالمكوناتبينمنت",
+   "kind": "idea",
+   "code": "ai-idea",
+   "section": "productDetail",
+   "titleAr": "ميزة 'مقارنة المكونات' بين منتجين",
+   "detailAr": "تسهل على الزائر اختيار المادة الخام الأنسب لمشروعه بناءً على الخصائص التقنية.",
+   "severity": "low",
+   "sources": [
+    "ai"
+   ],
+   "sectionAr": "صفحة المنتج",
+   "examinerAr": "د. ليان العطور",
+   "firstSeen": "2026-11-05T08:38:20.738Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 1
+  },
+  {
+   "id": "pyramid:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "pyramid",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "حاسبة الهرم العطري",
+   "examinerAr": "د. ليان العطور",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "pyramid:ai-idea:مؤشربصريلتوازنالهرمالعطر",
+   "kind": "idea",
+   "code": "ai-idea",
+   "section": "pyramid",
+   "titleAr": "مؤشر بصري لتوازن الهرم العطري",
+   "detailAr": "يساعد الزائر في معرفة ما إذا كان عطره متوازناً (قاعدة، قلب، قمة) أثناء عملية التصميم.",
+   "severity": "low",
+   "sources": [
+    "ai"
+   ],
+   "sectionAr": "حاسبة الهرم العطري",
+   "examinerAr": "د. ليان العطور",
+   "firstSeen": "2026-11-05T08:38:20.738Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 1
+  },
+  {
+   "id": "raw_materials:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "raw_materials",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "المواد الخام",
+   "examinerAr": "د. ليان العطور",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "shaheen_chat:ai-idea:اقتراحأسئلةشائعةQuickRep",
+   "kind": "idea",
+   "code": "ai-idea",
+   "section": "shaheen_chat",
+   "titleAr": "اقتراح أسئلة شائعة (Quick Replies)",
+   "detailAr": "تسرع عملية الوصول للمعلومة وتساعد الزائر الجديد في معرفة كيفية البدء في تصميم عطره.",
+   "severity": "low",
+   "sources": [
+    "ai"
+   ],
+   "sectionAr": "شات الخبير شاهين",
+   "examinerAr": "م. عمر الحاسوب",
+   "firstSeen": "2026-11-05T08:38:20.738Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 1
+  },
+  {
+   "id": "store:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "store",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "المتجر",
+   "examinerAr": "د. ليان العطور",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  },
+  {
+   "id": "world_perfumes:unnamed-button",
+   "kind": "idea",
+   "code": "unnamed-button",
+   "section": "world_perfumes",
+   "titleAr": "أسماء للأزرار اللي عليها أيقونة بس (4) — قارئ الشاشة مش بيعرف وظيفتها",
+   "severity": "low",
+   "sources": [
+    "browser"
+   ],
+   "sectionAr": "عطور العالم",
+   "examinerAr": "أ. مريم المجتمع",
+   "firstSeen": "2026-10-23T14:16:34.941Z",
+   "lastSeen": "2026-11-05T08:38:20.738Z",
+   "seen": 55
+  }
+ ],
+ "resolved": [
+  {
+   "id": "store:ai-idea:تفعيلفلترسريعلتصفيةالمنت",
+   "titleAr": "تفعيل فلتر سريع لتصفية المنتجات حسب الفئة وحالة التوفر في المخزون",
+   "section": "store",
+   "at": "2026-11-05T08:38:20.738Z"
+  },
+  {
+   "id": "shaheen_chat:ai-idea:إضافةاقتراحاتأسئلةجاهزةب",
+   "titleAr": "إضافة اقتراحات أسئلة جاهزة بنقرة واحدة لبدء المحادثة مع الخبير",
+   "section": "shaheen_chat",
+   "at": "2026-11-05T08:38:20.738Z"
+  },
+  {
+   "id": "home:ai-idea:إضافةشريطتنبيهاتمتحركللإ",
+   "titleAr": "إضافة شريط تنبيهات متحرك للإعلانات والعروض الرسمية المعتمدة في الأعلى",
+   "section": "home",
+   "at": "2026-11-05T08:38:20.738Z"
+  },
+  {
+   "id": "home:slow",
+   "titleAr": "تسريع القسم (بيفتح في 5 ثواني)",
+   "section": "home",
+   "at": "2026-11-05T08:38:20.738Z"
+  },
+  {
+   "id": "guide:ai-idea:إضافةفهرسجانبيسريعللتنقل",
+   "titleAr": "إضافة فهرس جانبي سريع للتنقل بين خطوات دليل تصنيع العطور",
+   "section": "guide",
+   "at": "2026-11-05T08:38:20.738Z"
+  },
+  {
+   "id": "costing:ai-idea:إضافةزرنسختفاصيلالتكلفةو",
+   "titleAr": "إضافة زر نسخ تفاصيل التكلفة والحسابات لمشاركتها بسهولة",
+   "section": "costing",
+   "at": "2026-11-05T08:38:20.738Z"
+  },
+  {
+   "id": "store:slow",
+   "titleAr": "تسريع القسم (بيفتح في 5 ثواني)",
+   "section": "store",
+   "at": "2026-11-05T02:32:28.591Z"
+  },
+  {
+   "id": "home:slow",
+   "titleAr": "تسريع القسم (بيفتح في 5 ثواني)",
+   "section": "home",
+   "at": "2026-11-05T00:50:40.464Z"
+  },
+  {
+   "id": "store:ai-idea:تفعيلخيارتصفيةالمنتجاتحس",
+   "titleAr": "تفعيل خيار تصفية المنتجات حسب الحجم والسعة المتاحة",
+   "section": "store",
+   "at": "2026-11-04T08:34:34.355Z"
+  },
+  {
+   "id": "shaheen_chat:ai-idea:إضافةأسئلةمقترحةجاهزةبنق",
+   "titleAr": "إضافة أسئلة مقترحة جاهزة بنقرة واحدة لبدء المحادثة",
+   "section": "shaheen_chat",
+   "at": "2026-11-04T08:34:34.355Z"
+  },
+  {
+   "id": "pyramid:ai-idea:إضافةتلميحاتتوضيحيةقصيرة",
+   "titleAr": "إضافة تلميحات توضيحية قصيرة بجانب طبقات الهرم العطري",
+   "section": "pyramid",
+   "at": "2026-11-04T08:34:34.355Z"
+  },
+  {
+   "id": "home:ai-idea:إضافةشريطتنقلسريععلويللو",
+   "titleAr": "إضافة شريط تنقل سريع علوي للوصول المباشر لأدوات التركيب",
+   "section": "home",
+   "at": "2026-11-04T08:34:34.355Z"
+  },
+  {
+   "id": "costing:ai-idea:إظهارملخصإجماليالتكلفةبخ",
+   "titleAr": "إظهار ملخص إجمالي التكلفة بخط بارز في أسفل الشاشة دائماً",
+   "section": "costing",
+   "at": "2026-11-04T08:34:34.355Z"
+  },
+  {
+   "id": "community:no-heading",
+   "titleAr": "عنوان واضح للقسم في أوله — يسهّل القراءة والبحث",
+   "section": "community",
+   "at": "2026-11-04T08:34:34.355Z"
+  },
+  {
+   "id": "home:slow",
+   "titleAr": "تسريع القسم (بيفتح في 6 ثواني)",
+   "section": "home",
+   "at": "2026-11-04T02:18:55.492Z"
+  },
+  {
+   "id": "store:ai-idea:تصفيةالمنتجاتحسبنوعالماد",
+   "titleAr": "تصفية المنتجات حسب نوع المادة الخام والتصنيف الهرمي",
+   "section": "store",
+   "at": "2026-11-03T08:32:11.222Z"
+  },
+  {
+   "id": "store:slow",
+   "titleAr": "تسريع القسم (بيفتح في 5 ثواني)",
+   "section": "store",
+   "at": "2026-11-03T08:32:11.222Z"
+  },
+  {
+   "id": "shaheen_chat:ai-idea:اقتراحاتأسئلةسريعةجاهزةع",
+   "titleAr": "اقتراحات أسئلة سريعة جاهزة عند فتح المحادثة للبدء فورًا",
+   "section": "shaheen_chat",
+   "at": "2026-11-03T08:32:11.222Z"
+  },
+  {
+   "id": "maceration_simulator:ai-idea:تنبيهزمنيوتلميحاتلحفظزجا",
+   "titleAr": "تنبيه زمني وتلميحات لحفظ زجاجة العطر أثناء فترة التعتيق",
+   "section": "maceration_simulator",
+   "at": "2026-11-03T08:32:11.222Z"
+  },
+  {
+   "id": "costing:ai-idea:خيارتصديرملخصتسعيرالزجاج",
+   "titleAr": "خيار تصدير ملخص تسعير الزجاجة كصورة أو نص جاهز للمشاركة",
+   "section": "costing",
+   "at": "2026-11-03T08:32:11.222Z"
+  },
+  {
+   "id": "concentration:ai-idea:إضافةأمثلةشائعةجاهزةللتر",
+   "titleAr": "إضافة أمثلة شائعة جاهزة للتركيزات (مثل EDP وEDT) للاختيار السريع",
+   "section": "concentration",
+   "at": "2026-11-03T08:32:11.222Z"
+  },
+  {
+   "id": "store:ai-idea:تصفيةسريعةللمنتجاتحسبفئة",
+   "titleAr": "تصفية سريعة للمنتجات حسب فئة الاستخدام ونوع المادة الخام",
+   "section": "store",
+   "at": "2026-11-02T08:42:24.774Z"
+  },
+  {
+   "id": "shaheen_chat:ai-idea:اقتراحاتأسئلةجاهزةلبدءال",
+   "titleAr": "اقتراحات أسئلة جاهزة لبدء المحادثة حول تركيب العطور",
+   "section": "shaheen_chat",
+   "at": "2026-11-02T08:42:24.774Z"
+  },
+  {
+   "id": "pyramid:ai-idea:ميزةتصديرأونسختركيبةالهر",
+   "titleAr": "ميزة تصدير أو نسخ تركيبة الهرم العطري كنص منظم أو صورة",
+   "section": "pyramid",
+   "at": "2026-11-02T08:42:24.774Z"
+  },
+  {
+   "id": "maceration_simulator:ai-idea:مؤشرزمنيمرئييوضحمراحلتطو",
+   "titleAr": "مؤشر زمني مرئي يوضح مراحل تطور الرائحة أثناء فترة التعتيق",
+   "section": "maceration_simulator",
+   "at": "2026-11-02T08:42:24.774Z"
+  },
+  {
+   "id": "concentration:ai-idea:زرلإعادةضبطحقولالحاسبةوت",
+   "titleAr": "زر لإعادة ضبط حقول الحاسبة وتفريغ القيم بنقرة واحدة",
+   "section": "concentration",
+   "at": "2026-11-02T08:42:24.774Z"
+  },
+  {
+   "id": "store:ai-idea:شريطتصنيفاتأفقيسريعللموا",
+   "titleAr": "شريط تصنيفات أفقي سريع للمواد الخام والأدوات في أعلى المتجر",
+   "section": "store",
+   "at": "2026-11-01T08:21:39.708Z"
+  },
+  {
+   "id": "shaheen_chat:ai-idea:اقتراحاتسريعةلأسئلةشائعة",
+   "titleAr": "اقتراحات سريعة لأسئلة شائعة في بداية المحادثة مع شاهين",
+   "section": "shaheen_chat",
+   "at": "2026-11-01T08:21:39.708Z"
+  },
+  {
+   "id": "pyramid:ai-idea:زرلتصديرالهرمالعطريأوحفظ",
+   "titleAr": "زر لتصدير الهرم العطري أو حفظه كصورة جاهزة للمشاركة",
+   "section": "pyramid",
+   "at": "2026-11-01T08:21:39.708Z"
+  },
+  {
+   "id": "costing:ai-idea:خيارحفظمسودةتسعيرالمنتجم",
+   "titleAr": "خيار حفظ مسودة تسعير المنتج محلياً على الهاتف",
+   "section": "costing",
+   "at": "2026-11-01T08:21:39.708Z"
+  }
+ ]
+}

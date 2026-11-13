@@ -1,0 +1,169 @@
+name: Shaheen source scout and school (every 6 hours)
+
+# «كشّاف المصادر» (scripts/shaheen-discover/): finds online perfume stores — with AI web search while the
+# packages last, by himself otherwise (official shops of the brands the store sells, stores found earlier,
+# DISCOVER_SEEDS), all over the world (Arab world, Europe, Americas, East/Central Asia, each in its language) —
+# reads each store's «CV» first (trust.ts: domain age, company identity, policies, payments, no copies; < 60/100
+# or a red flag = rejected) — then checks it politely (robots.txt, product sitemap, 6 product pages read without AI,
+# one currency, perfume) and turns the good ones into import sources (src/data/live/import-sources.json).
+# «مستورد شاهين» (shaheen-import.yml) then imports them with the original method: ×1.5 price rule, review,
+# photo cleaning, Arabic text, one page per product. The same perfume from two stores is kept once.
+# «مدرسة شاهين» (scripts/shaheen-school/): Shaheen examines himself on a question bank, learns what he can from
+# his own library (no AI), studies the rest while an AI engine is up, and keeps everything in his memory —
+# the memory the site answers from when no AI engine is available (GitHub Pages included).
+# The school's new missions (scripts/shaheen-school/curriculum.ts): ALL known programming languages, building
+# programming blocks and scheduling them (src/utils/shaheenBlocks.ts), software engineering, graphics & design,
+# a website-maintenance course, AI with ALL its skills and the modern sciences (self-managed without any
+# external AI app), cybersecurity (30 lessons) and quantum computing (17 lessons), and every AI tool developed
+# in its field — intensive self-study by default (SCHOOL_INTENSIVE=0 restores the old pace). It also builds its
+# own block programs and schedules them in src/data/live/shaheen-blocks.json (study, site care, tool
+# development, self-management) — and really RUNS the due ones: the school executes study/tooling, and the
+# patrol executes «ai-self» (every 12h) and «site-care» (daily 08:00) with that hour's measured facts.
+# «المعلم المحلي» (scripts/shaheen-school/teacher.sh): an open model (Qwen2.5-7B-Instruct, Apache-2.0) run by llama.cpp on
+# this runner — no key, no account — teaches the school when the AI keys fail. Variables (optional): TEACHER_MODEL_URL +
+# TEACHER_MODEL_SHA256 (another GGUF model), TEACHER_MODEL_NAME, SCHOOL_PREFER (an engine id to try first).
+# Settings (repository variables, all optional): DISCOVER_MAX_ACTIVE (20 stores), DISCOVER_VET_PER_RUN (10),
+# DISCOVER_QUERIES (4 web searches per run), DISCOVER_BLOCK (sites never to use), DISCOVER_TRUSTED (stores
+# you vouch for: a weak CV does not stop them, red flags still do), DISCOVER_SEEDS (sites to
+# check), SCHOOL_MAX_STUDY (10 questions per run), SCHOOL_INTENSIVE (1 = the academy teaches everything it can
+# per run; 0 = the old pace). Optional secrets: BRAVE_SEARCH_API_KEY (a search service),
+# SAFE_BROWSING_API_KEY (Google Safe Browsing, free — adds «is this site dangerous?» to every store's CV).
+
+on:
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: shaheen-discover-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner can pause this robot or freeze every robot (src/data/owner/controls.json,
+  # changed only from his GitHub account through «مكتب صاحب الموقع»). Branch and pull-request runs are not affected.
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs scout teacher school
+
+  scout:
+    name: Find and check perfume stores, then Shaheen's school
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    env:
+      PUBLISH: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      DISCOVER_MAX_ACTIVE: ${{ vars.DISCOVER_MAX_ACTIVE || '20' }}
+      DISCOVER_VET_PER_RUN: ${{ vars.DISCOVER_VET_PER_RUN || (github.ref == 'refs/heads/main' && '10' || '6') }}
+      DISCOVER_QUERIES: ${{ vars.DISCOVER_QUERIES || (github.ref == 'refs/heads/main' && '4' || '2') }}
+      DISCOVER_TIME_BUDGET_S: ${{ github.ref == 'refs/heads/main' && '900' || '420' }}
+      DISCOVER_BLOCK: ${{ vars.DISCOVER_BLOCK }}
+      DISCOVER_TRUSTED: ${{ vars.DISCOVER_TRUSTED }}
+      DISCOVER_SEEDS: ${{ vars.DISCOVER_SEEDS }}
+      SCHOOL_MAX_STUDY: ${{ vars.SCHOOL_MAX_STUDY || (github.ref == 'refs/heads/main' && '10' || '2') }}
+      SCHOOL_INTENSIVE: ${{ vars.SCHOOL_INTENSIVE || '1' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+      BRAVE_SEARCH_API_KEY: ${{ secrets.BRAVE_SEARCH_API_KEY }}
+      SAFE_BROWSING_API_KEY: ${{ secrets.SAFE_BROWSING_API_KEY }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || github.sha }}
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: «كشّاف المصادر» finds and checks perfume stores
+        id: scout
+        continue-on-error: true
+        run: node --import tsx scripts/shaheen-discover/run.mts
+      - name: Trial import from the new stores (rehearsal only, nothing is saved)
+        if: env.PUBLISH != 'true'
+        continue-on-error: true
+        env:
+          IMPORT_ONLY_DISCOVERED: '1'
+          IMPORT_MAX_NEW: '6'
+          IMPORT_MAX_REFRESH: '0'
+        run: node --import tsx scripts/shaheen-import/run.mts
+      - name: «المعلم المحلي» — an open model on this runner (no key, no account)
+        id: teacher
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          # llama.cpp server (pinned release + SHA-256) and an open-weights model (Apache-2.0).
+          LLAMA_BUILD: b11790
+          LLAMA_SHA256: 0e2b856ca192699fdb5c8dfe591b7896d658760bcdd48f133322236cd311c455
+          TEACHER_MODEL_URL: ${{ vars.TEACHER_MODEL_URL || 'https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/resolve/main/Qwen2.5-7B-Instruct-Q4_K_M.gguf' }}
+          # Another model (TEACHER_MODEL_URL) needs its own TEACHER_MODEL_SHA256, else the check stops it safely.
+          TEACHER_MODEL_SHA256: ${{ vars.TEACHER_MODEL_URL && vars.TEACHER_MODEL_SHA256 || '65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423' }}
+          TEACHER_MODEL_NAME: ${{ vars.TEACHER_MODEL_NAME || 'qwen2.5-7b-instruct' }}
+        run: bash scripts/shaheen-school/teacher.sh
+      - name: «مدرسة شاهين» — exam, self-study, study with the local teacher or AI
+        continue-on-error: true
+        timeout-minutes: 25
+        env:
+          SHAM_LLM_BASE_URL: ${{ steps.teacher.outputs.base_url }}
+          SHAM_LLM_MODEL: ${{ steps.teacher.outputs.model }}
+          SCHOOL_PREFER: ${{ vars.SCHOOL_PREFER || 'self_hosted' }}
+          SCHOOL_BUDGET_MIN: ${{ github.ref == 'refs/heads/main' && '18' || '8' }}
+          # Questions visitors asked while no engine answered (optional: same value as the Vercel admin code).
+          SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
+        run: node --import tsx scripts/shaheen-school/run.mts
+      - name: Stop the local teacher
+        if: always() && steps.teacher.outputs.base_url != ''
+        run: kill "$(cat "${RUNNER_TEMP}/teacher/server.pid")" 2>/dev/null || true
+      - name: Regression tests
+        run: |
+          set -o pipefail
+          bun run test 2>&1 | tee /tmp/test.log || { grep -E 'not ok|error:' /tmp/test.log | head -8 | sed 's/^/::error title=test::/'; exit 1; }
+      - name: Publish on main
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen scout bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          before=$(git rev-parse HEAD)
+          node scripts/ci/publish.mjs "كشّاف المصادر ومدرسة شاهين $(date -u +%Y-%m-%dT%H:%MZ)" \
+            src/data/live/import-sources.json src/data/live/shaheen-school.json src/data/live/shaheen-sciences.json \
+            src/data/live/shaheen-memory.json src/data/live/shaheen-blocks.json \
+            src/data/live/ai-memory.json src/data/live/ai-quota.json \
+            || { echo "::error::Could not push the scout's results"; exit 1; }
+          if [ "$(git rev-parse HEAD)" = "$before" ]; then exit 0; fi
+          # New stores: the importer starts at once instead of waiting for its next turn; Pages gets the new memory.
+          if [ "${{ steps.scout.outputs.activated || '0' }}" != "0" ]; then gh workflow run shaheen-import.yml --ref main || echo "::warning::Importer not started"; fi
+          gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started"

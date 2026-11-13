@@ -1,16 +1,38 @@
+import { createToolAgentRouter } from './agentRouter';
 import express from 'express';
 import dotenv from 'dotenv';
-import { executeAgent } from './agent';
-import { agentCapabilities, validateDocuments, ToolInputError } from './agentTools';
-import { GoogleGenAI } from '@google/genai';
-import { ChatError, executeChat, getChatModels, validateChatRequest } from './shaheen';
+import { createShaheenRouter } from './shaheen';
+import { createSpecialistsRouter } from './specialists/router';
+import { createMediaRouter } from './media';
+import { createStoreRouter } from './store';
+import { createCheckoutRouter } from './checkout';
+import { createShamCore } from './core/http';
+import { createSeoRootRouter, createSeoRouter } from './seo/router';
+import { callEngine, engineStatuses } from './core/engines';
+import { liveNews, supervisorGuidance } from './core/liveData';
+import { articlesFromCollected } from './newsFallback';
+import { RateLimiter, clientKey } from './core/rateLimit';
+import { createWorkspaceRouter } from './workspace';
+import { corsMiddleware } from './cors';
+import { createCommunity, createCommunityRouter } from './community/router';
+import { createContractsRouter } from './contracts/router';
+import { productsForCheckout, recordCheckout, markPaid } from './community/service';
+import { liveFxRates } from './core/liveFx';
 
 dotenv.config();
 
 const app = express();
 
-app.use('/api', (_req, res, next) => { res.set('Cache-Control', 'no-store'); next(); });
+// Rate limits use the client IP; trust exactly the configured number of proxy hops (Vercel = 1).
+const trustProxy = process.env.SHAM_TRUST_PROXY ?? (process.env.VERCEL || process.env.SHAM_SERVERLESS ? '1' : '');
+if (trustProxy) app.set('trust proxy', /^\d+$/.test(trustProxy) ? Number(trustProxy) : trustProxy);
 
+// The GitHub Pages build calls this API cross-origin (see server/cors.ts). Must run before body parsing.
+app.use('/api', corsMiddleware(process.env.SHAM_CORS_ORIGINS));
+// «مجتمع شام» carries pictures and voice notes: a larger body limit only on its routes (parsed once).
+app.use(['/api/community', '/api/admin/community'], express.json({ limit: '3mb' }));
+// «مساحة شاهين»: the visitor's files and pages travel with his question (an image to edit too).
+app.use('/api/workspace', express.json({ limit: '4mb' }));
 app.use(express.json({ limit: '128kb' }));
 app.use((error: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (error?.type === 'entity.parse.failed' || error?.type === 'entity.too.large') {
@@ -20,71 +42,63 @@ app.use((error: any, _req: express.Request, res: express.Response, next: express
   next(error);
 });
 
-const apiKey = process.env.GEMINI_API_KEY || '';
-const ai = apiKey ? new GoogleGenAI({
-  apiKey,
-  httpOptions: {
-    headers: {
-      'User-Agent': 'aistudio-build',
-    },
-  },
-}) : null;
-
-function withTimeout<T>(promise: Promise<T>, ms: number, fallbackValue: T): Promise<T> {
-  return new Promise((resolve) => {
-    const timer = setTimeout(() => resolve(fallbackValue), ms);
-    promise
-      .then((val) => {
-        clearTimeout(timer);
-        resolve(val);
-      })
-      .catch(() => {
-        clearTimeout(timer);
-        resolve(fallbackValue);
-      });
-  });
-}
+// Sham Core (services assistant + admin) and the shared settings store used by Shaheen as well.
+const shamCore = createShamCore();
 
 app.get('/api/health', (_req, res) => {
-  res.json({ service: 'sham-perfume', status: 'ok' });
+  res.setHeader('Cache-Control', 'no-store');
+  // `version` = deployed commit: the maintenance agent compares it with main to spot a stale deploy.
+  res.json({ service: 'sham-perfume', status: 'ok', version: shamCore.runtime.version, uptimeS: Math.round((Date.now() - shamCore.runtime.startedAt) / 1000) });
 });
 
-// Shahin routes: strict inputs, actual provider attribution, no canned AI impersonation.
-app.get('/api/models', (_req, res) => {
-  res.json({ models: getChatModels(process.env) });
+// «أسعار الصرف الحية»: the server's newest rates (server/core/liveFx.ts) for the storefront, which keeps them for
+// the next visit so the prices a visitor sees match the checkout without a GitHub robot committing them.
+app.get('/api/fx', async (_req, res) => {
+  const table = await liveFxRates();
+  res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=3600');
+  res.json({ base: table.base, source: table.source, updatedAt: table.updatedAt, rates: table.rates });
 });
 
-app.get('/api/agent/capabilities', (_req, res) => { res.json(agentCapabilities()); });
-
-app.post('/api/chat', async (req, res) => {
-  const controller = new AbortController();
-  const cancel = () => { if (!res.writableEnded) controller.abort(); };
-  res.on('close', cancel);
-  try {
-    const input = validateChatRequest(req.body);
-    if ((req.body.agent !== undefined && typeof req.body.agent !== 'boolean') ||
-      (req.body.webSearch !== undefined && typeof req.body.webSearch !== 'boolean')) {
-      throw new ChatError(400, 'INVALID_AGENT_REQUEST', 'Agent options must be boolean');
-    }
-    let documents;
-    try { documents = validateDocuments(req.body.documents); }
-    catch (error) { if (error instanceof ToolInputError) throw new ChatError(400, 'INVALID_AGENT_REQUEST', error.message); throw error; }
-    if (!req.body.agent && (documents.length || req.body.webSearch)) throw new ChatError(400, 'INVALID_AGENT_REQUEST', 'Documents and search require agent mode');
-    const result = req.body.agent
-      ? await executeAgent(input, documents, { signal: controller.signal, allowWebSearch: req.body.webSearch === true })
-      : await executeChat(input, { signal: controller.signal });
-    if (!res.destroyed) res.json(result);
-  } catch (error) {
-    if (res.destroyed) return;
-    if (error instanceof ChatError) {
-      res.status(error.status).json({ error: error.message, code: error.code });
-    } else {
-      res.status(500).json({ error: 'Chat service failed', code: 'CHAT_FAILED' });
-    }
-  } finally {
-    res.off('close', cancel);
-  }
-});
+// «الخبير شاهين»: GET /api/models + POST /api/chat. Settings come from server/config/shaheen.ts and the
+// admin dashboard, so both sites (Vercel and GitHub Pages, which calls this API) behave the same.
+app.use('/api/agent', createToolAgentRouter({ repo: shamCore.repo, runtime: shamCore.runtime }));
+app.use('/api', createShaheenRouter({ repo: shamCore.repo, runtime: shamCore.runtime, memory: shamCore.memory }));
+// «مجلس المتخصصين»: وكيل الاستشارة الذكي بأدواته (مدرسة شاهين وعلومها، الذاكرة، المكتبة، المواد،
+// حاسبات المعمل، المتجر، النشرة، الملجأ، المصادر المفتوحة) — POST /api/specialists/consult.
+app.use('/api/specialists', createSpecialistsRouter({ repo: shamCore.repo, runtime: shamCore.runtime, memory: shamCore.memory }));
+app.use('/api', createMediaRouter());
+// «مساحة شاهين»: Shaheen as a general assistant (any subject) — search, reading pages and PDFs, images, the owner's Notion/Slack.
+app.use('/api/workspace', createWorkspaceRouter());
+// «منارة شاهين»: the live SEO files and the public status snapshot. The static build also ships copies of
+// robots/sitemap/llms/feed, so crawlers are served even on GitHub Pages.
+app.use('/api', createSeoRouter(shamCore.seo));
+app.use(createSeoRootRouter(shamCore.seo));
+// «اسأل شاهين» in «متجر شام»: POST /api/store/advise (server/store.ts).
+app.use('/api', createStoreRouter({ repo: shamCore.repo, health: shamCore.runtime.health }));
+// «الدفع في متجر شام»: country, Kashier payment sessions and their verified results (server/checkout.ts).
+// «مجتمع شام»: accounts, merchants' and users' portals, «بوابة السوشيال» and the messenger (server/community).
+const community = createCommunity();
+app.use('/api', createCommunityRouter(community));
+// «مسؤول التعاقدات»: supplier agreements with electronic consent (decision L-40, server/contracts) — same database.
+app.use('/api', createContractsRouter(community, { env: process.env, finance: shamCore.finance }));
+app.use('/api', createCheckoutRouter({
+  finance: shamCore.finance,
+  bank: shamCore.bank,
+  // No payment without a real account: the session is checked against the community database (owner's rule).
+  customer: async (req) => community.userFrom(req),
+  merchantProducts: async (skus) => { const ctx = await community.ready(); return ctx ? productsForCheckout(ctx, skus) : []; },
+  onCheckout: async ({ ref, req, input, shippingUsd, total, currency, catalogLines }) => {
+    const hasMerchantItems = input.items.some((i) => i.sku.startsWith('mp_'));
+    if (!hasMerchantItems && !req.headers.authorization) return; // a visitor without an account buying the site's own products
+    const ctx = await community.ready();
+    if (!ctx) return;
+    const buyer = await community.userFrom(req);
+    if (!hasMerchantItems && !buyer) return;
+    await recordCheckout(ctx, { ref, buyerId: buyer?.id, country: input.country, items: input.items, catalog: buyer ? catalogLines : [], shippingUsd, total, currency,
+      address: { name: input.contact.name, email: input.contact.email, phone: input.contact.phone, city: input.address.city, line: input.address.line } });
+  },
+  onPaid: async (ref) => { const ctx = await community.ready(); if (ctx) await markPaid(ctx, ref); },
+}));
 
 // ============================================================================
 // DAILY PERFUME NEWS ENGINE (MASTER SHAHEEN AI CURATION & REFRESH)
@@ -136,147 +150,190 @@ function getTodayArabicDateString(): string {
   });
 }
 
+const NEWS_CATEGORIES = ['trends', 'exhibitions', 'harvests', 'ifra', 'niche'] as const;
+/** The whole daily bulletin has one time budget: no stack of slow engines may hold the response. */
+const NEWS_ENGINE_BUDGET_MS = 14_000;
+/** How long the first visitor of the day waits for the bulletin before the collected headlines answer. */
+const NEWS_FIRST_WAIT_MS = 7_000;
+const text = (value: unknown, max: number, fallback = '') => (typeof value === 'string' && value.trim() ? value.trim().slice(0, max) : fallback);
+
+/**
+ * Daily bulletin written by the same engines Shaheen uses (order/models from its settings). These are
+ * AI-written editorial explainers, not verified news: the prompt forbids invented deals, figures,
+ * lab results or quotes, and the site labels them as AI-generated.
+ */
 async function generateFreshDailyNewsWithShaheen(): Promise<GeneratedNewsItem[]> {
-  if (!ai) throw new Error('News refresh requires GEMINI_API_KEY.');
-  const models = ['gemini-3.1-flash-lite', 'gemini-3.8-flash', 'gemini-flash-latest'];
+  const shaheen = (await shamCore.repo.settings()).shaheen;
+  const configured = new Set(engineStatuses(process.env).filter((s) => s.configured).map((s) => s.id));
+  const engines = shaheen.enabled ? shaheen.engines.filter((id) => configured.has(id)) : [];
+  if (!engines.length) throw new Error('News refresh requires a configured AI engine.');
   const todayArabic = getTodayArabicDateString();
+  const deadline = Date.now() + NEWS_ENGINE_BUDGET_MS;
 
-  const prompt = `أنت "الخبير شاهين"، شيخ العطارين وكبير كيميائيي العطور بخبرة 35 عاماً، ورئيس تحرير مرصد أخبار العطور العالمية.
-تاريخ اليوم هو: ${todayArabic}.
-المطلوب منك: صياغة 3 تقارير إخبارية ومعملية حصرية وحديثة جداً لليوم في عالم وصناعة العطور، موثقة بالتحليلات الكيميائية والفنية.
-يجب أن تتناول التقارير:
-1. تقرير عن ابتكار عطري نيش حديث أو كيمياء خضراء مستدامة أو معطرات تجميلية ذكية.
-2. تقرير عن المعارض الدولية الكبرى والصفقات في ميلانو أو باريس أو دبي (Esxence, Beautyworld, Fragrance Summit).
-3. تقرير عن مواسم حصاد المواد الخام النقية (الورد، اللبان، العود، الزعفران، الحمضيات) ونتائج فحص النقاء المعملي (GC-MS).
+  const system = 'أنت الخبير شاهين، محرر تحريري تثقيفي في عالم العطور. أخرج فقط مصفوفة JSON صالحة دون أي شرح أو Markdown.'
+    + await supervisorGuidance('news_articles', process.env).catch(() => '');
+  const prompt = `تاريخ اليوم: ${todayArabic}.
+اكتب 3 مقالات تحريرية تثقيفية قصيرة لقسم «مرصد العطور» في منصة شام:
+1. اتجاه عام في تصميم العطور أو الكيمياء الخضراء أو العطور النيش.
+2. معلومة عن المعارض والفعاليات الدولية للعطور بشكل عام (دون ادعاء صفقات أو أرقام).
+3. معلومة عن مواسم المواد الخام (الورد، اللبان، العود، الزعفران، الحمضيات) وكيف تُفحص جودتها عادةً.
+قواعد صارمة: هذه ليست أخباراً عاجلة ولا تقارير موثقة. لا تختلق أرقاماً أو صفقات أو أسعاراً أو نتائج فحوص أو تصريحات أو أسماء جزيئات أو شركات أو أحداثاً بتواريخ محددة. استخدم صياغة عامة مثل «يتجه كثير من المصممين…». لا تذكر مصدراً غير حقيقي.
+الشكل المطلوب (مصفوفة فقط):
+[{"id":"slug-id","titleAr":"عنوان","titleEn":"English title","category":"niche|exhibitions|harvests|trends|ifra","categoryLabelAr":"تصنيف","summaryAr":"ملخص في سطرين","contentAr":"فقرتان","readTime":"3 دقائق","marketImpact":"أثر عام متوقع","expertVerdict":"نصيحة عملية قصيرة","tags":["وسم"],"keyNotes":[{"nameAr":"نوتة","nameEn":"Note","type":"top|heart|base","percentageHint":30}]}]`;
 
-أرجع الإجابة بتنسيق JSON فقط عبارة عن مصفوفة من الكائنات بالشكل التالي:
-[
-  {
-    "id": "slug-id",
-    "badge": "⚡ رصد الخبير شاهين اليومي",
-    "titleAr": "عنوان التقرير بالعربية بشكل جذاب ورسمي",
-    "titleEn": "English Title",
-    "category": "niche" | "exhibitions" | "harvests" | "trends" | "ifra",
-    "categoryLabelAr": "تصنيف بالعربية",
-    "summaryAr": "ملخص شامل في سطرين أو ثلاثة",
-    "contentAr": "تفاصيل التقرير الكامل في فقرتين تشمل التحليل المعملي والنصيحة",
-    "readTime": "3 دقائق",
-    "source": "المصدر الرسمي واسم المدينة",
-    "marketImpact": "الأثر الاقتصادي أو الصناعي في السوق",
-    "expertVerdict": "قول مأثور أو حكم معملي للخبير شاهين",
-    "tags": ["تاج1", "تاج2", "تاج3"],
-    "keyNotes": [
-      { "nameAr": "نوتة 1", "nameEn": "Note 1", "type": "top", "percentageHint": 30 },
-      { "nameAr": "نوتة 2", "nameEn": "Note 2", "type": "heart", "percentageHint": 35 },
-      { "nameAr": "نوتة 3", "nameEn": "Note 3", "type": "base", "percentageHint": 35 }
-    ]
-  }
-]`;
-
-  for (const model of models) {
+  for (const id of engines) {
     try {
-      const call = ai.models.generateContent({
-        model,
-        contents: prompt,
-        config: {
-          systemInstruction: 'أنت الخبير شاهين، رئيس تحرير مرصد أخبار العطور العالمي. أخرج فقط مصفوفة JSON نقية وصالحة دون أي كود Markdown.',
-          temperature: 0.7,
-          responseMimeType: 'application/json',
-        },
+      // One shared budget for the whole loop: a slow engine must not eat the visitor's patience.
+      const left = deadline - Date.now();
+      if (left < 3000) break;
+      const raw = await callEngine(id, system, [{ role: 'user', text: prompt }], {
+        signal: AbortSignal.timeout(left), temperature: 0.6, model: shaheen.models[id], maxTokens: 4096, maxChars: 40000,
       });
-
-      const res = await withTimeout(call, 18000, null as any);
-      if (res && res.text) {
-        let cleanText = res.text.trim();
-        if (cleanText.startsWith('```json')) {
-          cleanText = cleanText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-        } else if (cleanText.startsWith('```')) {
-          cleanText = cleanText.replace(/^```\s*/, '').replace(/\s*```$/, '');
-        }
-        const parsed = JSON.parse(cleanText);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.map((item: any, index: number) => ({
-            id: item.id || `shaheen-ai-${Date.now()}-${index}`,
-            badge: item.badge || '⚡ رصد الخبير شاهين اليومي',
-            titleAr: item.titleAr || 'تقرير الخبير شاهين اليومي',
-            titleEn: item.titleEn || 'Master Shaheen Daily Report',
-            category: item.category || 'niche',
-            categoryLabelAr: item.categoryLabelAr || 'ابتكارات النيش',
-            isHot: index === 0,
-            isDailyRefreshed: true,
-            summaryAr: item.summaryAr || '',
-            contentAr: item.contentAr || item.summaryAr || '',
-            date: `اليوم · ${todayArabic}`,
-            readTime: item.readTime || '3 دقائق',
-            source: item.source || 'مختبر الخبير شاهين · معمل شام',
-            imageUrl: EDITORIAL_NEWS_IMAGES[index % EDITORIAL_NEWS_IMAGES.length],
-            tags: Array.isArray(item.tags) ? item.tags : ['عطور', 'أخبار اليوم'],
-            keyNotes: Array.isArray(item.keyNotes) ? item.keyNotes : undefined,
-            marketImpact: item.marketImpact || 'تأثير إيجابي ملحوظ في صياغة التركيبات العطرية الحديثة.',
-            expertVerdict: item.expertVerdict ? (item.expertVerdict.includes('شاهين') ? item.expertVerdict : `«${item.expertVerdict}» - الخبير شاهين`) : '«العطر علمٌ وفن، وسلامة المكونات هي تاج كل تركيبة ناجحة» - الخبير شاهين.',
-            author: 'الخبير شاهين (شيخ العطارين)',
-            location: item.location || 'معمل شام الدولي',
-          }));
-        }
-      }
+      if (!raw) continue;
+      const json = raw.slice(raw.indexOf('['), raw.lastIndexOf(']') + 1);
+      const parsed = JSON.parse(json);
+      if (!Array.isArray(parsed) || !parsed.length) continue;
+      const items = parsed.slice(0, 6).filter((item) => item && typeof item === 'object' && text(item.titleAr, 200) && text(item.summaryAr, 600));
+      if (!items.length) continue;
+      return items.map((item: any, index: number): GeneratedNewsItem => {
+        const category = NEWS_CATEGORIES.includes(item.category) ? item.category : 'trends';
+        const verdict = text(item.expertVerdict, 300);
+        return {
+          id: `shaheen-${new Date().toISOString().slice(0, 10)}-${index}-${text(item.id, 60, 'note').replace(/[^a-z0-9-]/gi, '').slice(0, 40)}`,
+          badge: '✨ مقال تحريري مولّد بالذكاء الاصطناعي',
+          titleAr: text(item.titleAr, 200),
+          titleEn: text(item.titleEn, 200, 'Shaheen editorial note'),
+          category,
+          categoryLabelAr: text(item.categoryLabelAr, 60, 'اتجاهات'),
+          isHot: index === 0,
+          isDailyRefreshed: true,
+          summaryAr: text(item.summaryAr, 600),
+          contentAr: text(item.contentAr, 4000, text(item.summaryAr, 600)),
+          date: `اليوم · ${todayArabic}`,
+          readTime: text(item.readTime, 30, '3 دقائق'),
+          source: 'محتوى تحريري مولّد بالذكاء الاصطناعي — للتثقيف وليس خبراً موثقاً',
+          imageUrl: EDITORIAL_NEWS_IMAGES[index % EDITORIAL_NEWS_IMAGES.length],
+          tags: Array.isArray(item.tags) ? item.tags.map((t: unknown) => text(t, 40)).filter(Boolean).slice(0, 6) : ['عطور'],
+          keyNotes: Array.isArray(item.keyNotes) ? item.keyNotes.slice(0, 6).filter((n: any) => n && text(n.nameAr, 60)).map((n: any) => ({
+            nameAr: text(n.nameAr, 60), nameEn: text(n.nameEn, 60) || undefined,
+            type: ['top', 'heart', 'base'].includes(n.type) ? n.type : undefined,
+            percentageHint: Number.isFinite(Number(n.percentageHint)) ? Math.min(100, Math.max(0, Number(n.percentageHint))) : undefined,
+          })) : undefined,
+          marketImpact: text(item.marketImpact, 400) || undefined,
+          expertVerdict: verdict ? `«${verdict.replace(/^«|»$/g, '')}» — الخبير شاهين` : undefined,
+          author: 'الخبير شاهين (محتوى مولّد بالذكاء الاصطناعي)',
+          location: 'منصة شام',
+        };
+      });
     } catch (err: any) {
-      console.warn(`[News Refresh] Model ${model} attempt failed:`, err?.message?.slice(0, 80));
+      console.warn(`[News Refresh] engine ${id} failed:`, String(err?.message || err).slice(0, 80));
     }
   }
-
   throw new Error('No news provider returned valid articles.');
 }
 
+// Each generation is a paid model call: one at a time, at most once per cooldown for everyone,
+// and a per-visitor cap on manual refreshes.
+let newsInFlight: Promise<GeneratedNewsItem[]> | null = null;
+let lastNewsGeneratedAt = 0;
+let lastNewsAttemptAt = 0;
+const NEWS_COOLDOWN_MS = 10 * 60_000;
+const newsRefreshLimiter = new RateLimiter(3, 60 * 60_000);
+const generateNewsOnce = () => {
+  lastNewsAttemptAt = Date.now();
+  newsInFlight ||= generateFreshDailyNewsWithShaheen()
+    .then((articles) => {
+      activeDailyNewsList = articles;
+      lastNewsRefreshDate = new Date().toISOString().split('T')[0];
+      lastNewsGeneratedAt = Date.now();
+      return articles;
+    })
+    .finally(() => { newsInFlight = null; });
+  return newsInFlight;
+};
+const newsPayload = (extra: Record<string, unknown> = {}) => ({
+  success: true,
+  lastRefreshedAt: new Date(lastNewsGeneratedAt || Date.now()).toISOString(),
+  dateString: getTodayArabicDateString(),
+  curator: 'الخبير شاهين (محتوى مولّد بالذكاء الاصطناعي)',
+  aiGenerated: true,
+  count: activeDailyNewsList.length,
+  articles: activeDailyNewsList,
+  ...extra,
+});
+
+/** The real headlines «الخبير شاهين» collected from the web — the honest answer whenever no engine wrote today. */
+const collectedArticles = async (): Promise<{ id: string }[]> => {
+  const news = await liveNews().catch(() => undefined);
+  return news?.items?.length ? articlesFromCollected(news.items, EDITORIAL_NEWS_IMAGES, getTodayArabicDateString()) : [];
+};
+const collectedPayload = (articles: { id: string }[]) => ({
+  success: true, lastRefreshedAt: new Date().toISOString(), dateString: getTodayArabicDateString(),
+  curator: 'نشرة شاهين (أخبار من الويب بمصادرها)', aiGenerated: false, collected: true, count: articles.length, articles,
+});
+/** One generation at a time, off the visitor's clock: the request answers from what is already ready. */
+const newsRefreshInBackground = () => {
+  // A failing engine is not retried on every visit: at most one attempt per cooldown, and never twice at once.
+  if (newsInFlight || Date.now() - lastNewsAttemptAt < NEWS_COOLDOWN_MS) return;
+  void generateNewsOnce().catch(() => undefined);
+};
+
 // GET /api/news - Get active daily news feed
-app.get('/api/news', async (req, res) => {
+app.get('/api/news', async (_req, res) => {
+  const unavailable = { success: false, error: 'News service is unavailable. Existing articles have not been changed.' };
   try {
     const todayStr = new Date().toISOString().split('T')[0];
+    // Nothing today? Answer at once and let the bulletin refresh behind the scenes, so no visitor (or live
+    // test) ever waits for a model: yesterday's notes first, then the collected headlines with their sources.
     if (activeDailyNewsList.length === 0 || lastNewsRefreshDate !== todayStr) {
-      activeDailyNewsList = await generateFreshDailyNewsWithShaheen();
-      lastNewsRefreshDate = todayStr;
+      if (activeDailyNewsList.length) { newsRefreshInBackground(); res.json(newsPayload({ stale: true })); return; }
+      const ready = await collectedArticles();
+      if (ready.length) { newsRefreshInBackground(); res.json(collectedPayload(ready)); return; }
+      // Nothing at all yet: give the first generation a short, bounded chance — never the whole request.
+      await Promise.race([generateNewsOnce().catch(() => []), new Promise((done) => setTimeout(done, NEWS_FIRST_WAIT_MS))]);
     }
-
-    res.json({
-      success: true,
-      lastRefreshedAt: new Date().toISOString(),
-      dateString: getTodayArabicDateString(),
-      curator: 'الخبير شاهين (شيخ العطارين وكبير كيميائيي العطور)',
-      count: activeDailyNewsList.length,
-      articles: activeDailyNewsList,
-    });
+    if (activeDailyNewsList.length) { res.json(newsPayload()); return; }
+    const collected = await collectedArticles();
+    if (collected.length) { res.json(collectedPayload(collected)); return; }
+    res.status(503).json(unavailable);
   } catch (error: any) {
-    console.error('Error fetching news:', error);
-    res.status(503).json({
-      success: false,
-      error: 'News service is unavailable. Existing articles have not been changed.',
-    });
+    console.error('Error fetching news:', error?.message || error);
+    // Yesterday's notes are still worth reading; with none, the real headlines Shaheen collected (with sources).
+    if (activeDailyNewsList.length) { res.json(newsPayload({ stale: true })); return; }
+    const collected = await collectedArticles();
+    if (collected.length) { res.json(collectedPayload(collected)); return; }
+    res.status(503).json(unavailable);
   }
 });
 
-// POST /api/news/refresh - Explicit Daily Refresh by Master Shaheen
+// POST /api/news/refresh - Explicit refresh (cooldown + per-visitor limit)
 app.post('/api/news/refresh', async (req, res) => {
   try {
-    const freshArticles = await generateFreshDailyNewsWithShaheen();
-    activeDailyNewsList = freshArticles;
-    lastNewsRefreshDate = new Date().toISOString().split('T')[0];
-
-    res.json({
-      success: true,
-      message: 'تم تحديث النشرة اليومية بنجاح عبر الخبير شاهين ونشرها بالصور الكاملة.',
-      refreshedAt: new Date().toISOString(),
-      dateString: getTodayArabicDateString(),
-      curator: 'الخبير شاهين (شيخ العطارين وكبير كيميائيي العطور)',
-      count: freshArticles.length,
-      articles: freshArticles,
-    });
+    if (activeDailyNewsList.length && Date.now() - lastNewsGeneratedAt < NEWS_COOLDOWN_MS) {
+      res.json(newsPayload({ refreshedAt: new Date(lastNewsGeneratedAt).toISOString(), cached: true,
+        message: 'النشرة محدّثة منذ دقائق، وهذه أحدث نسخة.' }));
+      return;
+    }
+    if (!newsRefreshLimiter.allow(clientKey(req))) {
+      res.status(429).json({ success: false, code: 'RATE_LIMITED', error: 'Too many refreshes, please try again later.' });
+      return;
+    }
+    const articles = await generateNewsOnce();
+    res.json(newsPayload({ refreshedAt: new Date().toISOString(), count: articles.length, articles,
+      message: 'تم تحديث النشرة اليومية عبر الخبير شاهين (محتوى مولّد بالذكاء الاصطناعي).' }));
   } catch (error: any) {
-    console.error('Error refreshing news:', error);
-    res.status(503).json({
-      success: false,
-      error: 'News refresh failed. Existing articles have not been changed.',
-    });
+    console.error('Error refreshing news:', error?.message || error);
+    res.status(503).json({ success: false, error: 'News refresh failed. Existing articles have not been changed.' });
   }
 });
+
+// Sham Core: provider-independent services assistant + management API.
+app.use('/api/assistant', shamCore.assistant);
+app.use('/api/admin', shamCore.admin);
+app.use('/api/census', shamCore.censusRouter);
+// «إشارات المعمل»: the anonymous, opt-in design counters (no personal data, see server/labSignals.ts).
+if (shamCore.labSignalsRouter) app.use('/api/lab', shamCore.labSignalsRouter);
+app.use('/api/insights', shamCore.insightsRouter);
 
 app.use('/api', (_req, res) => {
   res.status(404).json({ error: 'API route not found' });

@@ -1,3 +1,4 @@
+import { makeStoreT } from '../لغات/storeL10n';
 import React from 'react';
 import {
   Home,
@@ -9,6 +10,7 @@ import {
   Layers,
   Scale,
   Sparkles,
+  PenLine,
   DollarSign,
   Globe,
   Compass,
@@ -18,10 +20,19 @@ import {
   BookMarked,
   Hourglass,
   Bot,
+  Users,
+  Atom,
+  ShoppingBag,
+  Wand2,
 } from 'lucide-react';
+import { wsText } from '../workspace/strings';
 import { SupportedLanguage } from '../types/i18n';
-import { t } from '../utils/i18n';
-import { LText, makeT } from '../utils/localize';
+import { t } from '../لغات/i18n';
+import { LText, makeT } from '../لغات/localize';
+import { isRTL } from '../لغات/localizedContent';
+import { uiLabel } from '../لغات/uiTextL10n';
+import { cosmeticsText } from '../لغات/cosmeticsL10n';
+import { designersText } from '../لغات/designersL10n';
 
 
 const S = {
@@ -66,7 +77,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
   currentLang = 'ar',
   onOpenPrintModal,
 }) => {
-  const isRtl = currentLang === 'ar' || currentLang === 'fa';
+  const isRtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
   const BackIcon = isRtl ? ArrowRight : ArrowLeft;
   const Separator = isRtl ? ChevronLeft : ChevronRight;
@@ -74,6 +85,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
   const tabConfigs: Record<string, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
     home: { label: t('nav_home', currentLang), icon: Home },
     concentration: { label: t('nav_calc', currentLang), icon: FlaskConical },
+    molecule_studio: { label: uiLabel('molecule_studio', currentLang), icon: Atom },
     perfume_news: { label: t('nav_news', currentLang), icon: Newspaper },
     world_perfumes: { label: t('nav_world_perfumes', currentLang), icon: Compass },
     raw_materials: { label: t('nav_raw_materials', currentLang), icon: Scale },
@@ -81,16 +93,29 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
     alcohol: { label: t('nav_alcohol', currentLang), icon: Hourglass },
     costing: { label: t('nav_costing', currentLang), icon: DollarSign },
     master_ai: { label: t('nav_ai_master', currentLang), icon: Bot },
+    workspace: { label: wsText(currentLang, 'title'), icon: Wand2 },
     maceration_simulator: { label: L('aging_sim_full'), icon: Hourglass },
     library: { label: t('nav_library', currentLang), icon: BookMarked },
     guide: { label: t('nav_guide', currentLang), icon: BookOpen },
+    perfumes: { label: cosmeticsText(currentLang, 'navPerfumes'), icon: Sparkles },
+    cosmetics: { label: cosmeticsText(currentLang, 'sectionCosmetics'), icon: Sparkles },
+    perfume_designers: { label: designersText(currentLang, 'navPerfume'), icon: PenLine },
+    cosmetic_designers: { label: designersText(currentLang, 'navCosmetic'), icon: PenLine },
+    store: { label: makeStoreT(currentLang)('sf_store_name'), icon: ShoppingBag },
+    productDetail: { label: makeStoreT(currentLang)('sf_store_name'), icon: ShoppingBag },
   };
 
-  const currentConfig = tabConfigs[activeTab] || { label: activeTab, icon: Sparkles };
+  // Deep routes («community/messenger/<id>», «store/<slug>»…) show their section's name, never the raw route.
+  tabConfigs.community = { label: currentLang === 'ar' ? 'مجتمع شام' : 'Sham Community', icon: Users };
+  const configFor = (tab: string) => tabConfigs[tab] || tabConfigs[tab.split('/')[0]];
+  const prettify = (tab: string) => tab.split('/')[0].replace(/_/g, ' ');
+  const currentConfig = configFor(activeTab) || { label: prettify(activeTab), icon: Sparkles };
   const TabIcon = currentConfig.icon;
 
   const quickLinks = [
     { id: 'concentration', label: L('ql_concentration'), icon: FlaskConical },
+    { id: 'molecule_studio', label: uiLabel('molecule_studio', currentLang), icon: Atom },
+    { id: 'perfume_designers', label: designersText(currentLang, 'hubButton'), icon: PenLine },
     { id: 'maceration_simulator', label: L('ql_maceration'), icon: Hourglass },
     { id: 'pyramid', label: L('ql_pyramid'), icon: Layers },
     { id: 'alcohol', label: L('ql_alcohol'), icon: Hourglass },
@@ -99,6 +124,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
     { id: 'world_perfumes', label: L('ql_world'), icon: Compass },
     { id: 'raw_materials', label: L('ql_raw'), icon: Scale },
     { id: 'master_ai', label: L('ql_ai'), icon: Bot },
+    { id: 'workspace', label: wsText(currentLang, 'title'), icon: Wand2 },
     { id: 'library', label: L('ql_library'), icon: BookMarked },
     { id: 'guide', label: L('ql_guide'), icon: BookOpen },
   ];
@@ -130,7 +156,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
               <span>{L('back_btn')}</span>
               {previousTabLabel && (
                 <span className="hidden md:inline text-stone-500 text-[11px]">
-                  ({previousTabLabel})
+                  ({configFor(previousTabLabel)?.label || prettify(previousTabLabel)})
                 </span>
               )}
             </button>
@@ -147,7 +173,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
             <Separator className="w-3.5 h-3.5 text-stone-400" />
             <div className="flex items-center gap-1.5 font-bold text-stone-900 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200/60">
               <TabIcon className="w-3.5 h-3.5 text-amber-700" />
-              <span>{currentConfig.label}</span>
+              <span className="max-w-[55vw] truncate">{currentConfig.label}</span>
             </div>
           </div>
         </div>

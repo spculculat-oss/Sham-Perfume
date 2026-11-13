@@ -1,3 +1,4 @@
+import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState } from 'react';
 import {
   MapPin,
@@ -49,8 +50,9 @@ import { ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { PyramidNote } from '../types/perfume';
 import { UserProfile } from '../types/auth';
 import { SupportedLanguage, SUPPORTED_LANGUAGES, LanguageConfig } from '../types/i18n';
-import { LText, makeT, fmt, pickArEn, LOCALE_MAP } from '../utils/localize';
-import { isRTL } from '../utils/localizedContent';
+import { LText, makeT, fmt, pickArEn, LOCALE_MAP } from '../لغات/localize';
+import { isRTL } from '../لغات/localizedContent';
+import { filterLanguages } from '../لغات/languagePicker';
 
 
 const S = {
@@ -124,7 +126,7 @@ const S = {
   active_in_lab: { ar: 'مفعلة بالمعمل', en: 'Active in lab', fr: 'Active au laboratoire', es: 'Activa en el laboratorio', it: 'Attiva nel laboratorio', de: 'Im Labor aktiv', ru: 'Активна в лаборатории', zh: '实验室启用', tr: 'Laboratuvarda etkin', fa: 'فعال در آزمایشگاه' },
   set_lab_currency: { ar: 'تعيين كعملة المعمل', en: 'Set as lab currency', fr: 'Définir comme devise du laboratoire', es: 'Establecer como moneda', it: 'Imposta come valuta', de: 'Als Labowährung festlegen', ru: 'Сделать валютой лаборатории', zh: '设为实验室货币', tr: 'Laboratuvar para birimi yap', fa: 'تنظیم به‌عنوان ارز آزمایشگاه' },
   lang_header: { ar: 'خانة تغيير واختيار لغة المنصة', en: 'Platform language selector', fr: 'Sélecteur de langue de la plateforme', es: 'Selector de idioma de la plataforma', it: 'Selettore lingua della piattaforma', de: 'Sprachauswahl der Plattform', ru: 'Выбор языка платформы', zh: '平台语言选择', tr: 'Platform dil seçici', fa: 'انتخابگر زبان پلتفرم' },
-  lang_10: { ar: '10 لغات عالمية', en: '10 world languages', fr: '10 langues', es: '10 idiomas', it: '10 lingue', de: '10 Weltsprachen', ru: '10 языков', zh: '10 种世界语言', tr: '10 dünya dili', fa: '۱۰ زبان جهانی' },
+  langs_badge: { ar: '{n} لغات عالمية', en: '{n} world languages', fr: '{n} langues', es: '{n} idiomas', it: '{n} lingue', de: '{n} Weltsprachen', ru: '{n} языков', zh: '{n} 种世界语言', tr: '{n} dünya dili', fa: '{n} زبان جهانی' },
   lang_header_p: { ar: 'اختر اللغة المفضلة للعمل بها داخل المعمل؛ يتم فوراً ضبط اتجاه الواجهة (RTL ⇄ LTR) وترجمة كافة المصطلحات المعملية، مع حفظ التفضيل تلقائياً في متصفحك.', en: 'Choose your preferred lab language; the interface direction (RTL ⇄ LTR) and all lab terminology switch instantly, and your preference is saved in your browser.', fr: 'Choisissez votre langue ; l’interface (RTL ⇄ LTR) et la terminologie basculent instantanément, et votre choix est mémorisé.', es: 'Elige tu idioma; la dirección (RTL ⇄ LTR) y la terminología cambian al instante y se guarda tu preferencia.', it: 'Scegli la lingua; direzione (RTL ⇄ LTR) e terminologia cambiano all’istante e la preferenza viene salvata.', de: 'Wählen Sie Ihre Sprache; Richtung (RTL ⇄ LTR) und Terminologie wechseln sofort, die Auswahl wird gespeichert.', ru: 'Выберите язык: направление (RTL ⇄ LTR) и терминология переключаются мгновенно, выбор сохраняется.', zh: '选择您的实验室语言；界面方向（RTL ⇄ LTR）与全部术语即时切换，偏好自动保存在浏览器中。', tr: 'Dilinizi seçin; yön (RTL ⇄ LTR) ve terminoloji anında değişir, tercihiniz tarayıcınızda saklanır.', fa: 'زبان مورد نظر خود را انتخاب کنید؛ جهت رابط (RTL ⇄ LTR) و همه اصطلاحات فوری تغییر می‌کند و ترجیح شما در مرورگر ذخیره می‌شود.' },
   current_lang_lbl: { ar: 'اللغة الحالية المفعلة:', en: 'Current active language:', fr: 'Langue active :', es: 'Idioma activo:', it: 'Lingua attiva:', de: 'Aktive Sprache:', ru: 'Текущий язык:', zh: '当前启用语言：', tr: 'Etkin dil:', fa: 'زبان فعال فعلی:' },
   search_lang_ph: { ar: 'ابحث عن لغة (مثال: العربية, English, Français, Deutsch, 中文)...', en: 'Search a language (e.g. English, Français, Deutsch, 中文)...', fr: 'Rechercher une langue (ex. English, Français…)…', es: 'Buscar idioma (ej. English, Français, 中文)...', it: 'Cerca lingua (es. English, Français, 中文)...', de: 'Sprache suchen (z. B. English, Français, 中文)…', ru: 'Поиск языка (напр. English, Français, 中文)…', zh: '搜索语言（如 English、Français、中文）……', tr: 'Dil ara (örn. English, Français, 中文)...', fa: 'جستجوی زبان (مثال: فارسی, English, Français)...' },
@@ -359,16 +361,9 @@ export const CountryAndAddressModal: React.FC<CountryAndAddressModalProps> = ({
     );
   });
 
-  // Filtered languages
-  const filteredLanguages = SUPPORTED_LANGUAGES.filter((l) => {
-    if (!languageSearch.trim()) return true;
-    const q = languageSearch.toLowerCase().trim();
-    return (
-      l.name.toLowerCase().includes(q) ||
-      l.nativeName.toLowerCase().includes(q) ||
-      l.code.toLowerCase().includes(q)
-    );
-  });
+  // Filtered languages — the same search engine as the unified button in the header,
+  // so both lists always agree on what a query finds.
+  const filteredLanguages = filterLanguages(languageSearch);
 
   const handleSelectLanguage = (langCode: SupportedLanguage) => {
     if (onSelectLanguage) {
@@ -1027,12 +1022,11 @@ export const CountryAndAddressModal: React.FC<CountryAndAddressModalProps> = ({
                   {/* Amount Input */}
                   <div className="md:col-span-3">
                     <label className="text-[11px] text-stone-400 block mb-1">{L('amount_lbl')}</label>
-                    <input
-                      type="number"
-                      min="0"
-                      step="1"
+                    <LocalizedNumberInput
+                      lang={currentLang}
+                      min={0}
                       value={calcAmount}
-                      onChange={(e) => setCalcAmount(parseFloat(e.target.value) || 0)}
+                      onValue={(n) => setCalcAmount(n || 0)}
                       className="w-full px-3 py-2 bg-stone-800 border border-stone-700 rounded-xl text-sm font-mono font-bold text-white focus:outline-none focus:border-amber-400"
                     />
                   </div>
@@ -1235,7 +1229,7 @@ export const CountryAndAddressModal: React.FC<CountryAndAddressModalProps> = ({
                       <h4 className="text-base font-bold text-white flex items-center gap-2">
                         <span>{L('lang_header')}</span>
                         <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-mono font-bold border border-amber-500/30">
-                          {L('lang_10')}
+                          {fmt(L('langs_badge'), { n: SUPPORTED_LANGUAGES.length })}
                         </span>
                       </h4>
                       <p className="text-xs text-stone-300 mt-1 max-w-xl">

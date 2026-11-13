@@ -1,3 +1,4 @@
+import { formatLocalizedNumber } from '../لغات/numerals';
 import React, { useEffect, useRef, useState } from 'react';
 import type { SupportedLanguage } from '../types/i18n';
 import type { AgentReport } from '../types/agent';
@@ -48,12 +49,12 @@ export function ShaheenAgentPanel({ language }: { language: SupportedLanguage })
         <button type="button" className="rounded-lg border border-stone-400 px-2 py-1 disabled:opacity-50" disabled={isLoading || reading}
           onClick={() => input.current?.click()}>{ar ? 'إرفاق ملف نصي' : 'Attach text file'}</button>
         {documents.map((doc, index) => <div key={`${index}-${doc.name}`} className="flex items-center gap-2 break-all">
-          <span>{doc.name} ({doc.text.length})</span><button type="button" disabled={isLoading || reading} onClick={() => update({ documents: documents.filter((_, i) => i !== index) })}
+          <span>{doc.name} ({formatLocalizedNumber(language, doc.text.length)})</span><button type="button" disabled={isLoading || reading} onClick={() => update({ documents: documents.filter((_, i) => i !== index) })}
             aria-label={ar ? `إزالة ${doc.name}` : `Remove ${doc.name}`}>×</button></div>)}
         <label className="flex gap-2"><input type="checkbox" checked={webSearch && searchAvailable} disabled={!searchAvailable || isLoading}
           onChange={(event) => update({ webSearch: event.target.checked })} />
-          {searchAvailable ? (ar ? 'السماح بالبحث الخارجي: تُرسل عبارات البحث لخدمة Brave' : 'Allow external search: search queries are sent to Brave')
-            : (ar ? 'البحث الخارجي غير مهيأ (يحتاج BRAVE_SEARCH_API_KEY على الخادم)' : 'Web search unavailable (server BRAVE_SEARCH_API_KEY required)')}</label>
+          {searchAvailable ? (ar ? 'السماح بالبحث الخارجي: تُرسل عبارات البحث لخدمة البحث الخارجية' : 'Allow external search: search queries are sent to the external search service')
+            : (ar ? 'البحث الخارجي غير مهيأ؛ يحتاج إعداداً من الإدارة' : 'Web search unavailable; administrator setup required')}</label>
       </>}
       {error && <p role="alert" className="text-red-700">{error}</p>}
       {isLoading && <button type="button" onClick={cancelRequest} className="rounded-lg border border-red-600 px-2 py-1 text-red-800">{ar ? 'إيقاف الطلب' : 'Stop request'}</button>}
@@ -66,7 +67,7 @@ export function ShaheenAgentReport({ report, language }: { report?: AgentReport;
   if (!report || !validAgentReport(report)) return null;
   const ar = language === 'ar';
   return <div className="mt-2 space-y-2 text-xs text-stone-700">
-    <details className="rounded-lg border border-stone-200 p-2"><summary className="cursor-pointer">{ar ? 'سجل الأدوات المنفّذة' : 'Tool execution log'} ({report.steps.length})</summary>
+    <details className="rounded-lg border border-stone-200 p-2"><summary className="cursor-pointer">{ar ? 'سجل الأدوات المنفّذة' : 'Tool execution log'} ({formatLocalizedNumber(language, report.steps.length)})</summary>
       {report.steps.length === 0 && <p>{ar ? 'رد بدون استدعاء أدوات' : 'Answered without tool calls'}</p>}
       <ol>{report.steps.map((step, index) => <li key={index}>{step.status === 'completed' ? '✓' : '✕'} {step.tool} — {step.status}</li>)}</ol>
     </details>

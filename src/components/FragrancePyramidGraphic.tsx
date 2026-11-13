@@ -1,3 +1,4 @@
+import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState, useEffect } from 'react';
 import {
   Sparkles,
@@ -24,7 +25,8 @@ import { PyramidNote, CalculationResult } from '../types/perfume';
 import { SupportedLanguage } from '../types/i18n';
 import { formatNum } from '../utils/calculations';
 import { useLanguage } from '../context/LanguageContext';
-import { LText, makeT, fmt, pickArEn } from '../utils/localize';
+import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
+import { uiLabel } from '../لغات/uiTextL10n';
 import {
   enrichPyramidNote,
   sortNotesByVolatilityOrder,
@@ -32,6 +34,7 @@ import {
   getNoteActivityAtMinute,
   EvolutionScenarioStage,
 } from '../utils/volatilityHelper';
+import { PerfumeSpraySimulator } from './PerfumeSpraySimulator';
 
 
 const S = {
@@ -274,7 +277,7 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
   const L = makeT(effectiveLang, S);
 
   // Enriched and volatility-sorted notes
-  const enrichedNotes = pyramidNotes.map(enrichPyramidNote);
+  const enrichedNotes = pyramidNotes.map((note) => enrichPyramidNote(note, effectiveLang));
   const sortedNotes = sortNotesByVolatilityOrder(enrichedNotes);
 
   const topNotes = sortedNotes.filter((n) => n.category === 'top');
@@ -296,6 +299,7 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
   const [sprayAnimationActive, setSprayAnimationActive] = useState<boolean>(false);
   const [copiedScenario, setCopiedScenario] = useState<boolean>(false);
+  const [showSpraySimulator, setShowSpraySimulator] = useState<boolean>(true);
 
   // Scenario generation
   const scenario = generateCustomSprayScenario(pyramidNotes, bottleVolumeMl, concentrationPercent);
@@ -327,12 +331,19 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
   }, [isPlaying, playbackSpeed]);
 
   const handleTriggerSpray = () => {
+    setShowSpraySimulator(true);
     setSprayAnimationActive(true);
     setCurrentMinutes(0);
     setIsPlaying(true);
     setTimeout(() => {
       setSprayAnimationActive(false);
     }, 1800);
+    setTimeout(() => {
+      const simEl = document.getElementById('perfume-spray-simulator-section');
+      if (simEl) {
+        simEl.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   const handleResetSimulation = () => {
@@ -539,6 +550,38 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
             </span>
           </div>
         </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* FULL PHYSICAL SPRAY, SKIN ADHESION & EVAPORATION KINETICS SIMULATOR        */}
+      {/* ========================================================================= */}
+      <div id="perfume-spray-simulator-section" className="scroll-mt-6 space-y-3">
+        <div className="flex items-center justify-between px-2">
+          <div className="flex items-center gap-2 text-xs font-bold text-stone-800">
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+            <span>{uiLabel('sim_tagline', effectiveLang)}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowSpraySimulator(!showSpraySimulator)}
+            className="text-xs font-semibold text-amber-700 hover:text-amber-900 cursor-pointer flex items-center gap-1 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-300/40 transition-colors"
+          >
+            <span>{showSpraySimulator ? 'تصغير شاشة المحاكاة' : 'فتح شاشة محاكاة الرش المباشرة'}</span>
+            {showSpraySimulator ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+          </button>
+        </div>
+
+        {showSpraySimulator && (
+          <div className="animate-in fade-in duration-300">
+            <PerfumeSpraySimulator
+              pyramidNotes={pyramidNotes}
+              bottleVolumeMl={bottleVolumeMl}
+              concentrationPercent={concentrationPercent}
+              result={result}
+              currentLang={effectiveLang}
+            />
+          </div>
+        )}
       </div>
 
       {/* Main Grid: Visual Graphic Pyramid (Left) + Interactive Scenario Simulation (Right) */}
@@ -803,15 +846,12 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
                                 </div>
 
                                 <div className="flex items-center gap-1 bg-stone-50 px-2 py-1 rounded-lg border border-stone-200">
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    step="1"
+                                  <LocalizedNumberInput
+                                    lang={effectiveLang}
+                                    min={0}
+                                    max={100}
                                     value={note.percentageOfOil}
-                                    onChange={(e) =>
-                                      handleUpdateNotePct(note.id, parseFloat(e.target.value) || 0)
-                                    }
+                                    onValue={(n) => handleUpdateNotePct(note.id, n || 0)}
                                     className="w-11 text-center font-mono-numbers text-xs font-bold text-stone-900 bg-transparent focus:outline-none"
                                   />
                                   <span className="text-[10px] font-bold text-stone-600">%</span>
@@ -961,15 +1001,12 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
                                 </div>
 
                                 <div className="flex items-center gap-1 bg-stone-50 px-2 py-1 rounded-lg border border-stone-200">
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    step="1"
+                                  <LocalizedNumberInput
+                                    lang={effectiveLang}
+                                    min={0}
+                                    max={100}
                                     value={note.percentageOfOil}
-                                    onChange={(e) =>
-                                      handleUpdateNotePct(note.id, parseFloat(e.target.value) || 0)
-                                    }
+                                    onValue={(n) => handleUpdateNotePct(note.id, n || 0)}
                                     className="w-11 text-center font-mono-numbers text-xs font-bold text-stone-900 bg-transparent focus:outline-none"
                                   />
                                   <span className="text-[10px] font-bold text-stone-600">%</span>
@@ -1119,15 +1156,12 @@ export const FragrancePyramidGraphic: React.FC<FragrancePyramidGraphicProps> = (
                                 </div>
 
                                 <div className="flex items-center gap-1 bg-stone-900 px-2 py-1 rounded-lg border border-stone-700">
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    step="1"
+                                  <LocalizedNumberInput
+                                    lang={effectiveLang}
+                                    min={0}
+                                    max={100}
                                     value={note.percentageOfOil}
-                                    onChange={(e) =>
-                                      handleUpdateNotePct(note.id, parseFloat(e.target.value) || 0)
-                                    }
+                                    onValue={(n) => handleUpdateNotePct(note.id, n || 0)}
                                     className="w-11 text-center font-mono-numbers text-xs font-bold text-amber-300 bg-transparent focus:outline-none"
                                   />
                                   <span className="text-[10px] font-bold text-amber-400">%</span>

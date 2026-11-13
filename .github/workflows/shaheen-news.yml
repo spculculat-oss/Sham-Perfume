@@ -1,0 +1,154 @@
+name: Shaheen news, assistant training and AI supervision (every 12 hours)
+
+# «نشرة شاهين»: every 12 hours «الخبير شاهين» collects the latest perfume news from the web, writes
+# Arabic/English summaries and his comment, and trains «مساعد شام» (perfumery lessons, answers to the
+# questions it could not answer, the latest-news digest). Results: src/data/live/*.json on main.
+# The site reads them directly (also on GitHub Pages) and the server refreshes them without a redeploy.
+# Code: scripts/shaheen-news/. Secrets (all optional): the AI keys, SHAM_ADMIN_TOKEN (unanswered questions).
+# Without any AI key it still publishes the real headlines, just without Shaheen's summaries.
+# Then «مشرف شاهين» (scripts/shaheen-supervisor/) tests every AI tool on the site, scores it and writes
+# quality guidance the tool follows (src/data/live/ai-supervisor.json; admin panel → «مشرف الذكاء الاصطناعي»).
+# «تدريب المتجر» (scripts/shaheen-store/): Shaheen reviews the products of «متجر شام» — clean names and
+# descriptions, scent family, notes, seasons, occasions, data issues for the merchant — in
+# src/data/live/store-catalog.json, which the store and its «اسأل شاهين» advisor read. A change to
+# src/data/products.json retrains the changed products right away.
+
+on:
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: shaheen-news-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner can pause this robot or freeze every robot (src/data/owner/controls.json,
+  # changed only from his GitHub account through «مكتب صاحب الموقع»). Branch and pull-request runs are not affected.
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs secretary catalog news
+
+  news:
+    name: Collect news and train the assistant
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      # Branch pushes rehearse only: the result is shown in the job summary, nothing is committed.
+      NEWS_COMMIT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
+      SHAM_SITE_URL: ${{ vars.DOCTOR_SITE_URL || 'https://sham-perfume-49bf.vercel.app' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Collect news and train «مساعد شام»
+        run: node --import tsx scripts/shaheen-news/run.mts
+      - name: Shaheen trains «متجر شام» (product catalog)
+        # A store problem must not block the news bulletin.
+        continue-on-error: true
+        run: node --import tsx scripts/shaheen-store/run.mts
+      - name: Regression tests with the new data
+        # Never publish a bulletin that would turn main red.
+        run: bun run test
+      - name: Publish on main
+        if: env.NEWS_COMMIT == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen news bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # main moves often and other bots write some of the same files: scripts/ci/publish.mjs handles both.
+          node scripts/ci/publish.mjs "نشرة شاهين: تحديث الأخبار وتدريب مساعد شام والمتجر $(date -u +%Y-%m-%dT%H:%MZ)" src/data/live \
+            || { echo "::error::Could not push the news update"; exit 1; }
+
+  supervise:
+    name: Shaheen supervises the AI tools
+    needs: [news, owner]
+    # Runs even when the news step failed: that failure is one of the things Shaheen reports.
+    if: always() && needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      SUPERVISOR_COMMIT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      SHAM_ADMIN_TOKEN: ${{ secrets.SHAM_ADMIN_TOKEN }}
+      SHAM_SITE_URL: ${{ vars.DOCTOR_SITE_URL || 'https://sham-perfume-49bf.vercel.app' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          # On main: the latest main, including the bulletin the news job just published.
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || github.sha }}
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Shaheen tests, scores and guides every AI tool
+        run: node --import tsx scripts/shaheen-supervisor/run.mts
+      - name: Regression tests with the new guidance
+        run: bun run test
+      - name: Publish on main and rebuild Pages
+        if: env.SUPERVISOR_COMMIT == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Shaheen supervisor bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "مشرف شاهين: مراجعة أدوات الذكاء الاصطناعي $(date -u +%Y-%m-%dT%H:%MZ)" src/data/live \
+            || { echo "::error::Could not push the supervisor report"; exit 1; }
+          # Pushes made with this token start no workflows; rebuild GitHub Pages once for the news and the report.
+          gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started (the site still reads the new data directly)"

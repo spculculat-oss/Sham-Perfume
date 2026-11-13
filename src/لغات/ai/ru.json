@@ -1,0 +1,20 @@
+{
+ "ui": {
+  "nav_ai_master_short": "ИИ Шахин",
+  "nav_alcohol_short": "Спирт",
+  "nav_calc_short": "Формула",
+  "nav_costing_short": "Себестоимость",
+  "nav_explore": "Обзор",
+  "nav_explore_short": "Обзор",
+  "nav_guide_short": "Руководство",
+  "nav_home_short": "Главная",
+  "nav_library_short": "Библиотека",
+  "nav_maceration_short": "Мацерация",
+  "nav_news_short": "Новости",
+  "nav_pyramid_short": "Пирамида",
+  "nav_raw_materials_short": "Материалы",
+  "nav_tools": "Инструменты",
+  "nav_tools_short": "Инструменты",
+  "nav_world_perfumes_short": "Культовые ароматы"
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "ui": {
+  "nav_ai_master_short": "Şahin AI",
+  "nav_alcohol_short": "Alkol",
+  "nav_calc_short": "Formül",
+  "nav_costing_short": "Maliyet",
+  "nav_explore": "Keşfet",
+  "nav_explore_short": "Keşfet",
+  "nav_guide_short": "Rehber",
+  "nav_home_short": "Ana Sayfa",
+  "nav_library_short": "Kütüphane",
+  "nav_maceration_short": "Dinlendirme",
+  "nav_news_short": "Haberler",
+  "nav_pyramid_short": "Piramit",
+  "nav_raw_materials_short": "Malzemeler",
+  "nav_tools": "Araçlar",
+  "nav_tools_short": "Araçlar",
+  "nav_world_perfumes_short": "İkonik"
+ }
+}

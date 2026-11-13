@@ -1,0 +1,146 @@
+/**
+ * Language-aware text utilities (Arabic + Latin scripts). Pure functions, no provider.
+ */
+
+const ARABIC_DIACRITICS = /[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g;
+
+export function normalize(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(ARABIC_DIACRITICS, '')
+    .replace(/[إأآٱ]/g, 'ا')
+    .replace(/ى/g, 'ي')
+    .replace(/ة/g, 'ه')
+    .replace(/ؤ/g, 'و')
+    .replace(/ئ/g, 'ي')
+    .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+    .replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06f0))
+    .replace(/[^\p{L}\p{N}\s-]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+const STOP = new Set([
+  'في', 'من', 'علي', 'على', 'الي', 'الى', 'عن', 'مع', 'او', 'و', 'ثم', 'هل', 'ما', 'ماذا', 'كيف', 'هو', 'هي', 'انا', 'انت',
+  'عايز', 'عاوز', 'اريد', 'ابغي', 'ممكن', 'لو', 'يا', 'ده', 'دي', 'دا', 'اللي', 'التي', 'الذي', 'هذا', 'هذه', 'ان', 'كان', 'بس',
+  'the', 'a', 'an', 'of', 'to', 'in', 'on', 'for', 'and', 'or', 'is', 'are', 'i', 'you', 'me', 'my', 'want', 'can', 'please', 'how', 'what', 'do',
+]);
+
+export function getFallbackReply(query: string): string {
+  if (query.includes('مكياج') || query.includes('تجميل') || query.includes('مستحضرات')) {
+    return 'احنا لسه قائمين على دراسة المجال ده عشان نقدمهالك بأحسن كفاءة.';
+  }
+  return 'عذراً، مش عندي تفاصيل كافية حالياً، جرب تسأل في حاجة تخص العطور أو الأدوات المتاحة.';
+}
+
+/** Light Arabic stemmer: strips the most common prefixes/suffixes so "العطور" ≈ "عطور" ≈ "عطر". */
+function stem(token: string): string {
+  if (/^[a-z0-9-]+$/.test(token)) {
+    return token.length > 4 ? token.replace(/(ing|ies|es|s)$/, '') : token;
+  }
+  let t = token;
+  for (const prefix of ['وال', 'بال', 'كال', 'فال', 'لل', 'ال']) {
+    if (t.startsWith(prefix) && t.length - prefix.length >= 2) { t = t.slice(prefix.length); break; }
+  }
+  for (const suffix of ['ات', 'ون', 'ين', 'ها', 'هم', 'كم', 'نا', 'ه', 'ي']) {
+    if (t.endsWith(suffix) && t.length - suffix.length >= 3) { t = t.slice(0, -suffix.length); break; }
+  }
+  // Broken plural "عطور" -> "عطر" (common فعول pattern).
+  if (t.length === 4 && t[2] === 'و') t = t[0] + t[1] + t[3];
+  return t;
+}
+
+export function tokenize(text: string): string[] {
+  return normalize(text)
+    .split(' ')
+    .filter((token) => token.length > 1 && !STOP.has(token))
+    .map(stem)
+    .filter(Boolean);
+}
+
+export function detectScriptLanguage(text: string): 'ar' | 'en' {
+  const arabic = (text.match(/[\u0600-\u06FF]/g) || []).length;
+  const latin = (text.match(/[A-Za-z]/g) || []).length;
+  return arabic >= latin ? 'ar' : 'en';
+}
+
+/**
+ * Whole-word keyword match that tolerates real inflections only (text is normalised + space-padded):
+ * - prefixes: ال، و، وال، بال، لل  ("الموظف" ⇒ موظف)
+ * - suffixes: plural/verb endings + pronouns, incl. Egyptian dative ("موظفين"، "طلباتي"، "اطلبلي"، "طلبت")
+ * but NOT arbitrary continuations: "بشري" no longer matches "بشريط", "طلب" does not match "مطلوب".
+ * A keyword written with a trailing space ("hi ") must match exactly.
+ */
+const PREFIXES = ['', 'ال', 'و', 'وال', 'بال', 'لل'];
+const AR_SUFFIX = /^(?:ين|ون|ات|ان|وا|و|ت|تي|تم|تو|يه)?(?:ي|ك|ه|ها|هم|هن|كم|كن|نا|لي|لك|لنا|لكم|له|لها)?$/;
+const EN_SUFFIX = /^(?:s|es|ed|ing|d)?$/;
+export function matchesKeyword(text: string, word: string): boolean {
+  const exact = word.endsWith(' ');
+  const key = normalize(word);
+  if (!key) return false;
+  const latin = /^[a-z0-9 ]+$/.test(key);
+  for (const prefix of latin ? [''] : PREFIXES) {
+    const needle = ` ${prefix}${key}`;
+    for (let i = text.indexOf(needle); i >= 0; i = text.indexOf(needle, i + 1)) {
+      const rest = (text.slice(i + needle.length).match(/^\S*/) || [''])[0];
+      if (exact ? rest === '' : (latin ? EN_SUFFIX : AR_SUFFIX).test(rest)) return true;
+    }
+  }
+  return false;
+}
+
+export interface IndexedDoc { id: string; title: string; text: string; kind: 'knowledge' | 'product' | 'service' }
+
+/** Okapi BM25 — the classic lexical retrieval used for grounded answers (RAG) without any external embedding API. */
+export class Bm25Index {
+  private docs: { doc: IndexedDoc; tf: Map<string, number>; length: number }[] = [];
+  private df = new Map<string, number>();
+  private avgLength = 0;
+
+  constructor(docs: IndexedDoc[], private k1 = 1.4, private b = 0.75) {
+    for (const doc of docs) {
+      const tokens = tokenize(`${doc.title} ${doc.title} ${doc.text}`);
+      const tf = new Map<string, number>();
+      for (const token of tokens) tf.set(token, (tf.get(token) || 0) + 1);
+      for (const token of tf.keys()) this.df.set(token, (this.df.get(token) || 0) + 1);
+      this.docs.push({ doc, tf, length: tokens.length });
+    }
+    this.avgLength = this.docs.reduce((sum, d) => sum + d.length, 0) / (this.docs.length || 1);
+  }
+
+  search(query: string, limit = 4, minScore = 0.5): { doc: IndexedDoc; score: number; matched: Record<string, number> }[] {
+    const terms = [...new Set(tokenize(query))];
+    if (!terms.length) return [];
+    const n = this.docs.length;
+    const results = this.docs.map(({ doc, tf, length }) => {
+      let score = 0;
+      const matched: Record<string, number> = {};
+      for (const term of terms) {
+        const f = tf.get(term) || 0;
+        if (!f) continue;
+        const df = this.df.get(term) || 0;
+        const idf = Math.log(1 + (n - df + 0.5) / (df + 0.5));
+        const weight = idf * ((f * (this.k1 + 1)) / (f + this.k1 * (1 - this.b + this.b * (length / (this.avgLength || 1)))));
+        matched[term] = weight;
+        score += weight;
+      }
+      return { doc, score, matched };
+    });
+    return results.filter((r) => r.score >= minScore).sort((a, b) => b.score - a.score).slice(0, limit);
+  }
+}
+
+export function excerpt(text: string, query: string, max = 420): string {
+  const clean = text.replace(/\s+/g, ' ').trim();
+  if (clean.length <= max) return clean;
+  const terms = tokenize(query);
+  const sentences = clean.split(/(?<=[.!؟?。])\s+/);
+  const scored = sentences.map((sentence, index) => ({
+    index,
+    score: tokenize(sentence).filter((token) => terms.includes(token)).length,
+  }));
+  const best = scored.sort((a, b) => b.score - a.score)[0]?.index ?? 0;
+  let out = '';
+  for (let i = best; i < sentences.length && out.length < max; i++) out += (out ? ' ' : '') + sentences[i];
+  return out.length > max ? `${out.slice(0, max - 1)}…` : out;
+}

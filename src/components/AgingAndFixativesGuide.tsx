@@ -1,3 +1,4 @@
+import { LegalDisclaimer } from './LegalDisclaimer';
 import React from 'react';
 import {
   Clock,
@@ -13,8 +14,8 @@ import {
 import ingredientsImg from '../assets/images/perfume_ingredients_pyramid_1791692429360.jpg';
 import { SupportedLanguage } from '../types/i18n';
 import { FormulationState } from '../types/perfume';
-import { isRTL } from '../utils/localizedContent';
-import { LText, makeT } from '../utils/localize';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, makeT } from '../لغات/localize';
 import { MacerationTimeSimulator } from './MacerationTimeSimulator';
 
 
@@ -680,7 +681,7 @@ export const AgingAndFixativesGuide: React.FC<AgingAndFixativesGuideProps> = ({
             </p>
           </div>
           <div className="md:col-span-5 h-64 md:h-full relative">
-            <img
+            <img loading="lazy" decoding="async"
               src={ingredientsImg}
               alt={L('img_alt')}
               referrerPolicy="no-referrer"
@@ -890,6 +891,7 @@ export const AgingAndFixativesGuide: React.FC<AgingAndFixativesGuideProps> = ({
           </div>
         </div>
       </div>
+      <LegalDisclaimer type="chemical" lang={currentLang} />
     </div>
   );
 };

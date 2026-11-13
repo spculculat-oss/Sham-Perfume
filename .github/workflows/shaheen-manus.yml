@@ -1,0 +1,98 @@
+name: Shaheen background agent (Manus — visitor tour, reviewer, languages and design)
+
+# «الخبير شاهين» sends his background agent (Manus, key MANUS_API_KEY in repository secrets) to open the
+# live GitHub Pages site in a real browser and audit the languages (Arabic + English every week and 3 more
+# of the site's languages in rotation) and the design (desktop + phone). The report is kept in
+# src/data/live/manus-audit.json for the admin team; visitors never see it or the agent's name.
+# Three missions, one per run (scripts/shaheen-manus/missions.ts):
+#   tour   — «جولة الزائر وتحضير الاجتماع»: daily as soon as the scheduled pre-meeting check (06:10 UTC)
+#            finishes (fallback 07:00): a phone shopping journey up to the payment page (never paying), then
+#            «المستشار الميداني» looks at the check's problems on the live site and writes his opinion and
+#            proposals — a sixth seat at the 08:15 meeting → src/data/live/manus-missions.json
+#   design — languages & design audit: Wednesdays and Saturdays 05:15 UTC (before the pre-meeting check reads it) → src/data/live/manus-audit.json
+#   verify — «المراجع الخارجي»: Mondays and Thursdays 09:30 UTC (after the meeting), the council tasks marked done, checked live
+# Pushes only rehearse (briefs built and checked, no task, no credit).
+# Settings (repository variables, optional): MANUS_PROFILE (lite | standard | max, default lite = fewest
+# credits), MANUS_WAIT_MIN (default 30) and MANUS_MONTHLY_CREDITS (shared monthly budget, default 2000; the
+# daily tour stops at 70% of it). Code: scripts/shaheen-manus/ and server/core/manus.ts.
+
+on:
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
+  workflow_dispatch:
+    inputs:
+      mission:
+        description: 'Mission (tour | design | verify)'
+        type: choice
+        options: [tour, design, verify]
+        default: tour
+permissions:
+  contents: write
+
+concurrency:
+  group: shaheen-manus
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner can pause this robot or freeze every robot (src/data/owner/controls.json,
+  # changed only from his GitHub account through «مكتب صاحب الموقع»). Branch and pull-request runs are not affected.
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs design_audit visitor_tour verifier
+
+  audit:
+    name: Run the background agent's mission
+    needs: owner
+    # After the pre-meeting check: only its daily scheduled run (not its rehearsals or code changes).
+    if: needs.owner.outputs.allowed == 'true' && (github.event_name != 'workflow_run' || github.event.workflow_run.event == 'schedule')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      MANUS_API_KEY: ${{ secrets.MANUS_API_KEY }}
+      MANUS_PROFILE: ${{ vars.MANUS_PROFILE || 'lite' }}
+      MANUS_WAIT_MIN: ${{ vars.MANUS_WAIT_MIN || '30' }}
+      MANUS_MONTHLY_CREDITS: ${{ vars.MANUS_MONTHLY_CREDITS || '2000' }}
+      MANUS_SCHEDULE: ${{ github.event.schedule }}
+      MANUS_MISSION: ${{ github.event.inputs.mission || (github.event_name == 'workflow_run' && 'tour') || '' }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref == 'refs/heads/main' && 'main' || github.sha }}
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Shaheen's agent runs its mission
+        run: node --import tsx scripts/shaheen-manus/run.mts
+      - name: Keep the report on main
+        if: github.ref == 'refs/heads/main' && github.event_name != 'push'
+        run: |
+          git config user.name "Shaheen audit bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "وكيل شاهين الخلفي $(date -u +%Y-%m-%d)" src/data/live/manus-audit.json src/data/live/manus-missions.json

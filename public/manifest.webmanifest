@@ -1,0 +1,16 @@
+{
+  "name": "صمم عطرك مع شام",
+  "short_name": "شام",
+  "description": "منصة عربية لتصميم العطور وتركيبها: حاسبات المعمل، الهرم العطري، التعتيق، المواد الخام، ومتجر شام.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf7f2",
+  "theme_color": "#b45309",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

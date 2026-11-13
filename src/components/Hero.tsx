@@ -15,9 +15,9 @@ import heroImg from '../assets/images/hero_luxury_perfume_1791692409081.jpg';
 import newsImg from '../assets/images/luxury_perfume_exhibition_1791696134494.jpg';
 
 import { SupportedLanguage } from '../types/i18n';
-import { t } from '../utils/i18n';
-import { isRTL } from '../utils/localizedContent';
-import { LText, makeT } from '../utils/localize';
+import { t } from '../لغات/i18n';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, makeT } from '../لغات/localize';
 
 interface HeroProps {
   onQuickStart: (mode: string) => void;

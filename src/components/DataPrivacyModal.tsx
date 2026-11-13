@@ -14,8 +14,8 @@ import {
 import { UserProfile } from '../types/auth';
 import { exportAllUserData, wipeAllUserData } from '../utils/authStorage';
 import { SupportedLanguage } from '../types/i18n';
-import { isRTL } from '../utils/localizedContent';
-import { LText, makeT } from '../utils/localize';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, makeT } from '../لغات/localize';
 
 
 const S = {

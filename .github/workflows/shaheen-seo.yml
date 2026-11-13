@@ -1,0 +1,115 @@
+name: Manaret Shaheen — SEO cycle and search-engine submissions (every 6 hours)
+
+# «منارة شاهين»: every 6 hours the agent audits the deployed site, studies the next SEO lesson,
+# applies only copy that passes the guardrails, asks «الخبير شاهين» to grade the cycle, submits
+# changed URLs to search engines (IndexNow + Bing/GSC when configured) and writes the media report.
+# Results: src/data/live/seo-agent.json and src/data/live/seo-pages.json on main.
+# The build (scripts/seo-build.mts) turns the published copy into tools/*.html, sitemap.xml,
+# robots.txt, llms.txt, feed.xml and the IndexNow key file.
+# Branch pushes rehearse (SEO_SUBMIT=0, no commit); scheduled runs on main submit and publish.
+#
+# Optional secrets: the AI engine keys, BING_WEBMASTER_API_KEY, GSC_SERVICE_ACCOUNT_JSON.
+# Var: SEO_SITE_URL (defaults to the main site on GitHub Pages — the address visitors and search engines use).
+
+on:
+  # Paused on GitHub (2026-11): robots no longer run on a schedule here. GitHub Actions is used only to build,
+  # test and deploy the site; robots move to their own server (docs/ROBOT_DISTRIBUTION.md). Manual run only.
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+  issues: write
+
+concurrency:
+  group: shaheen-seo-${{ github.ref == 'refs/heads/main' && 'main' || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # «مفتاح صاحب الموقع»: the owner can pause this robot or freeze every robot (src/data/owner/controls.json,
+  # changed only from his GitHub account through «مكتب صاحب الموقع»). Branch and pull-request runs are not affected.
+  owner:
+    name: Owner's switch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - name: Read the owner's switches
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            src/data/owner
+            scripts/owner
+      - name: May this robot run?
+        id: gate
+        run: node scripts/owner/gate.mjs seo
+
+  seo:
+    name: Audit, learn, apply and submit
+    needs: owner
+    if: needs.owner.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      SEO_COMMIT: ${{ github.ref == 'refs/heads/main' && 'true' || 'false' }}
+      SEO_SUBMIT: ${{ github.ref == 'refs/heads/main' && '1' || '0' }}
+      SEO_SITE_URL: ${{ vars.SEO_SITE_URL || 'https://spculculat-oss.github.io/Sham-Perfume/' }}
+      # Shaheen's supervisor guidance for this tool (server/core/liveData → supervisorGuidance).
+      SHAM_LIVE_DATA: ${{ vars.SHAM_LIVE_DATA }}
+      SHAM_LIVE_DATA_URL: ${{ vars.SHAM_LIVE_DATA_URL }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+      BING_WEBMASTER_API_KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
+      GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+      GSC_SITE_URL: ${{ vars.GSC_SITE_URL }}
+      YANDEX_WEBMASTER_TOKEN: ${{ secrets.YANDEX_WEBMASTER_TOKEN }}
+      YANDEX_WEBMASTER_USER_ID: ${{ vars.YANDEX_WEBMASTER_USER_ID }}
+      YANDEX_WEBMASTER_HOST_ID: ${{ vars.YANDEX_WEBMASTER_HOST_ID }}
+      SEO_SAME_AS: ${{ vars.SEO_SAME_AS }}
+      # Optional: comma-separated WebSub hubs. Empty uses the public defaults.
+      WEBSUB_HUBS: ${{ vars.WEBSUB_HUBS }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Set up pinned Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+      - name: Run one Manaret Shaheen cycle
+        run: node --import tsx scripts/seo-agent/run.mts
+      - name: Write visibility and growth summary
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SEO_WEEKLY_ISSUE: ${{ github.ref == 'refs/heads/main' && '1' || '0' }}
+        run: node --import tsx scripts/seo-agent/weekly-report.mts
+      - name: Regression tests with the new state
+        # Never publish copy/state that would turn main red.
+        run: bun run test
+      - name: Publish on main and rebuild Pages
+        if: env.SEO_COMMIT == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "Manaret Shaheen bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/ci/publish.mjs "منارة شاهين: دورة SEO وتعلّم $(date -u +%Y-%m-%dT%H:%MZ)" src/data/live \
+            || { echo "::error::Could not push the SEO state"; exit 1; }
+          # Pushes made with this token start no workflows; the build applies the new copy and files.
+          gh workflow run pages.yml --ref main || echo "::warning::Pages rebuild not started (the published files are still updated by the next build)"

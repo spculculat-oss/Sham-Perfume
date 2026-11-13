@@ -1,0 +1,1695 @@
+{
+ "version": 1,
+ "note": "بيانات الجمارك لكل دولة — كل رقم له مصدر وتاريخ فحص، واللي مصدره فاضي معناه «مش متأكد» ومايتعرضش للزائر ولا يتحسب في الوعد. الروبوت بيحدّث الملف ده ويقارن كل رقم بمصدره؛ الأرقام القديمة بتتحول لتنبيه.",
+ "updatedAt": "2026-10-25",
+ "goods": {
+  "hsCode": "3303",
+  "nameAr": "عطور (سوائل عطرية)",
+  "dangerousGoods": {
+   "unNumber": "UN1266",
+   "hazardClass": "Class 3 — سائل قابل للاشتعال",
+   "packingGroup": "II/III",
+   "noteAr": "العطور مادة خطرة على الطيران: الشحن الجوي محدود (60 لتر كارجو، 5 لتر ركاب، كمية مستثناة E1). شركات كتير بترفضها جوي — لازم شركة معتمدة لشحن المواد الخطرة أو شحن بحري.",
+   "source": "https://www.iata.org/en/programs/cargo/dgr/",
+   "checkedAt": "2026-10-25"
+  }
+ },
+ "agreements": [
+  {
+   "id": "GAFTA",
+   "nameAr": "منطقة التجارة الحرة العربية الكبرى (GAFTA)",
+   "nameEn": "Greater Arab Free Trade Area",
+   "members": [
+    "EG",
+    "SA",
+    "AE",
+    "KW",
+    "QA",
+    "BH",
+    "OM",
+    "JO",
+    "LB",
+    "IQ",
+    "SY",
+    "PS",
+    "LY",
+    "TN",
+    "DZ",
+    "MA",
+    "SD",
+    "YE",
+    "MR",
+    "SO",
+    "DJ",
+    "KM"
+   ],
+   "dutyFreeAr": "إعفاء كامل من الرسوم بين الدول العربية من 2005.",
+   "originRuleAr": "قاعدة المنشأ: قيمة مضافة محلية 40% من سعر المصنع (وتنزل 20% للصناعة العربية المشتركة) + شهادة منشأ + شرط الشحن والفوترة المباشرة.",
+   "requires": [
+    "شهادة منشأ عربية",
+    "قيمة مضافة ≥ 40%",
+    "شحن مباشر"
+   ],
+   "caveatAr": "الصومال وجيبوتي وجزر القمر وموريتانيا مش مطبقين التخفيضات. والمنتجات اللي أصلها مش عربي (مستوردة من ماليزيا مثلاً) مش بتاخد الإعفاء.",
+   "source": "https://gaft.gov.sa/en/lists/commercial-agreements/agreement-on-facilitating-and-developing-inter-arab-trade-major-arab-free-trade-area",
+   "checkedAt": "2026-10-25"
+  },
+  {
+   "id": "EU_EGYPT",
+   "nameAr": "اتفاقية الشراكة المصرية الأوروبية",
+   "nameEn": "Egypt–EU Association Agreement",
+   "members": [
+    "EG",
+    "AT",
+    "BE",
+    "BG",
+    "HR",
+    "CY",
+    "CZ",
+    "DK",
+    "EE",
+    "FI",
+    "FR",
+    "DE",
+    "GR",
+    "HU",
+    "IE",
+    "IT",
+    "LV",
+    "LT",
+    "LU",
+    "MT",
+    "NL",
+    "PL",
+    "PT",
+    "RO",
+    "SK",
+    "SI",
+    "ES",
+    "SE"
+   ],
+   "dutyFreeAr": "كل السلع الصناعية المصرية المصدرة للاتحاد الأوروبي معفاة من التعريفة الجمركية.",
+   "originRuleAr": "قواعد منشأ يورومتوسطية + شهادة حركة EUR.1 من غرفة التجارة أو الجمارك (تكلفتها ~30–80 يورو وتاخد يوم أو يومين).",
+   "requires": [
+    "شهادة EUR.1",
+    "منشأ مصري/أوروبي بالقواعد"
+   ],
+   "caveatAr": "الإعفاء لصالح البضاعة المصرية المنشأ اللي بتتصدّر لأوروبا — مش لأي حاجة بنشحنها من مصر.",
+   "source": "https://www.ida.gov.eg/en/international-agreements",
+   "checkedAt": "2026-10-25"
+  }
+ ],
+ "countries": [
+  {
+   "code": "EG",
+   "nameAr": "مصر",
+   "nameEn": "Egypt",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": 14,
+   "dutyPercent": [
+    0,
+    60
+   ],
+   "deMinimis": null,
+   "noteAr": "التعريفة من 0% إلى 60% حسب البند، وتضاف ضريبة قيمة مضافة 14% ورسم تنمية موارد ورسوم خدمات جمركية. إعفاء المسافر 15,000 جنيه للأشياء الشخصية والهدايا (مش للطرود التجارية).",
+   "source": "https://www.gomruky.com/",
+   "checkedAt": "2026-10-25",
+   "confidence": "secondary",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "SA",
+   "nameAr": "السعودية",
+   "nameEn": "Saudi Arabia",
+   "region": "gulf",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "AE",
+   "nameAr": "الإمارات",
+   "nameEn": "United Arab Emirates",
+   "region": "gulf",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "KW",
+   "nameAr": "الكويت",
+   "nameEn": "Kuwait",
+   "region": "gulf",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "QA",
+   "nameAr": "قطر",
+   "nameEn": "Qatar",
+   "region": "gulf",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "BH",
+   "nameAr": "البحرين",
+   "nameEn": "Bahrain",
+   "region": "gulf",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "OM",
+   "nameAr": "عمان",
+   "nameEn": "Oman",
+   "region": "gulf",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "JO",
+   "nameAr": "الأردن",
+   "nameEn": "Jordan",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": 16,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 200,
+    "currency": "JOD",
+    "noteAr": "الطرود البريدية حتى 200 دينار معفاة من الرسوم الجمركية بالكامل مع تطبيق ضريبة مبيعات 16%."
+   },
+   "noteAr": "قرار مجلس الوزراء: إعفاء جمركي كامل للطرود حتى 200 دينار + 16% ضريبة مبيعات.",
+   "source": "https://garaanews.com/article/400473",
+   "checkedAt": "2026-10-25",
+   "confidence": "secondary",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "LB",
+   "nameAr": "لبنان",
+   "nameEn": "Lebanon",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "IQ",
+   "nameAr": "العراق",
+   "nameEn": "Iraq",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "SY",
+   "nameAr": "سوريا",
+   "nameEn": "Syria",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": {
+    "ar": "عقوبات — الشحن ممنوع"
+   }
+  },
+  {
+   "code": "PS",
+   "nameAr": "فلسطين",
+   "nameEn": "Palestine",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "YE",
+   "nameAr": "اليمن",
+   "nameEn": "Yemen",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "LY",
+   "nameAr": "ليبيا",
+   "nameEn": "Libya",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "TN",
+   "nameAr": "تونس",
+   "nameEn": "Tunisia",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "DZ",
+   "nameAr": "الجزائر",
+   "nameEn": "Algeria",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "MA",
+   "nameAr": "المغرب",
+   "nameEn": "Morocco",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "SD",
+   "nameAr": "السودان",
+   "nameEn": "Sudan",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "MR",
+   "nameAr": "موريتانيا",
+   "nameEn": "Mauritania",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "SO",
+   "nameAr": "الصومال",
+   "nameEn": "Somalia",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "DJ",
+   "nameAr": "جيبوتي",
+   "nameEn": "Djibouti",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "KM",
+   "nameAr": "جزر القمر",
+   "nameEn": "Comoros",
+   "region": "arab",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [
+    "GAFTA"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "US",
+   "nameAr": "أمريكا",
+   "nameEn": "United States",
+   "region": "north_america",
+   "bloc": null,
+   "vatPercent": 0,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "USD",
+    "noteAr": "الإعفاء اتلغى تماماً: كل طرد تحت 800 دولار بقى عليه رسوم من 29 أغسطس 2025. البريد الدولي عليه رسم ثابت 80/160/200 دولار للطرد حسب نسبة تعريفة بلد المنشأ."
+   },
+   "noteAr": "مفيش إعفاء. الأمريكان بيحسبوا ضريبة مبيعات الولاية على المشتري مش علينا. أرخص طريقة: شحن تجاري مسجّل (Entry) مش بريد.",
+   "source": "https://www.whitehouse.gov/presidential-actions/2025/07/suspending-duty-free-de-minimis-treatment-for-all-countries/",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "CA",
+   "nameAr": "كندا",
+   "nameEn": "Canada",
+   "region": "north_america",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "MX",
+   "nameAr": "المكسيك",
+   "nameEn": "Mexico",
+   "region": "north_america",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "GB",
+   "nameAr": "بريطانيا",
+   "nameEn": "United Kingdom",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": 20,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 135,
+    "currency": "GBP",
+    "noteAr": "الإعفاء الجمركي حتى 135 جنيه إسترليني، وفوق كده رسوم. الضريبة 20% على كل حاجة (من أول جنيه)."
+   },
+   "noteAr": "بريطانيا مش في الاتحاد الأوروبي — حدودها مختلفة، وأرقامها محتاجة تأكيد من مصدر رسمي قبل الاعتماد عليها.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "CH",
+   "nameAr": "سويسرا",
+   "nameEn": "Switzerland",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "NO",
+   "nameAr": "النرويج",
+   "nameEn": "Norway",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "TR",
+   "nameAr": "تركيا",
+   "nameEn": "Turkey",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "MY",
+   "nameAr": "ماليزيا",
+   "nameEn": "Malaysia",
+   "region": "southeast_asia",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "SG",
+   "nameAr": "سنغافورة",
+   "nameEn": "Singapore",
+   "region": "southeast_asia",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "ID",
+   "nameAr": "إندونيسيا",
+   "nameEn": "Indonesia",
+   "region": "southeast_asia",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "TH",
+   "nameAr": "تايلاند",
+   "nameEn": "Thailand",
+   "region": "southeast_asia",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "PH",
+   "nameAr": "الفلبين",
+   "nameEn": "Philippines",
+   "region": "southeast_asia",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "VN",
+   "nameAr": "فيتنام",
+   "nameEn": "Vietnam",
+   "region": "southeast_asia",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "AU",
+   "nameAr": "أستراليا",
+   "nameEn": "Australia",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "NZ",
+   "nameAr": "نيوزيلندا",
+   "nameEn": "New Zealand",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "IN",
+   "nameAr": "الهند",
+   "nameEn": "India",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "PK",
+   "nameAr": "باكستان",
+   "nameEn": "Pakistan",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "CN",
+   "nameAr": "الصين",
+   "nameEn": "China",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "NG",
+   "nameAr": "نيجيريا",
+   "nameEn": "Nigeria",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "KE",
+   "nameAr": "كينيا",
+   "nameEn": "Kenya",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "ZA",
+   "nameAr": "جنوب أفريقيا",
+   "nameEn": "South Africa",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "BR",
+   "nameAr": "البرازيل",
+   "nameEn": "Brazil",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "RU",
+   "nameAr": "روسيا",
+   "nameEn": "Russia",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": {
+    "ar": "عقوبات جزئية على بعض السلع"
+   }
+  },
+  {
+   "code": "UA",
+   "nameAr": "أوكرانيا",
+   "nameEn": "Ukraine",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "JP",
+   "nameAr": "اليابان",
+   "nameEn": "Japan",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "KR",
+   "nameAr": "كوريا الجنوبية",
+   "nameEn": "South Korea",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "HK",
+   "nameAr": "هونج كونج",
+   "nameEn": "Hong Kong",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "TW",
+   "nameAr": "تايوان",
+   "nameEn": "Taiwan",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "IL",
+   "nameAr": "إسرائيل",
+   "nameEn": "Israel",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "IR",
+   "nameAr": "إيران",
+   "nameEn": "Iran",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": {
+    "ar": "عقوبات — الشحن ممنوع"
+   }
+  },
+  {
+   "code": "KP",
+   "nameAr": "كوريا الشمالية",
+   "nameEn": "North Korea",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": {
+    "ar": "عقوبات — الشحن ممنوع"
+   }
+  },
+  {
+   "code": "CU",
+   "nameAr": "كوبا",
+   "nameEn": "Cuba",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": {
+    "ar": "عقوبات أمريكية"
+   }
+  },
+  {
+   "code": "MM",
+   "nameAr": "ميانمار",
+   "nameEn": "Myanmar",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "BI",
+   "nameAr": "بوروندي",
+   "nameEn": "Burundi",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "CF",
+   "nameAr": "أفريقيا الوسطى",
+   "nameEn": "Central African Republic",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "CD",
+   "nameAr": "الكونغو الديمقراطية",
+   "nameEn": "DR Congo",
+   "region": "world",
+   "bloc": null,
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": null,
+   "noteAr": "مفيش بيانات جمركية متأكد منها لهذه الدولة — لازم تتأكد من مصدر رسمي قبل ما نعرض أي وعد للزائر.",
+   "source": null,
+   "checkedAt": null,
+   "confidence": "unverified",
+   "agreements": [],
+   "restricted": null
+  },
+  {
+   "code": "AT",
+   "nameAr": "AT",
+   "nameEn": "AT",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "BE",
+   "nameAr": "BE",
+   "nameEn": "BE",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "BG",
+   "nameAr": "BG",
+   "nameEn": "BG",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "HR",
+   "nameAr": "HR",
+   "nameEn": "HR",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "CY",
+   "nameAr": "CY",
+   "nameEn": "CY",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "CZ",
+   "nameAr": "CZ",
+   "nameEn": "CZ",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "DK",
+   "nameAr": "DK",
+   "nameEn": "DK",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "EE",
+   "nameAr": "EE",
+   "nameEn": "EE",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "FI",
+   "nameAr": "FI",
+   "nameEn": "FI",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "FR",
+   "nameAr": "FR",
+   "nameEn": "FR",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "DE",
+   "nameAr": "DE",
+   "nameEn": "DE",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "GR",
+   "nameAr": "GR",
+   "nameEn": "GR",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "HU",
+   "nameAr": "HU",
+   "nameEn": "HU",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "IE",
+   "nameAr": "IE",
+   "nameEn": "IE",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "IT",
+   "nameAr": "IT",
+   "nameEn": "IT",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "LV",
+   "nameAr": "LV",
+   "nameEn": "LV",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "LT",
+   "nameAr": "LT",
+   "nameEn": "LT",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "LU",
+   "nameAr": "LU",
+   "nameEn": "LU",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "MT",
+   "nameAr": "MT",
+   "nameEn": "MT",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "NL",
+   "nameAr": "NL",
+   "nameEn": "NL",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "PL",
+   "nameAr": "PL",
+   "nameEn": "PL",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "PT",
+   "nameAr": "PT",
+   "nameEn": "PT",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "RO",
+   "nameAr": "RO",
+   "nameEn": "RO",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "SK",
+   "nameAr": "SK",
+   "nameEn": "SK",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "SI",
+   "nameAr": "SI",
+   "nameEn": "SI",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "ES",
+   "nameAr": "ES",
+   "nameEn": "ES",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  },
+  {
+   "code": "SE",
+   "nameAr": "SE",
+   "nameEn": "SE",
+   "region": "europe",
+   "bloc": "EU",
+   "vatPercent": null,
+   "dutyPercent": null,
+   "deMinimis": {
+    "amount": 0,
+    "currency": "EUR",
+    "noteAr": "إعفاء 150 يورو اتلغى من 1 يوليو 2026: بقى 3 يورو رسم جمركي لكل بند جمركي في الطرد حتى 150 يورو (لحد 1 يوليو 2028)، وتتوقع رسوم معالجة ~2 يورو لكل بند من نوفمبر 2026."
+   },
+   "noteAr": "ضريبة القيمة المضافة بتتغير من دولة لدولة (VAT) وبتتضاف فوق الرسم. محتاج IOSS لتسجيل الضريبة.",
+   "source": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+   "checkedAt": "2026-10-25",
+   "confidence": "official",
+   "agreements": [
+    "EU_EGYPT"
+   ],
+   "restricted": null
+  }
+ ]
+}

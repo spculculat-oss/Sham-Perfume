@@ -1,25 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import { popBelongsToCheckout } from './utils/checkoutHistory';
+import { setInsightsContext, trackInsight } from './utils/insightsTracker';
+import { isVerifiedCustomer } from './utils/paymentAccess';
+import { BookLibrary } from './library/BookLibrary';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Header } from './components/Header';
+import { ToastNotification } from './components/ToastNotification';
+import { UserProfilePage } from './components/UserProfilePage';
 import { Hero } from './components/Hero';
 import { HomeHub } from './components/HomeHub';
+import { VisitorLocalDashboard } from './components/VisitorLocalDashboard';
+import { SectionsGateway } from './components/SectionsGateway';
+import { Storefront } from './components/Storefront';
+import { ProductDetail } from './components/ProductDetail';
 import { ConcentrationCalculator } from './components/ConcentrationCalculator';
 import { PyramidCalculator } from './components/PyramidCalculator';
 import { AlcoholDilutionCalculator } from './components/AlcoholDilutionCalculator';
 import { CostCalculator } from './components/CostCalculator';
 import { FormulaLibrary } from './components/FormulaLibrary';
-import { WorldPerfumesLibrary } from './components/WorldPerfumesLibrary';
+import { WorldPerfumesLibrary, worldPerfumeStudyDisclaimer, worldPerfumeStudyTitle } from './components/WorldPerfumesLibrary';
+import { MoleculeStudio } from './components/MoleculeStudio';
 import { RawMaterialsEncyclopedia } from './components/RawMaterialsEncyclopedia';
 import { AgingAndFixativesGuide } from './components/AgingAndFixativesGuide';
 import { MacerationTimeSimulator } from './components/MacerationTimeSimulator';
 import { ManufacturingSpecSheet } from './components/ManufacturingSpecSheet';
 import { PerfumerAIChatbot } from './components/PerfumerAIChatbot';
 import { PerfumerMasterLabView } from './components/PerfumerMasterLabView';
+import { ShamAssistant } from './assistant/ShamAssistant';
+import SpecialistsHub from './components/SpecialistsHub';
+import { FloatingDockManager } from './components/FloatingDock';
 import { WorldPerfumeNews } from './components/WorldPerfumeNews';
 import { Footer } from './components/Footer';
+import { LocalizedNumberInput } from './components/LocalizedNumberInput';
+import { TopPromoHub } from './components/TopPromoHub';
 import { NavigationBreadcrumbs } from './components/NavigationBreadcrumbs';
 import { CountryAndAddressModal } from './components/CountryAndAddressModal';
 import { AuthModal } from './components/AuthModal';
 import { DataPrivacyModal } from './components/DataPrivacyModal';
+import { LegalCenter } from './components/LegalCenter';
+import { CookieConsent } from './components/CookieConsent';
+import { trackPlatformVisit } from './utils/visitTracker';
+import { useSeo } from './hooks/useSeo';
 import {
   FormulationState,
   PyramidNote,
@@ -32,33 +52,63 @@ import {
 import { WorldPerfumeRecipe } from './data/worldPerfumes';
 import { calculatePerfumeFormulation } from './utils/calculations';
 import { ExtractedAIPerfume } from './utils/aiFormulaExtractor';
+import type { ShaheenTool, ToolLink } from './utils/shaheenTools';
 import { SupportedLanguage, SUPPORTED_LANGUAGES } from './types/i18n';
-import { getInitialLanguage, saveLanguage } from './utils/i18n';
+import { getInitialLanguage, saveLanguage } from './لغات/i18n';
+import { loadAiPack } from './لغات/aiPackLoader';
 import { LanguageProvider } from './context/LanguageContext';
-import { LText, makeT, fmt, pickArEn } from './utils/localize';
+import { LText, makeT, fmt, pickArEn } from './لغات/localize';
 import {
   UserEnvironmentProfile,
   getInitialUserEnvironment,
+  alignEnvironmentToCountry,
 } from './utils/environmentAdapter';
+import { followEntryCountry, setStoreCountry, useStoreCountry } from './utils/storeCheckout';
 import { loadDetailedAddress } from './utils/addressStorage';
 import {
-  detectUserCountryAndLanguage,
-  detectUserLocationAsync,
+  detectEntryLanguageAsync,
+  watchEntryCountry,
   forceRedetectLocation,
   USER_LANGUAGE_MANUAL_OVERRIDE_KEY,
+  LANGUAGE_PICKED_AT_KEY,
   saveUserCountryCode,
 } from './utils/geoDetector';
 import { UserProfile } from './types/auth';
 import { getCurrentUserSession, logoutUser } from './utils/authStorage';
-import { Check, X, BookmarkPlus } from 'lucide-react';
+import { decodeFormulaPayload } from './utils/formulaShare';
+import { Check, X, BookmarkPlus, Loader2 } from 'lucide-react';
+import { LOAD_FORMULA_EVENT, syncRecipeToAccount, trackLearning, type SharedFormula } from './community/sync';
+import { getSessionToken } from './community/api';
+import { profileFromMember, saveCurrentUserProfile } from './utils/authStorage';
+import { useSessionPick } from './community/session';
+import { ErrorBoundary, lazyWithReload } from './utils/lazyRetry';
+
+// «مجتمع شام» (social, messenger, member and merchant portals): its own bundle, loaded on the first #community visit.
+const CommunityApp = lazyWithReload(() => import('./community/CommunityApp'));
+const CosmeticsHub = lazyWithReload(() => import('./components/CosmeticsHub'));
+const DesignersStudio = lazyWithReload(() => import('./components/DesignersStudio'));
+// «مساحة شاهين»: the general assistant (loaded only when opened — its document and code tools are heavy).
+const ShaheenWorkspace = lazyWithReload(() => import('./workspace/ShaheenWorkspace'));
 
 const LOCAL_STORAGE_KEY = 'miyaar_perfume_saved_formulas';
 
 
 const S = {
+  toast_shared_loaded: {
+    ar: '✨ تم فتح تركيبة العطر المشاركة: «{title}» في حاسبة المعمل وبطاقة المواصفات!',
+    en: '✨ Shared fragrance formula loaded: «{title}» into lab calculator & spec sheet!',
+    fr: '✨ Formule partagée chargée : « {title} » dans le calculateur et la fiche !',
+    es: '✨ ¡Fórmula compartida cargada: «{title}» en la calculadora y ficha técnica!',
+    it: '✨ Formula condivisa caricata: «{title}» nel calcolatore e nella scheda!',
+    de: '✨ Geteilte Formel geladen: „{title}“ im Rechner & Datenblatt!',
+    ru: '✨ Загружена полученная формула: «{title}» в калькулятор и техкарту!',
+    zh: '✨ 已加载共享香水配方：「{title}」至实验室计算器与规格单！',
+    tr: '✨ Paylaşılan formül yüklendi: «{title}» hesaplayıcıya ve teknik karta!',
+    fa: '✨ فرمول اشتراک‌گذاری شده «{title}» در ماشین‌حساب و کارت مشخصات بارگذاری شد!',
+  },
   toast_home_back: { ar: 'أنت الآن في الصفحة الرئيسية. اضغط زر الرجوع مجدداً لمغادرة المنصة.', en: 'You are on the home page. Press back again to leave the platform.', fr: 'Vous êtes sur l’accueil. Appuyez à nouveau sur retour pour quitter.', es: 'Estás en el inicio. Pulsa atrás de nuevo para salir.', it: 'Sei nella home. Premi di nuovo indietro per uscire.', de: 'Sie sind auf der Startseite. Drücken Sie erneut „Zurück“, um zu verlassen.', ru: 'Вы на главной странице. Нажмите «Назад» ещё раз, чтобы выйти.', zh: '您正在首页。再次点击返回即可离开平台。', tr: 'Ana sayfadasınız. Ayrılmak için geriye tekrar basın.', fa: 'شما در صفحه اصلی هستید. برای خروج دوباره دکمه بازگشت را بزنید.' },
-  toast_lang_tpl: { ar: '🌐 تم تغيير لغة المنصة بنجاح إلى: {flag} «{native}» ({dir})', en: '🌐 Platform language changed to: {flag} «{native}» ({dir})', fr: '🌐 Langue changée : {flag} « {native} » ({dir})', es: '🌐 Idioma cambiado a: {flag} «{native}» ({dir})', it: '🌐 Lingua cambiata: {flag} «{native}» ({dir})', de: '🌐 Sprache geändert: {flag} „{native}“ ({dir})', ru: '🌐 Язык платформы изменён: {flag} «{native}» ({dir})', zh: '🌐 平台语言已切换为：{flag}「{native}」（{dir}）', tr: '🌐 Dil değiştirildi: {flag} «{native}» ({dir})', fa: '🌐 زبان پلتفرم به {flag} «{native}» ({dir}) تغییر کرد' },
-  toast_geo_tpl: { ar: '📍 تم تحديد موقعك: {flag} {country} — لغة المنصة: {lang}', en: '📍 Location detected: {flag} {country} — Platform language: {lang}', fr: '📍 Position détectée : {flag} {country} — Langue : {lang}', es: '📍 Ubicación detectada: {flag} {country} — Idioma: {lang}', it: '📍 Posizione rilevata: {flag} {country} — Lingua: {lang}', de: '📍 Standort erkannt: {flag} {country} — Sprache: {lang}', ru: '📍 Ваше местоположение: {flag} {country} — Язык: {lang}', zh: '📍 已检测到您的位置：{flag} {country} — 平台语言：{lang}', tr: '📍 Konum algılandı: {flag} {country} — Dil: {lang}', fa: '📍 موقعیت شما شناسایی شد: {flag} {country} — زبان پلتفرم: {lang}' },
+  toast_lang_tpl: { ar: '🌐 تم تغيير لغة المنصة بنجاح إلى: {flag} «{native}» ({dir})', en: '🌐 Platform language changed to: {flag} «{native}» ({dir})', fr: '🌐 Langue changée : {flag} « {native} » ({dir})', es: '🌐 Idioma cambiado a: {flag} «{native}» ({dir})', it: '🌐 Lingua cambiata: {flag} «{native}» ({dir})', de: '🌐 Sprache geändert: {flag} „{native}“ ({dir})', ru: '🌐 Язык платформы изменён: {flag} «{native}» ({dir})', zh: '🌐 平台语言已切换为：{flag}「{native}」（{dir}）', tr: '🌐 Dil değiştirildi: {flag} «{native}» ({dir})', fa: '🌐 زبان پلتفرم به {flag} «{native}» ({dir}) تغییر کرد', is: '🌐 Tungumáli vettvangsins var breytt í: {flag} „{native}“ ({dir})', sq: '🌐 Gjuha e platformës u ndryshua në: {flag} «{native}» ({dir})', ps: '🌐 د پلیټفارم ژبه بدله شوه: {flag} «{native}» ({dir})' },
+  toast_geo_tpl: { ar: '📍 تم تحديد موقعك: {flag} {country} — لغة المنصة: {lang}', en: '📍 Location detected: {flag} {country} — Platform language: {lang}', fr: '📍 Position détectée : {flag} {country} — Langue : {lang}', es: '📍 Ubicación detectada: {flag} {country} — Idioma: {lang}', it: '📍 Posizione rilevata: {flag} {country} — Lingua: {lang}', de: '📍 Standort erkannt: {flag} {country} — Sprache: {lang}', ru: '📍 Ваше местоположение: {flag} {country} — Язык: {lang}', zh: '📍 已检测到您的位置：{flag} {country} — 平台语言：{lang}', tr: '📍 Konum algılandı: {flag} {country} — Dil: {lang}', fa: '📍 موقعیت شما شناسایی شد: {flag} {country} — زبان پلتفرم: {lang}', is: '📍 Staðsetning greind: {flag} {country} — tungumál vettvangs: {lang}', sq: '📍 Vendndodhja u zbulua: {flag} {country} — gjuha e platformës: {lang}', ps: '📍 ځای وپېژندل شو: {flag} {country} — د پلیټفارم ژبه: {lang}' },
   toast_env_tpl: { ar: '🌍 تم ضبط بلد المعمل: {flag} «{country}» وعملة {currency}!', en: '🌍 Lab country set: {flag} «{country}» with currency {currency}!', fr: '🌍 Pays du laboratoire : {flag} « {country} », devise {currency} !', es: '🌍 País del laboratorio: {flag} «{country}», moneda {currency}!', it: '🌍 Paese del laboratorio: {flag} «{country}», valuta {currency}!', de: '🌍 Laberland festgelegt: {flag} „{country}“, Währung {currency}!', ru: '🌍 Страна лаборатории: {flag} «{country}», валюта {currency}!', zh: '🌍 实验室国家已设置：{flag}「{country}」，货币 {currency}！', tr: '🌍 Laboratuvar ülkesi: {flag} «{country}», para birimi {currency}!', fa: '🌍 کشور آزمایشگاه تنظیم شد: {flag} «{country}» با ارز {currency}!' },
   toast_welcome_tpl: { ar: '👤 مرحباً بك يا {name} في معملك الخاص!', en: '👤 Welcome {name} to your private lab!', fr: '👤 Bienvenue {name} dans votre laboratoire !', es: '👤 ¡Bienvenido {name} a tu laboratorio!', it: '👤 Benvenuto {name} nel tuo laboratorio!', de: '👤 Willkommen {name} in Ihrem Labor!', ru: '👤 Добро пожаловать, {name}, в вашу лабораторию!', zh: '👤 欢迎 {name} 来到您的私人实验室！', tr: '👤 {name}, özel laboratuvarınıza hoş geldiniz!', fa: '👤 {name} عزیز، به آزمایشگاه شخصی‌تان خوش آمدید!' },
   toast_logout: { ar: '👋 تم تسجيل الخروج بنجاح', en: '👋 Logged out successfully', fr: '👋 Déconnecté avec succès', es: '👋 Sesión cerrada con éxito', it: '👋 Disconnesso con successo', de: '👋 Erfolgreich abgemeldet', ru: '👋 Вы вышли из аккаунта', zh: '👋 已成功退出登录', tr: '👋 Başarıyla çıkış yapıldı', fa: '👋 با موفقیت از حساب خارج شدید' },
@@ -66,9 +116,19 @@ const S = {
   toast_apply_lab_tpl: { ar: '🧪 تم تطبيق تركيبة «{title}» في حاسبة التركيب والمعمل بنجاح!', en: '🧪 Formula «{title}» applied to the compounding calculator!', fr: '🧪 Formule « {title} » appliquée au calculateur !', es: '🧪 ¡Fórmula «{title}» aplicada a la calculadora!', it: '🧪 Formula «{title}» applicata al calcolatore!', de: '🧪 Formel „{title}“ in den Rechner übernommen!', ru: '🧪 Формула «{title}» применена в калькуляторе!', zh: '🧪 配方「{title}」已成功应用到调配计算器！', tr: '🧪 «{title}» formülü hesaplayıcıya uygulandı!', fa: '🧪 فرمول «{title}» با موفقیت در ماشین‌حساب اعمال شد!' },
   toast_apply_pyramid_tpl: { ar: '🔺 تم نقل نوتات «{title}» إلى حاسبة الهرم العطري بنجاح!', en: '🔺 Notes of «{title}» transferred to the pyramid calculator!', fr: '🔺 Notes de « {title} » transférées au calculateur de pyramide !', es: '🔺 ¡Notas de «{title}» transferidas a la pirámide olfativa!', it: '🔺 Note di «{title}» trasferite al calcolatore della piramide!', de: '🔺 Noten von „{title}“ in den Pyramidenrechner übertragen!', ru: '🔺 Ноты «{title}» перенесены в калькулятор пирамиды!', zh: '🔺 「{title}」的香材已成功转移到金字塔计算器！', tr: '🔺 «{title}» notaları piramit hesaplayıcısına aktarıldı!', fa: '🔺 نت‌های «{title}» به ماشین‌حساب هرم منتقل شد!' },
   toast_saved_lib_tpl: { ar: '📝 تم تدوين وحفظ «{title}» في دفتر الوصفات تلقائياً!', en: '📝 «{title}» recorded into the recipe library automatically!', fr: '📝 « {title} » enregistrée dans le carnet de recettes !', es: '📝 ¡«{title}» guardada en la libreta de recetas!', it: '📝 «{title}» salvata nella libreria delle ricette!', de: '📝 „{title}“ automatisch im Rezeptbuch gespeichert!', ru: '📝 «{title}» автоматически сохранена в книге рецептов!', zh: '📝 「{title}」已自动记入配方库！', tr: '📝 «{title}» tarif defterine kaydedildi!', fa: '📝 «{title}» به‌طور خودکار در دفتر فرمول‌ها ثبت شد!' },
+  toast_tool_tpl: { ar: '🧪 فتحت «{tool}» بقيم سؤالك — راجعها قبل التنفيذ', en: '🧪 Opened «{tool}» with the values from your question — review them before use', fr: '🧪 « {tool} » ouvert avec les valeurs de votre question — vérifiez-les', es: '🧪 «{tool}» abierto con los valores de tu pregunta — revísalos', de: '🧪 „{tool}“ mit den Werten deiner Frage geöffnet — bitte prüfen', tr: '🧪 «{tool}» sorunuzdaki değerlerle açıldı — kontrol edin', fa: '🧪 «{tool}» با مقادیر سؤال شما باز شد — قبل از اجرا بررسی کنید' },
+  tool_concentration: { ar: 'حاسبة التركيب', en: 'Compounding calculator' },
+  tool_pyramid: { ar: 'الهرم العطري', en: 'Fragrance pyramid' },
+  tool_maceration: { ar: 'محاكي التعتيق', en: 'Maceration simulator' },
+  tool_alcohol: { ar: 'تخفيف الكحول', en: 'Alcohol dilution' },
+  tool_costing: { ar: 'التكاليف والأرباح', en: 'Cost & profit' },
+  tool_raw_materials: { ar: 'موسوعة الخامات', en: 'Raw materials' },
+  tool_guide: { ar: 'دليل المثبتات والتعتيق', en: 'Fixatives & aging guide' },
+  tool_store: { ar: 'ترشيحات من متجر شام', en: 'Picks from Sham store' },
+  toast_store: { ar: '🛍️ شاهين بيختار لك من متجر شام حسب طلبك', en: '🛍️ Shaheen is picking from Sham store for you' },
   toast_costing_tpl: { ar: '💰 تم الانتقال لحاسبة التكاليف والأرباح لتسعير تركيبة «{title}»!', en: '💰 Moved to the costing calculator to price «{title}»!', fr: '💰 Passage au calculateur de coûts pour tarifer « {title} » !', es: '💰 ¡Ve a la calculadora de costes para tarificar «{title}»!', it: '💰 Passato al calcolatore dei costi per prezzi «{title}»!', de: '💰 Zum Kostenrechner gewechselt, um „{title}“ zu bepreisen!', ru: '💰 Переход к калькулятору себестоимости для «{title}»!', zh: '💰 已转到成本计算器为「{title}」定价！', tr: '💰 «{title}» için maliyet hesaplayıcısına geçildi!', fa: '💰 برای قیمت‌گذاری «{title}» به ماشین‌حساب هزینه منتقل شدید!' },
   toast_loaded_lab_tpl: { ar: 'تم تحميل التركيبة "{title}" بنجاح في المعمل', en: 'Formula "{title}" loaded into the lab', fr: 'Formule « {title} » chargée dans le laboratoire', es: 'Fórmula "{title}" cargada en el laboratorio', it: 'Formula "{title}" caricata nel laboratorio', de: 'Formel „{title}“ ins Labor geladen', ru: 'Формула «{title}» загружена в лабораторию', zh: '配方“{title}”已成功载入实验室', tr: '"{title}" formülü laboratuvara yüklendi', fa: 'فرمول «{title}» با موفقیت در آزمایشگاه بارگذاری شد' },
-  toast_loaded_world_tpl: { ar: 'تم تحميل تركيبة «{title}» في حاسبة المعمل بنجاح!', en: 'Formula «{title}» loaded into the lab calculator!', fr: 'Formule « {title} » chargée dans le calculateur !', es: '¡Fórmula «{title}» cargada en la calculadora!', it: 'Formula «{title}» caricata nel calcolatore!', de: 'Formel „{title}“ in den Lab-rechner geladen!', ru: 'Формула «{title}» загружена в калькулятор!', zh: '配方「{title}」已成功载入实验室计算器！', tr: '«{title}» formülü hesaplayıcıya yüklendi!', fa: 'فرمول «{title}» با موفقیت در ماشین‌حساب بارگذاری شد!' },
+  toast_loaded_world_tpl: { ar: 'تم تحميل النموذج التعليمي المستوحى «{title}» في حاسبة المعمل!', en: 'Inspired study «{title}» loaded into the lab calculator!', fr: 'Étude inspirée « {title} » chargée dans le calculateur !', es: 'Estudio inspirado «{title}» cargado en la calculadora.', it: 'Studio ispirato «{title}» caricato nel calcolatore!', de: 'Inspirationsstudie „{title}“ in den Rechner geladen!', ru: 'Учебный пример «{title}» загружен в калькулятор!', zh: '灵感示例「{title}」已载入实验室计算器！', tr: 'İlham çalışması «{title}» hesaplayıcıya yüklendi!', fa: 'نمونه الهام‌گرفته «{title}» در ماشین‌حساب بارگذاری شد!' },
   toast_note_added_tpl: { ar: 'تمت إضافة «{name}» إلى الهرم العطري بنجاح', en: '«{name}» added to the fragrance pyramid', fr: '« {name} » ajoutée à la pyramide olfactive', es: '«{name}» añadida a la pirámide olfativa', it: '«{name}» aggiunta alla piramide olfattiva', de: '„{name}“ zur Duftpyramide hinzugefügt', ru: '«{name}» добавлена в пирамиду', zh: '「{name}」已成功加入香调金字塔', tr: '«{name}» koku piramidine eklendi', fa: '«{name}» با موفقیت به هرم عطری اضافه شد' },
   toast_formula_saved_tpl: { ar: 'تم حفظ التركيبة "{title}" في مكتبة الوصفات!', en: 'Formula "{title}" saved to the library!', fr: 'Formule « {title} » enregistrée !', es: '¡Fórmula "{title}" guardada en la biblioteca!', it: 'Formula "{title}" salvata nella libreria!', de: 'Formel „{title}“ in der Bibliothek gespeichert!', ru: 'Формула «{title}» сохранена в библиотеке!', zh: '配方“{title}”已保存到配方库！', tr: '"{title}" formülü kütüphaneye kaydedildi!', fa: 'فرمول «{title}» در کتابخانه ذخیره شد!' },
   toast_formula_deleted: { ar: 'تم حذف التركيبة من المكتبة', en: 'Formula deleted from the library', fr: 'Formule supprimée de la bibliothèque', es: 'Fórmula eliminada de la biblioteca', it: 'Formula eliminata dalla libreria', de: 'Formel aus der Bibliothek gelöscht', ru: 'Формула удалена из библиотеки', zh: '配方已从库中删除', tr: 'Formül kütüphaneden silindi', fa: 'فرمول از کتابخانه حذف شد' },
@@ -90,13 +150,46 @@ const S = {
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>(() => {
     try {
+      if (new URLSearchParams(window.location.search).has('checkout')) return 'store';
       const hash = window.location.hash.replace('#', '');
-      return hash || 'home';
+      const clean = hash.split('?')[0];
+      if (clean === 'formula' || clean === 'spec') return 'concentration';
+      // Check for product detail page
+      const productMatch = clean.match(/^product=(\d+)$/);
+      if (productMatch) {
+        const productId = parseInt(productMatch[1]);
+        if (!isNaN(productId)) {
+          return 'productDetail';
+        }
+      }
+      return clean || 'home';
     } catch {
       return 'home';
     }
   });
-  const [historyStack, setHistoryStack] = useState<string[]>(['home']);
+  // A product link opened directly (a product page's «اطلب من المتجر» button, a shared link) must show that
+  // product at once — not an empty detail page until the hash changes.
+  const [productId, setProductId] = useState<number | null>(() => {
+    try {
+      const m = window.location.hash.replace('#', '').split('?')[0].match(/^product=(\d+)$/);
+      return m ? parseInt(m[1], 10) : null;
+    } catch {
+      return null;
+    }
+  });
+  useSeo(activeTab);
+  const [historyStack, setHistoryStack] = useState<string[]>(() => {
+    try {
+      const hash = window.location.hash.replace('#', '');
+      const clean = hash.split('?')[0];
+      if (clean.match(/^product=(\d+)$/)) {
+        return ['productDetail'];
+      }
+      return ['home'];
+    } catch {
+      return ['home'];
+    }
+  });
 
   // Modals & toast state
   const [isSpecModalOpen, setIsSpecModalOpen] = useState(false);
@@ -104,7 +197,14 @@ export default function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isEnvironmentModalOpen, setIsEnvironmentModalOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [isLegalCenterOpen, setIsLegalCenterOpen] = useState(false);
+  const [legalInitialTab, setLegalInitialTab] = useState<string>('overview');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const toastTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+  }, []);
 
   // Synchronous modal tracker ref for browser popstate
   const activeModalsRef = React.useRef({
@@ -113,22 +213,37 @@ export default function App() {
     auth: false,
     env: false,
     privacy: false,
+    legal: false,
   });
+  // Listen for Footer legal center open (L-08..L-20 Fix)
+  React.useEffect(() => {
+    const onOpenLegal = (e: Event) => {
+      const tab = (e as CustomEvent).detail || 'overview';
+      setLegalInitialTab(tab);
+      setIsLegalCenterOpen(true);
+      activeModalsRef.current.legal = true;
+    };
+    window.addEventListener('open-legal-center', onOpenLegal);
+    return () => window.removeEventListener('open-legal-center', onOpenLegal);
+  }, []);
 
   const showToast = (msg: string) => {
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
     setToastMessage(msg);
-    setTimeout(() => {
+    toastTimeoutRef.current = setTimeout(() => {
       setToastMessage(null);
+      toastTimeoutRef.current = null;
     }, 3500);
   };
 
   const closeAllModalsDirectly = () => {
-    activeModalsRef.current = { spec: false, save: false, auth: false, env: false, privacy: false };
+    activeModalsRef.current = { spec: false, save: false, auth: false, env: false, privacy: false, legal: false };
     setIsSpecModalOpen(false);
     setIsSaveModalOpen(false);
     setIsAuthModalOpen(false);
     setIsEnvironmentModalOpen(false);
     setIsPrivacyModalOpen(false);
+    setIsLegalCenterOpen(false);
   };
 
   const handleOpenSpecModal = () => {
@@ -162,6 +277,12 @@ export default function App() {
       window.history.back();
     }
   };
+
+  useEffect(() => {
+    const open = () => setIsAuthModalOpen(true);
+    window.addEventListener('sham-require-auth', open);
+    return () => window.removeEventListener('sham-require-auth', open);
+  }, []);
 
   const handleOpenAuthModal = () => {
     activeModalsRef.current.auth = true;
@@ -211,8 +332,10 @@ export default function App() {
     }
   };
 
-  const navigateToTab = (tab: string, pushHistory = true) => {
-    if (tab === activeTab) {
+  const navigateToTab = (target: string, pushHistory = true) => {
+    // «store?section=cosmetics»: the tab is the part before «?», the rest stays in the address for the page to read.
+    const tab = target.split('?')[0] || 'home';
+    if (tab === activeTab && tab === target) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -222,9 +345,9 @@ export default function App() {
     if (pushHistory) {
       setHistoryStack((prev) => [...prev, tab]);
       try {
-        window.history.pushState({ tab, isAppNav: true }, '', `#${tab}`);
+        window.history.pushState({ tab, isAppNav: true }, '', `#${target}`);
       } catch (e) {
-        window.location.hash = `#${tab}`;
+        window.location.hash = `#${target}`;
       }
     }
     setActiveTab(tab);
@@ -269,6 +392,8 @@ export default function App() {
     } catch {}
 
     const handlePopState = (event: PopStateEvent) => {
+      // 0. The store's order window took or gave back its own history entry: nothing to navigate.
+      if (popBelongsToCheckout()) return;
       // 1. If any modal was open and user pressed browser Back, close the modal safely
       const hasOpenModal =
         activeModalsRef.current.spec ||
@@ -286,8 +411,11 @@ export default function App() {
       }
 
       // 2. Identify target tab
-      const hash = window.location.hash.replace('#', '');
-      const targetTab = event.state?.tab || hash || 'home';
+      const hash = window.location.hash.replace('#', '').split('?')[0];
+      const rawTarget = event.state?.tab || hash || 'home';
+      const cleanRaw = rawTarget.split('?')[0];
+      const targetTab = cleanRaw === 'formula' || cleanRaw === 'spec' ? 'concentration' : 
+                        cleanRaw === 'store' ? 'store' : cleanRaw;
 
       // 3. Double-back safety net on Home to prevent accidental browser tab close
       if (targetTab === 'home' && (!event.state || event.state.isInitial)) {
@@ -316,8 +444,20 @@ export default function App() {
     };
 
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '') || 'home';
-      setActiveTab(hash);
+      const hash = window.location.hash.replace('#', '').split('?')[0];
+      // Check for product detail page
+      const productMatch = hash.match(/^product=(\d+)$/);
+      if (productMatch) {
+        const productId = parseInt(productMatch[1]);
+        if (!isNaN(productId)) {
+          setActiveTab('productDetail');
+          setProductId(productId);
+          return;
+        }
+      }
+      const target = hash === 'formula' || hash === 'spec' ? 'concentration' : 
+                    hash === 'store' ? 'store' : (hash || 'home');
+      setActiveTab(target);
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -348,6 +488,11 @@ export default function App() {
   const [batchCode, setBatchCode] = useState('MYR-B01');
   const [formulaNotes, setFormulaNotes] = useState('تركيبة متوازنة شرقية غربية معتقة.');
   const [macerationDays, setMacerationDays] = useState(30);
+  // Values Shaheen read from a question, for calculators that keep their own inputs (remount on each link).
+  const [alcoholPreset, setAlcoholPreset] = useState<{ from?: number; to?: number; volume?: number; at: number } | null>(null);
+  const [materialSearch, setMaterialSearch] = useState<{ text: string; at: number } | null>(null);
+  // «ترشيحات من متجر شام» from Shaheen's chat: the visitor's wish, asked again in the store's «اسأل شاهين».
+  const [storeQuery, setStoreQuery] = useState<{ text: string; at: number } | null>(null);
   const [macerationStartDate, setMacerationStartDate] = useState<string>(() => new Date().toISOString().split('T')[0]);
 
   // Fragrance pyramid notes
@@ -376,49 +521,103 @@ export default function App() {
   const L = makeT(currentLang, S);
 
   // Regional Environment & Climate Adaptation State
+  // One visitor country for the whole site (#169): the store's country (their choice → edge → time zone)
+  // drives the lab environment too, so the header, calculators, store, product page and cart share a currency.
+  const [storeCountry] = useStoreCountry();
   const [currentEnvironment, setCurrentEnvironment] = useState<UserEnvironmentProfile>(() =>
-    getInitialUserEnvironment()
+    alignEnvironmentToCountry(getInitialUserEnvironment(), storeCountry)
   );
 
   // User Profile & Authentication State
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(() =>
     getCurrentUserSession().user
   );
+  const [showProfilePage, setShowProfilePage] = useState(false);
+  const [profileUser, setProfileUser] = useState<UserProfile | null>(null);
 
   // User Detailed Facility & Shipping Address State
   const [detailedAddress, setDetailedAddress] = useState<UserDetailedAddress>(() =>
     loadDetailedAddress()
   );
 
-  // Auto-detect country and language based on the country where the site was opened
   useEffect(() => {
-    // 1. Immediate sync check with synchronous detector
-    try {
-      const hasOverride = localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
-      if (!hasOverride) {
-        const syncGeo = detectUserCountryAndLanguage();
-        if (syncGeo.detectedLanguage && syncGeo.detectedLanguage !== currentLang) {
-          setCurrentLang(syncGeo.detectedLanguage);
-          saveLanguage(syncGeo.detectedLanguage);
-        }
-      }
-    } catch (e) {
-      // ignore
-    }
+    setCurrentEnvironment((prev) => alignEnvironmentToCountry(prev, storeCountry));
+  }, [storeCountry]);
 
-    // 2. High-precision Async IP-based location detection
-    detectUserLocationAsync()
-      .then((geo) => {
-        const hasOverride = localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
-        if (!hasOverride && geo.detectedLanguage && geo.detectedLanguage !== currentLang) {
-          setCurrentLang(geo.detectedLanguage);
-          saveLanguage(geo.detectedLanguage);
-          if (geo.detectedCountry) {
-            saveUserCountryCode(geo.detectedCountry.code);
+  useEffect(() => {
+    trackPlatformVisit({ section: activeTab, country: storeCountry, lang: currentLang });
+    // «خزنة فهم الزوار» (only with the visitor's consent to «التحليل»): the section he opened, his country and language.
+    setInsightsContext({ country: storeCountry, language: currentLang });
+    trackInsight('section', { section: activeTab });
+  }, [activeTab, storeCountry, currentLang]);
+
+  // Check and load shared formula from URL hash or query params
+  useEffect(() => {
+    const handleUrlFormula = () => {
+      try {
+        const hash = window.location.hash || '';
+        const search = window.location.search || '';
+        if (
+          hash.includes('d=') ||
+          hash.includes('formula=') ||
+          search.includes('formula=') ||
+          search.includes('d=')
+        ) {
+          const raw = hash.includes('d=') || hash.includes('formula=') ? hash : search;
+          const payload = decodeFormulaPayload(raw);
+          if (payload && payload.title) {
+            setFormulaTitle(payload.title);
+            if (payload.author) setFormulaAuthor(payload.author);
+            if (payload.batchCode) setBatchCode(payload.batchCode);
+            if (payload.notes) setFormulaNotes(payload.notes);
+            if (payload.macerationDays) setMacerationDays(payload.macerationDays);
+            if (payload.formulation) setFormulation(payload.formulation);
+            if (payload.pyramidNotes && payload.pyramidNotes.length > 0) {
+              setPyramidNotes(payload.pyramidNotes);
+            }
+            setActiveTab('concentration');
+            setIsSpecModalOpen(true);
+            showToast(fmt(L('toast_shared_loaded'), { title: payload.title }));
           }
         }
-      })
-      .catch(() => {});
+      } catch (err) {
+        console.error('Error loading shared formula from URL:', err);
+      }
+    };
+
+    handleUrlFormula();
+    window.addEventListener('hashchange', handleUrlFormula);
+    return () => {
+      window.removeEventListener('hashchange', handleUrlFormula);
+    };
+  }, []);
+
+  // The opening language comes from the device (getInitialLanguage -> detectEntryLanguage: time zone, browser).
+  // The network then says where the visit really comes from (a VPN changes that, never the clock): asked on entry,
+  // and again when he comes back to the tab or the network changes — so no refresh is needed. A language he picked
+  // himself always stays.
+  const langRef = React.useRef(currentLang);
+  langRef.current = currentLang;
+  useEffect(() => {
+    let live = true;
+    const refine = () => {
+      void detectEntryLanguageAsync().then((hit) => {
+        if (!hit || !live) return;
+        saveUserCountryCode(hit.countryCode);
+        followEntryCountry(hit.countryCode); // prices follow the country he is entering from now
+        let hasOverride = false;
+        try {
+          hasOverride = !!localStorage.getItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY);
+        } catch (e) {}
+        if (!hasOverride && hit.language !== langRef.current) {
+          setCurrentLang(hit.language);
+          saveLanguage(hit.language);
+        }
+      }).catch(() => {});
+    };
+    refine();
+    const stop = watchEntryCountry(refine);
+    return () => { live = false; stop(); };
   }, []);
 
   // Sync document direction and language code whenever language changes
@@ -426,15 +625,24 @@ export default function App() {
     saveLanguage(currentLang);
   }, [currentLang]);
 
+  // «المترجم الذكي»: the language agent's translations for this language load on demand, then one re-render.
+  const [, setAiPackTick] = useState(0);
+  useEffect(() => {
+    let live = true;
+    void loadAiPack(currentLang).then((fresh) => { if (fresh && live) setAiPackTick((n) => n + 1); });
+    return () => { live = false; };
+  }, [currentLang]);
+
   // Client manually requested a specific language
   const handleSelectLanguage = (lang: SupportedLanguage) => {
     try {
       localStorage.setItem(USER_LANGUAGE_MANUAL_OVERRIDE_KEY, 'true');
+      localStorage.setItem(LANGUAGE_PICKED_AT_KEY, String(Date.now())); // the newest choice sets the currency
     } catch (e) {}
     setCurrentLang(lang);
     saveLanguage(lang);
     const langInfo = SUPPORTED_LANGUAGES.find((l) => l.code === lang);
-    showToast(fmt(L('toast_lang_tpl'), { flag: langInfo?.flag || '', native: langInfo?.nativeName || lang, dir: (langInfo?.dir || 'rtl').toUpperCase() }));
+    showToast(fmt(makeT(lang, S)('toast_lang_tpl'), { flag: langInfo?.flag || '', native: langInfo?.nativeName || lang, dir: (langInfo?.dir || 'rtl').toUpperCase() }));
   };
 
   // Re-run location detection by client request
@@ -442,11 +650,12 @@ export default function App() {
     const geo = await forceRedetectLocation();
     setCurrentLang(geo.detectedLanguage);
     saveLanguage(geo.detectedLanguage);
-    showToast(fmt(L('toast_geo_tpl'), { flag: geo.detectedCountry.flag, country: pickArEn(currentLang, geo.detectedCountry.nameAr, geo.detectedCountry.nameEn).split('(')[0], lang: geo.detectedLanguage.toUpperCase() }));
+    showToast(fmt(makeT(geo.detectedLanguage, S)('toast_geo_tpl'), { flag: geo.detectedCountry.flag, country: pickArEn(geo.detectedLanguage, geo.detectedCountry.nameAr, geo.detectedCountry.nameEn).split('(')[0], lang: geo.detectedLanguage.toUpperCase() }));
   };
 
   const handleUpdateEnvironment = (profile: UserEnvironmentProfile) => {
     setCurrentEnvironment(profile);
+    if (profile.countryCode !== storeCountry) setStoreCountry(profile.countryCode, true); // the store follows the visitor's pick
     setFormulation((prev) => ({
       ...prev,
       concentrationPercent: profile.recommendedConcentrationPercent,
@@ -465,10 +674,34 @@ export default function App() {
   const handleAuthSuccess = (user: UserProfile) => {
     setCurrentUser(user);
     if (user.regionId && user.regionId !== currentEnvironment.regionId) {
-      handleUpdateEnvironment(getInitialUserEnvironment());
+      handleUpdateEnvironment(alignEnvironmentToCountry(getInitialUserEnvironment(), storeCountry));
     }
     showToast(fmt(L('toast_welcome_tpl'), { name: user.name }));
   };
+
+  const handleOpenProfilePage = (user: UserProfile) => {
+    setProfileUser(user);
+    setShowProfilePage(true);
+  };
+
+  const handleCloseProfilePage = () => {
+    setShowProfilePage(false);
+    setProfileUser(null);
+  };
+
+  // A community account (signed in from «مجتمع شام») is also the site's account, and signing out there signs out here.
+  const communitySession = { me: useSessionPick((x) => x.me), status: useSessionPick((x) => x.status) };
+  const syncCommunityUser = useCallback(() => {
+    const me = communitySession.me;
+    if (!me) return;
+    setCurrentUser((prev) => (prev?.id === me.id && prev.name === me.name && prev.avatar === (me.avatar || undefined) ? prev : saveCurrentUserProfile(profileFromMember(me))));
+  }, [communitySession.me]);
+  useEffect(() => { syncCommunityUser(); }, [syncCommunityUser]);
+  useEffect(() => {
+    if (communitySession.status === 'guest' && String(currentUser?.id || '').startsWith('u_') && !getSessionToken()) { logoutUser(); setCurrentUser(null); }
+  }, [communitySession.status, currentUser?.id]);
+  // Learning progress in «بوابتي»: sections the member opens on the site.
+  useEffect(() => trackLearning(activeTab, currentLang), [activeTab, currentLang, communitySession.status]);
 
   const handleLogout = () => {
     logoutUser();
@@ -503,6 +736,10 @@ export default function App() {
       bottleVolumeMl: formula.bottleVolumeMl || 50,
       concentrationPercent: formula.concentrationPercent,
       concentrationType: formula.concentrationType,
+      // The whole recipe, not only the oil share: alcohol strength, water and fixative too.
+      alcoholPercentage: formula.alcoholPercentage || prev.alcoholPercentage,
+      waterPercent: formula.waterPercent ?? prev.waterPercent,
+      fixativePercent: formula.fixativePercent ?? prev.fixativePercent,
     }));
     setFormulaTitle(formula.title);
     setFormulaAuthor(formula.author);
@@ -551,6 +788,7 @@ export default function App() {
     };
 
     setSavedFormulas((prev) => [newEntry, ...prev]);
+    syncRecipeToAccount(newEntry);
     showToast(fmt(L('toast_saved_lib_tpl'), { title: formula.title }));
   };
 
@@ -585,6 +823,31 @@ export default function App() {
     handleOpenSpecModal();
   };
 
+  // 6. Any calculator Shaheen linked to his answer, opened with the values from the conversation.
+  const TOOL_TABS: Record<ShaheenTool, string> = {
+    concentration: 'concentration', pyramid: 'pyramid', maceration: 'maceration_simulator', alcohol: 'alcohol',
+    costing: 'costing', raw_materials: 'raw_materials', guide: 'guide', store: 'store',
+  };
+  const handleOpenShaheenTool = (link: ToolLink) => {
+    if (link.tool === 'concentration' || link.tool === 'costing' || link.tool === 'pyramid') {
+      setFormulation((prev) => ({
+        ...prev,
+        ...(link.bottleVolumeMl !== undefined && { bottleVolumeMl: link.bottleVolumeMl }),
+        ...(link.concentrationPercent !== undefined && { concentrationPercent: link.concentrationPercent }),
+        ...(link.concentrationType && { concentrationType: link.concentrationType }),
+        ...(link.alcoholPercentage !== undefined && { alcoholPercentage: link.alcoholPercentage }),
+        ...(link.waterPercent !== undefined && { waterPercent: link.waterPercent }),
+        ...(link.fixativePercent !== undefined && { fixativePercent: link.fixativePercent }),
+      }));
+    }
+    if (link.macerationDays !== undefined) setMacerationDays(link.macerationDays);
+    if (link.tool === 'alcohol') setAlcoholPreset({ from: link.alcoholFrom, to: link.alcoholTo, volume: link.finalVolumeMl, at: Date.now() });
+    if (link.tool === 'raw_materials') setMaterialSearch({ text: link.search || '', at: Date.now() });
+    if (link.tool === 'store') setStoreQuery(link.search ? { text: link.search, at: Date.now() } : null);
+    navigateToTab(TOOL_TABS[link.tool]);
+    showToast(link.tool === 'store' ? L('toast_store') : fmt(L('toast_tool_tpl'), { tool: L(`tool_${link.tool}` as 'tool_concentration') }));
+  };
+
   // ===================== LIBRARY & WORLD RECIPES HANDLERS =====================
 
   const handleLoadFormula = (formula: SavedFormula) => {
@@ -599,20 +862,37 @@ export default function App() {
     showToast(fmt(L('toast_loaded_lab_tpl'), { title: formula.title }));
   };
 
+  // «استخدم التركيبة دي» from «مجتمع شام» (a recipe card in a post or a profile): sanitised in community/sync.ts.
+  const loadSharedRef = React.useRef<(f: SharedFormula) => void>(() => {});
+  loadSharedRef.current = (f: SharedFormula) => {
+    setFormulation((prev) => ({ ...prev, ...f.formulation }));
+    setFormulaTitle(f.title);
+    setFormulaNotes(f.notes);
+    if (f.macerationDays !== undefined) setMacerationDays(f.macerationDays);
+    if (f.pyramidNotes.length) setPyramidNotes(f.pyramidNotes);
+    navigateToTab('concentration');
+    showToast(fmt(L('toast_loaded_lab_tpl'), { title: f.title }));
+  };
+  useEffect(() => {
+    const onLoad = (e: Event) => { const f = (e as CustomEvent<SharedFormula>).detail; if (f) loadSharedRef.current(f); };
+    window.addEventListener(LOAD_FORMULA_EVENT, onLoad);
+    return () => window.removeEventListener(LOAD_FORMULA_EVENT, onLoad);
+  }, []);
+
   const handleLoadWorldFormula = (recipe: WorldPerfumeRecipe) => {
     setFormulation((prev) => ({
       ...prev,
       concentrationPercent: recipe.targetConcentration,
       concentrationType: recipe.concentrationType,
     }));
-    setFormulaTitle(pickArEn(currentLang, recipe.nameAr, recipe.nameEn));
+    setFormulaTitle(worldPerfumeStudyTitle(recipe.nameAr, currentLang));
     setFormulaAuthor(recipe.brand);
     setBatchCode('WRLD-' + recipe.id.slice(0, 5).toUpperCase());
-    setFormulaNotes(`${recipe.descriptionAr}\n${L('expert_tip_lbl')} ${recipe.compoundingTips}`);
+    setFormulaNotes(`${recipe.descriptionAr}\n${L('expert_tip_lbl')} ${recipe.compoundingTips}\n\n${worldPerfumeStudyDisclaimer(currentLang)}`);
     setMacerationDays(recipe.macerationDays);
     setPyramidNotes(recipe.pyramidNotes);
     navigateToTab('concentration');
-    showToast(fmt(L('toast_loaded_world_tpl'), { title: pickArEn(currentLang, recipe.nameAr, recipe.nameEn) }));
+    showToast(fmt(L('toast_loaded_world_tpl'), { title: worldPerfumeStudyTitle(recipe.nameAr, currentLang) }));
   };
 
   const handlePrintWorldFormula = (recipe: WorldPerfumeRecipe) => {
@@ -621,10 +901,10 @@ export default function App() {
       concentrationPercent: recipe.targetConcentration,
       concentrationType: recipe.concentrationType,
     }));
-    setFormulaTitle(recipe.nameAr);
+    setFormulaTitle(worldPerfumeStudyTitle(recipe.nameAr, currentLang));
     setFormulaAuthor(recipe.brand);
     setBatchCode('WRLD-' + recipe.id.slice(0, 5).toUpperCase());
-    setFormulaNotes(recipe.descriptionAr);
+    setFormulaNotes(`${recipe.descriptionAr}\n\n${worldPerfumeStudyDisclaimer(currentLang)}`);
     setMacerationDays(recipe.macerationDays);
     setPyramidNotes(recipe.pyramidNotes);
     handleOpenSpecModal();
@@ -650,6 +930,7 @@ export default function App() {
     };
 
     setSavedFormulas((prev) => [newFormula, ...prev]);
+    syncRecipeToAccount(newFormula);
     handleCloseSaveModal();
     showToast(fmt(L('toast_formula_saved_tpl'), { title: newFormula.title }));
   };
@@ -674,13 +955,8 @@ export default function App() {
     <LanguageProvider initialLang={currentLang} onLanguageChange={handleSelectLanguage}>
       <div className="min-h-screen flex flex-col bg-stone-50 text-stone-900 selection:bg-amber-200">
         
-        {/* Toast Notification */}
-        {toastMessage && (
-          <div className="fixed bottom-6 left-6 z-50 bg-stone-900 text-white px-5 py-3.5 rounded-2xl shadow-xl border border-stone-800 text-xs font-semibold flex items-center gap-2.5 animate-in fade-in slide-in-from-bottom-3">
-            <Check className="w-4 h-4 text-emerald-400" />
-            <span>{toastMessage}</span>
-          </div>
-        )}
+        {/* Non-blocking, screen-reader-announced status below the sticky header. */}
+        <ToastNotification message={toastMessage} />
 
         {/* Top Header */}
         <Header
@@ -696,7 +972,20 @@ export default function App() {
           currentEnvironment={currentEnvironment}
           onOpenEnvironmentModal={handleOpenEnvironmentModal}
           onOpenPrivacyModal={handleOpenPrivacyModal}
+          onOpenProfilePage={() => currentUser && (getSessionToken() ? navigateToTab('community/me') : handleOpenProfilePage(currentUser))}
         />
+
+        {activeTab === 'home' && <VisitorLocalDashboard currentLang={currentLang} />}
+
+        {/* Store Promo Hub: promotional banner with store deals.
+            Not on «مجتمع شام»: a social feed opens straight on the feed (the banner took a whole screen there,
+            two on phones, and fetched the catalogue + dozens of product photos nobody was looking at). */}
+        {!(activeTab === 'community' || activeTab.startsWith('community/')) && (
+          <TopPromoHub
+            currentLang={currentLang}
+            onViewStore={() => navigateToTab('store')}
+          />
+        )}
 
         {/* Hero Showcase (only shown when in concentration tab or home) */}
         {activeTab === 'concentration' && (
@@ -725,7 +1014,23 @@ export default function App() {
             onOpenPrintModal={handleOpenSpecModal}
           />
 
-          {activeTab === 'home' && (
+          {/* The home page mixes the two sections; «العطور» opens the perfume hub on its own. */}
+          {activeTab === 'home' && <SectionsGateway currentLang={currentLang} onNavigate={(tabId) => navigateToTab(tabId)} />}
+
+          {activeTab === 'cosmetics' && (
+            <Suspense fallback={<div className="py-16 text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto text-rose-700" /></div>}>
+              <CosmeticsHub currentLang={currentLang} onNavigate={(tabId) => navigateToTab(tabId)} />
+            </Suspense>
+          )}
+
+          {/* «قسم المصممين»: the designer's journal + full simulation, in the perfume and the cosmetics sections. */}
+          {(activeTab === 'perfume_designers' || activeTab === 'cosmetic_designers') && (
+            <Suspense fallback={<div className="py-16 text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto text-amber-700" /></div>}>
+              <DesignersStudio key={activeTab} kind={activeTab === 'perfume_designers' ? 'perfume' : 'cosmetic'} currentLang={currentLang} onNavigate={(tabId) => navigateToTab(tabId)} />
+            </Suspense>
+          )}
+
+          {(activeTab === 'home' || activeTab === 'perfumes') && (
             <HomeHub
               onNavigate={(tabId) => navigateToTab(tabId)}
               currentLang={currentLang}
@@ -768,8 +1073,31 @@ export default function App() {
         )}
 
         {activeTab === 'world_perfumes' && (
+          <>
+          <BookLibrary currentLang={currentLang} />
           <WorldPerfumesLibrary
             currentLang={currentLang}
+            onLoadWorldFormula={handleLoadWorldFormula}
+            onPrintWorldFormula={handlePrintWorldFormula}
+          />
+          </>
+        )}
+
+        {activeTab === 'molecule_studio' && (
+          <MoleculeStudio
+            currentLang={currentLang}
+            formulation={formulation}
+            pyramidNotes={pyramidNotes}
+            setPyramidNotes={setPyramidNotes}
+            result={calculationResult}
+            formulaTitle={formulaTitle}
+            batchCode={batchCode}
+            macerationDays={macerationDays}
+            setMacerationDays={setMacerationDays}
+            macerationStartDate={macerationStartDate}
+            setMacerationStartDate={setMacerationStartDate}
+            onOpenSpecModal={handleOpenSpecModal}
+            onNavigateToTab={(tab) => navigateToTab(tab)}
             onLoadWorldFormula={handleLoadWorldFormula}
             onPrintWorldFormula={handlePrintWorldFormula}
           />
@@ -777,7 +1105,9 @@ export default function App() {
 
         {activeTab === 'raw_materials' && (
           <RawMaterialsEncyclopedia
+            key={materialSearch?.at ?? 'default'}
             currentLang={currentLang}
+            initialSearch={materialSearch?.text}
             onAddMaterialToPyramid={handleAddMaterialToPyramid}
           />
         )}
@@ -793,7 +1123,13 @@ export default function App() {
         )}
 
         {activeTab === 'alcohol' && (
-          <AlcoholDilutionCalculator currentLang={currentLang} />
+          <AlcoholDilutionCalculator
+            key={alcoholPreset?.at ?? 'default'}
+            currentLang={currentLang}
+            initialFrom={alcoholPreset?.from}
+            initialTarget={alcoholPreset?.to}
+            initialVolumeMl={alcoholPreset?.volume}
+          />
         )}
 
         {activeTab === 'costing' && (
@@ -815,6 +1151,14 @@ export default function App() {
           />
         )}
 
+        {activeTab === 'workspace' && (
+          <ErrorBoundary area="workspace" compact ar={currentLang === 'ar'}>
+            <Suspense fallback={<div className="py-16 text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto text-amber-700" /></div>}>
+              <ShaheenWorkspace currentLang={currentLang} />
+            </Suspense>
+          </ErrorBoundary>
+        )}
+
         {activeTab === 'master_ai' && (
           <PerfumerMasterLabView
             currentLang={currentLang}
@@ -823,6 +1167,7 @@ export default function App() {
             onRecordToRecipeLibrary={handleRecordToRecipeLibrary}
             onCalculateCosting={handleCalculateCosting}
             onPrintSpecSheet={handlePrintSpecSheetForFormula}
+            onOpenTool={handleOpenShaheenTool}
           />
         )}
 
@@ -854,6 +1199,35 @@ export default function App() {
             />
           </div>
         )}
+
+        {(activeTab === 'community' || activeTab.startsWith('community/')) && (
+          <ErrorBoundary key={activeTab} area="community" compact ar={currentLang === 'ar'}>
+            <Suspense fallback={<div className="py-24 text-center text-sm text-stone-500">…</div>}>
+              <CommunityApp lang={currentLang} route={activeTab.slice('community/'.length)} navigate={navigateToTab} onSignedIn={syncCommunityUser} />
+            </Suspense>
+          </ErrorBoundary>
+        )}
+
+        {activeTab === 'store' && (
+          <Storefront
+            onClose={() => navigateToTab('home')}
+            currentLang={currentLang}
+            retailerId={isVerifiedCustomer(currentUser) ? currentUser?.id : undefined}
+            signedIn={isVerifiedCustomer(currentUser)}
+            onRequireAuth={handleOpenAuthModal}
+            shaheenQuery={storeQuery}
+          />
+        )}
+
+        {activeTab === 'productDetail' && productId && (
+          <ProductDetail
+            productId={productId}
+            currentLang={currentLang}
+            signedIn={isVerifiedCustomer(currentUser)}
+            onRequireAuth={handleOpenAuthModal}
+            onClose={() => navigateToTab('store')}
+          />
+        )}
       </main>
 
       {/* Floating Interactive Master Perfumer AI Chatbot with Transfer Bridge */}
@@ -864,13 +1238,23 @@ export default function App() {
         onRecordToRecipeLibrary={handleRecordToRecipeLibrary}
         onCalculateCosting={handleCalculateCosting}
         onPrintSpecSheet={handlePrintSpecSheetForFormula}
+        onOpenTool={handleOpenShaheenTool}
+        hidden={activeTab === 'master_ai' || activeTab === 'workspace'}
       />
+
+      {/* Sham Core services assistant: orders, store, bespoke, B2B, support (opposite corner to Shaheen) */}
+      <ShamAssistant currentLang={currentLang} />
+
+      {/* «مجلس المتخصصين»: استشارة علوم شاهين في أي قسم وفي أي وقت (وسط الشاشة السفلي) */}
+      <SpecialistsHub section={activeTab} lang={currentLang} />
+
+      {/* «الأيقونات العائمة»: شريط جانبي يظهر بس لما أيقونة تتخفي أو تتحرك — يرجّعها أو يرجّع أماكنها */}
+      <FloatingDockManager lang={currentLang} />
 
       {/* Footer */}
       <Footer
         setActiveTab={(tab) => navigateToTab(tab)}
         currentLang={currentLang}
-        onSelectLanguage={handleSelectLanguage}
       />
 
       {/* Save Formula Modal */}
@@ -939,12 +1323,13 @@ export default function App() {
                 <label className="font-semibold text-stone-800 block mb-1">
                   {L('lbl_maceration')}
                 </label>
-                <input
-                  type="number"
-                  min="1"
-                  max="365"
+                <LocalizedNumberInput
+                  lang={currentLang}
+                  integer
+                  min={1}
+                  max={365}
                   value={macerationDays}
-                  onChange={(e) => setMacerationDays(parseInt(e.target.value) || 30)}
+                  onValue={(n) => setMacerationDays(Math.trunc(n) || 30)}
                   className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono-numbers text-stone-900 focus:outline-none focus:border-amber-700"
                 />
               </div>
@@ -998,6 +1383,17 @@ export default function App() {
         />
       )}
 
+      {/* User Profile Page */}
+      {showProfilePage && profileUser && (
+        <UserProfilePage
+          user={profileUser}
+          currentLang={currentLang}
+          isAdmin={false}
+          onLogout={handleLogout}
+          onClose={handleCloseProfilePage}
+        />
+      )}
+
       {/* User Authentication & Account Modal */}
       {isAuthModalOpen && (
         <AuthModal
@@ -1038,6 +1434,21 @@ export default function App() {
           onClose={handleClosePrivacyModal}
         />
       )}
+
+      {/* Legal Center — L-08..L-20, L-37 Fix: شامل الشروط والخصوصية وUN1266 وAI */}
+      {isLegalCenterOpen && (
+        <LegalCenter
+          currentLang={currentLang}
+          initialTab={legalInitialTab as any}
+          onClose={() => {
+            activeModalsRef.current.legal = false;
+            setIsLegalCenterOpen(false);
+          }}
+        />
+      )}
+
+      {/* Cookie Consent Banner — L-12 Fix: GDPR/ePrivacy consent */}
+      <CookieConsent currentLang={currentLang} onOpenPolicy={() => { setLegalInitialTab('cookies'); setIsLegalCenterOpen(true); activeModalsRef.current.legal = true; }} />
 
       </div>
     </LanguageProvider>

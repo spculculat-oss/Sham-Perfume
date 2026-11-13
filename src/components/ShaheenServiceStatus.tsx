@@ -1,56 +1,144 @@
 import type { SupportedLanguage } from '../types/i18n';
 import { ApiError, isStaticHosting } from '../utils/api';
-import { loc } from '../utils/localize';
-import { API_ERROR_NOTICE } from './StaticHostingNotice';
+import { loc, type LText } from '../لغات/localize';
+import type { ShaheenEngine } from '../hooks/useShaheenModels';
+import { visibleEngines } from './shaheenEngines';
 
-const NO_KEY = {
-  ar: 'شاهين غير متصل: لا يوجد مفتاح خدمة للمحرك المطلوب. أضف مفتاحاً صالحاً في إعدادات الخادم. لا تكتب المفتاح في المحادثة.',
-  en: 'Shahin is not connected: the requested provider has no API key. Configure a valid key on the server. Never paste keys into chat.',
+const NO_KEY: LText = {
+  ar: 'الخبير شاهين غير متاح الآن. جرّب بعد قليل، أو استخدم «مساعد شام» للطلبات والدعم. لا تكتب أي بيانات سرية في المحادثة.',
+  en: 'Master Shahin is not available right now. Try again shortly, or use the Sham assistant for orders and support. Never share secrets in chat.',
+  fr: 'Maître Shahin est indisponible pour le moment. Réessayez bientôt ou utilisez l’assistant Sham.',
+  es: 'El Maestro Shahin no está disponible ahora. Inténtalo en breve o usa el asistente de Sham.',
+  it: 'Il Maestro Shahin non è disponibile ora. Riprova tra poco o usa l’assistente Sham.',
+  de: 'Meister Shahin ist gerade nicht verfügbar. Versuchen Sie es gleich erneut oder nutzen Sie den Sham-Assistenten.',
+  ru: 'Мастер Шахин сейчас недоступен. Попробуйте позже или воспользуйтесь помощником Sham.',
+  zh: 'Shahin 大师暂时无法使用。请稍后再试，或使用 Sham 助手。',
+  tr: 'Usta Shahin şu anda kullanılamıyor. Biraz sonra tekrar deneyin veya Sham asistanını kullanın.',
+  fa: 'استاد شاهین اکنون در دسترس نیست. کمی بعد دوباره امتحان کنید یا از دستیار شام استفاده کنید.',
 };
-const TIMEOUT = {
-  ar: 'انتهت مهلة الاتصال بشاهين. لم يصل رد من الخدمة. أعد إرسال سؤالك للمحاولة مجدداً.',
-  en: 'Shahin’s request timed out without an answer. Send your question again to retry.',
+const ENGINE_NO_KEY: LText = {
+  ar: 'هذا الوضع غير متاح الآن. اختر «تلقائي» ليجيبك شاهين بأي طريقة متاحة.',
+  en: 'This mode is not available right now. Choose “Auto” and Shahin will answer any way it can.',
+  fr: 'Ce mode n’est pas disponible. Choisissez « Auto ».', es: 'Este modo no está disponible ahora. Elige «Automático».',
+  it: 'Questa modalità non è disponibile ora. Scegli «Automatico».', de: 'Dieser Modus ist gerade nicht verfügbar. Wählen Sie „Automatisch“.',
+  ru: 'Этот режим сейчас недоступен. Выберите «Авто».', zh: '该模式暂不可用，请选择“自动”。',
+  tr: 'Bu mod şu anda kullanılamıyor. “Otomatik”i seçin.', fa: 'این حالت اکنون در دسترس نیست. «خودکار» را انتخاب کنید.',
 };
+const COUNCIL_OFF: LText = {
+  ar: 'مجلس الخبراء غير متاح الآن. جرّب «تحليل معمّق» للحصول على إجابة مفصّلة.',
+  en: 'The expert council is not available right now. Try “In-depth” for a detailed answer.',
+  fr: 'Le conseil d’experts est indisponible. Essayez « Analyse approfondie ».', es: 'El consejo de expertos no está disponible. Prueba «Análisis a fondo».',
+  it: 'Il consiglio di esperti non è disponibile. Prova «Analisi approfondita».', de: 'Der Expertenrat ist nicht verfügbar. Versuchen Sie „Tiefenanalyse“.',
+  ru: 'Совет экспертов недоступен. Попробуйте «Глубокий анализ».', zh: '专家委员会暂不可用，请尝试“深度分析”。',
+  tr: 'Uzmanlar kurulu şu anda kullanılamıyor. “Derin analiz”i deneyin.', fa: 'شورای خبرگان در دسترس نیست. «تحلیل عمیق» را امتحان کنید.',
+};
+const DISABLED: LText = {
+  ar: 'الخبير شاهين متوقف مؤقتاً من إدارة الموقع. جرّب لاحقاً، أو استخدم «مساعد شام» للطلبات والدعم.',
+  en: 'Master Shahin is temporarily turned off by the site administration. Try later, or use the Sham assistant for orders and support.',
+};
+const TIMEOUT: LText = {
+  ar: 'انتهت مهلة الرد قبل أن يكمل شاهين إجابته. أعد المحاولة، وإذا تكرر جرّب سؤالاً أقصر.',
+  en: 'Shahin’s answer timed out. Try again, and if it repeats, ask a shorter question.',
+};
+const UNAVAILABLE: LText = {
+  ar: 'لم يتمكن شاهين من إكمال الرد الآن (الخدمة مشغولة). أعد المحاولة بعد قليل أو اختر «تلقائي».',
+  en: 'Shahin could not finish the answer right now (the service is busy). Retry shortly or choose “Auto”.',
+};
+const BUSY_WAIT: LText = {
+  ar: 'شاهين يرد الآن على عدد كبير من الزوار — سؤالك في الدور وسيصلك الرد تلقائياً خلال لحظات.',
+  en: 'Shaheen is answering many visitors right now — your question is in line and the reply will arrive by itself shortly.',
+  fr: 'Shaheen répond à de nombreux visiteurs en ce moment — votre question est en file et la réponse arrivera d’elle-même.',
+  es: 'Shaheen está atendiendo a muchos visitantes — tu pregunta está en cola y la respuesta llegará sola en breve.',
+  it: 'Shaheen sta rispondendo a molti visitatori — la tua domanda è in coda e la risposta arriverà da sola a breve.',
+  de: 'Shaheen beantwortet gerade viele Besucher — Ihre Frage ist in der Warteschlange, die Antwort kommt gleich von selbst.',
+  ru: 'Шахин сейчас отвечает многим посетителям — ваш вопрос в очереди, ответ придёт автоматически.',
+  zh: 'Shaheen 正在同时回答许多访客——您的问题已在排队，回复将很快自动送达。',
+  tr: 'Shaheen şu anda çok sayıda ziyaretçiye yanıt veriyor — sorunuz sırada, yanıt birazdan kendiliğinden gelecek.',
+  fa: 'شاهین هم‌اکنون به بازدیدکنندگان زیادی پاسخ می‌دهد — پرسش شما در نوبت است و پاسخ به‌زودی خودکار می‌رسد.',
+};
+const BUSY_GAVE_UP: LText = {
+  ar: 'الضغط على شاهين كبير جداً الآن بسبب عدد الزوار. أعد المحاولة بعد دقيقة.',
+  en: 'Shaheen is very busy right now because of the number of visitors. Please retry in a minute.',
+};
+/** Shown inside the "preparing the answer" bubble while the store waits in line by itself. */
+export const busyNoteText = (language: SupportedLanguage) => loc(language, BUSY_WAIT);
+
+const RATE: LText = {
+  ar: 'أرسلت رسائل كثيرة خلال دقيقة. انتظر قليلاً ثم أعد المحاولة.',
+  en: 'Too many messages in a minute. Wait a moment, then retry.',
+};
+const NETWORK: LText = {
+  ar: 'تعذّر الوصول إلى خادم شاهين. تأكد من اتصالك بالإنترنت ثم أعد المحاولة.',
+  en: 'Could not reach Shahin’s server. Check your internet connection and retry.',
+};
+const INVALID: LText = {
+  ar: 'تعذّر إرسال الرسالة بهذا الشكل. اختصر الرسالة أو امسح المحادثة ثم أعد المحاولة.',
+  en: 'The message could not be sent as is. Shorten it or clear the chat, then retry.',
+};
+const GENERIC: LText = {
+  ar: 'حدث خطأ غير متوقع في خدمة شاهين، ولم يُنشأ رد. أعد المحاولة بعد قليل.',
+  en: 'Shahin’s service hit an unexpected error and no answer was created. Please retry shortly.',
+};
+
+/** A precise, actionable message per failure (never a generic “server or news” text). */
 export function chatErrorText(language: SupportedLanguage, error: unknown) {
   if (error instanceof ApiError) {
-    const notices: Record<string, { ar: string; en: string }> = {
-      PROVIDER_RATE_LIMITED: { ar: 'وصل مزوّد الذكاء الاصطناعي لحد الاستخدام أو الحصة. راجع حدود المشروع عند المزود وانتظر تجددها؛ تغيير المفتاح داخل نفس المشروع لا يجدد الحصة.', en: 'Provider rate/quota limit reached. Check your project limits; a new key in the same project does not reset quota.' },
-      PROVIDER_AUTH_FAILED: { ar: 'المزوّد رفض الوصول. راجع صلاحية المفتاح وقيود المشروع على الخادم، ثم أعد النشر عند تغييره.', en: 'Provider denied access. Check server credentials and project restrictions; redeploy after changing them.' },
-      PROVIDER_MODEL_UNAVAILABLE: { ar: 'موديل الذكاء الاصطناعي غير متاح لهذا الإعداد. راجع معرف الموديل في إعدادات الخادم.', en: 'Model unavailable. Check the server model identifier and account access.' },
-      AGENT_INVALID_RESPONSE: { ar: 'لم يكمل الوكيل المهمة ضمن حدود الخطوات أو أعاد صيغة غير صالحة. لم يُدّع تنفيذ خطوات إضافية؛ جرّب مهمة أصغر أو المحادثة العادية.', en: 'Agent returned an invalid action or exceeded its step budget. Try a smaller task or normal chat.' },
-      INVALID_AGENT_REQUEST: { ar: 'مرفقات الوكيل أو خياراته غير صالحة. استخدم حتى 3 ملفات نصية بإجمالي 12000 حرف.', en: 'Invalid agent options or attachments. Use up to 3 text files totaling 12000 characters.' },
-      PROVIDER_UNAVAILABLE: { ar: 'المزوّد لم يُرجع إجابة صالحة. وجود المفتاح لا يضمن توفر الخدمة. جرّب لاحقاً أو اختر مزوّداً آخر مهيأً.', en: 'Provider did not return a valid answer. A configured key does not guarantee availability. Try later or another configured provider.' },
+    const agentNotices: Record<string, { ar: string; en: string }> = {
+      PROVIDER_RATE_LIMITED: { ar: 'وصلت خدمة الذكاء الاصطناعي لحد الاستخدام أو الحصة؛ راجع حدود المشروع وانتظر تجددها. تغيير المفتاح في نفس المشروع لا يجدد الحصة.', en: 'AI quota or rate limit reached. Check your project limits; a new key in the same project does not reset quota.' },
+      PROVIDER_AUTH_FAILED: { ar: 'رفضت الخدمة الوصول. راجع إعدادات الوصول على الخادم.', en: 'AI service denied access. Check server credentials and project restrictions.' },
+      PROVIDER_MODEL_UNAVAILABLE: { ar: 'إعداد النموذج غير متاح حالياً. راجع إعدادات الخادم.', en: 'Configured model unavailable. Check server settings.' },
+      INVALID_AGENT_REQUEST: { ar: 'خيارات الوكيل غير صالحة. استخدم وضع تلقائي أو سريع أو معمق، وحتى 3 ملفات نصية بإجمالي 12000 حرف.', en: 'Invalid agent options. Use auto, fast or deep and up to 3 text files totaling 12000 characters.' },
+      AGENT_INVALID_RESPONSE: { ar: 'لم يكمل الوكيل المهمة ضمن حدود الخطوات أو أعاد صيغة غير صالحة. جرّب مهمة أصغر أو المحادثة العادية.', en: 'Agent returned an invalid action or exceeded its step budget. Try a smaller task or normal chat.' },
     };
-    if (error.code && notices[error.code]) return loc(language, notices[error.code]);
+    if (error.code && agentNotices[error.code]) return loc(language, agentNotices[error.code]);
+    if (error.code === 'SHAHEEN_DISABLED') return loc(language, DISABLED);
+    if (error.code === 'PROVIDER_NOT_CONFIGURED') return loc(language, NO_KEY);
+    if (error.code === 'PROVIDER_UNAVAILABLE') return loc(language, UNAVAILABLE);
+    if (error.code === 'COUNCIL_UNAVAILABLE') return loc(language, COUNCIL_OFF);
+    if (error.code === 'SHAHEEN_BUSY') return loc(language, BUSY_GAVE_UP);
+    if (error.status === 429) return loc(language, RATE);
+    if (error.status === 504 || error.code === 'PROVIDER_TIMEOUT') return loc(language, TIMEOUT);
+    if (error.status === 400) return loc(language, INVALID);
+    return loc(language, GENERIC);
   }
-  if (error instanceof ApiError && error.code === 'PROVIDER_NOT_CONFIGURED') return loc(language, NO_KEY);
-  if ((error instanceof ApiError && error.status === 504) || (error instanceof DOMException && error.name === 'TimeoutError')) {
-    return loc(language, TIMEOUT);
-  }
-  return loc(language, API_ERROR_NOTICE);
-}
-export function ShaheenServiceStatus({ language, models, failed }: {
-  language: SupportedLanguage; models: { id: string; hasApiKey: boolean }[] | null; failed: boolean;
-}) {
-  if (isStaticHosting || (models?.some((model) => model.hasApiKey) && !failed)) return null;
-  const text = failed ? loc(language, API_ERROR_NOTICE) : models ? loc(language, NO_KEY) : loc(language, {
-    ar: 'جارٍ التحقق من إعداد خدمة شاهين…', en: 'Checking Shahin’s service configuration…',
-  });
-  return <p role="status" className="shrink-0 rounded-xl border border-amber-300 bg-amber-50 p-3 text-xs leading-relaxed text-amber-950">{text}</p>;
+  if (error instanceof DOMException && error.name === 'TimeoutError') return loc(language, TIMEOUT);
+  if (error instanceof TypeError) return loc(language, NETWORK); // fetch() network / CORS failure
+  return loc(language, GENERIC);
 }
 
-export function ShaheenProviderMatrix({ language, models }: {
-  language: SupportedLanguage; models: { id: string; hasApiKey: boolean }[] | null;
+/** Banner above the chat. Hidden when everything is fine (or on a static build with its own notice). */
+export function ShaheenServiceStatus({ language, models, failed, enabled = true, selected = 'auto' }: {
+  language: SupportedLanguage; models: { id: string; hasApiKey: boolean }[] | null; failed: boolean;
+  enabled?: boolean; selected?: string;
 }) {
-  const labels = { gemini: 'Google Gemini', deepseek: 'DeepSeek', openai: 'OpenAI', claude: 'Anthropic Claude' };
+  if (isStaticHosting || !models && !failed) return null;
+  let text: string | null = null;
+  if (failed) text = loc(language, NETWORK);
+  else if (!enabled) text = loc(language, DISABLED);
+  else if (!models?.some((m) => m.hasApiKey)) text = loc(language, NO_KEY);
+  else if (selected !== 'auto' && !models.find((m) => m.id === selected)?.hasApiKey) text = loc(language, ENGINE_NO_KEY);
+  if (!text) return null;
+  return <p role="status" className="shrink-0 border-b border-amber-300 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-950">{text}</p>;
+}
+
+/** Shaheen's response modes and whether each can answer now (no engine or vendor names). */
+export function ShaheenModesPanel({ language, models }: { language: SupportedLanguage; models: ShaheenEngine[] | null }) {
+  if (!models) {
+    return <p className="text-xs text-stone-400">{loc(language, { ar: 'جارٍ التحقق من الأوضاع المتاحة…', en: 'Checking available modes…' })}</p>;
+  }
+  const modes = visibleEngines(models.map((m) => ({ ...m, hasApiKey: true })), language);
   return <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-    {Object.entries(labels).map(([id, name]) => {
-      const configured = !isStaticHosting && models?.find((model) => model.id === id)?.hasApiKey;
-      return <div key={id} className="rounded-xl border border-stone-700 bg-stone-950 p-2">
-        <div className="font-bold text-stone-200">{name}</div>
-        <div className={configured ? 'text-emerald-300' : 'text-stone-400'}>{loc(language, configured
-          ? { ar: 'المفتاح مهيأ — التوفر الفعلي يُختبر عند الإرسال', en: 'Key configured — actual availability is checked when sending' }
-          : { ar: 'غير مهيأ أو لم يتم التحقق بعد', en: 'Not configured or not checked yet' })}</div>
+    {modes.map((m) => {
+      const ready = !isStaticHosting && models.find((x) => x.id === m.id)?.hasApiKey === true;
+      return <div key={m.id} className="rounded-xl border border-stone-700 bg-stone-950 p-2">
+        <div className="flex items-center gap-1.5 font-bold text-stone-200">
+          <span className={`h-2 w-2 rounded-full ${ready ? 'bg-emerald-400' : 'bg-stone-600'}`} />
+          {m.short}
+        </div>
+        <div className="text-stone-400">{m.desc}</div>
+        <div className={ready ? 'text-emerald-300' : 'text-stone-500'}>{loc(language, ready
+          ? { ar: 'متاح الآن', en: 'Available now', fr: 'Disponible', es: 'Disponible', it: 'Disponibile', de: 'Verfügbar', ru: 'Доступно', zh: '可用', tr: 'Kullanılabilir', fa: 'در دسترس' }
+          : { ar: 'غير متاح حالياً', en: 'Not available right now', fr: 'Indisponible', es: 'No disponible', it: 'Non disponibile', de: 'Nicht verfügbar', ru: 'Недоступно', zh: '暂不可用', tr: 'Şu an kullanılamıyor', fa: 'فعلاً در دسترس نیست' })}</div>
       </div>;
     })}
   </div>;

@@ -1,3 +1,5 @@
+import { LegalDisclaimer } from './LegalDisclaimer';
+import { LocalizedNumberInput } from './LocalizedNumberInput';
 import React, { useState } from 'react';
 import {
   Layers,
@@ -14,16 +16,18 @@ import {
   BookOpen,
   ArrowRight,
   ArrowLeft,
+  Atom,
 } from 'lucide-react';
 import { CalculationResult, FormulationState, PyramidNote } from '../types/perfume';
 import { CURATED_FORMULA_PRESETS, POPULAR_NOTES_DIRECTORY } from '../data/presets';
 import { calculatePyramidBreakdown, formatNum } from '../utils/calculations';
 import { FragrancePyramidGraphic } from './FragrancePyramidGraphic';
+import { PerfumeSpraySimulator } from './PerfumeSpraySimulator';
 import { CalculatorCriteriaGuide } from './CalculatorCriteriaGuide';
 import compoundingImg from '../assets/images/perfume_lab_compounding_1791692420116.jpg';
 import { SupportedLanguage } from '../types/i18n';
-import { isRTL } from '../utils/localizedContent';
-import { LText, makeT, fmt, pickArEn } from '../utils/localize';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
 
 interface PyramidCalculatorProps {
   currentLang?: SupportedLanguage;
@@ -93,6 +97,18 @@ const S = {
     zh: '综合视图 📐',
     tr: 'Birleşik görünüm 📐',
     fa: 'نمای جامع 📐',
+  },
+  tab_spray_sim: {
+    ar: 'محاكاة رش العطر وثباته 💨',
+    en: 'Spray & Skin Simulator 💨',
+    fr: 'Simulateur spray & peau 💨',
+    es: 'Simulador spray y piel 💨',
+    it: 'Simulatore spruzzo e pelle 💨',
+    de: 'Sprüh- & Hautsimulator 💨',
+    ru: 'Симулятор распыления и кожи 💨',
+    zh: '喷雾与肌肤固着模拟 💨',
+    tr: 'Püskürtme ve cilt simülatörü 💨',
+    fa: 'شبیه‌ساز اسپری و پوست 💨',
   },
   tab_guide: {
     ar: 'شرح المعايير 📚',
@@ -619,7 +635,7 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
   setPyramidNotes,
   result,
 }) => {
-  const [viewMode, setViewMode] = useState<'graphic' | 'compounding' | 'both' | 'guide'>('graphic');
+  const [viewMode, setViewMode] = useState<'graphic' | 'compounding' | 'both' | 'guide' | 'spray_simulator'>('graphic');
   const [selectedDirectoryCategory, setSelectedDirectoryCategory] = useState<'all' | 'top' | 'heart' | 'base'>('all');
   const [newNoteName, setNewNoteName] = useState('');
   const [newNoteCategory, setNewNoteCategory] = useState<'top' | 'heart' | 'base'>('top');
@@ -755,11 +771,24 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
 
           <button
             type="button"
+            onClick={() => setViewMode('spray_simulator')}
+            className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+              viewMode === 'spray_simulator'
+                ? 'bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-sm font-bold ring-2 ring-amber-400/40'
+                : 'text-amber-800 hover:text-amber-950 font-bold bg-amber-500/15'
+            }`}
+          >
+            <Atom className="w-3.5 h-3.5 text-amber-500 animate-spin" />
+            <span>{L('tab_spray_sim')}</span>
+          </button>
+
+          <button
+            type="button"
             onClick={() => setViewMode('guide')}
             className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
               viewMode === 'guide'
                 ? 'bg-amber-900 text-white shadow-sm font-bold'
-                : 'text-amber-800 hover:text-amber-950 font-bold bg-amber-500/10'
+                : 'text-stone-600 hover:text-stone-900'
             }`}
           >
             <BookOpen className="w-3.5 h-3.5 text-amber-500" />
@@ -772,6 +801,19 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
       {viewMode === 'guide' && (
         <div className="animate-in fade-in">
           <CalculatorCriteriaGuide onClose={() => setViewMode('graphic')} />
+        </div>
+      )}
+
+      {/* Dedicated Physics Spray & Skin Evaporation Simulator View */}
+      {viewMode === 'spray_simulator' && (
+        <div className="animate-in fade-in space-y-6">
+          <PerfumeSpraySimulator
+            pyramidNotes={pyramidNotes}
+            bottleVolumeMl={formulation.bottleVolumeMl}
+            concentrationPercent={formulation.concentrationPercent}
+            result={result}
+            currentLang={currentLang}
+          />
         </div>
       )}
 
@@ -850,13 +892,12 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
 
             <div className="sm:col-span-2">
               <div className="relative">
-                <input
-                  type="number"
-                  min="1"
-                  max="100"
-                  step="1"
+                <LocalizedNumberInput
+                  lang={currentLang}
+                  min={1}
+                  max={100}
                   value={newNotePct}
-                  onChange={(e) => setNewNotePct(parseFloat(e.target.value) || 0)}
+                  onValue={(n) => setNewNotePct(n || 0)}
                   className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono-numbers text-stone-900 focus:outline-none focus:border-amber-600"
                 />
                 <span className={`absolute ${rtl ? 'left-3' : 'right-3'} top-2.5 text-xs text-stone-400`}>%</span>
@@ -1035,7 +1076,7 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
 
           {/* Compounding Visual Card */}
           <div className="rounded-2xl overflow-hidden border border-stone-200 shadow-xs relative aspect-[4/3]">
-            <img
+            <img loading="lazy" decoding="async"
               src={compoundingImg}
               alt="Laboratory Balance Compounding"
               referrerPolicy="no-referrer"
@@ -1086,13 +1127,12 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
 
               <div className="sm:col-span-2">
                 <div className="relative">
-                  <input
-                    type="number"
-                    min="1"
-                    max="100"
-                    step="1"
+                  <LocalizedNumberInput
+                    lang={currentLang}
+                    min={1}
+                    max={100}
                     value={newNotePct}
-                    onChange={(e) => setNewNotePct(parseFloat(e.target.value) || 0)}
+                    onValue={(n) => setNewNotePct(n || 0)}
                     className="w-full px-2.5 py-2 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono-numbers text-stone-900 focus:outline-none focus:border-amber-700"
                   />
                   <span className={`absolute ${rtl ? 'left-2' : 'right-2'} top-2 text-xs text-stone-400`}>%</span>
@@ -1175,15 +1215,12 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
 
                       {/* Percentage Controller */}
                       <div className="flex items-center gap-1">
-                        <input
-                          type="number"
-                          min="0"
-                          max="100"
-                          step="1"
+                        <LocalizedNumberInput
+                          lang={currentLang}
+                          min={0}
+                          max={100}
                           value={item.percentageOfOil}
-                          onChange={(e) =>
-                            handleUpdateNotePct(item.id, parseFloat(e.target.value) || 0)
-                          }
+                          onValue={(n) => handleUpdateNotePct(item.id, n || 0)}
                           className="w-14 px-2 py-1 bg-stone-50 border border-stone-200 rounded text-xs font-mono-numbers text-center text-stone-900"
                         />
                         <span className="text-[11px] text-stone-500">%</span>
@@ -1279,6 +1316,7 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
         </div>
       </div>
       )}
+      <LegalDisclaimer type="chemical" lang={currentLang} />
     </div>
   );
 };

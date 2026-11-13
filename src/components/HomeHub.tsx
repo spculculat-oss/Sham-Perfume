@@ -19,6 +19,7 @@ import {
   Layers,
   Wind,
   Atom,
+  PenLine,
   Sliders,
   Wine,
   Gauge,
@@ -52,6 +53,8 @@ import {
   CheckCircle2,
   Radio,
   SlidersHorizontal,
+  Store,
+  Gift,
 } from 'lucide-react';
 
 import heroImg from '../assets/images/hero_luxury_perfume_1791692409081.jpg';
@@ -64,11 +67,18 @@ import { FormulationState, PyramidNote, SavedFormula } from '../types/perfume';
 import { UserEnvironmentProfile } from '../utils/environmentAdapter';
 import { UserDetailedAddress } from '../types/address';
 import { UserProfile } from '../types/auth';
-import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../utils/localizedHub';
-import { LText, makeT, loc, fmt } from '../utils/localize';
-import { PORTAL_L10N, NEWS_L10N_A, NewsL10N } from '../utils/hubL10n';
-import { NEWS_L10N_B } from '../utils/hubL10n2';
-import { NEWS_L10N_C } from '../utils/hubL10n3';
+import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../لغات/localizedHub';
+import { isRTL } from '../لغات/localizedContent';
+import { LText, makeT, loc, fmt, LOCALE_MAP } from '../لغات/localize';
+import { uiLabel } from '../لغات/uiTextL10n';
+import { designersText } from '../لغات/designersL10n';
+import { loadLiveNews, relativeTime, type NewsFile } from '../utils/liveNews';
+import { PORTAL_L10N as PORTAL_L10N_BASE, NEWS_L10N_A, NewsL10N } from '../لغات/hubL10n';
+import { NEWS_L10N_B } from '../لغات/hubL10n2';
+import { NEWS_L10N_C } from '../لغات/hubL10n3';
+import { mergeHubL10n } from '../لغات/hubL10nExt';
+import { freeShippingOffer, freeShippingSentence } from '../utils/freeShipping';
+import { useStoreMoney } from '../utils/storeCheckout';
 
 interface PortalNewsItem {
   id: string;
@@ -99,46 +109,46 @@ interface PortalDefinition {
 
 
 const S = {
-  hero_badge: { ar: 'البوابة الرئيسية المتكاملة لجميع أقسام المعمل ومنصات العطور', en: 'Integrated Master Command Suite for All Laboratory & Perfume Portals', fr: 'Suite de commande intégrée pour tous les portails laboratoire & parfum', es: 'Suite de mando integrada para todos los portales de laboratorio y perfumes', it: 'Suite di comando integrata per tutti i portali laboratorio e profumi', de: 'Integrierte Master-Suite für alle Labor- und Parfümportale', ru: 'Единый командный центр всех разделов лаборатории и парфюмерии', zh: '覆盖全部实验室与香水门户的一体化指挥中心', tr: 'Tüm laboratuvar ve parfüm portalları için entegre komuta merkezi', fa: 'مرکز فرماندهی یکپارچه همه بخش‌های آزمایشگاه و پلتفرم عطر' },
-  hero_title: { ar: 'صمم عطرك مع شام', en: 'Design Your Perfume with Sham', fr: 'Créez votre parfum avec Sham', es: 'Diseña tu perfume con Sham', it: 'Crea il tuo profumo con Sham', de: 'Gestalten Sie Ihr Parfüm mit Sham', ru: 'Создайте свой аромат с Sham', zh: '与 Sham 一同设计您的香水', tr: 'Parfümünüzü Sham ile tasarlayın', fa: 'عطر خود را با شام بسازید' },
-  hero_sub: { ar: 'نوافذ احترافية حية تجمع كافة منافذ وأقسام الموقع', en: 'Live Interactive Windows Connecting All 12 Laboratory Portals', fr: 'Fenêtres interactives reliant les 12 portails du laboratoire', es: 'Ventanas interactivas que conectan los 12 portales del laboratorio', it: 'Finestre interattive che collegano i 12 portali del laboratorio', de: 'Interaktive Fenster, die alle 12 Laborportale verbinden', ru: 'Живые интерактивные окна, объединяющие все 12 порталов', zh: '连接全部 12 个实验室门户的实时互动窗口', tr: '12 laboratuvar portalını birleştiren canlı etkileşimli pencereler', fa: 'پنجره‌های تعاملی زنده که هر ۱۲ درگاه آزمایشگاه را به هم متصل می‌کنند' },
-  hero_p: { ar: 'مرحباً بك في المركز القيادي الموحد. استعرض أدناه نوافذ الأقسام الاثني عشر التفاعلية؛ حيث تتغير الأيقونات والمحتويات تلقائياً داخل كل نافذة لتعرض لك آخر الأخبار، الحسابات اللحظية، وتحديثات المعمل كأنه خبر متجدد مباشر عن كل منفذ.', en: 'Welcome to your unified command lab. Explore the 12 dynamic interactive portals below with continuous updates, real-time molecular calculations, and industry insights.', fr: 'Bienvenue dans votre laboratoire de commandement unifié. Explorez les 12 portails interactifs ci-dessous : mises à jour continues, calculs moléculaires en temps réel et analyses du secteur.', es: 'Bienvenido a tu laboratorio de mando unificado. Explora los 12 portales interactivos con actualizaciones continuas, cálculos moleculares en tiempo real y análisis del sector.', it: 'Benvenuto nel tuo laboratorio di comando unificato. Esplora i 12 portali interattivi con aggiornamenti continui, calcoli molecolari in tempo reale e analisi di settore.', de: 'Willkommen in Ihrem vereinheitlichten Kommandolabor. Entdecken Sie die 12 interaktiven Portale mit fortlaufenden Updates, Echtzeitberechnungen und Branchenanalysen.', ru: 'Добро пожаловать в единый командный центр. Изучите 12 интерактивных порталов ниже: непрерывные обновления, расчёты в реальном времени и отраслевые обзоры.', zh: '欢迎来到统一指挥实验室。下方 12 个互动门户持续更新，提供实时分子计算与行业洞察。', tr: 'Birleşik komuta laboratuvarınıza hoş geldiniz. Aşağıdaki 12 etkileşimli portal; sürekli güncellemeler, gerçek zamanlı hesaplamalar ve sektör analizleri sunar.', fa: 'به مرکز فرماندهی یکپارچه خوش آمدید. ۱۲ درگاه تعاملی زیر را کاوش کنید: به‌روزرسانی مداوم، محاسبات مولکولی لحظه‌ای و تحلیل‌های صنعت.' },
-  live_status_lbl: { ar: 'حالة التحديث:', en: 'Live Status:', fr: 'Statut :', es: 'Estado:', it: 'Stato:', de: 'Status:', ru: 'Статус:', zh: '实时状态：', tr: 'Durum:', fa: 'وضعیت به‌روزرسانی:' },
-  live_status_val: { ar: 'بث أخبار حي ومستمر', en: 'Continuous Live Feed', fr: 'Flux continu en direct', es: 'Transmisión continua en vivo', it: 'Flusso continuo in diretta', de: 'Kontinuierlicher Live-Feed', ru: 'Непрерывная живая лента', zh: '持续实时推送', tr: 'Kesintisiz canlı akış', fa: 'جریان زنده و مداوم اخبار' },
-  climate_lbl: { ar: 'البلد والمناخ:', en: 'Country & Climate:', fr: 'Pays et climat :', es: 'País y clima:', it: 'Paese e clima:', de: 'Land & Klima:', ru: 'Страна и климат:', zh: '国家与气候：', tr: 'Ülke ve iklim:', fa: 'کشور و اقلیم:' },
-  saved_lbl: { ar: 'الوصفات المحفوظة:', en: 'Saved Formulas:', fr: 'Formules enregistrées :', es: 'Fórmulas guardadas:', it: 'Formule salvate:', de: 'Gespeicherte Formeln:', ru: 'Сохранённые формулы:', zh: '已保存配方：', tr: 'Kaydedilen formüller:', fa: 'فرمول‌های ذخیره‌شده:' },
-  formulas_word: { ar: 'تركيبة', en: 'Formulas', fr: 'formules', es: 'fórmulas', it: 'formule', de: 'Formeln', ru: 'формул', zh: '个配方', tr: 'formül', fa: 'فرمول' },
-  user_lbl: { ar: 'المستخدم:', en: 'User:', fr: 'Utilisateur :', es: 'Usuario:', it: 'Utente:', de: 'Benutzer:', ru: 'Пользователь:', zh: '用户：', tr: 'Kullanıcı:', fa: 'کاربر:' },
-  guest: { ar: 'ضيف المعمل', en: 'Lab Guest', fr: 'Invité du laboratoire', es: 'Invitado del laboratorio', it: 'Ospite del laboratorio', de: 'Laborgast', ru: 'Гость лаборатории', zh: '实验室访客', tr: 'Laboratuvar konuğu', fa: 'مهمان آزمایشگاه' },
-  open_lab_calc: { ar: 'دخول حاسبة المعمل الفورية', en: 'Open Lab Calculator', fr: 'Ouvrir le calculateur', es: 'Abrir la calculadora', it: 'Apri il calcolatore', de: 'Rechner öffnen', ru: 'Открыть калькулятор', zh: '打开实验室计算器', tr: 'Hesaplayıcıyı aç', fa: 'باز کردن ماشین‌حساب آزمایشگاه' },
-  global_trends: { ar: 'أحدث أخبار العطور بالعالم', en: 'Global Fragrance Trends', fr: 'Tendances mondiales de la parfumerie', es: 'Tendencias globales del perfume', it: 'Tendenze globali del profumo', de: 'Globale Dufttrends', ru: 'Мировые тренды парфюмерии', zh: '全球香水潮流', tr: 'Küresel parfüm trendleri', fa: 'ترندهای جهانی عطر' },
-  consult_ai: { ar: 'مجلس الخبير شاهين AI', en: 'Consult Master Shahin AI', fr: 'Consulter l’IA Maître Shahin', es: 'Consultar a la IA del Maestro Shahin', it: 'Consulta l’IA del Maestro Shahin', de: 'Meister Shahin KI befragen', ru: 'Консультация ИИ мастера Шахина', zh: '咨询 Shahin 大师 AI', tr: 'Usta Shahin YZ’ye danış', fa: 'مشورت با هوش مصنوعی استاد شاهین' },
-  alt_hero: { ar: 'معمل صمم عطرك مع شام', en: 'Design Your Perfume with Sham lab', fr: 'Laboratoire — créez votre parfum avec Sham', es: 'Laboratorio — diseña tu perfume con Sham', it: 'Laboratorio — crea il tuo profumo con Sham', de: 'Labor — Gestalten Sie Ihr Parfüm mit Sham', ru: 'Лаборатория «Создай свой аромат с Sham»', zh: '与 Sham 一起设计香水的实验室', tr: 'Parfümünüzü Sham ile tasarlayın laboratuvarı', fa: 'آزمایشگاه ساخت عطر با شام' },
-  network_badge: { ar: 'شبكة منافذ منصة شام الحرفية', en: 'Sham Artisanal Portals Network', fr: 'Réseau des portails artisanaux Sham', es: 'Red de portales artesanales de Sham', it: 'Rete dei portali artigianali Sham', de: 'Sham-Portalnetzwerk für Handwerkskunst', ru: 'Сеть порталов ремесленной платформы Sham', zh: 'Sham 匠心门户网络', tr: 'Sham zanaat portal ağı', fa: 'شبکه درگاه‌های صنعتگری شام' },
-  hero_quote: { ar: '«12 منفذاً تخصصياً يجمع كل ما يحتاجه صانع العطور من الحسابات الرياضية الدقيقة إلى الأخبار العالمية وأسرار الصنعة»', en: '«12 specialized portals uniting precision compounding mathematics, world industry reports, and artisan secrets»', fr: '« 12 portails spécialisés réunissant mathématiques de précision, rapports mondiaux et secrets d’atelier »', es: '«12 portales especializados que unen matemáticas de precisión, informes mundiales y secretos artesanales»', it: '«12 portali specializzati che uniscono matematica di precisione, report mondiali e segreti artigianali»', de: '«12 spezialisierte Portale — Präzisionsmathematik, Weltberichte und Handwerksgeheimnisse»', ru: '«12 специализированных порталов: точные расчёты, мировые обзоры и секреты мастерства»', zh: '「12 个专业门户：从精密计算到全球资讯与匠艺秘诀」', tr: '«12 uzman portal: hassas hesaplamalar, dünya raporları ve zanaat sırları»', fa: '«۱۲ درگاه تخصصی: از محاسبات دقیق تا اخبار جهانی و رازهای صنعتگری»' },
-  dispatch_lbl: { ar: 'نشرة منافذ المعمل', en: 'Lab Portals Dispatch', fr: 'Dépêche des portails', es: 'Boletín de portales', it: 'Bollettino dei portali', de: 'Portal-Depesche', ru: 'Бюллетень порталов', zh: '实验室门户快讯', tr: 'Portal bülteni', fa: 'نامه اطلاعاتی درگاه‌ها' },
-  updates_every: { ar: 'تحديث دوري كل 4 ثوانٍ:', en: 'Live updates every 4s:', fr: 'Mises à jour toutes les 4 s :', es: 'Actualización cada 4 s:', it: 'Aggiornamenti ogni 4 s:', de: 'Updates alle 4 Sek.:', ru: 'Обновление каждые 4 с:', zh: '每 4 秒刷新：', tr: 'Her 4 sn’de güncelleme:', fa: 'به‌روزرسانی هر ۴ ثانیه:' },
-  pause_cycle: { ar: 'إيقاف التدوير التلقائي', en: 'Pause Auto-Cycle', fr: 'Suspendre le cycle auto', es: 'Pausar ciclo automático', it: 'Pausa ciclo automatico', de: 'Auto-Rotation pausieren', ru: 'Остановить автопрокрутку', zh: '暂停自动轮播', tr: 'Otomatik döngüyü durdur', fa: 'توقف چرخش خودکار' },
-  resume_cycle: { ar: 'تشغيل التدوير التلقائي', en: 'Resume Auto-Cycle', fr: 'Reprendre le cycle auto', es: 'Reanudar ciclo automático', it: 'Riprendi ciclo automatico', de: 'Auto-Rotation fortsetzen', ru: 'Возобновить автопрокрутку', zh: '恢复自动轮播', tr: 'Otomatik döngüyü sürdür', fa: 'ادامه چرخش خودکار' },
-  pause_feed: { ar: 'إيقاف البث', en: 'Pause Feed', fr: 'Suspendre le flux', es: 'Pausar transmisión', it: 'Pausa flusso', de: 'Feed pausieren', ru: 'Пауза', zh: '暂停推送', tr: 'Akışı durdur', fa: 'توقف پخش' },
-  resume_feed: { ar: 'تشغيل البث', en: 'Resume Feed', fr: 'Reprendre le flux', es: 'Reanudar transmisión', it: 'Riprendi flusso', de: 'Feed fortsetzen', ru: 'Продолжить', zh: '恢复推送', tr: 'Akışı sürdür', fa: 'ادامه پخش' },
-  zone3_title: { ar: 'نوافذ أقسام المعمل ومنافذ المنصة', en: 'Laboratory & Platform Portals', fr: 'Portails laboratoire & plateforme', es: 'Portales de laboratorio y plataforma', it: 'Portali laboratorio e piattaforma', de: 'Labor- & Plattformportale', ru: 'Порталы лаборатории и платформы', zh: '实验室与平台门户', tr: 'Laboratuvar ve platform portalları', fa: 'درگاه‌های آزمایشگاه و پلتفرم' },
-  portals_badge: { ar: '12 نافذة متجددة', en: '12 Live Portals', fr: '12 portails en direct', es: '12 portales en vivo', it: '12 portali in diretta', de: '12 Live-Portale', ru: '12 живых порталов', zh: '12 个实时门户', tr: '12 canlı portal', fa: '۱۲ درگاه زنده' },
-  zone3_p: { ar: 'كل نافذة تعرض أيقونات وأخباراً ومعلومات متغيرة آلياً تمثل النبض الحي لذلك القسم', en: 'Each portal dynamically displays icons, metrics, and real-time updates representing that department.', fr: 'Chaque portail affiche icônes, métriques et mises à jour en temps réel du département.', es: 'Cada portal muestra iconos, métricas y actualizaciones en tiempo real de ese departamento.', it: 'Ogni portale mostra icone, metriche e aggiornamenti in tempo reale del dipartimento.', de: 'Jedes Portal zeigt Symbole, Kennzahlen und Echtzeit-Updates der Abteilung.', ru: 'Каждый портал динамически показывает иконки, метрики и обновления своего отдела.', zh: '每个门户动态展示该部门的图标、指标与实时更新。', tr: 'Her portal; o departmanın simgelerini, ölçümlerini ve gerçek zamanlı güncellemelerini gösterir.', fa: 'هر درگاه به‌صورت پویا نمادها، شاخص‌ها و به‌روزرسانی‌های لحظه‌ای آن بخش را نمایش می‌دهد.' },
-  cat_all: { ar: 'كافة المنافذ (12)', en: 'All Portals (12)', fr: 'Tous les portails (12)', es: 'Todos los portales (12)', it: 'Tutti i portali (12)', de: 'Alle Portale (12)', ru: 'Все порталы (12)', zh: '全部门户（12）', tr: 'Tüm portallar (12)', fa: 'همه درگاه‌ها (۱۲)' },
-  cat_lab: { ar: 'المعمل والحسابات (4)', en: 'Lab & Compounding (4)', fr: 'Laboratoire & composition (4)', es: 'Laboratorio y composición (4)', it: 'Laboratorio e composizione (4)', de: 'Labor & Komposition (4)', ru: 'Лаборатория и расчёты (4)', zh: '实验室与配方（4）', tr: 'Laboratuvar ve formülasyon (4)', fa: 'آزمایشگاه و فرمولاسیون (۴)' },
-  cat_knowledge: { ar: 'المعرفة والوصفات (3)', en: 'Knowledge & Formulas (3)', fr: 'Savoir & formules (3)', es: 'Conocimiento y fórmulas (3)', it: 'Conoscenza e formule (3)', de: 'Wissen & Formeln (3)', ru: 'Знания и формулы (3)', zh: '知识与配方（3）', tr: 'Bilgi ve formüller (3)', fa: 'دانش و فرمول‌ها (۳)' },
-  cat_business: { ar: 'التجارة والمقر (2)', en: 'Business & Facility (2)', fr: 'Affaires & établissement (2)', es: 'Negocios e instalaciones (2)', it: 'Affari e sede (2)', de: 'Geschäft & Standort (2)', ru: 'Бизнес и предприятие (2)', zh: '商业与设施（2）', tr: 'İşletme ve tesis (2)', fa: 'کسب‌وکار و مرکز (۲)' },
-  cat_ai: { ar: 'الذكاء والأخبار (3)', en: 'AI & Trends (3)', fr: 'IA & tendances (3)', es: 'IA y tendencias (3)', it: 'IA e tendenze (3)', de: 'KI & Trends (3)', ru: 'ИИ и тренды (3)', zh: 'AI 与趋势（3）', tr: 'YZ ve trendler (3)', fa: 'هوش مصنوعی و ترندها (۳)' },
-  live_sync: { ar: 'متصل بالمعمل', en: 'Live Sync', fr: 'Sync en direct', es: 'Sincronización en vivo', it: 'Sincronizzazione live', de: 'Live-Sync', ru: 'Синхронизация', zh: '实时同步', tr: 'Canlı eşitleme', fa: 'همگام‌سازی زنده' },
-  prev_update: { ar: 'الخبر السابق عن المنفذ', en: 'Previous update', fr: 'Mise à jour précédente', es: 'Actualización anterior', it: 'Aggiornamento precedente', de: 'Vorheriges Update', ru: 'Предыдущее обновление', zh: '上一条更新', tr: 'Önceki güncelleme', fa: 'به‌روزرسانی قبلی' },
-  next_update: { ar: 'الخبر التالي عن المنفذ', en: 'Next update', fr: 'Mise à jour suivante', es: 'Actualización siguiente', it: 'Aggiornamento successivo', de: 'Nächstes Update', ru: 'Следующее обновление', zh: '下一条更新', tr: 'Sonraki güncelleme', fa: 'به‌روزرسانی بعدی' },
-  enter_portal: { ar: 'دخول المنفذ', en: 'Enter Portal', fr: 'Entrer dans le portail', es: 'Entrar al portal', it: 'Entra nel portale', de: 'Portal betreten', ru: 'Открыть портал', zh: '进入门户', tr: 'Portala gir', fa: 'ورود به درگاه' },
-  golden_std: { ar: 'معيار شام الذهبي لصناعة العطور الفاخرة', en: 'Sham Golden Standard for Haute Parfumerie', fr: 'Standard d’or Sham pour la haute parfumerie', es: 'Estándar dorado de Sham para la alta perfumería', it: 'Standard d’oro Sham per l’alta profumeria', de: 'Sham-Goldstandard für Haute Parfumerie', ru: 'Золотой стандарт Sham высокой парфюмерии', zh: 'Sham 高级香水黄金准则', tr: 'Yüksek parfümeri için Sham altın standardı', fa: 'استاندارد طلایی شام برای عطرسازی لوکس' },
-  zone5_quote: { ar: '«العطر ليس مجرد رائحة، بل هو ميزان كيميائي ونوتات متناغمة وهوية لا تُنسى»', en: '«A fragrance is not merely a scent; it is chemical equilibrium, harmonious notes, and an unforgettable identity»', fr: '« Un parfum n’est pas qu’une odeur : équilibre chimique, notes harmonieuses et identité inoubliable »', es: '«Un perfume no es solo un aroma: es equilibrio químico, notas armoniosas e identidad inolvidable»', it: '«Un profumo non è solo un odore: equilibrio chimico, note armoniose e identità indimenticabile»', de: '«Ein Duft ist mehr als ein Geruch: chemisches Gleichgewicht, harmonische Noten und unvergessliche Identität»', ru: '«Аромат — это не просто запах: химическое равновесие, гармония нот и незабываемая индивидуальность»', zh: '「香水不只是气味，更是化学平衡、和谐香调与难忘的身份」', tr: '«Bir koku yalnızca bir koku değil; kimyasal denge, uyumlu notalar ve unutulmaz bir kimliktir»', fa: '«عطر تنها بویی نیست؛ تعادل شیمیایی، نت‌های هماهنگ و هویتی فراموش‌نشدنی است»' },
-  zone5_p: { ar: 'استفد من الدمج بين ميزان المعمل التحليلي، حاسبة الكحول، ومكتبة الوصفات العالمية للحصول على تركيبة مطابقة لأعلى معايير الإيفرا العالمية.', en: 'Leverage the synergy between analytical scales, alcohol dilution calculators, and the iconic formula library for compliance with IFRA standards.', fr: 'Exploitez la synergie entre balances analytiques, dilution d’alcool et bibliothèque de formules pour une conformité IFRA.', es: 'Aprovecha la sinergia entre balanzas analíticas, dilución de alcohol y la biblioteca de fórmulas para cumplir las normas IFRA.', it: 'Sfrutta la sinergia tra bilance analitiche, diluizione dell’alcol e libreria di formule per la conformità IFRA.', de: 'Nutzen Sie die Synergie von Analysenwaagen, Alkoholverdünnung und Formelbibliothek für IFRA-Konformität.', ru: 'Используйте синергию аналитических весов, разбавления спирта и библиотеки формул для соответствия стандартам IFRA.', zh: '善用分析天平、酒精稀释计算器与经典配方库的协同，满足 IFRA 标准。', tr: 'Analitik teraziler, alkol seyreltme ve formül kütüphanesi sinerjisinden yararlanarak IFRA uyumluluğu sağlayın.', fa: 'از هم‌افزایی ترازوی تحلیلی، رقیق‌سازی الکل و کتابخانه فرمول‌ها برای انطباق با استانداردهای IFRA بهره ببرید.' },
-  start_new: { ar: 'بدء تصميم عطر جديد', en: 'Start New Formulation', fr: 'Nouvelle formulation', es: 'Nueva formulación', it: 'Nuova formulazione', de: 'Neue Formulierung starten', ru: 'Новая формула', zh: '开始新配方', tr: 'Yeni formülasyona başla', fa: 'شروع فرمولاسیون جدید' },
-  print_spec: { ar: 'طباعة بطاقة التصنيع', en: 'Print Manufacturing Spec Sheet', fr: 'Imprimer la fiche technique', es: 'Imprimir hoja de especificaciones', it: 'Stampa la scheda di produzione', de: 'Produktionsblatt drucken', ru: 'Печать производственной карты', zh: '打印生产规格表', tr: 'Üretim föyünü yazdır', fa: 'چاپ برگه مشخصات تولید' },
+  hero_badge: { ar: 'البوابة الرئيسية المتكاملة لجميع أقسام المعمل ومنصات العطور', en: 'Integrated Master Command Suite for All Laboratory & Perfume Portals', fr: 'Suite de commande intégrée pour tous les portails laboratoire & parfum', es: 'Suite de mando integrada para todos los portales de laboratorio y perfumes', it: 'Suite di comando integrata per tutti i portali laboratorio e profumi', de: 'Integrierte Master-Suite für alle Labor- und Parfümportale', ru: 'Единый командный центр всех разделов лаборатории и парфюмерии', zh: '覆盖全部实验室与香水门户的一体化指挥中心', tr: 'Tüm laboratuvar ve parfüm portalları için entegre komuta merkezi', fa: 'مرکز فرماندهی یکپارچه همه بخش‌های آزمایشگاه و پلتفرم عطر', is: 'Samþætt stjórnstöð fyrir allar rannsóknarstofu- og ilmvatnsgáttir', sq: 'Qendra e integruar për të gjitha portalet e laboratorit dhe parfumerisë', ps: 'د لابراتوار او عطرونو د ټولو پورټلونو یوځای شوی مرکز' },
+  hero_title: { ar: 'صمم عطرك مع شام', en: 'Design Your Perfume with Sham', fr: 'Créez votre parfum avec Sham', es: 'Diseña tu perfume con Sham', it: 'Crea il tuo profumo con Sham', de: 'Gestalten Sie Ihr Parfüm mit Sham', ru: 'Создайте свой аромат с Sham', zh: '与 Sham 一同设计您的香水', tr: 'Parfümünüzü Sham ile tasarlayın', fa: 'عطر خود را با شام بسازید', is: 'Hannaðu ilmvatnið þitt með Sham', sq: 'Dizajnoni parfumin tuaj me Sham', ps: 'خپل عطر له شام سره ډیزاین کړئ' },
+  hero_sub: { ar: 'نوافذ احترافية حية تجمع كافة منافذ وأقسام الموقع', en: 'Live Interactive Windows Connecting All 12 Laboratory Portals', fr: 'Fenêtres interactives reliant les 12 portails du laboratoire', es: 'Ventanas interactivas que conectan los 12 portales del laboratorio', it: 'Finestre interattive che collegano i 12 portali del laboratorio', de: 'Interaktive Fenster, die alle 12 Laborportale verbinden', ru: 'Живые интерактивные окна, объединяющие все 12 порталов', zh: '连接全部 12 个实验室门户的实时互动窗口', tr: '12 laboratuvar portalını birleştiren canlı etkileşimli pencereler', fa: 'پنجره‌های تعاملی زنده که هر ۱۲ درگاه آزمایشگاه را به هم متصل می‌کنند', is: 'Gagnvirkir gluggar sem tengja allar 12 rannsóknarstofugáttir', sq: 'Dritare ndërvepruese që lidhin të 12 portalet e laboratorit', ps: 'متقابلې کړکۍ چې د لابراتوار ټول ۱۲ پورټلونه سره نښلوي' },
+  hero_p: { ar: 'مرحباً بك في المركز القيادي الموحد. استعرض أدناه نوافذ الأقسام الاثني عشر التفاعلية؛ حيث تتغير الأيقونات والمحتويات تلقائياً داخل كل نافذة لتعرض لك آخر الأخبار، الحسابات اللحظية، وتحديثات المعمل كأنه خبر متجدد مباشر عن كل منفذ.', en: 'Welcome to your unified command lab. Explore the 12 dynamic interactive portals below with continuous updates, real-time molecular calculations, and industry insights.', fr: 'Bienvenue dans votre laboratoire de commandement unifié. Explorez les 12 portails interactifs ci-dessous : mises à jour continues, calculs moléculaires en temps réel et analyses du secteur.', es: 'Bienvenido a tu laboratorio de mando unificado. Explora los 12 portales interactivos con actualizaciones continuas, cálculos moleculares en tiempo real y análisis del sector.', it: 'Benvenuto nel tuo laboratorio di comando unificato. Esplora i 12 portali interattivi con aggiornamenti continui, calcoli molecolari in tempo reale e analisi di settore.', de: 'Willkommen in Ihrem vereinheitlichten Kommandolabor. Entdecken Sie die 12 interaktiven Portale mit fortlaufenden Updates, Echtzeitberechnungen und Branchenanalysen.', ru: 'Добро пожаловать в единый командный центр. Изучите 12 интерактивных порталов ниже: непрерывные обновления, расчёты в реальном времени и отраслевые обзоры.', zh: '欢迎来到统一指挥实验室。下方 12 个互动门户持续更新，提供实时分子计算与行业洞察。', tr: 'Birleşik komuta laboratuvarınıza hoş geldiniz. Aşağıdaki 12 etkileşimli portal; sürekli güncellemeler, gerçek zamanlı hesaplamalar ve sektör analizleri sunar.', fa: 'به مرکز فرماندهی یکپارچه خوش آمدید. ۱۲ درگاه تعاملی زیر را کاوش کنید: به‌روزرسانی مداوم، محاسبات مولکولی لحظه‌ای و تحلیل‌های صنعت.', is: 'Velkomin í sameinaða rannsóknarstofu. Skoðaðu 12 gagnvirkar gáttir hér að neðan með stöðugum uppfærslum, rauntímaútreikningum og innsýn úr greininni.', sq: 'Mirë se vini në laboratorin e unifikuar. Eksploroni 12 portalet ndërvepruese më poshtë me përditësime të vazhdueshme, llogaritje në kohë reale dhe analiza të industrisë.', ps: 'یوځای شوي لابراتوار ته ښه راغلاست. لاندې ۱۲ متقابل پورټلونه وګورئ چې پرله‌پسې تازه معلومات، د مالیکولي محاسبې په ژوندۍ بڼه او د صنعت شننې وړاندې کوي.' },
+  live_status_lbl: { ar: 'حالة التحديث:', en: 'Live Status:', fr: 'Statut :', es: 'Estado:', it: 'Stato:', de: 'Status:', ru: 'Статус:', zh: '实时状态：', tr: 'Durum:', fa: 'وضعیت به‌روزرسانی:', is: 'Staða í beinni:', sq: 'Gjendja në kohë reale:', ps: 'ژوندۍ وضع:' },
+  live_status_val: { ar: 'بث أخبار حي ومستمر', en: 'Continuous Live Feed', fr: 'Flux continu en direct', es: 'Transmisión continua en vivo', it: 'Flusso continuo in diretta', de: 'Kontinuierlicher Live-Feed', ru: 'Непрерывная живая лента', zh: '持续实时推送', tr: 'Kesintisiz canlı akış', fa: 'جریان زنده و مداوم اخبار', is: 'Stöðug bein útsending', sq: 'Transmetim i vazhdueshëm', ps: 'پرله‌پسې ژوندۍ خپرونه' },
+  climate_lbl: { ar: 'البلد والمناخ:', en: 'Country & Climate:', fr: 'Pays et climat :', es: 'País y clima:', it: 'Paese e clima:', de: 'Land & Klima:', ru: 'Страна и климат:', zh: '国家与气候：', tr: 'Ülke ve iklim:', fa: 'کشور و اقلیم:', is: 'Land og loftslag:', sq: 'Shteti dhe klima:', ps: 'هېواد او اقلیم:' },
+  saved_lbl: { ar: 'الوصفات المحفوظة:', en: 'Saved Formulas:', fr: 'Formules enregistrées :', es: 'Fórmulas guardadas:', it: 'Formule salvate:', de: 'Gespeicherte Formeln:', ru: 'Сохранённые формулы:', zh: '已保存配方：', tr: 'Kaydedilen formüller:', fa: 'فرمول‌های ذخیره‌شده:', is: 'Vistaðar formúlur:', sq: 'Formulat e ruajtura:', ps: 'ساتل شوي فورمولونه:' },
+  formulas_word: { ar: 'تركيبة', en: 'Formulas', fr: 'formules', es: 'fórmulas', it: 'formule', de: 'Formeln', ru: 'формул', zh: '个配方', tr: 'formül', fa: 'فرمول', is: 'formúlur', sq: 'formula', ps: 'فورمولونه' },
+  user_lbl: { ar: 'المستخدم:', en: 'User:', fr: 'Utilisateur :', es: 'Usuario:', it: 'Utente:', de: 'Benutzer:', ru: 'Пользователь:', zh: '用户：', tr: 'Kullanıcı:', fa: 'کاربر:', is: 'Notandi:', sq: 'Përdoruesi:', ps: 'کارن:' },
+  guest: { ar: 'ضيف المعمل', en: 'Lab Guest', fr: 'Invité du laboratoire', es: 'Invitado del laboratorio', it: 'Ospite del laboratorio', de: 'Laborgast', ru: 'Гость лаборатории', zh: '实验室访客', tr: 'Laboratuvar konuğu', fa: 'مهمان آزمایشگاه', is: 'Gestur rannsóknarstofu', sq: 'Vizitor i laboratorit', ps: 'د لابراتوار مېلمه' },
+  open_lab_calc: { ar: 'دخول حاسبة المعمل الفورية', en: 'Open Lab Calculator', fr: 'Ouvrir le calculateur', es: 'Abrir la calculadora', it: 'Apri il calcolatore', de: 'Rechner öffnen', ru: 'Открыть калькулятор', zh: '打开实验室计算器', tr: 'Hesaplayıcıyı aç', fa: 'باز کردن ماشین‌حساب آزمایشگاه', is: 'Opna reiknivél rannsóknarstofu', sq: 'Hap kalkulatorin e laboratorit', ps: 'د لابراتوار محاسبه پرانیزئ' },
+  global_trends: { ar: 'أحدث أخبار العطور بالعالم', en: 'Global Fragrance Trends', fr: 'Tendances mondiales de la parfumerie', es: 'Tendencias globales del perfume', it: 'Tendenze globali del profumo', de: 'Globale Dufttrends', ru: 'Мировые тренды парфюмерии', zh: '全球香水潮流', tr: 'Küresel parfüm trendleri', fa: 'ترندهای جهانی عطر', is: 'Alþjóðlegir ilmstraumar', sq: 'Prirjet globale të aromave', ps: 'د عطرو نړیوال بهیرونه' },
+  consult_ai: { ar: 'استشر الخبير شاهين', en: 'Consult Master Shahin', fr: 'Consulter Maître Shahin', es: 'Consultar al Maestro Shahin', it: 'Consulta il Maestro Shahin', de: 'Meister Shahin fragen', ru: 'Спросить мастера Шахина', zh: '咨询 Shahin 大师', tr: 'Usta Shahin’e danış', fa: 'مشورت با استاد شاهین', is: 'Ráðfærðu þig við Shahin meistara', sq: 'Konsulto Mjeshtrin Shahin', ps: 'له استاد شاهین سره مشوره وکړئ' },
+  alt_hero: { ar: 'معمل صمم عطرك مع شام', en: 'Design Your Perfume with Sham lab', fr: 'Laboratoire — créez votre parfum avec Sham', es: 'Laboratorio — diseña tu perfume con Sham', it: 'Laboratorio — crea il tuo profumo con Sham', de: 'Labor — Gestalten Sie Ihr Parfüm mit Sham', ru: 'Лаборатория «Создай свой аромат с Sham»', zh: '与 Sham 一起设计香水的实验室', tr: 'Parfümünüzü Sham ile tasarlayın laboratuvarı', fa: 'آزمایشگاه ساخت عطر با شام', is: 'Rannsóknarstofa Sham fyrir ilmvatn', sq: 'Laboratori i parfumerisë Sham', ps: 'د شام د عطرو لابراتوار' },
+  network_badge: { ar: 'شبكة منافذ منصة شام الحرفية', en: 'Sham Artisanal Portals Network', fr: 'Réseau des portails artisanaux Sham', es: 'Red de portales artesanales de Sham', it: 'Rete dei portali artigianali Sham', de: 'Sham-Portalnetzwerk für Handwerkskunst', ru: 'Сеть порталов ремесленной платформы Sham', zh: 'Sham 匠心门户网络', tr: 'Sham zanaat portal ağı', fa: 'شبکه درگاه‌های صنعتگری شام', is: 'Net gátta Sham fyrir handverksilm', sq: 'Rrjeti i portaleve artizanale Sham', ps: 'د شام د لاسي عطر جوړونې د پورټلونو شبکه' },
+  hero_quote: { ar: '«12 منفذاً تخصصياً يجمع كل ما يحتاجه صانع العطور من الحسابات الرياضية الدقيقة إلى الأخبار العالمية وأسرار الصنعة»', en: '«12 specialized portals uniting precision compounding mathematics, world industry reports, and artisan secrets»', fr: '« 12 portails spécialisés réunissant mathématiques de précision, rapports mondiaux et secrets d’atelier »', es: '«12 portales especializados que unen matemáticas de precisión, informes mundiales y secretos artesanales»', it: '«12 portali specializzati che uniscono matematica di precisione, report mondiali e segreti artigianali»', de: '«12 spezialisierte Portale — Präzisionsmathematik, Weltberichte und Handwerksgeheimnisse»', ru: '«12 специализированных порталов: точные расчёты, мировые обзоры и секреты мастерства»', zh: '「12 个专业门户：从精密计算到全球资讯与匠艺秘诀」', tr: '«12 uzman portal: hassas hesaplamalar, dünya raporları ve zanaat sırları»', fa: '«۱۲ درگاه تخصصی: از محاسبات دقیق تا اخبار جهانی و رازهای صنعتگری»', is: '„12 sérhæfðar gáttir sameina nákvæma blöndunarútreikninga, fréttir úr alþjóðlegum iðnaði og leyndardóma handverksins.“', sq: '„12 portale të specializuara bashkojnë llogaritjet e sakta të formulimit, lajmet botërore të industrisë dhe sekretet artizanale.“', ps: '«۱۲ پورټلونه دقیق فورمولونه، د نړیوال صنعت خبرونه او د عطر جوړونې رازونه سره یوځای کوي.»' },
+  dispatch_lbl: { ar: 'نشرة منافذ المعمل', en: 'Lab Portals Dispatch', fr: 'Dépêche des portails', es: 'Boletín de portales', it: 'Bollettino dei portali', de: 'Portal-Depesche', ru: 'Бюллетень порталов', zh: '实验室门户快讯', tr: 'Portal bülteni', fa: 'نامه اطلاعاتی درگاه‌ها', is: 'Fréttir frá rannsóknarstofugáttum', sq: 'Buletini i portaleve të laboratorit', ps: 'د لابراتوار پورټلونو خبرپاڼه' },
+  updates_every: { ar: 'تحديث دوري كل 4 ثوانٍ:', en: 'Live updates every 4s:', fr: 'Mises à jour toutes les 4 s :', es: 'Actualización cada 4 s:', it: 'Aggiornamenti ogni 4 s:', de: 'Updates alle 4 Sek.:', ru: 'Обновление каждые 4 с:', zh: '每 4 秒刷新：', tr: 'Her 4 sn’de güncelleme:', fa: 'به‌روزرسانی هر ۴ ثانیه:', is: 'Beinar uppfærslur á 4 sekúndna fresti:', sq: 'Përditësime çdo 4 sekonda:', ps: 'ژوندۍ تازه‌کېدنه هر ۴ ثانیې:' },
+  pause_cycle: { ar: 'إيقاف التدوير التلقائي', en: 'Pause Auto-Cycle', fr: 'Suspendre le cycle auto', es: 'Pausar ciclo automático', it: 'Pausa ciclo automatico', de: 'Auto-Rotation pausieren', ru: 'Остановить автопрокрутку', zh: '暂停自动轮播', tr: 'Otomatik döngüyü durdur', fa: 'توقف چرخش خودکار', is: 'Gera hlé á sjálfvirkri hringrás', sq: 'Ndalo ciklin automatik', ps: 'اتومات ګرځېدل ودروئ' },
+  resume_cycle: { ar: 'تشغيل التدوير التلقائي', en: 'Resume Auto-Cycle', fr: 'Reprendre le cycle auto', es: 'Reanudar ciclo automático', it: 'Riprendi ciclo automatico', de: 'Auto-Rotation fortsetzen', ru: 'Возобновить автопрокрутку', zh: '恢复自动轮播', tr: 'Otomatik döngüyü sürdür', fa: 'ادامه چرخش خودکار', is: 'Halda sjálfvirkri hringrás áfram', sq: 'Vazhdo ciklin automatik', ps: 'اتومات ګرځېدل بېرته پیل کړئ' },
+  pause_feed: { ar: 'إيقاف البث', en: 'Pause Feed', fr: 'Suspendre le flux', es: 'Pausar transmisión', it: 'Pausa flusso', de: 'Feed pausieren', ru: 'Пауза', zh: '暂停推送', tr: 'Akışı durdur', fa: 'توقف پخش', is: 'Gera hlé á straumnum', sq: 'Ndalo transmetimin', ps: 'خپرونه ودروئ' },
+  resume_feed: { ar: 'تشغيل البث', en: 'Resume Feed', fr: 'Reprendre le flux', es: 'Reanudar transmisión', it: 'Riprendi flusso', de: 'Feed fortsetzen', ru: 'Продолжить', zh: '恢复推送', tr: 'Akışı sürdür', fa: 'ادامه پخش', is: 'Halda straumnum áfram', sq: 'Vazhdo transmetimin', ps: 'خپرونه بېرته پیل کړئ' },
+  zone3_title: { ar: 'نوافذ أقسام المعمل ومنافذ المنصة', en: 'Laboratory & Platform Portals', fr: 'Portails laboratoire & plateforme', es: 'Portales de laboratorio y plataforma', it: 'Portali laboratorio e piattaforma', de: 'Labor- & Plattformportale', ru: 'Порталы лаборатории и платформы', zh: '实验室与平台门户', tr: 'Laboratuvar ve platform portalları', fa: 'درگاه‌های آزمایشگاه و پلتفرم', is: 'Rannsóknarstofu- og vefgáttir', sq: 'Portalet e laboratorit dhe platformës', ps: 'د لابراتوار او پلیټفارم پورټلونه' },
+  portals_badge: { ar: '12 نافذة متجددة', en: '12 Live Portals', fr: '12 portails en direct', es: '12 portales en vivo', it: '12 portali in diretta', de: '12 Live-Portale', ru: '12 живых порталов', zh: '12 个实时门户', tr: '12 canlı portal', fa: '۱۲ درگاه زنده', is: '12 gáttir í beinni', sq: '12 portale aktive', ps: '۱۲ ژوندۍ پورټلونه' },
+  zone3_p: { ar: 'كل نافذة تعرض أيقونات وأخباراً ومعلومات متغيرة آلياً تمثل النبض الحي لذلك القسم', en: 'Each portal dynamically displays icons, metrics, and real-time updates representing that department.', fr: 'Chaque portail affiche icônes, métriques et mises à jour en temps réel du département.', es: 'Cada portal muestra iconos, métricas y actualizaciones en tiempo real de ese departamento.', it: 'Ogni portale mostra icone, metriche e aggiornamenti in tempo reale del dipartimento.', de: 'Jedes Portal zeigt Symbole, Kennzahlen und Echtzeit-Updates der Abteilung.', ru: 'Каждый портал динамически показывает иконки, метрики и обновления своего отдела.', zh: '每个门户动态展示该部门的图标、指标与实时更新。', tr: 'Her portal; o departmanın simgelerini, ölçümlerini ve gerçek zamanlı güncellemelerini gösterir.', fa: 'هر درگاه به‌صورت پویا نمادها، شاخص‌ها و به‌روزرسانی‌های لحظه‌ای آن بخش را نمایش می‌دهد.', is: 'Hver gátt sýnir tákn, mælikvarða og rauntímauppfærslur frá viðkomandi deild.', sq: 'Çdo portal shfaq ikona, tregues dhe përditësime në kohë reale nga departamenti përkatës.', ps: 'هر پورټل د خپلې څانګې نښې، شمېرې او د وخت پر بنسټ تازه معلومات ښيي.' },
+  cat_all: { ar: 'كافة المنافذ (12)', en: 'All Portals (12)', fr: 'Tous les portails (12)', es: 'Todos los portales (12)', it: 'Tutti i portali (12)', de: 'Alle Portale (12)', ru: 'Все порталы (12)', zh: '全部门户（12）', tr: 'Tüm portallar (12)', fa: 'همه درگاه‌ها (۱۲)', is: 'Allar gáttir (12)', sq: 'Të gjitha portalet (12)', ps: 'ټول پورټلونه (12)' },
+  cat_lab: { ar: 'المعمل والحسابات (4)', en: 'Lab & Compounding (4)', fr: 'Laboratoire & composition (4)', es: 'Laboratorio y composición (4)', it: 'Laboratorio e composizione (4)', de: 'Labor & Komposition (4)', ru: 'Лаборатория и расчёты (4)', zh: '实验室与配方（4）', tr: 'Laboratuvar ve formülasyon (4)', fa: 'آزمایشگاه و فرمولاسیون (۴)', is: 'Rannsóknarstofa og blöndun (4)', sq: 'Laboratori dhe formulimi (4)', ps: 'لابراتوار او فورمول جوړونه (4)' },
+  cat_knowledge: { ar: 'المعرفة والوصفات (3)', en: 'Knowledge & Formulas (3)', fr: 'Savoir & formules (3)', es: 'Conocimiento y fórmulas (3)', it: 'Conoscenza e formule (3)', de: 'Wissen & Formeln (3)', ru: 'Знания и формулы (3)', zh: '知识与配方（3）', tr: 'Bilgi ve formüller (3)', fa: 'دانش و فرمول‌ها (۳)', is: 'Þekking og formúlur (3)', sq: 'Njohuri dhe formula (3)', ps: 'پوهه او فورمولونه (3)' },
+  cat_business: { ar: 'التجارة والمقر (2)', en: 'Business & Facility (2)', fr: 'Affaires & établissement (2)', es: 'Negocios e instalaciones (2)', it: 'Affari e sede (2)', de: 'Geschäft & Standort (2)', ru: 'Бизнес и предприятие (2)', zh: '商业与设施（2）', tr: 'İşletme ve tesis (2)', fa: 'کسب‌وکار و مرکز (۲)', is: 'Viðskipti og aðstaða (2)', sq: 'Biznesi dhe ambientet (2)', ps: 'سوداګري او تاسیسات (2)' },
+  cat_ai: { ar: 'الذكاء والأخبار (3)', en: 'AI & Trends (3)', fr: 'IA & tendances (3)', es: 'IA y tendencias (3)', it: 'IA e tendenze (3)', de: 'KI & Trends (3)', ru: 'ИИ и тренды (3)', zh: 'AI 与趋势（3）', tr: 'YZ ve trendler (3)', fa: 'هوش مصنوعی و ترندها (۳)', is: 'Gervigreind og straumar (3)', sq: 'AI dhe tendencat (3)', ps: 'AI او بهیرونه (3)' },
+  live_sync: { ar: 'متصل بالمعمل', en: 'Live Sync', fr: 'Sync en direct', es: 'Sincronización en vivo', it: 'Sincronizzazione live', de: 'Live-Sync', ru: 'Синхронизация', zh: '实时同步', tr: 'Canlı eşitleme', fa: 'همگام‌سازی زنده', is: 'Samstillt í beinni', sq: 'Sinkronizim në kohë reale', ps: 'په ژوندۍ بڼه هممهاله' },
+  prev_update: { ar: 'الخبر السابق عن المنفذ', en: 'Previous update', fr: 'Mise à jour précédente', es: 'Actualización anterior', it: 'Aggiornamento precedente', de: 'Vorheriges Update', ru: 'Предыдущее обновление', zh: '上一条更新', tr: 'Önceki güncelleme', fa: 'به‌روزرسانی قبلی', is: 'Fyrri uppfærsla', sq: 'Përditësimi i mëparshëm', ps: 'مخکینی تازه خبر' },
+  next_update: { ar: 'الخبر التالي عن المنفذ', en: 'Next update', fr: 'Mise à jour suivante', es: 'Actualización siguiente', it: 'Aggiornamento successivo', de: 'Nächstes Update', ru: 'Следующее обновление', zh: '下一条更新', tr: 'Sonraki güncelleme', fa: 'به‌روزرسانی بعدی', is: 'Næsta uppfærsla', sq: 'Përditësimi i radhës', ps: 'راتلونکی تازه خبر' },
+  enter_portal: { ar: 'دخول المنفذ', en: 'Enter Portal', fr: 'Entrer dans le portail', es: 'Entrar al portal', it: 'Entra nel portale', de: 'Portal betreten', ru: 'Открыть портал', zh: '进入门户', tr: 'Portala gir', fa: 'ورود به درگاه', is: 'Opna gátt', sq: 'Hyr në portal', ps: 'پورټل ته ننوځئ' },
+  golden_std: { ar: 'معيار شام الذهبي لصناعة العطور الفاخرة', en: 'Sham Golden Standard for Haute Parfumerie', fr: 'Standard d’or Sham pour la haute parfumerie', es: 'Estándar dorado de Sham para la alta perfumería', it: 'Standard d’oro Sham per l’alta profumeria', de: 'Sham-Goldstandard für Haute Parfumerie', ru: 'Золотой стандарт Sham высокой парфюмерии', zh: 'Sham 高级香水黄金准则', tr: 'Yüksek parfümeri için Sham altın standardı', fa: 'استاندارد طلایی شام برای عطرسازی لوکس', is: 'Gullstaðall Sham fyrir lúxusilmgerð', sq: 'Standardi i artë Sham për parfumerinë luksoze', ps: 'د لوکس عطر جوړونې لپاره د شام زرین معیار' },
+  zone5_quote: { ar: '«العطر ليس مجرد رائحة، بل هو ميزان كيميائي ونوتات متناغمة وهوية لا تُنسى»', en: '«A fragrance is not merely a scent; it is chemical equilibrium, harmonious notes, and an unforgettable identity»', fr: '« Un parfum n’est pas qu’une odeur : équilibre chimique, notes harmonieuses et identité inoubliable »', es: '«Un perfume no es solo un aroma: es equilibrio químico, notas armoniosas e identidad inolvidable»', it: '«Un profumo non è solo un odore: equilibrio chimico, note armoniose e identità indimenticabile»', de: '«Ein Duft ist mehr als ein Geruch: chemisches Gleichgewicht, harmonische Noten und unvergessliche Identität»', ru: '«Аромат — это не просто запах: химическое равновесие, гармония нот и незабываемая индивидуальность»', zh: '「香水不只是气味，更是化学平衡、和谐香调与难忘的身份」', tr: '«Bir koku yalnızca bir koku değil; kimyasal denge, uyumlu notalar ve unutulmaz bir kimliktir»', fa: '«عطر تنها بویی نیست؛ تعادل شیمیایی، نت‌های هماهنگ و هویتی فراموش‌نشدنی است»', is: '„Ilmvatn er meira en lykt: það er efnafræðilegt jafnvægi, samhljómur ilmtóna og ógleymanleg ímynd.“', sq: '„Parfumi nuk është vetëm aromë: është ekuilibër kimik, nota harmonike dhe identitet i paharrueshëm.“', ps: '«عطر یوازې بوی نه دی؛ کیمیاوي توازن، همغږي نوټونه او نه‌هېرېدونکی هویت دی.»' },
+  zone5_p: { ar: 'اجمع بين ميزان المعمل وحاسبة تخفيف الكحول ومكتبة النماذج المستوحاة لتطوير تركيبتك؛ ثم تحقّق من حدود IFRA وبيانات SDS لكل خامة. الأمثلة ليست شهادة امتثال.', en: 'Combine lab weighing, alcohol dilution, and inspired reference studies to develop your own formula. Verify each material against applicable IFRA limits and its SDS; examples are not compliance certification.', fr: 'Associez pesée, dilution d’alcool et études inspirées pour créer votre formule. Vérifiez chaque matière selon les limites IFRA et sa FDS ; les exemples ne certifient pas la conformité.', es: 'Combine pesaje, dilución de alcohol y estudios inspirados para crear su fórmula. Verifique cada materia según IFRA y su FDS; los ejemplos no certifican cumplimiento.', it: 'Combina pesatura, diluizione dell’alcol e studi ispirati per sviluppare la tua formula. Verifica ogni materia rispetto a IFRA e alla SDS; gli esempi non certificano la conformità.', de: 'Kombinieren Sie Wiegen, Alkoholverdünnung und inspirierte Studien für eigene Formeln. Prüfen Sie jeden Stoff anhand der IFRA-Grenzen und des SDB; Beispiele sind keine Konformitätsbescheinigung.', ru: 'Совмещайте взвешивание, разбавление спирта и учебные примеры для разработки своей формулы. Проверяйте сырьё по ограничениям IFRA и паспорту безопасности; примеры не подтверждают соответствие.', zh: '结合称量、酒精稀释与灵感示例来开发自己的配方；并依据 IFRA 限值和 SDS 核验每种原料。示例不代表合规认证。', tr: 'Kendi formülünüzü geliştirmek için tartım, alkol seyreltme ve ilham örneklerini birleştirin. Her malzemeyi IFRA sınırları ve SDS ile doğrulayın; örnekler uygunluk sertifikası değildir.', fa: 'توزین، رقیق‌سازی الکل و نمونه‌های الهام‌گرفته را برای توسعه فرمول خود ترکیب کنید. هر ماده را با محدودیت‌های IFRA و برگه SDS بررسی کنید؛ نمونه‌ها گواهی انطباق نیستند.', is: 'Sameinaðu vigtun, þynningu alkóhóls og innblásin dæmi til að þróa eigin formúlu. Staðfestu hvert efni gagnvart IFRA-mörkum og SDS; dæmin eru ekki samræmisvottun.', sq: 'Kombinoni peshimin, hollimin e alkoolit dhe shembujt frymëzues për të zhvilluar formulën tuaj. Kontrolloni çdo material kundrejt kufijve IFRA dhe SDS; shembujt nuk certifikojnë përputhshmëri.', ps: 'وزن، د الکولو رقیق کول او الهامي بېلګې د خپلې نسخې د جوړولو لپاره یوځای وکاروئ. هر خام مواد د IFRA حدودو او SDS له مخې وڅېړئ؛ بېلګې د مطابقت تصدیق نه دي.' },
+  start_new: { ar: 'بدء تصميم عطر جديد', en: 'Start New Formulation', fr: 'Nouvelle formulation', es: 'Nueva formulación', it: 'Nuova formulazione', de: 'Neue Formulierung starten', ru: 'Новая формула', zh: '开始新配方', tr: 'Yeni formülasyona başla', fa: 'شروع فرمولاسیون جدید', is: 'Byrja nýja formúlu', sq: 'Fillo një formulim të ri', ps: 'نوی فورمول پیل کړئ' },
+  print_spec: { ar: 'طباعة بطاقة التصنيع', en: 'Print Manufacturing Spec Sheet', fr: 'Imprimer la fiche technique', es: 'Imprimir hoja de especificaciones', it: 'Stampa la scheda di produzione', de: 'Produktionsblatt drucken', ru: 'Печать производственной карты', zh: '打印生产规格表', tr: 'Üretim föyünü yazdır', fa: 'چاپ برگه مشخصات تولید', is: 'Prenta framleiðslulýsingu', sq: 'Printo fletën teknike të prodhimit', ps: 'د تولید تخنیکي پاڼه چاپ کړئ' },
 } satisfies Record<string, LText>;
 
 interface HomeHubProps {
@@ -170,18 +180,27 @@ export const HomeHub: React.FC<HomeHubProps> = ({
   onOpenAuthModal,
   onOpenSpecModal,
 }) => {
-  const isRtl = currentLang === 'ar' || currentLang === 'fa';
+  const isRtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
+
+  // «شحن مجاني» is a promise with money behind it: it is only shown when the merchant approved it in
+  // src/data/shipping.json (`freeShippingAboveEgp`), the threshold is shown in the visitor's own currency,
+  // and the same table makes checkout charge it. No approved offer → the banner says nothing about it.
+  const storeMoney = useStoreMoney(currentLang, currentLang === 'ar' ? 'ج.م' : 'EGP');
+  const freeShipping = freeShippingOffer();
+  const freeShippingLine = freeShipping
+    ? freeShippingSentence(freeShipping, storeMoney.price(freeShipping.thresholdEgp), currentLang)
+    : '';
 
   const SUBTITLE_EN_MAP: Record<string, string> = {
     portal_concentration: 'Gravimetric molecular weight calculation at 0.01g precision',
     portal_news: 'Master Shahin’s daily illustrated briefing from Milan, Paris & Dubai fairs',
-    portal_world_perfumes: 'Analyzing formulas of 8 world iconic fragrances with exact ratios',
+    portal_world_perfumes: 'Inspired educational accords; illustrative proportions, not verified original formulas',
     portal_raw_materials: 'Detailed catalog of 28+ pure ingredients with CAS numbers & safety',
     portal_pyramid: 'Three-layer pyramid structure with molecular evaporation simulation',
     portal_alcohol: 'Accurate dilution with distilled water to prevent clouding',
     portal_costing: 'Bottle unit pricing, ingredient costs, and ROI margin estimation',
-    portal_master_ai: 'Multi-AI synthesis (Gemini + DeepSeek + ChatGPT + Claude) in one lab',
+    portal_master_ai: 'Sham’s own perfumery expert: quick replies, in-depth analysis or an expert council',
     portal_library: 'Secure storage, cloud sync, and printable manufacturing specs',
     portal_guide: 'Cold maceration protocol, filtration, and longevity science',
     portal_maceration_simulator: 'Forecasting exact perfume maturation completion date with Master Shahin advice',
@@ -189,8 +208,9 @@ export const HomeHub: React.FC<HomeHubProps> = ({
     portal_privacy: 'Full encryption of formulas, instant export, and GDPR compliance',
   };
 
-  // ===== Full 10-language localization for the 13 portal cards =====
-  const ALL_NEWS_L10N: Record<string, NewsL10N> = { ...NEWS_L10N_A, ...NEWS_L10N_B, ...NEWS_L10N_C };
+  // ===== Full 10-language base + extension language packs for the 13 portal cards & 52 news cards =====
+  const PORTAL_L10N = mergeHubL10n([PORTAL_L10N_BASE]) as unknown as Record<string, { title: LText; subtitle: LText; badge: LText }>;
+  const ALL_NEWS_L10N: Record<string, NewsL10N> = mergeHubL10n([NEWS_L10N_A, NEWS_L10N_B, NEWS_L10N_C]) as unknown as Record<string, NewsL10N>;
   const hubVars: Record<string, string | number> = {
     v: formulation.bottleVolumeMl,
     c: formulation.concentrationPercent,
@@ -238,6 +258,27 @@ export const HomeHub: React.FC<HomeHubProps> = ({
   };
   const localizePortalNews = (portalId: string, item?: PortalNewsItem): PortalNewsItem | undefined => {
     if (!item) return item;
+    if (portalId === 'portal_world_perfumes') {
+      const titles: Record<string, { ar: string; en: string }> = {
+        w1: { ar: 'بكرات روج 540 — نموذج أكورد مستوحى', en: 'Baccarat Rouge 540 — inspired accord study' },
+        w2: { ar: 'كريد أفينتوس — نموذج نوتات تعليمي', en: 'Creed Aventus — educational note study' },
+        w3: { ar: 'توباكو فانيلا — مثال أكورد مستوحى', en: 'Tobacco Vanille — inspired accord example' },
+        w4: { ar: 'مراجع نوتات عطرية للاستلهام', en: 'Fragrance-note references for inspiration' },
+      };
+      const title = titles[item.id] || titles.w4;
+      const arabic = currentLang === 'ar';
+      return {
+        ...item,
+        badge: arabic ? 'مثال تعليمي' : 'Study example',
+        title: arabic ? title.ar : title.en,
+        description: arabic
+          ? 'نموذج تعليمي مستوحى من النوتات المعلنة؛ لا يمثل تركيبة الشركة الأصلية ولا تحليلاً مخبرياً.'
+          : 'An educational study inspired by public note descriptions—not the maker’s original formula or a laboratory analysis.',
+        metric: arabic ? 'للاستلهام فقط' : 'Illustrative only',
+        timestamp: arabic ? 'مرجع مستوحى' : 'Inspired reference',
+        actionHint: arabic ? 'افتح المكتبة المرجعية' : 'Open reference library',
+      };
+    }
     const l10n = ALL_NEWS_L10N[`${portalId}:${item.id}`];
     if (l10n) {
       return {
@@ -259,11 +300,13 @@ export const HomeHub: React.FC<HomeHubProps> = ({
     return isRtl ? fallbackAr : (fallbackEn || fallbackAr);
   };
   const localizedPortalSubtitle = (portalId: string, fallbackAr: string): string => {
+    if (portalId === 'portal_world_perfumes') return uiLabel('world_perfume_reference_subtitle', currentLang);
     const l10n = PORTAL_L10N[portalId];
     if (l10n) return loc(currentLang, l10n.subtitle) || fallbackAr;
     return isRtl ? fallbackAr : (SUBTITLE_EN_MAP[portalId] || fallbackAr);
   };
   const localizedStatsBadge = (portalId: string, fallback: string): string => {
+    if (portalId === 'portal_world_perfumes') return uiLabel('world_perfume_reference_badge', currentLang);
     const l10n = PORTAL_L10N[portalId];
     if (l10n) return fmt(loc(currentLang, l10n.badge), hubVars) || fallback;
     if (!isRtl && STATS_BADGE_EN[portalId]) return STATS_BADGE_EN[portalId];
@@ -278,6 +321,19 @@ export const HomeHub: React.FC<HomeHubProps> = ({
   const [portalIndexes, setPortalIndexes] = useState<Record<string, number>>({});
   // Animate pulse on index change
   const [animatingPortals, setAnimatingPortals] = useState<Record<string, boolean>>({});
+
+  // Real perfume news collected by Shaheen every 12 hours (works on GitHub Pages too: no server needed).
+  const [liveNews, setLiveNews] = useState<NewsFile | null>(null);
+  useEffect(() => { let alive = true; loadLiveNews().then((d) => { if (alive) setLiveNews(d); }, () => {}); return () => { alive = false; }; }, []);
+  const liveHeadlines: PortalNewsItem[] = (liveNews?.items || []).slice(0, 6).map((item) => ({
+    id: `live-${item.id}`,
+    badge: currentLang === 'ar' ? '📡 خبر حقيقي' : '📡 Live news',
+    title: currentLang === 'ar' ? item.title.ar : item.title.en,
+    description: currentLang === 'ar' ? item.summary.ar : item.summary.en,
+    metric: item.source,
+    timestamp: relativeTime(item.publishedAt || liveNews!.updatedAt, LOCALE_MAP[currentLang] || 'en'),
+    actionHint: currentLang === 'ar' ? 'كل أخبار العطور' : 'All perfume news',
+  }));
 
   // Dynamic news definitions utilizing live state
   const portals: PortalDefinition[] = [
@@ -347,7 +403,8 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       icons: [Newspaper, Flame, Globe, TrendingUp],
       statsBadge: '👑 رصد الخبير شاهين اليومي المصور',
       imageThumbnail: newsImg,
-      news: [
+      // Real headlines Shaheen collected from the web (every 12 h); the written samples only until the first bulletin.
+      news: liveHeadlines.length ? liveHeadlines : [
         {
           id: 'n1',
           badge: 'عاجل من ميلانو',
@@ -394,21 +451,21 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       category: 'knowledge',
       titleAr: 'مكتبة العطور العالمية الأيقونية',
       titleEn: 'Iconic World Perfumes Library',
-      subtitleAr: 'تحليل أسرار أشهر 8 عطور في التاريخ بنسب المعمل الدقيقة',
+      subtitleAr: 'نماذج أكورد تعليمية مستوحاة؛ نسب توضيحية لا تمثل التركيبات الأصلية',
       accentColor: 'from-amber-500 to-yellow-600 text-amber-500 bg-amber-500/10',
       borderGlow: 'hover:border-amber-400/50 hover:shadow-amber-900/10',
       icons: [Crown, Compass, Award, Sparkles],
-      statsBadge: '8 وصفات أسطورية جاهزة',
+      statsBadge: '8 نماذج مستوحاة',
       imageThumbnail: heroImg,
       news: [
         {
           id: 'w1',
           badge: 'الأكثر تحميلاً',
           title: 'باكارات روج 540 (Baccarat Rouge 540) - ميزون فرانسيس كوركديجان',
-          description: 'توليفة الزعفران الإيراني والياسمين والأمبروكسان وخشب الأرز بتركيز 25% مع نصائح دمج المسك الصناعي.',
-          metric: 'جاهزة للتحميل الفوري',
-          timestamp: 'وصفة معتمدة',
-          actionHint: 'تحميل التركيبة في المعمل',
+          description: 'مثال تعليمي مستوحى من النوتات الموصوفة علناً؛ لا يكشف وصفة الشركة ولا يمثل تحليلاً مخبرياً.',
+          metric: 'نموذج إلهامي',
+          timestamp: 'مرجع تعليمي',
+          actionHint: 'استعراض النموذج المرجعي',
         },
         {
           id: 'w2',
@@ -451,7 +508,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       accentColor: 'from-emerald-600 to-teal-700 text-emerald-500 bg-emerald-500/10',
       borderGlow: 'hover:border-emerald-500/50 hover:shadow-emerald-900/10',
       icons: [Leaf, Droplets, Flower2, Gem],
-      statsBadge: '24+ خامة نقية · CAS Certified',
+      statsBadge: '24+ خامة نقية · موثّقة بأرقام CAS',
       imageThumbnail: pyramidImg,
       news: [
         {
@@ -655,22 +712,22 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       id: 'portal_master_ai',
       targetTab: 'master_ai',
       category: 'ai_news',
-      titleAr: 'المعلم العطري الذكي (شاهين AI · Multi-AI Ensemble)',
-      titleEn: 'Master Perfumer AI (Shahin · Multi-AI Ensemble)',
-      subtitleAr: 'أتمتة دمج الذكاء الاصطناعي (Gemini + DeepSeek + ChatGPT + Claude) في معمل عطري متكامل',
+      titleAr: 'المعلم العطري الذكي (شاهين AI)',
+      titleEn: 'Master Perfumer AI (Shahin)',
+      subtitleAr: 'خبير عطور ذكي خاص بشام: رد سريع أو تحليل معمّق أو مجلس الخبراء',
       accentColor: 'from-amber-500 to-emerald-600 text-emerald-400 bg-emerald-500/10',
       borderGlow: 'hover:border-emerald-400/50 hover:shadow-emerald-900/10',
       icons: [Bot, Brain, Wand2, MessageSquare],
-      statsBadge: '⚡ مجلس خبراء الذكاء (4 نماذج)',
+      statsBadge: '⚡ خبير شام الذكي',
       news: [
         {
           id: 'ai1',
-          badge: '⚡ دمج مؤتمت (4 نماذج)',
-          title: 'استشارة متزامنة تجمع بين جيمناي وديب سيك وشات جي بي تي وكلود في إجابة موحدة',
-          description: 'اطلب من شاهين ابتكار تركيبة ليجمع لك دقة أوزان جيمناي، كيمياء ديب سيك، أكوردات ChatGPT، وفخامة تعتيق كلود.',
-          metric: 'Ensemble متزامن',
-          timestamp: 'مباشر الآن',
-          actionHint: 'بدء جلسة مع مجلس الخبراء',
+          badge: '⚡ المجلس الاستشاري',
+          title: 'مجلس الخبراء: عدة مستشارين يناقشون سؤالك ثم يلخّص شاهين رأياً واحداً',
+          description: 'يظهر «مجلس الخبراء» عندما يكون متاحاً؛ وفي كل الأحوال يجيبك شاهين تلقائياً أو برد سريع أو بتحليل معمّق. الأوضاع المتاحة الآن تظهر داخل نافذة شاهين.',
+          metric: 'حسب الأوضاع المتاحة',
+          timestamp: 'متاح الآن',
+          actionHint: 'ابدأ محادثة مع شاهين',
         },
         {
           id: 'ai2',
@@ -684,20 +741,20 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         {
           id: 'ai3',
           badge: 'حفظ وتصدير السجل',
-          title: 'تنزيل أرشيف المحادثات الفنية كوثيقة رسمية موقعة باسم معملك',
+          title: 'تنزيل محادثاتك الفنية كملف نصي (TXT) للرجوع إليها',
           description: 'احفظ خلاصة جلساتك مع المعلم العطري لتكون مرجعاً دائماً لورشة عملك ومختبرك الشخصي.',
-          metric: 'تصدير نصي مشفر',
-          timestamp: 'توثيق صناعي',
+          metric: 'تصدير TXT',
+          timestamp: 'أرشيف شخصي',
           actionHint: 'محادثة الخبير الآن',
         },
         {
           id: 'ai4',
-          badge: 'قاعدة بيانات متجددة',
-          title: 'مواكب لأحدث أبحاث مدرسة جراس ومقاييس الأمان الكيميائي العالمية',
-          description: 'تمت تغذية الخبير بأمهات كتب العطارة القديمة وأحدث دوريات الجمعيات العطرية في أوروبا والشرق.',
-          metric: 'مكتبة جراس والشرق',
-          timestamp: 'تحديث مستمر',
-          actionHint: 'فتح مجلس الخبير شاهين',
+          badge: 'السلامة أولاً',
+          title: 'تعليمات متخصصة في تركيب العطور مع تنبيهات السلامة',
+          description: 'شاهين موجَّه بتعليمات خبير عطور: لا يختلق مصادر أو شهادات IFRA، ويذكّرك بالتحقق من حدود الاستخدام وشهادة المورد قبل التصنيع.',
+          metric: 'تحقّق من IFRA',
+          timestamp: 'إرشاد مسؤول',
+          actionHint: 'اسأل شاهين',
         },
       ],
     },
@@ -709,7 +766,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
       category: 'knowledge',
       titleAr: 'دفتر الوصفات وسجلات المعمل',
       titleEn: 'Formula Notebook & Archive',
-      subtitleAr: 'حفظ آمن ومزامنة سحابية مع Firebase وطباعة استمارات التصنيع',
+      subtitleAr: 'حفظ آمن ومزامنة سحابية وطباعة استمارات التصنيع',
       accentColor: 'from-amber-700 to-stone-800 text-amber-500 bg-amber-500/10',
       borderGlow: 'hover:border-amber-600/50 hover:shadow-stone-900/10',
       icons: [BookmarkPlus, BookOpen, Archive, FileText],
@@ -737,9 +794,9 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         {
           id: 'lib3',
           badge: 'المزامنة السحابية المزدوجة',
-          title: 'حفظ آمن على هاتفك ومتصفحك مع مزامنة فورية على سحابة Firebase',
+          title: 'حفظ آمن على هاتفك ومتصفحك مع مزامنة سحابية فورية',
           description: 'لا خوف من فقدان تركيباتك عند تغيير الجهاز، سجلاتك مربوطة بحسابك الشخصي المشفر.',
-          metric: 'Firebase Sync',
+          metric: 'مزامنة سحابية',
           timestamp: 'حماية وتخزين',
           actionHint: 'تصفح الوصفات المحفوظة',
         },
@@ -933,7 +990,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           badge: 'حصانة الأسرار العطرية',
           title: 'تركيباتك ومعادلاتك العطرية مشفرة محلياً وسحابياً ولا تُشارك أبداً',
           description: 'نظام تشفير خاص يضمن أن أسرار نسب خلطاتك تبقى ملكك الخاص دون أي وصول من أي أطراف تجارية أخرى.',
-          metric: 'AES Encryption',
+          metric: 'تشفير AES',
           timestamp: 'أمان قصوى',
           actionHint: 'فحص إعدادات التشفير',
           onSpecialAction: onOpenPrivacyModal,
@@ -953,7 +1010,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           badge: 'حالة الحساب والمصادقة',
           title: currentUser ? `مسجل باسم: ${currentUser.name} (${currentUser.craftLevel})` : 'جلسة ضيف محلية آمنة',
           description: currentUser
-            ? `بياناتك متزامنة مع Firebase Authentication وقاعدة البيانات السحابية المشفرة.`
+            ? 'بياناتك محفوظة في حسابك ومتزامنة بين أجهزتك.'
             : 'يمكنك إنشاء حساب مجاني الآن لمزامنة خلطاتك عبر جميع أجهزتك بأعلى درجات الأمان.',
           metric: currentUser ? 'حساب نشط' : 'جلسة محلية',
           timestamp: 'حالة التسجيل',
@@ -969,6 +1026,50 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           timestamp: 'حرية نقل البيانات',
           actionHint: 'تصدير نسختك الاحتياطية',
           onSpecialAction: onOpenPrivacyModal,
+        },
+      ],
+    },
+
+    // 13. SHOP STOREPORTAL - Featured Products Store
+    {
+      id: 'portal_store',
+      targetTab: 'store',
+      category: 'business',
+      titleAr: '🛍️ المتجر | عطور أصيلة بأسعار مميزة',
+      titleEn: '🛍️ SHOP | Authentic Perfumes at Special Prices',
+      subtitleAr: `مئات العطور من أفضل الموردين - دفع آمن${freeShippingLine ? ` - ${freeShippingLine}` : ''}`,
+      accentColor: 'from-amber-500 to-orange-600 text-amber-600 bg-amber-500/10',
+      borderGlow: 'hover:border-amber-500/80 hover:shadow-amber-900/20 hover:scale-[1.02] transition-transform',
+      icons: [Store, Sparkles, Gift, Award],
+      statsBadge: '🛒 المتجر مفتوح الآن',
+      imageThumbnail: 'https://images.unsplash.com/photo-1541643600913-80f5f10a3b08?w=400&h=300&fit=crop',
+      news: [
+        {
+          id: 's1',
+          badge: '🔥 عرض حصري',
+          title: 'اكتشف مجموعة واسعة من العطور الأصلية',
+          description: `نحن نورد العطور من أفضل الموردين مثل لطيفة، الرحاب، وغيرهم. أسعار مميزة ودفع آمن${freeShippingLine ? `. ${freeShippingLine}` : ''}.`,
+          metric: '100+ منتج',
+          timestamp: 'مجموعة متنوعة',
+          actionHint: 'تصفح المتجر الآن',
+        },
+        {
+          id: 's2',
+          badge: '⭐ الأكثر مبيعاً',
+          title: 'العطور الرائجية هذا الموسم',
+          description: 'اكتشف أحدث مجموعات العطور التي يبحث عنها الجميع - من عطور الرجال الخفية إلى عطور النساء الفاخرة.',
+          metric: 'الرائج',
+          timestamp: 'موسم 2026',
+          actionHint: 'الدخول للمتجر',
+        },
+        {
+          id: 's3',
+          badge: '🎁 هدايا مميزة',
+          title: 'مجموعة هدايا العطور المميزة',
+          description: 'ابحث عن الهدية المثالية لأحبائك - عطور أصيلة في علب فاخرة. عرض خاص للهدايا هذا الشهر.',
+          metric: '50+ خيار هدية',
+          timestamp: 'عرض محدود',
+          actionHint: 'استكشاف الهدايا',
         },
       ],
     },
@@ -1074,6 +1175,24 @@ export const HomeHub: React.FC<HomeHubProps> = ({
               {L('hero_p')}
             </p>
 
+            <button
+              type="button"
+              onClick={() => onNavigate('molecule_studio')}
+              className="inline-flex items-center gap-2 rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-2.5 text-xs font-bold text-amber-100 transition hover:border-amber-300 hover:bg-amber-300/20 focus:outline-none focus:ring-2 focus:ring-amber-300"
+            >
+              <Atom className="h-4 w-4 text-amber-300" />
+              <span>{currentLang === 'ar' ? 'افتح مختبر تركيب وتحليل العطور' : 'Open the perfume composition studio'}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('perfume_designers')}
+              data-testid="home-designers"
+              className="ms-2 inline-flex items-center gap-2 rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-2.5 text-xs font-bold text-amber-100 transition hover:border-amber-300 hover:bg-amber-300/20 focus:outline-none focus:ring-2 focus:ring-amber-300"
+            >
+              <PenLine className="h-4 w-4 text-amber-300" />
+              <span>{designersText(currentLang, 'hubButton')} — {designersText(currentLang, 'hubButtonSub')}</span>
+            </button>
+
             {/* Quick Live Stats Strip */}
             <div className="pt-2 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-stone-300">
               <div className="flex items-center gap-1.5">
@@ -1135,7 +1254,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           {/* Right Showcase Card */}
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-2xl overflow-hidden border border-amber-600/30 shadow-xl aspect-16/10 group bg-stone-950">
-              <img
+              <img decoding="async" fetchPriority="high"
                 src={heroImg}
                 alt={L('alt_hero')}
                 referrerPolicy="no-referrer"

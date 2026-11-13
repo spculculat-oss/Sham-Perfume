@@ -1,0 +1,287 @@
+{
+ "version": 1,
+ "updatedAt": "2026-11-05T00:53:29.992Z",
+ "verified": [],
+ "runs": [
+  {
+   "at": "2026-11-05T00:53:29.992Z",
+   "mission": "tour",
+   "credits": 61,
+   "status": "done"
+  },
+  {
+   "at": "2026-11-04T07:19:00.627Z",
+   "mission": "tour",
+   "credits": 66,
+   "status": "done"
+  },
+  {
+   "at": "2026-11-04T06:07:22.242Z",
+   "mission": "design",
+   "credits": 83,
+   "status": "done"
+  },
+  {
+   "at": "2026-11-03T07:12:50.448Z",
+   "mission": "tour",
+   "credits": 80,
+   "status": "done"
+  },
+  {
+   "at": "2026-11-02T10:26:46.359Z",
+   "mission": "verify",
+   "credits": 29,
+   "status": "done"
+  },
+  {
+   "at": "2026-11-02T07:28:55.159Z",
+   "mission": "tour",
+   "credits": 102,
+   "status": "done"
+  },
+  {
+   "at": "2026-11-01T06:59:37.214Z",
+   "mission": "tour",
+   "credits": 49,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-31T06:54:42.847Z",
+   "mission": "tour",
+   "credits": 46,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-31T05:49:00.921Z",
+   "mission": "design",
+   "credits": 66,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-30T06:59:13.268Z",
+   "mission": "tour",
+   "credits": 50,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-29T10:15:29.382Z",
+   "mission": "verify",
+   "credits": 43,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-29T06:59:10.121Z",
+   "mission": "tour",
+   "credits": 79,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-28T06:57:58.149Z",
+   "mission": "tour",
+   "credits": 55,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-28T05:51:34.802Z",
+   "mission": "design",
+   "credits": 78,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-27T06:47:22.390Z",
+   "mission": "tour",
+   "credits": 40,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-26T10:09:47.447Z",
+   "mission": "verify",
+   "status": "failed",
+   "note": "upstream_error"
+  },
+  {
+   "at": "2026-10-26T06:50:57.153Z",
+   "mission": "tour",
+   "credits": 142,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-25T06:43:44.434Z",
+   "mission": "tour",
+   "credits": 45,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-24T06:43:14.585Z",
+   "mission": "tour",
+   "credits": 86,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-24T05:41:40.364Z",
+   "mission": "design",
+   "credits": 188,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-23T06:46:34.303Z",
+   "mission": "tour",
+   "credits": 61,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-22T05:49:23.630Z",
+   "mission": "tour",
+   "credits": 73,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-21T06:46:54.101Z",
+   "mission": "tour",
+   "credits": 40,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-21T05:41:54.171Z",
+   "mission": "design",
+   "credits": 56,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-20T06:45:33.146Z",
+   "mission": "tour",
+   "credits": 50,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-19T10:02:58.105Z",
+   "mission": "verify",
+   "credits": 10,
+   "status": "done"
+  },
+  {
+   "at": "2026-10-19T05:01:36.209Z",
+   "mission": "tour",
+   "credits": 30,
+   "status": "done"
+  }
+ ],
+ "tour": {
+  "at": "2026-11-05T00:53:29.992Z",
+  "summaryAr": "خلاصة الجولة: صفحة المتجر تعمل، ولكن التجربة الهاتفية ما زالت تعاني من ازدحام وتباين RTL. شاهين يجيب، لكن زمن الاستجابة بحاجة للتحسين.",
+  "score": 76,
+  "journey": [
+   {
+    "step": "home",
+    "ok": true,
+    "seconds": 8,
+    "noteAr": "ما حدث خلال الخطوات: 1- فتح المنزل + لقطات… 2-store… 3-open product… 4-إضافة للسلة… 5-checkout… 6-شاهين: تم إرسال سؤال"
+   }
+  ],
+  "issues": [
+   {
+    "area": "languages",
+    "severity": "high",
+    "language": "all",
+    "page": "/home",
+    "problem": "تباين المحاذاة وتوزيع العناصر في الواجهة الرئيسية على الهاتف",
+    "fix": "إصلاح التغذية للغة العربية وتوحيد اتجاه الصفحة"
+   },
+   {
+    "area": "design",
+    "severity": "high",
+    "language": "all",
+    "page": "/store",
+    "problem": "تباين محاذاة النص العربي وتوزيع العناصر وتصفح المتجر",
+    "fix": "إعادة توزيع العناصر وتخفيف ازدحام الشريط العلوي على الهاتف"
+   },
+   {
+    "area": "store",
+    "severity": "low",
+    "language": "all",
+    "page": "/store",
+    "problem": "صور المنتجات مكسورة أو غير محملة",
+    "fix": "تحقق من تحقّق الصور والكفاءة"
+   },
+   {
+    "area": "performance",
+    "severity": "medium",
+    "language": "all",
+    "page": "/master_ai",
+    "problem": "زمن استجابة Shahin طويل",
+    "fix": "تقصير زمن استجابات Shahin"
+   }
+  ],
+  "advisor": {
+   "opinionAr": "التطبيق الحالي يعمل بمعظم العناصر الأساسية (بحث/فلترة/صفحة منتج/إضافة للسلة/دفع)، لكن تجربة الهاتف ما زالت صعبة بسبب ازدحام الترتيب وخلط اتجاه النص ونقص الاتساق اللغوي. كما أن زمن استجابة Shahin ما زال يحتاج إلى تحسين. فيما يلي رأيي وتوصياتي: - I. أولوية اليوم: توحيد RTL واللغة العربية في الواجهة الأمامية (الرأس، وواجهات المتجر، وواجهة المنتج، والسلة والدفع). - II. إعادة تصميم التوزيع في الهاتف: تقليل ازدحام الرأس وتوحيد المساحات وتحديد موضع السلة والإجمالي بشكل ثابت دون تغطية المحتوى. - III. تحسين صفحة المنتج: ترتيب اسم المنتج بالعربية، السعر، الصور، الملاحظات وأنماط الشراء لتكون أكثر وضوحًا للمستخدم - IV. تقليل زمن استجابة Shahin: توفير ردود سريعة وخلاصات أثناء انتظار الردود التفصيلية، مع وضع مؤشرات حالة واضحة. - V. اختبار آلي للصور والغة وتوافق RTL قبل النشر. proposals: - {area:\"experience\", title:\"تصحيح RTL وتوحيد اللغة في واجهة المتجر\" , detail:\"إعادة ترتيب النصوص وإتجاهها بالعربية، وتوحيد اللغة المختارة مع عرض العربية بشكل موحّد\" , priority:\"high\", rerun:\"shaheen-service.yml\", ok:true (مختصر) } - {area:\"store\", title:\"إعادة تصميم تخطيط الهاتف للمتجر\" , detail:\"خفض ازدحام الرأس وتوزيع العناصر بشكل يسهل التمرير والقراءة على شاشة 390px\" , priority:\"high\", rerun:\"shaheen-import.yml\"} - {area:\"product\", title:\"تنسيق صفحة المنتج بالعربية مع صور أكثر وضوحاً\" , detail:\"تضمين الاسم العربي والسعر والوصف والنوتات وزر الإضافة ضمن إطار واحد بسيط\" , priority:\"high\", rerun:\"shaheen-news.yml\"} - {area:\"ai-tools\", title:\"تحسين زمن استجابة Shahin\" , detail:\"إظهار رد جاهز قصير خلال ثوانٍ مع تجميع التفاصيل في خلفية\" , priority:\"medium\", rerun:\"shaheen-seo.yml\"} - {area:\"reliability\", title:\"اختبار صور المنتجات وتحميلها\" , detail:\"التأكد من تحميل جميع الصور وعدم وجود روابط broken\" , priority:\"low\", rerun:\"shaheen-inventory.yml\"} لا يحدث شراء أو تسجيل دخول أو إرسال نماذج. يمكن تنفيذ هذ",
+   "proposals": [
+    {
+     "title": "تحسين زمن استجابة Shahin",
+     "detail": "تحسين زمن استجابة Shahin بنظام ردود أسرع وجاهزة، ثم تقديم رد موجز في البداية قبل التفصيل",
+     "area": "ai-tools",
+     "priority": "high",
+     "rerun": "shaheen-service.yml"
+    },
+    {
+     "title": "تصميم متجر مُبسّط للهاتف",
+     "detail": "إعادة تصميم تخطيط الهاتف للمتجر وتقليل ازدحام الرأس وتثبيت عناصر التصفية والبحث",
+     "area": "store",
+     "priority": "high",
+     "rerun": "shaheen-import.yml"
+    },
+    {
+     "title": "توحيد تجربة RTL/العربية",
+     "detail": "ضبط RTL واللغة العربية بشكل موحّد في الرأس والبطاقات والمنتجات والدفع",
+     "area": "experience",
+     "priority": "high",
+     "rerun": "shaheen-news.yml"
+    },
+    {
+     "title": "تنظيم عرض نتائج المتجر",
+     "detail": "تنظيم عرض نتائج البحث والتصفية في 390px وتظهير أحدث المنتجات بشكل واضح",
+     "area": "store",
+     "priority": "medium",
+     "rerun": "shaheen-seo.yml"
+    },
+    {
+     "title": "التحقق من الصور والموارد",
+     "detail": "إظهار حالة تحميل الصور والاتساق اللوني وتلافي العناصر المتداخلة",
+     "area": "experience",
+     "priority": "low",
+     "rerun": "shaheen-inventory.yml"
+    }
+   ]
+  },
+  "taskId": "P3z8oG9YV2VvcZStztG2v7",
+  "credits": 61
+ },
+ "verify": {
+  "at": "2026-11-02T10:26:46.359Z",
+  "summaryAr": "التقييم العام يشير إلى أن تنسيق RTL وتوحيد اللغة غير محققين بشكل كامل. كما أن التحقق من تطابق السعر النهائي عبر المسار الكامل (المنتج-السلة-الدفع) يبقى غير ثابت ويحتاج فحصاً إضافياً من صفحة الدفع. كما أن ثمة ازدواج لغوي مستمر وتفاوت في عرض النصوص بين سطح المكتب والهاتف.",
+  "checks": [
+   {
+    "id": "2026-10-25-2-تنسيق-RTL-وتوحيد-اللغة-ا",
+    "title": "تنسيق RTL وتوحيد اللغة العربية",
+    "verdict": "not_fixed",
+    "evidenceAr": "الصفحة الرئيسية والمتجر وصفحات المنتج تعرض خليطاً واضحاً من العربية والإنجليزية. النصوص الإنجليزية مألوفة في قوائم التنقل مثل \"Home\" و\"Perfumes\" و\"Shop\"، كما يظهر في محتوى الهاتف. عند التصفح بعرض 390px يظهر نصوص باللغة الإنجليزية مثل \"All languages — open the list and search (100)\". التخطيط RTL لم يُطبق بشكل واضح في هذه الصفحات.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/346"
+   },
+   {
+    "id": "2026-10-28-1-إصلاح-عرض-محتوى-السلة-وت",
+    "title": "إصلاح عرض محتوى السلة وتوحيد السعر النهائي للمنتج",
+    "verdict": "cannot_tell",
+    "evidenceAr": "في صفحة المنتج Hawas Chrome For Him by Rasasi 100ml EDP يظهر السعر المحلي كـ SGD 115. ثم يظهر زر Add to Cart وIn cart (2) ثم Sign in to pay، مع وجود رسالة الدفع فقط عند محاولة الدخول إلى صفحة الدفع. وجود \"Product page (to share)\" في عناصر الصفحة يعزز أنه لم يتم تثبيت نظام موحّد للسلة والدفع بعد. لا توجد أداة تؤكد السعر النهائي للسلة دون تسجيل الدخول.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/395"
+   },
+   {
+    "id": "2026-10-28-3-تحسين-تنسيق-الاتجاه-RTL-",
+    "title": "تحسين تنسيق الاتجاه (RTL) والتباين اللغوي في واجهات الموقع",
+    "verdict": "not_fixed",
+    "evidenceAr": "صفحة المنتج Hawas Chrome For Him by Rasasi 100ml EDP تُظهر العنوان بالإنجليزية كما في النص: \"Hawas Chrome For Him by Rasasi 100ml EDP\"، مع وجود سعر SGD 115. في العرض المحمول يظهر عنصر In cart (2) وSign in to pay، وهو ما يدل على استمرار وجود تجربة غربية/إنجليزية مع وجود عناوين عربية قليلة. كذلك يظهر تنسيق المحتوى مع فواصل ولغات متداخلة على الهاتف.",
+    "url": "https://github.com/spculculat-oss/Sham-Perfume/issues/397"
+   }
+  ],
+  "taskId": "RRyPsN7ipMrZM8G8bsZhZc",
+  "credits": 29
+ }
+}

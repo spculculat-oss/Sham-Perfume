@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { beforeEach, afterEach, test } from 'node:test';
-import { createChatStore, chatHistory } from '../src/utils/chatStore';
+import { catalogReply, createChatStore, chatHistory, isShoppingQuestion } from '../src/utils/chatStore';
+import { ApiError } from '../src/utils/api';
 import { CHAT_STORAGE_KEY, DEFAULT_WELCOME_MESSAGE, THIRTY_DAYS_MS, loadStoredChatSession, saveChatSession, type ChatMessage } from '../src/utils/chatStorage';
 import type { requestApi } from '../src/utils/api';
 
@@ -88,7 +89,7 @@ test('history includes current conversation, excludes welcome/error text and pas
 });
 
 test('upstream failures and invalid replies release the lock and are marked as errors', async () => {
-  for (const result of [null, { reply: '' }, { reply: 'hi', perspectives: [null] }]) {
+  for (const result of [null, { reply: '' }, { reply: 'hi', engine: { id: 'auto', provider: 'unknown' } }]) {
     const store = createChatStore((async () => result) as typeof requestApi);
     await store.send(options);
     assert.equal(store.getSnapshot().isLoading, false);
@@ -96,6 +97,36 @@ test('upstream failures and invalid replies release the lock and are marked as e
     assert.equal(store.getSnapshot().messages.at(-1)?.text, 'Service unavailable');
     assert.ok(chatHistory(store.getSnapshot().messages).every((turn) => turn.text !== 'Service unavailable'));
   }
+});
+
+test('source links stay hidden in normal replies and are shown only after the visitor asks', async () => {
+  let calls = 0;
+  const store = createChatStore((async () => { calls++; return { reply: 'unexpected network answer' }; }) as typeof requestApi);
+  const sources = [{ title: 'Study', url: 'https://example.org/paper' }];
+  store.setMessages([
+    { id: 'user-1', role: 'user', text: 'What is incense?', timestamp: 'now' },
+    { id: 'bot-1', role: 'assistant', text: 'Incense is a fragrant material.', timestamp: 'now', sources },
+  ]);
+  const history = chatHistory(store.getSnapshot().messages);
+  assert.deepEqual(history.at(-1), { role: 'assistant', text: 'Incense is a fragrant material.', sources }, 'hidden metadata travels for a later request');
+  await store.send({ ...options, text: 'هات المصادر' });
+  assert.equal(calls, 0, 'saved citations need no new model call');
+  assert.match(store.getSnapshot().messages.at(-1)!.text, /\[Study\]\(https:\/\/example\.org\/paper\)/);
+});
+
+test('a source request never reuses citations from an older, unrelated answer', async () => {
+  let calls = 0;
+  const store = createChatStore((async () => { calls++; return { reply: 'مش لاقي روابط للرد اللي فات.' }; }) as typeof requestApi);
+  store.setMessages([
+    { id: 'user-old', role: 'user', text: 'Old question', timestamp: 'now' },
+    { id: 'bot-old', role: 'assistant', text: 'Old answer', timestamp: 'now', sources: [{ title: 'Old study', url: 'https://example.org/old' }] },
+    { id: 'user-new', role: 'user', text: 'New question', timestamp: 'now' },
+    { id: 'bot-new', role: 'assistant', text: 'New answer', timestamp: 'now' },
+  ]);
+  await store.send({ ...options, text: 'مصدر؟' });
+  assert.equal(calls, 1, 'without metadata on the immediate answer, let the server search that question');
+  assert.equal(store.getSnapshot().messages.at(-1)!.text.includes('example.org/old'), false);
+  assert.equal(store.getSnapshot().messages.at(-1)!.text.includes('Old study'), false);
 });
 
 test('history payloads stay within server limits without mutating stored messages', () => {
@@ -178,35 +209,157 @@ test('loading history removes empty messages and duplicate IDs and caps records 
   assert.ok(session.messages.every((item) => item.text.trim()));
 });
 
-test('agent mode sends documents explicitly but does not persist attachment content automatically', async () => {
-  let payload: any;
-  const store = createChatStore((async (_url, init) => {
-    payload = JSON.parse(String(init?.body));
-    return { reply: 'Report prepared', agent: { steps: [{ tool: 'calculate', status: 'completed' }], artifacts: [{ name: 'report.txt', content: '10 ml' }] } };
+test('retry re-asks the question behind a trailing error bubble and replaces it with the answer', async () => {
+  let calls = 0;
+  const store = createChatStore((async () => {
+    calls++;
+    if (calls === 1) throw new Error('down');
+    return { reply: 'Second time lucky', engine: { id: 'self_hosted', provider: 'self_hosted', name: 'Self-hosted', badge: 'Self-hosted', model: 'qwen' } };
+  }) as typeof requestApi);
+  await store.send(options);
+  const failed = store.getSnapshot().messages;
+  assert.equal(failed[failed.length - 1].kind, 'error');
+  assert.equal(await store.retry({ model: 'auto', language: 'en', errorText: () => 'x' }), true);
+  const after = store.getSnapshot().messages;
+  assert.equal(calls, 2);
+  assert.deepEqual(after.slice(-2).map((m) => [m.role, m.text]), [['user', 'My perfume'], ['assistant', 'Second time lucky']]);
+  assert.equal(after.filter((m) => m.kind === 'error').length, 0);
+  assert.equal(await store.retry({ model: 'auto', language: 'en', errorText: () => 'x' }), false, 'nothing to retry');
+});
+
+test('replies in the current server shape (mode + anonymous Shaheen engine) are accepted', async () => {
+  const engine = { id: 'deep', provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' };
+  const store = createChatStore((async () => ({ reply: 'تحليل', mode: 'deep', engine })) as typeof requestApi);
+  await store.send(options);
+  const last = store.getSnapshot().messages.at(-1);
+  assert.equal(last?.kind, undefined);
+  assert.equal(last?.text, 'تحليل');
+  assert.equal(last?.aiEngine?.id, 'deep');
+});
+
+test('a bare greeting is answered locally at once, without calling the AI', async () => {
+  let calls = 0;
+  const store = createChatStore((async () => { calls++; return { reply: 'AI tip about DPG' }; }) as typeof requestApi);
+  assert.equal(await store.send({ ...options, text: 'السلام عليكم', language: 'ar' }), true);
+  assert.equal(calls, 0);
+  const [, question, answer] = store.getSnapshot().messages;
+  assert.equal(question.text, 'السلام عليكم');
+  assert.match(answer.text, /^وعليكم السلام/);
+  assert.equal(answer.aiEngine?.provider, 'shaheen');
+  assert.equal(store.getSnapshot().isLoading, false);
+  await store.send({ ...options, text: 'what is the best winter blend?' });
+  assert.equal(calls, 1, 'Real questions still go to Shaheen');
+});
+
+test('another tab saving its chat no longer swallows the answer in flight', async () => {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'window');
+  const events = new EventTarget();
+  Object.defineProperty(globalThis, 'window', { configurable: true, value: events });
+  const pending = deferred();
+  const store = createChatStore((async () => pending.promise) as typeof requestApi);
+  const unsubscribe = store.subscribe(() => {});
+  try {
+    const sending = store.send(options);
+    const event = new Event('storage');
+    Object.defineProperty(event, 'key', { value: CHAT_STORAGE_KEY });
+    Object.defineProperty(event, 'newValue', { value: memory.get(CHAT_STORAGE_KEY) ?? '{}' });
+    events.dispatchEvent(event);
+    pending.resolve({ reply: 'The winter blend' });
+    assert.equal(await sending, true);
+    const messages = store.getSnapshot().messages;
+    assert.equal(messages[messages.length - 1].text, 'The winter blend');
+    assert.equal(store.getSnapshot().isLoading, false);
+  } finally {
+    unsubscribe();
+    if (descriptor) Object.defineProperty(globalThis, 'window', descriptor);
+    else delete (globalThis as any).window;
+  }
+});
+
+test('«ترشيح المتجر»: a shopping question no engine could answer gets labelled store picks; formulas go to his designer', async () => {
+  assert.ok(isShoppingQuestion('عايز عطر رجالي هدية بـ 500'));
+  assert.ok(isShoppingQuestion('Can you recommend a fresh perfume?'));
+  assert.ok(!isShoppingQuestion('اعمل لي تركيبة عطر عود بنسب'), 'formula requests are for the expert');
+  assert.ok(!isShoppingQuestion('ما هو تاريخ العطور؟'));
+
+  const pick = (name: string, inStock = true) => ({ product: { name: { ar: name, en: name }, slug: name.toLowerCase(), inStock }, why: 'خشبي' });
+  const reply = catalogReply([pick('Oud'), pick('Gone', false), pick('Rose'), pick('Musk'), pick('Amber')], 'ar', (slug) => `https://shop.example/p/${slug}.html`)!;
+  assert.match(reply, /\[Oud\]\(https:\/\/shop\.example\/p\/oud\.html\) — خشبي/);
+  assert.doesNotMatch(reply, /Gone|Amber/, 'in stock only, three at most');
+  assert.match(reply, /ترشيح من فلتر المتجر/);
+  assert.equal(catalogReply([pick('Gone', false)], 'ar', () => undefined), undefined);
+
+  const down = (async () => { throw new ApiError(503, 'ENGINES_DOWN'); }) as typeof requestApi;
+  const noMemory = { learn: () => {}, recall: async () => undefined } as any;
+  const asked: string[] = [];
+  const catalog = async (text: string) => { asked.push(text); return 'store picks'; };
+  const shop = createChatStore(down, async () => {}, noMemory, catalog);
+  await shop.send({ ...options, model: 'fast', text: 'recommend a gift perfume' });
+  const last = shop.getSnapshot().messages.at(-1)!;
+  assert.equal(last.text, 'store picks');
+  assert.equal(last.kind, undefined, 'an answer, not an error bubble');
+  assert.equal(last.aiEngine?.provider, 'shaheen');
+
+  const formula = createChatStore(down, async () => {}, noMemory, catalog);
+  await formula.send({ ...options, model: 'fast', text: 'write me a formula with ratios' });
+  // «مصمم شاهين الذاتي»: a formula request with no direction gets his question back, not store picks or a guess.
+  assert.equal(formula.getSnapshot().messages.at(-1)!.kind, undefined);
+  assert.match(formula.getSnapshot().messages.at(-1)!.text || '', /direction/);
+  const vague = createChatStore(down, async () => {}, noMemory, catalog);
+  await vague.send({ ...options, model: 'fast', text: 'tell me about the history of perfume' });
+  assert.equal(vague.getSnapshot().messages.at(-1)!.kind, 'error');
+  assert.deepEqual(asked, ['recommend a gift perfume']);
+
+  const refused = createChatStore((async () => { throw new ApiError(429, 'RATE_LIMITED'); }) as typeof requestApi, async () => {}, noMemory, catalog);
+  await refused.send({ ...options, model: 'fast', text: 'recommend a gift perfume' });
+  assert.equal(refused.getSnapshot().messages.at(-1)!.kind, 'error', 'limits are not hidden behind store picks');
+});
+
+test('«مصمم شاهين الذاتي»: with no server answer, a design request is designed right in the browser', async () => {
+  const down = (async () => { throw new ApiError(503, 'PROVIDER_NOT_CONFIGURED'); }) as typeof requestApi;
+  const noMemory = { learn: () => {}, recall: async () => undefined } as any;
+  const store = createChatStore(down, async () => {}, noMemory, async () => undefined);
+  await store.send({ ...options, model: 'fast', text: 'صمم لي خلطة شتوية فيها عود' });
+  const last = store.getSnapshot().messages.at(-1)!;
+  assert.equal(last.kind, undefined);
+  assert.equal(last.aiEngine?.provider, 'shaheen');
+  assert.match(last.text || '', /sham-formula/);
+  assert.match(last.text || '', /عود/);
+  // A follow-up to his formula changes it.
+  await store.send({ ...options, model: 'fast', text: 'خليه أحلى' });
+  assert.match(store.getSnapshot().messages.at(-1)!.text || '', /حلو/);
+});
+
+test('opt-in agent uses its separate endpoint and preserves a validated tool report without saving attachments', async () => {
+  let endpoint = ''; let body: any;
+  const store = createChatStore((async (url, init) => {
+    endpoint = url; body = JSON.parse(String(init?.body));
+    return { reply: 'Report prepared', toolReport: { steps: [{ tool: 'calculate', status: 'completed' }], artifacts: [{ name: 'report.txt', content: '10 ml' }] } };
   }) as typeof requestApi);
   await store.send({ ...options, agent: true, documents: [{ name: 'private.txt', text: 'attachment-private-123' }] });
-  assert.equal(payload.agent, true);
-  assert.equal(payload.documents[0].text, 'attachment-private-123');
-  assert.equal(store.getSnapshot().messages.at(-1)?.agent?.steps[0].tool, 'calculate');
+  assert.equal(endpoint, '/api/agent/chat');
+  assert.equal(body.documents[0].text, 'attachment-private-123');
+  assert.equal(store.getSnapshot().messages.at(-1)?.toolReport?.steps[0].tool, 'calculate');
   assert.equal(memory.get(CHAT_STORAGE_KEY)?.includes('attachment-private-123'), false);
 });
 
-test('stopping a request aborts it and prevents late results without deleting the conversation', async () => {
+test('agent failure is not retried as normal chat or answered from offline memory', async () => {
+  let calls = 0;
+  const store = createChatStore((async () => { calls++; throw new ApiError(503, 'PROVIDER_RATE_LIMITED'); }) as typeof requestApi);
+  await store.send({ ...options, agent: true });
+  assert.equal(calls, 1);
+  assert.equal(store.getSnapshot().messages.at(-1)?.kind, 'error');
+});
+
+test('tool-mode stop aborts pending request and discards late artifact downloads', async () => {
   const pending = deferred();
   let signal: AbortSignal | undefined;
   const store = createChatStore((async (_url, init) => { signal = init?.signal as AbortSignal; return pending.promise; }) as typeof requestApi);
-  const sending = store.send(options);
+  const sending = store.send({ ...options, agent: true });
   store.cancel();
   assert.equal(signal?.aborted, true);
   assert.equal(store.getSnapshot().isLoading, false);
-  assert.equal(store.getSnapshot().messages.at(-1)?.role, 'user');
-  pending.resolve({ reply: 'Cancelled result' });
+  pending.resolve({ reply: 'Late answer', toolReport: { steps: [], artifacts: [{ name: 'late.txt', content: 'late' }] } });
   await sending;
-  assert.equal(store.getSnapshot().messages.some((message) => message.text === 'Cancelled result'), false);
-});
-
-test('untrusted agent metadata is rejected rather than persisted or offered for download', async () => {
-  const store = createChatStore((async () => ({ reply: 'Hi', agent: { steps: [], artifacts: [{ name: 'attack.html', content: '<script>bad</script>' }] } })) as typeof requestApi);
-  await store.send(options);
-  assert.equal(store.getSnapshot().messages.at(-1)?.kind, 'error');
+  assert.equal(store.getSnapshot().messages.some((m) => m.toolReport), false);
 });

@@ -1,3 +1,4 @@
+import { platformsOff } from './core/selfReliance';
 import { RAW_MATERIALS_DATABASE as rawMaterials } from '../src/data/rawMaterials';
 import { extractFormulaFromAIMessage } from '../src/utils/aiFormulaExtractor';
 import { validArtifact, type AgentArtifact, type AgentDocument } from '../src/types/agent';
@@ -35,9 +36,9 @@ export function agentCapabilities(env: Record<string, string | undefined> = proc
   return {
     version: 1, maxSteps: 5, maxDocuments: 3, maxDocumentCharacters: 12000,
     tools: ['calculate', 'perfume_batch', 'alcohol_dilution', 'batch_cost', 'search_materials', 'read_document', 'validate_formula', 'create_file',
-      ...(env.BRAVE_SEARCH_API_KEY?.trim() ? ['web_search'] : [])],
+      ...(!platformsOff(env) && env.BRAVE_SEARCH_API_KEY?.trim() ? ['web_search'] : [])],
     unavailable: ['shell_execution', 'repository_write', 'arbitrary_url_fetch', 'account_connectors', 'image_generation', 'audio_generation',
-      ...(!env.BRAVE_SEARCH_API_KEY?.trim() ? ['web_search'] : [])],
+      ...(!!platformsOff(env) && env.BRAVE_SEARCH_API_KEY?.trim() ? ['web_search'] : [])],
   };
 }
 export const toolInstructions = `Available tools (one at a time; strict numeric input; never invent arguments):

@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { SupportedLanguage } from '../types/i18n';
-import { LText, makeT, pickArEn } from '../utils/localize';
+import { LText, makeT, pickArEn } from '../لغات/localize';
 
 export interface CriterionExplanation {
   id: string;

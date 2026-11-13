@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "noteAr": "شركات شحن مرشحة لممراتنا (البضاعة في ماليزيا والإمارات ومصر). الكشّاف بيفتح صفحة كل شركة ويسجّل برضه اللي شافه، ومايحسبش سعر إلا لو التعريفة نفسها متسجلة بمصدرها وتاريخها. dg: true يعني الشركة بتقبل العطور (UN1266) بشكل مؤكد، false يعني بترفضها، null يعني لسه مش متأكدين — و«مش متأكد» مش «مقبول». الأسعار مش هنا: الأرقام بتتسجل في rates بمصدر وتاريخ، أو تفضل الشركة غير موثّقة.",
+  "candidates": [
+    {
+      "id": "dhl_express_my",
+      "nameAr": "DHL إكسبريس (ماليزيا)",
+      "nameEn": "DHL Express Malaysia",
+      "originCountry": "MY",
+      "scope": "international",
+      "ratesUrl": "https://www.dhl.com/my-en/home.html",
+      "dgUrl": "https://www.dhl.com/my-en/home/our-divisions/express.html",
+      "dg": null,
+      "rates": null,
+      "noteAr": "بتشحن من ماليزيا للعالم وفيها مكتب مواد خطرة — محتاج تأكيد مكتوب إنها بتقبل UN1266 على المسار، وتعريفة منشورة للوزن."
+    },
+    {
+      "id": "fedex_my",
+      "nameAr": "فيديكس (ماليزيا)",
+      "nameEn": "FedEx Malaysia",
+      "originCountry": "MY",
+      "scope": "international",
+      "ratesUrl": "https://www.fedex.com/en-my/home.html",
+      "dg": null,
+      "rates": null,
+      "noteAr": "شبكة دولية واسعة؛ العطور عندها مواد خطرة مسموحة بشروط — لازم تعريفة موثّقة وتأكيد القبول قبل أي استخدام."
+    },
+    {
+      "id": "aramex_my",
+      "nameAr": "أرامكس (ماليزيا)",
+      "nameEn": "Aramex Malaysia",
+      "originCountry": "MY",
+      "scope": "international",
+      "ratesUrl": "https://www.aramex.com/my/en",
+      "dg": null,
+      "rates": null,
+      "noteAr": "أرامكس بتغطي الخليج والعالم العربي كويس — قد تكون أرخص من البريد الماليزي في مسارات الخليج."
+    },
+    {
+      "id": "ninja_van_my",
+      "nameAr": "نينجا فان (ماليزيا)",
+      "nameEn": "Ninja Van Malaysia",
+      "originCountry": "MY",
+      "scope": "local",
+      "ratesUrl": "https://www.ninjavan.co/en-my",
+      "dg": null,
+      "rates": null,
+      "noteAr": "شحن محلي جوه ماليزيا — لسه مفيش تعريفة محلية منشورة في الملفات، ودي الوجهة الوحيدة اللي مفيهاش سعر (ماليزيا)."
+    },
+    {
+      "id": "jnt_my",
+      "nameAr": "J&T إكسبريس (ماليزيا)",
+      "nameEn": "J&T Express Malaysia",
+      "originCountry": "MY",
+      "scope": "international",
+      "ratesUrl": "https://www.jtexpress.my",
+      "dg": null,
+      "rates": null,
+      "noteAr": "دولي محدود لآسيا بس — يتأكد إنها بتقبل العطور قبل ما تتحسب."
+    },
+    {
+      "id": "aramex_ae",
+      "nameAr": "أرامكس (الإمارات)",
+      "nameEn": "Aramex UAE",
+      "originCountry": "AE",
+      "scope": "international",
+      "ratesUrl": "https://www.aramex.com/ae/en",
+      "dg": null,
+      "rates": null,
+      "noteAr": "مصدر بضاعة تاني عندنا (98 منتج في الإمارات) — مفيش تعريفة دولية منشورة من الإمارات لحد دلوقتي."
+    }
+  ]
+}
