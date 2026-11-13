@@ -281,7 +281,7 @@ function OwnerHome({ go, access }: { go: (s: Section) => void; access: Access })
         </button>
         <button type="button" disabled={access !== 'full'} onClick={() => go('money')} className={`${tile} disabled:opacity-40`}>
           <Banknote className="mb-2 h-5 w-5 text-amber-300" /><div className="font-bold">{T('البنك والمالية')}</div>
-          <div className="text-xs text-stone-400">{access === 'full' ? T('حسابات بنك شام والمدفوعات') : T('محتاجة الكود السري بتاع الإدارة')}</div>
+          <div className="text-xs text-stone-400">{access === 'full' ? T('ربط وورلد فيرست أول الصفحة') : T('محتاجة الكود السري بتاع الإدارة')}</div>
         </button>
       </div>
     </div>
