@@ -5,7 +5,8 @@ import type { AddressInfo } from 'node:net';
 import productsData from '../src/data/products.json';
 import catalogFile from '../src/data/live/store-catalog.json';
 import { mergeCatalog, type RawProduct, type StoreCatalogFile } from '../src/utils/storeCatalog';
-import { closeToDesign, designStoreNote, productLink, shownIn, storeAnswer, wantsStore, withContext } from '../src/utils/shaheenBrain';
+import { closeToDesign, designStoreNote, productLink, shownIn, storeAnswer, storeWish, wantsStore, withContext } from '../src/utils/shaheenBrain';
+import { productAnswer } from '../src/utils/shaheenPitch';
 import { designFor } from '../src/utils/shaheenDesigner';
 import { AGENT_LINK, agentLinkOn, agentLinkStatusAr } from '../src/utils/agentLink';
 import { STATE_CONSTITUTION, readStateOrders } from '../src/utils/platformState';
@@ -50,6 +51,56 @@ test('he remembers the conversation: a follow-up carries the subject of the ques
   assert.ok(shownIn(firstAnswer!.reply, PRODUCTS).length >= 1);
   assert.equal(withContext('شكرا').followUp, false);
   assert.equal(withContext('ايه هي الطاقة الشمسية', history).followUp, false, '«ايه هي …» is a new question, not «it»');
+});
+
+test('successive store follow-ups keep the original request and apply the newest season and price preference', () => {
+  const firstText = 'عايز عطر رجالي صيفي خفيف';
+  const first = storeAnswer(PRODUCTS, withContext(firstText), 'ar', link)!;
+  const history = [
+    { role: 'user' as const, text: firstText },
+    { role: 'assistant' as const, text: first.reply },
+  ];
+  const newWish = withContext('عايز عطر نسائي فانيليا', history);
+  assert.equal(newWish.followUp, false, 'a fully stated new shopping wish does not inherit the old gender');
+  assert.equal(storeWish(newWish).gender, 'women');
+
+  const winterContext = withContext('خليه للشتا', history);
+  assert.equal(winterContext.followUp, true);
+  const winterWish = storeWish(winterContext);
+  assert.equal(winterWish.gender, 'men', 'the original gender survives the correction');
+  assert.deepEqual(winterWish.seasons, ['winter'], 'winter replaces the earlier summer');
+  assert.ok(!winterWish.words.some((word) => /صيف|summer/i.test(word)), 'the old season is not left behind as a hidden ranking hint');
+  const winter = storeAnswer(PRODUCTS, winterContext, 'ar', link)!;
+  history.push({ role: 'user', text: 'خليه للشتا' }, { role: 'assistant', text: winter.reply });
+
+  const cheaperContext = withContext('والأوفر؟', history);
+  const cheaperWish = storeWish(cheaperContext);
+  assert.equal(cheaperContext.followUp, true);
+  assert.equal(cheaperWish.gender, 'men');
+  assert.deepEqual(cheaperWish.seasons, ['winter'], 'the second follow-up keeps the corrected season, not both seasons');
+  assert.equal(cheaperWish.cheap, true, '«الأوفر» is a budget preference');
+  const cheaper = storeAnswer(PRODUCTS, cheaperContext, 'ar', link)!;
+  assert.match(cheaper.reply, /بالترتيب من الأوفر للأغلى/, 'compare the actual products just shown');
+  const whoIsCheaper = withContext('مين الأوفر؟', history);
+  assert.equal(whoIsCheaper.followUp, true, 'comparison wording still links when it has no leading «و»');
+  assert.match(storeAnswer(PRODUCTS, whoIsCheaper, 'ar', link)!.reply, /بالترتيب من الأوفر للأغلى/);
+});
+
+test('a short product question is answered about the product on screen', () => {
+  const product = PRODUCTS.find((p) => p.name.en.toLowerCase().includes('hawas ice'))!;
+  assert.ok(product, 'catalogue contains the known test product');
+  const asked = `${product.name.en} كويس؟`;
+  const first = productAnswer([product], withContext(asked), 'ar', link)!;
+  const context = withContext('هو ثابت؟', [
+    { role: 'user', text: asked },
+    { role: 'assistant', text: first.reply },
+  ]);
+  assert.equal(context.followUp, true);
+  const answer = productAnswer([product], context, 'ar', link);
+  assert.ok(answer);
+  assert.equal(answer.picks[0].sku, product.sku);
+  assert.match(answer.reply, /الثبات/);
+  assert.doesNotMatch(answer.reply, /عشان أرشحلك صح/, 'answer the follow-up instead of restarting recommendations');
 });
 
 test('questions about perfumery itself, notes for a formula and lab work are not store questions', () => {
@@ -145,6 +196,27 @@ test('the server, link on: a perfume wish is answered from the store with no pla
     const other = await (await chat('ازاي احافظ على العطر من الحرارة')).json() as { reply: string };
     assert.match(other.reply, /رد المنصة/, 'the platforms answer while they work');
     assert.equal(calls(), 1);
+  });
+});
+
+test('the live server keeps a corrected season across turns and compares the same store picks', async () => {
+  await withServer({}, async (chat, calls) => {
+    const firstQuestion = 'عايز عطر رجالي صيفي خفيف';
+    const first = await (await chat(firstQuestion)).json() as { reply: string; memory: string };
+    assert.equal(first.memory, 'store');
+    const history = [
+      { role: 'user', text: firstQuestion },
+      { role: 'assistant', text: first.reply },
+    ];
+    const winter = await (await chat('خليه للشتا', history)).json() as { reply: string; memory: string };
+    assert.equal(winter.memory, 'store');
+    assert.match(winter.reply, /للموسم شتوي/);
+    history.push({ role: 'user', text: 'خليه للشتا' }, { role: 'assistant', text: winter.reply });
+
+    const cheaper = await (await chat('والأوفر؟', history)).json() as { reply: string; memory: string };
+    assert.equal(cheaper.memory, 'store');
+    assert.match(cheaper.reply, /بالترتيب من الأوفر للأغلى/);
+    assert.equal(calls(), 0, 'the connected store answer remains local to Shaheen');
   });
 });
 
