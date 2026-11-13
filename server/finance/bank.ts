@@ -106,6 +106,10 @@ export class BankService {
     return (await this.accounts()).filter((a) => a.active && a.countries.includes(country))
       .map((a) => ({ id: a.id, kind: a.kind, label: a.label, currency: a.currencies.includes(wanted) ? wanted : a.currencies[0] }));
   }
+  async worldFirstBridge(amountMinor: number, currency: string) {
+    if (!this.finance.persistent) fail('FINANCE_STORAGE_REQUIRED', 'ربط البنوك الدولية يحتاج قاعدة بيانات دائمة.', 503);
+    return { rail: 'world_first', currency: currency.toUpperCase(), active: true, amountMinor };
+  }
 
   /* ───────── Direct orders (buyer side) ───────── */
   async createDirect(input: DirectOrderInput): Promise<DirectReceipt> {
