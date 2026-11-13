@@ -176,6 +176,7 @@ export const SITE_SECTIONS: SiteSection[] = [
   { id: 'guide', titleAr: 'دليل صناعة العطور', titleEn: 'Perfume guide', consultants: ['specialist_scents', 'specialist_society', 'specialist_health'] },
   { id: 'alcohol', titleAr: 'الكحول في العطور', titleEn: 'Alcohol in perfumes', consultants: ['specialist_science', 'specialist_scents', 'specialist_health'] },
   { id: 'maceration_simulator', titleAr: 'محاكي التخمير والنضج', titleEn: 'Maceration simulator', consultants: ['specialist_science', 'specialist_scents'] },
+  { id: 'workspace', titleAr: 'مساحة شاهين — المساعد الشامل', titleEn: 'Shaheen Workspace', consultants: ['specialist_tech', 'specialist_learning', 'specialist_engineering', 'specialist_security'] },
   { id: 'master_ai', titleAr: 'الخبير شاهين', titleEn: 'Shaheen the expert', consultants: ['specialist_tech', 'specialist_security', 'specialist_engineering'] },
   { id: 'perfume_news', titleAr: 'أخبار العطور', titleEn: 'Perfume news', consultants: ['specialist_society', 'specialist_business', 'specialist_culture'] },
   { id: 'raw_materials', titleAr: 'المواد الخام', titleEn: 'Raw materials', consultants: ['specialist_scents', 'specialist_health'] },

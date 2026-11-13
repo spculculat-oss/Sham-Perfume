@@ -11,6 +11,7 @@ import { callEngine, engineStatuses } from './core/engines';
 import { liveNews, supervisorGuidance } from './core/liveData';
 import { articlesFromCollected } from './newsFallback';
 import { RateLimiter, clientKey } from './core/rateLimit';
+import { createWorkspaceRouter } from './workspace';
 import { corsMiddleware } from './cors';
 import { createCommunity, createCommunityRouter } from './community/router';
 import { createContractsRouter } from './contracts/router';
@@ -29,6 +30,8 @@ if (trustProxy) app.set('trust proxy', /^\d+$/.test(trustProxy) ? Number(trustPr
 app.use('/api', corsMiddleware(process.env.SHAM_CORS_ORIGINS));
 // «مجتمع شام» carries pictures and voice notes: a larger body limit only on its routes (parsed once).
 app.use(['/api/community', '/api/admin/community'], express.json({ limit: '3mb' }));
+// «مساحة شاهين»: the visitor's files and pages travel with his question (an image to edit too).
+app.use('/api/workspace', express.json({ limit: '4mb' }));
 app.use(express.json({ limit: '128kb' }));
 app.use((error: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (error?.type === 'entity.parse.failed' || error?.type === 'entity.too.large') {
@@ -62,6 +65,8 @@ app.use('/api', createShaheenRouter({ repo: shamCore.repo, runtime: shamCore.run
 // حاسبات المعمل، المتجر، النشرة، الملجأ، المصادر المفتوحة) — POST /api/specialists/consult.
 app.use('/api/specialists', createSpecialistsRouter({ repo: shamCore.repo, runtime: shamCore.runtime, memory: shamCore.memory }));
 app.use('/api', createMediaRouter());
+// «مساحة شاهين»: Shaheen as a general assistant (any subject) — search, reading pages and PDFs, images, the owner's Notion/Slack.
+app.use('/api/workspace', createWorkspaceRouter());
 // «منارة شاهين»: the live SEO files and the public status snapshot. The static build also ships copies of
 // robots/sitemap/llms/feed, so crawlers are served even on GitHub Pages.
 app.use('/api', createSeoRouter(shamCore.seo));
