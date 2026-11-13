@@ -1,3 +1,4 @@
+import { ShaheenAgentPanel, ShaheenAgentReport } from './ShaheenAgentPanel';
 import { useChatPrices } from '../utils/storeCheckout';
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import {
@@ -1194,6 +1195,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
 
             <AIDisclosureBadge lang={currentLang} />
             <StaticHostingNotice currentLang={currentLang} />
+            <ShaheenAgentPanel language={currentLang} />
             <ShaheenServiceStatus language={currentLang} models={modelStatus.models} failed={modelStatus.failed}
               enabled={modelStatus.enabled} selected={selectedModel} />
 
@@ -1376,6 +1378,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                           {activeDisplayContent}
                         </div>
                       )}
+                      <ShaheenAgentReport report={msg.toolReport} language={currentLang} />
 
                       {isError && isLastMessage && (
                         <button

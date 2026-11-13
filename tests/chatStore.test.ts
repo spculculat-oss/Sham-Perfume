@@ -329,3 +329,37 @@ test('«مصمم شاهين الذاتي»: with no server answer, a design requ
   await store.send({ ...options, model: 'fast', text: 'خليه أحلى' });
   assert.match(store.getSnapshot().messages.at(-1)!.text || '', /حلو/);
 });
+
+test('opt-in agent uses its separate endpoint and preserves a validated tool report without saving attachments', async () => {
+  let endpoint = ''; let body: any;
+  const store = createChatStore((async (url, init) => {
+    endpoint = url; body = JSON.parse(String(init?.body));
+    return { reply: 'Report prepared', toolReport: { steps: [{ tool: 'calculate', status: 'completed' }], artifacts: [{ name: 'report.txt', content: '10 ml' }] } };
+  }) as typeof requestApi);
+  await store.send({ ...options, agent: true, documents: [{ name: 'private.txt', text: 'attachment-private-123' }] });
+  assert.equal(endpoint, '/api/agent/chat');
+  assert.equal(body.documents[0].text, 'attachment-private-123');
+  assert.equal(store.getSnapshot().messages.at(-1)?.toolReport?.steps[0].tool, 'calculate');
+  assert.equal(memory.get(CHAT_STORAGE_KEY)?.includes('attachment-private-123'), false);
+});
+
+test('agent failure is not retried as normal chat or answered from offline memory', async () => {
+  let calls = 0;
+  const store = createChatStore((async () => { calls++; throw new ApiError(503, 'PROVIDER_RATE_LIMITED'); }) as typeof requestApi);
+  await store.send({ ...options, agent: true });
+  assert.equal(calls, 1);
+  assert.equal(store.getSnapshot().messages.at(-1)?.kind, 'error');
+});
+
+test('tool-mode stop aborts pending request and discards late artifact downloads', async () => {
+  const pending = deferred();
+  let signal: AbortSignal | undefined;
+  const store = createChatStore((async (_url, init) => { signal = init?.signal as AbortSignal; return pending.promise; }) as typeof requestApi);
+  const sending = store.send({ ...options, agent: true });
+  store.cancel();
+  assert.equal(signal?.aborted, true);
+  assert.equal(store.getSnapshot().isLoading, false);
+  pending.resolve({ reply: 'Late answer', toolReport: { steps: [], artifacts: [{ name: 'late.txt', content: 'late' }] } });
+  await sending;
+  assert.equal(store.getSnapshot().messages.some((m) => m.toolReport), false);
+});

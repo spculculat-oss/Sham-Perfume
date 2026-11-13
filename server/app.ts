@@ -1,3 +1,4 @@
+import { createToolAgentRouter } from './agentRouter';
 import express from 'express';
 import dotenv from 'dotenv';
 import { createShaheenRouter } from './shaheen';
@@ -60,6 +61,7 @@ app.get('/api/fx', async (_req, res) => {
 
 // «الخبير شاهين»: GET /api/models + POST /api/chat. Settings come from server/config/shaheen.ts and the
 // admin dashboard, so both sites (Vercel and GitHub Pages, which calls this API) behave the same.
+app.use('/api/agent', createToolAgentRouter({ repo: shamCore.repo, runtime: shamCore.runtime }));
 app.use('/api', createShaheenRouter({ repo: shamCore.repo, runtime: shamCore.runtime, memory: shamCore.memory }));
 // «مجلس المتخصصين»: وكيل الاستشارة الذكي بأدواته (مدرسة شاهين وعلومها، الذاكرة، المكتبة، المواد،
 // حاسبات المعمل، المتجر، النشرة، الملجأ، المصادر المفتوحة) — POST /api/specialists/consult.

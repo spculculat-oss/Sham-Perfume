@@ -222,6 +222,17 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     tags: ['شاهين', 'خبير', 'shaheen', 'formulation'],
   },
   {
+    id: 'shaheen_tools', group: 'workspace', tab: 'master_ai', docId: 'kb-platform-shaheen-tools',
+    name: { ar: 'وضع أدوات شاهين', en: 'Shaheen tool mode' },
+    summary: { ar: 'وضع اختياري لحسابات بأدوات فعلية وقراءة ملفات نصية وتجهيز تقارير للتنزيل.', en: 'Opt-in tool execution for calculations, text attachments and downloadable reports.' },
+    details: {
+      ar: 'افتح أدوات شاهين في الشات أو المعمل وفعّل وضع الوكيل، واختر تلقائي أو سريع أو معمق. يدعم الحسابات والدفعات والتخفيف والتكلفة والمواد ومراجعة التركيبات وقراءة حتى 3 ملفات نصية بإجمالي 12000 حرف، وتجهيز ملفين للتنزيل بنقرة. لا يكتب في حسابات أو مستودعات ولا ينفذ كوداً. تحتاج دورة الوكيل خدمة ذكاء متاحة، والبحث الخارجي اختياري بإعداد الإدارة وموافقتك؛ لا يتجاوز الحصة. المرفقات قد تصل للمزود ومقتطفاتها في الردود تُحفظ مع المحادثة؛ لا ترفع أسراراً.',
+      en: 'Open Shahin tools in chat or the lab, enable agent mode and choose auto, fast or deep. Supports calculations, batches, dilution, costing, materials, formula checks, up to 3 text files totaling 12000 characters and two click-to-download reports. No code execution, account access or repository changes. Requires an available AI service; optional external search needs admin configuration and your consent. It does not bypass quota. Attachments may reach the provider and excerpts in replies may be saved in chat; never upload secrets.',
+    },
+    keywords: ['أدوات شاهين', 'وضع الوكيل', 'إرفاق ملف نصي', 'تقرير للتنزيل', 'shahin tools', 'shaheen tool mode', 'agent mode', 'text attachments', 'download report'],
+    tags: ['أدوات', 'وكيل', 'مرفقات', 'tools', 'agent'],
+  },
+  {
     id: 'shaheen_voice', group: 'workspace', tab: 'master_ai', docId: 'kb-platform-shaheen-voice',
     name: { ar: 'وضع التحدث مع شاهين', en: 'Shaheen voice chat' },
     summary: {

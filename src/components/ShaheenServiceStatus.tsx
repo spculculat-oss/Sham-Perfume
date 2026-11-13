@@ -83,6 +83,14 @@ const GENERIC: LText = {
 /** A precise, actionable message per failure (never a generic “server or news” text). */
 export function chatErrorText(language: SupportedLanguage, error: unknown) {
   if (error instanceof ApiError) {
+    const agentNotices: Record<string, { ar: string; en: string }> = {
+      PROVIDER_RATE_LIMITED: { ar: 'وصلت خدمة الذكاء الاصطناعي لحد الاستخدام أو الحصة؛ راجع حدود المشروع وانتظر تجددها. تغيير المفتاح في نفس المشروع لا يجدد الحصة.', en: 'AI quota or rate limit reached. Check your project limits; a new key in the same project does not reset quota.' },
+      PROVIDER_AUTH_FAILED: { ar: 'رفضت الخدمة الوصول. راجع إعدادات الوصول على الخادم.', en: 'AI service denied access. Check server credentials and project restrictions.' },
+      PROVIDER_MODEL_UNAVAILABLE: { ar: 'إعداد النموذج غير متاح حالياً. راجع إعدادات الخادم.', en: 'Configured model unavailable. Check server settings.' },
+      INVALID_AGENT_REQUEST: { ar: 'خيارات الوكيل غير صالحة. استخدم وضع تلقائي أو سريع أو معمق، وحتى 3 ملفات نصية بإجمالي 12000 حرف.', en: 'Invalid agent options. Use auto, fast or deep and up to 3 text files totaling 12000 characters.' },
+      AGENT_INVALID_RESPONSE: { ar: 'لم يكمل الوكيل المهمة ضمن حدود الخطوات أو أعاد صيغة غير صالحة. جرّب مهمة أصغر أو المحادثة العادية.', en: 'Agent returned an invalid action or exceeded its step budget. Try a smaller task or normal chat.' },
+    };
+    if (error.code && agentNotices[error.code]) return loc(language, agentNotices[error.code]);
     if (error.code === 'SHAHEEN_DISABLED') return loc(language, DISABLED);
     if (error.code === 'PROVIDER_NOT_CONFIGURED') return loc(language, NO_KEY);
     if (error.code === 'PROVIDER_UNAVAILABLE') return loc(language, UNAVAILABLE);
