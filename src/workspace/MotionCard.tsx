@@ -46,11 +46,11 @@ export function MotionCard({ src, lang }: { src: string; lang: SupportedLanguage
     <canvas ref={canvas} aria-label={w('signed_image')} className="max-h-[65vh] max-w-full rounded-xl border border-stone-200 object-contain" />
     <p className="text-xs text-stone-600">{w('motion_note')}</p>
     <div className="flex flex-wrap gap-2 text-xs">
-      <button type="button" disabled={!ready || busy} onClick={() => { if (canvas.current) void canvasBlob(canvas.current).then((blob) => downloadBlob(blob, 'sharin-ai.png')).catch(() => setError(w('image_failed'))); }} className="rounded-lg border px-3 py-2 disabled:opacity-50">{w('download')}</button>
+      <button type="button" disabled={!ready || busy} onClick={() => { if (canvas.current) void canvasBlob(canvas.current).then((blob) => downloadBlob(blob, 'sharing-ai.png')).catch(() => setError(w('image_failed'))); }} className="rounded-lg border px-3 py-2 disabled:opacity-50">{w('download')}</button>
       <button type="button" disabled={!ready || busy} onClick={() => void animate()} className="rounded-lg bg-amber-800 px-3 py-2 text-white disabled:opacity-50">{busy ? w('motion_recording') : w('motion_create')}</button>
       {busy && <button type="button" onClick={() => { abort.current?.abort(); setBusy(false); }} className="rounded-lg border px-3 py-2">{w('stop')}</button>}
     </div>
-    {video && <><video src={video.url} controls playsInline className="max-h-[65vh] max-w-full rounded-xl" /><button type="button" className="rounded-lg border px-3 py-2 text-xs" onClick={() => downloadBlob(video.blob, `sharin-ai.${video.blob.type.includes('mp4') ? 'mp4' : 'webm'}`)}>{w('motion_download')}</button></>}
+    {video && <><video src={video.url} controls playsInline className="max-h-[65vh] max-w-full rounded-xl" /><button type="button" className="rounded-lg border px-3 py-2 text-xs" onClick={() => downloadBlob(video.blob, `sharing-ai.${video.blob.type.includes('mp4') ? 'mp4' : 'webm'}`)}>{w('motion_download')}</button></>}
     {error && <p role="alert" className="text-xs text-rose-700">{error}</p>}
   </div>;
 }

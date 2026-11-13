@@ -30,7 +30,7 @@ test('the exact Egyptian spelling/typo resolves to retrieval, not generated artw
     assert.deepEqual(realPhotoRequest(text), { query: 'Hosni Mubarak' }, text);
     const reply = realPhotoReply(text, [], 'ar')!;
     assert.deepEqual(extractMediaRequest(reply), { images: ['Hosni Mubarak'], videos: [], imageKind: 'photograph' });
-    assert.doesNotMatch(reply, /sham-image|sham-video|Google Images|sharin ai/);
+    assert.doesNotMatch(reply, /sham-image|sham-video|Google Images|sharing ai/);
     assert.doesNotMatch(removeMediaBlocks(reply), /sham-media/);
   }
   assert.equal(wantsRealPhoto('ارسم صورة واقعية لحسني مبارك'), false);
