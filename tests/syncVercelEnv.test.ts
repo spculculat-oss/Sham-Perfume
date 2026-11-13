@@ -11,7 +11,7 @@ interface EnvVar { id: string; key: string; value: string; target: string[]; typ
 
 /** Minimal fake of the Vercel REST endpoints the sync script uses. */
 interface Dpl { uid: string; source?: string; meta?: { githubCommitSha?: string } }
-function fakeVercel(initial: Record<string, EnvVar[]>, opts: { deployments?: Record<string, Dpl[]>; live?: Record<string, string>; pinned?: boolean } = {}) {
+function fakeVercel(initial: Record<string, EnvVar[]>, opts: { deployments?: Record<string, Dpl[]>; live?: Record<string, string>; pinned?: boolean; missingProjectId?: boolean } = {}) {
   const envs = structuredClone(initial);
   const live: Record<string, string> = { ...opts.live };
   const promoted: string[] = [];
@@ -41,9 +41,13 @@ function fakeVercel(initial: Record<string, EnvVar[]>, opts: { deployments?: Rec
         return send(200, { deployments: opts.deployments?.[p] || [{ uid: `dpl_${p}`, source: 'git', meta: metaOf(`dpl_${p}`) }] });
       }
       m = url.pathname.match(/^\/v9\/projects\/([^/]+)$/);
-      if (m) return send(200, { targets: { production: { id: live[m[1]] ?? `dpl_${m[1]}` } } });
+      if (m) return send(200, { id: opts.missingProjectId ? undefined : `prj_${m[1]}`, targets: { production: { id: live[m[1]] ?? `dpl_${m[1]}` } } });
       m = url.pathname.match(/^\/v10\/projects\/([^/]+)\/promote\/([^/]+)$/);
-      if (m && req.method === 'POST') { live[m[1]] = m[2]; promoted.push(`${m[1]}:${m[2]}`); return send(202, {}); }
+      if (m && req.method === 'POST') {
+        if (!m[1].startsWith('prj_')) return send(404, { error: { code: 'not_found' } });
+        const project = m[1].slice(4);
+        live[project] = m[2]; promoted.push(`${project}:${m[2]}`); return send(202, {});
+      }
       if (url.pathname === '/v13/deployments' && req.method === 'POST') {
         const { name, deploymentId } = JSON.parse(body);
         calls.push(`from ${deploymentId}`);
@@ -151,6 +155,7 @@ test('a changed key on a pinned project rebuilds the exact current commit and pr
     const out = await run(base, { VERCEL_PROJECTS: 'api', ANTHROPIC_API_KEY: 'sk-ant-new' });
     assert.ok(fake.calls.includes('from git_head'));
     assert.deepEqual(fake.promoted, ['api:new_api']);
+    assert.ok(fake.calls.includes('POST /v10/projects/prj_api/promote/new_api'), 'use project id, never its display name');
     assert.match(out, /production redeploy READY/);
     assert.doesNotMatch(out, /sk-ant-new/);
   } finally {
@@ -167,4 +172,15 @@ test('a refused VERCEL_TOKEN explains how to fix it', async () => {
   } finally {
     fake.server.close();
   }
+});
+
+test('a project lookup without an immutable id cannot fall back to promoting by name', async () => {
+  const fake = fakeVercel({ api: [] }, { live: { api: 'old' }, missingProjectId: true });
+  const base = await listen(fake);
+  try {
+    const out = await run(base, { VERCEL_PROJECTS: 'api' });
+    assert.match(out, /no id; refusing to promote by name/);
+    assert.deepEqual(fake.promoted, []);
+    assert.equal(fake.calls.filter((call) => call.includes('/promote/')).length, 0);
+  } finally { fake.server.close(); }
 });

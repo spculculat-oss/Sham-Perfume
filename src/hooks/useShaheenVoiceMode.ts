@@ -639,9 +639,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
             speechPosRef.current = { chunks, index, at };
           }
         };
-        utterance.onend = () => { if (sequence !== speechSequenceRef.current) return; clearTimeout(nativeSpeechTimerRef.current); nativeUtteranceRef.current = null; index += 1; speakNext(); };
-        utterance.onerror = () => finish(true);
-        nativeSpeechTimerRef.current = setTimeout(() => { try { window.speechSynthesis.cancel(); } catch { /* stalled engine */ } finish(true); }, Math.max(20000, chunks[index].length * 180));
+        utterance.onend = () => { if (sequence !== speechSequenceRef.current || nativeUtteranceRef.current !== utterance) return; clearTimeout(nativeSpeechTimerRef.current); nativeUtteranceRef.current = null; index += 1; speakNext(); };
+        utterance.onerror = () => { if (nativeUtteranceRef.current === utterance) finish(true); };
+        nativeSpeechTimerRef.current = setTimeout(() => { if (nativeUtteranceRef.current !== utterance) return; try { window.speechSynthesis.cancel(); } catch { /* stalled engine */ } finish(true); }, Math.max(20000, chunks[index].length * 180));
         nativeUtteranceRef.current = utterance;
         window.speechSynthesis.speak(utterance);
       } catch {
@@ -1321,6 +1321,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     earRef.current?.close();
     earRef.current = null;
     speechSequenceRef.current += 1;
+    clearTimeout(nativeSpeechTimerRef.current);
+    nativeUtteranceRef.current = null;
+    localStopRef.current?.(); localStopRef.current = null;
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       try { window.speechSynthesis.cancel(); } catch { /* The browser has no active speech queue. */ }
     }
