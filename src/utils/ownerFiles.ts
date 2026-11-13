@@ -132,6 +132,9 @@ export function planChange(edits: FileEdit[], read: (path: string) => string | u
       continue;
     }
     if (text === undefined) { problems.push(`${e.path}: الملف مش موجود`); continue; }
+    // Already in the file (the proposal grows the old part into code that is there already): applying it would
+    // duplicate those lines and break the file — seen live in #539, where the checks failed for that reason.
+    if (e.replace !== e.search && e.replace.includes(e.search) && text.includes(e.replace)) { problems.push(`${e.path}: التعديل ده متطبق بالفعل في الملف — مفيش حاجة تتغير`); continue; }
     const n = count(text, e.search);
     if (n !== 1) { problems.push(`${e.path}: ${n ? 'الجزء القديم متكرر أكتر من مرة' : 'الجزء القديم مش موجود في الملف (يمكن الملف اتغير)'}`); continue; }
     current.set(e.path, text.replace(e.search, () => e.replace));

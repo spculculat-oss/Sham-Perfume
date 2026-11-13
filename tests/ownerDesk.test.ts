@@ -134,3 +134,13 @@ test('an order\'s answer in the room is remembered next to the change cards', ()
   const room = readRoom({ version: 1, messages: [{ id: 'm1', by: 'shaheen', text: 'x', at: '2026-10-22T00:00:00Z' }], decisions: { m1: 'returned', 'm1:order:0': 'sent', 'zz:order:0': 'sent', m2: 'sent' } });
   assert.deepEqual(room.decisions, { m1: 'returned', 'm1:order:0': 'sent' });
 });
+
+test('a change already in the file is reported, never applied twice (#539 duplicated a function body)', () => {
+  const file = 'const clear = () => {\n  if (t !== null) {\n    clearTimeout(t);\n    t = null;\n  }\n};\n';
+  const edit = { path: 'src/hooks/useShaheenVoiceMode.ts', search: 'const clear = () => {\n  if (t !== null) {', replace: 'const clear = () => {\n  if (t !== null) {\n    clearTimeout(t);\n    t = null;\n  }\n};' };
+  const plan = planChange([edit], () => file);
+  assert.equal(plan.files.length, 0);
+  assert.match(plan.problems.join(' '), /متطبق بالفعل/);
+  const fresh = planChange([edit], () => 'const clear = () => {\n  if (t !== null) {\n    other();\n  }\n};\n');
+  assert.deepEqual(fresh.problems, [], 'a real change still goes through');
+});
