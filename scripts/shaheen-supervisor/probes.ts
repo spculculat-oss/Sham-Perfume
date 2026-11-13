@@ -110,6 +110,23 @@ async function newsArticleProbes(ctx: ProbeContext): Promise<Probe[]> {
   return [{ tool: 'news_articles', question: 'GET /api/news (مقالات اليوم)', answer, ms: r.ms, ok: !r.error && r.value?.success !== false, error: r.error, findings }];
 }
 
+/** «مساحة شاهين»: what is open (no vendor names), and one everyday question outside perfume answered in the visitor's language. */
+async function workspaceProbes(ctx: ProbeContext): Promise<Probe[]> {
+  const status = await timed(() => json<{ ai?: boolean; search?: string; image?: string }>(ctx.fetch, `${ctx.site}/api/workspace/status`));
+  const s = status.value;
+  const statusFindings: Probe['findings'] = [];
+  if (!status.error && s && /gemini|openai|claude|deepseek|perplexity/i.test(JSON.stringify(s))) statusFindings.push({ severe: true, text: 'حالة المساحة بتكشف اسم منصة ذكاء للزوار' });
+  if (!status.error && s && s.ai === false) statusFindings.push({ severe: false, text: 'المساحة من غير منصة ذكاء متاحة دلوقتي' });
+  const q = 'اكتبلي 3 نصايح قصيرة علشان أنظم وقتي في المذاكرة';
+  const asked = await timed(() => json<{ reply?: string }>(ctx.fetch, `${ctx.site}/api/workspace/ask`, post({ messages: [{ role: 'user', text: q }], language: 'ar' })));
+  const answer = asked.value?.reply || '';
+  const findings: Probe['findings'] = asked.error ? [] : inspectAnswer(answer, { language: 'ar', ms: asked.ms, maxChars: 4000 });
+  return [
+    { tool: 'shaheen_workspace', question: 'GET /api/workspace/status', answer: s ? JSON.stringify(s) : '', ms: status.ms, ok: !status.error, error: status.error, findings: statusFindings },
+    { tool: 'shaheen_workspace', question: q, answer, ms: asked.ms, ok: !asked.error && Boolean(answer), error: asked.error, findings },
+  ];
+}
+
 async function mediaProbes(ctx: ProbeContext): Promise<Probe[]> {
   const image = await timed(() => json<{ images?: { title: string }[] }>(ctx.fetch, `${ctx.site}/api/media?type=image&q=agarwood`));
   const place = await timed(() => json<{ places?: { lat: number; lon: number; label: string }[] }>(ctx.fetch, `${ctx.site}/api/media?type=place&q=${encodeURIComponent('Grasse, France')}`));
@@ -519,4 +536,5 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   language_agent: languageAgentProbes,
   platform_owner_agent: platformOwnerProbes,
   visitor_suggestions: visitorSuggestionsProbes,
+  shaheen_workspace: workspaceProbes,
 };

@@ -4,6 +4,7 @@ import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../types/i18n';
 import { cosmeticsText, type CosmeticsUiKey } from '../لغات/cosmeticsL10n';
 import { t as ui } from '../لغات/i18n';
 import { designersText } from '../لغات/designersL10n';
+import { wsText } from '../workspace/strings';
 
 interface Props {
   currentLang: SupportedLanguage;
@@ -64,6 +65,16 @@ export function SectionsGateway({ currentLang, onNavigate }: Props) {
         {card('perfumes', ct('navPerfumes'), ct('perfumeCardText'), perfumeTools, 'amber', '🌹', 'perfumes')}
         {card('cosmetics', ct('sectionCosmetics'), ct('cosmeticCardText'), cosmeticTools, 'rose', '🧴', 'cosmetics')}
       </div>
+      {/* «مساحة شاهين»: the general assistant — open to any subject, not only perfume and cosmetics. */}
+      <button type="button" onClick={() => onNavigate('workspace')} data-testid="gateway-workspace"
+        className="w-full flex items-center gap-4 rounded-3xl border border-violet-200 bg-gradient-to-br from-stone-900 via-stone-800 to-violet-900 p-5 text-start text-white shadow-xs hover:shadow-md cursor-pointer">
+        <span className="text-4xl" aria-hidden>🦅</span>
+        <span className="flex-1 min-w-0">
+          <span className="block text-lg sm:text-xl font-black">{wsText(currentLang, 'title')}</span>
+          <span className="block text-xs sm:text-sm text-violet-100/90 leading-relaxed">{wsText(currentLang, 'subtitle')}</span>
+        </span>
+        <Arrow className="w-5 h-5 shrink-0" />
+      </button>
     </section>
   );
 }

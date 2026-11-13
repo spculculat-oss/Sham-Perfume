@@ -87,6 +87,8 @@ import { ErrorBoundary, lazyWithReload } from './utils/lazyRetry';
 const CommunityApp = lazyWithReload(() => import('./community/CommunityApp'));
 const CosmeticsHub = lazyWithReload(() => import('./components/CosmeticsHub'));
 const DesignersStudio = lazyWithReload(() => import('./components/DesignersStudio'));
+// «مساحة شاهين»: the general assistant (loaded only when opened — its document and code tools are heavy).
+const ShaheenWorkspace = lazyWithReload(() => import('./workspace/ShaheenWorkspace'));
 
 const LOCAL_STORAGE_KEY = 'miyaar_perfume_saved_formulas';
 
@@ -1149,6 +1151,14 @@ export default function App() {
           />
         )}
 
+        {activeTab === 'workspace' && (
+          <ErrorBoundary area="workspace" compact ar={currentLang === 'ar'}>
+            <Suspense fallback={<div className="py-16 text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto text-amber-700" /></div>}>
+              <ShaheenWorkspace currentLang={currentLang} />
+            </Suspense>
+          </ErrorBoundary>
+        )}
+
         {activeTab === 'master_ai' && (
           <PerfumerMasterLabView
             currentLang={currentLang}
@@ -1229,7 +1239,7 @@ export default function App() {
         onCalculateCosting={handleCalculateCosting}
         onPrintSpecSheet={handlePrintSpecSheetForFormula}
         onOpenTool={handleOpenShaheenTool}
-        hidden={activeTab === 'master_ai'}
+        hidden={activeTab === 'master_ai' || activeTab === 'workspace'}
       />
 
       {/* Sham Core services assistant: orders, store, bespoke, B2B, support (opposite corner to Shaheen) */}

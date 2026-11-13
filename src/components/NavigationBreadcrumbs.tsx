@@ -23,7 +23,9 @@ import {
   Users,
   Atom,
   ShoppingBag,
+  Wand2,
 } from 'lucide-react';
+import { wsText } from '../workspace/strings';
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../لغات/i18n';
 import { LText, makeT } from '../لغات/localize';
@@ -91,6 +93,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
     alcohol: { label: t('nav_alcohol', currentLang), icon: Hourglass },
     costing: { label: t('nav_costing', currentLang), icon: DollarSign },
     master_ai: { label: t('nav_ai_master', currentLang), icon: Bot },
+    workspace: { label: wsText(currentLang, 'title'), icon: Wand2 },
     maceration_simulator: { label: L('aging_sim_full'), icon: Hourglass },
     library: { label: t('nav_library', currentLang), icon: BookMarked },
     guide: { label: t('nav_guide', currentLang), icon: BookOpen },
@@ -121,6 +124,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
     { id: 'world_perfumes', label: L('ql_world'), icon: Compass },
     { id: 'raw_materials', label: L('ql_raw'), icon: Scale },
     { id: 'master_ai', label: L('ql_ai'), icon: Bot },
+    { id: 'workspace', label: wsText(currentLang, 'title'), icon: Wand2 },
     { id: 'library', label: L('ql_library'), icon: BookMarked },
     { id: 'guide', label: L('ql_guide'), icon: BookOpen },
   ];

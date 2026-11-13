@@ -20,8 +20,10 @@ import {
   Atom,
   Flower2,
   Droplets,
+  Wand2,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
+import { wsText } from '../workspace/strings';
 import { t } from '../لغات/i18n';
 import { cosmeticsText } from '../لغات/cosmeticsL10n';
 import { LanguageSelector } from './LanguageSelector';
@@ -189,6 +191,15 @@ export const Header: React.FC<HeaderProps> = ({
       fullLabel: t('nav_ai_master', currentLang),
       icon: Sparkles,
       iconColor: 'text-emerald-500',
+    },
+    {
+      // «مساحة شاهين»: Shaheen as a general assistant (any subject — chat, search, code, files, images, documents).
+      id: 'workspace',
+      type: 'single',
+      label: wsText(currentLang, 'title'),
+      fullLabel: wsText(currentLang, 'nav'),
+      icon: Wand2,
+      iconColor: 'text-violet-500',
     },
     {
       id: 'community',
