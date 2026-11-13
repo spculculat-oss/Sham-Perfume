@@ -10,6 +10,8 @@ import { ShaheenMarkdown } from '../components/ShaheenMarkdown';
 import { readAloud } from '../utils/readAloud';
 import { ask, errorKey, makeImage, isGeneratedImageData, type WsContextFile, type WsSource } from './workspaceApi';
 import { imageRequest, segments, stripImageRequest, type CodeBlock } from './codeBlocks';
+import { parseImageRequest } from '../utils/imageCraft';
+import { fitForUpload } from './motion';
 import { CodeCard } from './CodeCard';
 import { ExportMenu } from './ExportMenu';
 import { MAX_FILE_BYTES, saveFile } from './fileStore';
@@ -80,7 +82,9 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
       setItems((prev) => [...prev, reply]);
       if (wanted) {
         try {
-          const img = await makeImage(wanted, undefined, controller.signal);
+          // «EDIT: …» changes the picture Shaheen just drew; without one still on screen it is drawn afresh.
+          const asked = parseImageRequest(wanted);
+          const img = await makeImage(asked.prompt, asked.mode === 'edit' && isGeneratedImageData(previousImage) ? await fitForUpload(previousImage) : undefined, controller.signal);
           if (controller.signal.aborted) return;
           setItems((prev) => prev.map((m) => (m === reply ? { ...m, image: img.src } : m)));
         } catch { if (!controller.signal.aborted) setItems((prev) => prev.map((m) => m === reply ? { ...m, text: `${m.text}\n\n${w('image_failed')}` } : m)); }

@@ -3,11 +3,12 @@ import { realPhotoReply } from '../utils/realPhotos';
 import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
 import { ShaheenMedia } from '../components/ShaheenMedia';
 import { MotionCard } from './MotionCard';
-import { canvasBlob, signCanvas } from './motion';
+import { canvasBlob, fitForUpload, signCanvas } from './motion';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Download, FlipHorizontal, ImagePlus, Loader2, RotateCw, Save, Sparkles, Undo2, Wand2 } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { errorKey, makeImage } from './workspaceApi';
+import { IMAGE_STYLES, type ImageAspect, type ImageStyleId } from '../utils/imageCraft';
 import { saveFile } from './fileStore';
 import { downloadBlob } from './officeWriters';
 import { wsText, type WsKey } from './strings';
@@ -17,10 +18,19 @@ const START: Adjust = { brightness: 100, contrast: 100, saturate: 100, blur: 0, 
 export const filterOf = (a: Pick<Adjust, 'brightness' | 'contrast' | 'saturate' | 'blur' | 'grayscale' | 'sepia'>) =>
   `brightness(${a.brightness}%) contrast(${a.contrast}%) saturate(${a.saturate}%)${a.blur ? ` blur(${a.blur}px)` : ''}${a.grayscale ? ' grayscale(1)' : ''}${a.sepia ? ' sepia(1)' : ''}`;
 
+/** The frame shapes offered as words (no digits to localise); «شاهين يختار» lets the idea decide. */
+export const IMAGE_SIZES: { key: WsKey; aspect?: ImageAspect }[] = [
+  { key: 'style_auto' }, { key: 'size_square', aspect: '1:1' }, { key: 'size_portrait', aspect: '3:4' },
+  { key: 'size_landscape', aspect: '4:3' }, { key: 'size_story', aspect: '9:16' }, { key: 'size_wide', aspect: '16:9' },
+];
+const chip = (on: boolean) => `rounded-full border px-2.5 py-1 text-[11px] font-bold cursor-pointer ${on ? 'border-amber-700 bg-amber-700 text-white' : 'border-stone-300 bg-white text-stone-700'}`;
+
 /** «صور»: draw an image from words, then edit it (or one from the device) — light, colour, turn, flip, words on it. */
 export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang: SupportedLanguage; aiImages: boolean; incoming: Blob | null; onIncomingUsed: () => void }) {
   const w = (k: WsKey) => wsText(lang, k);
   const [prompt, setPrompt] = useState('');
+  const [style, setStyle] = useState<ImageStyleId>('auto');
+  const [aspect, setAspect] = useState<ImageAspect | undefined>();
   const [busy, setBusy] = useState<'' | 'make' | 'edit'>('');
   const [photoReply, setPhotoReply] = useState('');
   const [gallery, setGallery] = useState<string[]>([]);
@@ -89,7 +99,7 @@ export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang
     if (found) { setPhotoReply(found); setNote(stripMediaBlock(found)); setSource(null); setGallery([]); setMotionSource(''); return; }
     setPhotoReply('');
     setBusy('make'); setNote('');
-    try { const out = await makeImage(prompt.trim()); load(out.src); setGallery((g) => [out.src, ...g].slice(0, 12)); } catch (e) { setNote(errorKey(e) === 'rate_limited' ? w('rate_limited') : w('image_failed')); } finally { setBusy(''); }
+    try { const out = await makeImage(prompt.trim(), undefined, undefined, { style, aspect }); load(out.src); setGallery((g) => [out.src, ...g].slice(0, 12)); } catch (e) { setNote(errorKey(e) === 'rate_limited' ? w('rate_limited') : w('image_failed')); } finally { setBusy(''); }
   };
   const blob = async () => {
     try {
@@ -110,7 +120,7 @@ export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang
     setBusy('edit'); setNote('');
     try {
       const data = (unsigned.current || canvas.current).toDataURL('image/png');
-      const out = await makeImage(editPrompt.trim(), data);
+      const out = await makeImage(editPrompt.trim(), await fitForUpload(data));
       load(out.src);
     } catch (e) { setNote(errorKey(e) === 'rate_limited' ? w('rate_limited') : w('image_failed')); } finally { setBusy(''); }
   };
@@ -129,6 +139,21 @@ export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang
         <button type="button" onClick={() => { void generate(); }} disabled={!prompt.trim() || Boolean(busy)} className="inline-flex items-center gap-1 rounded-xl bg-amber-800 px-4 py-2 text-sm font-black text-white disabled:opacity-50 cursor-pointer">
           {busy === 'make' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}{w('generate')}
         </button>
+      </div>
+      <div className="space-y-1.5" data-testid="ws-image-look">
+        <div role="group" aria-label={w('style_label')} className="flex flex-wrap items-center gap-1.5">
+          <span className="text-[11px] font-black text-stone-500">{w('style_label')}</span>
+          {IMAGE_STYLES.map((id) => (
+            <button type="button" key={id} aria-pressed={style === id} onClick={() => setStyle(id)} className={chip(style === id)}>{w(`style_${id}`)}</button>
+          ))}
+        </div>
+        <div role="group" aria-label={w('size_label')} className="flex flex-wrap items-center gap-1.5">
+          <span className="text-[11px] font-black text-stone-500">{w('size_label')}</span>
+          {IMAGE_SIZES.map((size) => (
+            <button type="button" key={size.key} aria-pressed={aspect === size.aspect} onClick={() => setAspect(size.aspect)} className={chip(aspect === size.aspect)}>{w(size.key)}</button>
+          ))}
+        </div>
+        <p className="text-[11px] text-stone-500">{w('image_hint')}</p>
       </div>
       {!aiImages && <p role="status" className="text-xs text-stone-600">{w('image_unavailable')}</p>}
       {photoReply && extractMediaRequest(photoReply) && <ShaheenMedia request={extractMediaRequest(photoReply)!} lang={lang} />}

@@ -78,3 +78,22 @@ export async function recordMotion(source: HTMLCanvasElement, signal: AbortSigna
     stream.getTracks().forEach((track) => track.stop());
   }
 }
+
+/** The edit route takes a few megabytes: a larger picture is sent smaller rather than refused. */
+export const UPLOAD_LIMIT = 2_600_000;
+export async function fitForUpload(src: string, limit = UPLOAD_LIMIT): Promise<string> {
+  if (src.length <= limit || typeof document === 'undefined') return src;
+  try {
+    const image = new Image();
+    await new Promise<void>((resolve, reject) => { image.onload = () => resolve(); image.onerror = () => reject(new Error('IMAGE_LOAD')); image.src = src; });
+    for (const side of [1280, 1024, 768]) {
+      const ratio = Math.min(1, side / Math.max(image.naturalWidth, image.naturalHeight));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(image.naturalWidth * ratio)); canvas.height = Math.max(1, Math.round(image.naturalHeight * ratio));
+      canvas.getContext('2d')?.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const out = canvas.toDataURL('image/jpeg', 0.9);
+      if (out.length <= limit) return out;
+    }
+  } catch { /* the original is sent as it is */ }
+  return src;
+}

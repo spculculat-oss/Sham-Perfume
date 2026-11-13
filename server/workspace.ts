@@ -1,4 +1,5 @@
 import { REAL_PHOTO_INSTRUCTION, realPhotoReply, wantsRealPhoto } from '../src/utils/realPhotos';
+import { IMAGE_CRAFT_INSTRUCTION, craftEditPrompt, craftImagePrompt, isImageAspect, isImageStyle, type ImageAspect, type ImageStyleId } from '../src/utils/imageCraft';
 import { CONTINUITY_INSTRUCTION, contextualMessage, conversationFocus, isContextFollowUp } from '../src/utils/conversationContext';
 /**
  * «مساحة شاهين»: Shaheen as a general assistant — any subject, not perfume only.
@@ -51,7 +52,7 @@ export function workspaceInstruction(language: SupportedLanguage, task: Workspac
 لو في نتايج بحث ويب مرقّمة، استشهد بيها برقمها [1] [2] ومتستخدمش غيرها كمصدر.
 البرمجة: اكتب الكود كامل وشغّال جوّه سياج بلغته (\`\`\`python، \`\`\`javascript، \`\`\`html…). موقع أو صفحة = ملف HTML واحد كامل فيه الـ CSS والـ JavaScript جوّاه في سياج \`\`\`html، علشان المستخدم يشوفه «معاينة حية» على طول. كود بايثون لازم يشتغل في المتصفح (مكتبات بايثون القياسية، وnumpy وpandas وmatplotlib مسموحين) ويطبع نتيجته بـ print.
 المستندات: لو طلب مستند أو تقرير أو عرض، اكتبه Markdown منظم (عنوان بـ #، أقسام بـ ##، نقاط، وجداول Markdown للأرقام) — الموقع بيحوّله Word أو Excel أو PowerPoint أو PDF بضغطة. للعرض التقديمي: كل شريحة قسم ## بعنوانها ونقاط قصيرة.
-الصور: لو طلب رسمة أو صورة مولدة (وليس صورة حقيقية أو أرشيفية)، اكتب في الآخر سياج \`\`\`sham-image فيه وصف إنجليزي دقيق للصورة في سطر واحد (الموقع بيرسمها).
+${IMAGE_CRAFT_INSTRUCTION}
 الفيديو المتحرك: الموقع يدعم تصدير فيديو قصير محلياً من صورة بتقريب وتحريك الكاميرا بلا صوت عبر زر «عمل فيديو متحرك» تحت الصورة. ده مش توليد فيديو بالذكاء الاصطناعي ولا تحريك أشخاص أو أشياء داخل المشهد؛ وضّح الفرق بصراحة، ولا تدّعي إنشاء فيديو قبل ضغط الزر ونجاح التسجيل. لو طلب فيديو متحرك، جهّز صورة أساسية بوصف داخل سياج sham-video بدلاً من رفض كل الحركة أو توجيهه لمواقع أخرى. تحريك صورة موجودة يتم محلياً. صيغة الفيديو حسب المتصفح WebM أو MP4، ولا تدّعي دعم GIF أو MP4 تحديداً قبل التحقق.
 توقيع الصور المضاف بواسطة الموقع هو sharing ai فقط (توقيع شاهين). لا تطلب كتابة اسم المزود على الصورة ولا تختلق مصدرها، ولا تمح أو تخفِ علامة منشأ أو حقوق مدمجة أصلاً. التوقيع علامة شام وليس إثباتاً أن نموذجاً خاصاً بشام ولّد الصورة.
 ممنوع: المساعدة في أذى أو اختراق أو احتيال أو محتوى جنسي لقاصرين أو سلاح؛ ونصايح طبية أو قانونية أو مالية خطيرة من غير ما توجّه لمختص.`;
@@ -244,19 +245,28 @@ export async function webSearch(query: string, language: SupportedLanguage, { en
 }
 
 // ── Images ──────────────────────────────────────────────────────────────────────────────────────────────────
-export async function makeImage(prompt: string, image: string | undefined, { env, fetch: request = fetch }: { env: Env; fetch?: typeof fetch }): Promise<string | undefined> {
+/**
+ * «خيال شاهين» (src/utils/imageCraft.ts) art-directs the idea first; the engine then draws the brief.
+ * A new image may carry a frame shape; an edit keeps the shape of the image it was given.
+ */
+export async function makeImage(prompt: string, image: string | undefined, { env, fetch: request = fetch, style, aspect }: { env: Env; fetch?: typeof fetch; style?: ImageStyleId; aspect?: ImageAspect }): Promise<string | undefined> {
   if (wantsRealPhoto(prompt)) throw new ReadError(400, 'REAL_PHOTO_REQUIRES_SEARCH', 'Use image search for real photographs');
   const key = env.GEMINI_API_KEY?.trim();
   if (!key || env.SHAM_WORKSPACE_IMAGES?.trim().toLowerCase() === 'off') return undefined;
   const model = env.GEMINI_IMAGE_MODEL?.trim() || 'gemini-2.5-flash-image';
-  const parts: object[] = [{ text: prompt.slice(0, 2000) + '\nDo not add AI vendor names, provider credits, or fake provenance text. The site adds its own sharing ai signature afterward. Preserve any existing embedded provenance or rights marks when editing.' }];
   const inline = image?.match(/^data:(image\/(?:png|jpeg|webp));base64,([A-Za-z0-9+/=]+)$/);
+  const brief = inline ? { prompt: craftEditPrompt(prompt), aspect: undefined } : craftImagePrompt(prompt, { style, aspect });
+  const parts: object[] = [{ text: brief.prompt.slice(0, 3600) + '\nDo not add AI vendor names, provider credits, or fake provenance text. The site adds its own sharing ai signature afterward. Preserve any existing embedded provenance or rights marks when editing.' }];
   if (inline) parts.push({ inlineData: { mimeType: inline[1], data: inline[2] } });
+  const draw = (shape?: ImageAspect) => request(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+    method: 'POST', signal: AbortSignal.timeout(45_000), headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+    body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { responseModalities: ['TEXT', 'IMAGE'], ...(shape ? { imageConfig: { aspectRatio: shape } } : {}) } }),
+  });
   try {
-    const response = await request(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-      method: 'POST', signal: AbortSignal.timeout(45_000), headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-      body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { responseModalities: ['TEXT', 'IMAGE'] } }),
-    });
+    let response = await draw(brief.aspect);
+    // An image model that does not take a frame shape rejects the field (400, no quota used): the brief
+    // still names the ratio in words, so draw once more without the field.
+    if (response.status === 400 && brief.aspect) response = await draw();
     if (!response.ok) return undefined;
     const data = await response.json() as { candidates?: Array<{ content?: { parts?: Array<{ inlineData?: { mimeType?: string; data?: string } }> } }> };
     const out = data.candidates?.[0]?.content?.parts?.find((p) => p.inlineData?.data)?.inlineData;
@@ -417,7 +427,10 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
     const prompt = typeof req.body?.prompt === 'string' ? req.body.prompt.trim() : '';
     if (!prompt) { res.status(400).json({ error: 'Empty prompt', code: 'BAD_REQUEST' }); return; }
     try {
-      const image = await makeImage(prompt, typeof req.body?.image === 'string' ? req.body.image : undefined, { env, fetch: request });
+      const image = await makeImage(prompt, typeof req.body?.image === 'string' ? req.body.image : undefined, {
+        env, fetch: request,
+        ...(isImageStyle(req.body?.style) ? { style: req.body.style } : {}), ...(isImageAspect(req.body?.aspect) ? { aspect: req.body.aspect } : {}),
+      });
       if (!image) { res.status(503).json({ error: 'No image engine', code: 'NO_IMAGE_ENGINE' }); return; }
       res.json({ image });
     } catch (error) { fail(res, error); }
