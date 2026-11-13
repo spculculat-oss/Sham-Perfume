@@ -11,8 +11,13 @@ export type Mood = 'calm' | 'epic' | 'happy' | 'mystery';
 export const MOODS_LIST: Mood[] = ['calm', 'epic', 'happy', 'mystery'];
 export type VideoStyle = 'cinematic' | 'anime' | 'watercolor' | '3d' | 'fantasy' | 'photo' | 'retro';
 export const VIDEO_STYLES: VideoStyle[] = ['cinematic', 'anime', 'watercolor', '3d', 'fantasy', 'photo', 'retro'];
-export interface Scene { id: string; caption: string; prompt: string; seconds: number; motion: Motion; image?: string }
-export interface Storyboard { title: string; aspect: Aspect; style: VideoStyle; mood: Mood; scenes: Scene[]; dir: 'rtl' | 'ltr' }
+export type Effect = 'none' | 'rain' | 'snow' | 'embers' | 'stars' | 'dust' | 'fog' | 'sparkles' | 'light';
+export const EFFECTS: Effect[] = ['none', 'rain', 'snow', 'embers', 'stars', 'dust', 'fog', 'sparkles', 'light'];
+/** `clip`: real moving footage for this scene from the professional engine (a blob: URL), drawn instead of the picture. */
+export interface Scene { id: string; caption: string; prompt: string; seconds: number; motion: Motion; image?: string; effect?: Effect; clip?: string }
+/** `depth`: the picture moves in two layers (near and far) for a filmed, three-dimensional feel.
+ *  `seed`: one seed for every scene, so the free generator keeps the same look and characters. */
+export interface Storyboard { title: string; aspect: Aspect; style: VideoStyle; mood: Mood; scenes: Scene[]; dir: 'rtl' | 'ltr'; depth?: boolean; seed?: number }
 
 export const ASPECT_SIZE: Record<Aspect, [number, number]> = { '16:9': [1280, 720], '9:16': [720, 1280], '1:1': [1080, 1080] };
 const STYLE_WORDS: Record<VideoStyle, string> = {
@@ -42,7 +47,7 @@ export function cleanStoryboard(v: unknown, defaults: Partial<Storyboard> = {}):
     const prompt = str(x.prompt ?? x.image, 500);
     if (!caption && !prompt) return [];
     const image = typeof x.src === 'string' && /^(?:https:|data:image\/(?:png|jpe?g|webp);base64,|blob:)/.test(x.src) ? x.src : undefined;
-    return [{ id: sceneId(), caption, prompt: prompt || caption, seconds: clampSeconds(x.seconds), motion: MOTIONS.includes(x.motion as Motion) ? x.motion as Motion : MOTIONS[(n + 1) % 5]!, ...(image ? { image } : {}) }];
+    return [{ id: sceneId(), caption, prompt: prompt || caption, seconds: clampSeconds(x.seconds), motion: MOTIONS.includes(x.motion as Motion) ? x.motion as Motion : MOTIONS[(n + 1) % 5]!, ...(EFFECTS.includes(x.effect as Effect) ? { effect: x.effect as Effect } : {}), ...(image ? { image } : {}) }];
   });
   if (!scenes.length) return undefined;
   const title = str(r.title, 100) || defaults.title || '';
@@ -50,7 +55,8 @@ export function cleanStoryboard(v: unknown, defaults: Partial<Storyboard> = {}):
   const style = VIDEO_STYLES.includes(r.style as VideoStyle) ? r.style as VideoStyle : defaults.style || 'cinematic';
   const mood = MOODS_LIST.includes(r.mood as Mood) ? r.mood as Mood : defaults.mood || 'calm';
   const text = `${title} ${scenes.map((s) => s.caption).join(' ')}`;
-  return { title, aspect, style, mood, scenes, dir: /[\u0600-\u06FF]/.test(text) ? 'rtl' : 'ltr' };
+  for (const sc of scenes) if (!sc.effect) sc.effect = effectFor(`${sc.prompt} ${sc.caption}`);
+  return { title, aspect, style, mood, scenes, dir: /[\u0600-\u06FF]/.test(text) ? 'rtl' : 'ltr', depth: true, seed: seedOf(text) };
 }
 
 /** Common things people imagine, Arabic → English, so the free image generator (best in English) draws them. */
@@ -86,7 +92,10 @@ export function localStoryboard(idea: string, { aspect = '16:9', style = 'cinema
     : ARC_PROMPT.map((shot, i) => ({ id: sceneId(), caption: i === 0 ? text.slice(0, 120) : (ar ? ARC_AR : ARC_EN)[i]!, prompt: `${subject}, ${shot}`, seconds: 4, motion: 'zoom-in' as Motion }));
   const each = Math.min(12, Math.max(2, Math.round((seconds / scenes.length) * 2) / 2));
   scenes.forEach((s, i) => { s.seconds = each; s.motion = (['zoom-in', 'pan-left', 'zoom-out', 'pan-right', 'pan-up'] as Motion[])[i % 5]!; });
-  return { title: text.slice(0, 60), aspect, style, mood, scenes, dir: ar ? 'rtl' : 'ltr' };
+  // Several atmospheres in one idea (rain, then fire…) are spread over the story in the order they are told.
+  const told = effectsIn(text);
+  scenes.forEach((sc, i) => { sc.effect = parts.length >= 3 ? effectFor(`${parts[i] || ''} ${sc.prompt}`) : told.length ? told[Math.floor(i * told.length / scenes.length)]! : effectFor(sc.prompt); });
+  return { title: text.slice(0, 60), aspect, style, mood, scenes, dir: ar ? 'rtl' : 'ltr', depth: true, seed: seedOf(text) };
 }
 
 // ── Timing (shared by the preview player and the recorder) ──────────────────────────────────────────────────
@@ -158,4 +167,84 @@ export function musicPlan(mood: Mood, seconds: number): { at: number; length: nu
   const out: { at: number; length: number; freqs: number[] }[] = [];
   for (let at = 0, i = 0; at < seconds; at += bar, i += 1) out.push({ at, length: Math.min(bar, seconds - at), freqs: chords[i % chords.length]!.map(NOTE) });
   return out;
+}
+
+// ── Atmosphere: particles drawn over the picture (rain, snow, embers, stars…) ───────────────────────────────
+const EFFECT_WORDS: Array<[Effect, RegExp]> = [
+  ['rain', /مطر|شتا|عاصفة|rain|storm/i], ['snow', /ثلج|تلج|شتاء|snow|winter|frost/i], ['embers', /نار|حريق|لهب|بركان|شرار|fire|flame|ember|volcano|lava/i],
+  ['stars', /نجوم|نجمة|فضاء|ليل|قمر|مجرة|star|space|night|moon|galaxy|cosmic/i], ['fog', /ضباب|دخان|بخور|غموض|fog|mist|smoke|incense|haze/i],
+  ['sparkles', /سحر|سحري|جني|حلم|أميرة|magic|fairy|dream|sparkl|enchant/i], ['dust', /صحراء|صحرا|رمل|غبار|أهرامات|اهرامات|desert|sand|dust|pyramid/i],
+  ['light', /شمس|غروب|شروق|فجر|نور|ضوء|ذهبي|sun|sunset|sunrise|dawn|golden|light|glow/i],
+];
+/** Every atmosphere the words mention, in the order they first appear. */
+export function effectsIn(text: string): Effect[] {
+  return EFFECT_WORDS.map(([e, re]) => [e, text.search(re)] as const).filter(([, at]) => at >= 0).sort((x, y) => x[1] - y[1]).map(([e]) => e);
+}
+/** The atmosphere a scene's words suggest ('none' when nothing fits). */
+export function effectFor(text: string): Effect {
+  return EFFECT_WORDS.find(([, re]) => re.test(text))?.[0] || 'none';
+}
+export const seedOf = (text: string) => Math.abs(Array.from(text).reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 17)) % 1_000_000;
+function mulberry(seed: number) {
+  let a = seed >>> 0;
+  return () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+export interface Particle { x: number; y: number; r: number; a: number; len?: number }
+const COUNTS: Record<Effect, number> = { none: 0, rain: 160, snow: 120, embers: 70, stars: 140, dust: 90, fog: 9, sparkles: 60, light: 0 };
+const fieldCache = new Map<string, Array<{ x: number; y: number; s: number; p: number; r: number }>>();
+/** Where every particle is at second `t` (x, y as fractions of the frame; r as a fraction of its height). Deterministic. */
+export function particlesAt(effect: Effect, t: number, seed = 1): Particle[] {
+  const n = COUNTS[effect];
+  if (!n) return [];
+  const key = `${effect}:${seed}`;
+  let field = fieldCache.get(key);
+  if (!field) {
+    const rnd = mulberry(seed + effect.length * 7919);
+    field = Array.from({ length: n }, () => ({ x: rnd(), y: rnd(), s: 0.4 + rnd() * 0.6, p: rnd() * Math.PI * 2, r: rnd() }));
+    if (fieldCache.size > 40) fieldCache.clear();
+    fieldCache.set(key, field);
+  }
+  const wrap = (v: number) => ((v % 1) + 1) % 1;
+  return field.map((q) => {
+    switch (effect) {
+      case 'rain': return { x: wrap(q.x + t * 0.08 * q.s), y: wrap(q.y + t * 1.7 * q.s), r: 0.0015, a: 0.25 + q.r * 0.35, len: 0.03 + q.s * 0.04 };
+      case 'snow': return { x: wrap(q.x + Math.sin(t * 0.8 + q.p) * 0.02 + t * 0.01), y: wrap(q.y + t * 0.12 * q.s), r: 0.002 + q.r * 0.005, a: 0.55 + q.r * 0.4 };
+      case 'embers': return { x: wrap(q.x + Math.sin(t * 1.3 + q.p) * 0.015), y: wrap(q.y - t * 0.18 * q.s), r: 0.0015 + q.r * 0.004, a: Math.max(0, 0.45 + 0.5 * Math.sin(t * 6 + q.p * 3)) };
+      case 'stars': return { x: q.x, y: q.y * 0.75, r: 0.0008 + q.r * 0.0026, a: 0.35 + 0.6 * (0.5 + 0.5 * Math.sin(t * (1 + q.s * 2) + q.p)) };
+      case 'dust': return { x: wrap(q.x + t * 0.04 * q.s), y: wrap(q.y + Math.sin(t * 0.6 + q.p) * 0.01), r: 0.001 + q.r * 0.003, a: 0.2 + q.r * 0.35 };
+      case 'fog': return { x: wrap(q.x + t * 0.015 * q.s) * 1.4 - 0.2, y: 0.45 + q.y * 0.55, r: 0.25 + q.r * 0.3, a: 0.07 + q.r * 0.08 };
+      case 'sparkles': return { x: wrap(q.x + Math.sin(t * 0.5 + q.p) * 0.03), y: wrap(q.y - t * 0.05 * q.s), r: 0.002 + q.r * 0.006, a: Math.max(0, Math.sin(t * 3 * q.s + q.p)) };
+      default: return { x: 0, y: 0, r: 0, a: 0 };
+    }
+  });
+}
+/** Colour grading by mood: an overlay colour and how strong it is. */
+export const GRADE: Record<Mood, { color: string; alpha: number; mode: GlobalCompositeOperation }> = {
+  calm: { color: '#7fb3d5', alpha: 0.12, mode: 'soft-light' },
+  epic: { color: '#f59e0b', alpha: 0.16, mode: 'overlay' },
+  happy: { color: '#fde68a', alpha: 0.14, mode: 'soft-light' },
+  mystery: { color: '#312e81', alpha: 0.22, mode: 'multiply' },
+};
+
+/** How many words of a caption are «said» by second `local` of its scene — about 2.6 words a second, finishing
+ *  before the scene's last fifth so the whole line is read before the cut. */
+export function wordsShown(caption: string, local: number, seconds: number): number {
+  const n = caption.split(/\s+/).filter(Boolean).length;
+  if (!n) return 0;
+  const span = Math.max(0.6, Math.min(n / 2.6, seconds * 0.8));
+  return Math.max(0, Math.min(n, Math.ceil((local - 0.15) / span * n)));
+}
+
+/** Film grammar: the shot size of each scene — wide to set the place, then medium, close for the big moment. */
+export type Shot = 'wide' | 'medium' | 'close';
+export function shotFor(i: number, n: number, prompt = ''): Shot {
+  if (/close|قريب|عيون|عين|وجه|ملامح|يد |إيد|ايد/i.test(prompt)) return 'close';
+  if (/wide|establishing|aerial|panorama|واسع|من فوق|بانوراما|منظر عام/i.test(prompt)) return 'wide';
+  if (i === 0 || i === n - 1) return 'wide';
+  return i === Math.round((n - 1) * 0.7) ? 'close' : 'medium';
+}
+export const SHOT_PROMPT: Record<Shot, string> = { wide: 'wide establishing shot', medium: 'medium shot', close: 'close-up shot, shallow depth of field' };
+/** The cast line: who appears, kept the same in every scene so the people and creatures look alike throughout. */
+export function castOf(board: Pick<Storyboard, 'title' | 'scenes'>): string {
+  return visualPrompt(`${board.title} ${board.scenes[0]?.prompt || ''}`).split(/,\s*/).slice(0, 6).join(', ');
 }

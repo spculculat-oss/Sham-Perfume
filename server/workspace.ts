@@ -8,6 +8,8 @@ import { CONTINUITY_INSTRUCTION, contextualMessage, conversationFocus, isContext
  *   /api/workspace/search   web search: the AI platform's own search when it has one, else the free encyclopedia API
  *   /api/workspace/read     a public page or PDF read as text (SSRF-guarded: public addresses only, size and time caps)
  *   /api/workspace/image    an image made or edited by the AI platform (503 NO_IMAGE_ENGINE → an honest unavailable message; no external generator fallback)
+ *   /api/workspace/video/*  real moving footage from the professional video engine (off until the owner turns it on;
+ *                           see server/videoEngine.ts)
  *   /api/workspace/owner/*  the owner's own Notion and Slack (Bearer SHAM_ADMIN_TOKEN; keys stay on the server)
  * Code runs, files, documents, image editing and reading aloud happen in the visitor's browser (src/workspace):
  * nothing of the visitor's files is stored here.
@@ -18,11 +20,12 @@ import { lookup as dnsLookup } from 'node:dns/promises';
 import { isIP } from 'node:net';
 import { callEngine, engineStatuses, GEMINI_DEFAULT_MODEL, type EngineTurn } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
+import { cleanVideoRequest, dailyLimit, DailyBudget, readJob, signJob, startVideo, videoAccess, videoBytes, VideoError, videoStatus } from './videoEngine';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../src/types/i18n';
 
 type Env = Record<string, string | undefined>;
 type Lookup = (host: string) => Promise<string[]>;
-export interface WorkspaceOptions { env?: Env; fetch?: typeof fetch; lookup?: Lookup }
+export interface WorkspaceOptions { env?: Env; fetch?: typeof fetch; lookup?: Lookup; videoBudget?: DailyBudget }
 
 /** The AI platforms a workspace turn may use, best first (live search has its own route). */
 const ORDER = ['gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'self_hosted'] as const;
@@ -70,8 +73,8 @@ export function workspaceInstruction(language: SupportedLanguage, task: Workspac
   if (task === 'storyboard') {
     return `${base}
 مهمتك دلوقتي: إنت مخرج فيديوهات خيالية في «استوديو شاهين». حوّل فكرة المستخدم لقصة مصوّرة من 3 لـ 10 مشاهد. رد بـ JSON بس (من غير أي كلام قبله أو بعده) بالشكل:
-{"title":"عنوان الفيديو","scenes":[{"caption":"جملة قصيرة تظهر على الشاشة بلغة المستخدم","prompt":"detailed English description of the picture for this scene, same characters and style across scenes","seconds":4,"motion":"zoom-in|zoom-out|pan-left|pan-right|pan-up|still"}]}
-خلي المشاهد ليها بداية ووسط ونهاية، والوصف الإنجليزي محدد (المكان، الإضاءة، زاوية الكاميرا، الشخصيات بنفس الشكل في كل مشهد). الجمل على الشاشة قصيرة (أقل من 12 كلمة).`;
+{"title":"عنوان الفيديو","scenes":[{"caption":"جملة قصيرة تظهر على الشاشة بلغة المستخدم","prompt":"detailed English description of the picture for this scene, same characters and style across scenes","seconds":4,"motion":"zoom-in|zoom-out|pan-left|pan-right|pan-up|still","effect":"none|rain|snow|embers|stars|dust|fog|sparkles|light"}]}
+خلي المشاهد ليها بداية ووسط ونهاية، والوصف الإنجليزي محدد (المكان، الإضاءة، زاوية الكاميرا، الشخصيات بنفس الشكل في كل مشهد). الجمل على الشاشة قصيرة (أقل من 12 كلمة). نوّع اللقطات زي المخرجين: لقطة واسعة (wide shot) في الأول، متوسطة في النص، وقريبة (close-up) في اللحظة الكبيرة. و effect هو جو المشهد (مطر، تلج، شرار نار، نجوم، غبار، ضباب، لمعة سحرية، أشعة شمس) أو none.`;
   }
   if (task === 'summarize') return `${base}\nمهمتك دلوقتي: لخّص المحتوى اللي جاي بوضوح: الفكرة الأساسية في سطرين، وبعدين أهم النقاط، وأي أرقام أو تواريخ مهمة. لو المستخدم طلب حاجة معينة من المحتوى، ركّز عليها.`;
   return base;
@@ -371,9 +374,11 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
   const lookup = options.lookup || defaultLookup;
   const router = express.Router();
   router.use(express.json({ limit: '4mb' }));
-  const limits = { ask: new RateLimiter(30, 60_000), search: new RateLimiter(20, 60_000), read: new RateLimiter(20, 60_000), image: new RateLimiter(8, 60_000), owner: new RateLimiter(30, 60_000) };
+  const limits = { ask: new RateLimiter(30, 60_000), search: new RateLimiter(20, 60_000), read: new RateLimiter(20, 60_000), image: new RateLimiter(8, 60_000), owner: new RateLimiter(30, 60_000), video: new RateLimiter(3, 60 * 60_000), videoPoll: new RateLimiter(120, 60_000) };
+  const budget = options.videoBudget || new DailyBudget();
   const fail = (res: express.Response, error: unknown) => {
-    if (error instanceof ReadError) { res.status(error.status).json({ error: error.message, code: error.code }); return; }
+    if (error instanceof VideoError && error.detail) console.warn(`[workspace] video engine: ${error.code} ${error.detail}`);
+    if (error instanceof ReadError || error instanceof VideoError) { res.status(error.status).json({ error: error.message, code: error.code }); return; }
     console.error('[workspace]', error instanceof Error ? error.message : error);
     res.status(500).json({ error: 'Internal error', code: 'INTERNAL' });
   };
@@ -391,6 +396,7 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
       search: env.GEMINI_API_KEY?.trim() || statuses.find((s) => s.id === 'perplexity')?.configured ? 'web' : 'encyclopedia',
       image: env.GEMINI_API_KEY?.trim() && env.SHAM_WORKSPACE_IMAGES?.trim().toLowerCase() !== 'off' ? 'ai' : 'off',
       notion: Boolean(env.NOTION_TOKEN?.trim()), slack: Boolean(env.SLACK_WEBHOOK_URL?.trim()),
+      video: videoAccess(env), videoLeft: videoAccess(env) === 'off' ? 0 : budget.left(dailyLimit(env)),
     });
   });
   router.post('/ask', limited('ask'), async (req, res) => {
@@ -426,6 +432,47 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
     if (!provided || !timingSafeEqual(digest(provided), digest(token))) { res.status(401).json({ error: 'Unauthorized', code: 'UNAUTHORIZED' }); return; }
     next();
   };
+  // The professional video engine: owner-only or everyone (the owner decides), a daily budget, signed jobs.
+  const signedIn = (req: express.Request) => {
+    const token = env.SHAM_ADMIN_TOKEN?.trim() || '';
+    const provided = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
+    return token.length >= 12 && Boolean(provided) && timingSafeEqual(digest(provided), digest(token));
+  };
+  router.post('/video/start', async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
+    const access = videoAccess(env);
+    if (access === 'off') { res.status(503).json({ error: 'The professional video engine is off', code: 'NO_VIDEO_ENGINE' }); return; }
+    const isOwner = signedIn(req);
+    if (access === 'owner' && !isOwner) { res.status(403).json({ error: 'Owner only', code: 'VIDEO_OWNER_ONLY' }); return; }
+    let body;
+    try { body = cleanVideoRequest(req.body); } catch (error) { fail(res, error); return; }
+    if (!isOwner && !limits.video.allow(clientKey(req))) { res.status(429).json({ error: 'Too many requests, wait a while', code: 'RATE_LIMITED' }); return; }
+    if (!budget.take(dailyLimit(env))) { res.status(429).json({ error: 'Today’s videos are used up, come back tomorrow', code: 'VIDEO_DAILY_LIMIT' }); return; }
+    try {
+      const job = await startVideo(body, { env, fetch: request });
+      res.json({ job: signJob(job.id, env), status: job.status });
+    } catch (error) { budget.give(); fail(res, error); }
+  });
+  router.get('/video/status', limited('videoPoll'), async (req, res) => {
+    const id = readJob(req.query.job, env);
+    if (!id || videoAccess(env) === 'off') { res.status(404).json({ error: 'Unknown job', code: 'NOT_FOUND' }); return; }
+    try { res.json({ status: (await videoStatus(id, { env, fetch: request })).status }); } catch (error) { fail(res, error); }
+  });
+  router.get('/video/file', limited('videoPoll'), async (req, res) => {
+    const id = readJob(req.query.job, env);
+    if (!id || videoAccess(env) === 'off') { res.status(404).json({ error: 'Unknown job', code: 'NOT_FOUND' }); return; }
+    try {
+      const { status, data } = await videoStatus(id, { env, fetch: request });
+      if (status !== 'completed') { res.status(409).json({ error: 'Not ready', code: status === 'failed' ? 'VIDEO_FAILED' : 'VIDEO_NOT_READY' }); return; }
+      const { mime, bytes } = await videoBytes(data, { env, fetch: request });
+      res.setHeader('Content-Type', /^video\/(?:mp4|webm)$/.test(mime) ? mime : 'video/mp4');
+      res.setHeader('Content-Length', String(bytes.length));
+      res.setHeader('Cache-Control', 'private, max-age=3600');
+      // In pieces: big clips are streamed rather than sent as one response.
+      for (let at = 0; at < bytes.length; at += 512 * 1024) res.write(bytes.subarray(at, at + 512 * 1024));
+      res.end();
+    } catch (error) { fail(res, error); }
+  });
   router.post('/owner/notion/search', limited('owner'), owner, async (req, res) => {
     if (!env.NOTION_TOKEN?.trim()) { res.status(503).json({ error: 'Set NOTION_TOKEN on the server', code: 'NOTION_NOT_CONFIGURED' }); return; }
     try { res.json({ results: await notionSearch(String(req.body?.q || ''), { env, fetch: request }) }); } catch (error) { fail(res, error); }
