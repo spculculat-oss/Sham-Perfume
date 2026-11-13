@@ -1,4 +1,5 @@
 import { wantsRealPhoto } from '../utils/realPhotos';
+import type { ImageAspect, ImageStyleId } from '../utils/imageCraft';
 /** «مساحة شاهين»: the browser side of /api/workspace (see server/workspace.ts). */
 import { ApiError, ApiUnavailableError, isStaticHosting, requestApi, visitorId } from '../utils/api';
 import { getToken } from '../admin/adminApi';
@@ -31,11 +32,11 @@ export function readUrl(url: string, signal?: AbortSignal) {
 export const isGeneratedImageData = (src: unknown): src is string => typeof src === 'string' && /^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(src);
 
 /** Only the configured server image engine. Never switch silently to a branded third-party URL. */
-export async function makeImage(prompt: string, image?: string, signal?: AbortSignal): Promise<{ src: string; engine: 'ai' }> {
+export async function makeImage(prompt: string, image?: string, signal?: AbortSignal, look: { style?: ImageStyleId; aspect?: ImageAspect } = {}): Promise<{ src: string; engine: 'ai' }> {
   if (wantsRealPhoto(prompt)) throw new Error('REAL_PHOTO_REQUIRES_SEARCH');
   signal?.throwIfAborted();
   if (isStaticHosting) throw new ApiUnavailableError();
-  const out = await requestApi<{ image: string }>('/api/workspace/image', { ...json({ prompt, ...(image ? { image } : {}) }), signal }, 90_000);
+  const out = await requestApi<{ image: string }>('/api/workspace/image', { ...json({ prompt, ...(image ? { image } : {}), ...(look.style && look.style !== 'auto' ? { style: look.style } : {}), ...(look.aspect ? { aspect: look.aspect } : {}) }), signal }, 90_000);
   if (!isGeneratedImageData(out.image)) throw new Error('INVALID_IMAGE_RESULT');
   return { src: out.image, engine: 'ai' };
 }
