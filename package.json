@@ -27,7 +27,8 @@
     "test:reader-browser": "node scripts/check-epub-reader.mjs",
     "review:assistant": "node --import tsx scripts/assistant-specialties.mts",
     "voice:bench": "node --import tsx --import ./tests/register-assets.mjs scripts/voice-bench.ts",
-    "voice:talk": "node --import tsx --import ./tests/register-assets.mjs scripts/talk-drill.ts"
+    "voice:talk": "node --import tsx --import ./tests/register-assets.mjs scripts/talk-drill.ts",
+    "voice:languages": "node --import tsx --import ./tests/register-assets.mjs scripts/language-drill.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

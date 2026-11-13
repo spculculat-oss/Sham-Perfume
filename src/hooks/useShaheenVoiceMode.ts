@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { SupportedLanguage } from '../types/i18n';
-import { bargeIn, mergeHeard, shaheenSpeechLocale, speechWindow, talkChunks } from '../utils/shaheenVoice';
+import { bargeIn, deviceLacksVoice, mergeHeard, speechLocaleFor, speechWindow, talkChunks } from '../utils/shaheenVoice';
 import { chosenVoice, saveVoiceChoice, savedVoiceChoice, voiceOptions, type VoiceChoice } from '../utils/voiceChoice';
 import { tunedVoice, type VoiceMood } from '../utils/voiceMood';
-import { dialectLocale, resolveDialect, saveDialectChoice, savedDialectChoice, type Dialect, type DialectChoice } from '../utils/arabicDialect';
+import { resolveDialect, saveDialectChoice, savedDialectChoice, type Dialect, type DialectChoice } from '../utils/arabicDialect';
 import { currentStoreCountry } from '../utils/storeCheckout';
 import { learnablePair, planVoiceTurn, readingsFrom, type PendingConfirm } from '../utils/heardFix';
 import { spokenReply, wantsMore } from '../utils/spokenReply';
@@ -162,6 +162,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const [waiting, setWaiting] = useState(false);
   const [interim, setInterim] = useState('');
   const [error, setError] = useState<VoiceError | null>(null);
+  /** The device has no voice for the conversation's language (the replies stay written). */
+  const [noVoice, setNoVoice] = useState(false);
   const [replyReady, setReplyReady] = useState(false);
   // The full-screen voice stage: a muted microphone keeps the conversation open without listening; `hearing`
   // is true while the engine detects speech; `spokenText` is the sentence being read aloud now and
@@ -192,7 +194,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const startListeningRef = useRef<() => void>(() => undefined);
   const mutedRef = useRef(false);
   const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
-  const localeRef = useRef(shaheenSpeechLocale(language));
+  const localeRef = useRef(speechLocaleFor(language, currentStoreCountry()));
   const bargeEnabledRef = useRef(true);
   const bargeRecognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const bargeRestartsRef = useRef(0);
@@ -271,8 +273,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   }, [dialectChoice, language, messages]);
   useEffect(() => { dialectRef.current = dialect; }, [dialect]);
   useEffect(() => {
-    localeRef.current = dialect ? dialectLocale(dialect, currentStoreCountry()) : shaheenSpeechLocale(language);
+    // «بلغة بلده ولهجتها»: Arabic in his dialect's accent, any other language in his country's accent (fr-CA, es-MX …).
+    localeRef.current = speechLocaleFor(language, currentStoreCountry(), dialect);
   }, [dialect, language]);
+  useEffect(() => { setNoVoice(false); }, [language]);
   // Engines load their voice list late (Chrome fills it after the first `voiceschanged`), so keep it fresh.
   useEffect(() => {
     if (typeof window === 'undefined' || !window.speechSynthesis) return undefined;
@@ -559,6 +563,14 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     gateRef.current.startSpeaking();
     let voices = voicesRef.current;
     if (!voices.length) { try { voices = window.speechSynthesis.getVoices(); } catch { voices = []; } }
+    // No voice on this device speaks his language: an English voice reading Hindi is gibberish. The reply stays
+    // written in the chat, he is told why, and Shaheen goes back to listening.
+    if (deviceLacksVoice(voices, languageRef.current)) {
+      setNoVoice(true);
+      onComplete();
+      return;
+    }
+    setNoVoice(false);
     const choice = voiceChoiceRef.current;
     const voice = chosenVoice(voices, locale, languageRef.current, choice);
     // «مزاج الكلام»: calmer for someone upset, quicker for someone in a hurry (his chosen voice, nudged a little).
@@ -701,7 +713,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       cancelRecognition();
       setLastHeard(said);
       setInterim('');
-      const next = spokenReply(more, { language: languageRef.current, dialect: dialectRef.current, words: 90 });
+      const next = spokenReply(more, { language: languageRef.current, dialect: dialectRef.current, words: 90, locale: localeRef.current });
       restRef.current = next.rest;
       speakReply(next.say || more, () => scheduleListening(350));
       return;
@@ -1239,7 +1251,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setInterim('');
     // «شاهين بيتكلم مش بيقرا»: the reply said the way people talk, and a long one only up to «تحب أكمّلك الباقي؟».
     // A whole answer (about 90 words) before «تحب أكمّلك الباقي؟» — a shorter cut felt like he stopped mid-answer.
-    const spoken = spokenReply(response.text, { language: languageRef.current, dialect: dialectRef.current, words: 90, opener: true });
+    const spoken = spokenReply(response.text, { language: languageRef.current, dialect: dialectRef.current, words: 90, opener: true, locale: localeRef.current });
     restRef.current = spoken.rest;
     speakReply(spoken.say || response.text, () => scheduleListening(350));
   }, [active, clearPendingTurn, isLoading, messages, replyReady, scheduleListening, speakReply, waiting]);
@@ -1273,6 +1285,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     waiting,
     interim,
     error,
+    noVoice,
+    /** The «اسمع الرد» button found no voice for his language (shown next to the voice button). */
+    reportNoVoice: () => setNoVoice(true),
+    clearNoVoice: () => setNoVoice(false),
     muted,
     hearing,
     spokenText,

@@ -1046,7 +1046,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
       }
       // Said the way Shaheen talks (numbers, prices and lists as people say them), in the visitor's dialect.
       setIsSpeaking(true);
-      readAloud(text, { language: currentLang, dialect: voice.dialect, onEnd: () => setIsSpeaking(false) });
+      readAloud(text, { language: currentLang, dialect: voice.dialect, onEnd: () => setIsSpeaking(false), onNoVoice: voice.reportNoVoice });
     }
   };
 

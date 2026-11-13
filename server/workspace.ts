@@ -37,7 +37,8 @@ const LANGS = new Set(SUPPORTED_LANGUAGES.map((l) => l.code));
 const languageOf = (value: unknown): SupportedLanguage => (typeof value === 'string' && LANGS.has(value as SupportedLanguage) ? value as SupportedLanguage : 'ar');
 
 /** Who Shaheen is in the workspace: a general assistant (perfume is his deepest specialty, not his limit). */
-export function workspaceInstruction(language: SupportedLanguage, task: 'chat' | 'plan' | 'summarize' = 'chat'): string {
+export type WorkspaceTask = 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard';
+export function workspaceInstruction(language: SupportedLanguage, task: WorkspaceTask = 'chat'): string {
   const name = SUPPORTED_LANGUAGES.find((l) => l.code === language)?.name || 'العربية';
   const base = `${CONTINUITY_INSTRUCTION}\n${REAL_PHOTO_INSTRUCTION}\nأنت «شاهين»، مساعد ذكاء اصطناعي شامل داخل منصة «شام». بتساعد في أي موضوع: كتابة، ترجمة، دراسة وشرح، برمجة ومواقع، تحليل بيانات وجداول، أفكار وتسويق، شغل ومستندات، أسئلة عامة — والعطور تخصصك العميق مش حدودك.
 هويتك «شاهين» بس: ما تذكرش اسم أي نموذج أو شركة ذكاء اصطناعي، ولو اتسألت قول إنك مساعد منصة شام والتفاصيل التقنية مش متاحة.
@@ -57,6 +58,20 @@ export function workspaceInstruction(language: SupportedLanguage, task: 'chat' |
 {"goal":"الهدف باختصار","steps":[{"tool":"search","input":"..."},{"tool":"ask","input":"..."}]}
 الأدوات: search (بحث ويب؛ input = عبارة البحث)، read (قراءة صفحة أو PDF؛ input = الرابط)، ask (تفكير/كتابة/تلخيص؛ input = المطلوب، وتقدر تشير لنتيجة خطوة قبلها بـ {{1}} أو {{2}})، image (رسم صورة؛ input = وصف إنجليزي)، python (تشغيل كود بايثون؛ input = الكود كامل ويطبع بـ print)، document (مستند؛ input = "docx" أو "xlsx" أو "pptx" أو "pdf" + ":" + المحتوى أو {{n}})، save (حفظ نتيجة كملف في ملفات المستخدم؛ input = "اسم-الملف.md:" + المحتوى أو {{n}}).
 من خطوة لـ 8 خطوات بالكتير، والخطوة الأخيرة غالباً ask بتجمّع النتيجة النهائية للمستخدم.`;
+  }
+  if (task === 'site') {
+    return `${base}
+مهمتك دلوقتي: إنت مصمم ومطوّر مواقع محترف في «استوديو شاهين». ابني أو عدّل الموقع اللي المستخدم طالبه. رد بـ JSON بس (من غير أي كلام قبله أو بعده) بالشكل:
+{"name":"اسم الموقع","tagline":"جملة قصيرة","lang":"ar","theme":{"base":"#8a5a2b","harmony":"complementary|analogous|triadic|split|mono","dark":false,"font":"cairo|tajawal|amiri|reem|playfair|poppins|serif|grotesk","radius":"sharp|soft|round"},"pages":[{"slug":"index","title":"الرئيسية","sections":[{"type":"hero","title":"...","text":"...","button":"...","link":"contact.html","image":{"prompt":"English description of the photo","alt":"..."}}]}]}
+أنواع الأقسام: hero، features (items فيها icon إيموجي وtitle وtext)، about (title وtext وimage)، gallery وproducts (items فيها title وtext وprice اختياري وimage)، steps (items)، faq (items فيها q وa)، cta (title وtext وbutton وlink)، contact (title وtext وemail وphone وwhatsapp وaddress — بس اللي المستخدم إداه، ما تخترعش أرقام أو إيميلات)، text.
+الصفحة الأولى slug بتاعها index، والروابط بين الصفحات بالشكل about.html أو #id. من صفحة لـ 6 صفحات، والصفحة من 2 لـ 10 أقسام. اكتب محتوى حقيقي مقنع بلغة المستخدم ومناسب لمجاله (مش «لوريم إيبسوم»)، من غير أسعار أو تقييمات أو أرقام أو عروض مخترعة — سيب السعر فاضي لو مش معروف. وصف كل صورة بالإنجليزي جوّه image.prompt (الموقع بيرسمها). اختار ألوان وخط يناسبوا الهوية.
+لو جالك موقع حالي بـ JSON مع طلب تعديل: رجّع الموقع كله بعد التعديل بنفس الشكل، وغيّر بس اللي اتطلب وحافظ على الباقي (ومن غير ما تلمس حقول src).`;
+  }
+  if (task === 'storyboard') {
+    return `${base}
+مهمتك دلوقتي: إنت مخرج فيديوهات خيالية في «استوديو شاهين». حوّل فكرة المستخدم لقصة مصوّرة من 3 لـ 10 مشاهد. رد بـ JSON بس (من غير أي كلام قبله أو بعده) بالشكل:
+{"title":"عنوان الفيديو","scenes":[{"caption":"جملة قصيرة تظهر على الشاشة بلغة المستخدم","prompt":"detailed English description of the picture for this scene, same characters and style across scenes","seconds":4,"motion":"zoom-in|zoom-out|pan-left|pan-right|pan-up|still"}]}
+خلي المشاهد ليها بداية ووسط ونهاية، والوصف الإنجليزي محدد (المكان، الإضاءة، زاوية الكاميرا، الشخصيات بنفس الشكل في كل مشهد). الجمل على الشاشة قصيرة (أقل من 12 كلمة).`;
   }
   if (task === 'summarize') return `${base}\nمهمتك دلوقتي: لخّص المحتوى اللي جاي بوضوح: الفكرة الأساسية في سطرين، وبعدين أهم النقاط، وأي أرقام أو تواريخ مهمة. لو المستخدم طلب حاجة معينة من المحتوى، ركّز عليها.`;
   return base;
@@ -278,7 +293,8 @@ export function askTurns(body: AskBody, resolveReferences = true): EngineTurn[] 
 
 export async function askWorkspace(body: AskBody, { env, fetch: request = fetch, signal }: { env: Env; fetch?: typeof fetch; signal?: AbortSignal }): Promise<{ reply: string; sources: SearchResult[] }> {
   const language = languageOf(body.language);
-  const task = body.task === 'plan' || body.task === 'summarize' ? body.task : 'chat';
+  const task: WorkspaceTask = (['plan', 'summarize', 'site', 'storyboard'] as const).find((t) => t === body.task) || 'chat';
+  const json = task === 'plan' || task === 'site' || task === 'storyboard';
   const rawTurns = askTurns({ ...body, context: [] }, false);
   const latest = rawTurns[rawTurns.length - 1]!;
   const photoReply = task === 'chat' ? realPhotoReply(latest.text, rawTurns.slice(0, -1), language) : undefined;
@@ -308,7 +324,7 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
     try {
       const reply = await callEngine(id, system, turns, {
         env, fetch: request, signal: AbortSignal.any([AbortSignal.timeout(45_000), ...(signal ? [signal] : [])]),
-        temperature: task === 'plan' ? 0.2 : 0.6, maxTokens: task === 'plan' ? 1200 : 6000, maxChars: 60_000,
+        temperature: task === 'plan' ? 0.2 : json ? 0.5 : 0.6, maxTokens: task === 'plan' ? 1200 : task === 'storyboard' ? 2500 : task === 'site' ? 8000 : 6000, maxChars: 60_000,
       });
       if (typeof reply === 'string' && reply.trim()) return { reply: reply.trim(), sources };
     } catch { /* the next platform */ }

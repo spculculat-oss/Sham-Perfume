@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-12T23:49:57.068Z",
+ "updatedAt": "2026-11-13T03:31:33.700Z",
  "entries": [
   {
    "id": "ar|auto|ازاي اخلي ريحة العطر تثبت علي الهدوم",
@@ -36,6 +36,76 @@
    "lastUsed": "2026-10-22T11:05:06.645Z"
   },
   {
+   "id": "ar|auto|ايه هي تصميم تركيبة شتوية شرقية",
+   "question": "ايه هي تصميم تركيبة شتوية شرقية؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "تركيبة شتوية شرقية — المقدمة: زعفران 10%، فلفل وردي 8%، برغموت 7%؛ القلب: عنبر 18%، ورد 12%؛ القاعدة: عود 20%، فانيليا 15%، باتشولي 10%. المجموع 100%، وتُجرَّب العينة الصغيرة قبل الإنتاج وتُعتَّق ثم تُقيَّم ثباتها.",
+   "at": "2026-11-13T03:31:33.699Z",
+   "hits": 0,
+   "source": "study"
+  },
+  {
+   "id": "ar|auto|ايه هي تصميم تركيبة صيفية حمضية",
+   "question": "ايه هي تصميم تركيبة صيفية حمضية؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "تركيبة صيفية حمضية — المقدمة: برغموت 22%، ليمون 18%، نيرولي 10%؛ القلب: لافندر 16%، شاي أبيض 14%؛ القاعدة: مسك أبيض 12%، خشب الأرز 8%. المجموع 100%، وتُجرَّب العينة الصغيرة قبل الإنتاج وتُعتَّق ثم تُقيَّم ثباتها.",
+   "at": "2026-11-13T03:31:33.699Z",
+   "hits": 0,
+   "source": "study"
+  },
+  {
+   "id": "en|auto|suggest a warm oriental perfume formula for winter with percentages",
+   "question": "Suggest a warm oriental perfume formula for winter with percentages",
+   "lang": "en",
+   "style": "auto",
+   "answer": "warm oriental winter formula: top saffron 10%, pink pepper 8%, bergamot 7%; heart amber 18%, rose 12%; base oud 20%, vanilla 15%, patchouli 10%. Total 100%. Test a small sample first, macerate, then evaluate the lasting before any production batch.",
+   "at": "2026-11-13T03:31:33.699Z",
+   "hits": 0,
+   "source": "study"
+  },
+  {
+   "id": "en|auto|suggest a fresh citrus perfume formula for summer with percentages",
+   "question": "Suggest a fresh citrus perfume formula for summer with percentages",
+   "lang": "en",
+   "style": "auto",
+   "answer": "fresh citrus summer formula: top bergamot 22%, lemon 18%, neroli 10%; heart lavender 16%, white tea 14%; base white musk 12%, cedarwood 8%. Total 100%. Test a small sample first, macerate, then evaluate the lasting before any production batch.",
+   "at": "2026-11-13T03:31:33.698Z",
+   "hits": 0,
+   "source": "study"
+  },
+  {
+   "id": "ar|auto|ايه هو دهن العود ومصادره وانواعه (هندي، كمبودي، ماليزي) وكيف يستخدم في العطور",
+   "question": "ايه هو دهن العود ومصادره وأنواعه (هندي، كمبودي، ماليزي) وكيف يُستخدم في العطور",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "يُستخرج دهن العود بعملية تقطير خشب العود المصاب بعد نقعه في الماء لفترات محددة. تختلف خصائص الدهن باختلاف مصادره الجغرافية؛ فالدهن الهندي يمتاز بالدفء، والحدة، والنفحات الحيوانية العميقة، بينما يميل الكمبودي إلى الحلاوة والنعومة الخشبية الفاخرة، ويتميز الماليزي بتوليفة فريدة تجمع بين الانتعاش والترابية العميقة. يُستخدم دهن العود في صناعة العطور الشرقية والغربية كمكون أساسي في قاعدة العطر (Base Notes)؛ نظراً لقدرته الفائقة على التثبيت وإضفاء طابع فخم وعميق. يُنصح بتخفيفه بنسب محسوبة مع كحول الإيثانول النقي أو زيوت ناقلة مناسبة عند مزجه في العطور الحديثة لتجنب طغيان رائحته القوية على باقي النوتات.",
+   "at": "2026-11-13T03:31:27.671Z",
+   "hits": 0,
+   "source": "study"
+  },
+  {
+   "id": "ar|auto|يعني ايه دهن العود ومصادره وانواعه (هندي، كمبودي، ماليزي) وكيف يستخدم في العطور",
+   "question": "يعني ايه دهن العود ومصادره وأنواعه (هندي، كمبودي، ماليزي) وكيف يُستخدم في العطور",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "يُستخرج دهن العود بعملية تقطير خشب العود المصاب بعد نقعه في الماء لفترات محددة. تختلف خصائص الدهن باختلاف مصادره الجغرافية؛ فالدهن الهندي يمتاز بالدفء، والحدة، والنفحات الحيوانية العميقة، بينما يميل الكمبودي إلى الحلاوة والنعومة الخشبية الفاخرة، ويتميز الماليزي بتوليفة فريدة تجمع بين الانتعاش والترابية العميقة. يُستخدم دهن العود في صناعة العطور الشرقية والغربية كمكون أساسي في قاعدة العطر (Base Notes)؛ نظراً لقدرته الفائقة على التثبيت وإضفاء طابع فخم وعميق. يُنصح بتخفيفه بنسب محسوبة مع كحول الإيثانول النقي أو زيوت ناقلة مناسبة عند مزجه في العطور الحديثة لتجنب طغيان رائحته القوية على باقي النوتات.",
+   "at": "2026-11-13T03:31:27.671Z",
+   "hits": 0,
+   "source": "study"
+  },
+  {
+   "id": "ar|auto|حدثني عن دهن العود ومصادره وانواعه (هندي، كمبودي، ماليزي) وكيف يستخدم في العطور",
+   "question": "حدثني عن دهن العود ومصادره وأنواعه (هندي، كمبودي، ماليزي) وكيف يُستخدم في العطور",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "يُستخرج دهن العود بعملية تقطير خشب العود المصاب بعد نقعه في الماء لفترات محددة. تختلف خصائص الدهن باختلاف مصادره الجغرافية؛ فالدهن الهندي يمتاز بالدفء، والحدة، والنفحات الحيوانية العميقة، بينما يميل الكمبودي إلى الحلاوة والنعومة الخشبية الفاخرة، ويتميز الماليزي بتوليفة فريدة تجمع بين الانتعاش والترابية العميقة. يُستخدم دهن العود في صناعة العطور الشرقية والغربية كمكون أساسي في قاعدة العطر (Base Notes)؛ نظراً لقدرته الفائقة على التثبيت وإضفاء طابع فخم وعميق. يُنصح بتخفيفه بنسب محسوبة مع كحول الإيثانول النقي أو زيوت ناقلة مناسبة عند مزجه في العطور الحديثة لتجنب طغيان رائحته القوية على باقي النوتات.",
+   "at": "2026-11-13T03:31:27.670Z",
+   "hits": 0,
+   "source": "study"
+  },
+  {
    "id": "ar|auto|ايه افضل خلطة شتوية دافية",
    "question": "ايه أفضل خلطة شتوية دافية؟",
    "lang": "ar",
@@ -64,46 +134,6 @@
    "at": "2026-11-12T23:49:57.068Z",
    "hits": 0,
    "source": "chat"
-  },
-  {
-   "id": "ar|auto|ايه هي تصميم تركيبة شتوية شرقية",
-   "question": "ايه هي تصميم تركيبة شتوية شرقية؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "تركيبة شتوية شرقية — المقدمة: زعفران 10%، فلفل وردي 8%، برغموت 7%؛ القلب: عنبر 18%، ورد 12%؛ القاعدة: عود 20%، فانيليا 15%، باتشولي 10%. المجموع 100%، وتُجرَّب العينة الصغيرة قبل الإنتاج وتُعتَّق ثم تُقيَّم ثباتها.",
-   "at": "2026-11-12T08:37:26.499Z",
-   "hits": 0,
-   "source": "study"
-  },
-  {
-   "id": "ar|auto|ايه هي تصميم تركيبة صيفية حمضية",
-   "question": "ايه هي تصميم تركيبة صيفية حمضية؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "تركيبة صيفية حمضية — المقدمة: برغموت 22%، ليمون 18%، نيرولي 10%؛ القلب: لافندر 16%، شاي أبيض 14%؛ القاعدة: مسك أبيض 12%، خشب الأرز 8%. المجموع 100%، وتُجرَّب العينة الصغيرة قبل الإنتاج وتُعتَّق ثم تُقيَّم ثباتها.",
-   "at": "2026-11-12T08:37:26.499Z",
-   "hits": 0,
-   "source": "study"
-  },
-  {
-   "id": "en|auto|suggest a warm oriental perfume formula for winter with percentages",
-   "question": "Suggest a warm oriental perfume formula for winter with percentages",
-   "lang": "en",
-   "style": "auto",
-   "answer": "warm oriental winter formula: top saffron 10%, pink pepper 8%, bergamot 7%; heart amber 18%, rose 12%; base oud 20%, vanilla 15%, patchouli 10%. Total 100%. Test a small sample first, macerate, then evaluate the lasting before any production batch.",
-   "at": "2026-11-12T08:37:26.498Z",
-   "hits": 0,
-   "source": "study"
-  },
-  {
-   "id": "en|auto|suggest a fresh citrus perfume formula for summer with percentages",
-   "question": "Suggest a fresh citrus perfume formula for summer with percentages",
-   "lang": "en",
-   "style": "auto",
-   "answer": "fresh citrus summer formula: top bergamot 22%, lemon 18%, neroli 10%; heart lavender 16%, white tea 14%; base white musk 12%, cedarwood 8%. Total 100%. Test a small sample first, macerate, then evaluate the lasting before any production batch.",
-   "at": "2026-11-12T08:37:26.497Z",
-   "hits": 0,
-   "source": "study"
   },
   {
    "id": "ar|auto|ايه الفرق بين edp و edt و parfum في نسبة الزيت والثبات",
