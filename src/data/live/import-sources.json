@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-12T08:27:06.830Z",
+ "updatedAt": "2026-11-13T03:28:49.274Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -6838,16 +6838,16 @@
    "host": "perfume-store.com",
    "name": "Spaceship",
    "base": "https://perfume-store.com",
-   "status": "candidate",
+   "status": "rejected",
    "foundBy": "council",
    "foundWith": "اجتماع شاهين اليومي",
    "foundAt": "2026-11-11T18:40:06.990Z",
-   "attempts": 2,
-   "vettedAt": "2026-11-12T08:27:06.830Z",
+   "attempts": 3,
+   "vettedAt": "2026-11-13T03:28:49.274Z",
    "trust": {
     "score": 38,
     "verdict": "weak",
-    "at": "2026-11-12T08:27:06.830Z",
+    "at": "2026-11-13T03:28:49.274Z",
     "checks": [
      {
       "id": "age",
@@ -7484,6 +7484,19 @@
  ],
  "runs": [
   {
+   "at": "2026-11-13T03:28:49.274Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 1,
+   "activated": 0,
+   "rejected": 1,
+   "notes": [
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ perfume-store.com: CV 38/100 [age,https,payment] (pages: /contact-us→0 /returns→0)",
+    "✗ perfume-store.com: ملف الثقة ضعيف (38/100): ينقصه هوية الشركة (سجل/رقم ضريبي/عنوان)، بيانات التواصل، سياسة الإرجاع والاسترداد"
+   ]
+  },
+  {
    "at": "2026-11-12T08:27:06.830Z",
    "mode": "self",
    "found": 0,
@@ -7850,17 +7863,6 @@
   },
   {
    "at": "2026-11-01T01:19:15.469Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-10-31T18:53:55.916Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,
