@@ -254,6 +254,28 @@ export function SocialFeed({ lang, session, go, toast, onOpenMessenger, initialS
             </span>
             <span>{t('سوق ومتاجر شام', 'Stores Marketplace')}</span>
           </button>
+
+          <button
+            type="button"
+            onClick={() => toast(t('ركن المزيكا والاسترخاء هيفتح قريباً!', 'Music & Chill lounge coming soon!'))}
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold text-amber-900 bg-amber-50/50 hover:bg-amber-100/70 transition cursor-pointer"
+          >
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-200 text-amber-900">
+              🎧
+            </span>
+            <span>{t('ركن المزيكا والأجواء', 'Music & Chill Lounge')}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => toast(t('عروض الفيديو الحية قيد التجهيز!', 'Live video section opening soon!'))}
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold text-rose-900 bg-rose-50/50 hover:bg-rose-100/70 transition cursor-pointer"
+          >
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-rose-200 text-rose-900">
+              🎬
+            </span>
+            <span>{t('فيديوهات وعروض المجتمع', 'Community Reels & Video')}</span>
+          </button>
         </Card>
 
         {/* Shortcuts to Lab Tools */}

@@ -1,6 +1,6 @@
 import { REAL_PHOTO_INSTRUCTION, realPhotoReply } from '../src/utils/realPhotos';
 import { IMAGE_CRAFT_INSTRUCTION, IMAGE_HONESTY_INSTRUCTION } from '../src/utils/imageCraft';
-import { CONTINUITY_INSTRUCTION, contextualMessage } from '../src/utils/conversationContext';
+import { CONTINUITY_INSTRUCTION, contextualMessage, isContextFollowUp } from '../src/utils/conversationContext';
 import { createResearchSpider } from '../src/utils/researchSpider';
 /**
  * «الخبير شاهين» — the perfume-design chat (floating window + the lab page).
@@ -30,7 +30,7 @@ import { isPersonal, isTimeBound, offlineNote } from '../src/utils/shaheenMemory
 import { libraryAnswer, unknownAnswer, type LibrarySources } from '../src/utils/shaheenLibrary';
 import { designFor } from '../src/utils/shaheenDesigner';
 import { cosmeticFor } from '../src/utils/cosmeticFormulator';
-import { designStoreNote, productLink, storeAnswer, wantsStore, withContext, type Context } from '../src/utils/shaheenBrain';
+import { currentQuestion, designStoreNote, productLink, storeAnswer, wantsStore, withContext, type Context } from '../src/utils/shaheenBrain';
 import { saleMove, salesAnswer } from '../src/utils/shaheenSeller';
 import { buyerHint, polishSale, readBuyer, salesPromptBlock } from '../src/utils/salesCraft';
 import { polishRelations, readSituation, relationsAnswer, relationsPromptBlock, socialHint } from '../src/utils/shaheenRelations';
@@ -747,7 +747,8 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
       // A perfume named from the store, or a wish for one: answered from the catalogue (live prices, no platform needed).
       const named = linkOn ? productAnswer(await products().catch(() => []), ctx, input.language, link) : undefined;
-      if (linkOn && (named || wantsStore(ctx.text))) {
+      const presentationFollowUp = ctx.followUp && isContextFollowUp(currentQuestion(ctx));
+      if (linkOn && (named || (!presentationFollowUp && wantsStore(ctx.text)))) {
         const answer = named || storeAnswer(await products().catch(() => []), ctx, input.language, link);
         if (answer) {
           send(answer.reply, 'store', { memory: 'store', store: { picks: answer.picks.map((p) => p.sku), matched: answer.matched, followUp: ctx.followUp } });

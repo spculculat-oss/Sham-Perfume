@@ -15,12 +15,12 @@
  *  5. One soft close in his language — one question at most and the one step to order.
  * Never an invented discount, scarcity, review or countdown. Pure and browser-safe.
  */
-import { askedProducts, closeTo, money, nameOf, nextStep, staying, type Context, type StoreAnswer } from './shaheenBrain';
+import { askedProducts, closeTo, currentQuestion, isProductDetailQuestion, money, nameOf, nextStep, shownIn, staying, type Context, type StoreAnswer } from './shaheenBrain';
 import { otherSizes, proofLine, valueLine } from './shaheenSeller';
 import { readBuyer, type BuyerProfile } from './salesCraft';
 import { readableNotes } from './noteNames';
-import { inferOccasions, inferSeasons } from './storeAdvisor';
-import { FAMILY_LABEL, OCCASION_LABEL, SEASON_LABEL, concentrationAr, type Family, type StoreProduct } from './storeCatalog';
+import { inferOccasions, inferSeasons, parseWish } from './storeAdvisor';
+import { FAMILY_LABEL, GENDER_LABEL, OCCASION_LABEL, SEASON_LABEL, concentrationAr, type Family, type StoreProduct } from './storeCatalog';
 
 type Lang = 'ar' | 'en';
 type Link = (slug: string) => string | undefined;
@@ -114,6 +114,47 @@ function whenLine(p: StoreProduct, lang: Lang): string {
   return [parts.join(' '), who].filter(Boolean).join(lang === 'ar' ? ' — ' : ' — ');
 }
 
+/** A direct answer to a follow-up about one product, using only facts in the store record. */
+function productFacts(p: StoreProduct, question: string, lang: Lang, link: Link): string | undefined {
+  const ar = lang === 'ar';
+  const q = question.toLowerCase();
+  const wish = parseWish(question);
+  const lines: string[] = [];
+  const priceAsked = /السعر|الاسعار|الأسعار|سعر(?:ه|ها)?|بكام|بكم|price|how much/i.test(q);
+  if (priceAsked) lines.push(ar ? `**السعر:** ${p.price > 0 ? money(p.price, lang) : 'السعر مش متسجل في بيانات المتجر.'}` : `**Price:** ${p.price > 0 ? money(p.price, lang) : 'not listed in the store data.'}`);
+  if (/ثبات|ثابت|يثبت|يدوم|longevity|long.?lasting/i.test(q)) lines.push(`${ar ? '**الثبات:**' : '**Staying power:**'} ${stayingPitch(p, lang)}`);
+  if (/ريح|رائح|نوتات|مكونات|notes?|scent|smell/i.test(q)) {
+    const story = scentStory(p, lang, true) || character(p, lang);
+    lines.push(ar ? `**ريحته:** ${story || 'تفاصيل النوتات مش متسجلة في بيانات المتجر.'}` : `**The scent:** ${story || 'notes are not listed in the store data.'}`);
+  }
+  if (/متوفر|موجود|in stock|available/i.test(q)) lines.push(ar ? (p.inStock ? '**التوفر:** متوفر حالياً حسب بيانات المتجر.' : '**التوفر:** غير متوفر حالياً حسب بيانات المتجر.') : `**Availability:** ${p.inStock ? 'in stock' : 'currently out of stock'} in the store data.`);
+  if (/تركيز|edp|edt|concentration/i.test(q)) lines.push(ar ? `**التركيز:** ${concOf(p, lang) || 'مش متسجل في بيانات المتجر.'}` : `**Concentration:** ${concOf(p, lang) || 'not listed in the store data.'}`);
+  const fitAsked = /ينفع|يناسب|مناسب|مناسبة/i.test(q) && (wish.seasons.length > 0 || wish.occasions.length > 0 || Boolean(wish.gender));
+  if (fitAsked) {
+    const seasons = inferSeasons(p);
+    const occasions = inferOccasions(p);
+    const seasonKnown = !wish.seasons.length || seasons.length > 0;
+    const occasionKnown = !wish.occasions.length || occasions.length > 0;
+    const genderKnown = !wish.gender || Boolean(p.gender);
+    const fits = (!wish.seasons.length || wish.seasons.every((s) => s === 'all' || seasons.includes(s) || seasons.includes('all')))
+      && (!wish.occasions.length || wish.occasions.every((o) => occasions.includes(o)))
+      && (!wish.gender || !p.gender || p.gender === wish.gender || p.gender === 'unisex');
+    const target = [
+      ...wish.seasons.map((s) => SEASON_LABEL[s][lang]),
+      ...wish.occasions.map((o) => OCCASION_LABEL[o][lang]),
+      ...(wish.gender ? [GENDER_LABEL[wish.gender][lang]] : []),
+    ].join(ar ? '، ' : ', ');
+    const usual = whenLine(p, lang);
+    lines.push(!seasonKnown || !occasionKnown || !genderKnown
+      ? (ar ? `بيانات الملاءمة لـ${target} مش كاملة في المتجر${usual ? `؛ المسجل إنه يناسب ${usual}` : ''}.` : `the store data does not fully record its fit for ${target}${usual ? `; it lists ${usual}` : ''}.`)
+      : (ar ? `${fits ? 'يناسب' : 'مش أنسب اختيار لـ'} ${target} حسب بيانات المتجر${!fits && usual ? `؛ المسجل إنه يناسب ${usual}` : ''}.` : `${fits ? 'It suits' : 'It is not the best fit for'} ${target} according to the store data${!fits && usual ? `; listed for ${usual}` : ''}.`));
+  }
+  if (!lines.length) return undefined;
+  const url = link(p.slug);
+  const title = url ? `[${nameOf(p, lang)}](${url})` : `**${nameOf(p, lang)}**`;
+  return [`**${title}**`, ...lines.map((line) => `- ${line}`)].join('\n');
+}
+
 /** The one alternative worth showing, and why — or none (a focused pitch beats a catalogue). */
 function oneAlternative(products: StoreProduct[], p: StoreProduct, buyer: BuyerProfile): { alt: StoreProduct; why: 'stock' | 'cheaper' | 'stronger' } | undefined {
   const near = closeTo(products, p, 8);
@@ -199,9 +240,19 @@ export function pitch(products: StoreProduct[], p: StoreProduct, buyer: BuyerPro
  * AI platform: the pitch for this buyer, at most one alternative, and one soft close.
  */
 export function productAnswer(products: StoreProduct[], ctx: Context, language: string, link: Link): StoreAnswer | undefined {
-  const named = askedProducts(products, ctx);
-  if (!named.length) return undefined;
+  let named = askedProducts(products, ctx);
   const lang = langOf(language, ctx.text);
+  const question = currentQuestion(ctx);
+  if (!named.length && ctx.followUp && isProductDetailQuestion(question)) {
+    const latest = shownIn(ctx.lastReply || '', products);
+    const recent = latest.length ? latest : shownIn(ctx.shownReply || '', products);
+    if (recent.length === 1) {
+      const facts = productFacts(recent[0], question, lang, link);
+      if (facts) return { reply: facts, picks: recent, matched: true };
+      named = recent;
+    }
+  }
+  if (!named.length) return undefined;
   const buyer = readBuyer(ctx.said || [ctx.text]);
   // Sizes and editions of one name: the one in stock leads (the other size is offered by the pitch when it helps).
   const main = [...named].sort((a, b) => Number(b.inStock) - Number(a.inStock))[0];
