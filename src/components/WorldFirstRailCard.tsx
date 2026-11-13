@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AdminApiError, adminRequest, send } from '../admin/adminApi';
 import { major } from '../finance/money';
+import { prepareBrowserLinkKey } from '../bank/worldFirstBrowserKey';
 import { WORLDFIRST_RECEIVING_REGIONS, WORLDFIRST_WALLETS, worldFirstSnapshot, type WorldFirstAccountNameKind, type WorldFirstLinkView, type WorldFirstReceivingRegion, type SaleSettlement, type WorldFirstSnapshot } from '../bank/worldFirstRail';
 
 /**
@@ -84,7 +85,17 @@ export function WorldFirstRailCard({ ar }: { ar: boolean }) {
         : t('المفتاح العام موجود. الخاص مش محفوظ، ومفيش حاجة اتبعتت.', 'The public key is already here. The private key is not stored, and nothing was sent.'));
       await load().catch(() => setLink((row) => ({ ...row, prepared: true, publicKeyPem: data.publicKeyPem, publicKeyBody: data.publicKeyBody, privateFingerprint: data.privateFingerprint })));
     } catch (e) {
-      linkError(e instanceof AdminApiError ? e.code : '');
+      const missing = e instanceof AdminApiError && (e.status === 404 || e.status === 502 || e.code === 'NOT_JSON');
+      if (!missing && e instanceof AdminApiError) { linkError(e.code); return; }
+      try {
+        const local = await prepareBrowserLinkKey();
+        setPrivateOnce(local.privateKeyPem);
+        setRotateArmed(false);
+        setLink((row) => ({ ...row, prepared: true, publicKeyPem: local.publicKeyPem, publicKeyBody: local.publicKeyBody, serverKey: 'absent' }));
+        setNotice(t('المفتاح اتجهز هنا لأن خادم فيرسل لسه على نسخة قديمة. انسخ الخاص مرة واحدة إلى Vercel، والعام لدعم وورلد فيرست. متبعتش الخاص هنا.', 'The key was prepared here because the Vercel server is still on an older copy. Copy the private key once into Vercel, and the public key to WorldFirst support. Do not send the private key here.'));
+      } catch {
+        linkError(e instanceof AdminApiError ? e.code : '');
+      }
     }
   };
   const markSeen = async (event: React.FormEvent) => {

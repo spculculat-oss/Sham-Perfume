@@ -1574,6 +1574,7 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'العطلات المفتوحة واللي اتصلح': { en: "Open faults and what was fixed" },
   'حسابات بنك شام والمدفوعات': { en: "Sham Bank accounts and payments" },
   'ربط وورلد فيرست أول الصفحة': { en: 'The WorldFirst link is at the top of this page' },
+  'مفتاح الربط هنا': { en: 'The link key is here' },
   "علوم شاهين — علوم الأرض": { en: "Shaheen sciences — Earth sciences" },
   "العلوم هنا للفهم والوقاية والبناء: تشريح ووظائف، وطب بشري وبيطري، وفضاء مدني، ودراسات حرب والقانون الدولي الإنساني، وحرب إلكترونية دفاعية، وفيزياء نووية سلمية، وسلامة حيوية وأمن بيولوجي، وتصنيع إلكترونيات، وعلوم الأرض. مفيش هنا تصميم أسلحة أو خطوات تصنيع مواد خطرة أو وصفات هجوم أو استهداف، وأي سؤال طبي ده تعليم عام مش تشخيص ولا بديل عن الطبيب.": { en: "Science here is for understanding, prevention and building: anatomy and physiology, human and veterinary medicine, civil space, war studies and international humanitarian law, defensive electronic warfare, peaceful nuclear physics, biosafety and biosecurity, electronics manufacturing, and Earth sciences. There is no weapon design, no instructions for making hazardous materials, no attack recipes and no targeting; any medical answer is general education, not a diagnosis or a substitute for a doctor." },
   "دروس بيرد عليها لوحده بدون أي خدمة ذكاء اصطناعي": { en: "Lessons he answers by himself with no AI service" },

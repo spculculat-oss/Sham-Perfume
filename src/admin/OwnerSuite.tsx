@@ -12,6 +12,7 @@ import bundledPrecheck from '../data/live/shaheen-precheck.json';
 import { BOTS } from '../utils/shaheenOrg';
 import { readControls, stoppedByOwner } from '../utils/ownerAuthority';
 import { stateActive } from '../utils/platformState';
+import { WorldFirstRailCard } from '../components/WorldFirstRailCard';
 
 /**
  * #owner — «جناح صاحب الموقع»: a separate management structure for the owner only, entered from the home page's
@@ -165,6 +166,12 @@ export default function OwnerSuite() {
           <button type="button" onClick={lock} className="ms-auto rounded-lg border border-stone-800 px-2 py-1 text-xs text-red-300 md:hidden">{T('اقفل الجناح')}</button>
         </div>
         <Suspense fallback={<div className="flex items-center gap-2 text-stone-400"><Loader2 className="h-4 w-4 animate-spin" />…</div>}>
+          {section === 'home' && access === 'full' && (
+            <div className="mb-4 rounded-3xl border-2 border-amber-300 bg-amber-300 p-1" data-testid="owner-worldfirst-link">
+              <p className="px-3 py-2 text-sm font-black text-stone-950">{T('مفتاح الربط هنا')}</p>
+              <WorldFirstRailCard ar={adminLocale().startsWith('ar')} />
+            </div>
+          )}
           {section === 'home' && <OwnerHome go={setSection} access={access} />}
           {section === 'inbox' && <OwnerInbox code={access === 'full' ? getToken() : ''} onRoom={access === 'full' ? () => setSection('room') : undefined} />}
           {section === 'governance' && access === 'full' && <GovernancePanel />}
