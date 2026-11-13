@@ -237,10 +237,12 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     });
     const country = edgeCountry || (location.country !== 'UN' && isCountry(location.country) ? location.country : undefined);
     const source = edgeCountry ? 'edge' : location.precision === 'timezone' ? 'timezone' : 'unknown';
+    const hasCityEntry = location.precision === 'edge-city' || location.precision === 'edge-coords';
     res.json({
       country: country || null,
       source,
-      location: location.country !== 'UN' ? { ...location, ...(headers.timezone ? { timezone: headers.timezone } : {}) } : null,
+      timezone: headers.timezone || null,
+      location: hasCityEntry && location.country !== 'UN' ? location : null,
     });
   });
 

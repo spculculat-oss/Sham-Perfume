@@ -148,12 +148,14 @@ test('visitor geo returns a city and the weather endpoint uses rounded coordinat
     assert.equal(geo.location.cityEn, 'Giza');
     assert.equal(geo.location.lat, 30.01);
     assert.equal(geo.location.lon, 31.21);
-    assert.equal(geo.location.timezone, 'Africa/Cairo');
+    assert.equal(geo.timezone, 'Africa/Cairo');
+    assert.equal(geo.location.timezone, undefined, 'network timezone is a clock fallback, not part of the city record');
 
     const timezoneGeo = await fetch(`${s.base}/geo`, { headers: { 'x-vercel-ip-timezone': 'Asia/Tokyo' } }).then((response) => response.json());
     assert.equal(timezoneGeo.country, 'JP');
     assert.equal(timezoneGeo.source, 'timezone');
-    assert.equal(timezoneGeo.location.cityEn, 'Tokyo (TZ zone)');
+    assert.equal(timezoneGeo.timezone, 'Asia/Tokyo');
+    assert.equal(timezoneGeo.location, null, 'a timezone alone must never be presented as an exact city');
 
     const weatherResponse = await fetch(`${s.base}/weather?latitude=30.0131&longitude=31.2089`);
     assert.equal(weatherResponse.status, 200);

@@ -1,12 +1,12 @@
 /**
  * Global Gazetteer & Precision Geo-Entry Resolver for «روبوت التعداد — دولة المنصة».
  *
- * Maps edge/CDN city names, ISO-3166-2 region codes, and IANA timezones to bilingual
- * Arabic/English place names and city-level coordinates (`0.01°` precision — never house/street
- * level, preserving visitor privacy while pinpointing exact city/governorate entry inside each country).
+ * Maps edge/CDN city names, ISO-3166-2 region codes, and user-approved device coordinates to bilingual
+ * Arabic/English cities with rounded city-level coordinates (`0.01°`, never house/street level). IANA timezones
+ * are only a clock/country fallback; they do not prove the visitor is in the timezone's representative city.
  */
 
-export type GeoPrecision = 'edge-coords' | 'edge-city' | 'timezone' | 'country';
+export type GeoPrecision = 'edge-coords' | 'edge-city' | 'device-gps' | 'timezone' | 'country';
 
 export interface GazetteerCity {
   key: string;
@@ -266,8 +266,8 @@ function safeDecode(raw?: string): string {
  *   1. Exact Edge/CDN coordinates + city/region headers (`x-vercel-ip-*`, `cf-*`, `x-eo-geo-*`),
  *   2. Gazetteer bilingual city/governorate match,
  *   3. Nearest known city within the same country when coordinates are provided,
- *   4. IANA timezone fallback when no edge geo headers exist,
- *   5. Country centroid fallback.
+ *   4. IANA timezone fallback for a coarse city hub (never exact enough for the visitor dashboard),
+ *   5. Country-centre fallback when no city-level evidence exists.
  */
 export function resolveVisitorEntryLocation(input: {
   country?: string;
@@ -411,6 +411,53 @@ export function resolveVisitorEntryLocation(input: {
     lat: fallbackLat,
     lon: fallbackLon,
     precision: 'country',
+  };
+}
+
+/** Resolve a user-approved device location against known cities, without sending raw GPS coordinates to a geocoder. */
+export function resolveDeviceLocation(latitude: number, longitude: number, accuracyMeters?: number): ResolvedEntryLocation {
+  const hasValidCoords = Number.isFinite(latitude) && Number.isFinite(longitude)
+    && Math.abs(latitude) <= 90 && Math.abs(longitude) <= 180 && !(latitude === 0 && longitude === 0);
+  if (!hasValidCoords) throw new Error('INVALID_DEVICE_COORDINATES');
+
+  const radians = (degrees: number) => (degrees * Math.PI) / 180;
+  const distanceKm = (city: GazetteerCity) => {
+    const dLat = radians(city.lat - latitude);
+    const dLon = radians(city.lon - longitude);
+    const a = Math.sin(dLat / 2) ** 2
+      + Math.cos(radians(latitude)) * Math.cos(radians(city.lat)) * Math.sin(dLon / 2) ** 2;
+    return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  };
+
+  let nearest: GazetteerCity | undefined;
+  let nearestKm = Infinity;
+  for (const city of WORLD_CITIES) {
+    const distance = distanceKm(city);
+    if (distance < nearestKm) { nearest = city; nearestKm = distance; }
+  }
+  const lat = roundCoord(latitude);
+  const lon = roundCoord(longitude);
+  if (nearest && nearestKm <= 45 && (accuracyMeters === undefined || accuracyMeters <= 25_000)) {
+    return {
+      placeId: `${nearest.country}:${nearest.key}`,
+      country: nearest.country,
+      cityAr: nearest.cityAr,
+      cityEn: nearest.cityEn,
+      ...(nearest.regionAr ? { regionAr: nearest.regionAr } : {}),
+      ...(nearest.regionEn ? { regionEn: nearest.regionEn } : {}),
+      lat,
+      lon,
+      precision: 'device-gps',
+    };
+  }
+  return {
+    placeId: `device:${lat.toFixed(2)}_${lon.toFixed(2)}`,
+    country: 'UN',
+    cityAr: 'موقعك الحالي',
+    cityEn: 'Your current location',
+    lat,
+    lon,
+    precision: 'device-gps',
   };
 }
 
