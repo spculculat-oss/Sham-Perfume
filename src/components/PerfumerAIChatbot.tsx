@@ -1,3 +1,4 @@
+import { ShaheenAgentPanel, ShaheenAgentReport } from './ShaheenAgentPanel';
 import React, { useState, useRef, useEffect } from 'react';
 import {
   Send,
@@ -1411,6 +1412,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
             </div>
 
             <StaticHostingNotice currentLang={currentLang} />
+      <ShaheenAgentPanel language={currentLang} />
       <ShaheenServiceStatus language={currentLang} models={modelStatus.models} failed={modelStatus.failed} />
 
             {/* Multi-AI Model Selector Toolbar */}
@@ -1598,6 +1600,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                       <div className="whitespace-pre-line break-words font-sans space-y-2">
                         {activeDisplayContent}
                       </div>
+                      <ShaheenAgentReport report={msg.agent} language={currentLang} />
 
                       {/* SMART INTERACTION BAR: Transfer Chat Data to App Modules */}
                       {extractedFormula && (

@@ -1,11 +1,15 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { executeAgent } from './agent';
+import { agentCapabilities, validateDocuments, ToolInputError } from './agentTools';
 import { GoogleGenAI } from '@google/genai';
 import { ChatError, executeChat, getChatModels, validateChatRequest } from './shaheen';
 
 dotenv.config();
 
 const app = express();
+
+app.use('/api', (_req, res, next) => { res.set('Cache-Control', 'no-store'); next(); });
 
 app.use(express.json({ limit: '128kb' }));
 app.use((error: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -50,13 +54,25 @@ app.get('/api/models', (_req, res) => {
   res.json({ models: getChatModels(process.env) });
 });
 
+app.get('/api/agent/capabilities', (_req, res) => { res.json(agentCapabilities()); });
+
 app.post('/api/chat', async (req, res) => {
   const controller = new AbortController();
   const cancel = () => { if (!res.writableEnded) controller.abort(); };
   res.on('close', cancel);
   try {
     const input = validateChatRequest(req.body);
-    const result = await executeChat(input, { signal: controller.signal });
+    if ((req.body.agent !== undefined && typeof req.body.agent !== 'boolean') ||
+      (req.body.webSearch !== undefined && typeof req.body.webSearch !== 'boolean')) {
+      throw new ChatError(400, 'INVALID_AGENT_REQUEST', 'Agent options must be boolean');
+    }
+    let documents;
+    try { documents = validateDocuments(req.body.documents); }
+    catch (error) { if (error instanceof ToolInputError) throw new ChatError(400, 'INVALID_AGENT_REQUEST', error.message); throw error; }
+    if (!req.body.agent && (documents.length || req.body.webSearch)) throw new ChatError(400, 'INVALID_AGENT_REQUEST', 'Documents and search require agent mode');
+    const result = req.body.agent
+      ? await executeAgent(input, documents, { signal: controller.signal, allowWebSearch: req.body.webSearch === true })
+      : await executeChat(input, { signal: controller.signal });
     if (!res.destroyed) res.json(result);
   } catch (error) {
     if (res.destroyed) return;

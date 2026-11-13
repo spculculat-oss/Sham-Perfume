@@ -1,3 +1,4 @@
+import type { AgentDocument } from '../types/agent';
 import type { SupportedLanguage } from '../types/i18n';
 import { isStaticHosting, requestApi, type ChatResponse } from './api';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
@@ -7,6 +8,7 @@ interface Snapshot { messages: ChatMessage[]; isLoading: boolean; daysRemaining:
 interface SendOptions {
   text: string; model: 'auto' | 'gemini' | 'deepseek' | 'openai' | 'claude'; language: SupportedLanguage;
   errorText: (error: unknown) => string;
+  agent?: boolean; documents?: AgentDocument[]; webSearch?: boolean;
 }
 
 export function chatHistory(messages: ChatMessage[]) {
@@ -81,6 +83,10 @@ export function createChatStore(request: typeof requestApi = requestApi) {
       clearChatSession();
       publish({ ...loadStoredChatSession(), messages: [DEFAULT_WELCOME_MESSAGE], isLoading: false });
     },
+    cancel() {
+      controller?.abort(); generation++;
+      publish({ ...getSnapshot(), isLoading: false });
+    },
     async send(options: SendOptions) {
       expire();
       const current = getSnapshot();
@@ -96,11 +102,12 @@ export function createChatStore(request: typeof requestApi = requestApi) {
         const data = await request<ChatResponse>('/api/chat', {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: controller.signal,
           body: JSON.stringify({ message: text, model: options.model, language: options.language,
-            conversationHistory: chatHistory(current.messages) }),
+            conversationHistory: chatHistory(current.messages),
+            ...(options.agent ? { agent: true, documents: options.documents || [], webSearch: options.webSearch === true } : {}) }),
         });
         if (generation !== token) return false;
         const message: ChatMessage = { id: id('bot'), role: 'assistant', text: data?.reply, timestamp: timestamp(),
-          aiEngine: data?.engine, perspectives: data?.perspectives, activePerspectiveTab: 'consensus' };
+          agent: data?.agent, aiEngine: data?.engine, perspectives: data?.perspectives, activePerspectiveTab: 'consensus' };
         if (!message.text?.trim() || !isChatMessage(message)) throw new Error('Invalid chat response');
         publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false });
       } catch (error) {

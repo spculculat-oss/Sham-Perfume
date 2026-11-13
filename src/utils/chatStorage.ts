@@ -1,3 +1,4 @@
+import { validAgentReport, type AgentReport } from '../types/agent';
 export interface ModelPerspective {
   modelId: 'gemini' | 'deepseek' | 'openai' | 'claude';
   name: string;
@@ -13,6 +14,7 @@ export interface ChatMessage {
   text: string;
   timestamp: string;
   kind?: 'error';
+  agent?: AgentReport;
   aiEngine?: {
     id: string;
     name: string;
@@ -58,6 +60,7 @@ export function isChatMessage(value: unknown): value is ChatMessage {
     (message.role === 'user' || message.role === 'assistant') &&
     typeof message.text === 'string' && message.text.trim().length > 0 && message.text.length <= 32000 &&
     typeof message.timestamp === 'string' &&
+    (message.agent === undefined || validAgentReport(message.agent)) &&
     (message.kind === undefined || message.kind === 'error') &&
     (message.aiEngine === undefined || Boolean(message.aiEngine &&
       typeof message.aiEngine.id === 'string' && typeof message.aiEngine.name === 'string' &&

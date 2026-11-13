@@ -177,3 +177,36 @@ test('loading history removes empty messages and duplicate IDs and caps records 
   assert.equal(new Set(session.messages.map((item) => item.id)).size, 200);
   assert.ok(session.messages.every((item) => item.text.trim()));
 });
+
+test('agent mode sends documents explicitly but does not persist attachment content automatically', async () => {
+  let payload: any;
+  const store = createChatStore((async (_url, init) => {
+    payload = JSON.parse(String(init?.body));
+    return { reply: 'Report prepared', agent: { steps: [{ tool: 'calculate', status: 'completed' }], artifacts: [{ name: 'report.txt', content: '10 ml' }] } };
+  }) as typeof requestApi);
+  await store.send({ ...options, agent: true, documents: [{ name: 'private.txt', text: 'attachment-private-123' }] });
+  assert.equal(payload.agent, true);
+  assert.equal(payload.documents[0].text, 'attachment-private-123');
+  assert.equal(store.getSnapshot().messages.at(-1)?.agent?.steps[0].tool, 'calculate');
+  assert.equal(memory.get(CHAT_STORAGE_KEY)?.includes('attachment-private-123'), false);
+});
+
+test('stopping a request aborts it and prevents late results without deleting the conversation', async () => {
+  const pending = deferred();
+  let signal: AbortSignal | undefined;
+  const store = createChatStore((async (_url, init) => { signal = init?.signal as AbortSignal; return pending.promise; }) as typeof requestApi);
+  const sending = store.send(options);
+  store.cancel();
+  assert.equal(signal?.aborted, true);
+  assert.equal(store.getSnapshot().isLoading, false);
+  assert.equal(store.getSnapshot().messages.at(-1)?.role, 'user');
+  pending.resolve({ reply: 'Cancelled result' });
+  await sending;
+  assert.equal(store.getSnapshot().messages.some((message) => message.text === 'Cancelled result'), false);
+});
+
+test('untrusted agent metadata is rejected rather than persisted or offered for download', async () => {
+  const store = createChatStore((async () => ({ reply: 'Hi', agent: { steps: [], artifacts: [{ name: 'attack.html', content: '<script>bad</script>' }] } })) as typeof requestApi);
+  await store.send(options);
+  assert.equal(store.getSnapshot().messages.at(-1)?.kind, 'error');
+});

@@ -1,3 +1,9 @@
+import { copyChatText } from '../utils/clipboard';
+import { ShaheenAgentPanel, ShaheenAgentReport } from './ShaheenAgentPanel';
+import { useShaheenChat } from '../hooks/useShaheenChat';
+import { useShaheenModels } from '../hooks/useShaheenModels';
+import { ShaheenServiceStatus, ShaheenProviderMatrix, chatErrorText } from './ShaheenServiceStatus';
+import { isFormulaTransferCommand } from '../utils/aiFormulaExtractor';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Sparkles,
@@ -25,19 +31,12 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import perfumerImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
 import { extractFormulaFromAIMessage, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
-import {
-  ChatMessage,
-  loadStoredChatSession,
-  saveChatSession,
-  clearChatSession,
-  exportChatTranscriptToFile,
-  DEFAULT_WELCOME_MESSAGE,
-} from '../utils/chatStorage';
+import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../utils/localizedContent';
 import { LText, makeT, fmt, loc, LOCALE_MAP } from '../utils/localize';
-import { isStaticHosting, requestApi, type ChatResponse } from '../utils/api';
-import { StaticHostingNotice, API_ERROR_NOTICE } from './StaticHostingNotice';
+import { isStaticHosting } from '../utils/api';
+import { StaticHostingNotice } from './StaticHostingNotice';
 
 interface PerfumerMasterLabViewProps {
   currentLang?: SupportedLanguage;
@@ -289,13 +288,10 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
   const masterPrompts: string[] = [L('prompt_1'), L('prompt_2'), L('prompt_3'), L('prompt_4'), L('prompt_5')];
-  // Load persisted session with 30-day (1 month) expiration check
-  const [sessionData, setSessionData] = useState(() => loadStoredChatSession());
-  const [messages, setMessages] = useState<ChatMessage[]>(() => sessionData.messages);
-  const [daysRemaining, setDaysRemaining] = useState(sessionData.daysRemaining);
+  const { messages, setMessages, daysRemaining, isLoading, sendMessage, clearHistory } = useShaheenChat();
+  const modelStatus = useShaheenModels();
 
   const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [scaleWeight, setScaleWeight] = useState(14.85);
   const [dripping, setDripping] = useState(false);
   const [compoundingStep, setCompoundingStep] = useState(0);
@@ -308,10 +304,10 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
   const AI_ENGINES = [
     { id: 'auto', name: L('eng_auto_name'), short: L('eng_auto_short'), badge: L('eng_auto_badge'), color: 'border-amber-400 bg-amber-500/20 text-amber-300', desc: L('eng_auto_desc') },
-    { id: 'gemini', name: 'Google Gemini 3.8 Flash', short: L('eng_gemini_short'), badge: '✨ Gemini 3.8 Flash', color: 'border-emerald-400 bg-emerald-500/20 text-emerald-300', desc: L('eng_gemini_desc') },
-    { id: 'deepseek', name: 'DeepSeek R1 Chemistry', short: L('eng_deepseek_short'), badge: '🔬 DeepSeek R1', color: 'border-blue-400 bg-blue-500/20 text-blue-300', desc: L('eng_deepseek_desc') },
-    { id: 'openai', name: 'ChatGPT GPT-4o Architect', short: L('eng_openai_short'), badge: '🟢 GPT-4o Architect', color: 'border-green-400 bg-green-500/20 text-green-300', desc: L('eng_openai_desc') },
-    { id: 'claude', name: 'Claude 3.5 Haute Parfumerie', short: L('eng_claude_short'), badge: '🟣 Claude 3.5 Sonnet', color: 'border-purple-400 bg-purple-500/20 text-purple-300', desc: L('eng_claude_desc') },
+    { id: 'gemini', name: 'Google Gemini', short: L('eng_gemini_short'), badge: 'Google Gemini', color: 'border-emerald-400 bg-emerald-500/20 text-emerald-300', desc: L('eng_gemini_desc') },
+    { id: 'deepseek', name: 'DeepSeek', short: L('eng_deepseek_short'), badge: 'DeepSeek', color: 'border-blue-400 bg-blue-500/20 text-blue-300', desc: L('eng_deepseek_desc') },
+    { id: 'openai', name: 'OpenAI', short: L('eng_openai_short'), badge: 'OpenAI', color: 'border-green-400 bg-green-500/20 text-green-300', desc: L('eng_openai_desc') },
+    { id: 'claude', name: 'Anthropic Claude', short: L('eng_claude_short'), badge: 'Claude', color: 'border-purple-400 bg-purple-500/20 text-purple-300', desc: L('eng_claude_desc') },
   ];
 
   const setActivePerspectiveForMessage = (msgId: string, tabId: string) => {
@@ -351,23 +347,6 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Persist messages whenever changed & broadcast to sync floating window
-  useEffect(() => {
-    saveChatSession(messages);
-    window.dispatchEvent(new CustomEvent('miyaar-chat-updated', { detail: messages }));
-  }, [messages]);
-
-  // Sync with updates from floating chat window
-  useEffect(() => {
-    const handleSync = (e: any) => {
-      if (Array.isArray(e.detail)) {
-        setMessages(e.detail);
-      }
-    };
-    window.addEventListener('miyaar-chat-updated', handleSync);
-    return () => window.removeEventListener('miyaar-chat-updated', handleSync);
-  }, []);
-
   useEffect(() => {
     let interval: any;
     if (isLoading) {
@@ -395,104 +374,38 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
     const activeModelChoice = overrideModel || selectedModel;
 
-    // Check if user requested an immediate interactive action by text command
-    const lower = text.toLowerCase();
-    if (
-      (lower.includes('طبق') || lower.includes('حول') || lower.includes('انقل')) &&
-      (lower.includes('حاسبة') || lower.includes('تركيب'))
-    ) {
+    if (isFormulaTransferCommand(text)) {
       for (let i = messages.length - 1; i >= 0; i--) {
-        if (messages[i].role === 'assistant') {
+        if (messages[i].role === 'assistant' && messages[i].kind !== 'error') {
           const formula = extractFormulaFromAIMessage(messages[i].text);
-          if (formula) {
-            onApplyToConcentrationCalculator(formula);
-            return;
-          }
+          if (formula) { onApplyToConcentrationCalculator(formula); return; }
         }
       }
     }
 
-    const userMsg: ChatMessage = {
-      id: 'u-' + Date.now(),
-      role: 'user',
-      text,
-      timestamp: new Date().toLocaleTimeString(LOCALE_MAP[currentLang], { hour: '2-digit', minute: '2-digit' }),
-    };
-
-    setMessages((prev) => [...prev, userMsg]);
     setInput('');
-    setIsLoading(true);
-    setDripping(true);
-
-    try {
-      const data = await requestApi<ChatResponse>('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          model: activeModelChoice,
-          conversationHistory: messages.map((m) => ({ role: m.role, text: m.text })),
-        }),
-      });
-      if (typeof data.reply !== 'string' || !data.reply.trim()) {
-        throw new Error('Chat response is empty');
-      }
-      const reply = data.reply || L('retry_later');
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: 'b-' + Date.now(),
-          role: 'assistant',
-          text: reply,
-          timestamp: new Date().toLocaleTimeString(LOCALE_MAP[currentLang], { hour: '2-digit', minute: '2-digit' }),
-          aiEngine: data.engine,
-          perspectives: data.perspectives,
-          activePerspectiveTab: 'consensus',
-        },
-      ]);
-    } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: 'err-' + Date.now(),
-          role: 'assistant',
-          text: loc(currentLang, API_ERROR_NOTICE),
-          timestamp: new Date().toLocaleTimeString(LOCALE_MAP[currentLang], { hour: '2-digit', minute: '2-digit' }),
-          aiEngine: {
-            id: 'ensemble',
-            name: L('shahin_name'),
-            badge: L('fallback_badge'),
-            provider: 'ensemble',
-          },
-        },
-      ]);
-    } finally {
-      setIsLoading(false);
-      setDripping(false);
-    }
+    await sendMessage({ text, model: activeModelChoice, language: currentLang,
+      errorText: (error) => chatErrorText(currentLang, error) });
   };
 
-  const handleCopySingle = (id: string, text: string) => {
-    navigator.clipboard.writeText(text);
+  const handleCopySingle = async (id: string, text: string) => {
+    if (!await copyChatText(text)) return;
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2500);
   };
 
-  const handleCopyEntireChat = () => {
+  const handleCopyEntireChat = async () => {
     const transcript = messages
       .map((m) => `[${m.role === 'user' ? L('q_word') : L('shahin_name')} - ${m.timestamp}]:\n${m.text}`)
       .join('\n\n' + '─'.repeat(40) + '\n\n');
 
-    navigator.clipboard.writeText(transcript);
+    if (!await copyChatText(transcript)) return;
     setCopiedAll(true);
     setTimeout(() => setCopiedAll(false), 2500);
   };
 
   const handleClearHistory = () => {
-    clearChatSession();
-    setMessages([DEFAULT_WELCOME_MESSAGE]);
-    setDaysRemaining(30);
+    clearHistory();
     setShowClearConfirm(false);
   };
 
@@ -640,6 +553,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
               return (
                 <button
                   key={eng.id}
+                  disabled={isLoading || modelStatus.isUnavailable(eng.id)}
                   onClick={() => setSelectedModel(eng.id as any)}
                   className={`px-3 py-1 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 border ${
                     isSelected
@@ -682,39 +596,12 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                 <ChevronDown className="w-4 h-4" />
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-[11px]">
-              <div className="p-2 rounded-xl bg-stone-950 border border-emerald-500/30 flex items-start gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 mt-1 shrink-0 animate-pulse" />
-                <div>
-                  <div className="font-bold text-emerald-300">Google Gemini 3.8 Flash</div>
-                  <div className="text-stone-400 text-[10px]">{L('matrix_gemini_desc')}</div>
-                </div>
-              </div>
-              <div className="p-2 rounded-xl bg-stone-950 border border-blue-500/30 flex items-start gap-2">
-                <span className="w-2 h-2 rounded-full bg-blue-400 mt-1 shrink-0 animate-pulse" />
-                <div>
-                  <div className="font-bold text-blue-300">DeepSeek R1 Chemistry</div>
-                  <div className="text-stone-400 text-[10px]">{L('matrix_deepseek_desc')}</div>
-                </div>
-              </div>
-              <div className="p-2 rounded-xl bg-stone-950 border border-green-500/30 flex items-start gap-2">
-                <span className="w-2 h-2 rounded-full bg-green-400 mt-1 shrink-0 animate-pulse" />
-                <div>
-                  <div className="font-bold text-green-300">ChatGPT GPT-4o Architect</div>
-                  <div className="text-stone-400 text-[10px]">{L('matrix_openai_desc')}</div>
-                </div>
-              </div>
-              <div className="p-2 rounded-xl bg-stone-950 border border-purple-500/30 flex items-start gap-2">
-                <span className="w-2 h-2 rounded-full bg-purple-400 mt-1 shrink-0 animate-pulse" />
-                <div>
-                  <div className="font-bold text-purple-300">Claude 3.5 Haute Parfumerie</div>
-                  <div className="text-stone-400 text-[10px]">{L('matrix_claude_desc')}</div>
-                </div>
-              </div>
-            </div>
+            <ShaheenProviderMatrix language={currentLang} models={modelStatus.models} />
           </div>
         )}
 
+        <ShaheenAgentPanel language={currentLang} />
+        <ShaheenServiceStatus language={currentLang} models={modelStatus.models} failed={modelStatus.failed} />
         {/* Messages Stream Board */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 bg-stone-50/50">
           {messages.map((m) => {
@@ -820,6 +707,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                   <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-line font-sans break-words space-y-2">
                     {activeDisplayContent}
                   </div>
+                  <ShaheenAgentReport report={m.agent} language={currentLang} />
 
                   {/* SMART INTERACTION BAR: Transfer Chat Data to App Modules */}
                   {extractedFormula && (

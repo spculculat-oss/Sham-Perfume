@@ -66,7 +66,7 @@ test('auto failover changes attribution to the provider that succeeded', async (
 test('explicit provider never silently impersonates another provider', async () => {
   let calls = 0;
   await assert.rejects(executeChat(validateChatRequest({ message: 'Hello', model: 'gemini' }), { env: keys,
-    fetch: (async () => { calls++; return json({}, 429); }) as typeof fetch }), { code: 'PROVIDER_UNAVAILABLE' });
+    fetch: (async () => { calls++; return json({}, 429); }) as typeof fetch }), { code: 'PROVIDER_RATE_LIMITED' });
   assert.equal(calls, 1);
 });
 
@@ -82,7 +82,7 @@ test('malformed and empty upstream answers fail honestly without leaking upstrea
     new Response('private-upstream-error', { status: 401 }), new Response('invalid-json')]) {
     await assert.rejects(executeChat(validateChatRequest({ message: 'hi', model: 'openai' }), {
       env: keys, fetch: (async () => response) as typeof fetch,
-    }), (error: ChatError) => error.code === 'PROVIDER_UNAVAILABLE' && !error.message.includes('private-upstream'));
+    }), (error: ChatError) => error.code === (response.status === 401 ? 'PROVIDER_AUTH_FAILED' : 'PROVIDER_UNAVAILABLE') && !error.message.includes('private-upstream'));
   }
 });
 
@@ -131,4 +131,12 @@ test('an individual provider deadline is also classified as a timeout', async ()
       })) as typeof fetch,
     }), { status: 504, code: 'PROVIDER_TIMEOUT' });
   } finally { clearInterval(keepAlive); }
+});
+
+test('provider rejection codes are actionable without exposing provider bodies or credentials', async () => {
+  for (const [status, code] of [[429, 'PROVIDER_RATE_LIMITED'], [401, 'PROVIDER_AUTH_FAILED'], [403, 'PROVIDER_AUTH_FAILED'], [404, 'PROVIDER_MODEL_UNAVAILABLE']] as const) {
+    await assert.rejects(executeChat(validateChatRequest({ message: 'hi', model: 'gemini' }), {
+      env: keys, fetch: (async () => new Response('secret-key-private-body', { status })) as typeof fetch,
+    }), (error: ChatError) => error.code === code && !error.message.includes('secret-key'));
+  }
 });

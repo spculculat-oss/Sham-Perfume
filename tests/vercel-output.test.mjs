@@ -151,3 +151,18 @@ test('static React assets do not contain server SDK or handler code', async () =
   const bundle = await readFile(path.join(output, 'functions/api.func/index.cjs'), 'utf8');
   assert.doesNotMatch(bundle, /createViteServer|vite\/dist\/node|vite\/client/);
 });
+
+test('isolated production function exposes real agent capabilities without private server tools', async () => {
+  const response = await fetch(`${baseUrl}/api/agent/capabilities`);
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.equal(data.maxSteps, 5);
+  assert.ok(data.tools.includes('create_file'));
+  assert.ok(data.unavailable.includes('shell_execution'));
+  const chat = await fetch(`${baseUrl}/api/chat`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'Calculate', agent: true, documents: [{ name: 'a.txt', text: '100' }] }),
+  });
+  assert.equal(chat.status, 503);
+  assert.equal((await chat.json()).code, 'PROVIDER_NOT_CONFIGURED');
+});

@@ -128,3 +128,29 @@ test('invalid JSON and oversized payloads return JSON errors', async () => {
     assert.equal((await response.json()).code, 'INVALID_REQUEST');
   }
 });
+
+test('agent capabilities declare actual tools and unavailable privileged actions', async () => {
+  const response = await fetch(`${baseUrl}/api/agent/capabilities`);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('cache-control'), 'no-store');
+  const data = await response.json();
+  assert.equal(data.maxSteps, 5);
+  assert.ok(data.tools.includes('perfume_batch'));
+  assert.ok(data.unavailable.includes('shell_execution'));
+  assert.equal(JSON.stringify(data).includes('GEMINI_API_KEY'), false);
+});
+
+test('agent routes validate options/attachments and never simulate an unconfigured AI', async () => {
+  for (const [body, status, code] of [
+    [{ message: 'Hi', agent: 'yes' }, 400, 'INVALID_AGENT_REQUEST'],
+    [{ message: 'Hi', agent: true, documents: [{ name: 'a.pdf', text: 'test' }] }, 400, 'INVALID_AGENT_REQUEST'],
+    [{ message: 'Hi', documents: [{ name: 'a.txt', text: 'test' }] }, 400, 'INVALID_AGENT_REQUEST'],
+    [{ message: 'Hi', agent: true }, 503, 'PROVIDER_NOT_CONFIGURED'],
+  ] as const) {
+    const response = await fetch(`${baseUrl}/api/chat`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+    });
+    assert.equal(response.status, status);
+    assert.equal((await response.json()).code, code);
+  }
+});

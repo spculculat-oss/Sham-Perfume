@@ -1,3 +1,4 @@
+import type { AgentReport } from '../types/agent';
 import type { ChatMessage } from './chatStorage';
 
 export const isStaticHosting = import.meta.env?.MODE === 'pages';
@@ -9,6 +10,7 @@ export class ApiError extends Error {
 }
 export interface ChatResponse {
   reply: string;
+  agent?: AgentReport;
   engine?: ChatMessage['aiEngine'];
   perspectives?: ChatMessage['perspectives'];
 }

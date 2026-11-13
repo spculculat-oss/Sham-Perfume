@@ -12,6 +12,17 @@ const TIMEOUT = {
   en: 'Shahin’s request timed out without an answer. Send your question again to retry.',
 };
 export function chatErrorText(language: SupportedLanguage, error: unknown) {
+  if (error instanceof ApiError) {
+    const notices: Record<string, { ar: string; en: string }> = {
+      PROVIDER_RATE_LIMITED: { ar: 'وصل مزوّد الذكاء الاصطناعي لحد الاستخدام أو الحصة. راجع حدود المشروع عند المزود وانتظر تجددها؛ تغيير المفتاح داخل نفس المشروع لا يجدد الحصة.', en: 'Provider rate/quota limit reached. Check your project limits; a new key in the same project does not reset quota.' },
+      PROVIDER_AUTH_FAILED: { ar: 'المزوّد رفض الوصول. راجع صلاحية المفتاح وقيود المشروع على الخادم، ثم أعد النشر عند تغييره.', en: 'Provider denied access. Check server credentials and project restrictions; redeploy after changing them.' },
+      PROVIDER_MODEL_UNAVAILABLE: { ar: 'موديل الذكاء الاصطناعي غير متاح لهذا الإعداد. راجع معرف الموديل في إعدادات الخادم.', en: 'Model unavailable. Check the server model identifier and account access.' },
+      AGENT_INVALID_RESPONSE: { ar: 'لم يكمل الوكيل المهمة ضمن حدود الخطوات أو أعاد صيغة غير صالحة. لم يُدّع تنفيذ خطوات إضافية؛ جرّب مهمة أصغر أو المحادثة العادية.', en: 'Agent returned an invalid action or exceeded its step budget. Try a smaller task or normal chat.' },
+      INVALID_AGENT_REQUEST: { ar: 'مرفقات الوكيل أو خياراته غير صالحة. استخدم حتى 3 ملفات نصية بإجمالي 12000 حرف.', en: 'Invalid agent options or attachments. Use up to 3 text files totaling 12000 characters.' },
+      PROVIDER_UNAVAILABLE: { ar: 'المزوّد لم يُرجع إجابة صالحة. وجود المفتاح لا يضمن توفر الخدمة. جرّب لاحقاً أو اختر مزوّداً آخر مهيأً.', en: 'Provider did not return a valid answer. A configured key does not guarantee availability. Try later or another configured provider.' },
+    };
+    if (error.code && notices[error.code]) return loc(language, notices[error.code]);
+  }
   if (error instanceof ApiError && error.code === 'PROVIDER_NOT_CONFIGURED') return loc(language, NO_KEY);
   if ((error instanceof ApiError && error.status === 504) || (error instanceof DOMException && error.name === 'TimeoutError')) {
     return loc(language, TIMEOUT);

@@ -74,7 +74,7 @@ export function systemInstruction(language: SupportedLanguage): string {
 
 /** Only the provider that actually answered is credited. Auto is failover, not a fake panel. */
 export async function executeChat(input: ChatRequest, options: {
-  env?: Environment; fetch?: typeof fetch; signal?: AbortSignal; timeoutMs?: number; totalTimeoutMs?: number;
+  env?: Environment; fetch?: typeof fetch; signal?: AbortSignal; timeoutMs?: number; totalTimeoutMs?: number; systemSuffix?: string;
 } = {}) {
   const env = options.env || process.env;
   const request = options.fetch || fetch;
@@ -83,13 +83,14 @@ export async function executeChat(input: ChatRequest, options: {
   if (!candidates.length) throw new ChatError(503, 'PROVIDER_NOT_CONFIGURED', 'No API key configured for the requested provider');
   const total = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 30000), ...(options.signal ? [options.signal] : [])]);
   let timedOut = false;
+  let upstreamCode: string | undefined;
   for (const provider of candidates) {
     if (total.aborted) break;
     const config = settings[provider];
     const key = env[config.key]!.trim();
     const model = env[config.model]?.trim() || config.defaultModel;
     const signal = AbortSignal.any([total, AbortSignal.timeout(options.timeoutMs ?? 12000)]);
-    const instruction = systemInstruction(input.language);
+    const instruction = systemInstruction(input.language) + (options.systemSuffix || '');
     const turns = [...input.conversationHistory, { role: 'user', text: input.message }];
     let url: string;
     let headers: Record<string, string> = { 'Content-Type': 'application/json' };
@@ -113,7 +114,13 @@ export async function executeChat(input: ChatRequest, options: {
     }
     try {
       const response = await request(url, { method: 'POST', headers, body: JSON.stringify(body), signal });
-      if (!response.ok) continue;
+      if (!response.ok) {
+        // Keep provider bodies/headers/keys out of logs and responses.
+        upstreamCode = response.status === 429 ? 'PROVIDER_RATE_LIMITED'
+          : [401, 403].includes(response.status) ? 'PROVIDER_AUTH_FAILED'
+          : response.status === 404 ? 'PROVIDER_MODEL_UNAVAILABLE' : 'PROVIDER_UNAVAILABLE';
+        continue;
+      }
       const data = await response.json() as {
         candidates?: { content?: { parts?: { thought?: boolean; text?: string }[] } }[];
         content?: { type: string; text: string }[];
@@ -134,5 +141,6 @@ export async function executeChat(input: ChatRequest, options: {
     }
   }
   if (total.aborted || timedOut) throw new ChatError(504, 'PROVIDER_TIMEOUT', 'AI request timed out or was cancelled');
+  if (upstreamCode && upstreamCode !== 'PROVIDER_UNAVAILABLE') throw new ChatError(503, upstreamCode, 'AI provider rejected the request; check provider configuration or limits');
   throw new ChatError(503, 'PROVIDER_UNAVAILABLE', 'The configured AI providers did not return a valid answer');
 }
