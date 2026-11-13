@@ -4,8 +4,9 @@
  * drawn and edited, Word/Excel/PowerPoint/PDF documents, read-aloud, multi-step tasks, and links to the services
  * he uses. The heavy parts (documents, Python, the PDF reader) load only when he uses them.
  */
-import React, { useCallback, useEffect, useState } from 'react';
-import { Code2, FolderOpen, Image as ImageIcon, Link2, MessageSquare, Search, Workflow } from 'lucide-react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
+import { lazyWithReload } from '../utils/lazyRetry';
+import { Code2, FolderOpen, Image as ImageIcon, Link2, Loader2, MessageSquare, Search, Wand2, Workflow } from 'lucide-react';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../types/i18n';
 import { ChatPanel, loadChat, type ChatItem } from './ChatPanel';
 import { SearchPanel } from './SearchPanel';
@@ -18,9 +19,13 @@ import { serverReachable, workspaceStatus, type WsContextFile, type WsStatus } f
 import type { CodeBlock, Runnable } from './codeBlocks';
 import { wsText, type WsKey } from './strings';
 
-type Tab = 'chat' | 'search' | 'code' | 'files' | 'images' | 'auto' | 'connect';
+/** «استوديو شاهين» (sites, videos, logos) loads only when opened. */
+const StudioPanel = lazyWithReload(() => import('../studio/StudioPanel'));
+
+type Tab = 'chat' | 'studio' | 'search' | 'code' | 'files' | 'images' | 'auto' | 'connect';
 const TABS: Array<{ id: Tab; key: WsKey; icon: typeof MessageSquare }> = [
   { id: 'chat', key: 'tab_chat', icon: MessageSquare },
+  { id: 'studio', key: 'tab_studio', icon: Wand2 },
   { id: 'search', key: 'tab_search', icon: Search },
   { id: 'code', key: 'tab_code', icon: Code2 },
   { id: 'files', key: 'tab_files', icon: FolderOpen },
@@ -76,6 +81,11 @@ export default function ShaheenWorkspace({ currentLang }: { currentLang: Support
       </nav>
       <div className="rounded-3xl border border-stone-200 bg-stone-50/60 p-3 sm:p-5">
         {tab === 'chat' && <ChatPanel lang={lang} items={items} setItems={setItems} attachments={attachments} setAttachments={setAttachments} onOpenEditor={openEditor} offline={offline} />}
+        {tab === 'studio' && (
+          <Suspense fallback={<p className="flex items-center gap-2 p-4 text-sm text-stone-500"><Loader2 className="h-4 w-4 animate-spin" />…</p>}>
+            <StudioPanel lang={lang} ai={Boolean(status?.ai) && !offline} onOpenCode={(code) => openEditor({ lang: 'html', code })} />
+          </Suspense>
+        )}
         {tab === 'search' && <SearchPanel lang={lang} onToChat={useInChat} />}
         {tab === 'code' && <CodePanel lang={lang} editor={editor} setEditor={setEditor} />}
         {tab === 'files' && <FilesPanel lang={lang} onUseInChat={useInChat} onOpenCode={(l, code) => openEditor({ lang: l, code })} onEditImage={(b) => { setIncomingImage(b); setTab('images'); }} />}
