@@ -1,6 +1,6 @@
 import { LOCALE_MAP, loc, type LText } from '../لغات/localize';
 import type { SupportedLanguage } from '../types/i18n';
-import { resolveVisitorEntryLocation, type GeoPrecision, type ResolvedEntryLocation } from '../data/worldEntryGazetteer';
+import { resolveDeviceLocation, resolveVisitorEntryLocation, type GeoPrecision, type ResolvedEntryLocation } from '../data/worldEntryGazetteer';
 import { apiUrl, isStaticHosting } from './api';
 import { isCountry } from './pricing';
 
@@ -14,7 +14,7 @@ export interface CurrentWeather {
   observedAt?: string;
 }
 
-const PRECISIONS = new Set<GeoPrecision>(['edge-coords', 'edge-city', 'timezone', 'country']);
+const PRECISIONS = new Set<GeoPrecision>(['edge-coords', 'edge-city', 'device-gps', 'timezone', 'country']);
 
 export function isValidTimeZone(value: unknown): value is string {
   if (typeof value !== 'string' || !value.trim()) return false;
@@ -35,34 +35,36 @@ export function browserTimeZone(): string | undefined {
   }
 }
 
-/** A city-level best effort when the server's edge has no city headers. It never invents a country centroid as a city. */
-export function browserVisitorLocation(
+/** A timezone may identify the country and local clock, but it is never treated as a city. */
+export function browserVisitorCountry(
   timezone = browserTimeZone(),
   languages: readonly string[] = typeof navigator === 'undefined' ? [] : (navigator.languages || [navigator.language]),
-): VisitorEntryLocation | undefined {
-  const safeTimezone = isValidTimeZone(timezone) ? timezone : undefined;
-  if (safeTimezone) {
-    const byTimezone = resolveVisitorEntryLocation({ timezone: safeTimezone });
-    if (byTimezone.country !== 'UN' && byTimezone.precision !== 'country') {
-      return {
-        ...byTimezone,
-        cityAr: byTimezone.cityAr.replace(/\s+\(نطاق التوقيت\)$/, ''),
-        cityEn: byTimezone.cityEn.replace(/\s+\(TZ zone\)$/, ''),
-        timezone: safeTimezone,
-      };
-    }
+): string | undefined {
+  if (isValidTimeZone(timezone)) {
+    const byTimezone = resolveVisitorEntryLocation({ timezone });
+    if (byTimezone.country !== 'UN' && isCountry(byTimezone.country)) return byTimezone.country;
   }
 
-  // A language-region such as ar-EG is useful for the displayed country, but not enough to guess a city or its weather.
-  const country = languages
+  // A language-region such as ar-EG can identify the country, not the visitor's city.
+  return languages
     .flatMap((tag) => (typeof tag === 'string' ? tag.split(/[-_]/).slice(1) : []))
     .map((part) => part.toUpperCase())
     .find((part) => isCountry(part));
-  if (country && safeTimezone) {
-    const byCountry = resolveVisitorEntryLocation({ country, timezone: safeTimezone });
-    if (byCountry.precision !== 'country') return { ...byCountry, timezone: safeTimezone };
-  }
-  return undefined;
+}
+
+/** Requests precise device coordinates only after the visitor acts or has already granted permission. */
+export async function locateVisitorDevice(): Promise<VisitorEntryLocation> {
+  if (typeof navigator === 'undefined' || !navigator.geolocation) throw new Error('GEOLOCATION_UNSUPPORTED');
+  const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      resolve,
+      (error) => reject(new Error(error.code === 1 ? 'GEOLOCATION_DENIED' : error.code === 3 ? 'GEOLOCATION_TIMEOUT' : 'GEOLOCATION_UNAVAILABLE')),
+      { enableHighAccuracy: true, timeout: 15_000, maximumAge: 120_000 },
+    );
+  });
+  const location = resolveDeviceLocation(position.coords.latitude, position.coords.longitude, position.coords.accuracy);
+  const timezone = browserTimeZone();
+  return { ...location, ...(timezone ? { timezone } : {}) };
 }
 
 export function readVisitorLocation(value: unknown): VisitorEntryLocation | undefined {
@@ -98,12 +100,13 @@ export function readVisitorLocation(value: unknown): VisitorEntryLocation | unde
   };
 }
 
-export function readVisitorGeo(value: unknown): { country?: string; location?: VisitorEntryLocation } {
+export function readVisitorGeo(value: unknown): { country?: string; timezone?: string; location?: VisitorEntryLocation } {
   if (!value || typeof value !== 'object') return {};
   const raw = value as Record<string, unknown>;
   const country = typeof raw.country === 'string' && isCountry(raw.country.toUpperCase()) ? raw.country.toUpperCase() : undefined;
+  const timezone = isValidTimeZone(raw.timezone) ? raw.timezone : undefined;
   const location = readVisitorLocation(raw.location);
-  return { ...(country ? { country } : {}), ...(location ? { location } : {}) };
+  return { ...(country ? { country } : {}), ...(timezone ? { timezone } : {}), ...(location ? { location } : {}) };
 }
 
 /** Accepts either our compact API reply or Open-Meteo's documented `current` object. */
@@ -170,7 +173,7 @@ export function weatherDescription(code: number, language: SupportedLanguage): s
 
 /** City-only coordinates are rounded again before being sent to the weather service. */
 export async function fetchVisitorWeather(location: VisitorEntryLocation): Promise<CurrentWeather> {
-  if (location.precision === 'country') throw new Error('City-level location is not available.');
+  if (location.precision === 'country' || location.precision === 'timezone') throw new Error('City-level location is not available.');
   const latitude = Math.round(location.lat * 100) / 100;
   const longitude = Math.round(location.lon * 100) / 100;
   const query = new URLSearchParams({ latitude: latitude.toFixed(2), longitude: longitude.toFixed(2) });

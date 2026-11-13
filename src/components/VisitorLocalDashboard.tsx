@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   CalendarDays,
   Clock3,
@@ -9,6 +9,7 @@ import {
   CloudSnow,
   CloudSun,
   MapPin,
+  Locate,
   Sun,
   Thermometer,
   type LucideIcon,
@@ -17,8 +18,9 @@ import { LOCALE_MAP, makeT, type LText } from '../لغات/localize';
 import type { SupportedLanguage } from '../types/i18n';
 import {
   browserTimeZone,
-  browserVisitorLocation,
+  browserVisitorCountry,
   fetchVisitorWeather,
+  locateVisitorDevice,
   readVisitorGeo,
   temperatureForVisitor,
   visitorLocale,
@@ -37,10 +39,19 @@ const TEXT = {
   current_weather: { ar: 'الطقس الحالي', en: 'Current weather' },
   loading_weather: { ar: 'جاري جلب الطقس…', en: 'Loading current weather…' },
   weather_unavailable: { ar: 'الطقس غير متاح حاليًا', en: 'Weather is temporarily unavailable' },
-  location_unavailable: { ar: 'تعذّر تحديد المدينة', en: 'City is not available' },
-  approximate_location: { ar: 'مدينة تقريبية حسب المنطقة الزمنية لجهازك', en: 'Approximate city from your device time zone' },
-  entry_location: { ar: 'حسب مدينة دخولك', en: 'Based on your entry city' },
-  device_time: { ar: 'توقيت جهازك المحلي', en: 'Your device local time' },
+  location_unavailable: { ar: 'الطقس غير متاح من غير مدينة مؤكدة', en: 'Weather needs a confirmed city' },
+  city_not_identified: { ar: 'المدينة غير محددة من شبكة الدخول', en: 'Entry network did not identify a city' },
+  timezone_only: { ar: 'الساعة حسب توقيت جهازك؛ المدينة مش مؤكدة', en: 'Clock follows your device zone; city is unconfirmed' },
+  entry_location: { ar: 'حسب مدينة شبكة الدخول', en: 'Based on the entry network city' },
+  device_location: { ar: 'حسب موقع الجهاز بعد موافقتك', en: 'Based on your device location' },
+  precise_location: { ar: 'حدّد موقعي بدقة', en: 'Use precise location' },
+  refresh_location: { ar: 'حدّث موقعي', en: 'Refresh my location' },
+  locating: { ar: 'بنحدد موقعك…', en: 'Finding your location…' },
+  location_denied: { ar: 'اسمح للموقع من إعدادات المتصفح عشان نحدد مدينتك', en: 'Allow location in your browser settings to identify your city' },
+  location_timeout: { ar: 'تحديد الموقع أخد وقت طويل؛ جرّب تاني', en: 'Location timed out; try again' },
+  location_unsupported: { ar: 'المتصفح مش بيدعم تحديد الموقع', en: 'This browser does not support location' },
+  location_failed: { ar: 'ماقدرناش نحدد موقعك دلوقتي', en: 'Could not determine your location right now' },
+  permission_note: { ar: 'موقع الجهاز مش هيتحدد إلا بموافقتك؛ الطقس يستخدم إحداثيات تقريبية', en: 'Device location is used only with permission; weather uses rounded coordinates' },
   powered_by: { ar: 'بيانات الطقس من', en: 'Weather data by' },
 } satisfies Record<string, LText>;
 
@@ -69,14 +80,22 @@ function timezoneName(timezone: string | undefined, locale: string, now: Date): 
   } catch { return undefined; }
 }
 
+type LocationRequestState = 'idle' | 'loading' | 'ready' | 'denied' | 'timeout' | 'unsupported' | 'failed';
+
+function hasCityPrecision(location: VisitorEntryLocation | undefined): location is VisitorEntryLocation {
+  return Boolean(location && ['edge-city', 'edge-coords', 'device-gps'].includes(location.precision));
+}
+
 export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedLanguage }) {
   const [now, setNow] = useState(() => new Date());
-  const [place, setPlace] = useState<VisitorEntryLocation | undefined>(() => browserVisitorLocation());
-  const [entryCountry, setEntryCountry] = useState<string | undefined>(() => place?.country);
-  const [timeZone, setTimeZone] = useState<string | undefined>(() => place?.timezone || browserTimeZone());
+  const [place, setPlace] = useState<VisitorEntryLocation | undefined>();
+  const [entryCountry, setEntryCountry] = useState<string | undefined>(() => browserVisitorCountry());
+  const [timeZone, setTimeZone] = useState<string | undefined>(() => browserTimeZone());
   const [weather, setWeather] = useState<CurrentWeather | undefined>();
   const [weatherLoading, setWeatherLoading] = useState(true);
   const [weatherError, setWeatherError] = useState(false);
+  const [locationRequest, setLocationRequest] = useState<LocationRequestState>('idle');
+  const deviceLocation = useRef<VisitorEntryLocation | undefined>(undefined);
   const label = makeT(currentLang, TEXT);
 
   useEffect(() => {
@@ -87,14 +106,15 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
   useEffect(() => {
     let live = true;
     let running = false;
+    let permissionChecked = false;
     const refresh = async () => {
       if (running) return;
       running = true;
       if (live) setWeatherLoading(true);
       try {
-        let nextPlace = browserVisitorLocation();
-        let nextCountry = nextPlace?.country;
         let nextTimeZone = browserTimeZone();
+        let nextCountry = browserVisitorCountry(nextTimeZone);
+        let nextPlace = deviceLocation.current;
 
         if (!isStaticHosting) {
           try {
@@ -102,28 +122,42 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
             if (response.ok) {
               const geo = readVisitorGeo(await response.json());
               if (geo.country) nextCountry = geo.country;
-              if (geo.location) {
-                if (geo.location.timezone) nextTimeZone = geo.location.timezone;
-                if (geo.location.precision !== 'country') {
-                  nextPlace = geo.location;
-                } else if (geo.location.timezone) {
-                  const timezonePlace = browserVisitorLocation(geo.location.timezone, geo.country ? [`${currentLang}-${geo.country}`] : undefined);
-                  if (timezonePlace) nextPlace = timezonePlace;
-                }
-              }
+              if (!nextTimeZone && geo.timezone) nextTimeZone = geo.timezone;
+              if (!deviceLocation.current && hasCityPrecision(geo.location)) nextPlace = geo.location;
             }
           } catch {
-            // Keep the browser's local time-zone/city fallback when the edge lookup is unavailable.
+            // Keep the device's local time and country; do not guess a city from its timezone.
           }
         }
 
+        // Reuse device location only when permission was already granted; never trigger a prompt on page load.
+        if (!permissionChecked && !deviceLocation.current) {
+          permissionChecked = true;
+          try {
+            if (typeof navigator !== 'undefined' && navigator.permissions) {
+              const permission = await navigator.permissions.query({ name: 'geolocation' });
+              if (permission.state === 'granted') {
+                const precise = await locateVisitorDevice();
+                deviceLocation.current = precise;
+                nextPlace = precise;
+                if (precise.country !== 'UN') nextCountry = precise.country;
+                nextTimeZone = precise.timezone || nextTimeZone;
+                if (live) setLocationRequest('ready');
+              }
+            }
+          } catch {
+            // The CDN city remains available if a previously granted device lookup is temporarily unavailable.
+          }
+        }
+
+        if (deviceLocation.current) nextPlace = deviceLocation.current;
         if (!live) return;
         setPlace(nextPlace);
         setEntryCountry(nextCountry);
         setTimeZone(nextTimeZone);
         setWeatherError(false);
 
-        if (!nextPlace || nextPlace.precision === 'country') {
+        if (!hasCityPrecision(nextPlace)) {
           setWeather(undefined);
           setWeatherError(true);
           return;
@@ -132,7 +166,10 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
         const current = await fetchVisitorWeather(nextPlace);
         if (live) setWeather(current);
       } catch {
-        if (live) setWeatherError(true);
+        if (live) {
+          setWeather(undefined);
+          setWeatherError(true);
+        }
       } finally {
         running = false;
         if (live) setWeatherLoading(false);
@@ -146,6 +183,32 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
       window.clearInterval(timer);
     };
   }, [currentLang]);
+
+  const requestDeviceLocation = async () => {
+    setLocationRequest('loading');
+    try {
+      const precise = await locateVisitorDevice();
+      deviceLocation.current = precise;
+      setPlace(precise);
+      if (precise.country !== 'UN') setEntryCountry(precise.country);
+      setTimeZone(precise.timezone || browserTimeZone());
+      setWeatherLoading(true);
+      setWeather(undefined);
+      setWeatherError(false);
+      setLocationRequest('ready');
+      try {
+        setWeather(await fetchVisitorWeather(precise));
+      } catch {
+        setWeather(undefined);
+        setWeatherError(true);
+      } finally {
+        setWeatherLoading(false);
+      }
+    } catch (error) {
+      const code = error instanceof Error ? error.message : '';
+      setLocationRequest(code === 'GEOLOCATION_DENIED' ? 'denied' : code === 'GEOLOCATION_TIMEOUT' ? 'timeout' : code === 'GEOLOCATION_UNSUPPORTED' ? 'unsupported' : 'failed');
+    }
+  };
 
   const locale = visitorLocale(currentLang, place?.country || entryCountry);
   const localTimeZone = place?.timezone || timeZone;
@@ -164,9 +227,17 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
 
   const placeCountry = place?.country && place.country !== 'UN' ? place.country : entryCountry;
   const localizedCountry = countryName(placeCountry, locale);
-  const city = place && place.precision !== 'country' ? (currentLang === 'ar' ? place.cityAr : place.cityEn) : '';
-  const placeText = city ? `${city}${localizedCountry ? ` · ${localizedCountry}` : ''}` : localizedCountry || label('location_unavailable');
-  const locationHint = place?.precision === 'timezone' ? label('approximate_location') : place ? label('entry_location') : label('device_time');
+  const city = hasCityPrecision(place) ? (currentLang === 'ar' ? place.cityAr : place.cityEn) : '';
+  const placeText = city
+    ? `${city}${localizedCountry ? ` · ${localizedCountry}` : ''}`
+    : `${localizedCountry ? `${localizedCountry} · ` : ''}${label('city_not_identified')}`;
+  const locationHint = place?.precision === 'device-gps'
+    ? label('device_location')
+    : hasCityPrecision(place) ? label('entry_location') : label('timezone_only');
+  const locationStatus = locationRequest === 'denied' ? label('location_denied')
+    : locationRequest === 'timeout' ? label('location_timeout')
+      : locationRequest === 'unsupported' ? label('location_unsupported')
+        : locationRequest === 'failed' ? label('location_failed') : '';
   const timezoneLabel = timezoneName(localTimeZone, locale, now);
   const temperature = weather ? temperatureForVisitor(weather.temperatureC, placeCountry || entryCountry) : undefined;
   const condition = weather ? weatherKind(weather.weatherCode) : undefined;
@@ -215,7 +286,7 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
               </div>
             ) : (
               <p className="mt-2 text-sm font-semibold text-stone-700" aria-live="polite">
-                {weatherLoading ? label('loading_weather') : weatherError ? label('weather_unavailable') : label('location_unavailable')}
+                {!hasCityPrecision(place) ? label('location_unavailable') : weatherLoading ? label('loading_weather') : weatherError ? label('weather_unavailable') : label('loading_weather')}
               </p>
             )}
             <div className="mt-1 flex flex-wrap items-center gap-x-1 text-[10px] text-stone-500">
@@ -231,6 +302,18 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
           <span aria-hidden="true">·</span>
           <span>{locationHint}</span>
           {localTimeZone && <span className="hidden sm:inline">· {localTimeZone}</span>}
+          <span className="basis-full text-[10px] text-stone-500 sm:basis-auto sm:ms-auto">{label('permission_note')}</span>
+          {locationStatus && <span role="status" aria-live="polite" className="basis-full text-[11px] text-rose-700 sm:basis-auto">{locationStatus}</span>}
+          <button
+            type="button"
+            onClick={() => { void requestDeviceLocation(); }}
+            disabled={locationRequest === 'loading'}
+            title={label('permission_note')}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-950 transition hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:cursor-wait disabled:opacity-60"
+          >
+            <Locate className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>{locationRequest === 'loading' ? label('locating') : place?.precision === 'device-gps' ? label('refresh_location') : label('precise_location')}</span>
+          </button>
         </div>
       </div>
     </section>
