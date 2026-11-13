@@ -7,7 +7,8 @@ import type { SupportedLanguage } from '../types/i18n';
 export interface WsMessage { role: 'user' | 'assistant'; text: string }
 export interface WsSource { title: string; url: string; snippet: string }
 export interface WsContextFile { name: string; text: string }
-export interface WsStatus { ai: boolean; search: 'web' | 'encyclopedia'; image: 'ai' | 'off'; notion: boolean; slack: boolean }
+/** `video`: who may use the professional video engine (off until the owner turns it on); `videoLeft`: clips left today. */
+export interface WsStatus { ai: boolean; search: 'web' | 'encyclopedia'; image: 'ai' | 'off'; notion: boolean; slack: boolean; video?: 'off' | 'owner' | 'everyone'; videoLeft?: number }
 
 const json = (body: unknown, extra: Record<string, string> = {}): RequestInit => ({
   method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Sham-Visitor': visitorId(), ...extra }, body: JSON.stringify(body),

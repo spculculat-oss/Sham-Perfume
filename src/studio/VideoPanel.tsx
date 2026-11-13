@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Clapperboard, Download, Loader2, Play, Plus, Sparkles, Square, Trash2 } from 'lucide-react';
+import { Clapperboard, Download, Film, Loader2, Play, Plus, Sparkles, Square, Trash2 } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
+import { ApiError } from '../utils/api';
 import { errorKey } from '../workspace/workspaceApi';
 import { wsText } from '../workspace/strings';
 import { saveFile } from '../workspace/fileStore';
 import { downloadBlob, safeFileName } from '../workspace/officeWriters';
-import { ASPECT_SIZE, MOODS_LIST, MOTIONS, stylePrompt, totalSeconds, VIDEO_STYLES, visualPrompt, type Aspect, type Mood, type Motion, type Storyboard, type VideoStyle } from './storyboard';
+import { ASPECT_SIZE, EFFECTS, MOODS_LIST, MOTIONS, totalSeconds, VIDEO_STYLES, type Aspect, type Effect, type Mood, type Motion, type Storyboard, type VideoStyle } from './storyboard';
 import { canRecord, drawFrame, loadPicture, play, record, type Picture } from './videoMaker';
-import { drawPicture, writeStoryboard } from './studioApi';
+import { clipPrompt, drawPicture, makeProClip, proVideoAccess, scenePicturePrompt, writeStoryboard } from './studioApi';
 import type { T } from './StudioPanel';
 
 const btn = 'inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-[12.5px] font-black cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed';
@@ -26,15 +27,27 @@ export function VideoPanel({ lang, st, ai }: { lang: SupportedLanguage; st: T; a
   const [length, setLength] = useState(20);
   const [board, setBoard] = useState<Storyboard | null>(null);
   const [pictures, setPictures] = useState<Array<Picture | null>>([]);
-  const [busy, setBusy] = useState<'' | 'story' | 'draw' | 'record'>('');
+  const [busy, setBusy] = useState<'' | 'story' | 'draw' | 'record' | 'pro'>('');
   const [progress, setProgress] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [music, setMusic] = useState(true);
+  const [narrate, setNarrate] = useState(true);
+  const [pro, setPro] = useState<{ usable: boolean; left: number }>({ usable: false, left: 0 });
+  const [proState, setProState] = useState('');
   const [note, setNote] = useState('');
   const canvas = useRef<HTMLCanvasElement>(null);
   const stopRef = useRef<() => void>(() => {});
   const abort = useRef<AbortController | null>(null);
   useEffect(() => () => { stopRef.current(); abort.current?.abort(); }, []);
+  // Whether the professional video engine is open to this visitor (off until the owner turns it on).
+  useEffect(() => {
+    const controller = new AbortController();
+    void proVideoAccess(controller.signal).then((a) => setPro({ usable: a.usable, left: a.left }));
+    return () => controller.abort();
+  }, []);
+  // Real clips are files in memory: freed when the story changes or the panel closes.
+  const clipsRef = useRef<string[]>([]);
+  useEffect(() => () => { for (const u of clipsRef.current) URL.revokeObjectURL(u); }, []);
 
   // The still frame when not playing.
   useEffect(() => {
@@ -61,8 +74,7 @@ export function VideoPanel({ lang, st, ai }: { lang: SupportedLanguage; st: T; a
     for (const i of targets) {
       if (controller.signal.aborted) break;
       try {
-        const scene = b.scenes[i]!;
-        const src = await drawPicture(`${stylePrompt(visualPrompt(scene.prompt), b.style)}, consistent characters`, Math.round(W * 1.15), Math.round(H * 1.15), controller.signal);
+        const src = await drawPicture(scenePicturePrompt(b, i), Math.round(W * 1.15), Math.round(H * 1.15), controller.signal);
         pics[i] = await loadPicture(src, controller.signal);
         setPictures([...pics]);
       } catch (error) {
@@ -93,7 +105,7 @@ export function VideoPanel({ lang, st, ai }: { lang: SupportedLanguage; st: T; a
     if (!board || !canvas.current) return;
     if (playing) { stopRef.current(); setPlaying(false); return; }
     setPlaying(true);
-    stopRef.current = play(canvas.current, board, pictures, { sound: music, onEnd: () => setPlaying(false) });
+    stopRef.current = play(canvas.current, board, pictures, { sound: music, narrate, onEnd: () => setPlaying(false) });
   };
 
   const recordVideo = async () => {
@@ -112,6 +124,45 @@ export function VideoPanel({ lang, st, ai }: { lang: SupportedLanguage; st: T; a
     } catch (error) {
       if (!controller.signal.aborted) setNote((error as Error)?.message === 'NO_RECORDER' ? st('no_recorder') : wsText(lang, 'failed'));
     }
+    setBusy('');
+  };
+
+  /** Real clips from the professional engine for every scene (or one). Any scene that fails keeps its moving picture. */
+  const makeClips = async (only?: number) => {
+    if (!board || busy || !pro.usable) return;
+    stopRef.current(); setPlaying(false);
+    const controller = new AbortController();
+    abort.current = controller;
+    setBusy('pro'); setNote(''); setProState('');
+    const targets = board.scenes.map((_, i) => i).filter((i) => (only === undefined ? !board.scenes[i]!.clip : i === only));
+    let current = board;
+    let made = 0;
+    let left = pro.left;
+    for (const [k, i] of targets.entries()) {
+      if (controller.signal.aborted || left <= 0) break;
+      const scene = current.scenes[i]!;
+      setProState(st('pro_working', { i: k + 1, n: targets.length, s: '' }));
+      try {
+        const pic = pictures[i];
+        // The scene's own picture starts the clip, so the look and the characters stay the same as in the storyboard.
+        const image = pictureData(pic);
+        const blob = await makeProClip(clipPrompt(current, i), { seconds: Math.min(10, Math.max(3, scene.seconds)), aspect: current.aspect === '9:16' ? '9:16' : '16:9', ...(image ? { image } : {}) }, controller.signal,
+          (state) => setProState(st('pro_working', { i: k + 1, n: targets.length, s: state === 'in_progress' ? '⏳' : '' })));
+        const url = URL.createObjectURL(blob);
+        clipsRef.current.push(url);
+        if (scene.clip) URL.revokeObjectURL(scene.clip);
+        current = { ...current, scenes: current.scenes.map((s, j) => (j === i ? { ...s, clip: url, seconds: Math.min(10, Math.max(3, s.seconds)) } : s)) };
+        setBoard(current);
+        made += 1; left -= 1;
+      } catch (error) {
+        if (controller.signal.aborted) break;
+        if (error instanceof ApiError && (error.code === 'VIDEO_DAILY_LIMIT' || error.status === 403)) { left = 0; setNote(st('pro_limit')); break; }
+        setNote(st('pro_failed'));
+      }
+    }
+    setPro((p) => ({ ...p, left }));
+    if (made) setNote(st('pro_done'));
+    setProState('');
     setBusy('');
   };
 
@@ -156,11 +207,23 @@ export function VideoPanel({ lang, st, ai }: { lang: SupportedLanguage; st: T; a
                 {busy === 'record' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}{busy === 'record' ? st('recording', { p: Math.round(progress * 100) }) : st('record')}
               </button>
               <label className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-white"><input type="checkbox" checked={music} onChange={(e) => setMusic(e.target.checked)} />🎵 {st('music')}</label>
+              <label className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-white" title={st('narrate_note')}><input type="checkbox" checked={narrate} onChange={(e) => setNarrate(e.target.checked)} data-testid="studio-narrate" />🗣️ {st('narrate')}</label>
+              <label className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-white"><input type="checkbox" checked={board.depth !== false} onChange={(e) => setBoard({ ...board, depth: e.target.checked })} />🧊 {st('depth')}</label>
               <span className="text-[12px] font-bold text-stone-300" dir="ltr">{Math.round(total)}s</span>
+              {busy === 'pro' && proState && <span className="inline-flex items-center gap-1.5 text-[12px] font-bold text-amber-200" role="status"><Loader2 className="h-4 w-4 animate-spin" />{proState}</span>}
               {busy === 'draw' && <span className="inline-flex items-center gap-1.5 text-[12px] font-bold text-amber-200"><Loader2 className="h-4 w-4 animate-spin" />{wsText(lang, 'drawing')} {Math.round(progress * 100)}%</span>}
             </div>
           </div>
 
+          {pro.usable && (
+            <div className="rounded-2xl border border-amber-300 bg-amber-50 p-3 space-y-2" data-testid="studio-pro">
+              <h3 className="flex items-center gap-1.5 text-[13px] font-black text-amber-900"><Film className="h-4 w-4" />{st('pro_title')}</h3>
+              <p className="text-[12px] leading-relaxed text-amber-900">{st('pro_note', { n: pro.left })}</p>
+              <button type="button" className={strong} disabled={Boolean(busy) || pro.left <= 0 || board.scenes.every((s) => s.clip)} onClick={() => void makeClips()}>
+                {busy === 'pro' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Film className="h-4 w-4" />}{st('pro_make')}
+              </button>
+            </div>
+          )}
           <div className="rounded-2xl border border-stone-200 bg-white p-3 space-y-2">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h3 className="text-[13px] font-black text-stone-800">{st('scenes')}</h3>
@@ -174,6 +237,7 @@ export function VideoPanel({ lang, st, ai }: { lang: SupportedLanguage; st: T; a
                 <li key={s.id} className="flex gap-2 rounded-xl border border-stone-200 p-2">
                   <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-lg bg-stone-200">
                     {pictures[i] ? <Thumb picture={pictures[i]!} /> : <span className="absolute inset-0 grid place-items-center text-[11px] font-black text-stone-500">{i + 1}</span>}
+                    {s.clip && <span className="absolute bottom-1 start-1 rounded bg-amber-700 px-1.5 py-0.5 text-[10px] font-black text-white">🎬 {st('pro_clip')}</span>}
                   </div>
                   <div className="min-w-0 grow space-y-1.5">
                     <input className={field} value={s.caption} maxLength={160} placeholder={st('caption')} aria-label={st('caption')} onChange={(e) => setScene(i, { caption: e.target.value })} />
@@ -181,7 +245,9 @@ export function VideoPanel({ lang, st, ai }: { lang: SupportedLanguage; st: T; a
                     <div className="flex flex-wrap items-center gap-1.5">
                       <select className={select} value={s.seconds} aria-label={st('seconds')} onChange={(e) => setScene(i, { seconds: Number(e.target.value) })}>{[...new Set([2, 3, 4, 5, 6, 8, 10, 12, s.seconds])].sort((x, y) => x - y).map((n) => <option key={n} value={n}>{n}s</option>)}</select>
                       <select className={select} value={s.motion} aria-label="motion" onChange={(e) => setScene(i, { motion: e.target.value as Motion })}>{MOTIONS.map((m) => <option key={m} value={m}>{MOTION_ICON[m]}</option>)}</select>
+                      <select className={select} value={s.effect || 'none'} aria-label={st('effect')} title={st('effect')} onChange={(e) => setScene(i, { effect: e.target.value as Effect })}>{EFFECTS.map((x) => <option key={x} value={x}>{st(`e_${x}`)}</option>)}</select>
                       <button type="button" className={soft} disabled={Boolean(busy)} onClick={() => void drawScenes(board, i)}><Sparkles className="h-4 w-4" /></button>
+                      {pro.usable && <button type="button" className={soft} disabled={Boolean(busy) || pro.left <= 0} title={st('pro_one')} aria-label={st('pro_one')} onClick={() => void makeClips(i)}><Film className="h-4 w-4" /></button>}
                       <button type="button" aria-label={st('remove')} title={st('remove')} disabled={board.scenes.length < 2} className="rounded p-1.5 text-rose-600 hover:bg-rose-50 disabled:opacity-30 cursor-pointer"
                         onClick={() => { setBoard({ ...board, scenes: board.scenes.filter((_, j) => j !== i) }); setPictures(pictures.filter((_, j) => j !== i)); }}><Trash2 className="h-4 w-4" /></button>
                     </div>
@@ -208,4 +274,17 @@ function Thumb({ picture }: { picture: Picture }) {
     ctx.drawImage(picture, (224 - w) / 2, (160 - h) / 2, w, h);
   }, [picture]);
   return <canvas ref={ref} className="h-full w-full object-cover" />;
+}
+
+/** A picture as a JPEG data URL (to start a real clip from it), when the browser allows reading it. */
+function pictureData(picture: Picture | null | undefined): string | undefined {
+  if (!picture || !picture.width || !picture.height || typeof document === 'undefined') return undefined;
+  try {
+    const c = document.createElement('canvas');
+    const scale = Math.min(1, 1280 / Math.max(picture.width, picture.height));
+    c.width = Math.round(picture.width * scale); c.height = Math.round(picture.height * scale);
+    c.getContext('2d')!.drawImage(picture, 0, 0, c.width, c.height);
+    const url = c.toDataURL('image/jpeg', 0.86);
+    return url.length < 3_400_000 ? url : undefined;
+  } catch { return undefined; } // a picture from another site without permission: the clip starts from the words alone
 }

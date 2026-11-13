@@ -78,7 +78,7 @@ export const AI_TOOLS: AiToolDef[] = [
   {
     id: 'shaheen_workspace', nameAr: 'مساحة شاهين — المساعد الشامل', nameEn: 'Shaheen Workspace — general assistant',
     descriptionAr: 'شاهين كمساعد في أي موضوع (مش العطور بس): محادثة بالسياق والملفات، بحث ويب بمصادره، قراءة وتلخيص الصفحات والـ PDF بأمان (عناوين عامة بس)، خطط مهام متعددة الخطوات، ورسم الصور. الكود والملفات والمستندات وتعديل الصور والقراءة بالصوت وتحريك تقريب/كاميرا من صورة لتصدير فيديو صامت بتوقيع sharin ai بتحصل في متصفح الزائر؛ التحريك ليس توليد فيديو للمشهد، وملفاته مش بتتخزن على السيرفر.',
-    sources: ['server/workspace.ts'], routes: ['/api/workspace/status', '/api/workspace/ask', '/api/workspace/search', '/api/workspace/read', '/api/workspace/image'], acceptsGuidance: false,
+    sources: ['server/workspace.ts', 'server/videoEngine.ts'], routes: ['/api/workspace/status', '/api/workspace/ask', '/api/workspace/search', '/api/workspace/read', '/api/workspace/image', '/api/workspace/video/start'], acceptsGuidance: false,
   },
   {
     id: 'store_advisor', nameAr: 'مستشار التسوق «اسأل شاهين» في المتجر', nameEn: 'Store shopping advisor',
