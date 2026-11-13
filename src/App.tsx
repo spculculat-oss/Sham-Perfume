@@ -8,6 +8,7 @@ import { ToastNotification } from './components/ToastNotification';
 import { UserProfilePage } from './components/UserProfilePage';
 import { Hero } from './components/Hero';
 import { HomeHub } from './components/HomeHub';
+import { VisitorLocalDashboard } from './components/VisitorLocalDashboard';
 import { SectionsGateway } from './components/SectionsGateway';
 import { Storefront } from './components/Storefront';
 import { ProductDetail } from './components/ProductDetail';
@@ -971,6 +972,8 @@ export default function App() {
           onOpenPrivacyModal={handleOpenPrivacyModal}
           onOpenProfilePage={() => currentUser && (getSessionToken() ? navigateToTab('community/me') : handleOpenProfilePage(currentUser))}
         />
+
+        {activeTab === 'home' && <VisitorLocalDashboard currentLang={currentLang} />}
 
         {/* Store Promo Hub: promotional banner with store deals.
             Not on «مجتمع شام»: a social feed opens straight on the feed (the banner took a whole screen there,
