@@ -3,7 +3,7 @@ import type { ConversationTurn } from './conversationContext';
 import { loc } from '../لغات/localize';
 import type { SupportedLanguage } from '../types/i18n';
 
-export const REAL_PHOTO_INSTRUCTION = `طلب صورة حقيقية أو فوتوغرافية أو أرشيفية يعني البحث عن صورة منشورة، لا توليد رسمة واقعية. يمكن عرض صور شخصيات عامة مثل حسني مبارك؛ لا تدّعِ أن كونك مساعداً يمنع عرضها. استخدم sham-media مع images باسم الشخص/الموضوع وimageKind بقيمة photograph. في مساحة العمل أيضاً استخدم sham-media للبحث، ولا تستخدم sham-image أو sham-video كبديل لصورة حقيقية. لا تختلق روابط أو مصدر الصورة أو تدّعي توثيق هويتها/تاريخها بصرياً. إن لم تتوفر نتيجة مناسبة أظهر تعذر العثور عليها بدلاً من توليد بديل. احتفظ بالمصدر والترخيص واسم المصور، ولا تضع توقيع sharin ai على صورة أرشيفية كأنها من توليد الموقع.`;
+export const REAL_PHOTO_INSTRUCTION = `طلب صورة حقيقية أو فوتوغرافية أو أرشيفية يعني البحث عن صورة منشورة، لا توليد رسمة واقعية. يمكن عرض صور شخصيات عامة مثل حسني مبارك؛ لا تدّعِ أن كونك مساعداً يمنع عرضها. استخدم sham-media مع images باسم الشخص/الموضوع وimageKind بقيمة photograph. في مساحة العمل أيضاً استخدم sham-media للبحث، ولا تستخدم sham-image أو sham-video كبديل لصورة حقيقية. لا تختلق روابط أو مصدر الصورة أو تدّعي توثيق هويتها/تاريخها بصرياً. إن لم تتوفر نتيجة مناسبة أظهر تعذر العثور عليها بدلاً من توليد بديل. احتفظ بالمصدر والترخيص واسم المصور، ولا تضع توقيع sharing ai على صورة أرشيفية كأنها من توليد الموقع.`;
 const fold = (value: string) => value.normalize('NFKC').replace(/[\u064B-\u065F\u0670]/g, '').replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').toLowerCase();
 export function wantsRealPhoto(text: string): boolean {
   const t = fold(text);

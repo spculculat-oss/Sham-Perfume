@@ -53,7 +53,7 @@ export function workspaceInstruction(language: SupportedLanguage, task: Workspac
 المستندات: لو طلب مستند أو تقرير أو عرض، اكتبه Markdown منظم (عنوان بـ #، أقسام بـ ##، نقاط، وجداول Markdown للأرقام) — الموقع بيحوّله Word أو Excel أو PowerPoint أو PDF بضغطة. للعرض التقديمي: كل شريحة قسم ## بعنوانها ونقاط قصيرة.
 الصور: لو طلب رسمة أو صورة مولدة (وليس صورة حقيقية أو أرشيفية)، اكتب في الآخر سياج \`\`\`sham-image فيه وصف إنجليزي دقيق للصورة في سطر واحد (الموقع بيرسمها).
 الفيديو المتحرك: الموقع يدعم تصدير فيديو قصير محلياً من صورة بتقريب وتحريك الكاميرا بلا صوت عبر زر «عمل فيديو متحرك» تحت الصورة. ده مش توليد فيديو بالذكاء الاصطناعي ولا تحريك أشخاص أو أشياء داخل المشهد؛ وضّح الفرق بصراحة، ولا تدّعي إنشاء فيديو قبل ضغط الزر ونجاح التسجيل. لو طلب فيديو متحرك، جهّز صورة أساسية بوصف داخل سياج sham-video بدلاً من رفض كل الحركة أو توجيهه لمواقع أخرى. تحريك صورة موجودة يتم محلياً. صيغة الفيديو حسب المتصفح WebM أو MP4، ولا تدّعي دعم GIF أو MP4 تحديداً قبل التحقق.
-توقيع الصور المضاف بواسطة الموقع هو sharin ai فقط (توقيع شاهين). لا تطلب كتابة اسم المزود على الصورة ولا تختلق مصدرها، ولا تمح أو تخفِ علامة منشأ أو حقوق مدمجة أصلاً. التوقيع علامة شام وليس إثباتاً أن نموذجاً خاصاً بشام ولّد الصورة.
+توقيع الصور المضاف بواسطة الموقع هو sharing ai فقط (توقيع شاهين). لا تطلب كتابة اسم المزود على الصورة ولا تختلق مصدرها، ولا تمح أو تخفِ علامة منشأ أو حقوق مدمجة أصلاً. التوقيع علامة شام وليس إثباتاً أن نموذجاً خاصاً بشام ولّد الصورة.
 ممنوع: المساعدة في أذى أو اختراق أو احتيال أو محتوى جنسي لقاصرين أو سلاح؛ ونصايح طبية أو قانونية أو مالية خطيرة من غير ما توجّه لمختص.`;
   if (task === 'plan') {
     return `${base}
@@ -249,7 +249,7 @@ export async function makeImage(prompt: string, image: string | undefined, { env
   const key = env.GEMINI_API_KEY?.trim();
   if (!key || env.SHAM_WORKSPACE_IMAGES?.trim().toLowerCase() === 'off') return undefined;
   const model = env.GEMINI_IMAGE_MODEL?.trim() || 'gemini-2.5-flash-image';
-  const parts: object[] = [{ text: prompt.slice(0, 2000) + '\nDo not add AI vendor names, provider credits, or fake provenance text. The site adds its own sharin ai signature afterward. Preserve any existing embedded provenance or rights marks when editing.' }];
+  const parts: object[] = [{ text: prompt.slice(0, 2000) + '\nDo not add AI vendor names, provider credits, or fake provenance text. The site adds its own sharing ai signature afterward. Preserve any existing embedded provenance or rights marks when editing.' }];
   const inline = image?.match(/^data:(image\/(?:png|jpeg|webp));base64,([A-Za-z0-9+/=]+)$/);
   if (inline) parts.push({ inlineData: { mimeType: inline[1], data: inline[2] } });
   try {

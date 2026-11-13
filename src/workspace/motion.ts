@@ -1,5 +1,5 @@
 /** Local image animation, not generative text-to-video. No upload, microphone, or camera. */
-export const SHAHIN_SIGNATURE = 'sharin ai';
+export const SHAHIN_SIGNATURE = 'sharing ai';
 export const MOTION_SECONDS = 6;
 export const VIDEO_TYPES = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm', 'video/mp4'];
 export function videoMime(supported: (mime: string) => boolean): string | undefined { return VIDEO_TYPES.find(supported); }

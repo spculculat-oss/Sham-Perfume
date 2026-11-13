@@ -23,14 +23,14 @@ test('local animation pans/zooms continuously within canvas coverage and clamps 
   }
 });
 
-test('signature is exactly the requested sharin ai, independent of any model/vendor name', () => {
+test('signature is exactly the requested sharing ai, independent of any model/vendor name', () => {
   const calls: string[] = [];
   const context = ctx();
   context.fillText = (text) => { calls.push(text); };
   context.strokeText = (text) => { calls.push(text); };
   signCanvas(context, 1024, 768);
-  assert.equal(SHAHIN_SIGNATURE, 'sharin ai');
-  assert.deepEqual(calls, ['sharin ai', 'sharin ai']);
+  assert.equal(SHAHIN_SIGNATURE, 'sharing ai');
+  assert.deepEqual(calls, ['sharing ai', 'sharing ai']);
 });
 
 test('video MIME is chosen only from actual browser support; never rename WebM as MP4', () => {
@@ -51,7 +51,7 @@ test('video image instructions are hidden from prose, and still yield a real bas
   const instruction = workspaceInstruction('ar');
   assert.match(instruction, /sham-video/);
   assert.match(instruction, /مش توليد فيديو/);
-  assert.match(instruction, /sharin ai/);
+  assert.match(instruction, /sharing ai/);
   assert.match(instruction, /لا تمح/);
 });
 

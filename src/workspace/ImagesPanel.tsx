@@ -102,7 +102,7 @@ export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang
   const exportImage = async (to: 'download' | 'save') => {
     const b = await blob();
     if (!b) { setNote(w('image_failed')); return; }
-    const name = `sharin-ai-${Date.now().toString(36)}.png`;
+    const name = `sharing-ai-${Date.now().toString(36)}.png`;
     if (to === 'download') downloadBlob(b, name); else { await saveFile(name, b, 'image/png'); setNote(w('saved')); }
   };
   const aiEdit = async () => {

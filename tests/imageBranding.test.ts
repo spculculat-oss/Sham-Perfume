@@ -39,13 +39,13 @@ test('network failures, malformed results and cancellation cannot return a third
   await assert.rejects(makeImage('a perfume bottle', undefined, controller.signal), { name: 'AbortError' });
 });
 
-test('brand spelling is exactly sharin ai in signature, gallery accessibility, translations and instructions', () => {
-  assert.equal(SHAHIN_SIGNATURE, 'sharin ai');
-  assert.match(renderToStaticMarkup(createElement(SignedImage, { src: image, lang: 'en' })), /Image signed sharin ai/);
-  assert.match(workspaceInstruction('ar'), /sharin ai/);
-  assert.doesNotMatch(workspaceInstruction('ar'), /sharing ai/);
+test('brand spelling is exactly sharing ai in signature, gallery accessibility, translations and instructions', () => {
+  assert.equal(SHAHIN_SIGNATURE, 'sharing ai');
+  assert.match(renderToStaticMarkup(createElement(SignedImage, { src: image, lang: 'en' })), /Image signed sharing ai/);
+  assert.match(workspaceInstruction('ar'), /sharing ai/);
+  assert.doesNotMatch(workspaceInstruction('ar'), /sharin ai/);
   for (const key of ['signed_image', 'motion_note'] as const) {
-    for (const value of Object.values(WS_STRINGS[key])) assert.ok(value.includes('sharin ai'));
+    for (const value of Object.values(WS_STRINGS[key])) assert.ok(value.includes('sharing ai'));
   }
 });
 
