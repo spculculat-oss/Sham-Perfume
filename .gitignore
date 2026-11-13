@@ -22,3 +22,6 @@ sham_perfume.db
 
 # Local PDF conversion environment (never publish dependencies)
 .venv/
+
+# Unmodified optional speech runtime copied from the locked npm dependency during build
+public/voice-engine/

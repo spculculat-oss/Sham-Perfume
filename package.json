@@ -4,13 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx server.ts",
-    "build": "vite build && node --import tsx scripts/product-pages.mts dist && node --import tsx scripts/seo-build.mts dist",
+    "dev": "node scripts/prepare-local-voices.mjs && tsx server.ts",
+    "build": "node scripts/prepare-local-voices.mjs && vite build && node --import tsx scripts/product-pages.mts dist && node --import tsx scripts/seo-build.mts dist",
     "start": "tsx server.ts",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.app.json",
-    "build:pages": "vite build --mode pages && node scripts/prepare-pages.mjs && node --import tsx scripts/product-pages.mts pages-dist && node --import tsx scripts/seo-build.mts pages-dist",
+    "build:pages": "node scripts/prepare-local-voices.mjs && vite build --mode pages && node scripts/prepare-pages.mjs && node --import tsx scripts/product-pages.mts pages-dist && node --import tsx scripts/seo-build.mts pages-dist",
     "test": "node --import tsx --import ./tests/register-assets.mjs --test tests/*.test.ts",
     "check:pages": "node scripts/check-pages.mjs",
     "check:seo": "node --import tsx scripts/seo-check-all.mts pages-dist",
@@ -28,10 +28,12 @@
     "review:assistant": "node --import tsx scripts/assistant-specialties.mts",
     "voice:bench": "node --import tsx --import ./tests/register-assets.mjs scripts/voice-bench.ts",
     "voice:talk": "node --import tsx --import ./tests/register-assets.mjs scripts/talk-drill.ts",
-    "voice:languages": "node --import tsx --import ./tests/register-assets.mjs scripts/language-drill.ts"
+    "voice:languages": "node --import tsx --import ./tests/register-assets.mjs scripts/language-drill.ts",
+    "test:voices-browser": "node scripts/check-local-voices.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
+    "@spelling-creator/spellophone": "0.2.1",
     "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "^6.1.1",
     "docx": "9.15.3",

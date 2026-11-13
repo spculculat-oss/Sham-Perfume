@@ -1,3 +1,5 @@
+import { localVoiceOptions, resolveLocalVoice } from '../utils/localVoiceCatalog';
+import { playLocalVoice, unlockLocalAudio } from '../utils/localVoicePlayer';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { SupportedLanguage } from '../types/i18n';
 import { bargeIn, deviceLacksVoice, mergeHeard, speechLocaleFor, speechWindow, talkChunks } from '../utils/shaheenVoice';
@@ -150,8 +152,7 @@ function latestMessageId(messages: readonly ShaheenVoiceMessage[], role: Shaheen
 export function shaheenVoiceSupported(): boolean {
   return typeof window !== 'undefined'
     && Boolean(recognitionConstructor())
-    && typeof window.speechSynthesis !== 'undefined'
-    && typeof window.SpeechSynthesisUtterance !== 'undefined';
+    && ((typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined') || typeof AudioContext !== 'undefined');
 }
 
 export function useShaheenVoiceMode({ language, messages, isLoading, disabled = false, onSend, onAsk }: UseShaheenVoiceModeOptions) {
@@ -193,6 +194,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const speechSequenceRef = useRef(0);
   const startListeningRef = useRef<() => void>(() => undefined);
   const mutedRef = useRef(false);
+  const nativeUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const nativeSpeechTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const localStopRef = useRef<(() => void) | null>(null);
   const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
   const localeRef = useRef(speechLocaleFor(language, currentStoreCountry()));
   const bargeEnabledRef = useRef(true);
@@ -345,6 +349,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   }, []);
 
   const cancelSpeech = useCallback(() => {
+    clearTimeout(nativeSpeechTimerRef.current);
+    nativeUtteranceRef.current = null;
+    localStopRef.current?.(); localStopRef.current = null;
     stopBargeWatch();
     dropCandidate();
     clearPatience();
@@ -542,7 +549,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   useEffect(() => { startBargeWatchRef.current = startBargeWatch; }, [startBargeWatch]);
 
   const speakReply = useCallback((text: string, onComplete: () => void) => {
-    if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) {
+    const local = resolveLocalVoice(voiceChoiceRef.current.names[languageRef.current], languageRef.current);
+    if (typeof window === 'undefined' || (!local && (!window.speechSynthesis || !window.SpeechSynthesisUtterance))) {
       setError('speech');
       onComplete();
       return;
@@ -565,7 +573,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     if (!voices.length) { try { voices = window.speechSynthesis.getVoices(); } catch { voices = []; } }
     // No voice on this device speaks his language: an English voice reading Hindi is gibberish. The reply stays
     // written in the chat, he is told why, and Shaheen goes back to listening.
-    if (deviceLacksVoice(voices, languageRef.current)) {
+    if (!local && deviceLacksVoice(voices, languageRef.current)) {
       setNoVoice(true);
       onComplete();
       return;
@@ -584,6 +592,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     const finish = (failed = false) => {
       if (finished || sequence !== speechSequenceRef.current) return;
       finished = true;
+      clearTimeout(nativeSpeechTimerRef.current);
+      nativeUtteranceRef.current = null;
       stopBargeWatch();
       speakingRef.current = false;
       setSpeaking(false);
@@ -591,6 +601,19 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       if (failed) setError('speech');
       onComplete();
     };
+    if (local) {
+      localStopRef.current = playLocalVoice(chunks, {
+        name: local.name, language: languageRef.current, rate: tune.rate, pitch: tune.pitch,
+        onChunk: (chunk, index) => {
+          if (sequence !== speechSequenceRef.current) return;
+          if (index === 0) { speakStartRef.current = performance.now(); startBargeWatchRef.current(); }
+          speechPosRef.current = { chunks, index, at: 0 };
+          setSpokenText(chunk); spokenSoFarRef.current = chunks.slice(0, index + 1).join(' ');
+          setSpeechBeat((beat) => (beat + 1) % 1_000_000);
+        }, onEnd: () => finish(), onError: () => finish(true),
+      });
+      return;
+    }
     const speakNext = () => {
       if (sequence !== speechSequenceRef.current || !activeRef.current) { finish(); return; }
       if (index >= chunks.length) { finish(); return; }
@@ -616,8 +639,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
             speechPosRef.current = { chunks, index, at };
           }
         };
-        utterance.onend = () => { index += 1; speakNext(); };
+        utterance.onend = () => { if (sequence !== speechSequenceRef.current) return; clearTimeout(nativeSpeechTimerRef.current); nativeUtteranceRef.current = null; index += 1; speakNext(); };
         utterance.onerror = () => finish(true);
+        nativeSpeechTimerRef.current = setTimeout(() => { try { window.speechSynthesis.cancel(); } catch { /* stalled engine */ } finish(true); }, Math.max(20000, chunks[index].length * 180));
+        nativeUtteranceRef.current = utterance;
         window.speechSynthesis.speak(utterance);
       } catch {
         finish(true);
@@ -676,6 +701,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
    * stock, delivery…). Not a reply: the reply cuts it off as soon as it is ready.
    */
   const sayWhileLooking = useCallback((line: string) => {
+    // The short loading acknowledgement must not suddenly use a different, possibly wrong-language native voice.
+    if (resolveLocalVoice(voiceChoiceRef.current.names[languageRef.current], languageRef.current)) return;
     if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
     try {
       const utterance = new window.SpeechSynthesisUtterance(line);
@@ -998,6 +1025,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   useEffect(() => { startListeningRef.current = startListening; }, [startListening]);
 
   const start = useCallback(() => {
+    if (resolveLocalVoice(voiceChoiceRef.current.names[languageRef.current], languageRef.current)) { try { unlockLocalAudio(); } catch { setError('speech'); } }
     if (disabledRef.current) return false;
     if (!shaheenVoiceSupported()) {
       setError('unsupported');
@@ -1046,7 +1074,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
 
   /** Cut Shaheen off mid-reply and listen at once (tap on the orb). */
   const interrupt = useCallback(() => {
-    if (!activeRef.current || !speakingRef.current) return;
+    if (!speakingRef.current) return;
+    if (!activeRef.current) { cancelSpeech(); return; }
     // He had just decided «not to me»: the tap says it was — learned.
     const aside = asideRef.current;
     if (aside && (typeof performance !== 'undefined' ? performance.now() : Date.now()) - aside.at < 6000) learnCut(aside.said, 'missed');
@@ -1174,29 +1203,49 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
 
   /** «صوت شاهين»: keep his choice (voice, pitch, pace); the next sentence Shaheen says uses it. */
   const setVoiceChoice = useCallback((choice: VoiceChoice) => {
+    if (resolveLocalVoice(choice.names[languageRef.current], languageRef.current)) { try { unlockLocalAudio(); } catch { setError('speech'); } }
     voiceChoiceRef.current = choice;
     setVoiceChoiceState(choice);
     saveVoiceChoice(choice);
   }, []);
   /** «اسمع»: one short sentence in a voice, so he can hear it before choosing (not while Shaheen is talking). */
   const previewVoice = useCallback((name: string, sample: string) => {
-    if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance || speakingRef.current) return;
+    if (typeof window === 'undefined' || speakingRef.current) return;
+    cancelSpeech(); cancelRecognition(); clearListenTimer();
+    const sequence = speechSequenceRef.current;
+    const local = resolveLocalVoice(name, languageRef.current);
+    let finished = false;
+    const done = (failed = false) => {
+      if (finished || sequence !== speechSequenceRef.current) return;
+      finished = true; clearTimeout(nativeSpeechTimerRef.current); nativeUtteranceRef.current = null;
+      speakingRef.current = false; setSpeaking(false); setSpokenText('');
+      if (failed) setError('speech');
+      scheduleListening(300);
+    };
+    if (local) {
+      try { unlockLocalAudio(); } catch { done(true); return; }
+      speakingRef.current = true; setSpeaking(true); setSpokenText(sample);
+      localStopRef.current = playLocalVoice(talkChunks(sample), { name, language: languageRef.current,
+        rate: voiceChoiceRef.current.rate, pitch: voiceChoiceRef.current.pitch,
+        onEnd: () => done(), onError: () => done(true),
+      });
+      return;
+    }
+    if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) { done(true); return; }
     const voice = voicesRef.current.find((item) => item.name === name);
     try {
-      cancelRecognition();
-      clearListenTimer();
-      window.speechSynthesis.cancel();
       const utterance = new window.SpeechSynthesisUtterance(sample);
       utterance.lang = voice?.lang || localeRef.current;
       if (voice) utterance.voice = voice;
-      utterance.rate = voiceChoiceRef.current.rate;
-      utterance.pitch = voiceChoiceRef.current.pitch;
-      utterance.onend = () => scheduleListening(300);
-      utterance.onerror = () => scheduleListening(300);
+      utterance.rate = voiceChoiceRef.current.rate; utterance.pitch = voiceChoiceRef.current.pitch;
+      utterance.onend = () => done(); utterance.onerror = () => done(true);
+      speakingRef.current = true; setSpeaking(true); setSpokenText(sample);
+      nativeUtteranceRef.current = utterance;
+      nativeSpeechTimerRef.current = setTimeout(() => { done(true); try { window.speechSynthesis.cancel(); } catch { /* Stalled preview. */ } }, 30000);
       window.speechSynthesis.speak(utterance);
-    } catch { /* The engine could not say it: nothing else changes. */ }
-  }, [cancelRecognition, clearListenTimer, scheduleListening]);
-  const voices = useMemo(() => voiceOptions(voiceList, localeRef.current, language), [voiceList, language, dialect]);
+    } catch { done(true); }
+  }, [cancelRecognition, cancelSpeech, clearListenTimer, scheduleListening]);
+  const voices = useMemo(() => [...voiceOptions(voiceList, localeRef.current, language), ...localVoiceOptions(language)], [voiceList, language, dialect]);
 
   /** Turn «المقاطعة بالصوت» on or off (kept in this browser). */
   const setBargeEnabled = useCallback((on: boolean) => {
@@ -1322,7 +1371,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     voiceChoice,
     setVoiceChoice,
     previewVoice,
-    currentVoiceName: chosenVoice(voiceList, localeRef.current, language, voiceChoice)?.name,
+    currentVoiceName: resolveLocalVoice(voiceChoice.names[language], language)?.name || chosenVoice(voiceList, localeRef.current, language, voiceChoice)?.name,
     voiceMood,
   };
 }

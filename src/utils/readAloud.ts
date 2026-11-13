@@ -1,3 +1,5 @@
+import { resolveLocalVoice } from './localVoiceCatalog';
+import { playLocalVoice } from './localVoicePlayer';
 /**
  * «اسمع الرد»: the speaker button under a reply. It used to hand the whole written reply to the browser in one go —
  * symbols, lists and digits read literally, in the device's default voice, and cut off by Chrome after ~15 seconds.
@@ -18,8 +20,12 @@ export function readAloud(text: string, { language, dialect, onEnd, onNoVoice }:
   onNoVoice?: () => void;
 }): () => void {
   let done = false;
-  const end = () => { if (!done) { done = true; onEnd?.(); } };
-  if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) { end(); return () => undefined; }
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  let current: SpeechSynthesisUtterance | undefined;
+  const end = () => { if (!done) { done = true; clearTimeout(timer); current = undefined; onEnd?.(); } };
+  const choice = savedVoiceChoice();
+  const local = resolveLocalVoice(choice.names[language], language);
+  if (typeof window === 'undefined' || (!local && (!window.speechSynthesis || !window.SpeechSynthesisUtterance))) { onNoVoice?.(); end(); return () => undefined; }
   const synth = window.speechSynthesis;
   // «بلغة بلده ولهجتها»: his country's accent (fr-CA, es-MX), or for Arabic his dialect (else his Arab country's).
   const country = currentStoreCountry();
@@ -27,11 +33,16 @@ export function readAloud(text: string, { language, dialect, onEnd, onNoVoice }:
   const locale = speechLocaleFor(language, country, spokenDialect);
   const chunks = splitShaheenSpeech(spokenReply(text, { language, dialect: spokenDialect, words: Infinity, locale }).say);
   if (!chunks.length) { end(); return () => undefined; }
+  if (local) {
+    try { synth?.cancel(); } catch { /* No queue. */ }
+    const stop = playLocalVoice(chunks, { name: local.name, language, rate: choice.rate, pitch: choice.pitch,
+      onEnd: end, onError: () => { onNoVoice?.(); end(); } });
+    return () => { stop(); end(); };
+  }
   let voices: SpeechSynthesisVoice[] = [];
   try { voices = synth.getVoices(); } catch { /* No voice list yet: the engine picks one for the locale. */ }
   if (deviceLacksVoice(voices, language)) { onNoVoice?.(); end(); return () => undefined; }
   // «صوت شاهين»: the voice, pitch and pace the visitor chose (or Shaheen's usual voice).
-  const choice = savedVoiceChoice();
   const voice = chosenVoice(voices, locale, language, choice);
   let index = 0;
   const next = () => {
@@ -43,9 +54,11 @@ export function readAloud(text: string, { language, dialect, onEnd, onNoVoice }:
       utterance.rate = choice.rate;
       utterance.pitch = choice.pitch;
       if (voice) utterance.voice = voice;
-      utterance.onend = () => { index += 1; next(); };
-      utterance.onerror = () => end();
-      synth.speak(utterance);
+      current = utterance;
+      utterance.onend = () => { clearTimeout(timer); current = undefined; index += 1; next(); };
+      utterance.onerror = () => { if (!done) onNoVoice?.(); end(); };
+      timer = setTimeout(() => { end(); try { synth.cancel(); } catch { /* stalled engine */ } }, Math.max(20000, chunks[index]!.length * 180));
+      synth.speak(current);
     } catch { end(); }
   };
   try { synth.cancel(); } catch { /* Nothing queued. */ }

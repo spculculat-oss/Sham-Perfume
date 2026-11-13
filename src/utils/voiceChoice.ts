@@ -108,7 +108,7 @@ export function chosenVoice<V extends ShaheenVoiceCandidate>(voices: readonly V[
   const named = choice.names[base];
   if (named) {
     const exact = voices.find((voice) => voice.name === named);
-    if (exact) return exact;
+    if (exact && speaksLanguage(exact.lang, base)) return exact;
   }
   if (choice.gender) {
     const same = voices.filter((voice) => voiceGender(voice) === choice.gender);
