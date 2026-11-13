@@ -18,7 +18,7 @@
  * («فاضل 2 بس»), no «الناس كلها بتاخده» without real reviews, no countdown. Only what the catalogue publishes.
  * Pure and browser-safe: the chat server, the browser fallback and the store page use the same logic.
  */
-import { closeTo, money, namedProducts, nameOf, scentKey, staying, type Context, type StoreAnswer } from './shaheenBrain';
+import { closeTo, currentQuestion, money, namedProducts, nameOf, scentKey, staying, type Context, type StoreAnswer } from './shaheenBrain';
 import { inferOccasions, inferSeasons } from './storeAdvisor';
 import { FAMILY_LABEL, OCCASION_LABEL, SEASON_LABEL, type StoreProduct } from './storeCatalog';
 import { RECIPIENT_LABEL, readBuyer, type BuyerProfile } from './salesCraft';
@@ -257,7 +257,7 @@ function doubtReply(products: StoreProduct[], p: StoreProduct, lang: Lang, link:
  */
 export function salesAnswer(products: StoreProduct[], ctx: Context, language: string, link: Link): StoreAnswer | undefined {
   if (!products.length) return undefined;
-  const asked = ctx.followUp && ctx.previous && ctx.text.startsWith(ctx.previous) ? ctx.text.slice(ctx.previous.length).trim() : ctx.text;
+  const asked = currentQuestion(ctx);
   const move = saleMove(asked);
   if (!move) return undefined;
   // The perfume on the screen: named now, else the main pick of the reply before — or of a recent one that showed

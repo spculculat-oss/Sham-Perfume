@@ -63,9 +63,11 @@ export function parseWish(text: string): Wish {
   if (max) wish.budgetMax = Number(max[1]);
   const min = t.match(/(?:فوق|اكتر من|أكثر من|over|above|more than)\s*(\d{2,6})/i);
   if (min) wish.budgetMin = Number(min[1]);
-  wish.cheap = /رخيص|ارخص|أرخص|اقتصادي|سعر حلو|مش غالي|اقل سعر|أقل سعر|cheap|budget|affordable/i.test(t);
+  wish.cheap = /رخيص|ارخص|أرخص|أوفر|اوفر|الأوفر|الاوفر|اقتصادي|سعر حلو|مش غالي|اقل سعر|أقل سعر|الاقل|الأقل|cheap|cheaper|budget|affordable|best value/i.test(t);
   wish.luxury = /فاخر|فخم|غالي|راقي|luxury|luxurious|premium|niche/i.test(t);
-  wish.words = t.replace(/[^\p{L}\p{N}\s-]/gu, ' ').split(/\s+/).filter((w) => w.length >= 3 && !STOP.has(w) && !/^\d+$/.test(w)).slice(0, 12);
+  const structured = [...GENDER_WORDS, ...FAMILY_WORDS, ...SEASON_WORDS, ...OCCASION_WORDS];
+  wish.words = t.replace(/[^\p{L}\p{N}\s-]/gu, ' ').split(/\s+/)
+    .filter((w) => w.length >= 3 && !STOP.has(w) && !structured.some(([, re]) => re.test(w)) && !/^\d+$/.test(w)).slice(0, 12);
   return wish;
 }
 
