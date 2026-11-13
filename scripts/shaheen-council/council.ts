@@ -340,6 +340,7 @@ export function buildBriefing(d: LiveData, now: number, openTasks: Task[] = []):
     }
   }
 
+  facts.push(`قرارات صاحب المنصة (ممنوع اقتراحها تاني): ${OWNER_REFUSED.map((r) => r.titleAr).join(' | ')}`);
   if (openTasks.length) facts.push(`مهام تطوير مفتوحة: ${openTasks.length} — ${openTasks.slice(0, 5).map((t) => t.title).join(' | ')}`);
   return { at: new Date(now).toISOString(), facts, signals };
 }
@@ -454,6 +455,22 @@ export function recordDelegation(file: CouncilFile, meeting: Meeting): void {
 }
 export const unreviewed = (file: CouncilFile) => (file.delegations || []).filter((x) => !x.reviewedAt);
 
+// ── Owner refusals ─────────────────────────────────────────────────────────────────────────────────────────
+/**
+ * Ideas the owner refused in his chat. He is above the State (rule O-11): a refused idea is never proposed again,
+ * even after the 14-day duplicate window — «الدفع كزائر» came back as #272 and then #403 after he said no.
+ */
+export const OWNER_REFUSED: readonly { id: string; titleAr: string; pattern: RegExp; since: string }[] = [
+  {
+    id: 'guest-checkout',
+    titleAr: 'الدفع كزائر / الشراء من غير تسجيل دخول (#272، #403)',
+    pattern: /(?:الدفع|الشراء|الطلب|إتمام)[^.\n]{0,30}(?:كزائر|كضيف|بدون تسجيل|من غير تسجيل|دون تسجيل)|guest[\s-]*checkout|checkout as (?:a )?guest|guest (?:purchase|order)/i,
+    since: '2026-11-14',
+  },
+];
+/** The owner's refusal this idea falls under, if any. */
+export const refusedByOwner = (text: string) => OWNER_REFUSED.find((r) => r.pattern.test(text));
+
 // ── 3. Applying decisions ───────────────────────────────────────────────────────────────────────────────────
 /** Same task already open (or done in the last 14 days)? Titles are compared by meaning. */
 export function duplicateOf(tasks: Task[], title: string, now: number): Task | undefined {
@@ -485,6 +502,8 @@ export function applyMeeting(file: CouncilFile, meeting: Meeting, now: number, m
       }
       continue;
     }
+    const refused = refusedByOwner(`${d.title} ${d.detail || ''}`);
+    if (refused) { d.status = 'skipped'; d.note = `رفضها صاحب المنصة: ${refused.titleAr}`; continue; }
     const dup = duplicateOf(file.tasks, d.title, now);
     if (dup) { d.status = 'skipped'; d.note = `موجودة كمهمة${dup.issue ? ` #${dup.issue}` : ''}`; continue; }
     if (newTasks.length >= maxNewTasks) { d.status = 'skipped'; d.note = 'الحد اليومي للمهام — يُعاد طرحها غداً'; continue; }
