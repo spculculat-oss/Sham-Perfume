@@ -51,6 +51,30 @@ export const PLATFORM_GROUP_LABEL: Record<PlatformGroup, { ar: string; en: strin
  */
 export const PLATFORM_FEATURES: PlatformFeature[] = [
   {
+    id: 'real_photos', group: 'workspace', tab: 'workspace', docId: 'kb-platform-real-photos',
+    name: { ar: 'الصور الحقيقية بمصدرها', en: 'Sourced real-photo search' },
+    summary: { ar: 'طلب صورة فوتوغرافية أو أرشيفية يستخدم بحث الصور لا توليد الرسومات.', en: 'Real or archival photograph requests use sourced image search, not image generation.' },
+    details: { ar: 'في شات شاهين ومساحة العمل وتبويب الصور، طلب مثل عايظ صورة حقيقيه لحسنى مبارك يحضر طلب بحث Hosni Mubarak عبر مسار الصور الموجود دون مفتاح توليد. تعرض الصور المنشورة مع رابط صفحة المصدر والترخيص واسم المصور المتاح، ولا نضيف توقيع sharin ai على الصور الأرشيفية. تظهر رسالة إن تعذر البحث أو لم توجد نتيجة مطابقة. البيانات التي تصف رسماً أو تمثالاً أو صورة مولدة تستبعد من نمط الصور الفوتوغرافية. هذه مرشحات نصية وليست تحققاً بصرياً مستقلاً لهوية الصورة أو تاريخها، وليس كل موضوع له صور مرخصة متاحة. التوليد يبقى للرسومات المطلوبة صراحة ولا يستعمل بديلاً صامتاً للصورة الحقيقية.', en: 'In Shaheen chat, Workspace chat and Images, requests such as a real photograph of Hosni Mubarak prepare a Hosni Mubarak image lookup through the existing media service without an image-generation key. Published images retain the source page, license and available photographer credit, without a sharin ai overlay. Missing results or failed lookups show a notice. Explicit artwork, statue and AI-generated metadata are excluded in photograph mode. Textual filtering is not independent visual identity/date authentication; licensed results are not guaranteed for every subject. Artwork generation is separate and never a silent fallback for real photographs.' },
+    keywords: ['صورة حقيقية', 'صورة أرشيفية', 'حسني مبارك', 'real photo', 'archival photograph', 'Hosni Mubarak'],
+    tags: ['صور', 'مصدر', 'ترخيص', 'photograph', 'source'],
+  },
+  {
+    id: 'conversation_context', group: 'workspace', tab: 'master_ai', docId: 'kb-platform-conversation-context',
+    name: { ar: 'ربط متابعة المحادثة والصور', en: 'Conversation and illustration continuity' },
+    summary: { ar: 'متابعة الصور والشرح والمقارنة تستند إلى السؤال والجواب القريبين، مع احترام تغيير الموضوع.', en: 'Elliptical illustration, explanation and comparison requests carry recent conversation context and respect topic changes.' },
+    details: { ar: 'بعد شرح عيوب اللحام، طلب هاتلي صور توضيحية يحمل السؤال والجواب السابقين إلى المحرك بدلاً من طلب صور بلا موضوع. يعمل الربط المحدود داخل المحادثة في شاهين ومساحة العمل ووضع الأدوات؛ لا ذاكرة مشتركة بين الزوار ولا تدريب تلقائي للنموذج. إذا لم يوجد مرجع يسأل عن الموضوع، وعند تغيير الموضوع يتبع الجديد. بحث الصور يحتفظ بكل الصفات الأساسية ويرفض نتائج عنوانها غير مطابق بدلاً من حذف الكلمات وتوسيع البحث؛ قد لا يجد صوراً. مطابقة العناوين ليست فحصاً بصرياً ولا ضماناً للدقة الفنية، والصور المولدة توضيحية لا دليل فحص حقيقي. جودة الفهم النهائي مرتبطة بالمحرك المتاح وليست ضماناً لإدراك بشري أو ذكاء مطلق.', en: 'After discussing welding defects, show me illustrations carries the recent question and answer to the model. Bounded per-conversation references work in Shaheen, Workspace and tool mode; there is no shared visitor memory or automatic model training. Missing references require clarification; explicit new subjects take priority. Image searches preserve qualifiers and reject non-matching titles instead of dropping words, so results may be empty. Title matching is not visual inspection or a technical accuracy guarantee. Generated illustrations are not inspection evidence. Final reasoning depends on the available model.' },
+    keywords: ['ربط المواضيع', 'صور توضيحية', 'عيوب اللحام', 'سياق المحادثة', 'conversation context', 'follow up'],
+    tags: ['شاهين', 'سياق', 'صور', 'context', 'illustration'],
+  },
+  {
+    id: 'workspace_motion', group: 'workspace', tab: 'workspace', docId: 'kb-platform-workspace-motion',
+    name: { ar: 'تحريك صور شاهين وتوقيعها', en: 'Shahin signed image animation' },
+    summary: { ar: 'توقيع sharin ai على معاينة وتصدير الصور، وتحريك تقريب وكاميرا محلي مع تنزيل فيديو قصير.', en: 'The sharin ai signature on image exports, with local pan/zoom animation and short video downloads.' },
+    details: { ar: 'توليد الصور تحت علامة sharin ai يستخدم الخدمة المهيأة فقط؛ لا رجوع تلقائي لمولّد خارجي ولا إخفاء لحقوق مدمجة. غياب الخدمة أو الحصة يظهر تعذراً ولا صورة وهمية. في مساحة شاهين، اطلب تحريك الصورة الموجودة أو افتح تبويب صور وارفع صورة، ثم اضغط عمل فيديو متحرك، وانتظر التسجيل وتنزيله. الفيديو بلا صوت، بصيغة يدعمها المتصفح (WebM أو MP4)، وليس توليد حركة أشخاص أو فيديو جديد بالذكاء الاصطناعي، ولا GIF. التصدير محلي ولا يحتاج مفتاح فيديو، لكن توليد الصورة الأساسية قد يحتاج خدمة وصلاحية وحصة. لا نزيل أي علامة حقوق أو منشأ مدمجة أصلاً، وsharin ai توقيع شام المضاف وليس دليلاً على مصدر النموذج. فشل تحميل الصورة أو CORS أو عدم دعم التسجيل يظهر خطأ دون نجاح وهمي.', en: 'Generated previews and exports use sharin ai branding with the configured service only; there is no automatic external generator fallback or removal of embedded rights marks. Missing service/quota fails honestly. In Shahin Workspace, request motion for an existing image, or upload an image in Images. Select Create motion clip, wait for recording, then download. Silent video uses a browser-supported WebM or MP4 format; it is pan/zoom, not new AI scene/character motion or GIF. Export is local and needs no video key; initial image generation may need a configured service and quota. Existing rights/provenance marks are not removed. sharin ai is added Sham branding, not proof of model origin. Loading, CORS and recording failures are reported without false success.' },
+    keywords: ['فيديو متحرك', 'تحريك الصورة', 'توقيع شاهين', 'sharin ai', 'animated video', 'image animation', 'motion clip'],
+    tags: ['صور', 'حركة', 'فيديو', 'images', 'animation'],
+  },
+  {
     id: 'concentration', group: 'lab', tab: 'concentration', docId: 'kb-concentration',
     name: { ar: 'حاسبة التركيز', en: 'Concentration calculator' },
     summary: {

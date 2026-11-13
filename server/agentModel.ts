@@ -1,3 +1,4 @@
+import { contextualMessage } from '../src/utils/conversationContext';
 import { callEngine, engineStatuses } from './core/engines';
 import { SHAHEEN_MODE_ORDER, SHAHEEN_SITE_SETTINGS } from './config/shaheen';
 import type { ShaheenSettings } from './core/types';
@@ -37,7 +38,7 @@ export const callAgentModel: AgentModelCall = async (input, options) => {
     let model = settings.models[engine.id] || engine.model;
     try {
       const reply = await callEngine(engine.id, systemInstruction(input.language, settings.instructions, undefined, input) + (options.systemSuffix || ''),
-        [...input.conversationHistory, { role: 'user', text: input.message }], {
+        [...input.conversationHistory, { role: 'user', text: contextualMessage(input.message, input.conversationHistory) }], {
           env, fetch: options.fetch, signal, temperature: settings.temperature, model,
           maxTokens: settings.maxTokens, maxChars: 32000, onModel: (actual) => { model = actual; },
           onFailure: (_failure, status) => { code = status === 429 ? 'PROVIDER_RATE_LIMITED' : status === 401 || status === 403

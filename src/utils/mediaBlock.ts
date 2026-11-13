@@ -5,7 +5,7 @@
  * sham-media / json / nothing, or a bare line, whose JSON object only has media keys counts.
  * Pure (no browser or server imports): shared by the API (normalises replies) and the client.
  */
-const MEDIA_KEYS = new Set(['images', 'image', 'videos', 'video', 'places', 'place']);
+const MEDIA_KEYS = new Set(['images', 'image', 'videos', 'video', 'places', 'place', 'imageKind']);
 
 export interface MediaSpan { start: number; end: number; data?: Record<string, unknown> }
 
@@ -86,6 +86,8 @@ export function normalizeMediaBlocks(text: string): string {
     const key = k.endsWith('s') ? k : `${k}s`;
     merged[key] = [...(merged[key] || []), ...(Array.isArray(v) ? v : [v])];
   }
+  delete merged.imageKinds;
+  const photograph = spans.some((s) => s.data?.imageKind === 'photograph');
   const body = removeMediaBlocks(text);
-  return Object.keys(merged).length ? `\`\`\`sham-media\n${JSON.stringify(merged)}\n\`\`\`\n${body}` : body;
+  return Object.keys(merged).length ? `\`\`\`sham-media\n${JSON.stringify({ ...merged, ...(photograph ? { imageKind: 'photograph' } : {}) })}\n\`\`\`\n${body}` : body;
 }

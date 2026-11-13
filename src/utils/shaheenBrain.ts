@@ -1,3 +1,4 @@
+import { conversationFocus, isContextFollowUp } from './conversationContext';
 /**
  * «عقل شاهين الموصول» — the owner's complaint (2026-10-22): on his own, Shaheen «doesn't give logical answers, doesn't
  * connect the information, and doesn't give the store's perfumes». Three missing links, all fixed here:
@@ -59,6 +60,11 @@ export function withContext(message: string, history: Turn[] = []): Context {
   const shownReply = history.filter((t) => t.role === 'assistant').slice(-3).reverse().find((t) => /\/p\/[a-z0-9-]+\.html/.test(t.text))?.text;
   const base: Context = { text, followUp: false, ...(previous ? { previous } : {}), ...(lastReply ? { lastReply } : {}), ...(said.length ? { said } : {}), ...(shownReply ? { shownReply } : {}) };
   if (!previous || greetingKind(text) || THANKS.test(text) || greetingKind(previous)) return base;
+  const focus = conversationFocus(text, history);
+  if (focus) return { ...base, followUp: true, text: `${text} — ${focus.question}`, previous: focus.question };
+  if (isContextFollowUp(text)) return base;
+  // An explicit illustration/comparison subject must not inherit an unrelated old subject.
+  if (/^(?:(?:هات(?:لي|لى)?|وريني|ورينى|عايز|محتاج)\s+(?:صور|صورة|صوره)|قارن\s|(?:show|give)\s+me\s+(?:images?|photos?|pictures?)\b|compare\s)/i.test(text)) return base;
   const own = topicWords(text.replace(LEAD_IN, ''));
   const lead = LEAD_IN.test(text);
   const short = text.length <= 60;

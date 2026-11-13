@@ -100,7 +100,7 @@ test('workspace routes: status names no vendor; empty input is 400; no engine is
     const status = await (await fetch(`${base}/status`)).json() as Record<string, unknown>;
     assert.deepEqual(Object.keys(status).sort(), ['ai', 'image', 'notion', 'search', 'slack']);
     assert.equal(status.ai, false);
-    assert.equal(status.image, 'open');
+    assert.equal(status.image, 'off');
     assert.equal((await post(`${base}/search`, { q: '  ' })).status, 400);
     assert.equal((await post(`${base}/image`, { prompt: '' })).status, 400);
     const image = await post(`${base}/image`, { prompt: 'a cat' });

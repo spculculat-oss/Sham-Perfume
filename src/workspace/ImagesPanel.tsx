@@ -1,3 +1,9 @@
+import { SignedImage } from './SignedImage';
+import { realPhotoReply } from '../utils/realPhotos';
+import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
+import { ShaheenMedia } from '../components/ShaheenMedia';
+import { MotionCard } from './MotionCard';
+import { canvasBlob, signCanvas } from './motion';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Download, FlipHorizontal, ImagePlus, Loader2, RotateCw, Save, Sparkles, Undo2, Wand2 } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
@@ -16,18 +22,21 @@ export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang
   const w = (k: WsKey) => wsText(lang, k);
   const [prompt, setPrompt] = useState('');
   const [busy, setBusy] = useState<'' | 'make' | 'edit'>('');
+  const [photoReply, setPhotoReply] = useState('');
   const [gallery, setGallery] = useState<string[]>([]);
   const [source, setSource] = useState<HTMLImageElement | null>(null);
   const [adjust, setAdjust] = useState<Adjust>(START);
   const [editPrompt, setEditPrompt] = useState('');
   const [note, setNote] = useState('');
+  const [motionSource, setMotionSource] = useState('');
   const canvas = useRef<HTMLCanvasElement>(null);
+  const unsigned = useRef<HTMLCanvasElement | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const load = useCallback((src: string) => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
-    img.onload = () => { setSource(img); setAdjust(START); setNote(''); };
+    img.onload = () => { setSource(img); setAdjust(START); setNote(''); setMotionSource(''); };
     img.onerror = () => setNote(w('image_failed'));
     img.src = src;
   }, [lang]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -69,25 +78,38 @@ export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang
       ctx.strokeText(adjust.text, c.width / 2, c.height - size * 0.6);
       ctx.fillText(adjust.text, c.width / 2, c.height - size * 0.6);
     }
+    const original = document.createElement('canvas'); original.width = c.width; original.height = c.height;
+    original.getContext('2d')?.drawImage(c, 0, 0); unsigned.current = original;
+    signCanvas(ctx, c.width, c.height);
   }, [source, adjust]);
 
   const generate = async () => {
     if (!prompt.trim() || busy) return;
+    const found = realPhotoReply(prompt, [], lang);
+    if (found) { setPhotoReply(found); setNote(stripMediaBlock(found)); setSource(null); setGallery([]); setMotionSource(''); return; }
+    setPhotoReply('');
     setBusy('make'); setNote('');
-    try { const out = await makeImage(prompt.trim()); setGallery((g) => [out.src, ...g].slice(0, 12)); } catch (e) { setNote(errorKey(e) === 'rate_limited' ? w('rate_limited') : w('image_failed')); } finally { setBusy(''); }
+    try { const out = await makeImage(prompt.trim()); load(out.src); setGallery((g) => [out.src, ...g].slice(0, 12)); } catch (e) { setNote(errorKey(e) === 'rate_limited' ? w('rate_limited') : w('image_failed')); } finally { setBusy(''); }
   };
-  const blob = () => new Promise<Blob | null>((resolve) => { try { canvas.current?.toBlob((b) => resolve(b), 'image/png'); } catch { resolve(null); } });
+  const blob = async () => {
+    try {
+      const original = canvas.current; if (!original) return null;
+      const signed = document.createElement('canvas'); signed.width = original.width; signed.height = original.height;
+      const ctx = signed.getContext('2d'); if (!ctx) return null;
+      ctx.drawImage(original, 0, 0); return await canvasBlob(signed);
+    } catch { return null; }
+  };
   const exportImage = async (to: 'download' | 'save') => {
     const b = await blob();
     if (!b) { setNote(w('image_failed')); return; }
-    const name = `shaheen-image-${Date.now().toString(36)}.png`;
+    const name = `sharin-ai-${Date.now().toString(36)}.png`;
     if (to === 'download') downloadBlob(b, name); else { await saveFile(name, b, 'image/png'); setNote(w('saved')); }
   };
   const aiEdit = async () => {
     if (!editPrompt.trim() || !canvas.current || busy) return;
     setBusy('edit'); setNote('');
     try {
-      const data = canvas.current.toDataURL('image/png');
+      const data = (unsigned.current || canvas.current).toDataURL('image/png');
       const out = await makeImage(editPrompt.trim(), data);
       load(out.src);
     } catch (e) { setNote(errorKey(e) === 'rate_limited' ? w('rate_limited') : w('image_failed')); } finally { setBusy(''); }
@@ -108,12 +130,14 @@ export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang
           {busy === 'make' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}{w('generate')}
         </button>
       </div>
+      {!aiImages && <p role="status" className="text-xs text-stone-600">{w('image_unavailable')}</p>}
+      {photoReply && extractMediaRequest(photoReply) && <ShaheenMedia request={extractMediaRequest(photoReply)!} lang={lang} />}
       {busy === 'make' && <p className="text-[12px] text-stone-500">{w('drawing')}</p>}
       {gallery.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {gallery.map((src, i) => (
             <button type="button" key={src + i} onClick={() => load(src)} className="overflow-hidden rounded-xl border border-stone-200 bg-stone-50 cursor-pointer" title={w('edit_image')}>
-              <img src={src} alt="" className="aspect-square w-full object-cover" loading="lazy" />
+              <SignedImage src={src} lang={lang} />
             </button>
           ))}
         </div>
@@ -153,12 +177,14 @@ export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang
               </div>
             )}
             <div className="flex flex-wrap gap-1.5 border-t border-stone-200 pt-2">
+              <button type="button" onClick={() => { try { if (canvas.current) setMotionSource((unsigned.current || canvas.current).toDataURL('image/png')); } catch { setNote(w('motion_failed')); } }} className="rounded-lg border border-amber-500 px-3 py-1 text-xs font-bold">{w('motion_create')}</button>
               <button type="button" onClick={() => { void exportImage('download'); }} className="inline-flex items-center gap-1 rounded-lg bg-stone-900 px-2.5 py-1 text-[11px] font-bold text-white cursor-pointer"><Download className="h-3 w-3" />{w('download')}</button>
               <button type="button" onClick={() => { void exportImage('save'); }} className="inline-flex items-center gap-1 rounded-lg border border-stone-300 px-2.5 py-1 text-[11px] font-bold cursor-pointer"><Save className="h-3 w-3" />{w('save_file')}</button>
             </div>
           </div>
         </div>
       )}
+      {motionSource && <MotionCard src={motionSource} lang={lang} />}
       {note && <p className="rounded-xl bg-stone-100 p-2.5 text-[12px] text-stone-700">{note}</p>}
     </div>
   );

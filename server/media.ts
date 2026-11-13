@@ -74,12 +74,12 @@ interface CommonsPage {
     extmetadata?: Record<string, { value?: unknown }> }[];
 }
 
-async function commonsSearch(query: string, options: { fetch?: typeof fetch; signal?: AbortSignal; limit?: number }): Promise<MediaImage[]> {
+async function commonsSearch(query: string, options: { fetch?: typeof fetch; signal?: AbortSignal; limit?: number; kind?: 'photograph' }): Promise<MediaImage[]> {
   const request = options.fetch || fetch;
   const params = new URLSearchParams({
     action: 'query', format: 'json', formatversion: '1', generator: 'search', gsrnamespace: '6', gsrlimit: '16',
     gsrsearch: `${query} filetype:bitmap`, prop: 'imageinfo', iiprop: 'url|size|mime|extmetadata', iiurlwidth: '500',
-    iiextmetadatafilter: 'LicenseShortName|Artist', origin: '*',
+    iiextmetadatafilter: 'LicenseShortName|Artist|ImageDescription|Categories|ObjectName', origin: '*',
   });
   const response = await request(`https://commons.wikimedia.org/w/api.php?${params}`, { headers: { 'User-Agent': UA, 'Api-User-Agent': UA }, signal: options.signal });
   if (!response.ok) throw new Error(`Wikimedia HTTP ${response.status}`);
@@ -94,6 +94,7 @@ async function commonsSearch(query: string, options: { fetch?: typeof fetch; sig
       if (!/^image\/(jpeg|png|webp)$/.test(info.mime || '')) return undefined;
       if ((info.thumbwidth || 0) < 200 || (info.thumbheight || 0) < 150 || UNSAFE.test(title)) return undefined;
       const meta = info.extmetadata || {};
+      if (options.kind === 'photograph' && !isPhotographCandidate([title, ...['ImageDescription', 'Categories', 'ObjectName'].map((key) => stripHtml(meta[key]?.value))].join(' '))) return undefined;
       return {
         title: title.slice(0, 120), thumb, width: info.thumbwidth || 500, height: info.thumbheight || 375,
         ...(wikimediaUrl(info.responsiveUrls?.['2']) ? { large: wikimediaUrl(info.responsiveUrls?.['2']) } : {}),
@@ -104,7 +105,7 @@ async function commonsSearch(query: string, options: { fetch?: typeof fetch; sig
     })
     .filter((x): x is MediaImage => Boolean(x))
     // Commons expands synonyms (oud → Dutch place names): keep files whose title names the topic.
-    .filter((img) => !terms(query).length || terms(query).some((t) => terms(withoutPlaceCompounds(img.title)).includes(t)))
+    .filter((img) => relevantImageTitle(query, withoutPlaceCompounds(img.title)))
     // Visitors read Arabic or Latin-script languages: captions in other scripts are reduced to their
     // readable part (usually the botanical name), and readable files are shown first.
     .map((img, i) => ({ img: { ...img, title: readableCaption(img.title, query) }, readable: isReadable(img.title), i }))
@@ -134,14 +135,20 @@ export function readableCaption(title: string, query: string): string {
 
 const terms = (text: string) => text.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter((t) => t.length >= 3).map((t) => t.replace(/s$/, ''));
 
-/** Commons needs every word to match: an empty multi-word search is retried with fewer words. */
-export async function searchImages(query: string, options: { fetch?: typeof fetch; signal?: AbortSignal; limit?: number } = {}): Promise<ImageResult> {
-  const words = query.split(' ');
-  for (let n = words.length; n >= Math.max(1, words.length - 2); n--) {
-    const images = await commonsSearch(words.slice(0, n).join(' '), options);
-    if (images.length) return { images, source: 'wikimedia' };
-  }
-  return { images: [], source: 'wikimedia' };
+/** Keep all subject qualifiers. Missing results are safer than unrelated illustrations.
+ * Presentation words are not subjects; title matching is conservative, not visual verification. */
+export function relevantImageTitle(query: string, title: string): boolean {
+  const presentation = new Set(['photo', 'image', 'picture', 'diagram', 'illustration', 'example', 'صور', 'صورة', 'توضيحية']);
+  const required = terms(query).filter((term) => !presentation.has(term));
+  const actual = terms(title);
+  return required.length > 0 && required.every((term) => actual.includes(term));
+}
+/** Reject explicit artwork/generated/sculpture labels. Metadata is not independent authentication. */
+export function isPhotographCandidate(metadata: string): boolean {
+  return !/\b(?:paintings?|drawings?|illustrations?|caricatures?|cartoons?|statues?|sculptures?|waxworks?|renderings?|ai[- ]generated|synthetic image|deepfake)\b|رسم(?:ة|ه)?|لوح[ةه]|تمثال|كاريكاتير|مولد[ةه] بالذكاء/i.test(metadata);
+}
+export async function searchImages(query: string, options: { fetch?: typeof fetch; signal?: AbortSignal; limit?: number; kind?: 'photograph' } = {}): Promise<ImageResult> {
+  return { images: await commonsSearch(query, options), source: 'wikimedia' };
 }
 
 /** YouTube key: its own, else the Google AI key (works only if that project enabled the YouTube API). */
@@ -250,14 +257,16 @@ export function createMediaRouter(options: { env?: Env; fetch?: typeof fetch } =
     const q = sanitizeQuery(req.query.q);
     const lang = typeof req.query.lang === 'string' && /^[a-z]{2,3}$/.test(req.query.lang) ? req.query.lang : undefined;
     if (!type || !q) { res.status(400).json({ error: 'type (image|video|place) and a short q are required', code: 'INVALID_MEDIA_QUERY' }); return; }
-    const key = `${type}:${lang || ''}:${q.toLowerCase()}`;
+    const kind = req.query.kind === 'photograph' ? 'photograph' as const : undefined;
+    if (req.query.kind !== undefined && (!kind || type !== 'image')) { res.status(400).json({ code: 'INVALID_MEDIA_QUERY' }); return; }
+    const key = `${type}:${kind || 'any'}:${lang || ''}:${q.toLowerCase()}`;
     const hit = cache.get(key);
     if (hit && Date.now() - hit.at < ttl(hit.data)) { res.setHeader('Cache-Control', 'public, max-age=3600'); res.json(hit.data); return; }
     if (!limiter.allow(clientKey(req))) { res.status(429).json({ error: 'Too many media lookups, please wait a minute', code: 'RATE_LIMITED' }); return; }
     try {
       const signal = AbortSignal.timeout(type === 'place' ? 10_000 : 8000);
       const data = type === 'image'
-        ? await searchImages(q, { fetch: options.fetch, signal })
+        ? await searchImages(q, { fetch: options.fetch, signal, kind })
         : type === 'place'
           ? await searchPlace(q, { fetch: options.fetch, signal, lang: lang?.slice(0, 2) })
           : await searchVideos(q, { env, fetch: options.fetch, signal, lang: lang?.slice(0, 2) });

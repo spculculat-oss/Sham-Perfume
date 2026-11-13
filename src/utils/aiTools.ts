@@ -73,11 +73,11 @@ export const AI_TOOLS: AiToolDef[] = [
   {
     id: 'media', nameAr: 'الصور والفيديو والخرائط في الردود', nameEn: 'Images, videos and maps in answers',
     descriptionAr: 'يبحث عن صور حرة وفيديوهات وأماكن على الخريطة للمواضيع التي يطلبها شاهين في رده.',
-    sources: ['server/media.ts'], routes: ['/api/media'], acceptsGuidance: false,
+    sources: ['src/utils/realPhotos.ts', 'server/media.ts'], routes: ['/api/media'], acceptsGuidance: false,
   },
   {
     id: 'shaheen_workspace', nameAr: 'مساحة شاهين — المساعد الشامل', nameEn: 'Shaheen Workspace — general assistant',
-    descriptionAr: 'شاهين كمساعد في أي موضوع (مش العطور بس): محادثة بالسياق والملفات، بحث ويب بمصادره، قراءة وتلخيص الصفحات والـ PDF بأمان (عناوين عامة بس)، خطط مهام متعددة الخطوات، ورسم الصور. الكود والملفات والمستندات وتعديل الصور والقراءة بالصوت بتحصل في متصفح الزائر؛ ملفاته مش بتتخزن على السيرفر.',
+    descriptionAr: 'شاهين كمساعد في أي موضوع (مش العطور بس): محادثة بالسياق والملفات، بحث ويب بمصادره، قراءة وتلخيص الصفحات والـ PDF بأمان (عناوين عامة بس)، خطط مهام متعددة الخطوات، ورسم الصور. الكود والملفات والمستندات وتعديل الصور والقراءة بالصوت وتحريك تقريب/كاميرا من صورة لتصدير فيديو صامت بتوقيع sharin ai بتحصل في متصفح الزائر؛ التحريك ليس توليد فيديو للمشهد، وملفاته مش بتتخزن على السيرفر.',
     sources: ['server/workspace.ts'], routes: ['/api/workspace/status', '/api/workspace/ask', '/api/workspace/search', '/api/workspace/read', '/api/workspace/image'], acceptsGuidance: false,
   },
   {
