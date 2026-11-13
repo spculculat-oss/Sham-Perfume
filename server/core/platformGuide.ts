@@ -51,6 +51,38 @@ export const PLATFORM_GROUP_LABEL: Record<PlatformGroup, { ar: string; en: strin
  */
 export const PLATFORM_FEATURES: PlatformFeature[] = [
   {
+    id: 'real_photos', group: 'workspace', tab: 'workspace', docId: 'kb-platform-real-photos',
+    name: { ar: 'الصور الحقيقية بمصدرها', en: 'Sourced real-photo search' },
+    summary: { ar: 'طلب صورة فوتوغرافية أو أرشيفية يستخدم بحث الصور لا توليد الرسومات.', en: 'Real or archival photograph requests use sourced image search, not image generation.' },
+    details: { ar: 'في شات شاهين ومساحة العمل وتبويب الصور، طلب مثل عايظ صورة حقيقيه لحسنى مبارك يحضر طلب بحث Hosni Mubarak عبر مسار الصور الموجود دون مفتاح توليد. تعرض الصور المنشورة مع رابط صفحة المصدر والترخيص واسم المصور المتاح، ولا نضيف توقيع sharing ai على الصور الأرشيفية. تظهر رسالة إن تعذر البحث أو لم توجد نتيجة مطابقة. البيانات التي تصف رسماً أو تمثالاً أو صورة مولدة تستبعد من نمط الصور الفوتوغرافية. هذه مرشحات نصية وليست تحققاً بصرياً مستقلاً لهوية الصورة أو تاريخها، وليس كل موضوع له صور مرخصة متاحة. التوليد يبقى للرسومات المطلوبة صراحة ولا يستعمل بديلاً صامتاً للصورة الحقيقية.', en: 'In Shaheen chat, Workspace chat and Images, requests such as a real photograph of Hosni Mubarak prepare a Hosni Mubarak image lookup through the existing media service without an image-generation key. Published images retain the source page, license and available photographer credit, without a sharing ai overlay. Missing results or failed lookups show a notice. Explicit artwork, statue and AI-generated metadata are excluded in photograph mode. Textual filtering is not independent visual identity/date authentication; licensed results are not guaranteed for every subject. Artwork generation is separate and never a silent fallback for real photographs.' },
+    keywords: ['صورة حقيقية', 'صورة أرشيفية', 'حسني مبارك', 'real photo', 'archival photograph', 'Hosni Mubarak'],
+    tags: ['صور', 'مصدر', 'ترخيص', 'photograph', 'source'],
+  },
+  {
+    id: 'conversation_context', group: 'workspace', tab: 'master_ai', docId: 'kb-platform-conversation-context',
+    name: { ar: 'ربط متابعة المحادثة والصور', en: 'Conversation and illustration continuity' },
+    summary: { ar: 'متابعة الصور والشرح والمقارنة تستند إلى السؤال والجواب القريبين، مع احترام تغيير الموضوع.', en: 'Elliptical illustration, explanation and comparison requests carry recent conversation context and respect topic changes.' },
+    details: { ar: 'بعد شرح عيوب اللحام، طلب هاتلي صور توضيحية يحمل السؤال والجواب السابقين إلى المحرك بدلاً من طلب صور بلا موضوع. يعمل الربط المحدود داخل المحادثة في شاهين ومساحة العمل ووضع الأدوات؛ لا ذاكرة مشتركة بين الزوار ولا تدريب تلقائي للنموذج. إذا لم يوجد مرجع يسأل عن الموضوع، وعند تغيير الموضوع يتبع الجديد. بحث الصور يحتفظ بكل الصفات الأساسية ويرفض نتائج عنوانها غير مطابق بدلاً من حذف الكلمات وتوسيع البحث؛ قد لا يجد صوراً. مطابقة العناوين ليست فحصاً بصرياً ولا ضماناً للدقة الفنية، والصور المولدة توضيحية لا دليل فحص حقيقي. جودة الفهم النهائي مرتبطة بالمحرك المتاح وليست ضماناً لإدراك بشري أو ذكاء مطلق.', en: 'After discussing welding defects, show me illustrations carries the recent question and answer to the model. Bounded per-conversation references work in Shaheen, Workspace and tool mode; there is no shared visitor memory or automatic model training. Missing references require clarification; explicit new subjects take priority. Image searches preserve qualifiers and reject non-matching titles instead of dropping words, so results may be empty. Title matching is not visual inspection or a technical accuracy guarantee. Generated illustrations are not inspection evidence. Final reasoning depends on the available model.' },
+    keywords: ['ربط المواضيع', 'صور توضيحية', 'عيوب اللحام', 'سياق المحادثة', 'conversation context', 'follow up'],
+    tags: ['شاهين', 'سياق', 'صور', 'context', 'illustration'],
+  },
+  {
+    id: 'workspace_motion', group: 'workspace', tab: 'workspace', docId: 'kb-platform-workspace-motion',
+    name: { ar: 'تحريك صور شاهين وتوقيعها', en: 'Shahin signed image animation' },
+    summary: { ar: 'توقيع sharing ai على معاينة وتصدير الصور، وتحريك تقريب وكاميرا محلي مع تنزيل فيديو قصير.', en: 'The sharing ai signature on image exports, with local pan/zoom animation and short video downloads.' },
+    details: { ar: 'توليد الصور تحت علامة sharing ai يستخدم الخدمة المهيأة فقط؛ لا رجوع تلقائي لمولّد خارجي ولا إخفاء لحقوق مدمجة. غياب الخدمة أو الحصة يظهر تعذراً ولا صورة وهمية. في مساحة شاهين، اطلب تحريك الصورة الموجودة أو افتح تبويب صور وارفع صورة، ثم اضغط عمل فيديو متحرك، وانتظر التسجيل وتنزيله. الفيديو بلا صوت، بصيغة يدعمها المتصفح (WebM أو MP4)، وليس توليد حركة أشخاص أو فيديو جديد بالذكاء الاصطناعي، ولا GIF. التصدير محلي ولا يحتاج مفتاح فيديو، لكن توليد الصورة الأساسية قد يحتاج خدمة وصلاحية وحصة. لا نزيل أي علامة حقوق أو منشأ مدمجة أصلاً، وsharing ai توقيع شام المضاف وليس دليلاً على مصدر النموذج. فشل تحميل الصورة أو CORS أو عدم دعم التسجيل يظهر خطأ دون نجاح وهمي.', en: 'Generated previews and exports use sharing ai branding with the configured service only; there is no automatic external generator fallback or removal of embedded rights marks. Missing service/quota fails honestly. In Shahin Workspace, request motion for an existing image, or upload an image in Images. Select Create motion clip, wait for recording, then download. Silent video uses a browser-supported WebM or MP4 format; it is pan/zoom, not new AI scene/character motion or GIF. Export is local and needs no video key; initial image generation may need a configured service and quota. Existing rights/provenance marks are not removed. sharing ai is added Sham branding, not proof of model origin. Loading, CORS and recording failures are reported without false success.' },
+    keywords: ['فيديو متحرك', 'تحريك الصورة', 'توقيع شاهين', 'sharing ai', 'animated video', 'image animation', 'motion clip'],
+    tags: ['صور', 'حركة', 'فيديو', 'images', 'animation'],
+  },
+  {
+    id: 'imagination_images', group: 'workspace', tab: 'workspace', docId: 'kb-platform-imagination',
+    name: { ar: 'الصور التخيلية بخيال شاهين', en: 'Shaheen imaginative images' },
+    summary: { ar: 'اكتب فكرة بسيطة بأي لغة، وشاهين يتخيّل الباقي (المكان والإضاءة والتكوين والألوان) ويرسمها بالأسلوب والمقاس اللي تختاره، وتعدّلها بالكلام.', en: 'Write a simple idea in any language; Shaheen imagines the rest (setting, light, composition, colour), draws it in the style and shape you choose, and edits it from your words.' },
+    details: { ar: 'افتح مساحة شاهين ثم تبويب صور، واكتب الفكرة ببساطة مثل قطة في الفضاء. اختر الأسلوب: شاهين يختار، واقعي، سينمائي، خيالي، أنمي، كرتون مجسّم، ألوان مائية، لوحة زيتية أو رسم بالرصاص. واختر المقاس: مربع، طولي، عرضي، ستوري للموبايل أو خلفية عريضة، ثم اضغط ارسم. شاهين يحافظ على كل تفصيلة كتبتها ويكمّل الناقص فقط، ولا يكتب كلاماً على الصورة إلا لو طلبت وكتبت النص بين علامتي تنصيص. بعد الرسم اطلب التعديل بالكلام (خلّيها ليل، غيّر الخلفية) فيتغيّر المطلوب فقط وتبقى باقي الصورة، وفي المحادثة اطلب الصورة ثم اطلب تعديلها بنفس الطريقة. الحدود بصراحة: الرسم يحتاج خدمة الصور مهيأة وحصتها متاحة، ولو غير متاحة تظهر رسالة تعذر ولا تظهر صورة وهمية؛ الحروف العربية الطويلة قد لا تخرج دقيقة فاكتب العبارات القصيرة أو أضف النص من أداة الكتابة على الصورة؛ طلب صورة حقيقية أو أرشيفية يذهب لبحث الصور لا للرسم؛ وكل صورة مرسومة تحمل توقيع sharing ai.', en: 'Open Shaheen Workspace, then Images, and write the idea simply, e.g. a cat in space. Pick a style: Shaheen decides, realistic, cinematic, fantasy, anime, 3D cartoon, watercolour, oil painting or pencil sketch. Pick a shape: square, portrait, landscape, phone story or wide screen, then press Generate. Shaheen keeps every detail you wrote and fills in only what is missing; it letters words on the image only when you ask and quote them. Afterwards ask for a change in words (make it night, change the background): only that changes and the rest of the image stays. In the chat, ask for an image and then ask to change it the same way. Honest limits: drawing needs the image service to be configured with quota left, otherwise an unavailable message is shown and never a fake image; long Arabic lettering may come out inexact, so keep phrases short or add the words with the text-on-image tool; a real or archival photo request goes to image search, not drawing; every drawn image carries the sharing ai signature.' },
+    keywords: ['صورة تخيلية', 'صور تخيلية', 'ارسم صورة', 'تصميم صورة', 'توليد صور', 'أسلوب الصورة', 'مقاس الصورة', 'imaginative image', 'generate an image', 'image style', 'draw a picture', 'ai image'],
+    tags: ['صور', 'تخيل', 'رسم', 'تصميم', 'images', 'imagination', 'drawing'],
+  },
+  {
     id: 'concentration', group: 'lab', tab: 'concentration', docId: 'kb-concentration',
     name: { ar: 'حاسبة التركيز', en: 'Concentration calculator' },
     summary: {
@@ -220,6 +252,17 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     },
     keywords: ['الخبير شاهين', 'شاهين', 'master shaheen', 'shaheen', 'معمل الذكاء', 'الذكاء الاصطناعي للعطور'],
     tags: ['شاهين', 'خبير', 'shaheen', 'formulation'],
+  },
+  {
+    id: 'shaheen_tools', group: 'workspace', tab: 'master_ai', docId: 'kb-platform-shaheen-tools',
+    name: { ar: 'وضع أدوات شاهين', en: 'Shaheen tool mode' },
+    summary: { ar: 'وضع اختياري لحسابات بأدوات فعلية وقراءة ملفات نصية وتجهيز تقارير للتنزيل.', en: 'Opt-in tool execution for calculations, text attachments and downloadable reports.' },
+    details: {
+      ar: 'افتح أدوات شاهين في الشات أو المعمل وفعّل وضع الوكيل، واختر تلقائي أو سريع أو معمق. يدعم الحسابات والدفعات والتخفيف والتكلفة والمواد ومراجعة التركيبات وقراءة حتى 3 ملفات نصية بإجمالي 12000 حرف، وتجهيز ملفين للتنزيل بنقرة. لا يكتب في حسابات أو مستودعات ولا ينفذ كوداً. تحتاج دورة الوكيل خدمة ذكاء متاحة، والبحث الخارجي اختياري بإعداد الإدارة وموافقتك؛ لا يتجاوز الحصة. المرفقات قد تصل للمزود ومقتطفاتها في الردود تُحفظ مع المحادثة؛ لا ترفع أسراراً.',
+      en: 'Open Shahin tools in chat or the lab, enable agent mode and choose auto, fast or deep. Supports calculations, batches, dilution, costing, materials, formula checks, up to 3 text files totaling 12000 characters and two click-to-download reports. No code execution, account access or repository changes. Requires an available AI service; optional external search needs admin configuration and your consent. It does not bypass quota. Attachments may reach the provider and excerpts in replies may be saved in chat; never upload secrets.',
+    },
+    keywords: ['أدوات شاهين', 'وضع الوكيل', 'إرفاق ملف نصي', 'تقرير للتنزيل', 'shahin tools', 'shaheen tool mode', 'agent mode', 'text attachments', 'download report'],
+    tags: ['أدوات', 'وكيل', 'مرفقات', 'tools', 'agent'],
   },
   {
     id: 'shaheen_voice', group: 'workspace', tab: 'master_ai', docId: 'kb-platform-shaheen-voice',

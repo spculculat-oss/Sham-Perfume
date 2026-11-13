@@ -62,9 +62,14 @@ export function ProfilePage({ handle, lang, go, toast, onOpenMessenger }: { hand
         <div className="relative h-40 w-full bg-gradient-to-br from-stone-900 via-amber-900 to-amber-600 sm:h-60">
           <div className="absolute inset-0 opacity-30 [background:radial-gradient(circle_at_20%_30%,rgba(251,191,36,.6),transparent_45%),radial-gradient(circle_at_80%_70%,rgba(244,63,94,.35),transparent_40%)]" />
           {isMe && (
-            <button type="button" onClick={() => go('me/profile')} className="absolute bottom-4 end-4 flex items-center gap-1.5 rounded-xl bg-white/85 px-3 py-1.5 text-xs font-bold text-stone-900 shadow backdrop-blur hover:bg-white cursor-pointer">
-              <Edit3 className="h-3.5 w-3.5" />{t('تعديل الملف', 'Edit profile')}
-            </button>
+            <div className="absolute bottom-4 end-4 flex items-center gap-2">
+              <button type="button" onClick={() => { const b = prompt(t('رابط صورة البانر الجديد:', 'New banner image URL:')); if (b) void act(() => cx('/community/profile', { method: 'PATCH', body: { banner: b } }), t('اتحدث البانر ✨', 'Banner updated ✨')); }} className="flex items-center gap-1.5 rounded-xl bg-white/85 px-3 py-1.5 text-xs font-bold text-stone-900 shadow backdrop-blur hover:bg-white cursor-pointer">
+                <ImageIcon className="h-3.5 w-3.5" />{t('تعديل البانر', 'Edit banner')}
+              </button>
+              <button type="button" onClick={() => go('me/profile')} className="flex items-center gap-1.5 rounded-xl bg-white/85 px-3 py-1.5 text-xs font-bold text-stone-900 shadow backdrop-blur hover:bg-white cursor-pointer">
+                <Edit3 className="h-3.5 w-3.5" />{t('تعديل الملف', 'Edit profile')}
+              </button>
+            </div>
           )}
         </div>
         <div className="px-4 pb-4 sm:px-6">

@@ -8,6 +8,7 @@
  */
 
 import { hasClaims, stripClaims, tidySupplierText } from './honestClaims';
+import { fixArabicEntry } from './arabicProductNames';
 
 export interface RawProduct {
   id: number | string; sku?: string; nameAr?: string; nameEn?: string; descriptionAr?: string; descriptionEn?: string;
@@ -283,7 +284,8 @@ const honest = (text: string, lang: 'ar' | 'en') => {
 export function mergeProduct(p: RawProduct, entry?: StoreEntry): StoreProduct {
   // An entry written for older merchant text is not trusted: rules until Shaheen rewrites it (next run).
   const fresh = entry && entry.sourceHash === productHash(p) ? entry : undefined;
-  const e = honestEntry(p, fresh || ruleEntry(p));
+  // Brand spellings and names read wrongly from English are corrected on the way to the page (#514).
+  const e = fixArabicEntry(skuOf(p), honestEntry(p, fresh || ruleEntry(p)));
   const images = productImages(p);
   return {
     id: p.id, sku: skuOf(p), name: { ar: e.nameAr, en: e.nameEn },

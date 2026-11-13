@@ -6,7 +6,7 @@ import { findMediaBlocks, removeMediaBlocks } from './mediaBlock';
  *   {"images":["agarwood"],"videos":["steam distillation of essential oils"],"places":["Grasse, France"]}
  * The block holds search topics only (never links); the site looks them up through /api/media.
  */
-export interface MediaRequest { images: string[]; videos: string[]; places?: string[] }
+export interface MediaRequest { images: string[]; videos: string[]; places?: string[]; imageKind?: 'photograph' }
 export interface MediaImage { title: string; thumb: string; large?: string; width: number; height: number; page: string; license: string; author: string }
 export interface MediaVideo { id: string; title: string; channel: string; thumb: string }
 export interface ImageResult { images: MediaImage[] }
@@ -62,13 +62,16 @@ export function extractMediaRequest(text: string, question?: string): MediaReque
   const images: string[] = [];
   const videos: string[] = [];
   const places: string[] = [];
+  let photograph = false;
   for (const { data } of findMediaBlocks(text)) {
     if (!data) continue;
+    if (data.imageKind === 'photograph') photograph = true;
     images.push(...topics(data.images ?? data.image, 2));
     videos.push(...topics(data.videos ?? data.video, 1));
     places.push(...topics(data.places ?? data.place, 5));
   }
   const request: MediaRequest = { images: [...new Set(images)].slice(0, 2), videos: [...new Set(videos)].slice(0, 1) };
+  if (photograph && request.images.length) request.imageKind = 'photograph';
   let uniquePlaces = [...new Set(places)].slice(0, 5);
   if (question !== undefined) uniquePlaces = relevantPlaces(uniquePlaces, question, text);
   if (uniquePlaces.length) request.places = uniquePlaces;
@@ -82,14 +85,14 @@ export function stripMediaBlock(text: string): string {
 
 const cache = new Map<string, Promise<unknown>>();
 /** Cached per page load; a failed lookup is forgotten so it can be retried later. */
-export function fetchMedia(type: 'image', q: string, lang: string): Promise<ImageResult>;
+export function fetchMedia(type: 'image', q: string, lang: string, kind?: 'photograph'): Promise<ImageResult>;
 export function fetchMedia(type: 'video', q: string, lang: string): Promise<VideoResult>;
 export function fetchMedia(type: 'place', q: string, lang: string): Promise<PlaceResult>;
-export function fetchMedia(type: 'image' | 'video' | 'place', q: string, lang: string): Promise<unknown> {
-  const key = `${type}:${lang}:${q.toLowerCase()}`;
+export function fetchMedia(type: 'image' | 'video' | 'place', q: string, lang: string, kind?: 'photograph'): Promise<unknown> {
+  const key = `${type}:${kind || "any"}:${lang}:${q.toLowerCase()}`;
   let pending = cache.get(key);
   if (!pending) {
-    const params = new URLSearchParams({ type, q, ...(lang ? { lang: lang.slice(0, 2) } : {}) });
+    const params = new URLSearchParams({ type, q, ...(kind ? { kind } : {}), ...(lang ? { lang: lang.slice(0, 2) } : {}) });
     pending = requestApi(`/api/media?${params}`, undefined, 15000);
     pending.catch(() => cache.delete(key));
     cache.set(key, pending);

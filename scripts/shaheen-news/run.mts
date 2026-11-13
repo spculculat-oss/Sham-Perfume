@@ -11,7 +11,7 @@
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { FEEDS, fetchFeed, type RawItem } from './feeds';
 import {
-  buildNewsFile, buildTrainingFile, docsFromTrainer, editorPrompt, EDITOR_SYSTEM, gapPrompt, isPerfumeNews, itemsFromEditor,
+  asCandidate, needsArabic, storyId, withArabicContext, buildNewsFile, buildTrainingFile, docsFromTrainer, editorPrompt, EDITOR_SYSTEM, gapPrompt, isPerfumeNews, itemsFromEditor,
   itemsFromFeeds, lessonPrompt, mergeNews, newsDoc, nextLessons, parseJson, selectCandidates, TRAINER_SYSTEM,
   type Ask, type NewsFile, type TrainingDoc, type TrainingFile,
 } from './curate';
@@ -51,15 +51,19 @@ const askJson = async (system: string, prompt: string) => parseJson(await ask!(s
 let editor: NewsFile['editor'] = 'feeds';
 let fresh = itemsFromFeeds(candidates);
 let digest = previousNews?.digest;
-if (ask && candidates.length) {
+// Stories published earlier without the expert (headlines only) go back to him, so they get their Arabic too.
+const waiting = (previousNews?.items || []).filter(needsArabic).filter((p) => !candidates.some((c) => storyId(c) === p.id)).slice(0, 15).map(asCandidate);
+const toEdit = [...candidates, ...waiting];
+if (ask && toEdit.length) {
   try {
-    const edited = itemsFromEditor(await askJson(EDITOR, editorPrompt(candidates, now)), candidates);
+    const edited = itemsFromEditor(await askJson(EDITOR, editorPrompt(toEdit, now)), toEdit);
     if (edited.items.length >= 3) { fresh = edited.items.sort((a, b) => b.importance - a.importance); digest = edited.digest || digest; editor = 'shaheen'; }
     say(`Shaheen edited ${edited.items.length} stories`);
   } catch (error) { say(`Shaheen could not edit this run (${(error as Error).message.slice(0, 120)}); publishing headlines only`); }
-} else if (!ask) say('No AI key configured: publishing real headlines without summaries');
+} else if (!ask) say('No AI key configured: publishing real headlines with an Arabic context line');
+if (waiting.length) say(`Stories waiting for their Arabic: ${waiting.length}`);
 
-const items = mergeNews(fresh, previousNews?.items, now.getTime());
+const items = mergeNews(fresh, (previousNews?.items || []).map(withArabicContext), now.getTime());
 const newsFile = items.length ? buildNewsFile(items, editor, editor === 'shaheen' ? digest : previousNews?.digest, now)
   : previousNews ? { ...previousNews, nextUpdateAt: new Date(now.getTime() + 12 * 3600_000).toISOString() } : buildNewsFile([], 'feeds', undefined, now);
 say(`News file: ${newsFile.items.length} stories, editor=${newsFile.editor}`);

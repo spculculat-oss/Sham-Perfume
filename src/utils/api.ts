@@ -1,3 +1,4 @@
+import type { AgentReport } from '../types/agent';
 import type { ChatMessage } from './chatStorage';
 
 /**
@@ -44,6 +45,7 @@ export function visitorId(): string {
 }
 export interface ChatResponse {
   reply: string;
+  toolReport?: AgentReport;
   engine?: ChatMessage['aiEngine'];
   perspectives?: ChatMessage['perspectives'];
   /** Source links are kept in chat history but are only rendered when the visitor asks for them. */

@@ -814,7 +814,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </div>
               <div className="flex gap-2">
                 <button type="button" onClick={() => toStep('auth')} className="flex-1 py-2 text-stone-600 hover:text-stone-800 text-xs underline cursor-pointer">{L('totp_back')}</button>
-                <button type="button" onClick={() => void requestPhoneCode()} disabled={phoneBusy || phoneResendCooldown > 0} className="flex-1 py-2 text-emerald-700 hover:text-emerald-800 text-xs font-semibold cursor-pointer disabled:opacity-60">{phoneBusy ? '…' : phoneResendCooldown > 0 ? `${currentLang === 'ar' ? 'إعادة الإرسال بعد' : 'Resend in'} ${phoneResendCooldown}s` : (currentLang === 'ar' ? 'إعادة إرسال الكود' : 'Resend code')}</button>
+                <button type="button" onClick={() => void requestPhoneCode()} disabled={phoneBusy || phoneResendCooldown > 0} className="flex-1 py-2 text-emerald-700 hover:text-emerald-800 text-xs font-semibold cursor-pointer disabled:opacity-60">{phoneBusy ? '…' : phoneResendCooldown > 0 ? `${pickArEn(currentLang, 'إعادة الإرسال بعد', 'Resend in')} ${phoneResendCooldown}s` : (pickArEn(currentLang, 'إعادة إرسال الكود', 'Resend code'))}</button>
               </div>
             </>
           )}
@@ -831,7 +831,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <input type="text" inputMode="numeric" autoComplete="one-time-code" maxLength={6} placeholder="••••••" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} className="w-full rounded-xl border border-stone-200 bg-stone-50 px-3 py-3 text-center font-mono text-lg tracking-[0.4em]" dir="ltr" />
               <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
                 <button type="button" onClick={() => void requestPhoneSetupCode()} disabled={phoneBusy || phoneResendCooldown > 0} className="font-semibold text-emerald-800 underline disabled:text-stone-400 disabled:no-underline">
-                  {phoneBusy ? '…' : phoneResendCooldown > 0 ? `${currentLang === 'ar' ? 'إعادة الإرسال بعد' : 'Resend in'} ${phoneResendCooldown}s` : L('whatsapp_resend')}
+                  {phoneBusy ? '…' : phoneResendCooldown > 0 ? `${pickArEn(currentLang, 'إعادة الإرسال بعد', 'Resend in')} ${phoneResendCooldown}s` : L('whatsapp_resend')}
                 </button>
                 <button type="button" onClick={() => void continueWithoutWhatsApp()} disabled={phoneBusy} className="text-stone-600 underline disabled:opacity-50">
                   {L('whatsapp_continue')}
@@ -930,8 +930,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           {stage === 'totp_setup' && (
             <div className="space-y-3">
               <div>
-                <label className="font-semibold text-stone-800 block mb-1">{currentLang === 'ar' ? 'إعداد التحقق بخطوتين' : 'Set up two-step verification'}</label>
-                <p className="text-[11px] text-stone-500 mb-2">{currentLang === 'ar' ? 'افتح تطبيق المصادقة (جوجل أوثنتاكر، أوثي، إلخ) وأضف حساباً جديداً باستخدام الكود التالي:' : 'Open your authenticator app (Google Authenticator, Authy, etc.) and add a new account using this code:'}</p>
+                <label className="font-semibold text-stone-800 block mb-1">{pickArEn(currentLang, 'إعداد التحقق بخطوتين', 'Set up two-step verification')}</label>
+                <p className="text-[11px] text-stone-500 mb-2">{pickArEn(currentLang, 'افتح تطبيق المصادقة (جوجل أوثنتاكر، أوثي، إلخ) وأضف حساباً جديداً باستخدام الكود التالي:', 'Open your authenticator app (Google Authenticator, Authy, etc.) and add a new account using this code:')}</p>
                 <div className="bg-stone-50 border border-stone-200 rounded-xl p-3 text-center font-mono text-lg tracking-wider text-stone-900 select-text">
                   {totpSetupSecret}
                 </div>
@@ -940,31 +940,31 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   onClick={() => {
                     if (totpSetupSecret) {
                       navigator.clipboard.writeText(totpSetupSecret).then(() => {
-                        setErrorMsg(currentLang === 'ar' ? 'تم نسخ الكود — ألصقه في تطبيق المصادقة' : 'Code copied — paste it in your authenticator app');
+                        setErrorMsg(pickArEn(currentLang, 'تم نسخ الكود — ألصقه في تطبيق المصادقة', 'Code copied — paste it in your authenticator app'));
                       });
                     }
                   }}
                   className="text-[11px] text-amber-800 underline cursor-pointer"
                 >
-                  {currentLang === 'ar' ? 'نسخ الكود' : 'Copy code'}
+                  {pickArEn(currentLang, 'نسخ الكود', 'Copy code')}
                 </button>
               </div>
               <p className="text-[10px] text-stone-400 leading-snug bg-stone-50 p-2 rounded-lg border border-stone-200">
-                {currentLang === 'ar' ? 'بعد الإضافة، سيعطيك التطبيق كوداً من 6 أرقام setiap 30 ثانية. ادخله عند تسجيل الدخول من جهاز جديد.' : 'After adding, the app gives a 6-digit code every 30 seconds. Enter it when signing in from a new device.'}
+                {pickArEn(currentLang, 'بعد الإضافة، سيعطيك التطبيق كوداً من 6 أرقام setiap 30 ثانية. ادخله عند تسجيل الدخول من جهاز جديد.', 'After adding, the app gives a 6-digit code every 30 seconds. Enter it when signing in from a new device.')}
               </p>
               <button
                 type="button"
                 onClick={() => { setTotpSetupSecret(null); onClose(); }}
                 className="w-full py-3 rounded-xl bg-amber-800 hover:bg-amber-900 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
               >
-                {currentLang === 'ar' ? 'اكتمل الإعداد' : 'Setup complete'}
+                {pickArEn(currentLang, 'اكتمل الإعداد', 'Setup complete')}
               </button>
               <button
                 type="button"
                 onClick={() => { setTotpSetupSecret(null); toStep('auth'); }}
                 className="w-full py-2.5 rounded-xl border border-stone-200 bg-white text-stone-600 font-semibold text-xs transition-colors hover:bg-stone-50 cursor-pointer"
               >
-                {currentLang === 'ar' ? 'تجاوز الآن' : 'Skip for now'}
+                {pickArEn(currentLang, 'تجاوز الآن', 'Skip for now')}
               </button>
             </div>
           )}
@@ -1006,7 +1006,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 dir="ltr"
               />
               {!email && !emailValid ? null : email && !emailValid ? (
-                <p className="text-[10px] text-rose-600 mt-1">{currentLang === 'ar' ? 'اكتب بريداً صالحاً (مثل perfumer@domain.com)' : 'Please enter a valid e-mail (e.g. perfumer@domain.com)'}</p>
+                <p className="text-[10px] text-rose-600 mt-1">{pickArEn(currentLang, 'اكتب بريداً صالحاً (مثل perfumer@domain.com)', 'Please enter a valid e-mail (e.g. perfumer@domain.com)')}</p>
               ) : null}
             </div>
           </div>
@@ -1044,7 +1044,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </div>
                 <ul className="text-[10px] leading-relaxed space-y-0.5">
                   <li className={password.length >= 8 ? 'text-emerald-600' : 'text-stone-500'}>• {password.length >= 8 ? '✓ ' : ''}{L('err_password').split('،')[0]}</li>
-                  <li className={pwOk ? 'text-emerald-600' : 'text-stone-500'}>• {currentLang === 'ar' ? 'لا نسمح بكلمات المرور المنتشرة (مثل 123456، password)' : 'We block common passwords (e.g. 123456, password)'} {pwOk ? '✓' : ''}</li>
+                  <li className={pwOk ? 'text-emerald-600' : 'text-stone-500'}>• {pickArEn(currentLang, 'لا نسمح بكلمات المرور المنتشرة (مثل 123456، password)', 'We block common passwords (e.g. 123456, password)')} {pwOk ? '✓' : ''}</li>
                 </ul>
               </div>
             )}
@@ -1093,7 +1093,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   className="mt-0.5 rounded text-amber-700 focus:ring-amber-700 cursor-pointer"
                 />
                 <label htmlFor="enable-2fa" className="text-[11px] text-stone-600 leading-snug cursor-pointer select-none">
-                  {currentLang === 'ar' ? 'تفعيل التحقق بخطوتين (اختياري) — كود من تطبيق المصادقة' : 'Enable two-step verification (optional) — a code from your authenticator app'}
+                  {pickArEn(currentLang, 'تفعيل التحقق بخطوتين (اختياري) — كود من تطبيق المصادقة', 'Enable two-step verification (optional) — a code from your authenticator app')}
                 </label>
               </div>
 
@@ -1109,7 +1109,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     </label>
                     {enableWhatsApp2fa && (
                       <>
-                        <input type="tel" inputMode="tel" autoComplete="tel" dir="ltr" required placeholder="+201001234567" value={whatsappPhone} onChange={(e) => setWhatsappPhone(e.target.value)} className="w-full rounded-xl border border-emerald-200 bg-white px-3 py-2 text-left font-mono text-xs" aria-label={currentLang === 'ar' ? 'رقم واتساب بالصيغة الدولية' : 'WhatsApp number in international format'} />
+                        <input type="tel" inputMode="tel" autoComplete="tel" dir="ltr" required placeholder="+201001234567" value={whatsappPhone} onChange={(e) => setWhatsappPhone(e.target.value)} className="w-full rounded-xl border border-emerald-200 bg-white px-3 py-2 text-left font-mono text-xs" aria-label={pickArEn(currentLang, 'رقم واتساب بالصيغة الدولية', 'WhatsApp number in international format')} />
                         <p className="text-[10px] leading-relaxed text-stone-600">{L('whatsapp_security_note')}</p>
                       </>
                     )}
@@ -1124,12 +1124,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
               {/* Sham Security — Google/Apple/Meta practices visible */}
               <div className="rounded-xl bg-amber-50 border border-amber-200 p-2.5 text-[10px] leading-relaxed text-amber-900">
-                <div className="flex items-center gap-1.5 font-bold"><ShieldCheck className="w-3.5 h-3.5 text-amber-700" />{currentLang === 'ar' ? 'حماية شام — كما في جوجل وآبل' : 'Sham Security — Google/Apple grade'}</div>
+                <div className="flex items-center gap-1.5 font-bold"><ShieldCheck className="w-3.5 h-3.5 text-amber-700" />{pickArEn(currentLang, 'حماية شام — كما في جوجل وآبل', 'Sham Security — Google/Apple grade')}</div>
                 <ul className="mt-1 list-disc list-inside space-y-0.5 text-stone-700">
-                  <li>{currentLang === 'ar' ? 'كلمة المرور تُفحص ضد 10 آلاف كلمة مسرّبة + تشفير scrypt' : 'Password checked vs 10k breached + scrypt hashing'}</li>
-                  <li>{currentLang === 'ar' ? 'قفل الحساب 15 دقيقة بعد 5 محاولات خاطئة' : 'Lockout 15 min after 5 failed attempts'}</li>
-                  <li>{currentLang === 'ar' ? 'تحقق بخطوتين + دخول بالبصمة/الوجه (Passkey)' : '2-Step + Passkey (fingerprint/face)'}</li>
-                  <li>{currentLang === 'ar' ? 'تنبيه بريد عند دخول جهاز جديد + إدارة الأجهزة من بوابتك' : 'New-device e-mail alert + device management'}</li>
+                  <li>{pickArEn(currentLang, 'كلمة المرور تُفحص ضد 10 آلاف كلمة مسرّبة + تشفير scrypt', 'Password checked vs 10k breached + scrypt hashing')}</li>
+                  <li>{pickArEn(currentLang, 'قفل الحساب 15 دقيقة بعد 5 محاولات خاطئة', 'Lockout 15 min after 5 failed attempts')}</li>
+                  <li>{pickArEn(currentLang, 'تحقق بخطوتين + دخول بالبصمة/الوجه (Passkey)', '2-Step + Passkey (fingerprint/face)')}</li>
+                  <li>{pickArEn(currentLang, 'تنبيه بريد عند دخول جهاز جديد + إدارة الأجهزة من بوابتك', 'New-device e-mail alert + device management')}</li>
                 </ul>
               </div>
 
@@ -1150,7 +1150,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   className="mt-0.5 rounded text-amber-700 focus:ring-amber-700 cursor-pointer"
                 />
                 <label htmlFor="remember-me" className="text-stone-600 cursor-pointer select-none">
-                  {currentLang === 'ar' ? 'تذكرني (احفظ الجلسة)' : 'Remember me'}
+                  {pickArEn(currentLang, 'تذكرني (احفظ الجلسة)', 'Remember me')}
                 </label>
               </div>
             )}
@@ -1189,7 +1189,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 className="w-full py-2.5 rounded-xl border border-amber-200 bg-amber-50 text-amber-900 font-semibold text-xs transition-colors hover:bg-amber-100 cursor-pointer flex items-center justify-center gap-2"
               >
                 <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
-                <span>{currentLang === 'ar' ? 'الرابط السحري (بدون كلمة مرور)' : 'Magic link (passwordless)'}</span>
+                <span>{pickArEn(currentLang, 'الرابط السحري (بدون كلمة مرور)', 'Magic link (passwordless)')}</span>
               </button>
             )}
 

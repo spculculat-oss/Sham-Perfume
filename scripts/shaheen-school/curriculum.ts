@@ -24,6 +24,7 @@ import { RELIGION_LESSONS, TOURISM_LESSONS } from './curriculumCulture';
 import { HACKING_LESSONS, THREAT_LESSONS } from './curriculumHacking';
 import { UNIVERSITY_PAIRS } from './curriculumUniversity';
 import { RESEARCH_PAIRS } from './curriculumResearch';
+import { IMAGINATION_LESSONS } from './curriculumImagination';
 
 export type TrackId =
   | 'perfume' | 'prog_langs' | 'blocks' | 'software' | 'graphics' | 'web_care' | 'ai_science' | 'security' | 'quantum' | 'ai_tools'
@@ -692,7 +693,7 @@ const PERFUME_SKILLS: AcademyPair[] = [
 ];
 const PAIRS: AcademyPair[] = [
   ...PROGRAMMING_LANGUAGES.map((l) => ask(lang(...l), `ايه هي لغة ${l[0]}؟`, 'lang', 'prog_langs')),
-  ...LANG_CONCEPTS, ...BLOCK_LESSONS, ...SOFTWARE_LESSONS, ...GRAPHICS_LESSONS, ...WEBCARE_LESSONS, ...AI_LESSONS,
+  ...LANG_CONCEPTS, ...BLOCK_LESSONS, ...SOFTWARE_LESSONS, ...GRAPHICS_LESSONS, ...IMAGINATION_LESSONS, ...WEBCARE_LESSONS, ...AI_LESSONS,
   ...SECURITY_LESSONS, ...HACKING_LESSONS, ...THREAT_LESSONS, ...QUANTUM_LESSONS, ...toolPairs(),
   ...AI_PROJECT_LESSONS, ...IT_LESSONS, ...FRONTIER_LESSONS, ...CHEM_LESSONS, ...PHYS_LESSONS, ...MATH_LESSONS,
   ...COMMERCE_LESSONS, ...TRADE_PRACTICAL_LESSONS, ...LAW_LESSONS, ...PR_LESSONS, ...MGMT_LESSONS, ...HIST_LESSONS, ...GEO_LESSONS, ...LIT_LESSONS, ...SOC_LESSONS,

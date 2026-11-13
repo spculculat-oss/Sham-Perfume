@@ -86,6 +86,11 @@ async function chatProbes(ctx: ProbeContext): Promise<Probe[]> {
     // memory:false — the supervisor tests the live engines, not «ذاكرة شاهين»'s saved answers.
     out.push({ tool: 'shaheen_chat', question: q, answer, ms: r.ms, ok: !r.error, error: r.error, findings: r.error ? [] : inspectAnswer(answer, { language: lang, ms: r.ms }) });
   }
+  const tools = await timed(() => json<{ maxSteps?: number; tools?: string[] }>(ctx.fetch, `${ctx.site}/api/agent/capabilities`));
+  const validTools = tools.value?.maxSteps === 5 && Array.isArray(tools.value?.tools) && tools.value!.tools!.includes('create_file');
+  out.push({ tool: 'shaheen_chat', question: 'GET /api/agent/capabilities', answer: tools.value ? JSON.stringify(tools.value) : '',
+    ms: tools.ms, ok: !tools.error && validTools, error: tools.error,
+    findings: tools.error || validTools ? [] : [{ severe: true, text: 'وضع الأدوات لا يعلن قدراته الفعلية' }] });
   return out;
 }
 

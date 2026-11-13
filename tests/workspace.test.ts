@@ -76,7 +76,7 @@ test('workspace: the conversation keeps context, attaches files to the last ques
 });
 
 test('workspace: Shaheen is a general assistant and never names an AI vendor', () => {
-  for (const task of ['chat', 'plan', 'summarize'] as const) {
+  for (const task of ['chat', 'plan', 'summarize', 'site', 'storyboard'] as const) {
     const text = workspaceInstruction('ar', task);
     assert.doesNotMatch(text, /gemini|openai|chatgpt|gpt-|claude|anthropic|deepseek|openrouter|perplexity|google|llama|mistral/i, task);
     assert.match(text, /أي موضوع/);
@@ -98,9 +98,9 @@ test('workspace routes: status names no vendor; empty input is 400; no engine is
   const offline = (async () => { throw new Error('no network'); }) as typeof fetch;
   await withServer({ SHAM_ADMIN_TOKEN: 'a-long-admin-token-123' }, offline, async (base) => {
     const status = await (await fetch(`${base}/status`)).json() as Record<string, unknown>;
-    assert.deepEqual(Object.keys(status).sort(), ['ai', 'image', 'notion', 'search', 'slack']);
+    assert.deepEqual(Object.keys(status).sort(), ['ai', 'image', 'notion', 'search', 'slack', 'video', 'videoLeft']);
     assert.equal(status.ai, false);
-    assert.equal(status.image, 'open');
+    assert.equal(status.image, 'off');
     assert.equal((await post(`${base}/search`, { q: '  ' })).status, 400);
     assert.equal((await post(`${base}/image`, { prompt: '' })).status, 400);
     const image = await post(`${base}/image`, { prompt: 'a cat' });

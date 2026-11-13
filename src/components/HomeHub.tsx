@@ -69,7 +69,7 @@ import { UserDetailedAddress } from '../types/address';
 import { UserProfile } from '../types/auth';
 import { STATS_BADGE_EN, PORTAL_NEWS_EN } from '../لغات/localizedHub';
 import { isRTL } from '../لغات/localizedContent';
-import { LText, makeT, loc, fmt, LOCALE_MAP } from '../لغات/localize';
+import { LText, makeT, loc, fmt, LOCALE_MAP, pickArEn } from '../لغات/localize';
 import { uiLabel } from '../لغات/uiTextL10n';
 import { designersText } from '../لغات/designersL10n';
 import { loadLiveNews, relativeTime, type NewsFile } from '../utils/liveNews';
@@ -186,7 +186,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
   // «شحن مجاني» is a promise with money behind it: it is only shown when the merchant approved it in
   // src/data/shipping.json (`freeShippingAboveEgp`), the threshold is shown in the visitor's own currency,
   // and the same table makes checkout charge it. No approved offer → the banner says nothing about it.
-  const storeMoney = useStoreMoney(currentLang, currentLang === 'ar' ? 'ج.م' : 'EGP');
+  const storeMoney = useStoreMoney(currentLang, pickArEn(currentLang, 'ج.م', 'EGP'));
   const freeShipping = freeShippingOffer();
   const freeShippingLine = freeShipping
     ? freeShippingSentence(freeShipping, storeMoney.price(freeShipping.thresholdEgp), currentLang)
@@ -327,12 +327,12 @@ export const HomeHub: React.FC<HomeHubProps> = ({
   useEffect(() => { let alive = true; loadLiveNews().then((d) => { if (alive) setLiveNews(d); }, () => {}); return () => { alive = false; }; }, []);
   const liveHeadlines: PortalNewsItem[] = (liveNews?.items || []).slice(0, 6).map((item) => ({
     id: `live-${item.id}`,
-    badge: currentLang === 'ar' ? '📡 خبر حقيقي' : '📡 Live news',
+    badge: pickArEn(currentLang, '📡 خبر حقيقي', '📡 Live news'),
     title: currentLang === 'ar' ? item.title.ar : item.title.en,
     description: currentLang === 'ar' ? item.summary.ar : item.summary.en,
     metric: item.source,
     timestamp: relativeTime(item.publishedAt || liveNews!.updatedAt, LOCALE_MAP[currentLang] || 'en'),
-    actionHint: currentLang === 'ar' ? 'كل أخبار العطور' : 'All perfume news',
+    actionHint: pickArEn(currentLang, 'كل أخبار العطور', 'All perfume news'),
   }));
 
   // Dynamic news definitions utilizing live state
@@ -1181,7 +1181,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
               className="inline-flex items-center gap-2 rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-2.5 text-xs font-bold text-amber-100 transition hover:border-amber-300 hover:bg-amber-300/20 focus:outline-none focus:ring-2 focus:ring-amber-300"
             >
               <Atom className="h-4 w-4 text-amber-300" />
-              <span>{currentLang === 'ar' ? 'افتح مختبر تركيب وتحليل العطور' : 'Open the perfume composition studio'}</span>
+              <span>{pickArEn(currentLang, 'افتح مختبر تركيب وتحليل العطور', 'Open the perfume composition studio')}</span>
             </button>
             <button
               type="button"

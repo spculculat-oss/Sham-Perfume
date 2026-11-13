@@ -28,7 +28,7 @@ import {
 import { wsText } from '../workspace/strings';
 import { SupportedLanguage } from '../types/i18n';
 import { t } from '../لغات/i18n';
-import { LText, makeT } from '../لغات/localize';
+import { LText, makeT, pickArEn } from '../لغات/localize';
 import { isRTL } from '../لغات/localizedContent';
 import { uiLabel } from '../لغات/uiTextL10n';
 import { cosmeticsText } from '../لغات/cosmeticsL10n';
@@ -106,7 +106,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
   };
 
   // Deep routes («community/messenger/<id>», «store/<slug>»…) show their section's name, never the raw route.
-  tabConfigs.community = { label: currentLang === 'ar' ? 'مجتمع شام' : 'Sham Community', icon: Users };
+  tabConfigs.community = { label: pickArEn(currentLang, 'مجتمع شام', 'Sham Community'), icon: Users };
   const configFor = (tab: string) => tabConfigs[tab] || tabConfigs[tab.split('/')[0]];
   const prettify = (tab: string) => tab.split('/')[0].replace(/_/g, ' ');
   const currentConfig = configFor(activeTab) || { label: prettify(activeTab), icon: Sparkles };

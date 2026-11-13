@@ -39,6 +39,7 @@ import {
 import commercialMan from '../assets/images/perfume_art_spray_man_1792313195183.jpg';
 import commercialWoman from '../assets/images/perfume_art_spray_woman_1792313196930.jpg';
 import commercialMist from '../assets/images/perfume_mist_cinematic_1792313197406.jpg';
+import { pickArEn } from '../لغات/localize';
 
 interface TopPromoHubProps {
   currentLang?: SupportedLanguage;
@@ -146,7 +147,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
   );
   const safeIndex = showcaseProducts.length ? Math.min(productSlideIndex, showcaseProducts.length - 1) : 0;
   const activeProduct: StoreProduct | undefined = showcaseProducts[safeIndex];
-  const money = useStoreMoney(currentLang, currentLang === 'ar' ? 'ج.م' : 'EGP');
+  const money = useStoreMoney(currentLang, pickArEn(currentLang, 'ج.م', 'EGP'));
 
   /** First photo of the product that has not failed to load (falls back to its other photos). */
   const photoOf = (p: StoreProduct): string | undefined => (p.images.length ? p.images : p.imageUrl ? [p.imageUrl] : []).find((u) => !failedImages[u]);

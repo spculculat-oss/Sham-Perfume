@@ -2,7 +2,7 @@
  * Reads the robots' reports and their last GitHub Actions run — shared by the pre-meeting check
  * (precheck.mts) and the meeting (run.mts, when the check is missing or old).
  */
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { BOTS } from '../../src/utils/shaheenOrg';
 import type { RunInfo } from './precheck';
 
@@ -14,6 +14,23 @@ export function readReports(): Record<string, unknown> {
   const names = new Set(BOTS.map((b) => b.report).filter(Boolean) as string[]);
   names.add('ai-supervisor.json');
   return Object.fromEntries([...names].map((n) => [n, readLive(n)]));
+}
+
+/** A workflow that runs by itself on a timer (a `schedule:` trigger with a `cron:` line, not just a comment). */
+export const hasSchedule = (yaml: string) => /^\s+schedule:\s*(?:#.*)?$/m.test(yaml) && /^\s*-\s*cron:/m.test(yaml);
+/**
+ * The robots' workflows that run only when someone starts them — the owner's decision (2026-11): no robot runs on a
+ * timer on GitHub any more. Their reports age by design; that is not a breakdown.
+ */
+export function onDemandWorkflows(dir = new URL('../../.github/workflows/', import.meta.url)): Set<string> {
+  const out = new Set<string>();
+  try {
+    for (const name of readdirSync(dir)) {
+      if (!/\.ya?ml$/.test(name)) continue;
+      try { if (!hasSchedule(readFileSync(new URL(name, dir), 'utf8'))) out.add(name); } catch { /* unreadable: treat as scheduled */ }
+    }
+  } catch { /* no workflows folder (a copy without .github): nothing is on demand */ }
+  return out;
 }
 
 const api = async (url: string, token: string): Promise<unknown> => {

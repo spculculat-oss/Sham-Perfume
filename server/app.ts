@@ -1,3 +1,4 @@
+import { createToolAgentRouter } from './agentRouter';
 import express from 'express';
 import dotenv from 'dotenv';
 import { createShaheenRouter } from './shaheen';
@@ -12,6 +13,7 @@ import { liveNews, supervisorGuidance } from './core/liveData';
 import { articlesFromCollected } from './newsFallback';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { createWorkspaceRouter } from './workspace';
+import { createNewsRouter } from './newsExplain';
 import { corsMiddleware } from './cors';
 import { createCommunity, createCommunityRouter } from './community/router';
 import { createContractsRouter } from './contracts/router';
@@ -60,6 +62,7 @@ app.get('/api/fx', async (_req, res) => {
 
 // «الخبير شاهين»: GET /api/models + POST /api/chat. Settings come from server/config/shaheen.ts and the
 // admin dashboard, so both sites (Vercel and GitHub Pages, which calls this API) behave the same.
+app.use('/api/agent', createToolAgentRouter({ repo: shamCore.repo, runtime: shamCore.runtime }));
 app.use('/api', createShaheenRouter({ repo: shamCore.repo, runtime: shamCore.runtime, memory: shamCore.memory }));
 // «مجلس المتخصصين»: وكيل الاستشارة الذكي بأدواته (مدرسة شاهين وعلومها، الذاكرة، المكتبة، المواد،
 // حاسبات المعمل، المتجر، النشرة، الملجأ، المصادر المفتوحة) — POST /api/specialists/consult.
@@ -67,6 +70,8 @@ app.use('/api/specialists', createSpecialistsRouter({ repo: shamCore.repo, runti
 app.use('/api', createMediaRouter());
 // «مساحة شاهين»: Shaheen as a general assistant (any subject) — search, reading pages and PDFs, images, the owner's Notion/Slack.
 app.use('/api/workspace', createWorkspaceRouter());
+// «نشرة شاهين — شاهين يشرحلك الخبر»: POST /api/news/explain (server/newsExplain.ts).
+app.use('/api/news', createNewsRouter());
 // «منارة شاهين»: the live SEO files and the public status snapshot. The static build also ships copies of
 // robots/sitemap/llms/feed, so crawlers are served even on GitHub Pages.
 app.use('/api', createSeoRouter(shamCore.seo));

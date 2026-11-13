@@ -1,8 +1,8 @@
 {
  "version": 1,
- "updatedAt": "2026-11-11T18:40:07.473Z",
+ "updatedAt": "2026-11-13T03:28:52.785Z",
  "sources": {
-  "catalogAt": "2026-11-11T18:32:23.373Z",
+  "catalogAt": "2026-11-12T23:44:49.270Z",
   "total": 1212,
   "published": 1161,
   "liveStock": true,
@@ -62,6 +62,14 @@
    "sku": "LAT-287",
    "nameAr": "آرت أوف يونيفيرس من لطافة برايد ماء عطر 100 مل",
    "brand": "Lattafa Pride",
+   "priority": "normal",
+   "units30": 0,
+   "reasonAr": "نفد"
+  },
+  {
+   "sku": "OSM-951",
+   "nameAr": "آمبر إيه أمبر آند ليذر 75 مل ماء عطر",
+   "brand": "Osma",
    "priority": "normal",
    "units30": 0,
    "reasonAr": "نفد"
@@ -430,14 +438,6 @@
    "sku": "ARM-600",
    "nameAr": "أوديسي هوم من أرماف للرجال",
    "brand": "Armaf",
-   "priority": "normal",
-   "units30": 0,
-   "reasonAr": "نفد"
-  },
-  {
-   "sku": "OSM-951",
-   "nameAr": "أوسما أمبر إي العنبر والجلد 75 مل",
-   "brand": "Osma",
    "priority": "normal",
    "units30": 0,
    "reasonAr": "نفد"

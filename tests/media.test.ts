@@ -89,20 +89,23 @@ test('images come from Wikimedia Commons with credit, filtered by type, size and
   assert.equal(result.source, 'wikimedia');
 });
 
-test('image search drops synonym noise and retries a long topic with fewer words', async () => {
+test('image search preserves qualifiers instead of broadening an empty topic', async () => {
   const asked: string[] = [];
-  const result = await searchImages('agarwood resin chips', { fetch: (async (u: string) => {
-    const q = new URL(u).searchParams.get('gsrsearch') || '';
-    asked.push(q);
-    if (q !== 'agarwood filetype:bitmap') return json({ batchcomplete: '' });
+  const result = await searchImages('welding porosity', { fetch: (async (u: string) => {
+    asked.push(new URL(u).searchParams.get('gsrsearch') || '');
     return json({ query: { pages: {
-      a: page(1, 'File:Agarwood top grade.jpg'),
-      b: page(2, 'File:Huis Oud Wulven bij Houten.jpg'),
-      c: page(3, 'File:Infected Agarwoods Aquilaria Malaysia.jpg'),
+      a: page(1, 'File:Welding machine.jpg'),
+      b: page(2, 'File:Skin porosity.jpg'),
+      c: page(3, 'File:Perfume bottle.jpg'),
     } } });
   }) as typeof fetch });
-  assert.deepEqual(asked, ['agarwood resin chips filetype:bitmap', 'agarwood resin filetype:bitmap', 'agarwood filetype:bitmap']);
-  assert.deepEqual(result.images.map((i) => i.title), ['Agarwood top grade', 'Infected Agarwoods Aquilaria Malaysia']);
+  assert.deepEqual(asked, ['welding porosity filetype:bitmap']);
+  assert.deepEqual(result.images, []);
+  const relevant = await searchImages('welding porosity diagram', { fetch: (async () => json({ query: { pages: {
+    a: page(1, 'File:Welding machine.jpg'),
+    b: page(2, 'File:Welding porosity cross section.jpg'),
+  } } })) as typeof fetch });
+  assert.deepEqual(relevant.images.map((i) => i.title), ['Welding porosity cross section']);
 });
 
 test('image captions are readable for visitors (live: a Malayalam file title on a rose image)', async () => {
@@ -157,7 +160,7 @@ test('GET /api/media validates, caches and rate-limits lookups', async () => {
   const app = express();
   app.use('/api', createMediaRouter({ env: { SHAM_MEDIA_RATE_PER_MIN: '3' }, fetch: (async () => {
     upstream++;
-    return json({ query: { pages: { a: page(1, `File:Rose ${upstream}.jpg`) } } });
+    return json({ query: { pages: { a: page(1, `File:Damask Rose petals ${upstream}.jpg`) } } });
   }) as typeof fetch }));
   const server = app.listen(0);
   const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}/api/media`;
@@ -167,7 +170,7 @@ test('GET /api/media validates, caches and rate-limits lookups', async () => {
     const first = await fetch(`${base}?type=image&q=Damask%20rose%20petals`);
     assert.equal(first.status, 200);
     const body = await first.json() as { images: { title: string }[] };
-    assert.equal(body.images[0].title, 'Rose'); // «Rose 1.jpg»: the file number is not part of the caption
+    assert.equal(body.images[0].title, 'Damask Rose petals'); // «Rose 1.jpg»: the file number is not part of the caption
     // Same topic again (any case): served from the cache.
     await fetch(`${base}?type=image&q=damask%20ROSE%20petals`);
     assert.equal(upstream, 1);

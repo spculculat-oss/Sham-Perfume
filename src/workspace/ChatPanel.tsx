@@ -1,10 +1,17 @@
+import { realPhotoReply } from '../utils/realPhotos';
+import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
+import { ShaheenMedia } from '../components/ShaheenMedia';
+import { MotionCard } from './MotionCard';
+import { wantsMotion } from './motion';
 import React, { useEffect, useRef, useState } from 'react';
 import { Copy, Globe, Loader2, Paperclip, Plus, Save, Send, Square, Volume2, X } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { ShaheenMarkdown } from '../components/ShaheenMarkdown';
 import { readAloud } from '../utils/readAloud';
-import { ask, errorKey, makeImage, type WsContextFile, type WsSource } from './workspaceApi';
+import { ask, errorKey, makeImage, isGeneratedImageData, type WsContextFile, type WsSource } from './workspaceApi';
 import { imageRequest, segments, stripImageRequest, type CodeBlock } from './codeBlocks';
+import { parseImageRequest } from '../utils/imageCraft';
+import { fitForUpload } from './motion';
 import { CodeCard } from './CodeCard';
 import { ExportMenu } from './ExportMenu';
 import { MAX_FILE_BYTES, saveFile } from './fileStore';
@@ -12,11 +19,12 @@ import { fileText } from './fileText';
 import { safeFileName } from './officeWriters';
 import { parseMarkdown } from './markdownDoc';
 import { wsText, type WsKey } from './strings';
+import { pickArEn } from '../لغات/localize';
 
-export interface ChatItem { role: 'user' | 'assistant'; text: string; sources?: WsSource[]; image?: string; files?: string[]; error?: boolean }
+export interface ChatItem { role: 'user' | 'assistant'; text: string; sources?: WsSource[]; image?: string; files?: string[]; error?: boolean; regenerateImage?: boolean }
 const STORE_KEY = 'sham_workspace_chat_v1';
 export function loadChat(): ChatItem[] {
-  try { const raw = JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); return Array.isArray(raw) ? raw.slice(-60) : []; } catch { return []; }
+  try { const raw = JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); return Array.isArray(raw) ? raw.slice(-60).map((item: ChatItem) => item.image && !isGeneratedImageData(item.image) ? { ...item, image: undefined, regenerateImage: true } : item) : []; } catch { return []; }
 }
 function storeChat(items: ChatItem[]) {
   // Big generated images (data URLs) stay for this visit only.
@@ -57,16 +65,29 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
     const controller = new AbortController();
     abort.current = controller;
     try {
+      const photoReply = realPhotoReply(text, items, lang);
+      if (photoReply) { setItems((prev) => [...prev, { role: 'assistant', text: photoReply }]); return; }
+      // An explicit motion request about an existing image is local, with no extra AI quota.
+      const previousImage = [...items].reverse().find((item) => item.image)?.image;
+      if (previousImage && wantsMotion(text) && /(?:الصورة|الصوره)(?:\s+(?:دي|دى|ده|هذه|ديّه))?|\b(?:this|that|the|my)\s+(?:image|photo|picture)\b/i.test(text)) {
+        setItems((prev) => [...prev, { role: 'assistant', text: w('motion_ready'), image: previousImage }]);
+        return;
+      }
       const messages = next.filter((m) => !m.error).map((m) => ({ role: m.role, text: m.text })).slice(-24);
       const out = await ask({ messages, language: lang, context: files, search: web }, controller.signal);
+      if (controller.signal.aborted) return;
+      // Only generate when the assistant supplies an explicit image request; do not override refusals.
       const wanted = imageRequest(out.reply);
       const reply: ChatItem = { role: 'assistant', text: out.reply, ...(out.sources.length ? { sources: out.sources } : {}) };
       setItems((prev) => [...prev, reply]);
       if (wanted) {
         try {
-          const img = await makeImage(wanted, undefined, controller.signal);
+          // «EDIT: …» changes the picture Shaheen just drew; without one still on screen it is drawn afresh.
+          const asked = parseImageRequest(wanted);
+          const img = await makeImage(asked.prompt, asked.mode === 'edit' && isGeneratedImageData(previousImage) ? await fitForUpload(previousImage) : undefined, controller.signal);
+          if (controller.signal.aborted) return;
           setItems((prev) => prev.map((m) => (m === reply ? { ...m, image: img.src } : m)));
-        } catch { /* the words still answer */ }
+        } catch { if (!controller.signal.aborted) setItems((prev) => prev.map((m) => m === reply ? { ...m, text: `${m.text}\n\n${w('image_failed')}` } : m)); }
       }
     } catch (error) {
       if (!controller.signal.aborted) setItems((prev) => [...prev, { role: 'assistant', text: w(errorKey(error)), error: true }]);
@@ -96,7 +117,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
   };
 
   const askFix = (block: CodeBlock, error: string) => {
-    void send(`${lang === 'ar' ? 'الكود ده طلّع الخطأ ده، صلّحه:' : 'This code fails with the error below — please fix it:'}\n\`\`\`${block.lang}\n${block.code}\n\`\`\`\n\`\`\`\n${error.slice(0, 2000)}\n\`\`\``);
+    void send(`${pickArEn(lang, 'الكود ده طلّع الخطأ ده، صلّحه:', 'This code fails with the error below — please fix it:')}\n\`\`\`${block.lang}\n${block.code}\n\`\`\`\n\`\`\`\n${error.slice(0, 2000)}\n\`\`\``);
   };
 
   return (
@@ -115,11 +136,13 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
                 </>
               ) : (
                 <div dir="auto" className="space-y-1">
-                  {segments(stripImageRequest(m.text)).map((s, j) => (s.kind === 'text'
+                  {segments(stripMediaBlock(stripImageRequest(m.text))).map((s, j) => (s.kind === 'text'
                     ? <ShaheenMarkdown key={j} text={s.text} />
                     : <CodeCard key={j} block={s.block} lang={lang} index={j + 1} onOpenEditor={onOpenEditor} onAskFix={askFix} />))}
                   {imageRequest(m.text) && !m.image && busy && i === items.length - 1 && <p className="text-[12px] text-stone-500"><Loader2 className="inline h-3 w-3 animate-spin" /> {w('drawing')}</p>}
-                  {m.image && <img src={m.image} alt={imageRequest(m.text) || ''} className="mt-2 max-w-full rounded-xl border border-stone-200" loading="lazy" />}
+                  {extractMediaRequest(m.text) && <ShaheenMedia request={extractMediaRequest(m.text)!} lang={lang} />}
+                  {m.regenerateImage && <p role="status" className="text-xs text-stone-600">{w('image_regenerate')}</p>}
+                  {m.image && <MotionCard src={m.image} lang={lang} />}
                   {m.sources?.length ? (
                     <details className="mt-2 text-[12px]">
                       <summary className="cursor-pointer font-bold text-stone-600">{w('sources')} ({m.sources.length})</summary>

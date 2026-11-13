@@ -1,3 +1,4 @@
+import { ShaheenAgentPanel, ShaheenAgentReport } from './ShaheenAgentPanel';
 import { useChatPrices } from '../utils/storeCheckout';
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
@@ -324,7 +325,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
       }
       // Said the way Shaheen talks (numbers, prices and lists as people say them), in the visitor's dialect.
       setIsSpeaking(true);
-      readAloud(text, { language: currentLang, dialect: voice.dialect, onEnd: () => setIsSpeaking(false) });
+      readAloud(text, { language: currentLang, dialect: voice.dialect, onEnd: () => setIsSpeaking(false), onNoVoice: voice.reportNoVoice });
     }
   };
 
@@ -419,6 +420,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   return (
     <div className="space-y-4">
       <StaticHostingNotice currentLang={currentLang} />
+            <ShaheenAgentPanel language={currentLang} />
       {/* 1. Compact Slim Header with Expiry Info & Controls */}
       <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200/90 shadow-2xs flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -695,6 +697,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                       {activeDisplayContent}
                     </div>
                   )}
+                      <ShaheenAgentReport report={m.toolReport} language={currentLang} />
 
                   {isError && isLastMessage && (
                     <button

@@ -1,3 +1,5 @@
+import { REAL_PHOTO_INSTRUCTION, realPhotoReply } from '../src/utils/realPhotos';
+import { CONTINUITY_INSTRUCTION, contextualMessage, isContextFollowUp } from '../src/utils/conversationContext';
 import { createResearchSpider } from '../src/utils/researchSpider';
 /**
  * «الخبير شاهين» — the perfume-design chat (floating window + the lab page).
@@ -12,6 +14,7 @@ import { createResearchSpider } from '../src/utils/researchSpider';
 import express from 'express';
 import { liveStoreCatalog, newsContext, supervisorGuidance, trainedKnowledge } from './core/liveData';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
+import { regionalLocale, regionInstruction } from '../src/utils/languageRegion';
 import { localizeReply, needsTranslation, translationInstruction, TranslationCache, type TranslateFn } from './core/replyLanguage';
 import type { SupportedLanguage } from '../src/types/i18n';
 import { normalizeMediaBlocks } from '../src/utils/mediaBlock';
@@ -26,7 +29,7 @@ import { isPersonal, isTimeBound, offlineNote } from '../src/utils/shaheenMemory
 import { libraryAnswer, unknownAnswer, type LibrarySources } from '../src/utils/shaheenLibrary';
 import { designFor } from '../src/utils/shaheenDesigner';
 import { cosmeticFor } from '../src/utils/cosmeticFormulator';
-import { designStoreNote, productLink, storeAnswer, wantsStore, withContext, type Context } from '../src/utils/shaheenBrain';
+import { currentQuestion, designStoreNote, productLink, storeAnswer, wantsStore, withContext, type Context } from '../src/utils/shaheenBrain';
 import { saleMove, salesAnswer } from '../src/utils/shaheenSeller';
 import { buyerHint, polishSale, readBuyer, salesPromptBlock } from '../src/utils/salesCraft';
 import { polishRelations, readSituation, relationsAnswer, relationsPromptBlock, socialHint } from '../src/utils/shaheenRelations';
@@ -65,6 +68,8 @@ export interface ChatRequest {
   conversationHistory: ChatTurn[];
   /** «لهجات شاهين»: the Arabic he answers in (Arabic conversations only). */
   dialect?: Dialect;
+  /** «بلغة بلده»: the country whose own variant of a non-Arabic language he answers in (`CA` for French → Canadian). */
+  region?: string;
   /** «التحدث مع شاهين»: the reply will be read aloud; `interrupted` = what he had said when the visitor cut in. */
   voice?: { interrupted?: string;
     /** «شاهين يصحح اللي اتسمع غلط»: heard words read as others before sending; `confirmed` = the visitor said yes to «قصدك …؟». */
@@ -128,6 +133,10 @@ export function validateChatRequest(body: unknown, country?: string): ChatReques
     const spoken = resolveDialect({ choice: dialect, texts: said, country: country ?? (body as Record<string, unknown>).country });
     // Egyptian is the instruction's own default, so only another dialect is carried.
     if (spoken !== 'egyptian') request.dialect = spoken;
+  } else {
+    // «بلغة بلده ولهجتها»: French from Canada, Spanish from Mexico, Portuguese from Brazil… (only where it differs).
+    const from = country ?? (body as Record<string, unknown>).country;
+    if (regionalLocale(language as SupportedLanguage, from)) request.region = String(from).trim().toUpperCase();
   }
   if (voice && typeof voice === 'object' && !Array.isArray(voice)) {
     const cut = (voice as Record<string, unknown>).interrupted;
@@ -279,7 +288,10 @@ export function voiceInstruction(voice: ChatRequest['voice'], dialect?: Dialect,
     + 'ممكن تختم بسؤال قصير واحد بس لو بيكمّل النقاش. سياج sham-formula أو sham-tool لو لازم يفضل في آخر الرد زي ما هو (مش هيتقال).';
   const group = !dialect || dialect === 'egyptian' ? 'egyptian' : dialect === 'gulf' || dialect === 'levantine' || dialect === 'msa' ? dialect : 'other';
   const ex = TALK_EXAMPLES[group];
-  const pair = language !== 'ar' ? '' : `\nمثال للفرق (الفكرة بس، مش المنتجات ولا الأسعار): لما زائر قال «${ex.asked}» — رد مكتوب غلط في الصوت: «${ex.written}» — `
+  // Another site language: the same talk rules, in that language as its people say it (not Arabic, not a translation).
+  const own = language === 'ar' ? '' : `\nالمحادثة بلغة الزائر (${SUPPORTED_LANGUAGES.find((lang) => lang.code === language)?.name || language}): طبّق القواعد دي بلغته هو مش بالعربي — `
+    + 'كلام طبيعي زي ما أهل بلده بيتكلموا مش ترجمة حرفية، والأرقام والأسعار والوحدات بالكلمات زي ما بتتقال في لغته، وأسماء الماركات بنطقها المعروف عندهم.';
+  const pair = language !== 'ar' ? own : `\nمثال للفرق (الفكرة بس، مش المنتجات ولا الأسعار): لما زائر قال «${ex.asked}» — رد مكتوب غلط في الصوت: «${ex.written}» — `
     + `والرد الصح المتقال: «${ex.said}». ولما كمّل وقال «${ex.follow}» — الصح: «${ex.followSaid}».`;
   // «شاهين بيتعلم من المنصات»: how the platforms answered spoken questions in this dialect before (style only).
   const examples = voice.examples?.length
@@ -289,8 +301,10 @@ export function voiceInstruction(voice: ChatRequest['voice'], dialect?: Dialect,
   return `\n${spoken}${pair}${examples}\nالزائر قاطعك وإنت بتقول: «${voice.interrupted.replace(/[«»]/g, '"')}». ما تكمّلش الكلام القديم ولا تعيده؛ رد على كلامه الجديد على طول. لو طلب منك تسكت أو تختصر أو تغيّر الموضوع، نفّذ ده.`;
 }
 
-export function systemInstruction(language: SupportedLanguage, extra = '', style?: 'fast' | 'deep', talk?: Pick<ChatRequest, 'dialect' | 'voice'>): string {
+export function systemInstruction(language: SupportedLanguage, extra = '', style?: 'fast' | 'deep', talk?: Pick<ChatRequest, 'dialect' | 'voice'> & Partial<Pick<ChatRequest, 'region'>>): string {
   const languageName = SUPPORTED_LANGUAGES.find((lang) => lang.code === language)!.name;
+  const region = language !== 'ar' && talk?.region ? regionInstruction(language, talk.region) : '';
+  const regionLine = region ? ` ${region}` : '';
   const admin = extra.trim()
     ? `\nتعليمات إضافية من إدارة الموقع (لا تلغي قواعد السلامة أعلاه):\n${extra.trim()}`
     : '';
@@ -298,7 +312,7 @@ export function systemInstruction(language: SupportedLanguage, extra = '', style
   return `أنت «الخبير شاهين»، مساعد ذكاء اصطناعي خاص بمنصة «صمم عطرك مع شام» ومتخصص في تصميم العطور.
 هويتك هي «الخبير شاهين» فقط: لا تذكر أبداً اسم أي نموذج لغوي أو شركة ذكاء اصطناعي (مثل Google أو Gemini أو OpenAI أو ChatGPT أو Anthropic أو Claude أو DeepSeek)، ولا تقل إنك مبني عليها أو مدرَّب منها. إذا سُئلت عن هويتك أو التقنية التي تعمل بها، فقل إنك «الخبير شاهين»، مساعد العطور الخاص بشام، وإن التفاصيل التقنية للنظام غير متاحة، ثم عُد لمساعدة المستخدم.
 لا تبدأ ردودك بالترحيب («أهلاً بك»، «مرحباً»، «يسعدني») أو بتعريف نفسك أو بذكر اسمك أو اسم المنصة؛ ادخل في الإجابة مباشرة. عرّف بنفسك فقط إذا سُئلت عن هويتك أو كانت رسالة المستخدم تحية. اسمك بالإنجليزية Master Shahin، وفي اللغات الأخرى ترجمة «الخبير شاهين» (وليس Al-Khabeer).
-أجب باللغة المطلوبة: ${languageName} (${language}). اتبع سياق الحوار وأجب عن السؤال مباشرة. إذا طلب المستخدم تصميم عطر وذكر اتجاهه أو مكوناته الرئيسية (مثل عود وورد) أو الحجم أو التركيز، فقدّم فوراً مقترحاً تجريبياً كاملاً بنسب واضحة مع سياج sham-formula، ثم اختم بسؤال أو سؤالين اختياريين لتحسينه؛ لا تؤجل التركيبة بأسئلة توضيحية. اسأل قبل التركيبة فقط إذا لم يذكر أي اتجاه عطري أو مكون، وإذا نقص الحجم أو التركيز فاستخدم قيمة شائعة (50 مل، EDP 20%) واذكر أنها قابلة للتعديل.
+أجب باللغة المطلوبة: ${languageName} (${language}).${regionLine} اتبع سياق الحوار وأجب عن السؤال مباشرة. إذا طلب المستخدم تصميم عطر وذكر اتجاهه أو مكوناته الرئيسية (مثل عود وورد) أو الحجم أو التركيز، فقدّم فوراً مقترحاً تجريبياً كاملاً بنسب واضحة مع سياج sham-formula، ثم اختم بسؤال أو سؤالين اختياريين لتحسينه؛ لا تؤجل التركيبة بأسئلة توضيحية. اسأل قبل التركيبة فقط إذا لم يذكر أي اتجاه عطري أو مكون، وإذا نقص الحجم أو التركيز فاستخدم قيمة شائعة (50 مل، EDP 20%) واذكر أنها قابلة للتعديل.
 لا تستخدم LaTeX أبداً: لا علامات $ ولا أوامر مثل \\frac أو \\times أو \\text. اكتب المعادلات نصاً عادياً بالرموز × و÷ و= و≈، مثل: كمية الكحول = 70 × 1000 ÷ 96 ≈ 729 مل.
 كن واضحاً وودوداً، واتعامل كخبير طبيعي في حوار متصل: افهم المقصود من الكلام والسياق، ${dialectInstruction(talk?.dialect || 'egyptian').replace(/\.$/, '')}، وادخل في الإجابة من غير مقدمات آلية أو تكرار السؤال. اسأل سؤال توضيح واحداً بس لما يلزم. حلل داخلياً، ولا تعرض سلسلة تفكيرك.
 قبل الرد افحص صلة الإجابة بالسؤال ومدى دعمها بمراجع شاهين الموثقة أو بمصادر البحث المتاحة؛ قارن المعلومات، واستبعد الخارج عن الموضوع أو المتعارض أو غير المدعوم. لو الدليل مش كفاية، قول إنك مش متأكد بدل ما تعرضه كحقيقة مدققة.
@@ -318,7 +332,7 @@ ${relationsPromptBlock('ar')}
 للمقارنات والنِّسب والخصائص (مثل مقارنة مواد، عائلات عطرية، تركيزات EDP/EDT، مدد التعتيق) اعرضها في جدول Markdown واضح بأعمدة قليلة.
 عندما تفيد الصور أو الفيديو في التوضيح فعلاً (شكل مادة خام أو نبات أو راتنج، أدوات المختبر، طرق الاستخلاص والتقطير والنقع، ورائحة لا تكفيها الكلمات) أو طلبها المستخدم، ابدأ ردك بسياج واحد باسم sham-media يحتوي JSON فقط، ثم اكتب الشرح بعده. وعندما يكون للسؤال بُعد جغرافي (منشأ مادة خام، مزارع الورد أو العود أو اللافندر، مدن ومتاحف وأسواق العطور، أين تُزرع نبتة) أضف places في نفس السياج ليعرضها الموقع على خريطة. السياج إلزامي كلما طلب المستخدم صوراً أو فيديو أو خريطة أو أماكن أو قال «وريني» أو show me. مثال:
 {"images":["agarwood","Aquilaria"],"videos":["steam distillation of essential oils"],"places":["Assam, India","Hainan, China"]}
-images حتى عبارتي بحث بالإنجليزية من كلمة إلى ثلاث كلمات (الاسم الشائع أو العلمي للمادة أو النبات أو الأداة، مثل agarwood أو Rosa damascena أو ambergris أو distillation apparatus)، وvideos عبارة بحث واحدة بلغة المستخدم أو بالإنجليزية، وplaces حتى 5 أماكن حقيقية معروفة بالإنجليزية بصيغة «المكان، الدولة» (مدينة أو منطقة أو معلم مثل Grasse, France أو Taif, Saudi Arabia أو Kannauj, India) تخص السؤال نفسه فقط، ولا تضع أبداً مقرات شركات أو ماركات أو متاجر، وكل مفتاح اختياري فاكتب المفيد منها فقط. سيعرض الموقع صوراً وفيديوهات وخريطة حقيقية من مصادر موثوقة. اكتب السياج باسم sham-media حرفياً (وليس json) وأغلقه بثلاث علامات \`\`\`. لا تكتب أبداً روابط صور أو فيديو أو خرائط أو إحداثيات أو صيغة ![]() بنفسك، ولا تحِل المستخدم إلى تطبيقات أو مواقع خرائط أو بحث خارجية؛ الموقع يعرض الخريطة والصور بنفسه، ولا تَعِد بصورة لم تطلبها في السياج، ولا تذكر السياج في الشرح. لا تضف sham-media للتحيات أو الأسئلة الطبية أو الأسئلة التي لا يفيدها التوضيح المرئي.${voiceInstruction(talk?.voice, talk?.dialect, language)}${mode}${admin}`;
+images حتى عبارتي بحث بالإنجليزية محددتين للموضوع والصفة، حتى ثمان كلمات (الاسم الشائع أو العلمي للمادة أو النبات أو الأداة، مثل agarwood أو Rosa damascena أو ambergris أو distillation apparatus)، وvideos عبارة بحث واحدة بلغة المستخدم أو بالإنجليزية، وplaces حتى 5 أماكن حقيقية معروفة بالإنجليزية بصيغة «المكان، الدولة» (مدينة أو منطقة أو معلم مثل Grasse, France أو Taif, Saudi Arabia أو Kannauj, India) تخص السؤال نفسه فقط، ولا تضع أبداً مقرات شركات أو ماركات أو متاجر، وكل مفتاح اختياري فاكتب المفيد منها فقط. سيعرض الموقع صوراً وفيديوهات وخريطة حقيقية من مصادر موثوقة. اكتب السياج باسم sham-media حرفياً (وليس json) وأغلقه بثلاث علامات \`\`\`. لا تكتب أبداً روابط صور أو فيديو أو خرائط أو إحداثيات أو صيغة ![]() بنفسك، ولا تحِل المستخدم إلى تطبيقات أو مواقع خرائط أو بحث خارجية؛ الموقع يعرض الخريطة والصور بنفسه، ولا تَعِد بصورة لم تطلبها في السياج، ولا تذكر السياج في الشرح. لا تضف sham-media للتحيات أو الأسئلة الطبية أو الأسئلة التي لا يفيدها التوضيح المرئي.${CONTINUITY_INSTRUCTION}\n${REAL_PHOTO_INSTRUCTION}${voiceInstruction(talk?.voice, talk?.dialect, language)}${mode}${admin}`;
 }
 
 /**
@@ -402,7 +416,7 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   // A deep analysis plus its formula block used to be cut before the closing fence: give it room.
   const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
     : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
-  const turns: ChatTurn[] = [...input.conversationHistory, { role: 'user', text: input.message }];
+  const turns: ChatTurn[] = [...input.conversationHistory, { role: 'user', text: contextualMessage(input.message, input.conversationHistory) }];
   const lite = requested === 'auto' && env.SHAM_LITE_ROUTING?.trim().toLowerCase() !== 'off' && isSimpleQuestion(input);
   let timedOut = false;
   const attempt = async (provider: Provider): Promise<{ outcome: 'ok'; value: ChatAnswer } | { outcome: 'next' | 'limited'; retryMs?: number }> => {
@@ -479,7 +493,7 @@ async function executeCouncil(input: ChatRequest, options: ExecuteOptions, env: 
   const signal = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 52000), ...(options.signal ? [options.signal] : [])]);
   const lang = input.language === 'ar' || input.language === 'fa' ? 'ar' : 'en';
   const result = await runCouncil({
-    question: input.message, history: input.conversationHistory.slice(-6), lang,
+    question: contextualMessage(input.message, input.conversationHistory), history: input.conversationHistory.slice(-6), lang,
     languageName: `${SUPPORTED_LANGUAGES.find((l) => l.code === input.language)!.name} (${input.language})`,
     briefing: `CONTEXT (Shaheen's rules — follow them):\n${systemInstruction(input.language, settings.instructions, undefined, input)}${await supervisorGuidance('shaheen_chat', env).catch(() => '')}\nENABLED SERVICES: the lab calculators on this site and the Sham assistant for orders.`,
     council, enginePolicy: settings.engines, temperature: settings.temperature, env, fetch: options.fetch, signal, onStep: () => {},
@@ -732,7 +746,8 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
       // A perfume named from the store, or a wish for one: answered from the catalogue (live prices, no platform needed).
       const named = linkOn ? productAnswer(await products().catch(() => []), ctx, input.language, link) : undefined;
-      if (linkOn && (named || wantsStore(ctx.text))) {
+      const presentationFollowUp = ctx.followUp && isContextFollowUp(currentQuestion(ctx));
+      if (linkOn && (named || (!presentationFollowUp && wantsStore(ctx.text)))) {
         const answer = named || storeAnswer(await products().catch(() => []), ctx, input.language, link);
         if (answer) {
           send(answer.reply, 'store', { memory: 'store', store: { picks: answer.picks.map((p) => p.sku), matched: answer.matched, followUp: ctx.followUp } });
@@ -796,6 +811,12 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       const own = switchMode === 'off' || (switchMode === 'auto' && !platformsReady(shaheen, env, health));
       const useMemory = Boolean(shaheen.enabled && (own || (memory && req.body?.memory !== false)));
       const mode = shaheen.allowVisitorChoice ? input.model : 'auto';
+      const photoReply = shaheen.enabled ? realPhotoReply(input.message, input.conversationHistory, input.language) : undefined;
+      if (photoReply) {
+        if (!res.destroyed) res.json(publicChatResult({ reply: photoReply, mode }, input.message));
+        runtime?.record({ ms: Date.now() - started, status: 200 });
+        return;
+      }
       if (isSourcesFollowUp(input.message)) {
         const previousAnswer = [...input.conversationHistory].reverse().find((turn) => turn.role === 'assistant');
         let sources = previousAnswer?.sources;

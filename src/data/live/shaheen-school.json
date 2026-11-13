@@ -1,16 +1,16 @@
 {
  "version": 1,
- "updatedAt": "2026-11-12T08:30:09.951Z",
+ "updatedAt": "2026-11-13T03:30:47.282Z",
  "reliance": {
   "score": 100,
-  "covered": 1352,
-  "total": 1353,
-  "fromMemory": 1352,
+  "covered": 1354,
+  "total": 1354,
+  "fromMemory": 1354,
   "fromLibrary": 0,
   "byLang": {
    "ar": {
-    "covered": 1331,
-    "total": 1332
+    "covered": 1333,
+    "total": 1333
    },
    "en": {
     "covered": 21,
@@ -19,8 +19,14 @@
   }
  },
  "studiedTotal": 142,
- "selfTaughtTotal": 1086,
+ "selfTaughtTotal": 1087,
  "history": [
+  {
+   "at": "2026-11-13T03:30:47.282Z",
+   "score": 100,
+   "studied": 1,
+   "mode": "self"
+  },
   {
    "at": "2026-11-12T08:30:09.951Z",
    "score": 100,
@@ -374,12 +380,6 @@
    "score": 100,
    "studied": 0,
    "mode": "self"
-  },
-  {
-   "at": "2026-11-03T12:38:49.118Z",
-   "score": 100,
-   "studied": 0,
-   "mode": "self"
   }
  ],
  "lastStudied": [
@@ -504,13 +504,7 @@
    "variants": 4
   }
  ],
- "pending": [
-  {
-   "q": "بقول لك يا شاهين هي الامبروكسان بيطلع من البترول الني لا انت كده",
-   "lang": "ar",
-   "topic": "expert:perfume"
-  }
- ],
+ "pending": [],
  "importer": {
   "localShare": 100,
   "aiReadings": 0,
@@ -518,9 +512,9 @@
  },
  "localTaughtTotal": 85,
  "spelling": {
-  "at": "2026-11-12T08:30:09.951Z",
-  "tried": 744,
-  "understood": 707,
+  "at": "2026-11-13T03:30:47.282Z",
+  "tried": 743,
+  "understood": 705,
   "score": 95,
   "misses": [
    "طبييه → طبيه (طبيعيه)",
@@ -534,7 +528,7 @@
   }
  },
  "practice": {
-  "at": "2026-11-12T08:30:09.951Z",
+  "at": "2026-11-13T03:30:47.282Z",
   "total": 15,
   "passed": 15,
   "taught": 4,
@@ -627,15 +621,15 @@
     "id": "check-curriculum",
     "titleAr": "فحص: المنهج مكتمل بلا تكرار",
     "ok": true,
-    "detail": "فُحص فعلاً: 1040 زوج سؤال وجواب، وكل المعرفات فريدة"
+    "detail": "فُحص فعلاً: 1042 زوج سؤال وجواب، وكل المعرفات فريدة"
    }
   ]
  },
  "tracks": {
   "perfume": {
    "covered": 184,
-   "total": 185,
-   "score": 99
+   "total": 184,
+   "score": 100
   },
   "prog_langs": {
    "covered": 106,
@@ -688,8 +682,8 @@
    "score": 100
   },
   "ai_tools": {
-   "covered": 42,
-   "total": 42,
+   "covered": 44,
+   "total": 44,
    "score": 100
   },
   "ai_projects": {
@@ -854,7 +848,7 @@
   }
  },
  "tools": {
-  "at": "2026-11-12T08:30:09.951Z",
+  "at": "2026-11-13T03:30:47.282Z",
   "items": [
    {
     "id": "finance_agent",
@@ -931,6 +925,14 @@
    {
     "id": "media",
     "field": "الوسائط",
+    "covered": 2,
+    "total": 2,
+    "score": 100,
+    "focus": "مجاله مكتمل — يُراجع بالتقرير القادم"
+   },
+   {
+    "id": "shaheen_workspace",
+    "field": "المساعد الشامل",
     "covered": 2,
     "total": 2,
     "score": 100,
@@ -1027,14 +1029,14 @@
   ]
  },
  "blocks": {
-  "at": "2026-11-12T08:30:09.951Z",
+  "at": "2026-11-13T03:30:47.282Z",
   "programs": 4,
   "scheduled": 4,
   "errors": 0,
   "nextRuns": [
    {
     "id": "school-day",
-    "next": "2026-11-12T14:30:09.951Z"
+    "next": "2026-11-13T09:30:47.282Z"
    },
    {
     "id": "site-care",
@@ -1046,7 +1048,7 @@
    },
    {
     "id": "ai-self",
-    "next": "2026-11-12T20:30:09.951Z"
+    "next": "2026-11-13T15:30:47.282Z"
    }
   ]
  }

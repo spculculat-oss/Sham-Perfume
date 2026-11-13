@@ -1,3 +1,4 @@
+import { conversationFocus, isContextFollowUp } from './conversationContext';
 /**
  * «عقل شاهين الموصول» — the owner's complaint (2026-10-22): on his own, Shaheen «doesn't give logical answers, doesn't
  * connect the information, and doesn't give the store's perfumes». Three missing links, all fixed here:
@@ -21,6 +22,7 @@ import { greetingKind } from './shaheenGreeting';
 import type { Design } from './shaheenDesigner';
 import { cleanNote, noteAr, readableNotes } from './noteNames';
 import { FORMAL_RECIPIENTS, closeLine, readBuyer, type BuyerProfile, type Recipient } from './salesCraft';
+import { fixArabicText } from './arabicProductNames';
 
 export interface Turn { role: 'user' | 'assistant'; text: string }
 type Lang = 'ar' | 'en';
@@ -31,11 +33,11 @@ export interface Context {
   /** The question as he works on it (a follow-up carries the subject of the question before it). */
   text: string;
   followUp: boolean;
-  /** The current request/topic carried forward from earlier user turns. */
+  /** The active request before this turn; linked store refinements are kept in order. */
   previous?: string;
-  /** The raw user turns in that linked request, oldest first; their newest criteria override earlier ones. */
+  /** Raw user turns that refined the active request, oldest first. */
   previousTurns?: string[];
-  /** The latest user wording before it is expanded with the carried-forward subject. */
+  /** The new wording of the follow-up before its subject is carried forward. */
   followUpText?: string;
   lastReply?: string;
   /** Everything the visitor said in this conversation, oldest first, this message last — how the seller reads him. */
@@ -47,14 +49,14 @@ export interface Context {
   shownReply?: string;
 }
 
-/** Current turn as asked, not the expanded text used by the reasoning and recommendation code. */
+/** The current turn as asked, not the expanded text used by the reasoning and recommendation code. */
 export function currentQuestion(ctx: Context): string {
   if (!ctx.followUp) return ctx.text;
   return ctx.followUpText ?? (ctx.previous && ctx.text.startsWith(ctx.previous) ? ctx.text.slice(ctx.previous.length).trim() : ctx.text);
 }
 
 const LEAD_IN = /^(?:تمام|ماشي|اوكي|أوكي|طب|طيب|طبعا|طيب و|طب و|ولو|وبالنسبة|بالنسبة|وماذا عن|وايه عن|وإيه عن|و|بس|يعني|what about|how about|and|also|so|ok(?:ay)?)(?=[\s،,]|$)[\s،,]*/i;
-const ANAPHOR = /(?<![\u0600-\u06FF])(?:ده|دي|دا|دى|ديه|دول|هو|هي|هى|منه|منها|منهم|فيه|فيها|فيهم|بيه|بيها|عليه|عليها|انهي|أنهي|انهو|أنهو|ايهم|أيهم|ايهما|أيهما|التلاتة|الاتنين|سعره|سعرها|ثباته|ثباتها|ريحته|ريحتها|رائحته|رائحتها|مكوناته|مكوناتها|تركيزه|تركيزها|خليه|خليها|خليهم|خليهما|خليهن|متوفر|متوفرة|موجود|موجودة|ينفع|يناسب|مناسب|مناسبة)(?![\u0600-\u06FF])|\b(?:it|that|this one|them|those|available)\b/i;
+const ANAPHOR = /(?<![\u0600-\u06FF])(?:ده|دي|دا|دى|ديه|دول|هو|هي|هى|منه|منها|منهم|فيه|فيها|فيهم|بيه|بيها|عليه|عليها|انهي|أنهي|انهو|أنهو|ايهم|أيهم|ايهما|أيهما|التلاتة|الاتنين|سعره|سعرها|ثباته|ثباتها|ريحته|ريحتها|رائحته|رائحتها|مكوناته|مكوناتها|تركيزه|تركيزها|خليه|خليها|خليهم|خليهما|خليهن|متوفر|متوفرة|موجود|موجودة|ينفع|يناسب|مناسب|مناسبة)(?![\u0600-\u06FF])|\b(?:it|that|this one|them|those|which one|these|available)\b/i;
 const MODIFIER_FOLLOWUP = /^(?:و?خلي(?:ه|ها|هم|هما|هن)|و?خلّ(?:يه|يها|يهم|يهما|يهن)|يكون|تكون|يبقى|تبقى|ينفع|يناسب|مناسب|مناسبة)(?=[\s،,؟?]|$)/i;
 const PRODUCT_DETAIL_FOLLOWUP = /(?:السعر|الاسعار|الأسعار|سعر(?:ه|ها)?|بكام|بكم|price|how much|ثبات(?:ه|ها)?|ثابت(?:ة)?|يثبت|يدوم|بي(?:قعد|فضل)|طول.*(?:يقعد|يثبت)|longevity|long.?lasting|ريح(?:ته|تها)|رائح(?:ته|تها)|نوتات(?:ه|ها)?|مكونات(?:ه|ها)?|متوفر(?:ة)?|موجود(?:ة)?|تركيز(?:ه|ها)?|edp|edt|concentration|(?:ينفع|يناسب)(?:ني)?(?=[\s،؟?!]|$)|(?:مناسب|مناسبة|كويس|كويسة|حلو|حلوة)(?=[\s،؟?!]|$)|رأيك|رايك|تستاهل)/i;
 const STORE_EXTENSION = /^(?:(?:و|و?أنا|و?انا)\s*)?(?:ال)?(?:ميزانيتي|ميزانية|ميزانيه|أقل|اقل|فوق|تحت|أعلى|اعلى|أوفر|اوفر|أرخص|ارخص|بدل|في\s+حدود|حدود|بـ?ميزانية|budget|under|below|less\s+than|up\s+to|max(?:imum)?)/i;
@@ -65,21 +67,26 @@ export function isProductDetailQuestion(text: string): boolean {
   return PRODUCT_DETAIL_FOLLOWUP.test(text);
 }
 
-interface LinkedQuestion { followUp: boolean; text: string; followUpText?: string }
+interface LinkedQuestion { followUp: boolean; text: string; followUpText?: string; previous?: string }
 
-/** Decide whether a short turn carries the preceding question's subject and, if so, retain the raw new wording. */
-function linkQuestion(text: string, previous?: string, lastReply?: string, shownReply?: string): LinkedQuestion {
+/** Decide whether a short turn carries the preceding question's subject and, if so, retain its new wording. */
+function linkQuestion(text: string, previous?: string, lastReply?: string, shownReply?: string, history: Turn[] = []): LinkedQuestion {
   const base = { followUp: false, text };
   if (!previous || greetingKind(text) || THANKS.test(text) || greetingKind(previous) || THANKS.test(previous)) return base;
+  if (isContextFollowUp(text)) {
+    const focus = conversationFocus(text, history);
+    if (!focus) return base;
+    const reference = wantsStore(previous) ? previous : focus.question;
+    return { followUp: true, text: `${text} — ${reference}`, followUpText: text, previous: reference };
+  }
+  // An explicit new subject must not inherit an unrelated old one.
+  if (/^(?:(?:هات(?:لي|لى)?|وريني|ورينى|عايز|محتاج)\s+(?:صور|صورة|صوره)|قارن\s|(?:show|give)\s+me\s+(?:images?|photos?|pictures?)\b|compare\s)/i.test(text)) return base;
   const own = topicWords(text.replace(LEAD_IN, ''));
   const lead = LEAD_IN.test(text);
   const short = text.length <= 80;
-  // A product-price/feature question can omit its noun («سعره كام؟»); a clear modifier («خليه للشتا») also carries context.
   const productWasShown = Boolean([lastReply, shownReply].some((reply) => reply && /\/p\/[a-z0-9-]+\.html/.test(reply)));
   const productDetail = productWasShown && PRODUCT_DETAIL_FOLLOWUP.test(text);
   const storeExtension = Boolean(wantsStore(previous) && STORE_EXTENSION.test(text));
-  // A full new question (its own subject, no lead-in, no «it/them») is a new topic.
-  // «ايه هي الطاقة الشمسية» — «هي» there is the question's copula, not «it»; «طب وهي بتثبت؟» is «it».
   const anaphoric = ANAPHOR.test(text.replace(COPULA, ''));
   const follows = short && (lead || anaphoric || own.length <= 1 || MODIFIER_FOLLOWUP.test(text) || productDetail || storeExtension || AMONG.test(text) || COMPARATIVE.test(text));
   if (!follows) return base;
@@ -91,13 +98,14 @@ function linkQuestion(text: string, previous?: string, lastReply?: string, shown
   return { followUp: true, text: subject ? `${rest} ${subject}`.trim() : rest, followUpText: rest };
 }
 
-/** Rebuild the active request through earlier turns, so later follow-ups retain the original criteria. */
+/** Rebuild the active store request through earlier user turns; general presentation follow-ups do not change its criteria. */
 function previousRequest(history: Turn[]): { text?: string; turns: string[] } {
   let current: string | undefined;
   let turns: string[] = [];
   let lastReply: string | undefined;
   const recentReplies: string[] = [];
-  for (const turn of history) {
+  for (let i = 0; i < history.length; i++) {
+    const turn = history[i];
     const text = turn.text.trim();
     if (!text) continue;
     if (turn.role === 'assistant') {
@@ -106,9 +114,10 @@ function previousRequest(history: Turn[]): { text?: string; turns: string[] } {
       if (recentReplies.length > 3) recentReplies.shift();
       continue;
     }
+    if (isContextFollowUp(text)) continue;
     if (!current) { current = text; turns = [text]; continue; }
     const shownReply = [...recentReplies].reverse().find((reply) => /\/p\/[a-z0-9-]+\.html/.test(reply));
-    const linked = linkQuestion(text, current, lastReply, shownReply);
+    const linked = linkQuestion(text, current, lastReply, shownReply, history.slice(0, i));
     if (linked.followUp) { current = linked.text; turns.push(text); }
     else { current = text; turns = [text]; }
   }
@@ -124,8 +133,15 @@ export function withContext(message: string, history: Turn[] = []): Context {
   const said = [...history.filter((t) => t.role === 'user' && t.text.trim()).map((t) => t.text.trim()).slice(-5), text].filter(Boolean);
   const shownReply = history.filter((t) => t.role === 'assistant').slice(-3).reverse().find((t) => /\/p\/[a-z0-9-]+\.html/.test(t.text))?.text;
   const base: Context = { text, followUp: false, ...(previous ? { previous } : {}), ...(request.turns.length ? { previousTurns: request.turns } : {}), ...(lastReply ? { lastReply } : {}), ...(said.length ? { said } : {}), ...(shownReply ? { shownReply } : {}) };
-  const linked = linkQuestion(text, previous, lastReply, shownReply);
-  return { ...base, followUp: linked.followUp, text: linked.text, ...(linked.followUpText ? { followUpText: linked.followUpText } : {}) };
+  if (!previous || greetingKind(text) || THANKS.test(text) || greetingKind(previous)) return base;
+  if (isContextFollowUp(text)) {
+    const focus = conversationFocus(text, history);
+    if (!focus) return base;
+    const reference = wantsStore(previous) ? previous : focus.question;
+    return { ...base, followUp: true, text: `${text} — ${reference}`, previous: reference, followUpText: text };
+  }
+  const linked = linkQuestion(text, previous, lastReply, shownReply, history);
+  return { ...base, followUp: linked.followUp, text: linked.text, previous: linked.previous ?? previous, ...(linked.followUpText ? { followUpText: linked.followUpText } : {}) };
 }
 
 // ── 2. The store ────────────────────────────────────────────────────────────────────────────────────────────────
@@ -164,7 +180,7 @@ function mergeWish(before: Wish, now: Wish): Wish {
   };
 }
 
-/** The wish across the linked turns: apply each correction in order, not both the old and new season. */
+/** The wish across the linked turns: later criteria replace earlier values instead of accumulating contradictions. */
 export function storeWish(ctx: Context): Wish {
   if (!ctx.followUp || !ctx.previous) return parseWish(ctx.text);
   const turns = ctx.previousTurns?.length ? ctx.previousTurns : [ctx.previous];
@@ -355,7 +371,7 @@ function giftReading(wish: Wish, said: string, buyer: BuyerProfile, lang: Lang):
 
 /** «فيهم / منهم / انهي / which one» — about the perfumes just shown. */
 const AMONG = /(?<![\u0600-\u06FF])(?:فيهم|منهم|انهي|أنهي|انهو|أنهو|ايهم|أيهم|ايهما|أيهما|التلاتة|الاتنين|دول)(?![\u0600-\u06FF])|\b(?:which one|of them|of these|among them)\b/i;
-const COMPARATIVE = /(?<![\u0600-\u06FF])(?:(?:و|ل)?ال)?(?:اثبت|أثبت|ارخص|أرخص|اوفر|أوفر|اغلى|أغلى|افخم|أفخم)(?=$|[\s،؟?!,.])|\b(?:longest|cheapest|most expensive)\b/i;
+const COMPARATIVE = /(?<![ء-ي])(?:(?:و|ل)?(?:ال)?)(?:اثبت|أثبت|ارخص|أرخص|اوفر|أوفر|اغلى|أغلى|افخم|أفخم)(?![ء-ي])|\b(?:longest|cheapest|most expensive)\b/i;
 
 export interface StoreAnswer { reply: string; picks: StoreProduct[]; matched: boolean }
 
@@ -369,10 +385,8 @@ export function storeAnswer(products: StoreProduct[], ctx: Context, language: st
   const buyerGift = gift.formal || wish.occasions.includes('gift');
   // A follow-up about the perfumes just shown («انهي فيهم أثبت؟») is answered about them.
   // («وللصيف؟» is a new wish — the season changes — not a question about the perfumes shown.)
-  const asked = currentQuestion(ctx);
-  const previousProducts = ctx.lastReply && /\/p\/[a-z0-9-]+\.html/.test(ctx.lastReply) ? ctx.lastReply : ctx.shownReply;
-  const about = ctx.followUp && previousProducts && (AMONG.test(asked) || COMPARATIVE.test(asked) || PRODUCT_DETAIL_FOLLOWUP.test(asked))
-    ? shownIn(previousProducts, products) : [];
+  const asked = ctx.followUp && ctx.previous ? ctx.text.slice(ctx.previous.length) : ctx.text;
+  const about = ctx.followUp && ctx.lastReply && (AMONG.test(asked) || COMPARATIVE.test(asked)) ? shownIn(ctx.lastReply, products) : [];
   if (about.length >= 2) {
     const followed = comparePicks(about, asked, lang, link);
     if (followed) return followed;
@@ -426,7 +440,7 @@ export function shownIn(reply: string, products: StoreProduct[]): StoreProduct[]
 function comparePicks(products: StoreProduct[], question: string, lang: Lang, link: (slug: string) => string | undefined): StoreAnswer | undefined {
   const q = question.toLowerCase();
   let ranked: StoreProduct[] | undefined; let head = ''; let reason: (p: StoreProduct) => string = () => '';
-  if (/اثبت|أثبت|ثبات|ثابت|يثبت|يدوم|longest|last|longevity/i.test(q)) {
+  if (/اثبت|أثبت|ثبات|يثبت|يدوم|longest|last|longevity/i.test(q)) {
     ranked = [...products].sort((a, b) => staying(b) - staying(a));
     head = lang === 'ar' ? 'بالترتيب من الأثبت للأخف:' : 'From longest-lasting to lightest:';
     reason = (p) => {
@@ -435,7 +449,7 @@ function comparePicks(products: StoreProduct[], question: string, lang: Lang, li
       return lang === 'ar' ? [conc ? `تركيزه ${conc}` : '', p.longevity ? `الثبات المنشور: ${p.longevity}` : '', fx.length ? `قاعدته فيها ${fx.join(' و')}` : 'قاعدته أخف'].filter(Boolean).join('، ')
         : [conc, p.longevity || '', fx.length ? `base of ${fx.join(', ')}` : 'lighter base'].filter(Boolean).join(', ');
     };
-  } else if (/(?:و|ل)?(?:ال)?(?:ارخص|أرخص|اوفر|أوفر)|cheap|price|(?:ال)?سعر|بكام|بكم/i.test(q)) {
+  } else if (/ارخص|أرخص|اوفر|أوفر|cheap|price|سعر/i.test(q)) {
     ranked = [...products].filter((p) => p.price > 0).sort((a, b) => a.price - b.price);
     head = lang === 'ar' ? 'بالترتيب من الأوفر للأغلى:' : 'From best value to priciest:';
     reason = (p) => money(p.price, lang);
@@ -515,7 +529,8 @@ const foldName = (s: string) => ` ${s.toLowerCase().normalize('NFKD').replace(/[
 const soundName = (s: string) => s.replace(/ح/g, 'ه').replace(/(?<=[\u0621-\u064A])ا/g, '');
 
 export function namedProducts(products: StoreProduct[], text: string, limit = 2): StoreProduct[] {
-  const t = foldName(text);
+  // The visitor may write a brand or a line the old ways («سبريماسي»، «ميسون ألامبرا»): read it as the catalogue spells it now.
+  const t = foldName(fixArabicText(text));
   const heard = soundName(t);
   if (t.trim().length < 4) return [];
   const hits: { p: StoreProduct; len: number }[] = [];
@@ -575,7 +590,7 @@ export function closeTo(products: StoreProduct[], p: StoreProduct, limit = 2): S
  * when the question belongs to the designer, the lab or the library. The pitch itself is src/utils/shaheenPitch.ts.
  */
 export function askedProducts(products: StoreProduct[], ctx: Context): StoreProduct[] {
-  const asked = currentQuestion(ctx);
+  const asked = ctx.followUp && ctx.previous ? ctx.text.slice(ctx.previous.length) : ctx.text;
   // «اعملي تركيبة زي …» belongs to the designer and the lab, not to the product card.
   if (DESIGN_OR_LAB.test(asked)) return [];
   // «ازاي استخدم ورد طائفي؟» is a question about the material, not about the product of that name — unless the

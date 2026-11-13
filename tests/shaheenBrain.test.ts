@@ -199,6 +199,20 @@ test('the server, link on: a perfume wish is answered from the store with no pla
   });
 });
 
+test('a presentation follow-up is not mistaken for a new store recommendation', async () => {
+  await withServer({}, async (chat, calls) => {
+    const question = 'عايز عطر رجالي شتوي تحت 5000';
+    const first = await (await chat(question)).json() as { reply: string };
+    const imageFollowUp = await (await chat('هاتلي صور توضيحية', [
+      { role: 'user', text: question },
+      { role: 'assistant', text: first.reply },
+    ])).json() as { reply: string; memory?: string };
+    assert.match(imageFollowUp.reply, /رد المنصة/);
+    assert.notEqual(imageFollowUp.memory, 'store');
+    assert.equal(calls(), 1, 'a non-store contextual request still reaches the connected engine');
+  });
+});
+
 test('the live server keeps a corrected season across turns and compares the same store picks', async () => {
   await withServer({}, async (chat, calls) => {
     const firstQuestion = 'عايز عطر رجالي صيفي خفيف';

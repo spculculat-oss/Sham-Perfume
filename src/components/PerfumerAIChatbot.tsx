@@ -1,3 +1,4 @@
+import { ShaheenAgentPanel, ShaheenAgentReport } from './ShaheenAgentPanel';
 import { useChatPrices } from '../utils/storeCheckout';
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import {
@@ -45,7 +46,7 @@ import { AIDisclosureBadge } from './LegalDisclaimer';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
-import { LText, makeT, fmt } from '../لغات/localize';
+import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
 import { isStaticHosting } from '../utils/api';
 import { copyChatText } from '../utils/clipboard';
 import { StaticHostingNotice } from './StaticHostingNotice';
@@ -1045,7 +1046,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
       }
       // Said the way Shaheen talks (numbers, prices and lists as people say them), in the visitor's dialect.
       setIsSpeaking(true);
-      readAloud(text, { language: currentLang, dialect: voice.dialect, onEnd: () => setIsSpeaking(false) });
+      readAloud(text, { language: currentLang, dialect: voice.dialect, onEnd: () => setIsSpeaking(false), onNoVoice: voice.reportNoVoice });
     }
   };
 
@@ -1194,6 +1195,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
 
             <AIDisclosureBadge lang={currentLang} />
             <StaticHostingNotice currentLang={currentLang} />
+            <ShaheenAgentPanel language={currentLang} />
             <ShaheenServiceStatus language={currentLang} models={modelStatus.models} failed={modelStatus.failed}
               enabled={modelStatus.enabled} selected={selectedModel} />
 
@@ -1361,7 +1363,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                       {msg.role === 'assistant' && !isError && msg.id !== 'welcome' && (
                         <div className="flex items-center gap-1 text-[9px] font-mono px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 w-fit">
                           <span>🤖</span>
-                          <span>{currentLang === 'ar' ? 'تم إنشاؤه بالذكاء الاصطناعي — راجع أخصائيًا للاستخدام الآمن' : 'AI-generated — verify with a specialist'}</span>
+                          <span>{pickArEn(currentLang, 'تم إنشاؤه بالذكاء الاصطناعي — راجع أخصائيًا للاستخدام الآمن', 'AI-generated — verify with a specialist')}</span>
                         </div>
                       )}
 
@@ -1376,6 +1378,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                           {activeDisplayContent}
                         </div>
                       )}
+                      <ShaheenAgentReport report={msg.toolReport} language={currentLang} />
 
                       {isError && isLastMessage && (
                         <button

@@ -5,6 +5,7 @@ import { ShaheenMarkdown } from '../components/ShaheenMarkdown';
 import { ask, errorKey, readUrl, search, type WsContextFile, type WsSource } from './workspaceApi';
 import { ExportMenu } from './ExportMenu';
 import { wsText, type WsKey } from './strings';
+import { pickArEn } from '../لغات/localize';
 
 /** «بحث وتلخيص»: a web search with its sources, and any public page or PDF read and summarised. */
 export function SearchPanel({ lang, onToChat }: { lang: SupportedLanguage; onToChat: (file: WsContextFile, question: string) => void }) {
@@ -27,7 +28,7 @@ export function SearchPanel({ lang, onToChat }: { lang: SupportedLanguage; onToC
     setBusy('read'); setError(''); setPage(null);
     try {
       const got = await readUrl(link);
-      const out = await ask({ messages: [{ role: 'user', text: lang === 'ar' ? 'لخّص المحتوى ده.' : 'Summarise this content.' }], language: lang, task: 'summarize', context: [{ name: got.title || got.url, text: got.text }] });
+      const out = await ask({ messages: [{ role: 'user', text: pickArEn(lang, 'لخّص المحتوى ده.', 'Summarise this content.') }], language: lang, task: 'summarize', context: [{ name: got.title || got.url, text: got.text }] });
       setPage({ title: got.title || got.url, url: got.url, text: got.text, summary: out.reply });
     } catch (e) {
       const key = errorKey(e);

@@ -1,3 +1,4 @@
+import type { AgentDocument } from '../types/agent';
 import { trackInsight } from './insightsTracker';
 import type { SupportedLanguage } from '../types/i18n';
 import { budgetsToHome } from './chatPrices';
@@ -52,6 +53,7 @@ const wait = (ms: number, signal: AbortSignal) => new Promise<void>((resolve, re
 interface SendOptions {
   text: string; model: ShaheenModelChoice; language: SupportedLanguage;
   errorText: (error: unknown) => string;
+  agent?: boolean; documents?: AgentDocument[]; webSearch?: boolean;
   /** «التحدث مع شاهين»: a spoken turn (the reply is read aloud); `interrupted` = what he had said when cut off. */
   voice?: { interrupted?: string;
     /** «شاهين يصحح اللي اتسمع غلط»: words heard as others and read as the word meant (shown under his message). */
@@ -215,6 +217,10 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       publish({ ...loadStoredChatSession(), messages: [DEFAULT_WELCOME_MESSAGE], isLoading: false });
     },
     /** Re-asks the question behind a trailing error bubble (removes both, then sends again). */
+    cancel() {
+      controller?.abort(); generation++;
+      publish({ ...getSnapshot(), isLoading: false, busy: false });
+    },
     async retry(options: Omit<SendOptions, 'text'>) {
       const current = getSnapshot();
       const last = current.messages[current.messages.length - 1];
@@ -278,7 +284,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       }
       // «تطبيقات شاهين السريعة»: a simple, complete task (alcohol dilution, oil amounts, oz↔ml, thanks…) is
       // calculated right here — instant, no queue, no AI quota — so the engines stay free for real questions.
-      const quick = quickAnswer(text, options.language);
+      const quick = options.agent ? undefined : quickAnswer(text, options.language);
       if (quick) {
         publish({ ...current, messages: [...current.messages,
           // A card/ID number is not even kept in this browser's chat history (it would travel with the next turn).
@@ -309,11 +315,12 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         // The anonymous visitor id travels in the body, not in a custom header: a custom header needs CORS approval,
         // and a server one deploy behind would then block every question from the GitHub Pages site.
         const body = JSON.stringify({ message: brainText, model: options.model, language: options.language,
-          conversationHistory: history, visitorId: visitorId(), ...money, ...talk });
+          conversationHistory: history, visitorId: visitorId(), ...money, ...talk,
+          ...(options.agent ? { documents: options.documents || [], webSearch: options.webSearch === true } : {}) });
         let data: ChatResponse | undefined;
         for (let attempt = 0; ; attempt++) {
           try {
-            data = await request<ChatResponse>('/api/chat', {
+            data = await request<ChatResponse>(options.agent ? '/api/agent/chat' : '/api/chat', {
               method: 'POST', headers: { 'Content-Type': 'application/json' }, signal, body,
             }, 58_000); // the server may queue a question for up to ~50 s before answering
             break;
@@ -328,14 +335,21 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         if (generation !== token) return false;
         followEntryCountry(data?.country);
         const message: ChatMessage = { id: id('bot'), role: 'assistant', text: data?.reply, timestamp: timestamp(),
-          aiEngine: data?.engine, ...(data?.sources?.length ? { sources: data.sources } : {}) };
+          toolReport: data?.toolReport, aiEngine: data?.engine, ...(data?.sources?.length ? { sources: data.sources } : {}) };
         if (!message.text?.trim() || !isChatMessage(message)) throw new Error('Invalid chat response');
         publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false, busy: false });
         // «ذاكرة شاهين»: this browser keeps its opening questions for the day the server cannot be reached.
-        if (!history.length && options.model !== 'council') memory.learn({ question: text, lang: options.language, mode: options.model, answer: message.text });
+        if (!options.agent && !history.length && options.model !== 'council') memory.learn({ question: text, lang: options.language, mode: options.model, answer: message.text });
       } catch (firstError) {
         let error: unknown = firstError;
         if (generation !== token) return false;
+        // Agent failures must never fall through to ordinary chat or offline memory claiming execution.
+        if (options.agent) {
+          publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
+            id: id('bot-err'), role: 'assistant', kind: 'error', text: options.errorText(error), timestamp: timestamp(),
+          }] });
+          return true;
+        }
         // The chosen mode could not answer (its engines are down or out of quota) but the server is there:
         // Shaheen answers the same question in his fast mode before falling back to memory or an error.
         // (Not after a gateway timeout: the server already used its time, a second wait helps no one.)

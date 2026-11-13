@@ -1,3 +1,6 @@
+import { REAL_PHOTO_INSTRUCTION, realPhotoReply, wantsRealPhoto } from '../src/utils/realPhotos';
+import { IMAGE_CRAFT_INSTRUCTION, craftEditPrompt, craftImagePrompt, isImageAspect, isImageStyle, type ImageAspect, type ImageStyleId } from '../src/utils/imageCraft';
+import { CONTINUITY_INSTRUCTION, contextualMessage, conversationFocus, isContextFollowUp } from '../src/utils/conversationContext';
 /**
  * «مساحة شاهين»: Shaheen as a general assistant — any subject, not perfume only.
  *   /api/workspace/status   what is open right now (no vendor names: visitors never see them)
@@ -5,8 +8,9 @@
  *                           and, on request, live web results with their links
  *   /api/workspace/search   web search: the AI platform's own search when it has one, else the free encyclopedia API
  *   /api/workspace/read     a public page or PDF read as text (SSRF-guarded: public addresses only, size and time caps)
- *   /api/workspace/image    an image made or edited by the AI platform (503 NO_IMAGE_ENGINE → the page uses the open
- *                           free generator)
+ *   /api/workspace/image    an image made or edited by the AI platform (503 NO_IMAGE_ENGINE → an honest unavailable message; no external generator fallback)
+ *   /api/workspace/video/*  real moving footage from the professional video engine (off until the owner turns it on;
+ *                           see server/videoEngine.ts)
  *   /api/workspace/owner/*  the owner's own Notion and Slack (Bearer SHAM_ADMIN_TOKEN; keys stay on the server)
  * Code runs, files, documents, image editing and reading aloud happen in the visitor's browser (src/workspace):
  * nothing of the visitor's files is stored here.
@@ -17,11 +21,12 @@ import { lookup as dnsLookup } from 'node:dns/promises';
 import { isIP } from 'node:net';
 import { callEngine, engineStatuses, GEMINI_DEFAULT_MODEL, type EngineTurn } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
+import { cleanVideoRequest, dailyLimit, DailyBudget, readJob, signJob, startVideo, videoAccess, videoBytes, VideoError, videoStatus } from './videoEngine';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../src/types/i18n';
 
 type Env = Record<string, string | undefined>;
 type Lookup = (host: string) => Promise<string[]>;
-export interface WorkspaceOptions { env?: Env; fetch?: typeof fetch; lookup?: Lookup }
+export interface WorkspaceOptions { env?: Env; fetch?: typeof fetch; lookup?: Lookup; videoBudget?: DailyBudget }
 
 /** The AI platforms a workspace turn may use, best first (live search has its own route). */
 const ORDER = ['gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'self_hosted'] as const;
@@ -36,9 +41,10 @@ const LANGS = new Set(SUPPORTED_LANGUAGES.map((l) => l.code));
 const languageOf = (value: unknown): SupportedLanguage => (typeof value === 'string' && LANGS.has(value as SupportedLanguage) ? value as SupportedLanguage : 'ar');
 
 /** Who Shaheen is in the workspace: a general assistant (perfume is his deepest specialty, not his limit). */
-export function workspaceInstruction(language: SupportedLanguage, task: 'chat' | 'plan' | 'summarize' = 'chat'): string {
+export type WorkspaceTask = 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard';
+export function workspaceInstruction(language: SupportedLanguage, task: WorkspaceTask = 'chat'): string {
   const name = SUPPORTED_LANGUAGES.find((l) => l.code === language)?.name || 'العربية';
-  const base = `أنت «شاهين»، مساعد ذكاء اصطناعي شامل داخل منصة «شام». بتساعد في أي موضوع: كتابة، ترجمة، دراسة وشرح، برمجة ومواقع، تحليل بيانات وجداول، أفكار وتسويق، شغل ومستندات، أسئلة عامة — والعطور تخصصك العميق مش حدودك.
+  const base = `${CONTINUITY_INSTRUCTION}\n${REAL_PHOTO_INSTRUCTION}\nأنت «شاهين»، مساعد ذكاء اصطناعي شامل داخل منصة «شام». بتساعد في أي موضوع: كتابة، ترجمة، دراسة وشرح، برمجة ومواقع، تحليل بيانات وجداول، أفكار وتسويق، شغل ومستندات، أسئلة عامة — والعطور تخصصك العميق مش حدودك.
 هويتك «شاهين» بس: ما تذكرش اسم أي نموذج أو شركة ذكاء اصطناعي، ولو اتسألت قول إنك مساعد منصة شام والتفاصيل التقنية مش متاحة.
 رد بلغة المستخدم (${name}). لو بيكتب عربي مصري رد بالمصري العامي الواضح؛ ولو لهجة تانية رد بيها؛ ولو فصحى رد بفصحى بسيطة. افهم السياق والكلام اللي فات، وادخل في الإجابة على طول من غير مقدمات.
 كن صادق: ما تخترعش مصادر أو أرقام أو روابط أو أحداث، وقول «مش متأكد» لما الدليل مش كفاية. ما تدّعيش إنك شغّلت كود أو فتحت ملف أو موقع إلا لو نتيجته موجودة قدامك في الرسالة.
@@ -46,7 +52,9 @@ export function workspaceInstruction(language: SupportedLanguage, task: 'chat' |
 لو في نتايج بحث ويب مرقّمة، استشهد بيها برقمها [1] [2] ومتستخدمش غيرها كمصدر.
 البرمجة: اكتب الكود كامل وشغّال جوّه سياج بلغته (\`\`\`python، \`\`\`javascript، \`\`\`html…). موقع أو صفحة = ملف HTML واحد كامل فيه الـ CSS والـ JavaScript جوّاه في سياج \`\`\`html، علشان المستخدم يشوفه «معاينة حية» على طول. كود بايثون لازم يشتغل في المتصفح (مكتبات بايثون القياسية، وnumpy وpandas وmatplotlib مسموحين) ويطبع نتيجته بـ print.
 المستندات: لو طلب مستند أو تقرير أو عرض، اكتبه Markdown منظم (عنوان بـ #، أقسام بـ ##، نقاط، وجداول Markdown للأرقام) — الموقع بيحوّله Word أو Excel أو PowerPoint أو PDF بضغطة. للعرض التقديمي: كل شريحة قسم ## بعنوانها ونقاط قصيرة.
-الصور: لو طلب صورة، اكتب في الآخر سياج \`\`\`sham-image فيه وصف إنجليزي دقيق للصورة في سطر واحد (الموقع بيرسمها).
+${IMAGE_CRAFT_INSTRUCTION}
+الفيديو المتحرك: الموقع يدعم تصدير فيديو قصير محلياً من صورة بتقريب وتحريك الكاميرا بلا صوت عبر زر «عمل فيديو متحرك» تحت الصورة. ده مش توليد فيديو بالذكاء الاصطناعي ولا تحريك أشخاص أو أشياء داخل المشهد؛ وضّح الفرق بصراحة، ولا تدّعي إنشاء فيديو قبل ضغط الزر ونجاح التسجيل. لو طلب فيديو متحرك، جهّز صورة أساسية بوصف داخل سياج sham-video بدلاً من رفض كل الحركة أو توجيهه لمواقع أخرى. تحريك صورة موجودة يتم محلياً. صيغة الفيديو حسب المتصفح WebM أو MP4، ولا تدّعي دعم GIF أو MP4 تحديداً قبل التحقق.
+توقيع الصور المضاف بواسطة الموقع هو sharing ai فقط (توقيع شاهين). لا تطلب كتابة اسم المزود على الصورة ولا تختلق مصدرها، ولا تمح أو تخفِ علامة منشأ أو حقوق مدمجة أصلاً. التوقيع علامة شام وليس إثباتاً أن نموذجاً خاصاً بشام ولّد الصورة.
 ممنوع: المساعدة في أذى أو اختراق أو احتيال أو محتوى جنسي لقاصرين أو سلاح؛ ونصايح طبية أو قانونية أو مالية خطيرة من غير ما توجّه لمختص.`;
   if (task === 'plan') {
     return `${base}
@@ -54,6 +62,20 @@ export function workspaceInstruction(language: SupportedLanguage, task: 'chat' |
 {"goal":"الهدف باختصار","steps":[{"tool":"search","input":"..."},{"tool":"ask","input":"..."}]}
 الأدوات: search (بحث ويب؛ input = عبارة البحث)، read (قراءة صفحة أو PDF؛ input = الرابط)، ask (تفكير/كتابة/تلخيص؛ input = المطلوب، وتقدر تشير لنتيجة خطوة قبلها بـ {{1}} أو {{2}})، image (رسم صورة؛ input = وصف إنجليزي)، python (تشغيل كود بايثون؛ input = الكود كامل ويطبع بـ print)، document (مستند؛ input = "docx" أو "xlsx" أو "pptx" أو "pdf" + ":" + المحتوى أو {{n}})، save (حفظ نتيجة كملف في ملفات المستخدم؛ input = "اسم-الملف.md:" + المحتوى أو {{n}}).
 من خطوة لـ 8 خطوات بالكتير، والخطوة الأخيرة غالباً ask بتجمّع النتيجة النهائية للمستخدم.`;
+  }
+  if (task === 'site') {
+    return `${base}
+مهمتك دلوقتي: إنت مصمم ومطوّر مواقع محترف في «استوديو شاهين». ابني أو عدّل الموقع اللي المستخدم طالبه. رد بـ JSON بس (من غير أي كلام قبله أو بعده) بالشكل:
+{"name":"اسم الموقع","tagline":"جملة قصيرة","lang":"ar","theme":{"base":"#8a5a2b","harmony":"complementary|analogous|triadic|split|mono","dark":false,"font":"cairo|tajawal|amiri|reem|playfair|poppins|serif|grotesk","radius":"sharp|soft|round"},"pages":[{"slug":"index","title":"الرئيسية","sections":[{"type":"hero","title":"...","text":"...","button":"...","link":"contact.html","image":{"prompt":"English description of the photo","alt":"..."}}]}]}
+أنواع الأقسام: hero، features (items فيها icon إيموجي وtitle وtext)، about (title وtext وimage)، gallery وproducts (items فيها title وtext وprice اختياري وimage)، steps (items)، faq (items فيها q وa)، cta (title وtext وbutton وlink)، contact (title وtext وemail وphone وwhatsapp وaddress — بس اللي المستخدم إداه، ما تخترعش أرقام أو إيميلات)، text.
+الصفحة الأولى slug بتاعها index، والروابط بين الصفحات بالشكل about.html أو #id. من صفحة لـ 6 صفحات، والصفحة من 2 لـ 10 أقسام. اكتب محتوى حقيقي مقنع بلغة المستخدم ومناسب لمجاله (مش «لوريم إيبسوم»)، من غير أسعار أو تقييمات أو أرقام أو عروض مخترعة — سيب السعر فاضي لو مش معروف. وصف كل صورة بالإنجليزي جوّه image.prompt (الموقع بيرسمها). اختار ألوان وخط يناسبوا الهوية.
+لو جالك موقع حالي بـ JSON مع طلب تعديل: رجّع الموقع كله بعد التعديل بنفس الشكل، وغيّر بس اللي اتطلب وحافظ على الباقي (ومن غير ما تلمس حقول src).`;
+  }
+  if (task === 'storyboard') {
+    return `${base}
+مهمتك دلوقتي: إنت مخرج فيديوهات خيالية في «استوديو شاهين». حوّل فكرة المستخدم لقصة مصوّرة من 3 لـ 10 مشاهد. رد بـ JSON بس (من غير أي كلام قبله أو بعده) بالشكل:
+{"title":"عنوان الفيديو","scenes":[{"caption":"جملة قصيرة تظهر على الشاشة بلغة المستخدم","prompt":"detailed English description of the picture for this scene, same characters and style across scenes","seconds":4,"motion":"zoom-in|zoom-out|pan-left|pan-right|pan-up|still","effect":"none|rain|snow|embers|stars|dust|fog|sparkles|light"}]}
+خلي المشاهد ليها بداية ووسط ونهاية، والوصف الإنجليزي محدد (المكان، الإضاءة، زاوية الكاميرا، الشخصيات بنفس الشكل في كل مشهد). الجمل على الشاشة قصيرة (أقل من 12 كلمة). نوّع اللقطات زي المخرجين: لقطة واسعة (wide shot) في الأول، متوسطة في النص، وقريبة (close-up) في اللحظة الكبيرة. و effect هو جو المشهد (مطر، تلج، شرار نار، نجوم، غبار، ضباب، لمعة سحرية، أشعة شمس) أو none.`;
   }
   if (task === 'summarize') return `${base}\nمهمتك دلوقتي: لخّص المحتوى اللي جاي بوضوح: الفكرة الأساسية في سطرين، وبعدين أهم النقاط، وأي أرقام أو تواريخ مهمة. لو المستخدم طلب حاجة معينة من المحتوى، ركّز عليها.`;
   return base;
@@ -223,18 +245,28 @@ export async function webSearch(query: string, language: SupportedLanguage, { en
 }
 
 // ── Images ──────────────────────────────────────────────────────────────────────────────────────────────────
-export async function makeImage(prompt: string, image: string | undefined, { env, fetch: request = fetch }: { env: Env; fetch?: typeof fetch }): Promise<string | undefined> {
+/**
+ * «خيال شاهين» (src/utils/imageCraft.ts) art-directs the idea first; the engine then draws the brief.
+ * A new image may carry a frame shape; an edit keeps the shape of the image it was given.
+ */
+export async function makeImage(prompt: string, image: string | undefined, { env, fetch: request = fetch, style, aspect }: { env: Env; fetch?: typeof fetch; style?: ImageStyleId; aspect?: ImageAspect }): Promise<string | undefined> {
+  if (wantsRealPhoto(prompt)) throw new ReadError(400, 'REAL_PHOTO_REQUIRES_SEARCH', 'Use image search for real photographs');
   const key = env.GEMINI_API_KEY?.trim();
   if (!key || env.SHAM_WORKSPACE_IMAGES?.trim().toLowerCase() === 'off') return undefined;
   const model = env.GEMINI_IMAGE_MODEL?.trim() || 'gemini-2.5-flash-image';
-  const parts: object[] = [{ text: prompt.slice(0, 2000) }];
   const inline = image?.match(/^data:(image\/(?:png|jpeg|webp));base64,([A-Za-z0-9+/=]+)$/);
+  const brief = inline ? { prompt: craftEditPrompt(prompt), aspect: undefined } : craftImagePrompt(prompt, { style, aspect });
+  const parts: object[] = [{ text: brief.prompt.slice(0, 3600) + '\nDo not add AI vendor names, provider credits, or fake provenance text. The site adds its own sharing ai signature afterward. Preserve any existing embedded provenance or rights marks when editing.' }];
   if (inline) parts.push({ inlineData: { mimeType: inline[1], data: inline[2] } });
+  const draw = (shape?: ImageAspect) => request(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+    method: 'POST', signal: AbortSignal.timeout(45_000), headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+    body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { responseModalities: ['TEXT', 'IMAGE'], ...(shape ? { imageConfig: { aspectRatio: shape } } : {}) } }),
+  });
   try {
-    const response = await request(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-      method: 'POST', signal: AbortSignal.timeout(45_000), headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-      body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { responseModalities: ['TEXT', 'IMAGE'] } }),
-    });
+    let response = await draw(brief.aspect);
+    // An image model that does not take a frame shape rejects the field (400, no quota used): the brief
+    // still names the ratio in words, so draw once more without the field.
+    if (response.status === 400 && brief.aspect) response = await draw();
     if (!response.ok) return undefined;
     const data = await response.json() as { candidates?: Array<{ content?: { parts?: Array<{ inlineData?: { mimeType?: string; data?: string } }> } }> };
     const out = data.candidates?.[0]?.content?.parts?.find((p) => p.inlineData?.data)?.inlineData;
@@ -244,7 +276,7 @@ export async function makeImage(prompt: string, image: string | undefined, { env
 
 // ── The conversation ────────────────────────────────────────────────────────────────────────────────────────
 interface AskBody { messages?: unknown; language?: unknown; task?: unknown; context?: unknown; search?: unknown }
-export function askTurns(body: AskBody): EngineTurn[] {
+export function askTurns(body: AskBody, resolveReferences = true): EngineTurn[] {
   const raw = Array.isArray(body.messages) ? body.messages.slice(-24) : [];
   const turns = raw.flatMap((m) => {
     const { role, text } = (m && typeof m === 'object' ? m : {}) as { role?: unknown; text?: unknown };
@@ -252,6 +284,8 @@ export function askTurns(body: AskBody): EngineTurn[] {
   });
   while (turns.length && turns[0]!.role !== 'user') turns.shift();
   if (!turns.length || turns[turns.length - 1]!.role !== 'user') throw new ReadError(400, 'BAD_REQUEST', 'The last message must be the visitor’s');
+  const lastUser = turns[turns.length - 1]!;
+  if (resolveReferences) turns[turns.length - 1] = { role: 'user', text: contextualMessage(lastUser.text, turns.slice(0, -1)) };
   // The visitor's files and pages, attached to his last message (capped).
   const files = Array.isArray(body.context) ? body.context.slice(0, 12) : [];
   let room = MAX_CONTEXT;
@@ -272,12 +306,22 @@ export function askTurns(body: AskBody): EngineTurn[] {
 
 export async function askWorkspace(body: AskBody, { env, fetch: request = fetch, signal }: { env: Env; fetch?: typeof fetch; signal?: AbortSignal }): Promise<{ reply: string; sources: SearchResult[] }> {
   const language = languageOf(body.language);
-  const task = body.task === 'plan' || body.task === 'summarize' ? body.task : 'chat';
+  const task: WorkspaceTask = (['plan', 'summarize', 'site', 'storyboard'] as const).find((t) => t === body.task) || 'chat';
+  const json = task === 'plan' || task === 'site' || task === 'storyboard';
+  const rawTurns = askTurns({ ...body, context: [] }, false);
+  const latest = rawTurns[rawTurns.length - 1]!;
+  const photoReply = task === 'chat' ? realPhotoReply(latest.text, rawTurns.slice(0, -1), language) : undefined;
+  if (photoReply) return { reply: photoReply, sources: [] };
   const turns = askTurns(body);
   let sources: SearchResult[] = [];
   if (body.search === true) {
-    const asked = turns[turns.length - 1]!.text.split('\n---\n').pop()!.slice(0, 300);
-    const found = await webSearch(asked, language, { env, fetch: request }).catch(() => ({ results: [] as SearchResult[], answer: undefined }));
+    const searchTurns = askTurns({ ...body, context: [] }, false);
+    const latest = searchTurns[searchTurns.length - 1]!.text;
+    const focus = conversationFocus(latest, searchTurns.slice(0, -1));
+    const asked = (focus ? `${focus.question} — ${latest}` : latest).slice(0, 300);
+    // Never search a contextless 'show me pictures' or a JSON context wrapper.
+    const found = isContextFollowUp(latest) && !focus ? { results: [] as SearchResult[], answer: undefined }
+      : await webSearch(asked, language, { env, fetch: request }).catch(() => ({ results: [] as SearchResult[], answer: undefined }));
     sources = found.results;
     if (sources.length) {
       const list = sources.map((s, i) => `[${i + 1}] ${s.title} — ${s.url}${s.snippet ? `\n${s.snippet}` : ''}`).join('\n');
@@ -293,7 +337,7 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
     try {
       const reply = await callEngine(id, system, turns, {
         env, fetch: request, signal: AbortSignal.any([AbortSignal.timeout(45_000), ...(signal ? [signal] : [])]),
-        temperature: task === 'plan' ? 0.2 : 0.6, maxTokens: task === 'plan' ? 1200 : 6000, maxChars: 60_000,
+        temperature: task === 'plan' ? 0.2 : json ? 0.5 : 0.6, maxTokens: task === 'plan' ? 1200 : task === 'storyboard' ? 2500 : task === 'site' ? 8000 : 6000, maxChars: 60_000,
       });
       if (typeof reply === 'string' && reply.trim()) return { reply: reply.trim(), sources };
     } catch { /* the next platform */ }
@@ -340,9 +384,11 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
   const lookup = options.lookup || defaultLookup;
   const router = express.Router();
   router.use(express.json({ limit: '4mb' }));
-  const limits = { ask: new RateLimiter(30, 60_000), search: new RateLimiter(20, 60_000), read: new RateLimiter(20, 60_000), image: new RateLimiter(8, 60_000), owner: new RateLimiter(30, 60_000) };
+  const limits = { ask: new RateLimiter(30, 60_000), search: new RateLimiter(20, 60_000), read: new RateLimiter(20, 60_000), image: new RateLimiter(8, 60_000), owner: new RateLimiter(30, 60_000), video: new RateLimiter(3, 60 * 60_000), videoPoll: new RateLimiter(120, 60_000) };
+  const budget = options.videoBudget || new DailyBudget();
   const fail = (res: express.Response, error: unknown) => {
-    if (error instanceof ReadError) { res.status(error.status).json({ error: error.message, code: error.code }); return; }
+    if (error instanceof VideoError && error.detail) console.warn(`[workspace] video engine: ${error.code} ${error.detail}`);
+    if (error instanceof ReadError || error instanceof VideoError) { res.status(error.status).json({ error: error.message, code: error.code }); return; }
     console.error('[workspace]', error instanceof Error ? error.message : error);
     res.status(500).json({ error: 'Internal error', code: 'INTERNAL' });
   };
@@ -358,8 +404,9 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
     res.json({
       ai: configuredEngines(env).length > 0,
       search: env.GEMINI_API_KEY?.trim() || statuses.find((s) => s.id === 'perplexity')?.configured ? 'web' : 'encyclopedia',
-      image: env.GEMINI_API_KEY?.trim() && env.SHAM_WORKSPACE_IMAGES?.trim().toLowerCase() !== 'off' ? 'ai' : 'open',
+      image: env.GEMINI_API_KEY?.trim() && env.SHAM_WORKSPACE_IMAGES?.trim().toLowerCase() !== 'off' ? 'ai' : 'off',
       notion: Boolean(env.NOTION_TOKEN?.trim()), slack: Boolean(env.SLACK_WEBHOOK_URL?.trim()),
+      video: videoAccess(env), videoLeft: videoAccess(env) === 'off' ? 0 : budget.left(dailyLimit(env)),
     });
   });
   router.post('/ask', limited('ask'), async (req, res) => {
@@ -379,9 +426,14 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
   router.post('/image', limited('image'), async (req, res) => {
     const prompt = typeof req.body?.prompt === 'string' ? req.body.prompt.trim() : '';
     if (!prompt) { res.status(400).json({ error: 'Empty prompt', code: 'BAD_REQUEST' }); return; }
-    const image = await makeImage(prompt, typeof req.body?.image === 'string' ? req.body.image : undefined, { env, fetch: request });
-    if (!image) { res.status(503).json({ error: 'No image engine', code: 'NO_IMAGE_ENGINE' }); return; }
-    res.json({ image });
+    try {
+      const image = await makeImage(prompt, typeof req.body?.image === 'string' ? req.body.image : undefined, {
+        env, fetch: request,
+        ...(isImageStyle(req.body?.style) ? { style: req.body.style } : {}), ...(isImageAspect(req.body?.aspect) ? { aspect: req.body.aspect } : {}),
+      });
+      if (!image) { res.status(503).json({ error: 'No image engine', code: 'NO_IMAGE_ENGINE' }); return; }
+      res.json({ image });
+    } catch (error) { fail(res, error); }
   });
 
   // The owner only: his Notion and Slack (the keys never leave the server).
@@ -393,6 +445,47 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
     if (!provided || !timingSafeEqual(digest(provided), digest(token))) { res.status(401).json({ error: 'Unauthorized', code: 'UNAUTHORIZED' }); return; }
     next();
   };
+  // The professional video engine: owner-only or everyone (the owner decides), a daily budget, signed jobs.
+  const signedIn = (req: express.Request) => {
+    const token = env.SHAM_ADMIN_TOKEN?.trim() || '';
+    const provided = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
+    return token.length >= 12 && Boolean(provided) && timingSafeEqual(digest(provided), digest(token));
+  };
+  router.post('/video/start', async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
+    const access = videoAccess(env);
+    if (access === 'off') { res.status(503).json({ error: 'The professional video engine is off', code: 'NO_VIDEO_ENGINE' }); return; }
+    const isOwner = signedIn(req);
+    if (access === 'owner' && !isOwner) { res.status(403).json({ error: 'Owner only', code: 'VIDEO_OWNER_ONLY' }); return; }
+    let body;
+    try { body = cleanVideoRequest(req.body); } catch (error) { fail(res, error); return; }
+    if (!isOwner && !limits.video.allow(clientKey(req))) { res.status(429).json({ error: 'Too many requests, wait a while', code: 'RATE_LIMITED' }); return; }
+    if (!budget.take(dailyLimit(env))) { res.status(429).json({ error: 'Today’s videos are used up, come back tomorrow', code: 'VIDEO_DAILY_LIMIT' }); return; }
+    try {
+      const job = await startVideo(body, { env, fetch: request });
+      res.json({ job: signJob(job.id, env), status: job.status });
+    } catch (error) { budget.give(); fail(res, error); }
+  });
+  router.get('/video/status', limited('videoPoll'), async (req, res) => {
+    const id = readJob(req.query.job, env);
+    if (!id || videoAccess(env) === 'off') { res.status(404).json({ error: 'Unknown job', code: 'NOT_FOUND' }); return; }
+    try { res.json({ status: (await videoStatus(id, { env, fetch: request })).status }); } catch (error) { fail(res, error); }
+  });
+  router.get('/video/file', limited('videoPoll'), async (req, res) => {
+    const id = readJob(req.query.job, env);
+    if (!id || videoAccess(env) === 'off') { res.status(404).json({ error: 'Unknown job', code: 'NOT_FOUND' }); return; }
+    try {
+      const { status, data } = await videoStatus(id, { env, fetch: request });
+      if (status !== 'completed') { res.status(409).json({ error: 'Not ready', code: status === 'failed' ? 'VIDEO_FAILED' : 'VIDEO_NOT_READY' }); return; }
+      const { mime, bytes } = await videoBytes(data, { env, fetch: request });
+      res.setHeader('Content-Type', /^video\/(?:mp4|webm)$/.test(mime) ? mime : 'video/mp4');
+      res.setHeader('Content-Length', String(bytes.length));
+      res.setHeader('Cache-Control', 'private, max-age=3600');
+      // In pieces: big clips are streamed rather than sent as one response.
+      for (let at = 0; at < bytes.length; at += 512 * 1024) res.write(bytes.subarray(at, at + 512 * 1024));
+      res.end();
+    } catch (error) { fail(res, error); }
+  });
   router.post('/owner/notion/search', limited('owner'), owner, async (req, res) => {
     if (!env.NOTION_TOKEN?.trim()) { res.status(503).json({ error: 'Set NOTION_TOKEN on the server', code: 'NOTION_NOT_CONFIGURED' }); return; }
     try { res.json({ results: await notionSearch(String(req.body?.q || ''), { env, fetch: request }) }); } catch (error) { fail(res, error); }

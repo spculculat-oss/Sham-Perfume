@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { Loader2 } from 'lucide-react';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../types/i18n';
-import { LOCALE_MAP } from '../لغات/localize';
+import { LOCALE_MAP, pickArEn } from '../لغات/localize';
 import { formatLocalizedNumber } from '../لغات/numerals';
 import { CommunityApiError, type PublicUser } from './api';
 
@@ -12,8 +12,8 @@ export type Lang = SupportedLanguage;
 export function resolveCommunityLanguage(value: string): Lang {
   return SUPPORTED_LANGUAGES.some(({ code }) => code === value) ? value as Lang : 'en';
 }
-/** Portal text: Arabic for Arabic visitors, English for everyone else (more languages will follow). */
-export const tx = (lang: Lang) => (ar: string, en: string) => (lang === 'ar' ? ar : en);
+/** Portal text: Arabic for Arabic visitors; other languages read the smart translator's copy, then English (#502). */
+export const tx = (lang: Lang) => (ar: string, en: string) => pickArEn(lang, ar, en);
 
 const PALETTE = ['from-amber-400 to-amber-700', 'from-rose-400 to-rose-700', 'from-emerald-400 to-emerald-700', 'from-sky-400 to-sky-700', 'from-violet-400 to-violet-700', 'from-stone-500 to-stone-800'];
 const hash = (s: string) => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);

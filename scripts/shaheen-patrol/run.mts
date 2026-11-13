@@ -25,7 +25,7 @@ import { configuredEngines, keyFingerprint, makeAsk, QuotaExhaustedError, quotaB
 import { parseJson } from '../shaheen-supervisor/checks';
 import { runPrecheck } from '../shaheen-council/precheck';
 import { loadOwnerControls } from '../owner/load';
-import { fetchRuns, readReports } from '../shaheen-council/runs';
+import { fetchRuns, onDemandWorkflows, readReports } from '../shaheen-council/runs';
 import {
   ASKS_PER_SHIFT, isPatrolFile, isPatrolRerunnable, shiftAt, shiftOfBot, SHIFTS, type ProbeId, type ShiftIndex, MAX_TASKS_PER_DAY, parseShaheen, patrolIssue, issueMarker, probeCatalog, probeCurrency, probeFx, probeL10n, probeNewsFile,
   probePricing, PROBES, reviewerOf, runPatrol, shaheenPrompt, SHAHEEN_SYSTEM, shouldPublish, signatureOf, type PatrolFile, type ProbeResult, REVIEWERS,
@@ -53,7 +53,7 @@ say(`Shift: ${shift === 'all' ? 'all role records and probes (manual monitoring 
 // ── 1. Each tool's own check (the pre-meeting rules) ──────────────────────────────────────────────────────
 const repo = env.GITHUB_REPOSITORY || 'spculculat-oss/Sham-Perfume';
 const token = env.GITHUB_TOKEN?.trim();
-const precheck = runPrecheck(readReports(), await fetchRuns(repo, token), now, loadOwnerControls());
+const precheck = runPrecheck(readReports(), await fetchRuns(repo, token), now, loadOwnerControls(), onDemandWorkflows());
 say(`Self-checks: ${precheck.summaryAr}`);
 
 // ── 2. Hands-on tests of every scope ─────────────────────────────────────────────────────────────────────

@@ -42,7 +42,7 @@ export const AI_TOOLS: AiToolDef[] = [
   {
     id: 'shaheen_chat', nameAr: 'شات الخبير شاهين', nameEn: 'Master Shahin chat',
     descriptionAr: 'المحادثة العائمة وصفحة خبير المعمل: تصميم التركيبات والحسابات، كتابةً أو بوضع تحدث اختياري يستخدم التعرف على الكلام وقراءة الرد في المتصفح. النص المفرغ يمر بمسار المحادثة الحالي؛ لا يوجد مسار ذكاء أو رفع صوت جديد.',
-    sources: ['server/shaheen.ts', 'src/hooks/useShaheenVoiceMode.ts', 'src/utils/shaheenVoice.ts', 'src/components/ShaheenVoiceModeButton.tsx', 'src/components/ShaheenVoiceStage.tsx', 'src/utils/arabicDialect.ts'], routes: ['/api/chat'], acceptsGuidance: true,
+    sources: ['server/agentModel.ts', 'server/agent.ts', 'server/agentRouter.ts', 'server/shaheen.ts', 'src/hooks/useShaheenVoiceMode.ts', 'src/utils/shaheenVoice.ts', 'src/components/ShaheenVoiceModeButton.tsx', 'src/components/ShaheenVoiceStage.tsx', 'src/utils/arabicDialect.ts'], routes: ['/api/chat', '/api/agent/chat', '/api/agent/capabilities'], acceptsGuidance: true,
   },
   {
     id: 'sham_assistant', nameAr: 'مساعد شام للخدمات', nameEn: 'Sham services assistant',
@@ -63,7 +63,7 @@ export const AI_TOOLS: AiToolDef[] = [
   {
     id: 'news_bulletin', nameAr: 'نشرة شاهين للأخبار الحقيقية', nameEn: 'Shahin real-news bulletin',
     descriptionAr: 'تجمع أخبار العطور الحقيقية من الإنترنت كل 12 ساعة وتكتب لها عناوين وملخصات وتعليق الخبير.',
-    sources: ['scripts/shaheen-news/run.mts'], routes: [], acceptsGuidance: true,
+    sources: ['scripts/shaheen-news/run.mts', 'server/newsExplain.ts'], routes: ['/api/news/explain'], acceptsGuidance: true,
   },
   {
     id: 'assistant_training', nameAr: 'دروس تدريب مساعد شام', nameEn: 'Sham assistant lessons',
@@ -73,12 +73,12 @@ export const AI_TOOLS: AiToolDef[] = [
   {
     id: 'media', nameAr: 'الصور والفيديو والخرائط في الردود', nameEn: 'Images, videos and maps in answers',
     descriptionAr: 'يبحث عن صور حرة وفيديوهات وأماكن على الخريطة للمواضيع التي يطلبها شاهين في رده.',
-    sources: ['server/media.ts'], routes: ['/api/media'], acceptsGuidance: false,
+    sources: ['src/utils/realPhotos.ts', 'server/media.ts'], routes: ['/api/media'], acceptsGuidance: false,
   },
   {
     id: 'shaheen_workspace', nameAr: 'مساحة شاهين — المساعد الشامل', nameEn: 'Shaheen Workspace — general assistant',
-    descriptionAr: 'شاهين كمساعد في أي موضوع (مش العطور بس): محادثة بالسياق والملفات، بحث ويب بمصادره، قراءة وتلخيص الصفحات والـ PDF بأمان (عناوين عامة بس)، خطط مهام متعددة الخطوات، ورسم الصور. الكود والملفات والمستندات وتعديل الصور والقراءة بالصوت بتحصل في متصفح الزائر؛ ملفاته مش بتتخزن على السيرفر.',
-    sources: ['server/workspace.ts'], routes: ['/api/workspace/status', '/api/workspace/ask', '/api/workspace/search', '/api/workspace/read', '/api/workspace/image'], acceptsGuidance: false,
+    descriptionAr: 'شاهين كمساعد في أي موضوع (مش العطور بس): محادثة بالسياق والملفات، بحث ويب بمصادره، قراءة وتلخيص الصفحات والـ PDF بأمان (عناوين عامة بس)، خطط مهام متعددة الخطوات، ورسم الصور. الكود والملفات والمستندات وتعديل الصور والقراءة بالصوت وتحريك تقريب/كاميرا من صورة لتصدير فيديو صامت بتوقيع sharing ai بتحصل في متصفح الزائر؛ التحريك ليس توليد فيديو للمشهد، وملفاته مش بتتخزن على السيرفر.',
+    sources: ['server/workspace.ts', 'server/videoEngine.ts'], routes: ['/api/workspace/status', '/api/workspace/ask', '/api/workspace/search', '/api/workspace/read', '/api/workspace/image', '/api/workspace/video/start'], acceptsGuidance: false,
   },
   {
     id: 'store_advisor', nameAr: 'مستشار التسوق «اسأل شاهين» في المتجر', nameEn: 'Store shopping advisor',
