@@ -414,8 +414,9 @@ export function resolveVisitorEntryLocation(input: {
   };
 }
 
-/** Extracts geo headers across Vercel, Cloudflare, Tencent EdgeOne, CloudFront, Fastly, and AppEngine. */
+/** Extracts geo headers across Vercel, Cloudflare, Tencent EdgeOne, CloudFront, Fastly, AppEngine, and Netlify. */
 export function geoDetailsFromHeaders(headers: Record<string, string | string[] | undefined>): {
+  country?: string;
   city?: string;
   region?: string;
   lat?: string;
@@ -432,26 +433,37 @@ export function geoDetailsFromHeaders(headers: Record<string, string | string[] 
   const [aeLat, aeLon] = appEngineLatLon ? appEngineLatLon.split(',') : [undefined, undefined];
 
   return {
+    country:
+      first('x-vercel-ip-country') ||
+      first('cf-ipcountry') ||
+      first('x-eo-geo-country') ||
+      first('cloudfront-viewer-country') ||
+      first('fastly-client-geo-country-code') ||
+      first('x-appengine-country') ||
+      first('x-nf-geo-country'),
     city:
       first('x-vercel-ip-city') ||
       first('cf-ipcity') ||
       first('x-eo-geo-city') ||
       first('cloudfront-viewer-city') ||
       first('fastly-client-geo-city') ||
-      first('x-appengine-city'),
+      first('x-appengine-city') ||
+      first('x-nf-geo-city'),
     region:
       first('x-vercel-ip-country-region') ||
       first('cf-region') ||
       first('cf-region-code') ||
       first('x-eo-geo-region') ||
       first('cloudfront-viewer-country-region-name') ||
-      first('x-appengine-region'),
+      first('x-appengine-region') ||
+      first('x-nf-geo-region'),
     lat:
       first('x-vercel-ip-latitude') ||
       first('cf-iplatitude') ||
       first('x-eo-geo-latitude') ||
       first('cloudfront-viewer-latitude') ||
       first('fastly-client-geo-latitude') ||
+      first('x-nf-geo-latitude') ||
       aeLat,
     lon:
       first('x-vercel-ip-longitude') ||
@@ -459,10 +471,12 @@ export function geoDetailsFromHeaders(headers: Record<string, string | string[] 
       first('x-eo-geo-longitude') ||
       first('cloudfront-viewer-longitude') ||
       first('fastly-client-geo-longitude') ||
+      first('x-nf-geo-longitude') ||
       aeLon,
     timezone:
       first('x-vercel-ip-timezone') ||
       first('cf-timezone') ||
-      first('cloudfront-viewer-time-zone'),
+      first('cloudfront-viewer-time-zone') ||
+      first('x-nf-geo-timezone'),
   };
 }

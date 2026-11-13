@@ -1,7 +1,8 @@
 /**
  * «الدفع في متجر شام» — real online payment through Kashier (server/core/kashier.ts).
  *
- *   GET  /api/geo                       the visitor's country (Vercel's x-vercel-ip-country), for prices
+ *   GET  /api/geo                       the visitor's country, city, approximate coordinates, and timezone
+ *   GET  /api/weather                   current temperature/weather for the visitor's coarse city coordinates
  *   GET  /api/store/payments            {enabled, mode, currencies} — no secret, ever
  *   POST /api/store/checkout            cart → amount recomputed HERE from the catalog → Kashier session
  *   GET  /api/store/checkout/:sessionId the payment result, read from Kashier (never from the browser)
@@ -32,6 +33,7 @@ import { RateLimiter, clientKey } from './core/rateLimit';
 import { corsOrigins } from './cors';
 import { ShamBooks, readMoneyBody } from './finance/shamBooks';
 import { PLATFORM_HOLDER } from '../src/bank/shamLedger';
+import { geoDetailsFromHeaders, resolveVisitorEntryLocation } from '../src/data/worldEntryGazetteer';
 
 type Env = Record<string, string | undefined>;
 export interface CheckoutRouterOptions {
@@ -163,6 +165,8 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     });
   };
   const verifyLimiter = new RateLimiter(60, 60_000);
+  const weatherLimiter = new RateLimiter(90, 60_000);
+  const weatherCache = new Map<string, { expiresAt: number; value: { temperatureC: number; weatherCode: number; observedAt?: string } }>();
   const products = options.products || (productsData as { products?: RawProduct[] }).products || [];
   const catalog = options.catalog || (() => liveStoreCatalog(env, request));
   const bundledFx = { ...BUNDLED_FX, updatedAt: BUNDLED_FX.updatedAt || '1970-01-01T00:00:00Z' };
@@ -220,8 +224,78 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
 
   router.get('/geo', (req, res) => {
     res.setHeader('Cache-Control', 'private, no-store');
-    const country = countryFromHeaders(req.headers);
-    res.json({ country: country || null, source: country ? 'edge' : 'unknown' });
+    const headers = geoDetailsFromHeaders(req.headers);
+    const edgeCountry = countryFromHeaders(req.headers)
+      || (headers.country && isCountry(headers.country.toUpperCase()) ? headers.country.toUpperCase() : undefined);
+    const location = resolveVisitorEntryLocation({
+      country: edgeCountry,
+      cityHeader: headers.city,
+      regionHeader: headers.region,
+      latHeader: headers.lat,
+      lonHeader: headers.lon,
+      timezone: headers.timezone,
+    });
+    const country = edgeCountry || (location.country !== 'UN' && isCountry(location.country) ? location.country : undefined);
+    const source = edgeCountry ? 'edge' : location.precision === 'timezone' ? 'timezone' : 'unknown';
+    res.json({
+      country: country || null,
+      source,
+      location: location.country !== 'UN' ? { ...location, ...(headers.timezone ? { timezone: headers.timezone } : {}) } : null,
+    });
+  });
+
+  router.get('/weather', async (req, res) => {
+    res.setHeader('Cache-Control', 'private, max-age=600');
+    if (!weatherLimiter.allow(clientKey(req))) { res.status(429).json({ code: 'RATE_LIMITED' }); return; }
+    const readCoordinate = (raw: unknown, limit: number): number | undefined => {
+      const text = typeof raw === 'string' ? raw.trim() : '';
+      if (!/^-?\d{1,3}(?:\.\d{1,6})?$/.test(text)) return undefined;
+      const value = Number(text);
+      if (!Number.isFinite(value) || Math.abs(value) > limit) return undefined;
+      return Math.round(value * 100) / 100;
+    };
+    const latitude = readCoordinate(req.query.latitude, 90);
+    const longitude = readCoordinate(req.query.longitude, 180);
+    if (latitude === undefined || longitude === undefined || (latitude === 0 && longitude === 0)) {
+      res.status(400).json({ error: 'invalid_coordinates' }); return;
+    }
+
+    const key = `${latitude.toFixed(2)},${longitude.toFixed(2)}`;
+    const now = Date.now();
+    for (const [cacheKey, entry] of weatherCache) if (entry.expiresAt <= now) weatherCache.delete(cacheKey);
+    const cached = weatherCache.get(key);
+    if (cached) { res.json(cached.value); return; }
+
+    try {
+      const url = new URL('https://api.open-meteo.com/v1/forecast');
+      url.search = new URLSearchParams({
+        latitude: latitude.toFixed(2),
+        longitude: longitude.toFixed(2),
+        current: 'temperature_2m,weather_code',
+        timezone: 'auto',
+      }).toString();
+      const response = await request(url.toString(), { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(6000) });
+      if (!response.ok) throw new Error('Weather service unavailable.');
+      const payload = await response.json() as { current?: { temperature_2m?: unknown; weather_code?: unknown; time?: unknown } };
+      const current = payload?.current;
+      const rawTemperature = current?.temperature_2m;
+      const rawWeatherCode = current?.weather_code;
+      const temperatureC = typeof rawTemperature === 'number' ? rawTemperature : typeof rawTemperature === 'string' && rawTemperature.trim() ? Number(rawTemperature) : Number.NaN;
+      const weatherCode = typeof rawWeatherCode === 'number' ? rawWeatherCode : typeof rawWeatherCode === 'string' && rawWeatherCode.trim() ? Number(rawWeatherCode) : Number.NaN;
+      if (!Number.isFinite(temperatureC) || temperatureC < -100 || temperatureC > 70 || !Number.isInteger(weatherCode) || weatherCode < 0 || weatherCode > 99) {
+        throw new Error('Weather response was invalid.');
+      }
+      const value = {
+        temperatureC,
+        weatherCode,
+        ...(typeof current?.time === 'string' ? { observedAt: current.time.slice(0, 40) } : {}),
+      };
+      if (weatherCache.size >= 300) weatherCache.delete(weatherCache.keys().next().value!);
+      weatherCache.set(key, { expiresAt: now + 10 * 60_000, value });
+      res.json(value);
+    } catch {
+      res.status(502).json({ error: 'weather_unavailable' });
+    }
   });
 
   router.get('/store/card-network', (req, res) => {

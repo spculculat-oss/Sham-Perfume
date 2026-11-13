@@ -128,6 +128,49 @@ async function serve(env: Record<string, string>, kashier: (url: string, init?: 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 const order = { items: [{ sku: 'LAT-001', qty: 2 }], country: 'SA', lang: 'ar', contact: { name: 'Ali', email: 'ali@example.com', phone: '+966500000000' }, address: { city: 'Riyadh', line: 'King Fahd Rd 10' }, returnUrl: 'https://spculculat-oss.github.io/Sham-Perfume/' };
 
+test('visitor geo returns a city and the weather endpoint uses rounded coordinates', async () => {
+  const s = await serve({}, (url) => (url.startsWith('https://api.open-meteo.com/v1/forecast?')
+    ? json({ current: { temperature_2m: 26.5, weather_code: 2, time: '2026-10-24T14:00' } })
+    : json({}, 404)));
+  try {
+    const geoResponse = await fetch(`${s.base}/geo`, { headers: {
+      'x-vercel-ip-country': 'EG',
+      'x-vercel-ip-city': 'Giza',
+      'x-vercel-ip-country-region': 'GZ',
+      'x-vercel-ip-latitude': '30.0131',
+      'x-vercel-ip-longitude': '31.2089',
+      'x-vercel-ip-timezone': 'Africa/Cairo',
+    } });
+    const geo = await geoResponse.json();
+    assert.equal(geo.country, 'EG');
+    assert.equal(geo.source, 'edge');
+    assert.equal(geo.location.cityAr, 'الجيزة');
+    assert.equal(geo.location.cityEn, 'Giza');
+    assert.equal(geo.location.lat, 30.01);
+    assert.equal(geo.location.lon, 31.21);
+    assert.equal(geo.location.timezone, 'Africa/Cairo');
+
+    const timezoneGeo = await fetch(`${s.base}/geo`, { headers: { 'x-vercel-ip-timezone': 'Asia/Tokyo' } }).then((response) => response.json());
+    assert.equal(timezoneGeo.country, 'JP');
+    assert.equal(timezoneGeo.source, 'timezone');
+    assert.equal(timezoneGeo.location.cityEn, 'Tokyo (TZ zone)');
+
+    const weatherResponse = await fetch(`${s.base}/weather?latitude=30.0131&longitude=31.2089`);
+    assert.equal(weatherResponse.status, 200);
+    assert.deepEqual(await weatherResponse.json(), { temperatureC: 26.5, weatherCode: 2, observedAt: '2026-10-24T14:00' });
+    const providerUrl = new URL(s.calls[0].url);
+    assert.equal(providerUrl.origin, 'https://api.open-meteo.com');
+    assert.equal(providerUrl.searchParams.get('latitude'), '30.01');
+    assert.equal(providerUrl.searchParams.get('longitude'), '31.21');
+    assert.equal(providerUrl.searchParams.get('current'), 'temperature_2m,weather_code');
+
+    const invalid = await fetch(`${s.base}/weather?latitude=91&longitude=31.21`);
+    assert.equal(invalid.status, 400);
+    assert.equal((await invalid.json()).error, 'invalid_coordinates');
+    assert.equal(s.calls.length, 1, 'invalid coordinates never reach the weather provider');
+  } finally { s.close(); }
+});
+
 test('card network stays unconfirmed without keys and never accepts a card number', async () => {
   const s = await serve({}, () => json({}));
   try {
