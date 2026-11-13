@@ -9,7 +9,10 @@ import {
 import type { SupportedLanguage } from '../types/i18n';
 import { SUPPORTED_LANGUAGES } from '../types/i18n';
 import { ApiError, ApiUnavailableError, isStaticHosting } from '../utils/api';
-import { followEntryCountry, formatMoney, useChatPrices, useStoreMoney } from '../utils/storeCheckout';
+import { currentStoreCountry, followEntryCountry, formatMoney, useChatPrices, useStoreMoney } from '../utils/storeCheckout';
+import { speechLocaleFor } from '../utils/shaheenVoice';
+import { resolveDialect, savedDialectChoice } from '../utils/arabicDialect';
+import { readAloud } from '../utils/readAloud';
 import { BUNDLED_FX, priceIn } from '../utils/pricing';
 import { fmt, loc, makeT, type LText } from '../لغات/localize';
 import { FloatingDock } from '../components/FloatingDock';
@@ -107,7 +110,11 @@ const MEMORY_LABEL: Record<string, LText> = {
   name: { ar: 'الاسم', en: 'Name' }, lastService: { ar: 'آخر خدمة', en: 'Last service' }, lastRequestRef: { ar: 'آخر رقم طلب', en: 'Last request' },
 };
 const PRIVACY_PROMPT: LText = { ar: 'ماذا تعرف عني؟', en: 'What do you know about me?' };
-const speechLang = (lang: SupportedLanguage) => (lang === 'ar' ? 'ar-EG' : lang);
+/** «بلغة بلده ولهجتها»: Arabic in his dialect (his pick, else his Arab country's), other languages in his country's accent. */
+const speechLang = (lang: SupportedLanguage) => {
+  const country = currentStoreCountry();
+  return speechLocaleFor(lang, country, lang === 'ar' ? resolveDialect({ choice: savedDialectChoice(), country }) : undefined);
+};
 
 // Minimal typing for the (prefixed) Web Speech recognition API, which is not in lib.dom for all browsers.
 interface Recognition { lang: string; interimResults: boolean; continuous: boolean; start(): void; stop(): void; onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }> & { isFinal: boolean }> }) => void) | null; onend: (() => void) | null; onerror: (() => void) | null }
@@ -263,17 +270,15 @@ export function ShamAssistant({ currentLang }: Props) {
   const stop = () => abortRef.current?.abort();
   const [editing, setEditing] = useState<string | null>(null);
 
-  const stopSpeaking = () => { if (canSpeak) window.speechSynthesis.cancel(); setSpeakingId(null); };
+  const stopReading = useRef<() => void>(() => undefined);
+  const stopSpeaking = () => { stopReading.current(); if (canSpeak) window.speechSynthesis.cancel(); setSpeakingId(null); };
   const speak = (m: UiMessage, key: string) => {
     if (!canSpeak) return;
     if (speakingId === key) { stopSpeaking(); return; }
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(prices.show(m.text).replace(/[*_#`>]/g, ''));
-    utterance.lang = speechLang(currentLang);
-    utterance.onend = () => setSpeakingId((id) => (id === key ? null : id));
-    utterance.onerror = utterance.onend;
+    stopReading.current();
+    // Said the way Shaheen talks (prices, numbers and brand names as people say them), in the visitor's accent.
     setSpeakingId(key);
-    window.speechSynthesis.speak(utterance);
+    stopReading.current = readAloud(prices.show(m.text), { language: currentLang, onEnd: () => setSpeakingId((id) => (id === key ? null : id)) });
   };
 
   const toggleMic = () => {

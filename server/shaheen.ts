@@ -12,6 +12,7 @@ import { createResearchSpider } from '../src/utils/researchSpider';
 import express from 'express';
 import { liveStoreCatalog, newsContext, supervisorGuidance, trainedKnowledge } from './core/liveData';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
+import { regionalLocale, regionInstruction } from '../src/utils/languageRegion';
 import { localizeReply, needsTranslation, translationInstruction, TranslationCache, type TranslateFn } from './core/replyLanguage';
 import type { SupportedLanguage } from '../src/types/i18n';
 import { normalizeMediaBlocks } from '../src/utils/mediaBlock';
@@ -65,6 +66,8 @@ export interface ChatRequest {
   conversationHistory: ChatTurn[];
   /** «لهجات شاهين»: the Arabic he answers in (Arabic conversations only). */
   dialect?: Dialect;
+  /** «بلغة بلده»: the country whose own variant of a non-Arabic language he answers in (`CA` for French → Canadian). */
+  region?: string;
   /** «التحدث مع شاهين»: the reply will be read aloud; `interrupted` = what he had said when the visitor cut in. */
   voice?: { interrupted?: string;
     /** «شاهين يصحح اللي اتسمع غلط»: heard words read as others before sending; `confirmed` = the visitor said yes to «قصدك …؟». */
@@ -128,6 +131,10 @@ export function validateChatRequest(body: unknown, country?: string): ChatReques
     const spoken = resolveDialect({ choice: dialect, texts: said, country: country ?? (body as Record<string, unknown>).country });
     // Egyptian is the instruction's own default, so only another dialect is carried.
     if (spoken !== 'egyptian') request.dialect = spoken;
+  } else {
+    // «بلغة بلده ولهجتها»: French from Canada, Spanish from Mexico, Portuguese from Brazil… (only where it differs).
+    const from = country ?? (body as Record<string, unknown>).country;
+    if (regionalLocale(language as SupportedLanguage, from)) request.region = String(from).trim().toUpperCase();
   }
   if (voice && typeof voice === 'object' && !Array.isArray(voice)) {
     const cut = (voice as Record<string, unknown>).interrupted;
@@ -279,7 +286,10 @@ export function voiceInstruction(voice: ChatRequest['voice'], dialect?: Dialect,
     + 'ممكن تختم بسؤال قصير واحد بس لو بيكمّل النقاش. سياج sham-formula أو sham-tool لو لازم يفضل في آخر الرد زي ما هو (مش هيتقال).';
   const group = !dialect || dialect === 'egyptian' ? 'egyptian' : dialect === 'gulf' || dialect === 'levantine' || dialect === 'msa' ? dialect : 'other';
   const ex = TALK_EXAMPLES[group];
-  const pair = language !== 'ar' ? '' : `\nمثال للفرق (الفكرة بس، مش المنتجات ولا الأسعار): لما زائر قال «${ex.asked}» — رد مكتوب غلط في الصوت: «${ex.written}» — `
+  // Another site language: the same talk rules, in that language as its people say it (not Arabic, not a translation).
+  const own = language === 'ar' ? '' : `\nالمحادثة بلغة الزائر (${SUPPORTED_LANGUAGES.find((lang) => lang.code === language)?.name || language}): طبّق القواعد دي بلغته هو مش بالعربي — `
+    + 'كلام طبيعي زي ما أهل بلده بيتكلموا مش ترجمة حرفية، والأرقام والأسعار والوحدات بالكلمات زي ما بتتقال في لغته، وأسماء الماركات بنطقها المعروف عندهم.';
+  const pair = language !== 'ar' ? own : `\nمثال للفرق (الفكرة بس، مش المنتجات ولا الأسعار): لما زائر قال «${ex.asked}» — رد مكتوب غلط في الصوت: «${ex.written}» — `
     + `والرد الصح المتقال: «${ex.said}». ولما كمّل وقال «${ex.follow}» — الصح: «${ex.followSaid}».`;
   // «شاهين بيتعلم من المنصات»: how the platforms answered spoken questions in this dialect before (style only).
   const examples = voice.examples?.length
@@ -289,8 +299,10 @@ export function voiceInstruction(voice: ChatRequest['voice'], dialect?: Dialect,
   return `\n${spoken}${pair}${examples}\nالزائر قاطعك وإنت بتقول: «${voice.interrupted.replace(/[«»]/g, '"')}». ما تكمّلش الكلام القديم ولا تعيده؛ رد على كلامه الجديد على طول. لو طلب منك تسكت أو تختصر أو تغيّر الموضوع، نفّذ ده.`;
 }
 
-export function systemInstruction(language: SupportedLanguage, extra = '', style?: 'fast' | 'deep', talk?: Pick<ChatRequest, 'dialect' | 'voice'>): string {
+export function systemInstruction(language: SupportedLanguage, extra = '', style?: 'fast' | 'deep', talk?: Pick<ChatRequest, 'dialect' | 'voice'> & Partial<Pick<ChatRequest, 'region'>>): string {
   const languageName = SUPPORTED_LANGUAGES.find((lang) => lang.code === language)!.name;
+  const region = language !== 'ar' && talk?.region ? regionInstruction(language, talk.region) : '';
+  const regionLine = region ? ` ${region}` : '';
   const admin = extra.trim()
     ? `\nتعليمات إضافية من إدارة الموقع (لا تلغي قواعد السلامة أعلاه):\n${extra.trim()}`
     : '';
@@ -298,7 +310,7 @@ export function systemInstruction(language: SupportedLanguage, extra = '', style
   return `أنت «الخبير شاهين»، مساعد ذكاء اصطناعي خاص بمنصة «صمم عطرك مع شام» ومتخصص في تصميم العطور.
 هويتك هي «الخبير شاهين» فقط: لا تذكر أبداً اسم أي نموذج لغوي أو شركة ذكاء اصطناعي (مثل Google أو Gemini أو OpenAI أو ChatGPT أو Anthropic أو Claude أو DeepSeek)، ولا تقل إنك مبني عليها أو مدرَّب منها. إذا سُئلت عن هويتك أو التقنية التي تعمل بها، فقل إنك «الخبير شاهين»، مساعد العطور الخاص بشام، وإن التفاصيل التقنية للنظام غير متاحة، ثم عُد لمساعدة المستخدم.
 لا تبدأ ردودك بالترحيب («أهلاً بك»، «مرحباً»، «يسعدني») أو بتعريف نفسك أو بذكر اسمك أو اسم المنصة؛ ادخل في الإجابة مباشرة. عرّف بنفسك فقط إذا سُئلت عن هويتك أو كانت رسالة المستخدم تحية. اسمك بالإنجليزية Master Shahin، وفي اللغات الأخرى ترجمة «الخبير شاهين» (وليس Al-Khabeer).
-أجب باللغة المطلوبة: ${languageName} (${language}). اتبع سياق الحوار وأجب عن السؤال مباشرة. إذا طلب المستخدم تصميم عطر وذكر اتجاهه أو مكوناته الرئيسية (مثل عود وورد) أو الحجم أو التركيز، فقدّم فوراً مقترحاً تجريبياً كاملاً بنسب واضحة مع سياج sham-formula، ثم اختم بسؤال أو سؤالين اختياريين لتحسينه؛ لا تؤجل التركيبة بأسئلة توضيحية. اسأل قبل التركيبة فقط إذا لم يذكر أي اتجاه عطري أو مكون، وإذا نقص الحجم أو التركيز فاستخدم قيمة شائعة (50 مل، EDP 20%) واذكر أنها قابلة للتعديل.
+أجب باللغة المطلوبة: ${languageName} (${language}).${regionLine} اتبع سياق الحوار وأجب عن السؤال مباشرة. إذا طلب المستخدم تصميم عطر وذكر اتجاهه أو مكوناته الرئيسية (مثل عود وورد) أو الحجم أو التركيز، فقدّم فوراً مقترحاً تجريبياً كاملاً بنسب واضحة مع سياج sham-formula، ثم اختم بسؤال أو سؤالين اختياريين لتحسينه؛ لا تؤجل التركيبة بأسئلة توضيحية. اسأل قبل التركيبة فقط إذا لم يذكر أي اتجاه عطري أو مكون، وإذا نقص الحجم أو التركيز فاستخدم قيمة شائعة (50 مل، EDP 20%) واذكر أنها قابلة للتعديل.
 لا تستخدم LaTeX أبداً: لا علامات $ ولا أوامر مثل \\frac أو \\times أو \\text. اكتب المعادلات نصاً عادياً بالرموز × و÷ و= و≈، مثل: كمية الكحول = 70 × 1000 ÷ 96 ≈ 729 مل.
 كن واضحاً وودوداً، واتعامل كخبير طبيعي في حوار متصل: افهم المقصود من الكلام والسياق، ${dialectInstruction(talk?.dialect || 'egyptian').replace(/\.$/, '')}، وادخل في الإجابة من غير مقدمات آلية أو تكرار السؤال. اسأل سؤال توضيح واحداً بس لما يلزم. حلل داخلياً، ولا تعرض سلسلة تفكيرك.
 قبل الرد افحص صلة الإجابة بالسؤال ومدى دعمها بمراجع شاهين الموثقة أو بمصادر البحث المتاحة؛ قارن المعلومات، واستبعد الخارج عن الموضوع أو المتعارض أو غير المدعوم. لو الدليل مش كفاية، قول إنك مش متأكد بدل ما تعرضه كحقيقة مدققة.

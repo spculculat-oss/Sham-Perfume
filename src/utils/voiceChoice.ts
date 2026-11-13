@@ -3,7 +3,7 @@
  * conversation's language — and how high and how fast it speaks. Kept in this browser; used by the voice
  * conversation and by «اسمع الرد». Only the browser's own voices (free, nothing sent anywhere).
  */
-import { pickShaheenVoice, type ShaheenVoiceCandidate } from './shaheenVoice';
+import { pickShaheenVoice, speaksLanguage, type ShaheenVoiceCandidate } from './shaheenVoice';
 
 export type VoiceGender = 'male' | 'female';
 
@@ -52,7 +52,7 @@ export function voiceOptions<V extends ShaheenVoiceCandidate>(voices: readonly V
   return voices
     .filter((voice) => {
       const lang = (voice.lang || '').toLowerCase().replace(/_/g, '-');
-      if (!(lang === base || lang.startsWith(`${base}-`)) || seen.has(voice.name)) return false;
+      if (!speaksLanguage(lang, base) || seen.has(voice.name)) return false;
       seen.add(voice.name);
       return true;
     })

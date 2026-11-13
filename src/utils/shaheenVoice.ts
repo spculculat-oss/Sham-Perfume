@@ -5,11 +5,69 @@ import { removeMediaBlocks } from './mediaBlock';
 import { removeFormulaBlocks } from './aiFormulaExtractor';
 import { removeToolBlocks } from './shaheenTools';
 import { plainMath } from './shaheenText';
-import { normalizeArabic } from './arabicDialect';
+import { dialectForCountry, dialectLocale, normalizeArabic, type Dialect } from './arabicDialect';
+import { regionalLocale, REGIONAL } from './languageRegion';
 
-/** Use the site's locale map, with Egyptian Arabic as the Arabic default. */
-export function shaheenSpeechLocale(language: SupportedLanguage): string {
-  return LOCALE_MAP[language] || (language === 'ar' ? 'ar-EG' : language);
+/** Speech engines name a few languages differently from the site («fil-PH» for Tagalog, «nb-NO» for Norwegian). */
+const SPEECH_LOCALE: Partial<Record<SupportedLanguage, string>> = { tl: 'fil-PH', co: 'co-FR', no: 'nb-NO' };
+
+/**
+ * The accent Shaheen speaks and listens in: the site's locale map (Egyptian Arabic by default), or — given the
+ * country the visitor is entering from — that country's own accent of the language (`fr` in Canada → `fr-CA`).
+ */
+export function shaheenSpeechLocale(language: SupportedLanguage, country?: unknown): string {
+  return regionalLocale(language, country) || SPEECH_LOCALE[language] || LOCALE_MAP[language] || (language === 'ar' ? 'ar-EG' : language);
+}
+
+/**
+ * «بلغة بلده ولهجتها»: the one locale for the voice, the ear and the «اسمع الرد» button. Arabic → the dialect's
+ * accent (the visitor's pick or way of talking, else his Arab country's), any other language → his country's accent.
+ */
+export function speechLocaleFor(language: SupportedLanguage, country?: unknown, dialect?: Dialect): string {
+  if (language === 'ar') return dialectLocale(dialect || dialectForCountry(country) || 'egyptian', country);
+  return shaheenSpeechLocale(language, country);
+}
+
+/** Codes a device may use for the same language (old Android «iw» for Hebrew, «fil» for Tagalog …). */
+const LANGUAGE_ALIASES: Record<string, readonly string[]> = {
+  tl: ['fil'], fil: ['tl'], no: ['nb', 'nn'], nb: ['no', 'nn'], nn: ['no', 'nb'], he: ['iw'], iw: ['he'], id: ['in'], in: ['id'],
+  jv: ['jw'], jw: ['jv'], zh: ['cmn', 'yue'], co: ['fr', 'it'],
+};
+/** Does a device voice tagged `voiceLang` («fil-PH», «ar_EG») speak the site language `language` («tl», «ar»)? */
+export function speaksLanguage(voiceLang: string | undefined, language: string): boolean {
+  const base = (voiceLang || '').toLowerCase().replace(/_/g, '-').split('-')[0] || '';
+  const want = (language || '').toLowerCase().split('-')[0] || '';
+  if (!base || !want) return false;
+  if (want === 'co') return base === 'co';
+  return base === want || (LANGUAGE_ALIASES[want] || []).includes(base);
+}
+
+/** Accents close enough to stand in for each other when the device lacks the exact one (Rabat ↔ Algiers …). */
+const NEAR_GROUPS: readonly (readonly string[])[] = [
+  ['ar-ma', 'ar-dz', 'ar-tn', 'ar-ly', 'ar-mr'],
+  ['ar-sa', 'ar-ae', 'ar-kw', 'ar-qa', 'ar-bh', 'ar-om', 'ar-ye', 'ar-iq'],
+  ['ar-jo', 'ar-lb', 'ar-ps', 'ar-sy'],
+  ['ar-eg', 'ar-sd'],
+  ['es-419', ...(REGIONAL.es || []).filter((code) => code !== 'ES').map((code) => `es-${code.toLowerCase()}`)],
+  ['en-us', 'en-ca', 'en-ph'],
+  ['en-gb', 'en-ie', 'en-au', 'en-nz', 'en-za', 'en-in', 'en-ng', 'en-ke', 'en-sg', 'en-pk', 'en-gh', 'en-tz', 'en-hk'],
+  ['fr-fr', 'fr-be', 'fr-ch', 'fr-lu'],
+  ['pt-pt', 'pt-ao', 'pt-mz'],
+  ['de-de', 'de-at', 'de-ch'],
+  ['zh-cn', 'zh-sg', 'zh-tw'],
+];
+export function nearLocale(a: string, b: string): boolean {
+  const x = a.toLowerCase().replace(/_/g, '-'); const y = b.toLowerCase().replace(/_/g, '-');
+  return x !== y && NEAR_GROUPS.some((group) => group.includes(x) && group.includes(y));
+}
+
+/**
+ * The device has voices, but none for this language: Shaheen should not read Hindi with an English voice (that is
+ * gibberish). The reply stays written, and the visitor is told his device lacks that language's voice.
+ * An empty list is «not loaded yet» (iOS, early Chrome), not «missing».
+ */
+export function deviceLacksVoice(voices: readonly { lang?: string }[], language: string): boolean {
+  return voices.length > 0 && !voices.some((voice) => speaksLanguage(voice.lang, language));
 }
 
 /** Remove machine-oriented Markdown before speaking; keep readable labels and prose. */
@@ -123,8 +181,10 @@ export function pickShaheenVoice<V extends ShaheenVoiceCandidate>(voices: readon
     if (!lang) continue;
     let score: number;
     if (lang === wanted) score = 100;
-    else if (lang === base || lang.startsWith(`${base}-`)) score = 60;
+    else if (speaksLanguage(lang, base)) score = nearLocale(lang, wanted) ? 75 : 60;
     else continue;
+    // Cantonese («zh-HK», «yue») for a Mandarin reply only when nothing else speaks Chinese.
+    if (base === 'zh' && /^(?:yue|zh-hk)/.test(lang) && !/^zh-hk/.test(wanted)) score -= 20;
     if (NATURAL_VOICE.test(voice.name)) score += 25;
     // «الخبير شاهين» is a man: among equally good voices, a male one.
     if (MALE_VOICE.test(voice.name)) score += 6;

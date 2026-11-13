@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { AudioLines, ShieldCheck, X } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
-import { makeT, type LText } from '../لغات/localize';
+import { loc, makeT, type LText } from '../لغات/localize';
 import type { useShaheenVoiceMode } from '../hooks/useShaheenVoiceMode';
-import { ShaheenVoiceStage } from './ShaheenVoiceStage';
+import { NO_VOICE_COPY, ShaheenVoiceStage } from './ShaheenVoiceStage';
 
 type VoiceModeState = ReturnType<typeof useShaheenVoiceMode>;
 
@@ -98,6 +98,12 @@ export function ShaheenVoiceModeButton({ language, voice, disabled = false, avat
       {!voice.supported && !disabled && (
         <p className="absolute bottom-[calc(100%+0.65rem)] end-0 z-20 w-72 max-w-[80vw] rounded-xl border border-stone-200 bg-white p-3 text-xs leading-relaxed text-stone-600 shadow-lg" dir={rtl ? 'rtl' : 'ltr'} role="status">
           {L('unsupported')}
+        </p>
+      )}
+      {voice.noVoice && !voice.active && !errorText && (
+        <p className="absolute bottom-[calc(100%+0.65rem)] end-0 z-20 flex w-72 max-w-[80vw] items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs leading-relaxed text-amber-900 shadow-lg" dir={rtl ? 'rtl' : 'ltr'} role="status">
+          <span className="flex-1">{loc(language, NO_VOICE_COPY)}</span>
+          <button type="button" onClick={voice.clearNoVoice} className="shrink-0 rounded-full px-1.5 font-bold text-amber-800 hover:bg-amber-100" aria-label={L('cancel')}>×</button>
         </p>
       )}
       {errorText && (

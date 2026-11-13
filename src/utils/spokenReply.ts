@@ -15,6 +15,8 @@ import { removeFormulaBlocks } from './aiFormulaExtractor';
 import { removeToolBlocks } from './shaheenTools';
 import { plainMath } from './shaheenText';
 import { talkify } from './talkStyle';
+import { arabicBrandNames, MORE_WORLD, speakWorldNumbers, wantsMoreWorld, worldTerms } from './spokenWorld';
+import { shaheenSpeechLocale } from './shaheenVoice';
 
 // ── Numbers as people say them ───────────────────────────────────────────────────────────────────────────
 interface NumberWords {
@@ -51,7 +53,34 @@ const MSA: NumberWords = {
   thousand: ['ألف', 'ألفان', 'آلاف', 'ألف'], million: ['مليون', 'مليونان', 'ملايين', 'مليون'],
   half: 'نصف', quarter: 'ربع', threeQuarters: 'ثلاثة أرباع', percent: 'بالمئة', to: 'إلى ', about: 'حوالي',
 };
-const wordsFor = (dialect?: Dialect) => (!dialect || dialect === 'egyptian' ? EGYPTIAN : dialect === 'msa' ? MSA : WHITE);
+/** Levantine (Damascus, Beirut, Amman): «تنين، تلاتة، تمانية، حدعش، تلتمية». */
+const LEVANTINE: NumberWords = {
+  ...WHITE,
+  units: ['صفر', 'واحد', 'تنين', 'تلاتة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'تمانية', 'تسعة', 'عشرة', 'حدعش', 'تنعش', 'تلطعش', 'أربعطعش', 'خمسطعش', 'ستطعش', 'سبعطعش', 'تمنطعش', 'تسعطعش'],
+  tens: ['', '', 'عشرين', 'تلاتين', 'أربعين', 'خمسين', 'ستين', 'سبعين', 'تمانين', 'تسعين'],
+  hundreds: ['', 'مية', 'ميتين', 'تلتمية', 'أربعمية', 'خمسمية', 'ستمية', 'سبعمية', 'تمنمية', 'تسعمية'],
+  counted: ['', '', '', 'تلات', 'أربع', 'خمس', 'ست', 'سبع', 'تمن', 'تسع', 'عشر'],
+  threeQuarters: 'تلت تربع', percent: 'بالمية',
+};
+/** Iraqi: «ثنين، دعش، ثنعش، ثلثمية». */
+const IRAQI: NumberWords = {
+  ...WHITE,
+  units: ['صفر', 'واحد', 'ثنين', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة', 'عشرة', 'دعش', 'ثنعش', 'ثلطعش', 'أربعطعش', 'خمسطعش', 'ستطعش', 'سبعطعش', 'ثمنطعش', 'تسعطعش'],
+  hundreds: ['', 'مية', 'ميتين', 'ثلثمية', 'أربعمية', 'خمسمية', 'ستمية', 'سبعمية', 'ثمنمية', 'تسعمية'],
+};
+/** Maghrebi, understood from Rabat to Tunis: «زوج، ربعة، حداش، طناش، تلت مية، فالمية». */
+const MAGHREBI: NumberWords = {
+  ...WHITE,
+  units: ['صفر', 'واحد', 'زوج', 'تلاتة', 'ربعة', 'خمسة', 'ستة', 'سبعة', 'تمنية', 'تسعة', 'عشرة', 'حداش', 'طناش', 'تلطاش', 'ربعطاش', 'خمسطاش', 'سطاش', 'سبعطاش', 'تمنطاش', 'تسعطاش'],
+  tens: ['', '', 'عشرين', 'تلاتين', 'ربعين', 'خمسين', 'ستين', 'سبعين', 'تمانين', 'تسعين'],
+  hundreds: ['', 'مية', 'ميتين', 'تلتمية', 'ربعمية', 'خمسمية', 'ستمية', 'سبعمية', 'تمنمية', 'تسعمية'],
+  counted: ['', '', '', 'تلت', 'ربع', 'خمس', 'ست', 'سبع', 'تمن', 'تسع', 'عشر'],
+  thousand: ['ألف', 'ألفين', 'آلاف', 'ألف'],
+  threeQuarters: 'تلت ربع', percent: 'فالمية',
+};
+const NUMBER_SETS: Partial<Record<Dialect, NumberWords>> = { egyptian: EGYPTIAN, sudanese: EGYPTIAN, msa: MSA, levantine: LEVANTINE, iraqi: IRAQI, maghrebi: MAGHREBI };
+/** Each dialect's own number words (Gulf and Yemeni use the plain spoken Arabic understood everywhere). */
+const wordsFor = (dialect?: Dialect) => NUMBER_SETS[dialect || 'egyptian'] || WHITE;
 
 function under1000(n: number, w: NumberWords): string {
   const h = Math.floor(n / 100); const r = n % 100;
@@ -161,7 +190,7 @@ export function speakArabicNumbers(input: string, dialect?: Dialect): string {
     });
 }
 /** The last word of a number said in words (so «مل» after it is read as «مللي», and nowhere else). */
-const NUMBER_WORD = new RegExp(`(?:${[...new Set([...EGYPTIAN.units, ...EGYPTIAN.tens, ...EGYPTIAN.hundreds, ...EGYPTIAN.counted, ...WHITE.units, ...WHITE.tens, ...WHITE.hundreds, ...WHITE.counted, ...MSA.units, ...MSA.tens, ...MSA.hundreds, 'ألف', 'ألفين', 'ألفان', 'آلاف', 'تلاف', 'مليون', 'مليونين', 'ملايين', 'نص', 'نصف', 'ربع', 'تربع', 'أرباع'])].filter((x) => x && !x.includes(' ')).join('|')})$`, 'u');
+const NUMBER_WORD = new RegExp(`(?:${[...new Set([...[EGYPTIAN, WHITE, MSA, LEVANTINE, IRAQI, MAGHREBI].flatMap((w) => [...w.units, ...w.tens, ...w.hundreds, ...w.counted]), 'ألف', 'ألفين', 'ألفان', 'آلاف', 'تلاف', 'مليون', 'مليونين', 'ملايين', 'نص', 'نصف', 'ربع', 'تربع', 'أرباع'])].filter((x) => x && !x.includes(' ')).join('|')})$`, 'u');
 
 // ── Everyday words instead of written ones ───────────────────────────────────────────────────────────────
 const COMMON_SWAPS: [string, string][] = [['الذي', 'اللي'], ['التي', 'اللي'], ['الذين', 'اللي'], ['اللذان', 'اللي'], ['اللتان', 'اللي']];
@@ -175,37 +204,62 @@ const SWAPS: Partial<Record<Dialect, [string, string][]>> = {
     ['سوف', 'هـ'], ['جداً', 'قوي'], ['أخرى', 'تانية'],
   ],
   gulf: [
-    ['ماذا', 'وش'], ['لماذا', 'ليش'], ['أين', 'وين'], ['الآن', 'الحين'], ['أريد', 'أبي'], ['تريد', 'تبي'], ['لا يوجد', 'ما فيه'],
+    ['يجب أن', 'لازم'], ['يجب', 'لازم'], ['هؤلاء', 'هذولا'], ['نعم', 'إيه'], ['ليس', 'مو'], ['ليست', 'مو'], ['أيضاً', 'بعد'], ['أيضا', 'بعد'], ['ماذا', 'وش'], ['لماذا', 'ليش'], ['أين', 'وين'], ['الآن', 'الحين'], ['أريد', 'أبي'], ['تريد', 'تبي'], ['لا يوجد', 'ما فيه'],
     ['جيد', 'زين'], ['جيدة', 'زينة'], ['كثيراً', 'وايد'], ['كثيرا', 'وايد'], ['فقط', 'بس'], ['لكن', 'بس'], ['ولكن', 'بس'], ['لذلك', 'عشان كذا'],
+    ['يوجد', 'فيه'], ['هناك', 'فيه'],
   ],
   levantine: [
     ['هذا', 'هاد'], ['هذه', 'هاي'], ['ماذا', 'شو'], ['لماذا', 'ليش'], ['أين', 'وين'], ['الآن', 'هلق'], ['أريد', 'بدي'], ['تريد', 'بدك'],
     ['لا يوجد', 'ما في'], ['جيد', 'منيح'], ['جيدة', 'منيحة'], ['كثيراً', 'كتير'], ['كثيرا', 'كتير'], ['فقط', 'بس'], ['لكن', 'بس'], ['ولكن', 'بس'],
+    ['متى', 'إيمتى'], ['نعم', 'إي'], ['ليس', 'مش'], ['ليست', 'مش'], ['يجب أن', 'لازم'], ['يجب', 'لازم'], ['يمكنك أن', 'فيك'], ['يمكنك', 'فيك'],
+    ['يمكن أن', 'ممكن'], ['يمكن', 'ممكن'], ['هؤلاء', 'هدول'], ['ذلك', 'هداك'], ['تلك', 'هديك'], ['لذلك', 'منشان هيك'], ['لذا', 'منشان هيك'],
+    ['لأن', 'لأنو'], ['أيضاً', 'كمان'], ['أيضا', 'كمان'], ['يوجد', 'في'], ['هناك', 'في'], ['جداً', 'كتير'],
   ],
-  iraqi: [['ماذا', 'شنو'], ['لماذا', 'ليش'], ['أين', 'وين'], ['الآن', 'هسة'], ['جيد', 'زين'], ['كثيراً', 'هواية'], ['كثيرا', 'هواية'], ['فقط', 'بس'], ['لكن', 'بس']],
-  maghrebi: [['ماذا', 'اشنو'], ['لماذا', 'علاش'], ['كيف', 'كيفاش'], ['أين', 'فين'], ['الآن', 'دابا'], ['أريد', 'بغيت'], ['جيد', 'مزيان'], ['كثيراً', 'بزاف'], ['كثيرا', 'بزاف'], ['فقط', 'غير']],
-  sudanese: [['ماذا', 'شنو'], ['لماذا', 'ليه'], ['أين', 'وين'], ['الآن', 'هسي'], ['جيد', 'كويس'], ['كثيراً', 'شديد'], ['فقط', 'بس']],
-  yemeni: [['ماذا', 'ايش'], ['لماذا', 'ليش'], ['أين', 'فين'], ['الآن', 'الحين'], ['أريد', 'أشتي'], ['جيد', 'تمام'], ['فقط', 'بس']],
+  iraqi: [
+    ['ماذا', 'شنو'], ['لماذا', 'ليش'], ['أين', 'وين'], ['الآن', 'هسة'], ['جيد', 'زين'], ['كثيراً', 'هواية'], ['كثيرا', 'هواية'], ['فقط', 'بس'], ['لكن', 'بس'],
+    ['ولكن', 'بس'], ['هذه', 'هاي'], ['هؤلاء', 'هذوله'], ['كيف', 'شلون'], ['متى', 'شوكت'], ['نعم', 'إي'], ['ليس', 'مو'], ['ليست', 'مو'],
+    ['لا يوجد', 'ماكو'], ['يوجد', 'أكو'], ['هناك', 'أكو'], ['أيضاً', 'هم'], ['أيضا', 'هم'], ['يجب أن', 'لازم'], ['يجب', 'لازم'], ['جداً', 'كلش'],
+  ],
+  maghrebi: [
+    ['ماذا', 'اشنو'], ['لماذا', 'علاش'], ['كيف', 'كيفاش'], ['أين', 'فين'], ['الآن', 'دابا'], ['أريد', 'بغيت'], ['جيد', 'مزيان'], ['كثيراً', 'بزاف'], ['كثيرا', 'بزاف'], ['فقط', 'غير'],
+    ['هذا', 'هاد'], ['هذه', 'هادي'], ['هؤلاء', 'هادو'], ['لا يوجد', 'ماكاينش'], ['يوجد', 'كاين'], ['هناك', 'كاين'], ['نعم', 'إيه'], ['ليس', 'ماشي'], ['ليست', 'ماشي'],
+    ['تريد', 'بغيتي'], ['جيدة', 'مزيانة'], ['يجب أن', 'خاص'], ['يجب', 'خاص'], ['متى', 'فوقاش'], ['لذلك', 'داكشي علاش'], ['جداً', 'بزاف'],
+  ],
+  sudanese: [
+    ['ماذا', 'شنو'], ['لماذا', 'ليه'], ['أين', 'وين'], ['الآن', 'هسي'], ['جيد', 'كويس'], ['كثيراً', 'شديد'], ['فقط', 'بس'],
+    ['هذا', 'ده'], ['هذه', 'دي'], ['أريد', 'داير'], ['تريد', 'داير'], ['لا يوجد', 'مافي'], ['يوجد', 'في'], ['نعم', 'أيوه'], ['ولكن', 'بس'],
+    ['يجب أن', 'لازم'], ['يجب', 'لازم'], ['جيدة', 'كويسة'], ['جداً', 'شديد'],
+  ],
+  yemeni: [
+    ['ماذا', 'ايش'], ['لماذا', 'ليش'], ['أين', 'فين'], ['الآن', 'دحين'], ['أريد', 'أشتي'], ['جيد', 'تمام'], ['فقط', 'بس'],
+    ['تريد', 'تشتي'], ['نعم', 'ايوه'], ['لا يوجد', 'مابش'], ['ولكن', 'بس'], ['لكن', 'بس'], ['يجب أن', 'لازم'], ['يجب', 'لازم'], ['كثيراً', 'كثير'], ['كثيرا', 'كثير'],
+  ],
 };
+const DEMONSTRATIVES = new Set(['هذا', 'هذه', 'هؤلاء', 'ذلك', 'تلك']);
 /** Written Arabic words said the everyday way in the visitor's dialect (whole words only; MSA is left as it is). */
 export function everydayWords(text: string, dialect?: Dialect): string {
   if (dialect === 'msa') return text;
   // Egyptian puts «ده / دي / دول» after the noun: «هذا العطر» → «العطر ده».
   let out = (dialect || 'egyptian') !== 'egyptian' ? text : text
-    .replace(/(?<![\p{L}\p{M}])(و|ف)?هذا\s+(ال\p{L}+)/gu, (_m, prefix = '', noun: string) => `${prefix}${noun} ده`)
-    .replace(/(?<![\p{L}\p{M}])(و|ف)?هذه\s+(ال\p{L}+)/gu, (_m, prefix = '', noun: string) => `${prefix}${noun} دي`)
-    .replace(/(?<![\p{L}\p{M}])(و|ف)?هؤلاء\s+(ال\p{L}+)/gu, (_m, prefix = '', noun: string) => `${prefix}${noun} دول`);
+    .replace(/(?<![\p{L}\p{M}])(و|ف|ب|وب|فب)?هذا\s+(ال\p{L}+)/gu, (_m, prefix = '', noun: string) => `${prefix}${noun} ده`)
+    .replace(/(?<![\p{L}\p{M}])(و|ف|ب|وب|فب)?هذه\s+(ال\p{L}+)/gu, (_m, prefix = '', noun: string) => `${prefix}${noun} دي`)
+    .replace(/(?<![\p{L}\p{M}])(و|ف|ب|وب|فب)?هؤلاء\s+(ال\p{L}+)/gu, (_m, prefix = '', noun: string) => `${prefix}${noun} دول`);
   for (const [from, to] of [...(SWAPS[dialect || 'egyptian'] || []), ...COMMON_SWAPS]) {
-    const re = new RegExp(`(?<![\\p{L}\\p{M}])(و|ف)?${from}(?![\\p{L}\\p{M}])`, 'gu');
+    // «بهذا السعر» → «بهاد السعر»: «ب» joins only the pointing words (elsewhere it would split real words).
+    const prefixes = DEMONSTRATIVES.has(from) ? '(و|ف|ب|وب|فب)?' : '(و|ف)?';
+    const re = new RegExp(`(?<![\\p{L}\\p{M}])${prefixes}${from}(?![\\p{L}\\p{M}])`, 'gu');
     out = out.replace(re, (_m, prefix = '') => {
-      // «سوف يثبت» → «هيثبت»: the future mark joins the verb after it.
-      if (to === 'هـ') return `${prefix}ه`;
+      // «سوف يثبت» → «هيثبت» / «حيثبت» / «بيثبت»: the future mark joins the verb after it.
+      if (to.endsWith('ـ')) return `${prefix}${to.slice(0, -1)}\u2063`;
       // «ولكن» is «بس», not «وبس» (that means «and that's all»).
       if (to === 'بس' && prefix === 'و') return to;
       return `${prefix}${to}`;
     });
   }
-  return out.replace(/(?<![\p{L}\p{M}])(و|ف)?ه (?=\p{L})/gu, (_m, prefix = '') => `${prefix}ه`);
+  // «هـ» + «بيثبت» is «هيثبت» (the future takes the verb without the present «ب»).
+  out = out.replace(/\u2063\s*ب(?=[يتنأا]\p{L})/gu, '').replace(/\u2063\s*(?=\p{L})/gu, '').replace(/\u2063/g, '');
+  // «تقدر أن تجربه» → «تقدر تجربه»: spoken Arabic drops the written «أن» after these.
+  return out.replace(/(?<![\p{L}\p{M}])((?:و|ف)?(?:تقدر|تقدري|فيك|فيكي|ممكن|لازم|بدك|بدي|عايز|عايزة|تبي|أبي|تبغى|بغيتي|بغيت|خاص|المفروض|داير|تشتي|تريد))\s+أن\s+(?=\p{L})/gu, '$1 ');
 }
 
 /** Short names that are spelt out letter by letter by browser voices. */
@@ -286,17 +340,22 @@ export interface SpokenReply {
  * The reply as Shaheen says it. `words` = about how much he says before asking «تحب أكمّلك؟» (Infinity = all of it,
  * for the «اسمع الرد» button). A short tail (under a fifth more) is said too rather than cut.
  */
-export function spokenReply(text: string, { language, dialect, words = 45, opener = false }: {
+export function spokenReply(text: string, { language, dialect, words = 45, opener = false, locale }: {
   language: SupportedLanguage; dialect?: Dialect; words?: number;
   /** «بص،» / «بصراحة،» now and then, like talk (the live voice conversation; not the «اسمع الرد» button). */
   opener?: boolean;
+  /** The speech locale (`fr-CA`, `es-MX` …): numbers and prices are said that country's way. */
+  locale?: string;
 }): SpokenReply {
   const arabic = language === 'ar';
+  const speechLocale = locale || shaheenSpeechLocale(language);
   const prepared = (sentence: string) => {
     let s = sentence;
     if (arabic) {
       for (const [re, name] of SPOKEN_NAMES) s = s.replace(re, name);
-      s = everydayWords(speakArabicNumbers(s, dialect), dialect);
+      s = arabicBrandNames(everydayWords(speakArabicNumbers(s, dialect), dialect), dialect);
+    } else {
+      s = speakWorldNumbers(worldTerms(s, language), language, speechLocale);
     }
     return s.replace(/\s+([،,.!?؟])/g, '$1').replace(/[،,]+(?=[.!?؟]|$)/gu, '').replace(/([،,])[،,]+/gu, '$1').replace(/\s+/g, ' ').trim();
   };
@@ -317,7 +376,7 @@ export function spokenReply(text: string, { language, dialect, words = 45, opene
   const rest = sentences.slice(said.length).join(' ');
   if (!rest) return { say: said.join(' '), rest: '' };
   // Already ending on a question to him: that question is the turn's end, the rest waits in the chat.
-  const ask = /[?؟]$/.test(said[said.length - 1]!) ? '' : ` ${arabic ? MORE[dialect || 'egyptian'] : MORE[language] || MORE.en}`;
+  const ask = /[?؟？;]$/.test(said[said.length - 1]!) ? '' : ` ${arabic ? MORE[dialect || 'egyptian'] : MORE_WORLD[language as Exclude<SupportedLanguage, 'ar'>] || MORE.en}`;
   return { say: `${said.join(' ')}${ask}`, rest };
 }
 
@@ -325,5 +384,5 @@ export function spokenReply(text: string, { language, dialect, words = 45, opene
 export function wantsMore(text: string): boolean {
   const t = ` ${text.toLowerCase().replace(/\p{M}/gu, '').replace(/[^\p{L}\s]/gu, ' ').replace(/\s+/g, ' ').trim()} `;
   if (/ (لا|لأ|مش عايز|خلاص|no|nope|non|nein|нет) /u.test(t)) return false;
-  return / (ايوه|أيوه|ايوا|أيوة|اه|آه|نعم|اكيد|أكيد|تمام|كمل|كمّل|كملي|اكمل|أكمل|كمله|زود|قول كمان|كمان|وبعدين|يلا|ياريت|يا ريت|ok|okay|yes|yeah|sure|go on|continue|more|oui|sí|si|ja|да|evet|بله|آره|ابي|أبي|بدي|اي|إي|يب) /u.test(t);
+  return wantsMoreWorld(text) || / (ايوه|أيوه|ايوا|أيوة|اه|آه|نعم|اكيد|أكيد|تمام|كمل|كمّل|كملي|اكمل|أكمل|كمله|زود|قول كمان|كمان|وبعدين|يلا|ياريت|يا ريت|ok|okay|yes|yeah|sure|go on|continue|more|oui|sí|si|ja|да|evet|بله|آره|ابي|أبي|بدي|اي|إي|يب) /u.test(t);
 }
