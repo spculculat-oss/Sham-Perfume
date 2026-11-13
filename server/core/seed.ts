@@ -14,10 +14,11 @@ import type { CoreSettings, KnowledgeDoc, Product, ServiceDef } from './types';
  * platform already runs: `Repository.ready()` then adds the missing ones to existing stores without
  * touching a single document the merchant edited or deleted.
  */
-export const KNOWLEDGE_SEED_VERSION = 8;
+export const KNOWLEDGE_SEED_VERSION = 9;
 
-/** Which seed version introduced a document: 1 = original, 2 = platform guide, 3 = store guide, 4 = visitor suggestions, 5 = Shaheen voice chat, 6 = opt-in tool mode, 7 = signed local image animation and conversation continuity / real-photo search, 8 = Shaheen's imaginative images (styles, shapes, edits by words). */
+/** Which seed version introduced a document: 1 = original, 2 = platform guide, 3 = store guide, 4 = visitor suggestions, 5 = Shaheen voice chat, 6 = opt-in tool mode, 7 = signed local image animation and conversation continuity / real-photo search, 8 = Shaheen's imaginative images (styles, shapes, edits by words), 9 = Shaheen's own painter (local illustration when the image service is unavailable). */
 export function knowledgeDocVersion(id: string): number {
+  if (id === 'kb-platform-painter') return 9;
   if (id === 'kb-platform-imagination') return 8;
   if (id === 'kb-platform-workspace-motion' || id === 'kb-platform-conversation-context' || id === 'kb-platform-real-photos') return 7;
   if (id === 'kb-platform-shaheen-tools') return 6;

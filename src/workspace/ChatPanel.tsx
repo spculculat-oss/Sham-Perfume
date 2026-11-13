@@ -11,6 +11,7 @@ import { readAloud } from '../utils/readAloud';
 import { ask, errorKey, imageErrorKey, makeImage, isGeneratedImageData, type WsContextFile, type WsSource } from './workspaceApi';
 import { imageRequest, segments, stripImageRequest, type CodeBlock } from './codeBlocks';
 import { parseImageRequest } from '../utils/imageCraft';
+import { drawOrPaint } from './paint';
 import { fitForUpload } from './motion';
 import { CodeCard } from './CodeCard';
 import { ExportMenu } from './ExportMenu';
@@ -21,7 +22,7 @@ import { parseMarkdown } from './markdownDoc';
 import { wsText, type WsKey } from './strings';
 import { pickArEn } from '../لغات/localize';
 
-export interface ChatItem { role: 'user' | 'assistant'; text: string; sources?: WsSource[]; image?: string; files?: string[]; error?: boolean; regenerateImage?: boolean; imageNote?: ReturnType<typeof imageErrorKey> }
+export interface ChatItem { role: 'user' | 'assistant'; text: string; sources?: WsSource[]; image?: string; files?: string[]; error?: boolean; regenerateImage?: boolean; painted?: 'whole' | 'partial'; imageNote?: ReturnType<typeof imageErrorKey> }
 const STORE_KEY = 'sham_workspace_chat_v1';
 export function loadChat(): ChatItem[] {
   try { const raw = JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); return Array.isArray(raw) ? raw.slice(-60).map((item: ChatItem) => item.image && !isGeneratedImageData(item.image) ? { ...item, image: undefined, regenerateImage: true } : item) : []; } catch { return []; }
@@ -84,9 +85,9 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
         try {
           // «EDIT: …» changes the picture Shaheen just drew; without one still on screen it is drawn afresh.
           const asked = parseImageRequest(wanted);
-          const img = await makeImage(asked.prompt, asked.mode === 'edit' && isGeneratedImageData(previousImage) ? await fitForUpload(previousImage) : undefined, controller.signal);
+          const img = await drawOrPaint(asked.prompt, asked.mode === 'edit' && isGeneratedImageData(previousImage) ? await fitForUpload(previousImage) : undefined, controller.signal);
           if (controller.signal.aborted) return;
-          setItems((prev) => prev.map((m) => (m === reply ? { ...m, image: img.src } : m)));
+          setItems((prev) => prev.map((m) => (m === reply ? { ...m, image: img.src, ...(img.painted ? { painted: img.painted } : {}) } : m)));
         } catch (error) {
           // The reason sits beside the reply, never inside its text: the next turn must not read «I failed» as
           // something Shaheen said and start apologising for it.
@@ -146,6 +147,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
                   {imageRequest(m.text) && !m.image && busy && i === items.length - 1 && <p className="text-[12px] text-stone-500"><Loader2 className="inline h-3 w-3 animate-spin" /> {w('drawing')}</p>}
                   {extractMediaRequest(m.text) && <ShaheenMedia request={extractMediaRequest(m.text)!} lang={lang} />}
                   {m.imageNote && !m.image && <p role="status" className="rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs text-amber-900">{w(m.imageNote)}</p>}
+                  {m.painted && m.image && <p role="status" className="text-xs text-stone-600">{w(m.painted === 'partial' ? 'painter_partial' : 'painter_note')}</p>}
                   {m.regenerateImage && <p role="status" className="text-xs text-stone-600">{w('image_regenerate')}</p>}
                   {m.image && <MotionCard src={m.image} lang={lang} />}
                   {m.sources?.length ? (

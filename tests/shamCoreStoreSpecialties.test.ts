@@ -81,8 +81,8 @@ test('the store documents are seeded (v3) and explain the real buying rules', ()
   // Upgrading v2 stores adds store docs, while v3/v4 stores receive the new platform guides.
   const added = knowledgeSeedAdditions(2).map((d) => d.id);
   assert.ok(added.some((id) => id.startsWith('kb-store-')), added.join(' · '));
-  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions', 'kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination']);
-  assert.deepEqual(knowledgeSeedAdditions(4).map((d) => d.id), ['kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination']);
+  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions', 'kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter']);
+  assert.deepEqual(knowledgeSeedAdditions(4).map((d) => d.id), ['kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter']);
   const text = STORE_PLAYBOOK.map((t) => t.body.ar).join('\n');
   for (const fact of ['إنستاباي', 'UN1266', 'SH-', 'الإرجاع']) assert.ok(text.includes(fact), `the store playbook lost “${fact}”`);
 });
