@@ -613,7 +613,10 @@ export function contractsChecks(contracts: unknown): Finding[] {
   return [{ level: 'note', idea: `${approved} متجر موقّع ومعتمد — بيتنقل منهم بحكم L-40` }];
 }
 
-export function runPrecheck(reports: Record<string, unknown>, runs: Record<string, RunInfo | undefined>, now: number, controls?: OwnerControls): PrecheckFile {
+/** Said of a robot whose workflow has no timer: it waits to be started, so an old report is expected. */
+export const ON_DEMAND_AR = 'بيشتغل عند الطلب بس (قرار صاحب الموقع 2026-11: مفيش روبوت بيشتغل بجدول على GitHub) — تقريره من آخر تشغيل، وده مش عطل';
+/** `onDemand`: workflow files with no schedule (see onDemandWorkflows in runs.ts) — their reports are never «late». */
+export function runPrecheck(reports: Record<string, unknown>, runs: Record<string, RunInfo | undefined>, now: number, controls?: OwnerControls, onDemand?: ReadonlySet<string>): PrecheckFile {
   const bots: BotCheck[] = [];
   for (const bot of BOTS) {
     const c: BotCheck = { id: bot.id, status: 'idle', problems: [], fixes: [], ideas: [] };
@@ -649,7 +652,8 @@ export function runPrecheck(reports: Record<string, unknown>, runs: Record<strin
       else {
         c.reportAt = at; c.ageHours = Math.round(age * 10) / 10;
         raise('ok');
-        if (bot.everyHours && age > bot.everyHours * 4) { raise('fail'); c.problems.push(`التقرير متأخر جداً (${Math.round(age)} ساعة، المفروض كل ${bot.everyHours})`); c.fixes.push('إعادة تشغيل الروبوت ومراجعة سبب التوقف'); }
+        if (bot.everyHours && age > bot.everyHours * 4 && bot.workflow && onDemand?.has(bot.workflow)) c.ideas.push(ON_DEMAND_AR);
+        else if (bot.everyHours && age > bot.everyHours * 4) { raise('fail'); c.problems.push(`التقرير متأخر جداً (${Math.round(age)} ساعة، المفروض كل ${bot.everyHours})`); c.fixes.push('إعادة تشغيل الروبوت ومراجعة سبب التوقف'); }
         else if (bot.everyHours && age > bot.everyHours * 2) { raise('warn'); c.problems.push(`التقرير متأخر (${Math.round(age)} ساعة، المفروض كل ${bot.everyHours})`); c.fixes.push('إعادة تشغيل الروبوت'); }
         for (const x of ownChecks(bot.id, o(report), now)) {
           if (x.level !== 'note') raise(x.level);
