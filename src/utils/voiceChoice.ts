@@ -72,6 +72,8 @@ export interface VoiceChoice {
   pitch: number;
   /** 0.7–1.3 (Shaheen's usual pace is 0.96). */
   rate: number;
+  /** «يتأقلم مع مزاجك»: false = never nudged by the visitor's mood (on unless he turned it off). */
+  mood?: boolean;
 }
 export const DEFAULT_VOICE_CHOICE: VoiceChoice = { names: {}, pitch: 1, rate: 0.96 };
 const KEY = 'sham_voice_choice_v1';
@@ -89,6 +91,7 @@ export function savedVoiceChoice(): VoiceChoice {
       ...(data.gender === 'male' || data.gender === 'female' ? { gender: data.gender } : {}),
       pitch: clamp(data.pitch, 0.6, 1.5, 1),
       rate: clamp(data.rate, 0.7, 1.3, 0.96),
+      ...(data.mood === false ? { mood: false } : {}),
     };
   } catch { return { ...DEFAULT_VOICE_CHOICE }; }
 }

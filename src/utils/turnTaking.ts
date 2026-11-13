@@ -28,22 +28,34 @@ const TRAILING = new Set([
   'ان', 'انه', 'لكن', 'ممكن', 'عايز', 'عاوز', 'عايزه', 'محتاج', 'محتاجه', 'ابغي', 'ابي', 'بدي', 'اريد', 'حابب', 'نفسي', 'زي', 'مثلا', 'كمان',
   'يكون', 'تكون', 'بتاع', 'بتاعه', 'بين', 'لحد', 'قبل', 'بعد', 'حاجه', 'هو', 'هي', 'انا', 'احنا', 'اممم', 'امم', 'ام', 'ااه', 'اه', 'ايوه يعني',
   'and', 'or', 'but', 'so', 'because', 'the', 'a', 'an', 'to', 'with', 'of', 'for', 'if', 'that', 'my', 'um', 'uh', 'like', 'want', 'need', 'is', 'i',
-  'et', 'ou', 'mais', 'le', 'la', 'de', 'y', 'o', 'pero', 'el', 'e', 'und', 'oder', 'aber', 'и', 'или', 'но', 've', 'veya', 'ama', 'که',
+  'about', 'from', 'in', 'on', 'at', 'than', 'some', 'any', 'your', 'et', 'ou', 'mais', 'le', 'la', 'de', 'pour', 'avec', 'un', 'une', 'y', 'o', 'pero', 'el', 'e', 'para', 'con', 'un', 'una', 'und', 'oder', 'aber', 'и', 'или', 'но', 've', 'veya', 'ama', 'که',
 ]);
 /** Words that make a sentence a question or a request (a turn that can be answered). */
 const ASKING = new Set([
   'كام', 'بكام', 'ايه', 'ايش', 'وش', 'شو', 'شنو', 'شنهو', 'فين', 'وين', 'امتي', 'متي', 'ازاي', 'كيف', 'شلون', 'ليه', 'ليش', 'هل', 'مين', 'منين',
-  'عندك', 'عندكم', 'فيه', 'في', 'يوجد', 'قولي', 'قلي', 'وريني', 'رشحلي', 'رشح', 'انصحني', 'اقترح', 'اختارلي', 'فهمني', 'اشرح', 'ابعتلي', 'احسن', 'افضل',
+  'كم', 'بكم', 'ايش', 'اش', 'واش', 'عندك', 'عندكم', 'فيه', 'في', 'يوجد', 'ممكن', 'اقدر', 'نقدر', 'ينفع', 'هينفع', 'يصلح', 'قولي', 'قلي', 'وريني', 'رشحلي', 'رشح', 'انصحني', 'اقترح', 'اختارلي', 'فهمني', 'اشرح', 'ابعتلي', 'احسن', 'افضل',
   'what', 'how', 'where', 'when', 'why', 'which', 'who', 'do', 'does', 'can', 'could', 'is', 'are', 'recommend', 'suggest', 'tell', 'show', 'best',
   'quel', 'quelle', 'comment', 'combien', 'qué', 'cuánto', 'cómo', 'was', 'wie', 'wo', 'что', 'сколько', 'как', 'ne', 'nasıl', 'kaç', 'چه', 'چند',
 ]);
 /** Short replies that are a whole turn by themselves. */
 const WHOLE_REPLIES = [
-  'ايوه', 'ايوا', 'اه', 'نعم', 'لا', 'لا شكرا', 'تمام', 'ماشي', 'شكرا', 'متشكر', 'تسلم', 'خلاص', 'مع السلامه', 'سلام', 'كمل', 'اكيد', 'طيب', 'اوكي',
+  'ايوه', 'ايوا', 'اه', 'نعم', 'لا', 'لا شكرا', 'مع السلامه', 'في امان الله', 'الله يسلمك', 'تمام', 'ماشي', 'شكرا', 'متشكر', 'تسلم', 'خلاص', 'مع السلامه', 'سلام', 'كمل', 'اكيد', 'طيب', 'اوكي',
   'yes', 'no', 'ok', 'okay', 'thanks', 'thank you', 'bye', 'sure', 'oui', 'non', 'merci', 'sí', 'gracias', 'ja', 'nein', 'danke', 'да', 'нет', 'evet', 'hayır',
 ];
 
 export type TurnState = 'done' | 'more' | 'unsure';
+
+const NEGATION = new Set(['مش', 'ما', 'مو', 'مب', 'لا', 'not', "don't", 'dont', 'pas']);
+const INTENSIFIERS = new Set(['جدا', 'اوي', 'قوي', 'خالص', 'كتير', 'كثير', 'وايد', 'كتير', 'so', 'much', 'very', 'a', 'lot', 'beaucoup', 'mucho', 'muchas', 'sehr', 'كده', 'يا', 'باشا', 'حبيبي']);
+const OPENERS = new Set(['بص', 'بصي', 'اسمع', 'اسمعي', 'شوف', 'شوفي', 'بقولك', 'listen', 'look', 'so', 'well', 'écoute', 'mira', 'oye']);
+const KNOW = new Set(['اعرف', 'افهم', 'قولي', 'قلي', 'know', 'tell', 'ask', 'savoir', 'saber', 'wissen']);
+const YOU = new Set(['انتو', 'انتم', 'انت', 'انتي', 'حضرتك', 'حضرتكم', 'you', 'vous', 'tu', 'usted', 'ustedes']);
+const OPEN_VERBS = new Set(['كنت', 'كان', 'كانت', 'بحب', 'بتحب', 'بيحب', 'بنحب', 'بدور', 'بتدور', 'بفكر', 'بتفكر', 'بقول', 'بيقول', 'اسمه', 'اسمها', 'نفسي', 'was', 'were', 'likes', 'loves']);
+const CONDITION = new Set(['لو', 'اذا', 'لما', 'if', 'si', 'wenn']);
+
+/** «أريد عطر»، «بدي شي»: a wish with only a general word after it — the details are still coming. */
+const GENERAL = new Set(['عطر', 'شي', 'شيء', 'حاجه', 'حاجة', 'ريحه', 'برفان', 'something', 'perfume', 'parfum', 'algo', 'etwas']);
+const WISH = new Set(['عايز', 'عاوز', 'عايزه', 'محتاج', 'ابغي', 'ابي', 'بدي', 'اريد', 'بغيت', 'حابب', 'نفسي', 'ودي', 'want', 'need', 'veux', 'quiero', 'voglio', 'möchte']);
 
 /**
  * After the visitor pauses: is the turn over? 'more' = it plainly goes on (ends on «و»، «عشان»، «عايز»…); 'done' = a
@@ -54,13 +66,34 @@ export function turnState(text: string, { answering = false }: { answering?: boo
   const list = words(raw);
   if (!list.length) return 'unsure';
   const last = list[list.length - 1]!;
+  const before = list[list.length - 2];
+  // «لا مش عايز»: a wish said in the negative is complete.
+  if (before && NEGATION.has(before) && WISH.has(last)) return 'done';
+  // «شكرا جدا»، «thank you so much»: a whole reply with only «very / so much» after it.
+  const head = WHOLE_REPLIES.find((reply) => (`${list.join(' ')} `).startsWith(`${normalizeArabic(reply)} `));
+  if (head && list.slice(normalizeArabic(head).split(' ').length).every((word) => INTENSIFIERS.has(word))) return 'done';
+  // «أبي أعرف كم…»: «know / tell me» then a question word at the very end — the thing asked about is next.
+  if (before && KNOW.has(before) && ASKING.has(last)) return 'more';
+  // «انتو بتشحنوا للكويت»: a sentence said to Shaheen («انتو / حضرتك / you …») is a question even without «؟».
+  if (list.length >= 3 && YOU.has(list[0]!)) return 'done';
+  // «بص يا سيدي»، «listen»: an opener — what he wants to say is next.
+  if (list.length <= 3 && OPENERS.has(list[0]!) && !has(list, ASKING)) return 'more';
+  // «طب لو أخدت اتنين»: an «if» with no question yet.
+  if (list.length <= 6 && list.some((word) => CONDITION.has(word)) && !has(list.filter((word) => !CONDITION.has(word)), ASKING) && !/[?؟]\s*$/u.test(raw)) return 'more';
+  // A whole goodbye or thanks («مع السلامة»), even though it holds a word that usually leads on.
+  if (list.length <= 3 && WHOLE_REPLIES.some((reply) => normalizeArabic(reply) === list.join(' '))) return 'done';
+  if (list.length <= 3 && GENERAL.has(last) && list.slice(0, -1).some((word) => WISH.has(word))) return 'more';
   if (TRAILING.has(last) || (list.length >= 2 && TRAILING.has(`${list[list.length - 2]} ${last}`))) return 'more';
   if (/[?؟]\s*$/u.test(raw)) return 'done';
   // The answer to a question Shaheen just asked («رجالي ولا حريمي؟» → «رجالي»).
   if (answering && list.length <= 4) return 'done';
   if (list.length <= 3 && phrase(raw, WHOLE_REPLIES) && list.every((word) => !TRAILING.has(word) || word === 'اه')) return 'done';
   if (list.length >= 2 && has(list, ASKING)) return 'done';
-  if (list.length >= 6) return 'done';
+  // «انا كنت»، «اختي بتحب»: a short start ending on a verb that needs what comes after it.
+  if (list.length <= 3 && OPEN_VERBS.has(last)) return 'more';
+  // Three words or more that end on a real word (not «و»، «عشان»…): a statement or a yes/no question
+  // («هو الشحن مجاني»، «السعر ده شامل الشحن») — said the way people ask without «هل».
+  if (list.length >= 3) return 'done';
   return 'unsure';
 }
 
@@ -74,10 +107,14 @@ export function finishedAnswer(text: string): 'done' | 'more' | undefined {
 }
 
 /** What he is saying to Shaheen (stop, a question, the store) versus to someone near him. */
+/** Words that, alone, mean «stop». Said while calling someone else («اسكت يا ولد»), they are not for Shaheen. */
 const TO_HIM_STRONG = ['شاهين', 'shaheen', 'استني', 'استنا', 'لحظه', 'ثانيه', 'ثواني', 'وقف', 'اسكت', 'بس بس', 'لا لا', 'كفايه', 'خلاص', 'اصبر', 'stop', 'wait', 'hold on', 'attends', 'espera', 'aspetta', 'warte', 'стоп', 'подожди', 'dur', 'bekle', 'صبر کن', 'وایسا'];
 const TO_HIM = new Set([
   'عطر', 'عطور', 'ريحه', 'برفان', 'بارفان', 'سعر', 'سعره', 'بكام', 'كام', 'شحن', 'توصيل', 'اطلب', 'اشتري', 'خصم', 'عود', 'مسك', 'عنبر', 'فانيليا', 'ورد',
   'ثبات', 'فواحه', 'زجاجه', 'مل', 'تستر', 'اوردر', 'طلب', 'منتج', 'انت', 'انتا', 'حضرتك', 'قولي', 'قلي', 'وريني', 'رشحلي', 'انصحني', 'فهمني', 'اعد', 'تاني',
+  'الفرق', 'فرق', 'اعرف', 'فاهم', 'فاهمه', 'فهمت', 'مفهمتش', 'مفهمتكش', 'وضح', 'وبعدين', 'اطلبه', 'اطلبها', 'اشتريه', 'متاح', 'موجود', 'discount', 'price', 'cost',
+  'men', 'women', 'ship', 'shipping', 'delivery', 'smell', 'long', 'last', 'cheaper', 'other', 'another', 'again', 'mean', 'understand',
+  'تانيه', 'كمان', 'اخف', 'اتقل', 'ارخص', 'اغلي', 'غالي', 'رخيص', 'رجالي', 'حريمي', 'نسائي', 'هديه', 'عينه', 'عروض', 'سعرها', 'ريحته', 'ريحتها',
   'طب', 'يعني', 'غير', 'ارخص', 'اغلي', 'احسن', 'افضل', 'ده', 'دي', 'هو', 'ايه', 'ليه', 'ازاي', 'فين', 'perfume', 'scent', 'price', 'shipping', 'order',
   'cheaper', 'you', 'parfum', 'prix', 'perfume', 'precio', 'preis', 'духи', 'цена', 'parfüm', 'fiyat', 'عطری', 'قیمت',
 ]);
@@ -85,7 +122,8 @@ const WANTING = new Set(['عايز', 'عاوز', 'عايزه', 'محتاج', 'ا
 /** Calling someone («يا ماما»، «يا أحمد») or telling someone near to do something. */
 const ASIDE = new Set([
   'ماما', 'بابا', 'حبيبي', 'حبيبتي', 'حاج', 'ابني', 'بنتي', 'ولاد', 'ياولد', 'تعالي', 'تعالا', 'روح', 'روحي', 'هات', 'هاتي', 'اقفل', 'افتح',
-  'الباب', 'الشاي', 'الاكل', 'التليفون', 'الموبايل', 'مستني', 'جاي', 'جايه', 'نازل', 'mom', 'dad', 'honey', 'mommy', 'daddy', 'come', 'door', 'phone',
+  'الباب', 'الشاي', 'الاكل', 'التليفون', 'الموبايل', 'مستني', 'جاي', 'جايه', 'نازل', 'البيت', 'خليك', 'خليكي', 'اقعد', 'اقعدي', 'نام', 'نامي',
+  'هاتلي', 'هاتيلي', 'هاتهولي', 'الميه', 'ميه', 'خد', 'خدو', 'الريموت', 'الشنطه', 'المفتاح', 'coming', 'remote', 'dinner', 'شوفي', 'خدي', 'اسمعي', 'كلي', 'اشربي', 'التلفزيون', 'السفره', 'حطي', 'ولد', 'عيال', 'الولاد', 'بتنادي', 'بينادي', 'معايا', 'كلمني', 'mom', 'dad', 'honey', 'mommy', 'daddy', 'come', 'door', 'phone',
   'maman', 'papa', 'mamá', 'papá', 'mama', 'мама', 'папа', 'anne', 'baba', 'مامان',
 ]);
 
@@ -107,17 +145,22 @@ export type Addressee = 'shaheen' | 'other' | 'unsure';
 export function addressee(said: string, memory: BargeMemory = EMPTY_BARGE_MEMORY): { to: Addressee; score: number; strong: boolean } {
   const list = words(said);
   if (!list.length) return { to: 'unsure', score: 0, strong: false };
-  if (phrase(said, TO_HIM_STRONG)) return { to: 'shaheen', score: 3, strong: true };
+  if (list.includes('شاهين') || list.includes('shaheen')) return { to: 'shaheen', score: 3, strong: true };
+  // «يا ماما»، «يا أحمد»، «honey»: calling someone who is not Shaheen; «ألو»: on the phone.
+  const calls = list.some((word, i) => (word === 'يا' && list[i + 1] && list[i + 1] !== 'شاهين') || (/^يا\p{L}{2,}/u.test(word) && word !== 'ياريت'))
+    || list.some((word) => ['honey', 'mom', 'mommy', 'dad', 'daddy', 'babe', 'sweetie', 'maman', 'mamá'].includes(word));
+  const phone = ['الو', 'الوو', 'aló', 'allo', 'алло'].includes(list[0]!);
+  const aside = list.some((word) => ASIDE.has(word));
+  if (phrase(said, TO_HIM_STRONG) && !calls && !phone && !aside) return { to: 'shaheen', score: 3, strong: true };
   let score = 0;
-  // «يا ماما»، «يا أحمد»: calling someone who is not Shaheen.
-  const calls = list.some((word, i) => (word === 'يا' && list[i + 1] && list[i + 1] !== 'شاهين') || /^يا\p{L}{2,}/u.test(word) && word !== 'ياريت');
   if (calls) score -= 2;
+  if (phone) score -= 3;
   for (const word of list) {
     if (TO_HIM.has(word)) score += 1;
     if (ASIDE.has(word)) score -= 1.5;
     score += Math.max(-3, Math.min(3, (memory.words[word] || 0) * 0.75));
   }
-  if (has(list, ASKING) && !calls) score += 1;
+  if (has(list, ASKING) && !calls && !aside && !phone) score += 1;
   // «لا…»، «أنا عايز…»: answering what he is saying.
   if (['لا', 'لأ', 'no', 'non', 'nein', 'нет', 'hayır', 'نه'].includes(list[0]!)) score += 1;
   if (has(list, WANTING)) score += 0.5;

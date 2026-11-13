@@ -11,6 +11,8 @@
 import type { SupportedLanguage } from '../types/i18n';
 import { baseLexicon, SCENT_WORDS, withAffix, wordKey, type Lexicon } from './shaheenSpelling';
 import type { Dialect } from './arabicDialect';
+import { EVERYDAY_WORDS } from './everydayWords';
+import { EMPTY_SOUNDS, soundProfile, swapCost, vowelCost, type SoundProfile } from './pronunciation';
 
 export interface HeardFix { from: string; to: string; sure: boolean }
 export interface HeardReading {
@@ -22,21 +24,29 @@ export interface HeardReading {
 }
 
 /** Letters that sound alike to a speech engine (each group costs little to swap). */
-const SOUND_ALIKE = ['نم', 'سصث', 'تطث', 'دضظذ', 'زذظ', 'قأءاعكإآ', 'هحخة', 'جغق', 'يىئ', 'وؤ', 'فڤ'];
+// «تد»: a voiced and an unvoiced «t/d» are the pair speech engines mix up most at a word's end («الأوت» = «العود»).
+const SOUND_ALIKE = ['نم', 'تد', 'سصث', 'تطث', 'دضظذ', 'زذظ', 'قأءاعكإآ', 'هحخة', 'جغق', 'يىئ', 'وؤ', 'فڤ'];
 const alike = (a: string, b: string) => SOUND_ALIKE.some((group) => group.includes(a) && group.includes(b));
 
-/** Edit distance where a sound-alike swap costs 0.4 (a missing/extra/other letter costs 1). */
-export function heardDistance(a: string, b: string): number {
+/**
+ * Edit distance where a sound-alike swap costs 0.4 (a missing/extra/other letter costs 1). «مخارج الألفاظ»: with a
+ * sound profile, the swaps this visitor's dialect makes (and the ones learned from confirmed words) cost less, and a long
+ * vowel dropped or added by the engine costs half.
+ */
+export function heardDistance(a: string, b: string, sounds?: SoundProfile): number {
+  const vowel = sounds ? vowelCost(sounds) : 1;
   const n = a.length; const m = b.length;
   const d: number[][] = Array.from({ length: n + 1 }, (_, i) => Array.from({ length: m + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0)));
   for (let i = 1; i <= n; i += 1) {
     for (let j = 1; j <= m; j += 1) {
       // «فانيلية» / «فانيليا»: a word's last «ة» is said as «ا».
       const ending = i === n && j === m && 'ها'.includes(a[i - 1]!) && 'ها'.includes(b[j - 1]!);
-      const sub = a[i - 1] === b[j - 1] ? 0 : alike(a[i - 1]!, b[j - 1]!) || ending ? 0.4 : 1;
-      // A doubled letter heard once (or once heard twice) is a light slip («vanila» / «vanilla»).
-      const del = a[i - 1] === a[i - 2] || a[i - 1] === b[j - 1] ? 0.4 : 1;
-      const ins = b[j - 1] === b[j - 2] || b[j - 1] === a[i - 1] ? 0.4 : 1;
+      const learned = a[i - 1] === b[j - 1] ? undefined : swapCost(sounds, a[i - 1]!, b[j - 1]!);
+      const sub = a[i - 1] === b[j - 1] ? 0 : learned ?? (alike(a[i - 1]!, b[j - 1]!) || ending ? 0.4 : 1);
+      // A doubled letter heard once (or once heard twice) is a light slip («vanila» / «vanilla»); so is a long vowel
+      // the engine dropped or added («صندال» / «صندل»), once the speaker's sounds are known.
+      const del = a[i - 1] === a[i - 2] || a[i - 1] === b[j - 1] ? 0.4 : 'اوي'.includes(a[i - 1]!) && i > 1 && i < n ? vowel : 1;
+      const ins = b[j - 1] === b[j - 2] || b[j - 1] === a[i - 1] ? 0.4 : 'اوي'.includes(b[j - 1]!) && j > 1 && j < m ? vowel : 1;
       d[i]![j] = Math.min(d[i - 1]![j]! + del, d[i]![j - 1]! + ins, d[i - 1]![j - 1]! + sub);
     }
   }
@@ -56,7 +66,9 @@ function sense(text: string, lex: Lexicon, learned: Record<string, string>, cont
   if (!keys.length) return 0;
   // The same word twice in a row («عطر عطر») is an echo of the engine, not sense.
   const echoes = keys.filter((key, i) => i > 0 && keys[i - 1] === key).length;
-  return (keys.filter((key) => lex.words.has(key) || learned[key] || context.has(key)).length - echoes) / keys.length;
+  // An everyday word counts half: it is a real word, but a reading with the store's own words makes more sense.
+  const known = keys.reduce((sum, key) => sum + (lex.words.has(key) || learned[key] || context.has(key) ? 1 : EVERYDAY_WORDS.has(key) ? 0.5 : 0), 0);
+  return (known - echoes) / keys.length;
 }
 
 const NO_CONTEXT: ReadonlySet<string> = new Set();
@@ -67,36 +79,53 @@ export function contextWords(texts: readonly string[]): Set<string> {
   return keys;
 }
 
+/** The conversation's adjacent word pairs («أمير العرب»، «بديع العود»), as word keys. */
+export function contextPhrases(texts: readonly string[]): string[] {
+  const out = new Set<string>();
+  for (const text of texts) {
+    const keys = text.split(/[^\p{L}\p{M}]+/u).map(wordKey).filter((key) => key.length >= 2);
+    for (let i = 1; i < keys.length; i += 1) out.add(`${keys[i - 1]} ${keys[i]}`);
+  }
+  return [...out];
+}
+
 /**
  * The closest sensible word to a heard one, with how far it is and whether it is the only one that close. A word
  * said in the conversation just now (by Shaheen or the visitor) is the likelier meaning: it wins a tie.
  */
-function nearest(lex: Lexicon, key: string, context: ReadonlySet<string> = NO_CONTEXT): { word: string; distance: number; unique: boolean; scent: boolean; context: boolean; weight: number } | undefined {
+function nearest(lex: Lexicon, key: string, context: ReadonlySet<string> = NO_CONTEXT, sounds?: SoundProfile): { word: string; distance: number; unique: boolean; scent: boolean; context: boolean; weight: number } | undefined {
   let best: { word: string; distance: number; weight: number }[] = [];
-  const consider = (word: string) => {
+  const consider = (word: string, everyday = false) => {
     if (word.length < 3) return;
-    const distance = heardDistance(key, word);
+    const distance = heardDistance(key, word, sounds);
     if (distance > 1) return;
-    const weight = (lex.words.get(word) || 0) + (context.has(word) ? 1000 : 0);
+    const weight = (everyday ? 2 : lex.words.get(word) || 0) + (context.has(word) ? 1000 : 0);
     if (!best.length || distance < best[0]!.distance - 1e-9) best = [{ word, distance, weight }];
     else if (Math.abs(distance - best[0]!.distance) < 1e-9 && !best.some((b) => b.word === word)) best.push({ word, distance, weight });
   };
   for (let len = key.length - 1; len <= key.length + 1; len += 1) for (const word of lex.byLength.get(len) || []) consider(word);
   for (const word of context) if (Math.abs(word.length - key.length) <= 1 && !lex.words.has(word)) consider(word);
+  // Everyday words («أبيض»، «جدة») are meanings too (a light weight: a perfume word or the conversation wins a tie).
+  for (const word of EVERYDAY_WORDS) if (Math.abs(word.length - key.length) <= 1 && !lex.words.has(word) && !context.has(word)) consider(word, true);
   if (!best.length) return undefined;
   best.sort((x, y) => y.weight - x.weight);
   const inContext = best.filter((b) => context.has(b.word)).length;
   const top = best[0]!;
   return { word: top.word, distance: top.distance, weight: top.weight, scent: SCENT_KEYS.has(top.word), context: context.has(top.word),
-    unique: best.length === 1 || (context.has(top.word) && inContext === 1) };
+    // A store word tied only with everyday words («الأود»: «عود» / «كود») is still the one meant.
+    unique: best.length === 1 || (context.has(top.word) && inContext === 1) || (top.weight > 2 && best.filter((b) => b.weight > 2).length === 1) };
 }
 
 /**
  * The sentence as Shaheen understands it. `alternatives` = the engine's other readings (best first);
  * `learned` = heard word key → meant word (confirmed by visitors or fixed by the AI platforms before).
  */
-export function fixHeard(heard: string, { alternatives = [], learned = {}, lexicon = baseLexicon(), context = NO_CONTEXT }: {
+export function fixHeard(heard: string, { alternatives = [], learned = {}, lexicon = baseLexicon(), context = NO_CONTEXT, sounds, phrases = [] }: {
   alternatives?: readonly string[]; learned?: Record<string, string>; lexicon?: Lexicon;
+  /** «مخارج الألفاظ»: how this visitor (and his dialect) says letters — see pronunciation.ts. */
+  sounds?: SoundProfile;
+  /** The conversation's own word pairs («أمير العرب»): a pair heard one sound off («أمير العرف») is that pair. */
+  phrases?: readonly string[];
   /** «التخمين من سياق الكلام»: words of the conversation just now (see contextWords). */
   context?: ReadonlySet<string>;
 } = {}): HeardReading {
@@ -117,10 +146,23 @@ export function fixHeard(heard: string, { alternatives = [], learned = {}, lexic
     if (!match) return part;
     const word = match[2]!;
     const key = wordKey(word);
-    if (key.length < 3 || lexicon.words.has(key) || context.has(key) || SPOKEN_FORMS.has(key) || DIALECT_VERB.test(key) || (/^[a-z]+$/i.test(key) && key.length < 5)) return part;
+    // «أمير العرف» after he said «أمير العرب»: the pair he just said, one sound off — even when the word alone is a word.
+    const before = index > 0 ? wordKey(parts[index - 1]!) : '';
+    if (before && key.length >= 3) {
+      const twin = phrases.map((p) => p.split(' ')).find(([first, second]) => first === before && first!.length >= 3 && second !== key && second!.length >= 3 && heardDistance(key, second!, sounds) <= 1);
+      if (twin) {
+        const meant = `${word.match(ARTICLE)?.[1] || ''}${twin[1]}`;
+        fixes.push({ from: word, to: meant, sure: true });
+        return `${match[1]}${meant}${match[3]}`;
+      }
+    }
+    if (key.length < 3 || lexicon.words.has(key) || context.has(key) || SPOKEN_FORMS.has(key) || EVERYDAY_WORDS.has(key) || (/^[a-z]+$/i.test(key) && key.length < 5)) return part;
+    // «بيقولوا»، «هتوصل»: a dialect verb is left alone — unless it is plainly a perfume word heard one sound off
+    // («بتشولي» = «باتشولي»).
+    const dialectVerb = DIALECT_VERB.test(key);
     // «وفانيلية»: the «و» of «and» stays, the word after it is what is checked.
     const and = /^و\p{L}{3,}$/u.test(word) && !word.match(ARTICLE) && !lexicon.words.has(key) ? 'و' : '';
-    if (and && (lexicon.words.has(key.slice(1)) || SPOKEN_FORMS.has(key.slice(1)))) return part;
+    if (and && (lexicon.words.has(key.slice(1)) || SPOKEN_FORMS.has(key.slice(1)) || EVERYDAY_WORDS.has(key.slice(1)))) return part;
     const article = and ? '' : word.match(ARTICLE)?.[1] || '';
     const own = and ? key.slice(1) : key;
     const learnedWord = learned[own];
@@ -131,20 +173,25 @@ export function fixHeard(heard: string, { alternatives = [], learned = {}, lexic
       fixes.push({ from: word, to: `${and}${article}${learnedWord}`, sure: true });
       return `${match[1]}${and}${article}${learnedWord}${match[3]}`;
     }
-    const near = nearest(lexicon, own, context);
-    if (!near) return part;
+    const near = nearest(lexicon, own, context, sounds);
+    if (!near || (dialectVerb && !(near.scent && near.distance <= 0.5))) return part;
     const meant = `${and}${article}${near.word}`;
     // One sound-alike letter and nothing else as close: sure.
-    if (near.unique && near.distance <= 0.4) {
+    if (near.unique && (near.distance <= 0.4 || (dialectVerb && near.distance <= 0.5))) {
       fixes.push({ from: word, to: meant, sure: true });
       return `${match[1]}${meant}${match[3]}`;
     }
     // A word that could be meant (but he is not sure) — a perfume word, a word said in the conversation just now, or a
     // common word close enough: asked once, before answering.
     const worthAsking = near.scent || near.context || (near.weight >= 20 && own.length >= 5 && near.distance <= 0.8);
-    // «ثابت» / «ثبات»: one root in two forms (only the long vowels differ) — a real word, not misheard.
-    const sameRoot = own.replace(/[اويىآأإ]/gu, '') === near.word.replace(/[اويىآأإ]/gu, '');
-    if (!ask && worthAsking && !sameRoot && near.distance <= 1) {
+    // «ثابت» / «ثبات»: one root in two forms (a long vowel moved, not dropped or added) — a real word, not misheard.
+    // «صندال» / «صندل» (a vowel added by the engine) is a mishearing.
+    const vowelsOf = (w: string) => (w.match(/[اويىآأإ]/gu) || []).length;
+    const sameRoot = own.replace(/[اويىآأإ]/gu, '') === near.word.replace(/[اويىآأإ]/gu, '') && vowelsOf(own) === vowelsOf(near.word);
+    // A three-letter word has many neighbours: asked about only when it is one light slip away.
+    // (Two sound-alike letters with nothing added or dropped — «الأوت» / «العود» — is still one perfume word.)
+    const closeEnough = near.distance <= (own.length > 3 ? 1 : own.length === near.word.length && near.scent ? 0.8 : 0.5);
+    if (!ask && worthAsking && !sameRoot && closeEnough) {
       const corrected = parts.map((p, i) => (i === index ? `${match[1]}${meant}${match[3]}` : p)).join(' ');
       ask = { from: word, to: meant, corrected };
     }
@@ -281,14 +328,17 @@ const NO_WORDS = /^(لا|لأ|لاء|لاا|مش|كده|كدا|قصدي|قصدى
  * What to do with a spoken sentence: ask about one unsure word first, or send it (with the sure corrections, and the
  * «ثواني أشوفلك البيانات» line when the answer needs a real look-up). `pending` = the question he is answering now.
  */
-export function planVoiceTurn(said: string, { pending, alternatives = [], learned = {}, lexicon, language, dialect, context, confidence }: {
+export function planVoiceTurn(said: string, { pending, alternatives = [], learned = {}, lexicon, language, dialect, context, confidence, sounds }: {
   pending?: PendingConfirm | null; alternatives?: readonly string[]; learned?: Record<string, string>; lexicon?: Lexicon;
   language: SupportedLanguage; dialect?: Dialect;
   /** The conversation just now (his last reply, the visitor's last sentences): a misheard word is guessed from it. */
   context?: readonly string[];
   /** How sure the speech engine was (0–1; 0 or missing = it did not say). */
   confidence?: number;
+  /** «مخارج الألفاظ»: how he says letters (default: what his dialect is known to do). */
+  sounds?: SoundProfile;
 }): VoicePlan {
+  const heardAs = sounds ?? (language === 'ar' ? soundProfile(dialect, learned) : EMPTY_SOUNDS);
   const send = (text: string, heard: Extract<VoicePlan, { action: 'send' }>['heard']): VoicePlan => {
     const filler = needsLookup(text) ? lookupFiller(language, dialect) : undefined;
     return { action: 'send', text, heard, ...(filler ? { filler } : {}) };
@@ -304,7 +354,7 @@ export function planVoiceTurn(said: string, { pending, alternatives = [], learne
         const meant = rest[0]!;
         // «لا، عنبر» where «عنبر» sounds like what was heard: a mishearing, learned (his way of saying it). A word
         // that sounds nothing like it is not learned: he may simply have changed his mind.
-        const misheard = heardDistance(wordKey(pending.from), wordKey(meant)) <= 1.2;
+        const misheard = heardDistance(wordKey(pending.from), wordKey(meant), heardAs) <= 1.2;
         return send(pending.original.replace(pending.from, meant), [...sure(pending.fixes), { from: pending.from, to: meant, ...(misheard ? { confirmed: true } : {}) }]);
       }
       return send(pending.original, sure(pending.fixes));
@@ -313,7 +363,10 @@ export function planVoiceTurn(said: string, { pending, alternatives = [], learne
   }
   if (language !== 'ar' && language !== 'en') return send(said.replace(/\s+/g, ' ').trim(), []);
   const known = context?.length ? contextWords(context) : undefined;
-  const reading = fixHeard(said, { alternatives, learned, ...(lexicon ? { lexicon } : {}), ...(known ? { context: known } : {}) });
+  const reading = fixHeard(said, {
+    alternatives, learned, sounds: heardAs, ...(lexicon ? { lexicon } : {}),
+    ...(known ? { context: known, phrases: contextPhrases(context!) } : {}),
+  });
   // The engine itself was unsure and most of the sentence makes no sense: «ممكن تعيد؟» instead of answering a guess
   // (a wrong guess is how a conversation jumps to another topic).
   if (confidence !== undefined && confidence > 0 && confidence < 0.45 && sense(reading.text, lexicon || baseLexicon(), learned, known) < 0.5) {
