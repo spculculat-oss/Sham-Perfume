@@ -3,7 +3,8 @@ import { playLocalVoice, unlockLocalAudio } from '../utils/localVoicePlayer';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { SupportedLanguage } from '../types/i18n';
 import { bargeIn, deviceLacksVoice, mergeHeard, speechLocaleFor, speechWindow, talkChunks } from '../utils/shaheenVoice';
-import { chosenVoice, saveVoiceChoice, savedVoiceChoice, voiceOptions, type VoiceChoice } from '../utils/voiceChoice';
+import { chosenVoice, saveVoiceChoice, savedVoiceChoice, voiceGender, voiceOptions, type VoiceChoice } from '../utils/voiceChoice';
+import { clipGender, humanClipId, humanClipUrl, playHumanClip } from '../utils/humanVoiceClips';
 import { tunedVoice, type VoiceMood } from '../utils/voiceMood';
 import { resolveDialect, saveDialectChoice, savedDialectChoice, type Dialect, type DialectChoice } from '../utils/arabicDialect';
 import { currentStoreCountry } from '../utils/storeCheckout';
@@ -548,8 +549,49 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const startBargeWatchRef = useRef<() => void>(() => undefined);
   useEffect(() => { startBargeWatchRef.current = startBargeWatch; }, [startBargeWatch]);
 
-  const speakReply = useCallback((text: string, onComplete: () => void) => {
+  const speakReply = useCallback((text: string, onComplete: () => void, deviceOnly = false) => {
     const local = resolveLocalVoice(voiceChoiceRef.current.names[languageRef.current], languageRef.current);
+    // «أصوات بشرية محفوظة»: a line recorded in a human voice is played from the site (the device voice is the fallback).
+    const clip = deviceOnly || typeof window === 'undefined' ? undefined : humanClipId(text);
+    if (clip) {
+      cancelSpeech();
+      const sequence = speechSequenceRef.current;
+      replyTextRef.current = text;
+      spokenSoFarRef.current = '';
+      speechPosRef.current = { chunks: [text], index: 0, at: 0 };
+      bargeRestartsRef.current = 0;
+      watchHeardRef.current = '';
+      gateRef.current.startSpeaking();
+      setNoVoice(false);
+      speakingRef.current = true;
+      setSpeaking(true);
+      const choice = voiceChoiceRef.current;
+      const device = chosenVoice(voicesRef.current, localeRef.current, languageRef.current, choice);
+      const url = humanClipUrl(clip, clipGender(choice.gender, local?.gender, device ? voiceGender(device) : undefined));
+      let over = false;
+      const end = (failed: boolean) => {
+        if (over || sequence !== speechSequenceRef.current) return;
+        over = true;
+        localStopRef.current = null;
+        stopBargeWatch();
+        speakingRef.current = false;
+        setSpeaking(false);
+        setSpokenText('');
+        if (failed) speakReply(text, onComplete, true); else onComplete();
+      };
+      localStopRef.current = playHumanClip(url, {
+        rate: choice.rate / 0.96,
+        onStart: () => {
+          if (sequence !== speechSequenceRef.current) return;
+          speakStartRef.current = typeof performance !== 'undefined' ? performance.now() : 0;
+          setSpokenText(text); spokenSoFarRef.current = text;
+          setSpeechBeat((beat) => (beat + 1) % 1_000_000);
+          startBargeWatchRef.current();
+        },
+        onEnd: () => end(false), onError: () => end(true),
+      });
+      return;
+    }
     if (typeof window === 'undefined' || (!local && (!window.speechSynthesis || !window.SpeechSynthesisUtterance))) {
       setError('speech');
       onComplete();
@@ -701,6 +743,20 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
    * stock, delivery…). Not a reply: the reply cuts it off as soon as it is ready.
    */
   const sayWhileLooking = useCallback((line: string) => {
+    // A recorded human line plays from the site; the reply's cancelSpeech() cuts it off like any other speech.
+    const clip = typeof window === 'undefined' ? undefined : humanClipId(line);
+    if (clip && !speakingRef.current) {
+      const choice = voiceChoiceRef.current;
+      const local = resolveLocalVoice(choice.names[languageRef.current], languageRef.current);
+      const device = chosenVoice(voicesRef.current, localeRef.current, languageRef.current, choice);
+      localStopRef.current?.();
+      setSpokenText(line);
+      const clear = () => { setSpokenText((now) => (now === line ? '' : now)); };
+      localStopRef.current = playHumanClip(humanClipUrl(clip, clipGender(choice.gender, local?.gender, device ? voiceGender(device) : undefined)), {
+        rate: choice.rate / 0.96, onEnd: clear, onError: clear,
+      });
+      return;
+    }
     // The short loading acknowledgement must not suddenly use a different, possibly wrong-language native voice.
     if (resolveLocalVoice(voiceChoiceRef.current.names[languageRef.current], languageRef.current)) return;
     if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
