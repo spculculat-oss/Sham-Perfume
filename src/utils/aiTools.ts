@@ -63,7 +63,7 @@ export const AI_TOOLS: AiToolDef[] = [
   {
     id: 'news_bulletin', nameAr: 'نشرة شاهين للأخبار الحقيقية', nameEn: 'Shahin real-news bulletin',
     descriptionAr: 'تجمع أخبار العطور الحقيقية من الإنترنت كل 12 ساعة وتكتب لها عناوين وملخصات وتعليق الخبير.',
-    sources: ['scripts/shaheen-news/run.mts'], routes: [], acceptsGuidance: true,
+    sources: ['scripts/shaheen-news/run.mts', 'server/newsExplain.ts'], routes: ['/api/news/explain'], acceptsGuidance: true,
   },
   {
     id: 'assistant_training', nameAr: 'دروس تدريب مساعد شام', nameEn: 'Sham assistant lessons',

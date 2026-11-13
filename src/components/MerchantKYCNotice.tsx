@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShieldCheck, AlertTriangle, FileText, Globe } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
+import { pickArEn } from '../لغات/localize';
 
 export const MerchantKYCNotice: React.FC<{ currentLang?: SupportedLanguage; status?: string }> = ({ currentLang = 'ar', status = 'pending' }) => {
   // This notice currently has Arabic/English copy only; non-Arabic locales use the English fallback.
@@ -13,7 +14,7 @@ export const MerchantKYCNotice: React.FC<{ currentLang?: SupportedLanguage; stat
       </div>
       <div className="flex-1 min-w-0 space-y-1">
         <h4 className={`font-bold text-xs ${isPending ? 'text-amber-900' : 'text-emerald-900'}`}>
-          {isPending ? (currentLang === 'ar' ? 'التحقق مطلوب قبل البيع — KYC/عقوبات' : 'Verification required before selling — KYC/Sanctions') : (currentLang === 'ar' ? 'تم التحقق ✓' : 'Verified ✓')}
+          {isPending ? (pickArEn(currentLang, 'التحقق مطلوب قبل البيع — KYC/عقوبات', 'Verification required before selling — KYC/Sanctions')) : (pickArEn(currentLang, 'تم التحقق ✓', 'Verified ✓'))}
         </h4>
         <p className="text-[11px] text-stone-600 leading-relaxed">
           {currentLang === 'ar'
@@ -21,7 +22,7 @@ export const MerchantKYCNotice: React.FC<{ currentLang?: SupportedLanguage; stat
             : 'Per OFAC/EU/SA AML: upload CR + ID, sanctions screening, video call. Your products appear but are not orderable until approved (48h).'}
         </p>
         <div className="flex flex-wrap gap-2 text-[10px]">
-          <span className="inline-flex items-center gap-1 px-2 py-1 bg-white border border-stone-200 rounded-full"><FileText className="w-3 h-3" /> {currentLang === 'ar' ? 'السجل التجاري' : 'CR'}</span>
+          <span className="inline-flex items-center gap-1 px-2 py-1 bg-white border border-stone-200 rounded-full"><FileText className="w-3 h-3" /> {pickArEn(currentLang, 'السجل التجاري', 'CR')}</span>
           <span className="inline-flex items-center gap-1 px-2 py-1 bg-white border border-stone-200 rounded-full"><Globe className="w-3 h-3" /> OFAC/EU check</span>
           <span className="inline-flex items-center gap-1 px-2 py-1 bg-white border border-stone-200 rounded-full">IBAN AES-256-GCM</span>
         </div>

@@ -22,6 +22,7 @@ import { greetingKind } from './shaheenGreeting';
 import type { Design } from './shaheenDesigner';
 import { cleanNote, noteAr, readableNotes } from './noteNames';
 import { FORMAL_RECIPIENTS, closeLine, readBuyer, type BuyerProfile, type Recipient } from './salesCraft';
+import { fixArabicText } from './arabicProductNames';
 
 export interface Turn { role: 'user' | 'assistant'; text: string }
 type Lang = 'ar' | 'en';
@@ -463,7 +464,8 @@ const foldName = (s: string) => ` ${s.toLowerCase().normalize('NFKD').replace(/[
 const soundName = (s: string) => s.replace(/ح/g, 'ه').replace(/(?<=[\u0621-\u064A])ا/g, '');
 
 export function namedProducts(products: StoreProduct[], text: string, limit = 2): StoreProduct[] {
-  const t = foldName(text);
+  // The visitor may write a brand or a line the old ways («سبريماسي»، «ميسون ألامبرا»): read it as the catalogue spells it now.
+  const t = foldName(fixArabicText(text));
   const heard = soundName(t);
   if (t.trim().length < 4) return [];
   const hits: { p: StoreProduct; len: number }[] = [];

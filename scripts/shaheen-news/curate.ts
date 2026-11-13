@@ -121,13 +121,41 @@ export function guessCategory(text: string): NewsCategory {
   return 'industry';
 }
 
-/** Headlines without the expert (no AI key answered): still real, linked news. */
+const ARABIC = /[\u0600-\u06FF]/;
+export const CATEGORY_AR: Record<NewsCategory, string> = {
+  launch: 'إطلاق عطر جديد', industry: 'صناعة العطور', ingredients: 'المواد الخام', market: 'سوق العطور',
+  events: 'المعارض والجوايز', regulation: 'اللوايح والقوانين', culture: 'ثقافة العطور والعود',
+};
+const LANG_AR: Record<string, string> = { en: 'الإنجليزي', fr: 'الفرنساوي', es: 'الإسباني', it: 'الإيطالي', de: 'الألماني', ar: 'العربي' };
+/** A story the expert has not written in Arabic yet (the headline is still in its own language). */
+export const needsArabic = (item: Pick<NewsItem, 'title'>) => !ARABIC.test(item.title.ar);
+/** An Arabic line that says honestly what a not-yet-translated story is: its subject, source and language. */
+export function arabicContext(c: Pick<RawItem, 'title' | 'snippet' | 'source' | 'lang'>, category = guessCategory(`${c.title} ${c.snippet}`)): string {
+  return `خبر عن ${CATEGORY_AR[category]} من «${c.source}»، منشور ب${LANG_AR[c.lang] || 'لغة تانية'}. شاهين يقدر يشرحه لك بالعربي.`;
+}
+/** A published story back as an editor candidate, so the next run with an AI editor writes its Arabic. */
+export const asCandidate = (item: NewsItem): RawItem => ({
+  title: item.original, url: item.url, source: item.source, publishedAt: item.publishedAt, lang: item.lang, feed: 'previous',
+  snippet: item.summary.en !== item.original ? item.summary.en : '',
+});
+
+/** A story published earlier with no Arabic at all gets the same honest Arabic line (its facts only). */
+export function withArabicContext(item: NewsItem): NewsItem {
+  if (!needsArabic(item) || ARABIC.test(item.summary.ar)) return item;
+  return { ...item, summary: { ...item.summary, ar: arabicContext(asCandidate(item), item.category) } };
+}
+
+/** Headlines without the expert (no AI key answered): still real, linked news, with an honest Arabic line. */
 export function itemsFromFeeds(candidates: RawItem[], max = 20): NewsItem[] {
-  return candidates.slice(0, max).map((c) => ({
-    id: storyId(c), url: c.url, source: c.source, publishedAt: c.publishedAt, original: c.title, lang: c.lang,
-    category: guessCategory(`${c.title} ${c.snippet}`), importance: 2,
-    title: { ar: c.title, en: c.title }, summary: { ar: c.snippet || c.title, en: c.snippet || c.title },
-  }));
+  return candidates.slice(0, max).map((c) => {
+    const category = guessCategory(`${c.title} ${c.snippet}`);
+    const arabic = ARABIC.test(c.title);
+    return {
+      id: storyId(c), url: c.url, source: c.source, publishedAt: c.publishedAt, original: c.title, lang: c.lang, category, importance: 2,
+      title: { ar: c.title, en: c.title },
+      summary: { ar: arabic ? c.snippet || c.title : arabicContext(c, category), en: c.snippet || c.title },
+    };
+  });
 }
 
 /** New stories first, then still-recent stories from the last run (so a thin run never empties the page). */

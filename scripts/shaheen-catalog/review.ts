@@ -21,7 +21,7 @@
  * Pure: the product list, the shipping table and the rates are parameters (`tests/catalogReview.test.ts`).
  * It reports; it never edits a price, a name or a photo.
  */
-import { isGarbled, isGenericDescription, type RawProduct } from '../../src/utils/storeCatalog';
+import { isGarbled, isGenericDescription, mergeProduct, skuOf, type RawProduct, type StoreCatalogFile } from '../../src/utils/storeCatalog';
 import { HOME_CURRENCY, convert, type FxTable, type ShippingTable, type ShippingZone } from '../../src/utils/pricing';
 import { ourPriceOf, type PriceRule } from '../shaheen-import/transform';
 
@@ -43,6 +43,11 @@ export interface CatalogReviewInput {
   safeShippingShare?: number;
   /** The merchant's approved price rule — the very one «مستورد شاهين» priced with (default: cost × 1.5, rounded up to 5). */
   priceRule?: number | PriceRule;
+  /**
+   * Shaheen's edited catalogue (src/data/live/store-catalog.json). The Arabic checks read what the page really shows —
+   * the edited name and description — not the supplier's raw text, which reported «1161 Latin names» that no visitor saw (#514).
+   */
+  catalog?: Pick<StoreCatalogFile, 'entries'>;
 }
 
 export interface CatalogReviewReport {
@@ -137,8 +142,13 @@ export function reviewCatalog(input: CatalogReviewInput): CatalogReviewReport {
     .filter((p) => p.nameAr && isGarbled(String(p.nameAr)))
     .map((p) => ({ sku: String(p.sku || ''), nameAr: String(p.nameAr) }));
 
-  const namesInLatin = onSale.filter((p) => p.nameAr && !hasArabic(String(p.nameAr)));
-  const genericDescriptions = onSale.filter((p) => isGenericDescription(String(p.descriptionAr || '')));
+  const shown = (p: ReviewProduct) => {
+    if (!input.catalog) return { nameAr: String(p.nameAr || ''), descriptionAr: String(p.descriptionAr || '') };
+    const page = mergeProduct(p as RawProduct, input.catalog.entries?.[skuOf(p as RawProduct)]);
+    return { nameAr: page.name.ar, descriptionAr: page.description.ar };
+  };
+  const namesInLatin = onSale.filter((p) => shown(p).nameAr && !hasArabic(shown(p).nameAr)).map((p) => ({ ...p, nameAr: shown(p).nameAr }));
+  const genericDescriptions = onSale.filter((p) => isGenericDescription(shown(p).descriptionAr));
 
   const imageUse = new Map<string, string[]>();
   for (const p of onSale) {

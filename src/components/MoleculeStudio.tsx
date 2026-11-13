@@ -23,6 +23,7 @@ import type { CalculationResult, FormulationState, PyramidNote } from '../types/
 import type { SupportedLanguage } from '../types/i18n';
 import { formatLocalizedNumber } from '../لغات/numerals';
 import { isRTL } from '../لغات/localizedContent';
+import { pickArEn } from '../لغات/localize';
 import { LocalizedNumberInput } from './LocalizedNumberInput';
 import { analyzePyramidNotes, calculateIngredientMassGrams, matchRawMaterialName, parsePerfumeIngredientList, type FragrancePhase, type IngredientAnalysisRow } from '../utils/moleculeStudio';
 import { PyramidCalculator } from './PyramidCalculator';
@@ -74,7 +75,7 @@ export const MoleculeStudio: React.FC<MoleculeStudioProps> = ({
   onPrintWorldFormula,
 }) => {
   const rtl = isRTL(currentLang);
-  const c: Copy = (ar, en) => currentLang === 'ar' ? ar : en;
+  const c: Copy = (ar, en) => pickArEn(currentLang, ar, en);
   const number = (value: number, digits = 2) => formatLocalizedNumber(currentLang, value, { maximumFractionDigits: digits });
   const [section, setSection] = useState<StudioSection>('compose');
   const [materialSearch, setMaterialSearch] = useState('');

@@ -46,7 +46,7 @@ import { AIDisclosureBadge } from './LegalDisclaimer';
 import type { ShaheenModelChoice } from '../utils/chatStore';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
-import { LText, makeT, fmt } from '../لغات/localize';
+import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
 import { isStaticHosting } from '../utils/api';
 import { copyChatText } from '../utils/clipboard';
 import { StaticHostingNotice } from './StaticHostingNotice';
@@ -1363,7 +1363,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                       {msg.role === 'assistant' && !isError && msg.id !== 'welcome' && (
                         <div className="flex items-center gap-1 text-[9px] font-mono px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 w-fit">
                           <span>🤖</span>
-                          <span>{currentLang === 'ar' ? 'تم إنشاؤه بالذكاء الاصطناعي — راجع أخصائيًا للاستخدام الآمن' : 'AI-generated — verify with a specialist'}</span>
+                          <span>{pickArEn(currentLang, 'تم إنشاؤه بالذكاء الاصطناعي — راجع أخصائيًا للاستخدام الآمن', 'AI-generated — verify with a specialist')}</span>
                         </div>
                       )}
 

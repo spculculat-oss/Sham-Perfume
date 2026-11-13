@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ExternalLink, MessageCircle, Radio, RefreshCw } from 'lucide-react';
+import { ExternalLink, Loader2, MessageCircle, Radio, RefreshCw, Sparkles } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { fmt, LOCALE_MAP } from '../لغات/localize';
 import { makeNewsT } from '../لغات/newsL10n';
 import type { NewsTextKey } from '../لغات/newsKeys';
 import { storeLocalized } from '../لغات/storeL10n';
-import { loadLiveNews, relativeTime, type NewsFile } from '../utils/liveNews';
+import { loadLiveNews, relativeTime, type NewsFile, type NewsItem } from '../utils/liveNews';
+import { isStaticHosting, requestApi } from '../utils/api';
+import { explainText } from './newsExplainText';
 
 
 export function ShaheenLiveNews({ currentLang = 'ar' }: { currentLang?: SupportedLanguage }) {
@@ -89,9 +91,12 @@ export function ShaheenLiveNews({ currentLang = 'ar' }: { currentLang?: Supporte
                     </p>
                   )}
                 </div>
-                <a href={item.url} target="_blank" rel="noopener noreferrer nofollow" className="mt-3 inline-flex items-center gap-1 self-start text-xs font-bold text-amber-800 hover:text-amber-950 hover:underline">
-                  {L('live_read')} <ExternalLink className="h-3 w-3" aria-hidden />
-                </a>
+                <div className="mt-3 flex flex-wrap items-center gap-3">
+                  <a href={item.url} target="_blank" rel="noopener noreferrer nofollow" className="inline-flex items-center gap-1 text-xs font-bold text-amber-800 hover:text-amber-950 hover:underline">
+                    {L('live_read')} <ExternalLink className="h-3 w-3" aria-hidden />
+                  </a>
+                  {!isStaticHosting && <ExplainButton item={item} lang={currentLang} />}
+                </div>
               </li>
             ))}
           </ol>
@@ -102,5 +107,40 @@ export function ShaheenLiveNews({ currentLang = 'ar' }: { currentLang?: Supporte
         </>
       )}
     </section>
+  );
+}
+
+type Explained = { title: string; summary: string; note: string };
+/** «شاهين يشرحلك الخبر»: the story explained in the visitor's language, on request (the answer stays under the card). */
+function ExplainButton({ item, lang }: { item: NewsItem; lang: SupportedLanguage }) {
+  const [state, setState] = useState<'idle' | 'busy' | 'done' | 'failed'>('idle');
+  const [out, setOut] = useState<Explained | null>(null);
+  const explain = async () => {
+    if (state === 'busy') return;
+    setState('busy');
+    try {
+      const answer = await requestApi<Explained>('/api/news/explain', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: item.id, language: lang }) }, 40_000);
+      setOut(answer); setState('done');
+    } catch { setState('failed'); }
+  };
+  if (state === 'done' && out) {
+    return (
+      <div className="basis-full space-y-1.5 rounded-xl border border-amber-200 bg-amber-50/60 p-3" dir="auto" data-testid="news-explained">
+        <p className="flex items-center gap-1 text-[11px] font-extrabold text-amber-800"><Sparkles className="h-3.5 w-3.5" aria-hidden />{explainText(lang, 'by')}</p>
+        <p className="text-sm font-extrabold text-stone-900">{out.title}</p>
+        <p className="text-sm leading-relaxed text-stone-700">{out.summary}</p>
+        {out.note && <p className="text-xs leading-relaxed text-amber-950">{out.note}</p>}
+      </div>
+    );
+  }
+  return (
+    <>
+      <button type="button" onClick={() => void explain()} disabled={state === 'busy'} data-testid="news-explain"
+        className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-amber-300 bg-white px-2.5 py-1 text-xs font-bold text-amber-900 hover:bg-amber-50 disabled:cursor-wait disabled:opacity-70">
+        {state === 'busy' ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden /> : <Sparkles className="h-3.5 w-3.5" aria-hidden />}
+        {state === 'busy' ? explainText(lang, 'explaining') : explainText(lang, 'explain')}
+      </button>
+      {state === 'failed' && <p className="basis-full text-[11px] text-stone-500" role="status">{explainText(lang, 'busy')}</p>}
+    </>
   );
 }

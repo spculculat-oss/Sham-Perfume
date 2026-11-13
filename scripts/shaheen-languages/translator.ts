@@ -85,6 +85,11 @@ export function missingFor(lang: string, units: readonly TextUnit[], own: (u: Te
 
 const STR = String.raw`(?:'((?:[^'\\\n]|\\.)*)'|"((?:[^"\\\n]|\\.)*)"|\`((?:[^\`\\$\n]|\\.)*)\`)`;
 const EN_RE = new RegExp(String.raw`(?:^|[\s{,])en:\s*` + STR);
+/**
+ * Bilingual pairs written as calls — `t('عربي', 'English')` (community tx, studio copy) and
+ * `pickArEn(lang, 'عربي', 'English')` — read by the site through aiText() like any inline dictionary (#502).
+ */
+const PAIR_RE = new RegExp(String.raw`(?<![\w.])(?:t|c|tx|pickArEn)\(\s*(?:[A-Za-z_][\w.]*\s*,\s*)?` + STR + String.raw`\s*,\s*` + STR + String.raw`\s*[,)]`, 'g');
 const unescape = (s: string) => s.replace(/\\(u[0-9a-fA-F]{4}|.)/g, (_, c: string) => (c.length === 5 ? String.fromCharCode(parseInt(c.slice(1), 16)) : c === 'n' ? '\n' : c === 't' ? '\t' : c));
 
 /** The one-line {ar, en, …} dictionaries of a source file: the English text and the languages present. */
@@ -98,6 +103,16 @@ export function harvestInlineTexts(source: string): { en: string; langs: Set<str
     if (!en || !/\p{L}{2,}/u.test(en)) return;
     const langs = new Set([...line.matchAll(/(?:^|[\s{,])([a-z]{2}):\s*['"`]/g)].map((x) => x[1]));
     out.push({ en, langs, line: i + 1 });
+  });
+  source.split('\n').forEach((line, i) => {
+    if (/^\s*(?:\/\/|\*|\/\*)/.test(line)) return;
+    for (const m of line.matchAll(PAIR_RE)) {
+      const ar = unescape(m[1] ?? m[2] ?? m[3] ?? '');
+      const en = unescape(m[4] ?? m[5] ?? m[6] ?? '').trim();
+      // Arabic first, real English second; `${…}` templates are skipped (their text is built at run time).
+      if (!/[\u0600-\u06FF]/.test(ar) || !/[A-Za-z]{2}/.test(en) || /[\u0600-\u06FF]/.test(en)) continue;
+      out.push({ en, langs: new Set(['ar', 'en']), line: i + 1 });
+    }
   });
   return out;
 }
