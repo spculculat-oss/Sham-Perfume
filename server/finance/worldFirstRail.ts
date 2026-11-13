@@ -12,6 +12,7 @@ import {
   worldFirstSnapshot,
   type SaleSettlement,
 } from '../../src/bank/worldFirstRail';
+import { linkView } from './worldFirstLink';
 
 function isSettlement(value: SaleSettlement | undefined): value is SaleSettlement {
   return Boolean(value && value.id && value.status === 'queued' && value.sent === false && value.externalRef === ''
@@ -24,7 +25,9 @@ export class WorldFirstRail {
 
   async snapshot() {
     const items = (await this.store.list('shamSettlement')).filter(isSettlement);
-    return { ...worldFirstSnapshot(worldFirstApiConfigured(this.env), items.length), items };
+    const link = linkView(await this.store.get('shamWorldFirstLink', 'link'), this.env);
+    const receiving = link.receivingSeen ? 'owner_seen_in_portal' as const : 'not_issued' as const;
+    return { ...worldFirstSnapshot(worldFirstApiConfigured(this.env), items.length, receiving), items, link };
   }
 
   async queue(body: Record<string, unknown> | undefined): Promise<SaleSettlement> {

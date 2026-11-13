@@ -30,6 +30,8 @@ const KEYS = {
   SHAM_GMAIL_APP_PASSWORD: 'gmail',
   // «الدفع في متجر شام»: the payment server needs them (verified by scripts/verify-payments.mts as `kashier`).
   KASHIER_MERCHANT_ID: 'kashier', KASHIER_API_KEY: 'kashier', KASHIER_SECRET_KEY: 'kashier', KASHIER_MODE: 'kashier', KASHIER_CURRENCIES: 'kashier',
+  // Background rail. Absent secrets are left untouched. Values are never printed.
+  WORLDFIRST_CLIENT_ID: 'worldfirst', WORLDFIRST_PRIVATE_KEY: 'worldfirst', WORLDFIRST_PUBLIC_KEY: 'worldfirst', WORLDFIRST_API_HOST: 'worldfirst',
 };
 const BLOCKING = new Set(['invalid_key', 'no_credit', 'missing']);
 const gh = Boolean(process.env.GITHUB_ACTIONS);

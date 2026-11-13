@@ -12,6 +12,7 @@ import { PLATFORM_HOLDER } from '../../src/bank/shamLedger';
 import { ShamBooks, readMoneyBody } from './shamBooks';
 import { WorldFirstRail } from './worldFirstRail';
 import { inquireWorldFirst } from './worldFirstInquiry';
+import { WorldFirstLink } from './worldFirstLink';
 import { liveFxRates } from '../core/liveFx';
 import type { PeriodKind } from './types';
 
@@ -96,14 +97,22 @@ export function createFinanceRouter(finance: FinanceService, bank?: BankService,
       res.json(await books.convert(PLATFORM_HOLDER, body, rates));
     }));
     const settlement = new WorldFirstRail(finance.store, () => new Date().toISOString(), finance.env);
+    const worldFirstLink = new WorldFirstLink(finance.store, () => new Date().toISOString(), finance.env);
     const inquiryLimiter = new RateLimiter(6, 10 * 60_000);
+    const linkLimiter = new RateLimiter(4, 10 * 60_000);
     router.get('/bank/sham/settlement', wrap(async (_req, res) => { res.json(await settlement.snapshot()); }));
     router.post('/bank/sham/settlement', wrap(async (req, res) => { res.status(201).json(await settlement.queue(req.body)); }));
+    router.post('/bank/sham/settlement/link/prepare', wrap(async (req, res) => {
+      if (!linkLimiter.allow(clientKey(req))) throw new ValidationError('RATE_LIMITED', 'انتظر قبل تجهيز مفتاح جديد.', 429);
+      const prepared = await worldFirstLink.prepare(req.body);
+      res.status(prepared.reissued ? 201 : 200).json(prepared);
+    }));
+    router.post('/bank/sham/settlement/link/seen', wrap(async (req, res) => { res.json(await worldFirstLink.seen(req.body)); }));
     router.post('/bank/sham/settlement/inquire', wrap(async (req, res) => {
       if (!inquiryLimiter.allow(clientKey(req))) throw new ValidationError('RATE_LIMITED', 'انتظر قبل إعادة قراءة الرصيد.', 429);
       const snap = await settlement.snapshot();
       const inquiry = await inquireWorldFirst(finance.env);
-      res.json({ ...inquiry, queued: snap.queued, items: snap.items, sendsExternal: false, receiving: 'not_issued', transmission: 'blocked' });
+      res.json({ ...inquiry, queued: snap.queued, items: snap.items, link: snap.link, sendsExternal: false, receiving: snap.receiving, transmission: 'blocked' });
     }));
   }
   router.get('/export', wrap(async (_req, res) => {

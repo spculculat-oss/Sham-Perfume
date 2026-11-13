@@ -52,12 +52,57 @@ export interface SaleSettlement {
   createdAt: string;
 }
 
+/** Locations WorldFirst itself lists for a receiving account. Not a Sham account number. */
+export const WORLDFIRST_RECEIVING_REGIONS = ['SG', 'HK', 'JP', 'AU', 'NZ', 'GB', 'US', 'NL'] as const;
+export type WorldFirstReceivingRegion = typeof WORLDFIRST_RECEIVING_REGIONS[number];
+export type WorldFirstAccountNameKind = 'owner' | 'worldfirst' | 'partner_bank';
+export type WorldFirstReceiving = 'not_issued' | 'owner_seen_in_portal';
+
+/**
+ * Stored link state. The private key is never a field here.
+ * A portal sighting records the region and whose name was on the account, not the number.
+ */
+export interface WorldFirstLinkRecord {
+  id: 'link';
+  publicKeyPem: string;
+  privateFingerprint: string;
+  preparedAt: string;
+  receivingSeenAt: string;
+  receivingRegion: WorldFirstReceivingRegion | '';
+  accountNameKind: WorldFirstAccountNameKind | '';
+}
+
+export interface WorldFirstLinkView {
+  prepared: boolean;
+  publicKeyPem: string;
+  publicKeyBody: string;
+  privateFingerprint: string;
+  /** Whether the server's private key is the one this desk prepared. Never the key itself. */
+  serverKey: 'absent' | 'matches' | 'different' | 'unprepared';
+  receivingSeen: boolean;
+  receivingRegion: WorldFirstReceivingRegion | '';
+  accountNameKind: WorldFirstAccountNameKind | '';
+}
+
+export function emptyWorldFirstLink(): WorldFirstLinkView {
+  return {
+    prepared: false,
+    publicKeyPem: '',
+    publicKeyBody: '',
+    privateFingerprint: '',
+    serverKey: 'absent',
+    receivingSeen: false,
+    receivingRegion: '',
+    accountNameKind: '',
+  };
+}
+
 export interface WorldFirstSnapshot {
   visibleBank: 'sham';
   settlementInstitution: 'worldfirst';
   account: 'owner_reported_accepted';
   verifiedByProvider: false;
-  receiving: 'not_issued';
+  receiving: WorldFirstReceiving;
   api: 'not_connected' | 'keys_present';
   sendsExternal: false;
   transmission: 'blocked';
@@ -67,6 +112,7 @@ export interface WorldFirstSnapshot {
   balancesLive: boolean;
   reportedTotalUsd: '0.00';
   wallets: readonly { currency: WorldFirstCurrency; available: string; pending: string }[];
+  link: WorldFirstLinkView;
 }
 
 const SALE_ID = /^[A-Za-z0-9_-]{8,40}$/;
@@ -76,13 +122,13 @@ export function worldFirstApiConfigured(env: { WORLDFIRST_CLIENT_ID?: string; WO
   return Boolean(env?.WORLDFIRST_CLIENT_ID?.trim() && env?.WORLDFIRST_PRIVATE_KEY?.trim());
 }
 
-export function worldFirstSnapshot(apiKeysPresent: boolean, queued: number): WorldFirstSnapshot {
+export function worldFirstSnapshot(apiKeysPresent: boolean, queued: number, receiving: WorldFirstReceiving = 'not_issued'): WorldFirstSnapshot {
   return {
     visibleBank: 'sham',
     settlementInstitution: 'worldfirst',
     account: 'owner_reported_accepted',
     verifiedByProvider: false,
-    receiving: 'not_issued',
+    receiving,
     api: apiKeysPresent ? 'keys_present' : 'not_connected',
     sendsExternal: false,
     transmission: 'blocked',
@@ -91,6 +137,7 @@ export function worldFirstSnapshot(apiKeysPresent: boolean, queued: number): Wor
     balancesLive: false,
     reportedTotalUsd: '0.00',
     wallets: WORLDFIRST_WALLETS,
+    link: emptyWorldFirstLink(),
   };
 }
 
