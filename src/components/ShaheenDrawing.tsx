@@ -3,15 +3,18 @@ import { ImagePlus, Loader2, RotateCw } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { imageRequest } from '../workspace/codeBlocks';
 import { wsText } from '../workspace/strings';
-import { imageErrorKey, isGeneratedImageData, makeImage } from '../workspace/workspaceApi';
+import { imageErrorKey, isGeneratedImageData } from '../workspace/workspaceApi';
+import { drawOrPaint } from '../workspace/paint';
 import { fitForUpload } from '../workspace/motion';
 import { drawReply, drawingOf, freshReplies, previousDrawing, subscribeDrawings } from '../utils/shaheenDrawings';
 
 // The signed picture card (download, motion clip) arrives only when a picture is actually drawn.
 const MotionCard = lazy(() => import('../workspace/MotionCard').then((m) => ({ default: m.MotionCard })));
 
-const draw = async (prompt: string, previous?: string) =>
-  (await makeImage(prompt, previous && isGeneratedImageData(previous) ? await fitForUpload(previous) : undefined)).src;
+const draw = async (prompt: string, previous?: string) => {
+  const out = await drawOrPaint(prompt, previous && isGeneratedImageData(previous) ? await fitForUpload(previous) : undefined);
+  return { src: out.src, ...(out.painted ? { painted: out.painted } : {}) };
+};
 
 /**
  * The picture under a reply of «اسأل شاهين» that carries a ```sham-image order: drawn once when the reply
@@ -27,7 +30,12 @@ export function ShaheenDrawing({ messageId, text, messageIds, lang }: { messageI
   if (!line) return null;
   const button = 'inline-flex items-center gap-1.5 rounded-xl border border-amber-300 bg-white px-3 py-1.5 text-xs font-bold text-amber-900 cursor-pointer';
   if (drawing?.status === 'done') {
-    return <Suspense fallback={<Loader2 className="h-4 w-4 animate-spin text-amber-700" />}><MotionCard src={drawing.src} lang={lang} /></Suspense>;
+    return (
+      <Suspense fallback={<Loader2 className="h-4 w-4 animate-spin text-amber-700" />}>
+        <MotionCard src={drawing.src} lang={lang} />
+        {drawing.painted && <p role="status" className="text-xs text-stone-600" data-testid="shaheen-painter-note">{wsText(lang, drawing.painted === 'partial' ? 'painter_partial' : 'painter_note')}</p>}
+      </Suspense>
+    );
   }
   if (drawing?.status === 'busy') {
     return <p role="status" className="flex items-center gap-1.5 text-xs text-stone-500"><Loader2 className="h-3.5 w-3.5 animate-spin" />{wsText(lang, 'drawing')}</p>;

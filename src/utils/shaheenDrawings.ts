@@ -10,8 +10,9 @@
 import { parseImageRequest } from './imageCraft';
 
 export type DrawingNote = 'image_unavailable' | 'image_quota' | 'image_refused' | 'rate_limited' | 'image_failed';
-export type Drawing = { status: 'busy' } | { status: 'done'; src: string } | { status: 'error'; note: DrawingNote };
-export type Draw = (prompt: string, previous?: string) => Promise<string>;
+export type Drawing = { status: 'busy' } | { status: 'done'; src: string; painted?: 'whole' | 'partial' } | { status: 'error'; note: DrawingNote };
+/** `painted`: Shaheen's own painter drew it (the engine was not there) — whole, or the place and mood only. */
+export type Draw = (prompt: string, previous?: string) => Promise<string | { src: string; painted?: 'whole' | 'partial' }>;
 
 /** Replies that arrived during this visit (not restored from storage). */
 export const freshReplies = new Set<string>();
@@ -47,8 +48,8 @@ export async function drawReply(id: string, line: string, draw: Draw, note: (err
   publish(id, { status: 'busy' });
   const order = parseImageRequest(line);
   try {
-    const src = await draw(order.prompt, order.mode === 'edit' ? previous : undefined);
-    publish(id, { status: 'done', src });
+    const out = await draw(order.prompt, order.mode === 'edit' ? previous : undefined);
+    publish(id, typeof out === 'string' ? { status: 'done', src: out } : { status: 'done', src: out.src, ...(out.painted ? { painted: out.painted } : {}) });
   } catch (error) {
     publish(id, { status: 'error', note: note(error) });
   }

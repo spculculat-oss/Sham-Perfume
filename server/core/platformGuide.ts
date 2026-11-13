@@ -83,6 +83,14 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     tags: ['صور', 'تخيل', 'رسم', 'تصميم', 'images', 'imagination', 'drawing'],
   },
   {
+    id: 'shaheen_painter', group: 'workspace', tab: 'workspace', docId: 'kb-platform-painter',
+    name: { ar: 'مرسم شاهين الخاص', en: 'Shaheen own painter' },
+    summary: { ar: 'لو خدمة الصور المتقدمة مش متاحة، شاهين بيرسم الفكرة بمرسمه الخاص على جهازك: رسم توضيحي مبسّط مش صورة واقعية، وبيقول كده تحت الرسمة.', en: 'When the advanced image service is unavailable, Shaheen draws the idea with his own painter on your device: a simple illustration, not a realistic image, and the note under the picture says so.' },
+    details: { ar: 'مرسم شاهين بيشتغل تلقائياً في شات اسأل شاهين وفي مساحة شاهين وتبويب صور لما خدمة الصور المتقدمة تكون مش متاحة أو حصتها خلصت. بيعرف يرسم: الفضاء والنجوم، الصحراء، البحر، الجبال، الغابة، المدينة، الحديقة وسطح استوديو، في الليل أو الغروب أو الفجر أو النهار، ومعاها زجاجة عطر، ورد، صقر، قطة، جمال، نخيل، فانوس، مسجد، مركب أو شخص واقف، بالألوان والأسلوب اللي تطلبه. لو العنصر الرئيسي مش من الحاجات دي (زي حصان أو سيارة أو وجه واقعي أو أكل) بيرسم المكان والجو بس ويقول بصراحة إن العنصر ناقص. الصور الواقعية وتعديل صورة بالكلام محتاجين خدمة الصور المتقدمة.', en: 'Shaheen own painter works automatically in the Ask Shaheen chat and in the workspace Images tab when the advanced image service is unavailable or out of quota. It can draw space and stars, desert, sea, mountains, forest, city, garden and a studio surface, at night, sunset, dawn or day, with a perfume bottle, roses, a falcon, a cat, camels, palms, a lantern, a mosque, a boat or a standing figure, in the colours and style you ask for. If the main subject is not one of these (a horse, a car, a realistic face, food) it draws the place and mood only and says plainly what is missing. Realistic images and editing a picture from words need the advanced image service.' },
+    keywords: ['مرسم شاهين', 'رسم توضيحي', 'الرسم من غير خدمة الصور', 'شاهين بيرسم بنفسه', 'own painter', 'simple illustration', 'offline drawing'],
+    tags: ['صور', 'رسم', 'مرسم', 'images', 'painter', 'illustration'],
+  },
+  {
     id: 'concentration', group: 'lab', tab: 'concentration', docId: 'kb-concentration',
     name: { ar: 'حاسبة التركيز', en: 'Concentration calculator' },
     summary: {

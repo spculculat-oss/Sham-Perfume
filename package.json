@@ -24,6 +24,7 @@
     "seo:report": "node --import tsx scripts/seo-agent/weekly-report.mts",
     "science:bench": "node --import tsx scripts/shaheen-school/science-bench.mts",
     "train:specialists": "node --import tsx scripts/shaheen-specialists/train.mts",
+    "train:painter": "node --import tsx scripts/shaheen-imagination/train.mts",
     "test:reader-browser": "node scripts/check-epub-reader.mjs",
     "review:assistant": "node --import tsx scripts/assistant-specialties.mts",
     "voice:bench": "node --import tsx --import ./tests/register-assets.mjs scripts/voice-bench.ts",

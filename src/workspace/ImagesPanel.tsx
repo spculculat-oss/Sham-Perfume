@@ -8,6 +8,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Download, FlipHorizontal, ImagePlus, Loader2, RotateCw, Save, Sparkles, Undo2, Wand2 } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { imageErrorKey, makeImage } from './workspaceApi';
+import { drawOrPaint } from './paint';
 import { IMAGE_STYLES, type ImageAspect, type ImageStyleId } from '../utils/imageCraft';
 import { saveFile } from './fileStore';
 import { downloadBlob } from './officeWriters';
@@ -99,7 +100,7 @@ export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang
     if (found) { setPhotoReply(found); setNote(stripMediaBlock(found)); setSource(null); setGallery([]); setMotionSource(''); return; }
     setPhotoReply('');
     setBusy('make'); setNote('');
-    try { const out = await makeImage(prompt.trim(), undefined, undefined, { style, aspect }); load(out.src); setGallery((g) => [out.src, ...g].slice(0, 12)); } catch (e) { setNote(w(imageErrorKey(e))); } finally { setBusy(''); }
+    try { const out = await drawOrPaint(prompt.trim(), undefined, undefined, { style, aspect }); load(out.src); if (out.painted) setTimeout(() => setNote(w(out.painted === 'partial' ? 'painter_partial' : 'painter_note')), 0); setGallery((g) => [out.src, ...g].slice(0, 12)); } catch (e) { setNote(w(imageErrorKey(e))); } finally { setBusy(''); }
   };
   const blob = async () => {
     try {
@@ -155,7 +156,7 @@ export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang
         </div>
         <p className="text-[11px] text-stone-500">{w('image_hint')}</p>
       </div>
-      {!aiImages && <p role="status" className="text-xs text-stone-600">{w('image_unavailable')}</p>}
+      {!aiImages && <p role="status" className="text-xs text-stone-600">{w('painter_ready')}</p>}
       {photoReply && extractMediaRequest(photoReply) && <ShaheenMedia request={extractMediaRequest(photoReply)!} lang={lang} />}
       {busy === 'make' && <p className="text-[12px] text-stone-500">{w('drawing')}</p>}
       {gallery.length > 0 && (
