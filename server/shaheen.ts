@@ -1,4 +1,5 @@
 import { REAL_PHOTO_INSTRUCTION, realPhotoReply } from '../src/utils/realPhotos';
+import { IMAGE_CRAFT_INSTRUCTION, IMAGE_HONESTY_INSTRUCTION } from '../src/utils/imageCraft';
 import { CONTINUITY_INSTRUCTION, contextualMessage, isContextFollowUp } from '../src/utils/conversationContext';
 import { createResearchSpider } from '../src/utils/researchSpider';
 /**
@@ -332,7 +333,7 @@ ${relationsPromptBlock('ar')}
 للمقارنات والنِّسب والخصائص (مثل مقارنة مواد، عائلات عطرية، تركيزات EDP/EDT، مدد التعتيق) اعرضها في جدول Markdown واضح بأعمدة قليلة.
 عندما تفيد الصور أو الفيديو في التوضيح فعلاً (شكل مادة خام أو نبات أو راتنج، أدوات المختبر، طرق الاستخلاص والتقطير والنقع، ورائحة لا تكفيها الكلمات) أو طلبها المستخدم، ابدأ ردك بسياج واحد باسم sham-media يحتوي JSON فقط، ثم اكتب الشرح بعده. وعندما يكون للسؤال بُعد جغرافي (منشأ مادة خام، مزارع الورد أو العود أو اللافندر، مدن ومتاحف وأسواق العطور، أين تُزرع نبتة) أضف places في نفس السياج ليعرضها الموقع على خريطة. السياج إلزامي كلما طلب المستخدم صوراً أو فيديو أو خريطة أو أماكن أو قال «وريني» أو show me. مثال:
 {"images":["agarwood","Aquilaria"],"videos":["steam distillation of essential oils"],"places":["Assam, India","Hainan, China"]}
-images حتى عبارتي بحث بالإنجليزية محددتين للموضوع والصفة، حتى ثمان كلمات (الاسم الشائع أو العلمي للمادة أو النبات أو الأداة، مثل agarwood أو Rosa damascena أو ambergris أو distillation apparatus)، وvideos عبارة بحث واحدة بلغة المستخدم أو بالإنجليزية، وplaces حتى 5 أماكن حقيقية معروفة بالإنجليزية بصيغة «المكان، الدولة» (مدينة أو منطقة أو معلم مثل Grasse, France أو Taif, Saudi Arabia أو Kannauj, India) تخص السؤال نفسه فقط، ولا تضع أبداً مقرات شركات أو ماركات أو متاجر، وكل مفتاح اختياري فاكتب المفيد منها فقط. سيعرض الموقع صوراً وفيديوهات وخريطة حقيقية من مصادر موثوقة. اكتب السياج باسم sham-media حرفياً (وليس json) وأغلقه بثلاث علامات \`\`\`. لا تكتب أبداً روابط صور أو فيديو أو خرائط أو إحداثيات أو صيغة ![]() بنفسك، ولا تحِل المستخدم إلى تطبيقات أو مواقع خرائط أو بحث خارجية؛ الموقع يعرض الخريطة والصور بنفسه، ولا تَعِد بصورة لم تطلبها في السياج، ولا تذكر السياج في الشرح. لا تضف sham-media للتحيات أو الأسئلة الطبية أو الأسئلة التي لا يفيدها التوضيح المرئي.${CONTINUITY_INSTRUCTION}\n${REAL_PHOTO_INSTRUCTION}${voiceInstruction(talk?.voice, talk?.dialect, language)}${mode}${admin}`;
+images حتى عبارتي بحث بالإنجليزية محددتين للموضوع والصفة، حتى ثمان كلمات (الاسم الشائع أو العلمي للمادة أو النبات أو الأداة، مثل agarwood أو Rosa damascena أو ambergris أو distillation apparatus)، وvideos عبارة بحث واحدة بلغة المستخدم أو بالإنجليزية، وplaces حتى 5 أماكن حقيقية معروفة بالإنجليزية بصيغة «المكان، الدولة» (مدينة أو منطقة أو معلم مثل Grasse, France أو Taif, Saudi Arabia أو Kannauj, India) تخص السؤال نفسه فقط، ولا تضع أبداً مقرات شركات أو ماركات أو متاجر، وكل مفتاح اختياري فاكتب المفيد منها فقط. سيعرض الموقع صوراً وفيديوهات وخريطة حقيقية من مصادر موثوقة. اكتب السياج باسم sham-media حرفياً (وليس json) وأغلقه بثلاث علامات \`\`\`. لا تكتب أبداً روابط صور أو فيديو أو خرائط أو إحداثيات أو صيغة ![]() بنفسك، ولا تحِل المستخدم إلى تطبيقات أو مواقع خرائط أو بحث خارجية؛ الموقع يعرض الخريطة والصور بنفسه، ولا تَعِد بصورة لم تطلبها في السياج، ولا تذكر السياج في الشرح. لا تضف sham-media للتحيات أو الأسئلة الطبية أو الأسئلة التي لا يفيدها التوضيح المرئي.${CONTINUITY_INSTRUCTION}\n${REAL_PHOTO_INSTRUCTION}${talk?.voice ? '' : `\n${IMAGE_CRAFT_INSTRUCTION}\n${IMAGE_HONESTY_INSTRUCTION}`}${voiceInstruction(talk?.voice, talk?.dialect, language)}${mode}${admin}`;
 }
 
 /**
@@ -340,7 +341,7 @@ images حتى عبارتي بحث بالإنجليزية محددتين للمو
  * need the flagship model. It goes to the light tier (Gemini Flash-Lite: its own, larger quota, faster),
  * keeping the main model's quota for formulas, analyses and long conversations.
  */
-const NEEDS_FULL_MODEL = /صمم|تصميم|تركيب|وصف[ةه]|خلط[ةه]|نسب|حلل|تحليل|قارن|مقارن|جدول|خطوة|اشرح بالتفصيل|بالتفصيل|formula|recipe|design|ratio|analy|compare|table|step|detail/i;
+const NEEDS_FULL_MODEL = /ارسم|رسم[ةه]|تخيل|draw|imagine|illustrat|صمم|تصميم|تركيب|وصف[ةه]|خلط[ةه]|نسب|حلل|تحليل|قارن|مقارن|جدول|خطوة|اشرح بالتفصيل|بالتفصيل|formula|recipe|design|ratio|analy|compare|table|step|detail/i;
 export function isSimpleQuestion(input: Pick<ChatRequest, 'message' | 'conversationHistory'> & Partial<Pick<ChatRequest, 'voice'>>): boolean {
   // «التحدث مع شاهين»: a spoken turn is answered in a few sentences, so the quicker tier answers it even deep in a
   // conversation — the first word comes sooner (a voice conversation waits for nothing longer than it must).

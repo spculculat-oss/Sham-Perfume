@@ -8,7 +8,14 @@ import {
   IMAGE_ASPECTS, IMAGE_CRAFT_INSTRUCTION, IMAGE_STYLES, craftEditPrompt, craftImagePrompt, detectAspect, detectLettering, detectStyle,
   detectSubject, isImageAspect, isImageStyle, parseImageRequest,
 } from '../src/utils/imageCraft';
-import { makeImage, workspaceInstruction } from '../server/workspace';
+import { IMAGE_FAILURE_RESPONSE, drawImage, makeImage, workspaceInstruction } from '../server/workspace';
+import { publicChatResult, systemInstruction } from '../server/shaheen';
+import { IMAGE_HONESTY_INSTRUCTION } from '../src/utils/imageCraft';
+import { drawReply, drawingOf, forgetDrawings, freshReplies, previousDrawing } from '../src/utils/shaheenDrawings';
+import { imageErrorKey } from '../src/workspace/workspaceApi';
+import { imageRequest } from '../src/workspace/codeBlocks';
+import { stripFormulaBlock } from '../src/components/ShaheenMarkdown';
+import { ApiError, ApiUnavailableError } from '../src/utils/api';
 import { IMAGE_SIZES } from '../src/workspace/ImagesPanel';
 import { WS_STRINGS } from '../src/workspace/strings';
 import { IMAGINATION_LESSONS } from '../scripts/shaheen-school/curriculumImagination';
@@ -166,4 +173,92 @@ test('the school teaches the imagination craft: each question finds exactly its 
     assert.doesNotMatch(lesson.content, VENDORS, lesson.id);
     assert.equal(lesson.track, 'graphics');
   }
+});
+
+test('every reason an image did not come has its own code and its own sentence', async () => {
+  const env = { GEMINI_API_KEY: 'reasons' };
+  const answer = (response: () => Response) => (async () => response()) as typeof fetch;
+  assert.deepEqual(await drawImage('قطة', undefined, { env: {}, fetch: answer(drawn) }), { failure: 'no_engine' });
+  const quota = await drawImage('قطة', undefined, { env, fetch: answer(() => Response.json({ error: { message: 'Quota exceeded, limit: 0' } }, { status: 429 })) });
+  assert.equal('failure' in quota && quota.failure, 'quota');
+  assert.match('failure' in quota ? quota.detail || '' : '', /limit: 0/);
+  const refused = await drawImage('قطة', undefined, { env, fetch: answer(() => Response.json({ candidates: [{ finishReason: 'IMAGE_SAFETY', content: { parts: [{ text: 'I cannot draw that' }] } }] })) });
+  assert.deepEqual(refused, { failure: 'refused', status: 200, detail: 'IMAGE_SAFETY' });
+  const rejected = await drawImage('قطة', undefined, { env, fetch: answer(() => Response.json({ error: 'API key not valid' }, { status: 403 })) });
+  assert.equal('failure' in rejected && rejected.failure, 'rejected');
+  const down = await drawImage('قطة', undefined, { env, fetch: (async () => { throw new TypeError('network'); }) as typeof fetch });
+  assert.equal('failure' in down && down.failure, 'unreachable');
+
+  assert.deepEqual(Object.values(IMAGE_FAILURE_RESPONSE).map((r) => r.code), ['NO_IMAGE_ENGINE', 'IMAGE_QUOTA', 'IMAGE_REFUSED', 'IMAGE_ENGINE_REJECTED', 'IMAGE_ENGINE_UNREACHABLE']);
+  assert.equal(imageErrorKey(new ApiError(503, 'NO_IMAGE_ENGINE')), 'image_unavailable');
+  assert.equal(imageErrorKey(new ApiUnavailableError()), 'image_unavailable');
+  assert.equal(imageErrorKey(new ApiError(503, 'IMAGE_QUOTA')), 'image_quota');
+  assert.equal(imageErrorKey(new ApiError(422, 'IMAGE_REFUSED')), 'image_refused');
+  assert.equal(imageErrorKey(new ApiError(429, 'RATE_LIMITED')), 'rate_limited');
+  assert.equal(imageErrorKey(new ApiError(502, 'IMAGE_ENGINE_REJECTED')), 'image_failed');
+  for (const key of ['image_unavailable', 'image_quota', 'image_refused', 'rate_limited', 'image_failed', 'image_draw', 'image_retry'] as const) assert.ok(WS_STRINGS[key].ar, key);
+});
+
+test('a retired image model is replaced from the account\'s own list, once', async () => {
+  const asked: string[] = [];
+  const request = (async (url: unknown) => {
+    const path = String(url);
+    asked.push(path.replace(/^.*\/v1beta\//, ''));
+    if (path.includes('models?')) return Response.json({ models: [
+      { name: 'models/gemini-3-pro', supportedGenerationMethods: ['generateContent'] },
+      { name: 'models/imagen-5', supportedGenerationMethods: ['predict'] },
+      { name: 'models/gemini-3-pro-image-preview', supportedGenerationMethods: ['generateContent'] },
+      { name: 'models/gemini-3-flash-image', supportedGenerationMethods: ['generateContent'] },
+    ] });
+    return path.includes('gemini-3-flash-image') ? drawn() : Response.json({ error: 'model not found' }, { status: 404 });
+  }) as typeof fetch;
+  const result = await drawImage('كوباية شاي', undefined, { env: { GEMINI_API_KEY: 'retired' }, fetch: request });
+  assert.deepEqual(result, { image: PNG, model: 'gemini-3-flash-image' });
+  assert.deepEqual(asked, ['models/gemini-2.5-flash-image:generateContent', 'models?pageSize=200', 'models/gemini-3-flash-image:generateContent']);
+});
+
+test('«اسأل شاهين» is taught to draw, and never to send the visitor elsewhere', () => {
+  const written = systemInstruction('ar');
+  assert.ok(written.includes(IMAGE_CRAFT_INSTRUCTION) && written.includes(IMAGE_HONESTY_INSTRUCTION));
+  assert.ok(!systemInstruction('ar', '', undefined, { voice: {} }).includes(IMAGE_CRAFT_INSTRUCTION), 'a spoken turn has no picture to show');
+  for (const word of ['مشكلة تقنية', 'خارجي', 'من جديد']) assert.ok(IMAGE_HONESTY_INSTRUCTION.includes(word), word);
+  assert.doesNotMatch(IMAGE_HONESTY_INSTRUCTION, VENDORS);
+  assert.ok(workspaceInstruction('ar').includes(IMAGE_HONESTY_INSTRUCTION));
+
+  const reply = 'تخيلت زجاجة كريستال بتطفو في الفضاء.\n\n```sham-image\nA crystal perfume bottle floating in space, glowing nebula, cinematic lighting, 3:4\n```';
+  const sent = publicChatResult({ reply }, 'ارسم زجاجة عطر في الفضاء').reply;
+  assert.equal(imageRequest(sent), 'A crystal perfume bottle floating in space, glowing nebula, cinematic lighting, 3:4', 'the order reaches the browser whole');
+  assert.equal(stripFormulaBlock(sent), 'تخيلت زجاجة كريستال بتطفو في الفضاء.', 'the visitor reads the words, not the order');
+});
+
+test('a reply\'s picture is drawn once, a failure says why and can be retried, an edit carries the last picture', async () => {
+  forgetDrawings();
+  let calls = 0;
+  const seen: Array<[string, string | undefined]> = [];
+  const draw = async (prompt: string, previous?: string) => { calls += 1; seen.push([prompt, previous]); return PNG; };
+  const note = imageErrorKey;
+  const both = await Promise.all([drawReply('bot-1', 'a red fox', draw, note), drawReply('bot-1', 'a red fox', draw, note)]);
+  assert.equal(calls, 1, 'the page and the floating window share one drawing');
+  assert.deepEqual(both[0], { status: 'done', src: PNG });
+  await drawReply('bot-1', 'a red fox', draw, note);
+  assert.equal(calls, 1);
+
+  let fail = true;
+  const flaky = async () => { if (fail) throw new ApiError(503, 'IMAGE_QUOTA'); return PNG; };
+  assert.deepEqual(await drawReply('bot-2', 'a blue bird', flaky, note), { status: 'error', note: 'image_quota' });
+  fail = false;
+  assert.deepEqual(await drawReply('bot-2', 'a blue bird', flaky, note), { status: 'done', src: PNG });
+
+  forgetDrawings();
+  await drawReply('bot-1', 'a red fox', draw, note);
+  const ids = ['user-1', 'bot-1', 'user-2', 'bot-3'];
+  assert.equal(previousDrawing(ids, 'bot-3'), PNG);
+  assert.equal(previousDrawing(ids, 'bot-1'), undefined);
+  await drawReply('bot-3', 'EDIT: make it night', draw, note, previousDrawing(ids, 'bot-3'));
+  assert.deepEqual(seen.at(-1), ['make it night', PNG]);
+  await drawReply('bot-4', 'a new castle', draw, note, PNG);
+  assert.deepEqual(seen.at(-1), ['a new castle', undefined], 'a new picture is not an edit');
+  freshReplies.add('bot-9'); forgetDrawings();
+  assert.equal(freshReplies.size, 0);
+  assert.equal(drawingOf('bot-1'), undefined);
 });

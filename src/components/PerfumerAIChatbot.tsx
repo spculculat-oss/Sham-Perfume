@@ -39,6 +39,7 @@ import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
 import { ShaheenServiceStatus, ShaheenModesPanel, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
 import { ShaheenMedia } from './ShaheenMedia';
+import { ShaheenDrawing } from './ShaheenDrawing';
 import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
 import { stripOpeningGreeting } from '../utils/shaheenText';
 import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
@@ -866,6 +867,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const { messages, setMessages, daysRemaining, isLoading, busy, sendMessage, retryLast, clearHistory } = useShaheenChat();
+  const messageIds = React.useMemo(() => messages.map((x) => x.id), [messages]);
   const modelStatus = useShaheenModels();
   const selectedModel = modelStatus.selected;
   const setSelectedModel = modelStatus.setSelected;
@@ -1372,6 +1374,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                         <>
                           <ShaheenMarkdown text={activeDisplayContent} className="font-sans" />
                           {mediaRequest && <ShaheenMedia request={mediaRequest} lang={currentLang} />}
+                          {msg.role === 'assistant' && !isError && msg.id !== 'welcome' && <ShaheenDrawing messageId={msg.id} text={msg.text} messageIds={messageIds} lang={currentLang} />}
                         </>
                       ) : (
                         <div className="whitespace-pre-line break-words font-sans space-y-2" dir="auto">

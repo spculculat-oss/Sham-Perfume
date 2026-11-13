@@ -1,5 +1,6 @@
 import React from 'react';
 import { removeMediaBlocks } from '../utils/mediaBlock';
+import { stripImageRequest } from '../workspace/codeBlocks';
 import { removeFormulaBlocks } from '../utils/aiFormulaExtractor';
 import { removeToolBlocks } from '../utils/shaheenTools';
 import { MATH_CLOSE, MATH_OPEN, plainMath } from '../utils/shaheenText';
@@ -14,7 +15,8 @@ import { MATH_CLOSE, MATH_OPEN, plainMath } from '../utils/shaheenText';
  */
 export function stripFormulaBlock(text: string): string {
   // Any formula-looking block (```json label, cut fence, bare JSON…), not only the canonical one.
-  return removeToolBlocks(removeFormulaBlocks(removeMediaBlocks(text)))
+  // The ```sham-image line is the site's drawing order (ShaheenDrawing shows the picture), not reading matter.
+  return removeToolBlocks(removeFormulaBlocks(removeMediaBlocks(stripImageRequest(text))))
     // Fences left behind once a block inside them was removed («```sham-formula» + «```json…```» + «```»),
     // empty blocks and a dangling closing fence: seen live as an empty black box under the answer.
     .replace(/^[ \t]*(```|~~~)[\w-]*[ \t]*\n(?:[ \t]*\n)*[ \t]*\1[ \t]*$/gm, '')

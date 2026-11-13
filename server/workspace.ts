@@ -1,5 +1,5 @@
 import { REAL_PHOTO_INSTRUCTION, realPhotoReply, wantsRealPhoto } from '../src/utils/realPhotos';
-import { IMAGE_CRAFT_INSTRUCTION, craftEditPrompt, craftImagePrompt, isImageAspect, isImageStyle, type ImageAspect, type ImageStyleId } from '../src/utils/imageCraft';
+import { IMAGE_CRAFT_INSTRUCTION, IMAGE_HONESTY_INSTRUCTION, craftEditPrompt, craftImagePrompt, isImageAspect, isImageStyle, type ImageAspect, type ImageStyleId } from '../src/utils/imageCraft';
 import { CONTINUITY_INSTRUCTION, contextualMessage, conversationFocus, isContextFollowUp } from '../src/utils/conversationContext';
 /**
  * «مساحة شاهين»: Shaheen as a general assistant — any subject, not perfume only.
@@ -53,6 +53,7 @@ export function workspaceInstruction(language: SupportedLanguage, task: Workspac
 البرمجة: اكتب الكود كامل وشغّال جوّه سياج بلغته (\`\`\`python، \`\`\`javascript، \`\`\`html…). موقع أو صفحة = ملف HTML واحد كامل فيه الـ CSS والـ JavaScript جوّاه في سياج \`\`\`html، علشان المستخدم يشوفه «معاينة حية» على طول. كود بايثون لازم يشتغل في المتصفح (مكتبات بايثون القياسية، وnumpy وpandas وmatplotlib مسموحين) ويطبع نتيجته بـ print.
 المستندات: لو طلب مستند أو تقرير أو عرض، اكتبه Markdown منظم (عنوان بـ #، أقسام بـ ##، نقاط، وجداول Markdown للأرقام) — الموقع بيحوّله Word أو Excel أو PowerPoint أو PDF بضغطة. للعرض التقديمي: كل شريحة قسم ## بعنوانها ونقاط قصيرة.
 ${IMAGE_CRAFT_INSTRUCTION}
+${IMAGE_HONESTY_INSTRUCTION}
 الفيديو المتحرك: الموقع يدعم تصدير فيديو قصير محلياً من صورة بتقريب وتحريك الكاميرا بلا صوت عبر زر «عمل فيديو متحرك» تحت الصورة. ده مش توليد فيديو بالذكاء الاصطناعي ولا تحريك أشخاص أو أشياء داخل المشهد؛ وضّح الفرق بصراحة، ولا تدّعي إنشاء فيديو قبل ضغط الزر ونجاح التسجيل. لو طلب فيديو متحرك، جهّز صورة أساسية بوصف داخل سياج sham-video بدلاً من رفض كل الحركة أو توجيهه لمواقع أخرى. تحريك صورة موجودة يتم محلياً. صيغة الفيديو حسب المتصفح WebM أو MP4، ولا تدّعي دعم GIF أو MP4 تحديداً قبل التحقق.
 توقيع الصور المضاف بواسطة الموقع هو sharing ai فقط (توقيع شاهين). لا تطلب كتابة اسم المزود على الصورة ولا تختلق مصدرها، ولا تمح أو تخفِ علامة منشأ أو حقوق مدمجة أصلاً. التوقيع علامة شام وليس إثباتاً أن نموذجاً خاصاً بشام ولّد الصورة.
 ممنوع: المساعدة في أذى أو اختراق أو احتيال أو محتوى جنسي لقاصرين أو سلاح؛ ونصايح طبية أو قانونية أو مالية خطيرة من غير ما توجّه لمختص.`;
@@ -245,34 +246,90 @@ export async function webSearch(query: string, language: SupportedLanguage, { en
 }
 
 // ── Images ──────────────────────────────────────────────────────────────────────────────────────────────────
+/** Why no image came back — each reason has its own honest message for the visitor (never one vague «failed»). */
+export type ImageFailure = 'no_engine' | 'quota' | 'refused' | 'rejected' | 'unreachable';
+export type ImageResult = { image: string; model: string } | { failure: ImageFailure; status?: number; detail?: string };
+const IMAGE_MODEL = 'gemini-2.5-flash-image';
+/** An image model found on the account after the configured one was retired (kept for an hour, per key). */
+const foundModels = new Map<string, { model: string; at: number }>();
+const keyTag = (key: string) => createHash('sha256').update(key).digest('hex').slice(0, 12);
+
+/** The account's own list: a model that draws through generateContent, the light «flash» ones first. */
+async function findImageModel(key: string, not: string, request: typeof fetch): Promise<string | undefined> {
+  const kept = foundModels.get(keyTag(key));
+  if (kept && kept.model !== not && Date.now() - kept.at < 60 * 60_000) return kept.model;
+  try {
+    const response = await request('https://generativelanguage.googleapis.com/v1beta/models?pageSize=200', { signal: AbortSignal.timeout(10_000), headers: { 'x-goog-api-key': key } });
+    if (!response.ok) return undefined;
+    const data = await response.json() as { models?: Array<{ name?: string; supportedGenerationMethods?: string[] }> };
+    const names = (data.models || [])
+      .filter((m) => m.supportedGenerationMethods?.includes('generateContent'))
+      .map((m) => (m.name || '').replace(/^models\//, ''))
+      .filter((id) => /^gemini-/.test(id) && /image/i.test(id) && id !== not)
+      .sort((x, y) => Number(/flash/i.test(y)) - Number(/flash/i.test(x)) || Number(/preview|exp/i.test(x)) - Number(/preview|exp/i.test(y)) || y.localeCompare(x));
+    if (names[0]) foundModels.set(keyTag(key), { model: names[0], at: Date.now() });
+    return names[0];
+  } catch { return undefined; }
+}
+
 /**
  * «خيال شاهين» (src/utils/imageCraft.ts) art-directs the idea first; the engine then draws the brief.
- * A new image may carry a frame shape; an edit keeps the shape of the image it was given.
+ * A new image may carry a frame shape; an edit keeps the shape of the image it was given. When the
+ * configured model is gone (404) the account's own model list is asked once for another that draws.
  */
-export async function makeImage(prompt: string, image: string | undefined, { env, fetch: request = fetch, style, aspect }: { env: Env; fetch?: typeof fetch; style?: ImageStyleId; aspect?: ImageAspect }): Promise<string | undefined> {
+export async function drawImage(prompt: string, image: string | undefined, { env, fetch: request = fetch, style, aspect }: { env: Env; fetch?: typeof fetch; style?: ImageStyleId; aspect?: ImageAspect }): Promise<ImageResult> {
   if (wantsRealPhoto(prompt)) throw new ReadError(400, 'REAL_PHOTO_REQUIRES_SEARCH', 'Use image search for real photographs');
   const key = env.GEMINI_API_KEY?.trim();
-  if (!key || env.SHAM_WORKSPACE_IMAGES?.trim().toLowerCase() === 'off') return undefined;
-  const model = env.GEMINI_IMAGE_MODEL?.trim() || 'gemini-2.5-flash-image';
+  if (!key || env.SHAM_WORKSPACE_IMAGES?.trim().toLowerCase() === 'off') return { failure: 'no_engine' };
   const inline = image?.match(/^data:(image\/(?:png|jpeg|webp));base64,([A-Za-z0-9+/=]+)$/);
   const brief = inline ? { prompt: craftEditPrompt(prompt), aspect: undefined } : craftImagePrompt(prompt, { style, aspect });
   const parts: object[] = [{ text: brief.prompt.slice(0, 3600) + '\nDo not add AI vendor names, provider credits, or fake provenance text. The site adds its own sharing ai signature afterward. Preserve any existing embedded provenance or rights marks when editing.' }];
   if (inline) parts.push({ inlineData: { mimeType: inline[1], data: inline[2] } });
-  const draw = (shape?: ImageAspect) => request(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+  const draw = (model: string, shape?: ImageAspect) => request(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
     method: 'POST', signal: AbortSignal.timeout(45_000), headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
     body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { responseModalities: ['TEXT', 'IMAGE'], ...(shape ? { imageConfig: { aspectRatio: shape } } : {}) } }),
   });
-  try {
-    let response = await draw(brief.aspect);
+  const attempt = async (model: string): Promise<ImageResult> => {
+    let response = await draw(model, brief.aspect);
     // An image model that does not take a frame shape rejects the field (400, no quota used): the brief
     // still names the ratio in words, so draw once more without the field.
-    if (response.status === 400 && brief.aspect) response = await draw();
-    if (!response.ok) return undefined;
-    const data = await response.json() as { candidates?: Array<{ content?: { parts?: Array<{ inlineData?: { mimeType?: string; data?: string } }> } }> };
+    if (response.status === 400 && brief.aspect) response = await draw(model);
+    if (!response.ok) {
+      // The provider's own reason is for the server log only (it never holds the key).
+      const detail = (await response.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 300);
+      return { failure: response.status === 429 ? 'quota' : response.status >= 500 ? 'unreachable' : 'rejected', status: response.status, ...(detail ? { detail } : {}) };
+    }
+    const data = await response.json() as { promptFeedback?: { blockReason?: string }; candidates?: Array<{ finishReason?: string; content?: { parts?: Array<{ inlineData?: { mimeType?: string; data?: string } }> } }> };
     const out = data.candidates?.[0]?.content?.parts?.find((p) => p.inlineData?.data)?.inlineData;
-    return out?.data ? `data:${out.mimeType || 'image/png'};base64,${out.data}` : undefined;
-  } catch { return undefined; }
+    if (out?.data) return { image: `data:${out.mimeType || 'image/png'};base64,${out.data}`, model };
+    // Answered, but with words only or a safety stop: the engine declined this picture.
+    return { failure: 'refused', status: 200, detail: data.promptFeedback?.blockReason || data.candidates?.[0]?.finishReason || 'no image part' };
+  };
+  try {
+    const model = env.GEMINI_IMAGE_MODEL?.trim() || IMAGE_MODEL;
+    const first = await attempt(model);
+    if ('image' in first || first.status !== 404) return first;
+    const other = await findImageModel(key, model, request);
+    return other ? await attempt(other) : first;
+  } catch (error) {
+    return { failure: 'unreachable', detail: error instanceof Error ? error.name : 'error' };
+  }
 }
+
+/** The image alone (undefined when none came back) — for callers that do not need the reason. */
+export async function makeImage(prompt: string, image: string | undefined, options: { env: Env; fetch?: typeof fetch; style?: ImageStyleId; aspect?: ImageAspect }): Promise<string | undefined> {
+  const result = await drawImage(prompt, image, options);
+  return 'image' in result ? result.image : undefined;
+}
+
+/** What the visitor's browser is told for each reason (codes only — the provider's words stay in the log). */
+export const IMAGE_FAILURE_RESPONSE: Record<ImageFailure, { status: number; code: string }> = {
+  no_engine: { status: 503, code: 'NO_IMAGE_ENGINE' },
+  quota: { status: 503, code: 'IMAGE_QUOTA' },
+  refused: { status: 422, code: 'IMAGE_REFUSED' },
+  rejected: { status: 502, code: 'IMAGE_ENGINE_REJECTED' },
+  unreachable: { status: 502, code: 'IMAGE_ENGINE_UNREACHABLE' },
+};
 
 // ── The conversation ────────────────────────────────────────────────────────────────────────────────────────
 interface AskBody { messages?: unknown; language?: unknown; task?: unknown; context?: unknown; search?: unknown }
@@ -427,12 +484,14 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
     const prompt = typeof req.body?.prompt === 'string' ? req.body.prompt.trim() : '';
     if (!prompt) { res.status(400).json({ error: 'Empty prompt', code: 'BAD_REQUEST' }); return; }
     try {
-      const image = await makeImage(prompt, typeof req.body?.image === 'string' ? req.body.image : undefined, {
+      const result = await drawImage(prompt, typeof req.body?.image === 'string' ? req.body.image : undefined, {
         env, fetch: request,
         ...(isImageStyle(req.body?.style) ? { style: req.body.style } : {}), ...(isImageAspect(req.body?.aspect) ? { aspect: req.body.aspect } : {}),
       });
-      if (!image) { res.status(503).json({ error: 'No image engine', code: 'NO_IMAGE_ENGINE' }); return; }
-      res.json({ image });
+      if ('image' in result) { res.json({ image: result.image }); return; }
+      const told = IMAGE_FAILURE_RESPONSE[result.failure];
+      if (result.failure !== 'no_engine') console.warn(`[workspace] image engine: ${told.code} status=${result.status ?? '-'} ${result.detail || ''}`.trim());
+      res.status(told.status).json({ error: 'No image', code: told.code });
     } catch (error) { fail(res, error); }
   });
 
