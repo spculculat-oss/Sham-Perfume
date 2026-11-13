@@ -163,3 +163,20 @@ test('the council is a supervised AI tool with its own probe', async () => {
   assert.ok(AI_TOOLS.some((t) => t.id === 'shaheen_council' && t.sources.includes('scripts/shaheen-council/run.mts')));
   assert.equal(typeof PROBES.shaheen_council, 'function');
 });
+
+test('the owner’s refusals are never proposed again (guest checkout, #272/#403)', async () => {
+  const { refusedByOwner, OWNER_REFUSED } = await import('../scripts/shaheen-council/council');
+  assert.ok(refusedByOwner('مهمة شاهين: إتاحة خيار الدفع كزائر وتبسيط صفحة إتمام الطلب'));
+  assert.ok(refusedByOwner('إصلاح مسار سلة التسوق وإتاحة الدفع كزائر'));
+  assert.ok(refusedByOwner('السماح بالشراء من غير تسجيل دخول'));
+  assert.ok(refusedByOwner('Enable guest checkout on mobile'));
+  assert.equal(refusedByOwner('تحسين صور المنتجات'), undefined);
+  assert.equal(refusedByOwner('تسهيل تسجيل الدخول للزوار'), undefined, 'only the refused idea, not every mention of visitors');
+  const file = emptyCouncil();
+  const now = Date.parse('2026-12-20T08:00:00Z');
+  const decision = { id: 'x1', title: 'إتاحة الدفع كزائر', detail: 'لتسريع الطلب', area: 'experience', priority: 'high', kind: 'task', needsApproval: true } as never;
+  const applied = applyMeeting(file, { date: '2026-12-20', at: new Date(now).toISOString(), chair: 'shaheen', summaryAr: 'x', decisions: [decision], toolGoals: {} } as never, now);
+  assert.equal(applied.newTasks.length, 0);
+  assert.match((decision as { note: string }).note, /رفضها صاحب المنصة/);
+  assert.ok(OWNER_REFUSED.every((r) => r.titleAr && r.since));
+});
