@@ -1,3 +1,5 @@
+import { REAL_PHOTO_INSTRUCTION, realPhotoReply } from '../src/utils/realPhotos';
+import { CONTINUITY_INSTRUCTION, contextualMessage } from '../src/utils/conversationContext';
 import { createResearchSpider } from '../src/utils/researchSpider';
 /**
  * «الخبير شاهين» — the perfume-design chat (floating window + the lab page).
@@ -330,7 +332,7 @@ ${relationsPromptBlock('ar')}
 للمقارنات والنِّسب والخصائص (مثل مقارنة مواد، عائلات عطرية، تركيزات EDP/EDT، مدد التعتيق) اعرضها في جدول Markdown واضح بأعمدة قليلة.
 عندما تفيد الصور أو الفيديو في التوضيح فعلاً (شكل مادة خام أو نبات أو راتنج، أدوات المختبر، طرق الاستخلاص والتقطير والنقع، ورائحة لا تكفيها الكلمات) أو طلبها المستخدم، ابدأ ردك بسياج واحد باسم sham-media يحتوي JSON فقط، ثم اكتب الشرح بعده. وعندما يكون للسؤال بُعد جغرافي (منشأ مادة خام، مزارع الورد أو العود أو اللافندر، مدن ومتاحف وأسواق العطور، أين تُزرع نبتة) أضف places في نفس السياج ليعرضها الموقع على خريطة. السياج إلزامي كلما طلب المستخدم صوراً أو فيديو أو خريطة أو أماكن أو قال «وريني» أو show me. مثال:
 {"images":["agarwood","Aquilaria"],"videos":["steam distillation of essential oils"],"places":["Assam, India","Hainan, China"]}
-images حتى عبارتي بحث بالإنجليزية من كلمة إلى ثلاث كلمات (الاسم الشائع أو العلمي للمادة أو النبات أو الأداة، مثل agarwood أو Rosa damascena أو ambergris أو distillation apparatus)، وvideos عبارة بحث واحدة بلغة المستخدم أو بالإنجليزية، وplaces حتى 5 أماكن حقيقية معروفة بالإنجليزية بصيغة «المكان، الدولة» (مدينة أو منطقة أو معلم مثل Grasse, France أو Taif, Saudi Arabia أو Kannauj, India) تخص السؤال نفسه فقط، ولا تضع أبداً مقرات شركات أو ماركات أو متاجر، وكل مفتاح اختياري فاكتب المفيد منها فقط. سيعرض الموقع صوراً وفيديوهات وخريطة حقيقية من مصادر موثوقة. اكتب السياج باسم sham-media حرفياً (وليس json) وأغلقه بثلاث علامات \`\`\`. لا تكتب أبداً روابط صور أو فيديو أو خرائط أو إحداثيات أو صيغة ![]() بنفسك، ولا تحِل المستخدم إلى تطبيقات أو مواقع خرائط أو بحث خارجية؛ الموقع يعرض الخريطة والصور بنفسه، ولا تَعِد بصورة لم تطلبها في السياج، ولا تذكر السياج في الشرح. لا تضف sham-media للتحيات أو الأسئلة الطبية أو الأسئلة التي لا يفيدها التوضيح المرئي.${voiceInstruction(talk?.voice, talk?.dialect, language)}${mode}${admin}`;
+images حتى عبارتي بحث بالإنجليزية محددتين للموضوع والصفة، حتى ثمان كلمات (الاسم الشائع أو العلمي للمادة أو النبات أو الأداة، مثل agarwood أو Rosa damascena أو ambergris أو distillation apparatus)، وvideos عبارة بحث واحدة بلغة المستخدم أو بالإنجليزية، وplaces حتى 5 أماكن حقيقية معروفة بالإنجليزية بصيغة «المكان، الدولة» (مدينة أو منطقة أو معلم مثل Grasse, France أو Taif, Saudi Arabia أو Kannauj, India) تخص السؤال نفسه فقط، ولا تضع أبداً مقرات شركات أو ماركات أو متاجر، وكل مفتاح اختياري فاكتب المفيد منها فقط. سيعرض الموقع صوراً وفيديوهات وخريطة حقيقية من مصادر موثوقة. اكتب السياج باسم sham-media حرفياً (وليس json) وأغلقه بثلاث علامات \`\`\`. لا تكتب أبداً روابط صور أو فيديو أو خرائط أو إحداثيات أو صيغة ![]() بنفسك، ولا تحِل المستخدم إلى تطبيقات أو مواقع خرائط أو بحث خارجية؛ الموقع يعرض الخريطة والصور بنفسه، ولا تَعِد بصورة لم تطلبها في السياج، ولا تذكر السياج في الشرح. لا تضف sham-media للتحيات أو الأسئلة الطبية أو الأسئلة التي لا يفيدها التوضيح المرئي.${CONTINUITY_INSTRUCTION}\n${REAL_PHOTO_INSTRUCTION}${voiceInstruction(talk?.voice, talk?.dialect, language)}${mode}${admin}`;
 }
 
 /**
@@ -414,7 +416,7 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   // A deep analysis plus its formula block used to be cut before the closing fence: give it room.
   const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
     : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
-  const turns: ChatTurn[] = [...input.conversationHistory, { role: 'user', text: input.message }];
+  const turns: ChatTurn[] = [...input.conversationHistory, { role: 'user', text: contextualMessage(input.message, input.conversationHistory) }];
   const lite = requested === 'auto' && env.SHAM_LITE_ROUTING?.trim().toLowerCase() !== 'off' && isSimpleQuestion(input);
   let timedOut = false;
   const attempt = async (provider: Provider): Promise<{ outcome: 'ok'; value: ChatAnswer } | { outcome: 'next' | 'limited'; retryMs?: number }> => {
@@ -491,7 +493,7 @@ async function executeCouncil(input: ChatRequest, options: ExecuteOptions, env: 
   const signal = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 52000), ...(options.signal ? [options.signal] : [])]);
   const lang = input.language === 'ar' || input.language === 'fa' ? 'ar' : 'en';
   const result = await runCouncil({
-    question: input.message, history: input.conversationHistory.slice(-6), lang,
+    question: contextualMessage(input.message, input.conversationHistory), history: input.conversationHistory.slice(-6), lang,
     languageName: `${SUPPORTED_LANGUAGES.find((l) => l.code === input.language)!.name} (${input.language})`,
     briefing: `CONTEXT (Shaheen's rules — follow them):\n${systemInstruction(input.language, settings.instructions, undefined, input)}${await supervisorGuidance('shaheen_chat', env).catch(() => '')}\nENABLED SERVICES: the lab calculators on this site and the Sham assistant for orders.`,
     council, enginePolicy: settings.engines, temperature: settings.temperature, env, fetch: options.fetch, signal, onStep: () => {},
@@ -808,6 +810,12 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       const own = switchMode === 'off' || (switchMode === 'auto' && !platformsReady(shaheen, env, health));
       const useMemory = Boolean(shaheen.enabled && (own || (memory && req.body?.memory !== false)));
       const mode = shaheen.allowVisitorChoice ? input.model : 'auto';
+      const photoReply = shaheen.enabled ? realPhotoReply(input.message, input.conversationHistory, input.language) : undefined;
+      if (photoReply) {
+        if (!res.destroyed) res.json(publicChatResult({ reply: photoReply, mode }, input.message));
+        runtime?.record({ ms: Date.now() - started, status: 200 });
+        return;
+      }
       if (isSourcesFollowUp(input.message)) {
         const previousAnswer = [...input.conversationHistory].reverse().find((turn) => turn.role === 'assistant');
         let sources = previousAnswer?.sources;

@@ -11,6 +11,7 @@ import { fetchMedia, osmSearchUrl, youtubeSearchUrl, type MediaImage, type Media
 const ShaheenMap = lazyWithReload(() => import('./ShaheenMap'));
 
 const STRINGS = {
+  noImages: { ar: 'لم تتوفر صور مطابقة للطلب؛ لن نعرض صوراً من موضوع آخر.', en: 'No matching images are available; unrelated images will not be substituted.', fr: 'Aucune image correspondante disponible ; aucune image sans rapport ne sera substituée.', es: 'No hay imágenes coincidentes; no se sustituirán por imágenes ajenas al tema.', it: 'Nessuna immagine corrispondente disponibile; non verranno usate immagini non pertinenti.', de: 'Keine passenden Bilder verfügbar; keine themenfremden Ersatzbilder.', ru: 'Подходящих изображений нет; посторонние изображения не подставляются.', zh: '暂无匹配图片；不会用无关图片替代。', tr: 'Eşleşen görsel yok; ilgisiz görseller gösterilmeyecek.', fa: 'تصویر منطبق در دسترس نیست؛ تصویر نامرتبط جایگزین نمی‌شود.' },
   title: { ar: 'توضيح مرئي', en: 'Visual guide', fr: 'Guide visuel', es: 'Guía visual', de: 'Visuelle Erklärung', tr: 'Görsel rehber', ru: 'Наглядно', zh: '图示说明' },
   imagesFrom: { ar: 'صور حرة من Wikimedia Commons — اضغط على الصورة للتكبير ومعرفة المصدر والترخيص.', en: 'Free images from Wikimedia Commons — tap an image to enlarge it and see its source and license.', fr: 'Images libres de Wikimedia Commons — touchez une image pour l’agrandir et voir sa source.', es: 'Imágenes libres de Wikimedia Commons: toca una imagen para ampliarla y ver su fuente.', de: 'Freie Bilder von Wikimedia Commons – zum Vergrößern und für Quelle/Lizenz antippen.', tr: 'Wikimedia Commons’tan özgür görseller — büyütmek ve kaynağı görmek için dokunun.' },
   watch: { ar: 'تشغيل الفيديو', en: 'Play video', fr: 'Lire la vidéo', es: 'Reproducir vídeo', de: 'Video abspielen', tr: 'Videoyu oynat' },
@@ -46,8 +47,9 @@ export function ShaheenMedia({ request, lang }: Props) {
     if (!imageKey || isStaticHosting) { setImages([]); return; }
     setImages(null);
     // Images and places do not depend on the interface language (it can switch right after load).
-    void Promise.allSettled(imageKey.split('|').map((q) => fetchMedia('image', q, ''))).then((results) => {
+    void Promise.allSettled(imageKey.split('|').map((q) => fetchMedia('image', q, '', request.imageKind))).then((results) => {
       if (!alive) return;
+      setBroken(new Set());
       const seen = new Set<string>();
       // Interleave the topics so each one gets a picture before any gets a second.
       // Readable captions (no catalogue numbers), and no Dutch places for «oud» — also for answers the
@@ -64,7 +66,7 @@ export function ShaheenMedia({ request, lang }: Props) {
       setImages(merged);
     });
     return () => { alive = false; };
-  }, [imageKey]);
+  }, [imageKey, request.imageKind]);
 
   useEffect(() => {
     let alive = true;
@@ -108,7 +110,8 @@ export function ShaheenMedia({ request, lang }: Props) {
   const hasPlaces = Boolean(places?.length);
   // Places that could not be located (or no API on this host) still get a search link (`unlocated`).
   const hasPlaceArea = loadingPlaces || hasPlaces || unlocated.length > 0;
-  if (!loadingImages && !hasImages && !hasVideoArea && !hasPlaceArea) return null;
+  const noImages = Boolean(imageKey) && !loadingImages && !hasImages;
+  if (!loadingImages && !hasImages && !hasVideoArea && !hasPlaceArea && !noImages) return null;
 
   return (
     <section className="@container mt-3 rounded-xl border border-amber-200/80 bg-amber-50/40 p-2.5 sm:p-3" aria-label={L('title')} data-testid="shaheen-media">
@@ -122,6 +125,8 @@ export function ShaheenMedia({ request, lang }: Props) {
           {[0, 1].map((i) => <div key={i} className="aspect-[4/3] animate-pulse rounded-lg bg-stone-200/80" />)}
         </div>
       )}
+
+      {noImages && <p role="status" className="text-xs text-stone-600">{L('noImages')}</p>}
 
       {hasImages && (
         <>

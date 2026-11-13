@@ -1,7 +1,7 @@
 /**
  * «استوديو شاهين»: the studio's calls — the AI platforms through /api/workspace/ask (tasks «site» and «storyboard»)
- * and pictures through the workspace image engine — each with its own fallback, so the studio always produces
- * something: the built-in templates and storyboard writer, and the open image generator.
+ * and pictures through the configured workspace image engine. Site/storyboard templates remain local fallbacks;
+ * image generation reports failure rather than switching to an external generator.
  */
 import type { SupportedLanguage } from '../types/i18n';
 import { ask, makeImage, serverReachable } from '../workspace/workspaceApi';
@@ -10,14 +10,10 @@ import { forAi, localEdit, siteFromReply, type EditDone } from './siteEdit';
 import { cleanStoryboard, localStoryboard, type Aspect, type Mood, type Storyboard, type VideoStyle } from './storyboard';
 import { jsonFrom } from './siteSpec';
 
-/** A picture of a given shape. The open generator is asked for that exact size; the AI engine draws its own. */
-export async function drawPicture(prompt: string, width = 1024, height = 1024, signal?: AbortSignal): Promise<string> {
-  const { src, engine } = await makeImage(prompt, undefined, signal);
-  if (engine !== 'open') return src;
-  const u = new URL(src);
-  u.searchParams.set('width', String(width));
-  u.searchParams.set('height', String(height));
-  return u.href;
+/** Request a picture from the configured engine; dimensions remain hints for callers, not a format guarantee. */
+export async function drawPicture(prompt: string, _width = 1024, _height = 1024, signal?: AbortSignal): Promise<string> {
+  const { src } = await makeImage(prompt, undefined, signal);
+  return src;
 }
 
 export async function buildSite(brief: string, language: SupportedLanguage, { ai, onePage }: { ai: boolean; onePage: boolean }, signal?: AbortSignal): Promise<{ spec: SiteSpec; by: 'ai' | 'local' }> {

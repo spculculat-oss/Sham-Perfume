@@ -1,3 +1,5 @@
+import { REAL_PHOTO_INSTRUCTION, realPhotoReply, wantsRealPhoto } from '../src/utils/realPhotos';
+import { CONTINUITY_INSTRUCTION, contextualMessage, conversationFocus, isContextFollowUp } from '../src/utils/conversationContext';
 /**
  * «مساحة شاهين»: Shaheen as a general assistant — any subject, not perfume only.
  *   /api/workspace/status   what is open right now (no vendor names: visitors never see them)
@@ -5,8 +7,7 @@
  *                           and, on request, live web results with their links
  *   /api/workspace/search   web search: the AI platform's own search when it has one, else the free encyclopedia API
  *   /api/workspace/read     a public page or PDF read as text (SSRF-guarded: public addresses only, size and time caps)
- *   /api/workspace/image    an image made or edited by the AI platform (503 NO_IMAGE_ENGINE → the page uses the open
- *                           free generator)
+ *   /api/workspace/image    an image made or edited by the AI platform (503 NO_IMAGE_ENGINE → an honest unavailable message; no external generator fallback)
  *   /api/workspace/owner/*  the owner's own Notion and Slack (Bearer SHAM_ADMIN_TOKEN; keys stay on the server)
  * Code runs, files, documents, image editing and reading aloud happen in the visitor's browser (src/workspace):
  * nothing of the visitor's files is stored here.
@@ -39,7 +40,7 @@ const languageOf = (value: unknown): SupportedLanguage => (typeof value === 'str
 export type WorkspaceTask = 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard';
 export function workspaceInstruction(language: SupportedLanguage, task: WorkspaceTask = 'chat'): string {
   const name = SUPPORTED_LANGUAGES.find((l) => l.code === language)?.name || 'العربية';
-  const base = `أنت «شاهين»، مساعد ذكاء اصطناعي شامل داخل منصة «شام». بتساعد في أي موضوع: كتابة، ترجمة، دراسة وشرح، برمجة ومواقع، تحليل بيانات وجداول، أفكار وتسويق، شغل ومستندات، أسئلة عامة — والعطور تخصصك العميق مش حدودك.
+  const base = `${CONTINUITY_INSTRUCTION}\n${REAL_PHOTO_INSTRUCTION}\nأنت «شاهين»، مساعد ذكاء اصطناعي شامل داخل منصة «شام». بتساعد في أي موضوع: كتابة، ترجمة، دراسة وشرح، برمجة ومواقع، تحليل بيانات وجداول، أفكار وتسويق، شغل ومستندات، أسئلة عامة — والعطور تخصصك العميق مش حدودك.
 هويتك «شاهين» بس: ما تذكرش اسم أي نموذج أو شركة ذكاء اصطناعي، ولو اتسألت قول إنك مساعد منصة شام والتفاصيل التقنية مش متاحة.
 رد بلغة المستخدم (${name}). لو بيكتب عربي مصري رد بالمصري العامي الواضح؛ ولو لهجة تانية رد بيها؛ ولو فصحى رد بفصحى بسيطة. افهم السياق والكلام اللي فات، وادخل في الإجابة على طول من غير مقدمات.
 كن صادق: ما تخترعش مصادر أو أرقام أو روابط أو أحداث، وقول «مش متأكد» لما الدليل مش كفاية. ما تدّعيش إنك شغّلت كود أو فتحت ملف أو موقع إلا لو نتيجته موجودة قدامك في الرسالة.
@@ -47,7 +48,9 @@ export function workspaceInstruction(language: SupportedLanguage, task: Workspac
 لو في نتايج بحث ويب مرقّمة، استشهد بيها برقمها [1] [2] ومتستخدمش غيرها كمصدر.
 البرمجة: اكتب الكود كامل وشغّال جوّه سياج بلغته (\`\`\`python، \`\`\`javascript، \`\`\`html…). موقع أو صفحة = ملف HTML واحد كامل فيه الـ CSS والـ JavaScript جوّاه في سياج \`\`\`html، علشان المستخدم يشوفه «معاينة حية» على طول. كود بايثون لازم يشتغل في المتصفح (مكتبات بايثون القياسية، وnumpy وpandas وmatplotlib مسموحين) ويطبع نتيجته بـ print.
 المستندات: لو طلب مستند أو تقرير أو عرض، اكتبه Markdown منظم (عنوان بـ #، أقسام بـ ##، نقاط، وجداول Markdown للأرقام) — الموقع بيحوّله Word أو Excel أو PowerPoint أو PDF بضغطة. للعرض التقديمي: كل شريحة قسم ## بعنوانها ونقاط قصيرة.
-الصور: لو طلب صورة، اكتب في الآخر سياج \`\`\`sham-image فيه وصف إنجليزي دقيق للصورة في سطر واحد (الموقع بيرسمها).
+الصور: لو طلب رسمة أو صورة مولدة (وليس صورة حقيقية أو أرشيفية)، اكتب في الآخر سياج \`\`\`sham-image فيه وصف إنجليزي دقيق للصورة في سطر واحد (الموقع بيرسمها).
+الفيديو المتحرك: الموقع يدعم تصدير فيديو قصير محلياً من صورة بتقريب وتحريك الكاميرا بلا صوت عبر زر «عمل فيديو متحرك» تحت الصورة. ده مش توليد فيديو بالذكاء الاصطناعي ولا تحريك أشخاص أو أشياء داخل المشهد؛ وضّح الفرق بصراحة، ولا تدّعي إنشاء فيديو قبل ضغط الزر ونجاح التسجيل. لو طلب فيديو متحرك، جهّز صورة أساسية بوصف داخل سياج sham-video بدلاً من رفض كل الحركة أو توجيهه لمواقع أخرى. تحريك صورة موجودة يتم محلياً. صيغة الفيديو حسب المتصفح WebM أو MP4، ولا تدّعي دعم GIF أو MP4 تحديداً قبل التحقق.
+توقيع الصور المضاف بواسطة الموقع هو sharin ai فقط (توقيع شاهين). لا تطلب كتابة اسم المزود على الصورة ولا تختلق مصدرها، ولا تمح أو تخفِ علامة منشأ أو حقوق مدمجة أصلاً. التوقيع علامة شام وليس إثباتاً أن نموذجاً خاصاً بشام ولّد الصورة.
 ممنوع: المساعدة في أذى أو اختراق أو احتيال أو محتوى جنسي لقاصرين أو سلاح؛ ونصايح طبية أو قانونية أو مالية خطيرة من غير ما توجّه لمختص.`;
   if (task === 'plan') {
     return `${base}
@@ -239,10 +242,11 @@ export async function webSearch(query: string, language: SupportedLanguage, { en
 
 // ── Images ──────────────────────────────────────────────────────────────────────────────────────────────────
 export async function makeImage(prompt: string, image: string | undefined, { env, fetch: request = fetch }: { env: Env; fetch?: typeof fetch }): Promise<string | undefined> {
+  if (wantsRealPhoto(prompt)) throw new ReadError(400, 'REAL_PHOTO_REQUIRES_SEARCH', 'Use image search for real photographs');
   const key = env.GEMINI_API_KEY?.trim();
   if (!key || env.SHAM_WORKSPACE_IMAGES?.trim().toLowerCase() === 'off') return undefined;
   const model = env.GEMINI_IMAGE_MODEL?.trim() || 'gemini-2.5-flash-image';
-  const parts: object[] = [{ text: prompt.slice(0, 2000) }];
+  const parts: object[] = [{ text: prompt.slice(0, 2000) + '\nDo not add AI vendor names, provider credits, or fake provenance text. The site adds its own sharin ai signature afterward. Preserve any existing embedded provenance or rights marks when editing.' }];
   const inline = image?.match(/^data:(image\/(?:png|jpeg|webp));base64,([A-Za-z0-9+/=]+)$/);
   if (inline) parts.push({ inlineData: { mimeType: inline[1], data: inline[2] } });
   try {
@@ -259,7 +263,7 @@ export async function makeImage(prompt: string, image: string | undefined, { env
 
 // ── The conversation ────────────────────────────────────────────────────────────────────────────────────────
 interface AskBody { messages?: unknown; language?: unknown; task?: unknown; context?: unknown; search?: unknown }
-export function askTurns(body: AskBody): EngineTurn[] {
+export function askTurns(body: AskBody, resolveReferences = true): EngineTurn[] {
   const raw = Array.isArray(body.messages) ? body.messages.slice(-24) : [];
   const turns = raw.flatMap((m) => {
     const { role, text } = (m && typeof m === 'object' ? m : {}) as { role?: unknown; text?: unknown };
@@ -267,6 +271,8 @@ export function askTurns(body: AskBody): EngineTurn[] {
   });
   while (turns.length && turns[0]!.role !== 'user') turns.shift();
   if (!turns.length || turns[turns.length - 1]!.role !== 'user') throw new ReadError(400, 'BAD_REQUEST', 'The last message must be the visitor’s');
+  const lastUser = turns[turns.length - 1]!;
+  if (resolveReferences) turns[turns.length - 1] = { role: 'user', text: contextualMessage(lastUser.text, turns.slice(0, -1)) };
   // The visitor's files and pages, attached to his last message (capped).
   const files = Array.isArray(body.context) ? body.context.slice(0, 12) : [];
   let room = MAX_CONTEXT;
@@ -289,11 +295,20 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
   const language = languageOf(body.language);
   const task: WorkspaceTask = (['plan', 'summarize', 'site', 'storyboard'] as const).find((t) => t === body.task) || 'chat';
   const json = task === 'plan' || task === 'site' || task === 'storyboard';
+  const rawTurns = askTurns({ ...body, context: [] }, false);
+  const latest = rawTurns[rawTurns.length - 1]!;
+  const photoReply = task === 'chat' ? realPhotoReply(latest.text, rawTurns.slice(0, -1), language) : undefined;
+  if (photoReply) return { reply: photoReply, sources: [] };
   const turns = askTurns(body);
   let sources: SearchResult[] = [];
   if (body.search === true) {
-    const asked = turns[turns.length - 1]!.text.split('\n---\n').pop()!.slice(0, 300);
-    const found = await webSearch(asked, language, { env, fetch: request }).catch(() => ({ results: [] as SearchResult[], answer: undefined }));
+    const searchTurns = askTurns({ ...body, context: [] }, false);
+    const latest = searchTurns[searchTurns.length - 1]!.text;
+    const focus = conversationFocus(latest, searchTurns.slice(0, -1));
+    const asked = (focus ? `${focus.question} — ${latest}` : latest).slice(0, 300);
+    // Never search a contextless 'show me pictures' or a JSON context wrapper.
+    const found = isContextFollowUp(latest) && !focus ? { results: [] as SearchResult[], answer: undefined }
+      : await webSearch(asked, language, { env, fetch: request }).catch(() => ({ results: [] as SearchResult[], answer: undefined }));
     sources = found.results;
     if (sources.length) {
       const list = sources.map((s, i) => `[${i + 1}] ${s.title} — ${s.url}${s.snippet ? `\n${s.snippet}` : ''}`).join('\n');
@@ -374,7 +389,7 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
     res.json({
       ai: configuredEngines(env).length > 0,
       search: env.GEMINI_API_KEY?.trim() || statuses.find((s) => s.id === 'perplexity')?.configured ? 'web' : 'encyclopedia',
-      image: env.GEMINI_API_KEY?.trim() && env.SHAM_WORKSPACE_IMAGES?.trim().toLowerCase() !== 'off' ? 'ai' : 'open',
+      image: env.GEMINI_API_KEY?.trim() && env.SHAM_WORKSPACE_IMAGES?.trim().toLowerCase() !== 'off' ? 'ai' : 'off',
       notion: Boolean(env.NOTION_TOKEN?.trim()), slack: Boolean(env.SLACK_WEBHOOK_URL?.trim()),
     });
   });
@@ -395,9 +410,11 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
   router.post('/image', limited('image'), async (req, res) => {
     const prompt = typeof req.body?.prompt === 'string' ? req.body.prompt.trim() : '';
     if (!prompt) { res.status(400).json({ error: 'Empty prompt', code: 'BAD_REQUEST' }); return; }
-    const image = await makeImage(prompt, typeof req.body?.image === 'string' ? req.body.image : undefined, { env, fetch: request });
-    if (!image) { res.status(503).json({ error: 'No image engine', code: 'NO_IMAGE_ENGINE' }); return; }
-    res.json({ image });
+    try {
+      const image = await makeImage(prompt, typeof req.body?.image === 'string' ? req.body.image : undefined, { env, fetch: request });
+      if (!image) { res.status(503).json({ error: 'No image engine', code: 'NO_IMAGE_ENGINE' }); return; }
+      res.json({ image });
+    } catch (error) { fail(res, error); }
   });
 
   // The owner only: his Notion and Slack (the keys never leave the server).

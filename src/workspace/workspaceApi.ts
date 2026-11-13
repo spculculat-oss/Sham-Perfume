@@ -1,3 +1,4 @@
+import { wantsRealPhoto } from '../utils/realPhotos';
 /** «مساحة شاهين»: the browser side of /api/workspace (see server/workspace.ts). */
 import { ApiError, ApiUnavailableError, isStaticHosting, requestApi, visitorId } from '../utils/api';
 import { getToken } from '../admin/adminApi';
@@ -6,7 +7,7 @@ import type { SupportedLanguage } from '../types/i18n';
 export interface WsMessage { role: 'user' | 'assistant'; text: string }
 export interface WsSource { title: string; url: string; snippet: string }
 export interface WsContextFile { name: string; text: string }
-export interface WsStatus { ai: boolean; search: 'web' | 'encyclopedia'; image: 'ai' | 'open'; notion: boolean; slack: boolean }
+export interface WsStatus { ai: boolean; search: 'web' | 'encyclopedia'; image: 'ai' | 'off'; notion: boolean; slack: boolean }
 
 const json = (body: unknown, extra: Record<string, string> = {}): RequestInit => ({
   method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Sham-Visitor': visitorId(), ...extra }, body: JSON.stringify(body),
@@ -26,23 +27,16 @@ export function readUrl(url: string, signal?: AbortSignal) {
   return requestApi<{ url: string; title: string; text: string; kind: 'html' | 'pdf' | 'text'; truncated: boolean }>('/api/workspace/read', { ...json({ url }), signal }, 40_000);
 }
 
-/** The open image generator (no key, no account): used when the server has no image engine or is unreachable. */
-export const openImageUrl = (prompt: string, seed = Math.floor(Math.random() * 1e6)) =>
-  `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt.slice(0, 700))}?width=1024&height=1024&nologo=true&seed=${seed}`;
+export const isGeneratedImageData = (src: unknown): src is string => typeof src === 'string' && /^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(src);
 
-/** A data: URL from the server's image engine, or the open generator's URL. `image` (data URL) asks for an edit. */
-export async function makeImage(prompt: string, image?: string, signal?: AbortSignal): Promise<{ src: string; engine: 'ai' | 'open' }> {
-  if (!isStaticHosting) {
-    try {
-      const out = await requestApi<{ image: string }>('/api/workspace/image', { ...json({ prompt, ...(image ? { image } : {}) }), signal }, 90_000);
-      if (out.image?.startsWith('data:image/')) return { src: out.image, engine: 'ai' };
-    } catch (error) {
-      if (error instanceof ApiError && error.status === 429) throw error;
-      if (image) throw error; // an edit needs the server engine
-    }
-  }
-  if (image) throw new ApiUnavailableError();
-  return { src: openImageUrl(prompt), engine: 'open' };
+/** Only the configured server image engine. Never switch silently to a branded third-party URL. */
+export async function makeImage(prompt: string, image?: string, signal?: AbortSignal): Promise<{ src: string; engine: 'ai' }> {
+  if (wantsRealPhoto(prompt)) throw new Error('REAL_PHOTO_REQUIRES_SEARCH');
+  signal?.throwIfAborted();
+  if (isStaticHosting) throw new ApiUnavailableError();
+  const out = await requestApi<{ image: string }>('/api/workspace/image', { ...json({ prompt, ...(image ? { image } : {}) }), signal }, 90_000);
+  if (!isGeneratedImageData(out.image)) throw new Error('INVALID_IMAGE_RESULT');
+  return { src: out.image, engine: 'ai' };
 }
 
 /** Owner-only: Notion and Slack through the server (the admin sign-in token proves it is the owner). */

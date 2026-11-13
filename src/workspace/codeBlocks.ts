@@ -46,11 +46,11 @@ export function fileNameFor(block: Pick<CodeBlock, 'lang'>, index = 1): string {
 
 /** «```sham-image» — the English description of the image the reply asks the site to draw. */
 export function imageRequest(text: string): string | undefined {
-  const m = text.match(/```[ \t]*sham-image[^\n]*\n([\s\S]*?)```/i);
+  const m = text.match(/```[ \t]*(?:sham-image|sham-video)[^\n]*\n([\s\S]*?)```/i);
   const prompt = m?.[1]?.replace(/\s+/g, ' ').trim();
   return prompt ? prompt.slice(0, 900) : undefined;
 }
-export const stripImageRequest = (text: string) => text.replace(/\n?```[ \t]*sham-image[^\n]*\n[\s\S]*?```\n?/gi, '\n').trim();
+export const stripImageRequest = (text: string) => text.replace(/\n?```[ \t]*(?:sham-image|sham-video)[^\n]*\n[\s\S]*?```\n?/gi, '\n').trim();
 
 export type Segment = { kind: 'text'; text: string } | { kind: 'code'; block: CodeBlock };
 /** A reply cut into its prose and its code blocks, in order (an unclosed last fence still shows as code). */
