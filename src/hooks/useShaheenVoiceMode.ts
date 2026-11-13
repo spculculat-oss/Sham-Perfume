@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { SupportedLanguage } from '../types/i18n';
-import { bargeIn, mergeHeard, shaheenSpeechLocale, speechWindow, splitShaheenSpeech } from '../utils/shaheenVoice';
+import { bargeIn, mergeHeard, shaheenSpeechLocale, speechWindow, talkChunks } from '../utils/shaheenVoice';
 import { chosenVoice, saveVoiceChoice, savedVoiceChoice, voiceOptions, type VoiceChoice } from '../utils/voiceChoice';
 import { tunedVoice, type VoiceMood } from '../utils/voiceMood';
 import { dialectLocale, resolveDialect, saveDialectChoice, savedDialectChoice, type Dialect, type DialectChoice } from '../utils/arabicDialect';
@@ -543,7 +543,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       onComplete();
       return;
     }
-    const chunks = splitShaheenSpeech(text);
+    // The first sentence alone, then a sentence per utterance: he starts talking sooner and breathes between ideas.
+    const chunks = talkChunks(text);
     if (!chunks.length) { onComplete(); return; }
 
     cancelSpeech();
@@ -1238,7 +1239,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setInterim('');
     // «شاهين بيتكلم مش بيقرا»: the reply said the way people talk, and a long one only up to «تحب أكمّلك الباقي؟».
     // A whole answer (about 90 words) before «تحب أكمّلك الباقي؟» — a shorter cut felt like he stopped mid-answer.
-    const spoken = spokenReply(response.text, { language: languageRef.current, dialect: dialectRef.current, words: 90 });
+    const spoken = spokenReply(response.text, { language: languageRef.current, dialect: dialectRef.current, words: 90, opener: true });
     restRef.current = spoken.rest;
     speakReply(spoken.say || response.text, () => scheduleListening(350));
   }, [active, clearPendingTurn, isLoading, messages, replyReady, scheduleListening, speakReply, waiting]);
