@@ -10,6 +10,7 @@ import {
   type Family, type Gender, type Occasion, type RawProduct, type Season, type StoreCatalogFile, type StoreEntry,
 } from '../../src/utils/storeCatalog';
 import { stripClaims } from '../../src/utils/honestClaims';
+import { fixArabicEntry } from '../../src/utils/arabicProductNames';
 
 export const STORE_INTERVAL_HOURS = 12;
 export const BATCH = 14;
@@ -164,9 +165,9 @@ export function buildCatalogFile(products: RawProduct[], previous: StoreCatalogF
     const old = previous?.entries?.[sku];
     // Shaheen's work is kept while the merchant's text is unchanged; the rules are recomputed every run.
     // A kept entry written before the thin-source rule loses the scent prose it could not support.
-    entries[sku] = fresh[sku] || (old && old.editor === 'shaheen' && old.sourceHash === productHash(p)
+    entries[sku] = fixArabicEntry(sku, fresh[sku] || (old && old.editor === 'shaheen' && old.sourceHash === productHash(p)
       ? withDocumentedNotes(p, honestEntry(p, old))
-      : ruleEntry(p, at));
+      : ruleEntry(p, at)));
   }
   const issues = products.map((p) => ({ sku: skuOf(p), issues: auditProduct(p) })).filter((i) => i.issues.length);
   const shaheen = Object.values(entries).filter((e) => e.editor === 'shaheen').length;

@@ -1,6 +1,6 @@
 import { trackInsight } from '../utils/insightsTracker';
 import { peopleAlsoViewed } from '../utils/peopleAlsoViewed';
-import { loc } from '../لغات/localize';
+import { loc, pickArEn } from '../لغات/localize';
 
 const TOGETHER_TITLE = { ar: 'ناس ذوقهم قريب من ذوقك شافوا كمان', en: 'People with a taste like yours also viewed' };
 import React, { useEffect, useMemo, useState } from 'react';
@@ -184,7 +184,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
                   <button type="button" onClick={add} data-testid="product-add-to-cart" className="min-w-0 px-2 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer">
                     <ShoppingCart className="w-4 h-4" />{cart[product.sku] ? L.inCart.replace('{n}', storeNumber(cart[product.sku], currentLang)) : L.addToCart}
                   </button>
-                  <button type="button" onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } requestDirectPurchase(product.sku, qty); }} data-testid="product-buy-now" className="min-w-0 px-2 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer"><CreditCard className="w-4 h-4 shrink-0" />{signedIn ? L.buyNow : (currentLang === 'ar' ? 'دخول للدفع' : 'Sign in to pay')}</button>
+                  <button type="button" onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } requestDirectPurchase(product.sku, qty); }} data-testid="product-buy-now" className="min-w-0 px-2 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold inline-flex items-center justify-center gap-2 cursor-pointer"><CreditCard className="w-4 h-4 shrink-0" />{signedIn ? L.buyNow : (pickArEn(currentLang, 'دخول للدفع', 'Sign in to pay'))}</button>
                 </div>
               </div>
             ) : <p className="py-2.5 rounded-xl bg-stone-100 text-stone-500 text-center">{L.outOfStock}</p>}
@@ -234,7 +234,7 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
         <LegalDisclaimer type="shipping" lang={currentLang} />
         <div className="bg-stone-50 border border-stone-200 rounded-xl p-3 text-[11px] leading-relaxed text-stone-600 flex gap-2">
           <span>🧾</span>
-          <span>{currentLang === 'ar' ? 'السعر لا يشمل الضريبة/الجمارك في بلدك (مصر 14%، السعودية 15%، الإمارات 5%، أوروبا ~20%). الفاتورة الضريبية تُصدر إلكترونيًا. التاجر البائع مسؤول قانونيًا عن مطابقة المنتج للوصف (مسؤولية البائع، المنصة وسيط).' : 'Price excludes VAT/customs in your country (Egypt 14%, Saudi 15%, UAE 5%, EU ~20%). E-invoice issued. Merchant seller is liable for product conformity (marketplace liability).'}</span>
+          <span>{pickArEn(currentLang, 'السعر لا يشمل الضريبة/الجمارك في بلدك (مصر 14%، السعودية 15%، الإمارات 5%، أوروبا ~20%). الفاتورة الضريبية تُصدر إلكترونيًا. التاجر البائع مسؤول قانونيًا عن مطابقة المنتج للوصف (مسؤولية البائع، المنصة وسيط).', 'Price excludes VAT/customs in your country (Egypt 14%, Saudi 15%, UAE 5%, EU ~20%). E-invoice issued. Merchant seller is liable for product conformity (marketplace liability).')}</span>
         </div>
         {(product as any).supplierName && (
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[10px] leading-relaxed text-amber-900 flex gap-2">

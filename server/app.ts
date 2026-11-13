@@ -13,6 +13,7 @@ import { liveNews, supervisorGuidance } from './core/liveData';
 import { articlesFromCollected } from './newsFallback';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { createWorkspaceRouter } from './workspace';
+import { createNewsRouter } from './newsExplain';
 import { corsMiddleware } from './cors';
 import { createCommunity, createCommunityRouter } from './community/router';
 import { createContractsRouter } from './contracts/router';
@@ -69,6 +70,8 @@ app.use('/api/specialists', createSpecialistsRouter({ repo: shamCore.repo, runti
 app.use('/api', createMediaRouter());
 // «مساحة شاهين»: Shaheen as a general assistant (any subject) — search, reading pages and PDFs, images, the owner's Notion/Slack.
 app.use('/api/workspace', createWorkspaceRouter());
+// «نشرة شاهين — شاهين يشرحلك الخبر»: POST /api/news/explain (server/newsExplain.ts).
+app.use('/api/news', createNewsRouter());
 // «منارة شاهين»: the live SEO files and the public status snapshot. The static build also ships copies of
 // robots/sitemap/llms/feed, so crawlers are served even on GitHub Pages.
 app.use('/api', createSeoRouter(shamCore.seo));

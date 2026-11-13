@@ -2,7 +2,7 @@ import React from 'react';
 import { contactEmail, contactMailto } from '../config/contact';
 import { Newspaper, Sparkles } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
-import { LText, makeT, fmt } from '../لغات/localize';
+import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
 import VisitorSuggestionBox from './VisitorSuggestionBox';
 
 
@@ -196,7 +196,7 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="md:col-span-8">
             <div className="font-bold text-white text-xs tracking-wider uppercase mb-3 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              <span>{currentLang === 'ar' ? 'المركز القانوني — حقوقك وشروطنا' : 'Legal Center — Your Rights & Our Terms'}</span>
+              <span>{pickArEn(currentLang, 'المركز القانوني — حقوقك وشروطنا', 'Legal Center — Your Rights & Our Terms')}</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {[
@@ -218,20 +218,20 @@ export const Footer: React.FC<FooterProps> = ({
               ))}
             </div>
             <div className="mt-3 flex flex-wrap gap-2 text-[10px] text-stone-500">
-              <span className="font-semibold text-stone-400">{currentLang === 'ar' ? 'شكاوى حكومية:' : 'Gov complaints:'}</span>
+              <span className="font-semibold text-stone-400">{pickArEn(currentLang, 'شكاوى حكومية:', 'Gov complaints:')}</span>
               <a href="https://maroof.sa" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇸🇦 معروف</a>
               <a href="https://www.cpa.gov.eg" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇪🇬 حماية المستهلك</a>
-              <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇪🇺 {currentLang === 'ar' ? 'الاتحاد الأوروبي' : 'EU ODR'}</a>
-              <a href="https://u.ae/en/information-and-services/social-affairs/having-a-consumer-complaint" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇦🇪 {currentLang === 'ar' ? 'الإمارات' : 'UAE'}</a>
+              <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇪🇺 {pickArEn(currentLang, 'الاتحاد الأوروبي', 'EU ODR')}</a>
+              <a href="https://u.ae/en/information-and-services/social-affairs/having-a-consumer-complaint" target="_blank" rel="noreferrer" className="hover:text-amber-400 underline">🇦🇪 {pickArEn(currentLang, 'الإمارات', 'UAE')}</a>
             </div>
             <div className="mt-2 flex flex-wrap gap-2 text-[10px] items-center">
-              <button onClick={() => window.dispatchEvent(new CustomEvent("open-cookie-settings"))} className="text-stone-400 hover:text-white underline cursor-pointer">🍪 {currentLang === 'ar' ? 'إعدادات الكوكيز' : 'Cookie Settings'}</button>
+              <button onClick={() => window.dispatchEvent(new CustomEvent("open-cookie-settings"))} className="text-stone-400 hover:text-white underline cursor-pointer">🍪 {pickArEn(currentLang, 'إعدادات الكوكيز', 'Cookie Settings')}</button>
               <span className="text-stone-600">·</span>
-              <a href={contactMailto('dpo', currentLang)} dir="ltr" className="text-stone-500 hover:text-amber-400 underline">{currentLang === 'ar' ? 'حماية البيانات' : 'Data protection'}: {contactEmail('dpo')}</a>
+              <a href={contactMailto('dpo', currentLang)} dir="ltr" className="text-stone-500 hover:text-amber-400 underline">{pickArEn(currentLang, 'حماية البيانات', 'Data protection')}: {contactEmail('dpo')}</a>
             </div>
           </div>
           <div className="md:col-span-4 bg-stone-900 rounded-xl border border-stone-800 p-3 space-y-1">
-            <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">⚖️ {currentLang === 'ar' ? 'معلومات قانونية' : 'Legal Info'}</div>
+            <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">⚖️ {pickArEn(currentLang, 'معلومات قانونية', 'Legal Info')}</div>
             <div className="text-[11px] text-stone-400 leading-relaxed">
               {currentLang === 'ar'
                 ? `السجل التجاري: [يُعبأ] | الرقم الضريبي: [يُعبأ] | ${contactEmail('privacy')}`
@@ -243,7 +243,7 @@ export const Footer: React.FC<FooterProps> = ({
                 : '🤖 Shaheen replies are AI-generated — not professional advice. Perfumes UN1266 flammable.'}
             </div>
             <div className="text-[10px] text-stone-500">
-              {currentLang === 'ar' ? 'النص العربي هو المرجع الملزم عند التعارض.' : 'Arabic is binding on conflict.'}
+              {pickArEn(currentLang, 'النص العربي هو المرجع الملزم عند التعارض.', 'Arabic is binding on conflict.')}
             </div>
             <div className="pt-2"><VisitorSuggestionBox currentLang={currentLang} /></div>
           </div>

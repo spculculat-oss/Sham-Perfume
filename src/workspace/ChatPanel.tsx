@@ -17,6 +17,7 @@ import { fileText } from './fileText';
 import { safeFileName } from './officeWriters';
 import { parseMarkdown } from './markdownDoc';
 import { wsText, type WsKey } from './strings';
+import { pickArEn } from '../لغات/localize';
 
 export interface ChatItem { role: 'user' | 'assistant'; text: string; sources?: WsSource[]; image?: string; files?: string[]; error?: boolean; regenerateImage?: boolean }
 const STORE_KEY = 'sham_workspace_chat_v1';
@@ -112,7 +113,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
   };
 
   const askFix = (block: CodeBlock, error: string) => {
-    void send(`${lang === 'ar' ? 'الكود ده طلّع الخطأ ده، صلّحه:' : 'This code fails with the error below — please fix it:'}\n\`\`\`${block.lang}\n${block.code}\n\`\`\`\n\`\`\`\n${error.slice(0, 2000)}\n\`\`\``);
+    void send(`${pickArEn(lang, 'الكود ده طلّع الخطأ ده، صلّحه:', 'This code fails with the error below — please fix it:')}\n\`\`\`${block.lang}\n${block.code}\n\`\`\`\n\`\`\`\n${error.slice(0, 2000)}\n\`\`\``);
   };
 
   return (

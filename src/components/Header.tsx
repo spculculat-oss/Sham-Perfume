@@ -204,16 +204,16 @@ export const Header: React.FC<HeaderProps> = ({
     {
       id: 'community',
       type: 'single',
-      label: t('nav_community_short', currentLang, currentLang === 'ar' ? 'المجتمع' : 'Community'),
-      fullLabel: t('nav_community', currentLang, currentLang === 'ar' ? 'مجتمع شام — السوشيال والماسنجر وبوابات الأعضاء والتجار' : 'Sham Community — social, messenger, member and merchant portals'),
+      label: t('nav_community_short', currentLang, pickArEn(currentLang, 'المجتمع', 'Community')),
+      fullLabel: t('nav_community', currentLang, pickArEn(currentLang, 'مجتمع شام — السوشيال والماسنجر وبوابات الأعضاء والتجار', 'Sham Community — social, messenger, member and merchant portals')),
       icon: Users,
       iconColor: 'text-rose-600',
     },
     {
       id: 'store',
       type: 'single',
-      label: t('nav_store_short', currentLang, currentLang === 'ar' ? 'التسوق' : 'Shop'),
-      fullLabel: t('nav_store', currentLang, currentLang === 'ar' ? 'متجر الشام - العطور' : 'Sham Perfume Store'),
+      label: t('nav_store_short', currentLang, pickArEn(currentLang, 'التسوق', 'Shop')),
+      fullLabel: t('nav_store', currentLang, pickArEn(currentLang, 'متجر الشام - العطور', 'Sham Perfume Store')),
       icon: Store,
       iconColor: 'text-amber-600',
     },
@@ -303,7 +303,7 @@ export const Header: React.FC<HeaderProps> = ({
                         ? 'bg-rose-800 text-white'
                         : 'bg-rose-600 text-white animate-pulse'
                     }`}>
-                      {currentLang === 'ar' ? 'سوشيال' : 'Social'}
+                      {pickArEn(currentLang, 'سوشيال', 'Social')}
                     </span>
                   )}
                 </button>
@@ -616,7 +616,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <span className="text-[11px]">{group.label}</span>
                   {isCommunity && (
                     <span className="px-1.5 py-0.5 rounded-full bg-rose-600 text-white text-[9px] font-bold">
-                      {currentLang === 'ar' ? 'سوشيال' : 'Social'}
+                      {pickArEn(currentLang, 'سوشيال', 'Social')}
                     </span>
                   )}
                 </button>

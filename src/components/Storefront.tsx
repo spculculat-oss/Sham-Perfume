@@ -54,7 +54,7 @@ import { LegalDisclaimer } from './LegalDisclaimer';
 import { StoreInvoiceBreakdown } from './StoreInvoiceBreakdown';
 import CompleteYourOrder from './CompleteYourOrder';
 import TasteQuiz from './TasteQuiz';
-import { fmt, loc } from '../لغات/localize';
+import { fmt, loc, pickArEn } from '../لغات/localize';
 import { QUIZ_UI, hasTaste, rankForTaste, savedAnswers, tasteFromAnswers, withViewed, type QuizAnswers } from '../utils/tasteQuiz';
 import { variantOf } from '../utils/experiments';
 import { priceYardstick } from '../utils/visitorInsights';
@@ -1156,10 +1156,10 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
             onClick={() => setShowAnalytics(true)}
             className="hidden shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 sm:flex cursor-pointer shadow-2xs"
             data-testid="store-dashboard-button"
-            title={currentLang === 'ar' ? 'لوحة تحكم مبيعات المتجر (مخطط Recharts)' : 'Store Sales Dashboard (Recharts Pie Chart)'}
+            title={pickArEn(currentLang, 'لوحة تحكم مبيعات المتجر (مخطط Recharts)', 'Store Sales Dashboard (Recharts Pie Chart)')}
           >
             <TrendingUp className="h-4 w-4 text-amber-600" />
-            <span>{currentLang === 'ar' ? 'تحليل المبيعات' : 'Sales Analytics'}</span>
+            <span>{pickArEn(currentLang, 'تحليل المبيعات', 'Sales Analytics')}</span>
           </button>
 
           <button
@@ -1167,10 +1167,10 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
             onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setShowBank(true); }}
             className="flex shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-2.5 sm:px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 cursor-pointer shadow-2xs"
             data-testid="store-bank-button"
-            title={currentLang === 'ar' ? 'حساب بنك شام' : 'Sham Bank account'}
+            title={pickArEn(currentLang, 'حساب بنك شام', 'Sham Bank account')}
           >
             <Landmark className="h-4 w-4 text-stone-800" />
-            <span className="hidden sm:inline">{currentLang === 'ar' ? 'بنك شام' : 'Sham Bank'}</span>
+            <span className="hidden sm:inline">{pickArEn(currentLang, 'بنك شام', 'Sham Bank')}</span>
           </button>
 
           {/* Customer Saved Payment Methods / Vault Button */}
@@ -1179,10 +1179,10 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
             onClick={() => { if (!signedIn && !requireCustomerLogin()) { onRequireAuth?.(); return; } setShowPaymentModal(true); }}
             className="flex shrink-0 items-center gap-2 rounded-2xl border border-stone-200/90 bg-white/90 px-2.5 sm:px-3.5 py-2 text-xs font-bold text-stone-800 transition hover:bg-stone-50 hover:text-amber-800 cursor-pointer shadow-2xs"
             data-testid="store-vault-button"
-            title={currentLang === 'ar' ? 'تسجيل البطاقات والمحافظ' : 'Register cards and wallets'}
+            title={pickArEn(currentLang, 'تسجيل البطاقات والمحافظ', 'Register cards and wallets')}
           >
             <CreditCard className="h-4 w-4 text-emerald-600" />
-            <span className="hidden sm:inline">{currentLang === 'ar' ? 'بطاقاتي' : 'My cards'}</span>
+            <span className="hidden sm:inline">{pickArEn(currentLang, 'بطاقاتي', 'My cards')}</span>
           </button>
 
           {/* Become Merchant Button */}
@@ -1320,7 +1320,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
         <ProductPayMethods
           lang={currentLang}
           country={money.country}
-          heading={currentLang === 'ar' ? 'وسائل الدفع المتاحة لمنتجات المتجر في بلدك' : 'Payment methods available for store products in your country'}
+          heading={pickArEn(currentLang, 'وسائل الدفع المتاحة لمنتجات المتجر في بلدك', 'Payment methods available for store products in your country')}
         />
 
         {/* The store's two sections: perfumes and cosmetics (same pricing). */}
@@ -1724,10 +1724,10 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
             {/* #411: the order has its own clear path — 1) the basket, 2) delivery and payment — shown as steps, and the
                 delivery/payment step gets a wider page of its own (the store's suggestions never appear there). */}
             {summary.lines.length > 0 && (
-              <ol className="flex items-center gap-2 pt-3 text-[11px] font-bold" data-testid="checkout-steps" aria-label={currentLang === 'ar' ? 'خطوات الطلب' : 'Order steps'}>
+              <ol className="flex items-center gap-2 pt-3 text-[11px] font-bold" data-testid="checkout-steps" aria-label={pickArEn(currentLang, 'خطوات الطلب', 'Order steps')}>
                 {[
-                  { id: 'cart', label: currentLang === 'ar' ? 'السلة' : 'Basket' },
-                  { id: 'form', label: currentLang === 'ar' ? 'التوصيل والدفع' : 'Delivery & payment' },
+                  { id: 'cart', label: pickArEn(currentLang, 'السلة', 'Basket') },
+                  { id: 'form', label: pickArEn(currentLang, 'التوصيل والدفع', 'Delivery & payment') },
                 ].map((s, i) => (
                   <li key={s.id} className="flex items-center gap-2 min-w-0" aria-current={step === s.id ? 'step' : undefined}>
                     {i > 0 && <span className="w-6 h-px bg-stone-300 shrink-0" aria-hidden="true" />}
@@ -1747,7 +1747,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                 {visibleDirect.map((o) => <DirectPaymentCard key={o.ref} order={o} lang={currentLang} onChange={() => setDirectOrders(savedDirectOrders())} />)}
               </div>
             )}
-            {directPurchase && <p className="text-xs text-amber-900 bg-amber-50 p-2 rounded-lg my-2">{currentLang === 'ar' ? 'شراء هذا المنتج فقط. محتويات سلتك الأخرى محفوظة كما هي.' : 'Buy only this product. Your existing basket stays unchanged.'}</p>}
+            {directPurchase && <p className="text-xs text-amber-900 bg-amber-50 p-2 rounded-lg my-2">{pickArEn(currentLang, 'شراء هذا المنتج فقط. محتويات سلتك الأخرى محفوظة كما هي.', 'Buy only this product. Your existing basket stays unchanged.')}</p>}
             {summary.lines.length ? (
               <>
                 <div className="shrink-0 divide-y divide-stone-100 py-2">
@@ -1768,7 +1768,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                           type="button"
                           onClick={() => changeCheckoutQty(product.sku, qty - 1)}
                           disabled={Boolean(directPurchase && qty <= 1) || paying}
-                          aria-label={currentLang === 'ar' ? 'تقليل الكمية' : 'Decrease quantity'}
+                          aria-label={pickArEn(currentLang, 'تقليل الكمية', 'Decrease quantity')}
                           className="p-1 rounded hover:bg-white text-stone-700 cursor-pointer"
                         >
                           <Minus className="w-3 h-3" />
@@ -1778,7 +1778,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                           type="button"
                           onClick={() => changeCheckoutQty(product.sku, qty + 1)}
                           disabled={qty >= 99 || paying}
-                          aria-label={currentLang === 'ar' ? 'زيادة الكمية' : 'Increase quantity'}
+                          aria-label={pickArEn(currentLang, 'زيادة الكمية', 'Increase quantity')}
                           className="p-1 rounded hover:bg-white text-stone-700 cursor-pointer"
                         >
                           <Plus className="w-3 h-3" />
@@ -1815,7 +1815,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                   <StoreInvoiceBreakdown subtotal={bill.items} shipping={bill.shipping} country={money.country} currency={money.currency} money={money.money} lang={currentLang} />
                   <LegalDisclaimer type="shipping" lang={currentLang} compact />
                   <p className="text-[10px] text-stone-500 leading-relaxed">
-                    {currentLang === 'ar' ? 'الأسعار لا تشمل ضريبة بلدك/الجمارك. الإرجاع: تواصل خلال 14 يومًا عبر التاجر المسؤول (المنصة وسيط).' : 'Prices exclude your country VAT/customs. Returns: contact merchant within 14 days (platform is intermediary).'}
+                    {pickArEn(currentLang, 'الأسعار لا تشمل ضريبة بلدك/الجمارك. الإرجاع: تواصل خلال 14 يومًا عبر التاجر المسؤول (المنصة وسيط).', 'Prices exclude your country VAT/customs. Returns: contact merchant within 14 days (platform is intermediary).')}
                   </p>
 
                   {step === 'form' ? (
@@ -1858,13 +1858,13 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                           onStoreEmail={sendToStore}
                         />
                       ) : (
-                        <><button type="button" onClick={() => { requireCustomerLogin(); onRequireAuth?.(); }} className="w-full rounded-xl bg-stone-900 py-2.5 text-sm font-bold text-white" data-testid="checkout-sign-in">{currentLang === 'ar' ? 'سجّل الدخول لحفظ البطاقة أو المحفظة' : 'Sign in to save a card or wallet'}</button>{localOnlyProfile() && <p className="text-[11px] leading-5 text-amber-900 bg-amber-50 rounded-xl p-2 mt-2" role="status" data-testid="checkout-local-only">{currentLang === 'ar' ? 'دخولك الحالي محفوظ على هذا الجهاز فقط. الدفع يحتاج حساباً مسجّلاً ومؤكَّداً على خادم شام.' : 'Your current sign-in exists on this device only. Paying needs a registered account verified by the Sham server.'}</p>}</>
+                        <><button type="button" onClick={() => { requireCustomerLogin(); onRequireAuth?.(); }} className="w-full rounded-xl bg-stone-900 py-2.5 text-sm font-bold text-white" data-testid="checkout-sign-in">{pickArEn(currentLang, 'سجّل الدخول لحفظ البطاقة أو المحفظة', 'Sign in to save a card or wallet')}</button>{localOnlyProfile() && <p className="text-[11px] leading-5 text-amber-900 bg-amber-50 rounded-xl p-2 mt-2" role="status" data-testid="checkout-local-only">{pickArEn(currentLang, 'دخولك الحالي محفوظ على هذا الجهاز فقط. الدفع يحتاج حساباً مسجّلاً ومؤكَّداً على خادم شام.', 'Your current sign-in exists on this device only. Paying needs a registered account verified by the Sham server.')}</p>}</>
                       )}
                       {canPay && <fieldset className="rounded-xl border border-stone-200 bg-stone-50 p-3 space-y-3" data-testid="real-payment-methods">
-                        <legend className="text-xs font-bold px-1">{currentLang === 'ar' ? 'وسائل الدفع المفعّلة لبلدك' : 'Enabled methods for your country'}</legend>
+                        <legend className="text-xs font-bold px-1">{pickArEn(currentLang, 'وسائل الدفع المفعّلة لبلدك', 'Enabled methods for your country')}</legend>
                         {payments?.methods.map((m) => <label key={m.id} className="flex items-center gap-2 text-xs">
                           <input type="radio" name="paymentMethod" value={m.id} checked={!chosenDirect && chosenMethod === m.id} onChange={() => { setPaymentMethod(m.id); setDirectChoice(''); }} />
-                          {m.id === 'card' ? (currentLang === 'ar' ? 'بطاقة بنكية' : 'Bank card') : (currentLang === 'ar' ? 'محفظة مصرية' : 'Egyptian mobile wallet')}
+                          {m.id === 'card' ? (pickArEn(currentLang, 'بطاقة بنكية', 'Bank card')) : (pickArEn(currentLang, 'محفظة مصرية', 'Egyptian mobile wallet'))}
                         </label>)}
                         {directMethods.length > 0 && <div className="space-y-2 pt-1" data-testid="direct-methods">
                           <p className="text-[11px] font-bold text-emerald-800">{L.directTitle}</p>
@@ -1874,8 +1874,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                           </label>)}
                           <p className="text-[11px] text-stone-600">{L.directNote}</p>
                         </div>}
-                        {!canPay && (payments === null ? <p role="status" className="text-xs text-stone-600">{L.loading}</p> : <ProductPayMethods lang={currentLang} country={money.country} heading={currentLang === 'ar' ? 'وسائل الدفع المتاحة لطلبك' : 'Payment methods available for this order'} />)}
-                        {payments?.enabled && !chosenDirect && <p className="text-[11px] text-stone-600 flex items-start gap-2"><ShieldCheck className="w-4 h-4 shrink-0" />{currentLang === 'ar' ? 'تُدخل بيانات البطاقة أو المحفظة داخل صفحة البوابة فقط. لا تحفظ شام رقم البطاقة أو رمز CVV، والتأكيد من البوابة هو إثبات الدفع.' : 'Enter card or wallet details only on the gateway page. Sham does not save card numbers or CVVs; only a verified gateway response confirms payment.'}</p>}
+                        {!canPay && (payments === null ? <p role="status" className="text-xs text-stone-600">{L.loading}</p> : <ProductPayMethods lang={currentLang} country={money.country} heading={pickArEn(currentLang, 'وسائل الدفع المتاحة لطلبك', 'Payment methods available for this order')} />)}
+                        {payments?.enabled && !chosenDirect && <p className="text-[11px] text-stone-600 flex items-start gap-2"><ShieldCheck className="w-4 h-4 shrink-0" />{pickArEn(currentLang, 'تُدخل بيانات البطاقة أو المحفظة داخل صفحة البوابة فقط. لا تحفظ شام رقم البطاقة أو رمز CVV، والتأكيد من البوابة هو إثبات الدفع.', 'Enter card or wallet details only on the gateway page. Sham does not save card numbers or CVVs; only a verified gateway response confirms payment.')}</p>}
                         {chargedBill && !chosenDirect && <p className="text-xs font-semibold" data-testid="charge-currency">{L.payCharge.replace('{amount}', `${chargedBill.total} ${chargedBill.currency}`)}</p>}
                       </fieldset>}
 
@@ -1917,7 +1917,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                         data-testid="store-pay-start"
                         className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold cursor-pointer transition-all shadow-xs"
                       >
-                        {currentLang === 'ar' ? 'أكمل الطلب' : 'Continue order'}
+                        {pickArEn(currentLang, 'أكمل الطلب', 'Continue order')}
                       </button>
                       <button
                         type="button"
@@ -1929,10 +1929,10 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
                     </>
                   ) : (
                     <div className="space-y-2">
-                      {payments === null ? <p className="text-xs text-stone-600" role="status">{L.loading}</p> : <ProductPayMethods lang={currentLang} country={money.country} heading={currentLang === 'ar' ? 'وسائل الدفع المتاحة لطلبك' : 'Payment methods available for this order'} />}
+                      {payments === null ? <p className="text-xs text-stone-600" role="status">{L.loading}</p> : <ProductPayMethods lang={currentLang} country={money.country} heading={pickArEn(currentLang, 'وسائل الدفع المتاحة لطلبك', 'Payment methods available for this order')} />}
                       {/* #169: the main button continues to the delivery form (the order then goes to the store's inbox), not to the chat. */}
                       <button type="button" onClick={() => { setStep('form'); setOrderSent(''); }} disabled={payments === null} data-testid="store-order-start"
-                        className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-400 text-white text-sm font-bold cursor-pointer transition-all shadow-xs">{currentLang === 'ar' ? 'أكمل الطلب' : 'Continue order'}</button>
+                        className="w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-400 text-white text-sm font-bold cursor-pointer transition-all shadow-xs">{pickArEn(currentLang, 'أكمل الطلب', 'Continue order')}</button>
                       <button type="button" onClick={checkout} className="w-full py-1.5 text-xs text-amber-800 hover:underline cursor-pointer text-center">{L.orAssistant}</button>
                     </div>
                   )}
@@ -1976,7 +1976,7 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
               type="button"
               onClick={() => setShowAnalytics(false)}
               className="absolute top-4 end-4 p-2 rounded-full hover:bg-stone-100 text-stone-500 hover:text-stone-900 transition-colors cursor-pointer"
-              aria-label={currentLang === 'ar' ? 'إغلاق' : 'Close'}
+              aria-label={pickArEn(currentLang, 'إغلاق', 'Close')}
             >
               <X className="w-5 h-5" />
             </button>

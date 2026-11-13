@@ -7,7 +7,7 @@
  * `src/data/live/catalog-review.json` for «الفحص الشامل» and the council. It changes no price and no product.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
-import type { RawProduct } from '../../src/utils/storeCatalog';
+import type { RawProduct, StoreCatalogFile } from '../../src/utils/storeCatalog';
 import type { FxTable, ShippingTable } from '../../src/utils/pricing';
 import { freeShippingAbove } from '../../src/utils/pricing';
 import type { PriceRule } from '../shaheen-import/transform';
@@ -20,6 +20,8 @@ const positive = (v?: string) => (Number(v) > 0 ? Number(v) : undefined);
 const products = (read('src/data/products.json').products || []) as RawProduct[];
 const shipping = read('src/data/shipping.json') as ShippingTable;
 const fx = read('src/data/live/fx-rates.json') as FxTable;
+// What the page really shows: Shaheen's edited names and descriptions over the supplier's raw text.
+const catalog = read('src/data/live/store-catalog.json') as StoreCatalogFile;
 // The merchant's price rule — the same repository variables «مستورد شاهين» priced with (defaults: ×1.5).
 const priceRule: PriceRule = {
   markup: Number(env.IMPORT_MARKUP) >= 1 ? Number(env.IMPORT_MARKUP) : 1.5,
@@ -35,6 +37,7 @@ const report = reviewCatalog({
   homeCountry: env.SHAM_HOME_COUNTRY || 'EG',
   freeShippingAboveEgp: freeShippingAbove(shipping),
   priceRule,
+  catalog,
 });
 
 writeFileSync(new URL('../../src/data/live/catalog-review.json', import.meta.url), `${JSON.stringify(report, null, 1)}\n`);
