@@ -34,11 +34,14 @@ export function ShamAccountDesk({
   customerId,
   recorded = [],
   onClose,
+  worldFirstLink = true,
 }: {
   lang: SupportedLanguage;
   customerId: string;
   recorded?: RecordedBalance[];
   onClose?: () => void;
+  /** Owner suite already shows the link card above this desk. */
+  worldFirstLink?: boolean;
 }) {
   const ar = lang === 'ar';
   const t = (a: string, e: string) => (ar ? a : e);
@@ -224,6 +227,7 @@ export function ShamAccountDesk({
 
         {pane === 'home' && view && (
           <>
+            {worldFirstLink && customerId.toLowerCase() === 'owner' && <WorldFirstRailCard ar={ar} />}
             <div className="flex gap-3 overflow-x-auto pb-1" data-testid="sham-balances">
               {[...view.balances].sort((a, b) => Number((b.availableMinor + b.heldMinor) > 0) - Number((a.availableMinor + a.heldMinor) > 0)).map((row) => (
                 <button key={row.currency} type="button" onClick={() => { setCurrency(row.currency); setPane('pay'); }} className="min-w-[168px] rounded-2xl border border-stone-200 p-3 text-start hover:border-stone-900">
@@ -254,7 +258,6 @@ export function ShamAccountDesk({
               <p className="mt-1 text-xs text-stone-500">{t('أعطِ هذا الرقم لمن سيحوّل إليك من حساب شام. ليس رقم استقبال خارجي.', 'Give this number to someone sending from a Sham account. It is not an external receiving number.')}</p>
             </div>
             <p className="text-xs text-stone-500">{t('مسارات البنوك الخارجية لم تُصدر. لا يظهر آيبان ولا رقم حساب بنك. شريك الاستقبال في الخلفية لم يُصدر تفاصيله، ولم يُرسل إليه شيء.', 'External bank rails are not issued. No IBAN and no outside account number is shown. The receiving partner behind the bank has not issued details, and nothing has been sent.')}</p>
-            {customerId.toLowerCase() === 'owner' && <WorldFirstRailCard ar={ar} />}
             {RECEIVING_RAILS.map((rail) => <RailRow key={rail.id} rail={rail} ar={ar} onAsk={() => run(async () => { requestAccountAction(customerId, { kind: 'receiving', currency: rail.currency, detail: rail.networkEn }); reloadLists(); setNotice(t('طُلب إصدار التفاصيل. لم يُنشأ رقم خارجي.', 'Issuance was requested. No external number was created.')); })} />)}
           </div>
         )}

@@ -7,6 +7,7 @@ import { major } from '../finance/money';
 import type { BankDashboard } from '../../server/finance/bank';
 import type { CollectionAccount } from '../../server/finance/types';
 import { ShamAccountDesk } from '../components/ShamAccountDesk';
+import { WorldFirstRailCard } from '../components/WorldFirstRailCard';
 import SalesPanel from './SalesPanel';
 
 /**
@@ -113,10 +114,11 @@ export default function BankPanel() {
     </div>
     {error && <p role="alert" className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-3 text-sm">{error}</p>}
     {notice && <p role="status" className="bg-emerald-50 text-emerald-800 rounded-xl p-3 text-sm">{notice}</p>}
+    <WorldFirstRailCard ar={adminLocale().startsWith('ar')} />
     {loading && !data && <p role="status" className="text-sm flex items-center gap-2 text-stone-500"><Loader2 className="w-4 h-4 animate-spin" />{f('جاري فتح البنك…', 'Opening the bank…')}</p>}
     {data && !data.persistent && <p className="rounded-xl bg-red-50 border border-red-200 text-red-800 p-3 text-sm flex gap-2"><AlertTriangle className="w-5 h-5 shrink-0" />{f('البنك شغّال على ذاكرة مؤقتة، فوسائل الدفع المباشر مخفية عن العملاء حتى لا يضيع أي طلب. الحل: أضف قاعدة البيانات المجانية من فيرسال (Storage ← Neon) ثم أعد النشر.', 'The bank runs on temporary memory, so direct payment is hidden from buyers to avoid losing orders. Fix: add the free database in Vercel (Storage → Neon), then redeploy.')}</p>}
     {data && <>
-      {section === 'account' && <ShamAccountDesk lang={adminLocale().startsWith('ar') ? 'ar' : 'en'} customerId="owner" recorded={data.balances.map((row) => ({ currency: row.currency, minor: row.collectedMinor }))} />}
+      {section === 'account' && <ShamAccountDesk lang={adminLocale().startsWith('ar') ? 'ar' : 'en'} customerId="owner" worldFirstLink={false} recorded={data.balances.map((row) => ({ currency: row.currency, minor: row.collectedMinor }))} />}
       {section === 'desk' && <>
         <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-3">
           <div className={card}><p className="text-xs text-stone-500">{f('تحويلات تنتظر تأكيدك', 'Transfers awaiting you')}</p><p className="text-2xl font-bold mt-2">{data.waitingConfirmation}</p></div>

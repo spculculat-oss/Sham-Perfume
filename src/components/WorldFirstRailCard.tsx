@@ -138,7 +138,7 @@ export function WorldFirstRailCard({ ar }: { ar: boolean }) {
   return (
     <section className="space-y-3 rounded-2xl border border-stone-900 bg-stone-950 p-4 text-white" data-testid="worldfirst-rail">
       <div>
-        <p className="text-sm font-bold">{t('تسوية الخلفية', 'Background settlement')}</p>
+        <p className="text-base font-black">{t('ربط وورلد فيرست', 'WorldFirst link')}</p>
         <p className="mt-1 text-xs leading-5 text-stone-300">{t('بنك شام هو البنك الظاهر. وورلد فيرست يستقبل في الخلفية ثمن البيع، وتكلفة الشراء من التاجر، وربح المنصة. القبول الذي أبلغت به ليس تأكيداً من وورلد فيرست.', 'Sham Bank is the bank people see. WorldFirst is behind it for the sale receipt, the merchant purchase, and the platform profit. The acceptance you reported is not a confirmation from WorldFirst.')}</p>
       </div>
       <div data-testid="worldfirst-wallets">
