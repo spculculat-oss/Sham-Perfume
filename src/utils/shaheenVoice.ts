@@ -73,6 +73,25 @@ export function splitShaheenSpeech(text: string, maxChars = 220): string[] {
   return chunks;
 }
 
+/**
+ * «يبدأ الكلام على طول»: the reply in utterances for a spoken turn — the FIRST sentence alone (an engine starts
+ * a short utterance sooner, the online natural voices most of all), then one sentence per utterance so the voice
+ * takes a breath between ideas instead of running them together.
+ */
+export function talkChunks(text: string, maxChars = 220): string[] {
+  const clean = prepareShaheenSpeech(text);
+  if (!clean) return [];
+  const sentences = clean.split(/(?<=[.!?؟؛。])\s+/u).map((part) => part.trim()).filter(Boolean);
+  // A very short sentence («بص.» / «أيوه.») is joined to the next one: alone it sounds clipped.
+  const merged: string[] = [];
+  for (const sentence of sentences) {
+    const last = merged[merged.length - 1];
+    if (last !== undefined && last.split(/\s+/).length <= 2 && last.length + 1 + sentence.length <= maxChars) merged[merged.length - 1] = `${last} ${sentence}`;
+    else merged.push(sentence);
+  }
+  return merged.flatMap((sentence) => (sentence.length <= maxChars ? [sentence] : splitShaheenSpeech(sentence, maxChars)));
+}
+
 /** The little a speech engine exposes about one of its voices (a subset of SpeechSynthesisVoice). */
 export interface ShaheenVoiceCandidate {
   readonly name: string;

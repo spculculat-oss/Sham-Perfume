@@ -14,6 +14,7 @@ import { removeMediaBlocks } from './mediaBlock';
 import { removeFormulaBlocks } from './aiFormulaExtractor';
 import { removeToolBlocks } from './shaheenTools';
 import { plainMath } from './shaheenText';
+import { talkify } from './talkStyle';
 
 // ── Numbers as people say them ───────────────────────────────────────────────────────────────────────────
 interface NumberWords {
@@ -84,7 +85,11 @@ function decimalInWords(whole: number, fraction: string, dialect?: Dialect): str
 }
 
 /** Plurals that take the short counting form after 3–10 («تلات ساعات», not «تلاتة ساعات»). */
-const COUNTED_PLURAL = /^(?:ساعات|أيام|ايام|أسابيع|اسابيع|شهور|أشهر|اشهر|سنين|سنوات|دقايق|دقائق|مرات|نقط|نقاط|قطرات|أنواع|انواع|طبقات|مكونات|زجاجات|إزازات|ازازات|بخات|رشات|ثواني|ثوان)$/u;
+const SINGULAR_OF: Record<string, string> = {
+  ساعات: 'ساعة', أيام: 'يوم', ايام: 'يوم', أسابيع: 'أسبوع', اسابيع: 'أسبوع', شهور: 'شهر', أشهر: 'شهر', اشهر: 'شهر', سنين: 'سنة', سنوات: 'سنة', دقايق: 'دقيقة',
+  دقائق: 'دقيقة', مرات: 'مرة', خيارات: 'خيار', اختيارات: 'اختيار', عطور: 'عطر', قطرات: 'قطرة', نقط: 'نقطة', بخات: 'بخة', رشات: 'رشة', ثواني: 'ثانية',
+};
+const COUNTED_PLURAL = /^(?:خيارات|اختيارات|عطور|ترشيحات|حاجات|نصايح|نصائح|أسئلة|ألوان|خطوات|ساعات|أيام|ايام|أسابيع|اسابيع|شهور|أشهر|اشهر|سنين|سنوات|دقايق|دقائق|مرات|نقط|نقاط|قطرات|أنواع|انواع|طبقات|مكونات|زجاجات|إزازات|ازازات|بخات|رشات|ثواني|ثوان)$/u;
 
 const CURRENCY_AFTER: [RegExp, string][] = [
   [/^(?:ج\.م\.?|جنيه|جنيهاً|جنيها|EGP|LE)/u, 'جنيه'], [/^(?:US\$|USD|\$|دولار)/u, 'دولار'], [/^(?:€|EUR|يورو)/u, 'يورو'],
@@ -113,10 +118,12 @@ export function speakArabicNumbers(input: string, dialect?: Dialect): string {
     .replace(/\s*×\s*/g, ' في ').replace(/\s*÷\s*/g, ' على ').replace(/\s*≈\s*/g, ` ${w.about} `).replace(/\s*=\s*(?=\d)|(?<=\d)\s*=\s*/g, dialect === 'msa' ? ' يساوي ' : ' يبقى ')
     .replace(/(?<=\d)\s*\+\s*(?=\d)/g, ' زائد ').replace(/(?<![\p{L}\d])~\s*(?=\d)/gu, `${w.about} `);
   // Ranges: «6-8 ساعات» → «من ست لتمن ساعات».
-  text = text.replace(/(?<![\d.,٫٬])(\d+)\s*[-–—]\s*(\d+)(?![\d.,٫٬])(\s*)(\S*)/gu, (_m, a: string, b: string, space: string, noun: string) => {
-    const counted = COUNTED_PLURAL.test(noun);
+  text = text.replace(/(?<![\d.,٫٬])(\d+)\s*[-–—]\s*(\d+)(?![\d.,٫٬])(\s*)(\S*)/gu, (_m, a: string, b: string, space: string, noun: string, offset: number, all: string) => {
+    const counted = COUNTED_PLURAL.test(noun.replace(/[^\p{L}]+$/u, ''));
     const say = (n: number) => (counted && n >= 3 && n <= 10 ? w.counted[n]! : numberInWords(n, dialect));
-    return `${w.from} ${say(Number(a))} ${w.to}${say(Number(b))}${space}${noun}`;
+    // «من 5-7 أيام» already says «من»: not «من من خمسة لسبعة».
+    const from = new RegExp(`(?:^|\\s)${w.from}\\s*$`, 'u').test(all.slice(0, offset)) ? '' : `${w.from} `;
+    return `${from}${say(Number(a))} ${w.to}${say(Number(b))}${space}${noun}`;
   });
   // Currency written before the number («€21», «US$23.50», «EGP 1,250»).
   text = text.replace(/(US\$|UK£|USD\s?|EUR\s?|GBP\s?|EGP\s?|SAR\s?|QAR\s?|OMR\s?|AED\s?|MAD\s?|KWD\s?|BHD\s?|JOD\s?|LE\s?|\$|€|£)(\d{1,3}(?:[,٬]\d{3})+|\d+)(?:[.٫](\d+))?/gu,
@@ -127,6 +134,8 @@ export function speakArabicNumbers(input: string, dialect?: Dialect): string {
       const named = fraction.startsWith('5') ? w.half : fraction === '25' ? w.quarter : w.threeQuarters;
       return `${numberInWords(Number(whole.replace(/[,٬]/g, '')), dialect)} ${CURRENCY_AFTER.find(([re]) => re.test(sign))?.[1] || sign} ${w.and}${named}`;
     });
+  // «11 ساعات» is said «حداشر ساعة»: from eleven on, the counted noun is singular.
+  text = text.replace(/(?<![\d.,٫٬])(\d{2,})(\s+)(\p{L}+)/gu, (m, digits: string, space: string, noun: string) => (Number(digits) >= 11 && SINGULAR_OF[noun] ? `${digits}${space}${SINGULAR_OF[noun]}` : m));
   // Every number left, with what follows it (a currency, a unit, «%», a counted plural).
   return text.replace(NUMBER, (match, whole: string, fraction: string | undefined, offset: number, all: string) => {
     const digits = whole.replace(/[,٬]/g, '');
@@ -135,8 +144,9 @@ export function speakArabicNumbers(input: string, dialect?: Dialect): string {
     const after = all.slice(offset + match.length).replace(/^\s+/, '');
     const n = Number(digits);
     if (/^[%٪]/.test(after)) return `${decimalInWords(n, fraction || '', dialect)} ${w.percent}`;
-    const noun = after.split(/\s+/)[0] || '';
+    const noun = (after.split(/\s+/)[0] || '').replace(/[^\p{L}]+$/u, '');
     if (!fraction && n >= 3 && n <= 10 && COUNTED_PLURAL.test(noun)) return w.counted[n]!;
+
     if (CURRENCY_AFTER.some(([re]) => re.test(after)) && fraction && fraction.length === 2 && !['00', '50', '25', '75'].includes(fraction)) {
       return `${numberInWords(n, dialect)} ${w.point} ${numberInWords(Number(fraction), dialect)}`;
     }
@@ -190,6 +200,8 @@ export function everydayWords(text: string, dialect?: Dialect): string {
     out = out.replace(re, (_m, prefix = '') => {
       // «سوف يثبت» → «هيثبت»: the future mark joins the verb after it.
       if (to === 'هـ') return `${prefix}ه`;
+      // «ولكن» is «بس», not «وبس» (that means «and that's all»).
+      if (to === 'بس' && prefix === 'و') return to;
       return `${prefix}${to}`;
     });
   }
@@ -205,7 +217,7 @@ const SPOKEN_NAMES: [RegExp, string][] = [
 // ── The page's structure as talk ─────────────────────────────────────────────────────────────────────────
 const EMOJI = /[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\uFE0F\u20E3]/gu;
 /** Machine and page markup removed, one line per idea, the structure kept for the next step. */
-function talkLines(text: string): string[] {
+function talkLines(text: string, comma = '، '): string[] {
   const shown = plainMath(removeToolBlocks(removeFormulaBlocks(removeMediaBlocks(text))))
     .replace(/^[ \t]*(```|~~~)[^\n]*\n[\s\S]*?^[ \t]*\1[ \t]*$/gm, ' ')
     .replace(/^[ \t]*(```|~~~)[^\n]*(?:\n[\s\S]*)?$/m, ' ')
@@ -226,8 +238,8 @@ function talkLines(text: string): string[] {
       .replace(/^\s*(?:[-*+•]|\d+[.)])\s+/, '')
       .replace(/\*\*([^*]+)\*\*/g, '$1').replace(/__([^_]+)__/g, '$1').replace(/(?<![\p{L}])_([^_]+)_(?![\p{L}])/gu, '$1')
       .replace(EMOJI, ' ')
-      .replace(/\s+[—–]\s+/g, '، ').replace(/\s*·\s*/g, '، ').replace(/\s*\|\s*/g, '، ')
-      .replace(/\s*[()[\]{}]\s*/g, '، ')
+      .replace(/\s+[—–]\s+/g, comma).replace(/\s*·\s*/g, comma).replace(/\s*\|\s*/g, comma)
+      .replace(/\s*[()[\]{}]\s*/g, comma)
       .replace(/[*_~`>#]+/g, ' ')
       .replace(/\s+/g, ' ').trim();
     if (!line) continue;
@@ -237,21 +249,21 @@ function talkLines(text: string): string[] {
   return lines;
 }
 /** Lines into sentences: a title with «:» leads into what follows it, every other line ends as a sentence. */
-function sentencesOf(lines: string[]): string[] {
+function sentencesOf(lines: string[], comma = '، '): string[] {
   const out: string[] = [];
   let lead = '';
   for (const line of lines) {
     if (!line) continue;
     const ends = /[.!?؟؛…]$/.test(line);
-    if (/:$/.test(line)) { lead = `${lead}${line.replace(/:$/, '،')} `; continue; }
+    if (/:$/.test(line)) { lead = `${lead}${line.replace(/:$/, comma.trim())} `; continue; }
     // «المكونات: الافتتاحية: برجموت» → «المكونات، الافتتاحية برجموت».
     // A label leads its value with a short pause; labels inside it are just said («الافتتاحية برجموت، القلب ورد»).
     let first = true;
-    const said = `${lead}${line}`.replace(/:\s+/g, () => (first ? ((first = false), '، ') : ' ')).replace(/،\s*،/g, '،');
+    const said = `${lead}${line}`.replace(/:\s+/g, () => (first ? ((first = false), comma) : ' ')).replace(/([،,])\s*[،,]/g, '$1');
     lead = '';
     out.push(...splitSentences(ends ? said : `${said}.`));
   }
-  if (lead) out.push(`${lead.trim().replace(/،$/, '')}.`);
+  if (lead) out.push(`${lead.trim().replace(/[،,]$/, '')}.`);
   return out;
 }
 const splitSentences = (text: string) => text.split(/(?<=[.!?؟؛…])\s+/u).map((s) => s.trim()).filter(Boolean);
@@ -274,7 +286,11 @@ export interface SpokenReply {
  * The reply as Shaheen says it. `words` = about how much he says before asking «تحب أكمّلك؟» (Infinity = all of it,
  * for the «اسمع الرد» button). A short tail (under a fifth more) is said too rather than cut.
  */
-export function spokenReply(text: string, { language, dialect, words = 45 }: { language: SupportedLanguage; dialect?: Dialect; words?: number }): SpokenReply {
+export function spokenReply(text: string, { language, dialect, words = 45, opener = false }: {
+  language: SupportedLanguage; dialect?: Dialect; words?: number;
+  /** «بص،» / «بصراحة،» now and then, like talk (the live voice conversation; not the «اسمع الرد» button). */
+  opener?: boolean;
+}): SpokenReply {
   const arabic = language === 'ar';
   const prepared = (sentence: string) => {
     let s = sentence;
@@ -282,9 +298,12 @@ export function spokenReply(text: string, { language, dialect, words = 45 }: { l
       for (const [re, name] of SPOKEN_NAMES) s = s.replace(re, name);
       s = everydayWords(speakArabicNumbers(s, dialect), dialect);
     }
-    return s.replace(/\s+([،,.!?؟])/g, '$1').replace(/\s+/g, ' ').trim();
+    return s.replace(/\s+([،,.!?؟])/g, '$1').replace(/[،,]+(?=[.!?؟]|$)/gu, '').replace(/([،,])[،,]+/gu, '$1').replace(/\s+/g, ' ').trim();
   };
-  const sentences = sentencesOf(talkLines(text)).map(prepared).filter((s) => /[\p{L}\p{N}]/u.test(s));
+  // «شاهين بيحكي مش بيقرا» (talkStyle.ts): lists, labels, steps and written verbs re-said as talk first.
+  // Arabic and Persian pause on «،»; the other languages' voices on «,».
+  const comma = arabic || language === 'fa' ? '، ' : ', ';
+  const sentences = sentencesOf(talkLines(talkify(text, { language, dialect, opener }), comma), comma).map(prepared).filter((s) => /[\p{L}\p{N}]/u.test(s));
   if (!sentences.length) return { say: '', rest: '' };
   const total = sentences.reduce((sum, s) => sum + wordCount(s), 0);
   if (!Number.isFinite(words) || total <= words * 1.2) return { say: sentences.join(' '), rest: '' };

@@ -225,20 +225,68 @@ export function isComplaintTurn(message: string): boolean {
 /**
  * «التحدث مع شاهين»: a spoken reply is short and natural like talk, and after an interruption he answers the new
  * point instead of finishing (or repeating) what he was saying.
+ * «شاهين بيحكي مش بيقرا» (v3): the voice rules come LAST and say they win over the page rules above them (Markdown,
+ * tables, media), with a written → spoken example pair in the visitor's own dialect, and the habits of a real talk:
+ * answer first, one idea per sentence, refer back to what was said, one short question at most.
  */
-export function voiceInstruction(voice: ChatRequest['voice']): string {
+const TALK_EXAMPLES: Record<'egyptian' | 'gulf' | 'levantine' | 'other' | 'msa', { asked: string; written: string; said: string; follow: string; followSaid: string }> = {
+  egyptian: {
+    asked: 'عايز عطر للشتا يكون ثابت',
+    written: 'بالتأكيد! إليك أفضل الخيارات: 1. **عود ملكي**: يتميز بثبات عالي ويدوم 10 ساعات. 2. **عنبر الليل**: مناسب للسهرات. هل تريد المزيد؟',
+    said: 'بص، للشتا أنا شايف العود الملكي، ثباته جامد وبيقعد معاك اليوم كله تقريباً. ولو بتحب حاجة أدفى شوية للسهرات، عنبر الليل حلو قوي. تحب تجرب أنهي فيهم؟',
+    follow: 'طب والأرخص فيهم؟',
+    followSaid: 'الأرخص هو عنبر الليل، بس صدقني فرق السعر مش كبير والعود ثباته أعلى.',
+  },
+  gulf: {
+    asked: 'أبي عطر للشتاء يكون ثابت',
+    written: 'بالتأكيد! إليك أفضل الخيارات: 1. **عود ملكي**: يتميز بثبات عالي. 2. **عنبر الليل**: مناسب للسهرات. هل تريد المزيد؟',
+    said: 'شوف، للشتاء أنصحك بالعود الملكي، ثباته قوي ويقعد معك طول اليوم. وإذا تبي شي أدفى للطلعات، عنبر الليل حلو وايد. أيهم تبي تجرب؟',
+    follow: 'طيب والأرخص؟',
+    followSaid: 'الأرخص عنبر الليل، بس الفرق بسيط والعود أثبت.',
+  },
+  levantine: {
+    asked: 'بدي عطر للشتي يكون ثابت',
+    written: 'بالتأكيد! إليك أفضل الخيارات: 1. **عود ملكي**: يتميز بثبات عالي. 2. **عنبر الليل**: مناسب للسهرات. هل تريد المزيد؟',
+    said: 'شوف، للشتي بنصحك بالعود الملكي، ثباته قوي وبيضل معك طول النهار. وإذا بدك شي أدفى للسهرات، عنبر الليل كتير حلو. أي واحد بدك تجرب؟',
+    follow: 'طيب والأرخص؟',
+    followSaid: 'الأرخص عنبر الليل، بس الفرق مش كبير والعود أثبت.',
+  },
+  other: {
+    asked: 'أريد عطر للشتاء ثابت',
+    written: 'بالتأكيد! إليك أفضل الخيارات: 1. **عود ملكي**: يتميز بثبات عالي. 2. **عنبر الليل**: مناسب للسهرات. هل تريد المزيد؟',
+    said: 'شوف، للشتاء أنصحك بالعود الملكي، ثباته قوي ويبقى معك طول اليوم. وإذا تحب شي أدفى للسهرات، عنبر الليل حلو كثير. أي واحد تحب تجرب؟',
+    follow: 'طيب والأرخص؟',
+    followSaid: 'الأرخص عنبر الليل، بس الفرق بسيط والعود أثبت.',
+  },
+  msa: {
+    asked: 'أريد عطراً شتوياً ثابتاً',
+    written: 'بالتأكيد! إليك أفضل الخيارات: 1. **عود ملكي**: يتميز بثبات عالٍ. 2. **عنبر الليل**: مناسب للسهرات. هل تريد المزيد؟',
+    said: 'للشتاء أنصحك بالعود الملكي، فثباته قوي ويبقى معك اليوم كله تقريباً. وإن كنت تفضل شيئاً أدفأ للسهرات فعنبر الليل جميل جداً. أيهما تحب أن تجرب؟',
+    follow: 'وأيهما أرخص؟',
+    followSaid: 'عنبر الليل أرخص قليلاً، لكن الفرق بسيط والعود أثبت.',
+  },
+};
+export function voiceInstruction(voice: ChatRequest['voice'], dialect?: Dialect, language: SupportedLanguage = 'ar'): string {
   if (!voice) return '';
-  const spoken = 'المحادثة دي صوتية: ردك هيتقال بصوت عالي للزائر، فاكتبه كلام يتقال مش كلام يتقري — زي ما خبير عطور بيكلم زبون قدامه. '
+  const spoken = 'المحادثة دي صوتية: ردك هيتقال بصوت عالي للزائر، فاكتبه كلام يتقال مش كلام يتقري — زي ما خبير عطور بيكلم زبون قدامه في المحل. '
+    + 'القواعد دي تتقدم على أي تعليمات تنسيق فوق (Markdown والعناوين والجداول والنقاط وsham-media): في الصوت مفيش تنسيق خالص. '
     + 'خليه قصير وطبيعي (من جملتين لأربع جمل، وأقل من 70 كلمة) إلا لو طلب تفاصيل. ابدأ بالإجابة نفسها على طول، وجمل قصيرة سهلة، بنفس لهجته العامية، '
     + 'وكلمات الكلام الطبيعية في مكانها من غير مبالغة (بص، يعني، بصراحة، طيب). اكتب الأرقام والأسعار بالحروف زي ما بتتقال («خمسمية جنيه»، «تلاتين مللي»، «عشرين في المية»). '
     + 'من غير جداول أو عناوين أو نقاط أو ترقيم أو رموز أو إيموجي أو روابط أو أقواس؛ ولو عندك كذا اختيار قول أهمهم وبس واسأله يحب يعرف الباقي. '
+    + 'ممنوع افتتاحيات الكتابة («بالتأكيد!»، «سؤال رائع»، «إليك»، «فيما يلي»، «يسعدني») وممنوع تعيد سؤاله. '
+    + 'كمّل على اللي اتقال في المحادثة: لو قال «ده» أو «الأرخص» أو «التاني» افهم يقصد إيه من كلامك اللي فات وجاوب عليه بالاسم. '
+    + 'لو زعلان ابدأ بجملة تفهّم قصيرة وبعدين الحل؛ ولو مستعجل اختصر لجملة أو اتنين. '
     + 'ممكن تختم بسؤال قصير واحد بس لو بيكمّل النقاش. سياج sham-formula أو sham-tool لو لازم يفضل في آخر الرد زي ما هو (مش هيتقال).';
+  const group = !dialect || dialect === 'egyptian' ? 'egyptian' : dialect === 'gulf' || dialect === 'levantine' || dialect === 'msa' ? dialect : 'other';
+  const ex = TALK_EXAMPLES[group];
+  const pair = language !== 'ar' ? '' : `\nمثال للفرق (الفكرة بس، مش المنتجات ولا الأسعار): لما زائر قال «${ex.asked}» — رد مكتوب غلط في الصوت: «${ex.written}» — `
+    + `والرد الصح المتقال: «${ex.said}». ولما كمّل وقال «${ex.follow}» — الصح: «${ex.followSaid}».`;
   // «شاهين بيتعلم من المنصات»: how the platforms answered spoken questions in this dialect before (style only).
   const examples = voice.examples?.length
     ? `\nأمثلة لأسلوب ردودك الصوتية قبل كده (للأسلوب والطول بس، مش للمعلومة): ${voice.examples.map((e) => `«${e.replace(/[«»]/g, '"')}»`).join(' ')}`
     : '';
-  if (!voice.interrupted) return `\n${spoken}${examples}`;
-  return `\n${spoken}${examples}\nالزائر قاطعك وإنت بتقول: «${voice.interrupted.replace(/[«»]/g, '"')}». ما تكمّلش الكلام القديم ولا تعيده؛ رد على كلامه الجديد على طول. لو طلب منك تسكت أو تختصر أو تغيّر الموضوع، نفّذ ده.`;
+  if (!voice.interrupted) return `\n${spoken}${pair}${examples}`;
+  return `\n${spoken}${pair}${examples}\nالزائر قاطعك وإنت بتقول: «${voice.interrupted.replace(/[«»]/g, '"')}». ما تكمّلش الكلام القديم ولا تعيده؛ رد على كلامه الجديد على طول. لو طلب منك تسكت أو تختصر أو تغيّر الموضوع، نفّذ ده.`;
 }
 
 export function systemInstruction(language: SupportedLanguage, extra = '', style?: 'fast' | 'deep', talk?: Pick<ChatRequest, 'dialect' | 'voice'>): string {
@@ -270,7 +318,7 @@ ${relationsPromptBlock('ar')}
 للمقارنات والنِّسب والخصائص (مثل مقارنة مواد، عائلات عطرية، تركيزات EDP/EDT، مدد التعتيق) اعرضها في جدول Markdown واضح بأعمدة قليلة.
 عندما تفيد الصور أو الفيديو في التوضيح فعلاً (شكل مادة خام أو نبات أو راتنج، أدوات المختبر، طرق الاستخلاص والتقطير والنقع، ورائحة لا تكفيها الكلمات) أو طلبها المستخدم، ابدأ ردك بسياج واحد باسم sham-media يحتوي JSON فقط، ثم اكتب الشرح بعده. وعندما يكون للسؤال بُعد جغرافي (منشأ مادة خام، مزارع الورد أو العود أو اللافندر، مدن ومتاحف وأسواق العطور، أين تُزرع نبتة) أضف places في نفس السياج ليعرضها الموقع على خريطة. السياج إلزامي كلما طلب المستخدم صوراً أو فيديو أو خريطة أو أماكن أو قال «وريني» أو show me. مثال:
 {"images":["agarwood","Aquilaria"],"videos":["steam distillation of essential oils"],"places":["Assam, India","Hainan, China"]}
-images حتى عبارتي بحث بالإنجليزية من كلمة إلى ثلاث كلمات (الاسم الشائع أو العلمي للمادة أو النبات أو الأداة، مثل agarwood أو Rosa damascena أو ambergris أو distillation apparatus)، وvideos عبارة بحث واحدة بلغة المستخدم أو بالإنجليزية، وplaces حتى 5 أماكن حقيقية معروفة بالإنجليزية بصيغة «المكان، الدولة» (مدينة أو منطقة أو معلم مثل Grasse, France أو Taif, Saudi Arabia أو Kannauj, India) تخص السؤال نفسه فقط، ولا تضع أبداً مقرات شركات أو ماركات أو متاجر، وكل مفتاح اختياري فاكتب المفيد منها فقط. سيعرض الموقع صوراً وفيديوهات وخريطة حقيقية من مصادر موثوقة. اكتب السياج باسم sham-media حرفياً (وليس json) وأغلقه بثلاث علامات \`\`\`. لا تكتب أبداً روابط صور أو فيديو أو خرائط أو إحداثيات أو صيغة ![]() بنفسك، ولا تحِل المستخدم إلى تطبيقات أو مواقع خرائط أو بحث خارجية؛ الموقع يعرض الخريطة والصور بنفسه، ولا تَعِد بصورة لم تطلبها في السياج، ولا تذكر السياج في الشرح. لا تضف sham-media للتحيات أو الأسئلة الطبية أو الأسئلة التي لا يفيدها التوضيح المرئي.${voiceInstruction(talk?.voice)}${mode}${admin}`;
+images حتى عبارتي بحث بالإنجليزية من كلمة إلى ثلاث كلمات (الاسم الشائع أو العلمي للمادة أو النبات أو الأداة، مثل agarwood أو Rosa damascena أو ambergris أو distillation apparatus)، وvideos عبارة بحث واحدة بلغة المستخدم أو بالإنجليزية، وplaces حتى 5 أماكن حقيقية معروفة بالإنجليزية بصيغة «المكان، الدولة» (مدينة أو منطقة أو معلم مثل Grasse, France أو Taif, Saudi Arabia أو Kannauj, India) تخص السؤال نفسه فقط، ولا تضع أبداً مقرات شركات أو ماركات أو متاجر، وكل مفتاح اختياري فاكتب المفيد منها فقط. سيعرض الموقع صوراً وفيديوهات وخريطة حقيقية من مصادر موثوقة. اكتب السياج باسم sham-media حرفياً (وليس json) وأغلقه بثلاث علامات \`\`\`. لا تكتب أبداً روابط صور أو فيديو أو خرائط أو إحداثيات أو صيغة ![]() بنفسك، ولا تحِل المستخدم إلى تطبيقات أو مواقع خرائط أو بحث خارجية؛ الموقع يعرض الخريطة والصور بنفسه، ولا تَعِد بصورة لم تطلبها في السياج، ولا تذكر السياج في الشرح. لا تضف sham-media للتحيات أو الأسئلة الطبية أو الأسئلة التي لا يفيدها التوضيح المرئي.${voiceInstruction(talk?.voice, talk?.dialect, language)}${mode}${admin}`;
 }
 
 /**
@@ -279,7 +327,10 @@ images حتى عبارتي بحث بالإنجليزية من كلمة إلى ث
  * keeping the main model's quota for formulas, analyses and long conversations.
  */
 const NEEDS_FULL_MODEL = /صمم|تصميم|تركيب|وصف[ةه]|خلط[ةه]|نسب|حلل|تحليل|قارن|مقارن|جدول|خطوة|اشرح بالتفصيل|بالتفصيل|formula|recipe|design|ratio|analy|compare|table|step|detail/i;
-export function isSimpleQuestion(input: Pick<ChatRequest, 'message' | 'conversationHistory'>): boolean {
+export function isSimpleQuestion(input: Pick<ChatRequest, 'message' | 'conversationHistory'> & Partial<Pick<ChatRequest, 'voice'>>): boolean {
+  // «التحدث مع شاهين»: a spoken turn is answered in a few sentences, so the quicker tier answers it even deep in a
+  // conversation — the first word comes sooner (a voice conversation waits for nothing longer than it must).
+  if (input.voice && input.message.length <= 220 && !NEEDS_FULL_MODEL.test(input.message)) return true;
   return input.message.length <= 140 && input.conversationHistory.length <= 2 && !NEEDS_FULL_MODEL.test(input.message);
 }
 /** «تلقائي»: how long one platform, and the whole chain, may take before his own brain answers. */
