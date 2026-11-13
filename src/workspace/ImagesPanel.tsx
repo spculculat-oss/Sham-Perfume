@@ -7,7 +7,7 @@ import { canvasBlob, fitForUpload, signCanvas } from './motion';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Download, FlipHorizontal, ImagePlus, Loader2, RotateCw, Save, Sparkles, Undo2, Wand2 } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
-import { errorKey, makeImage } from './workspaceApi';
+import { imageErrorKey, makeImage } from './workspaceApi';
 import { IMAGE_STYLES, type ImageAspect, type ImageStyleId } from '../utils/imageCraft';
 import { saveFile } from './fileStore';
 import { downloadBlob } from './officeWriters';
@@ -99,7 +99,7 @@ export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang
     if (found) { setPhotoReply(found); setNote(stripMediaBlock(found)); setSource(null); setGallery([]); setMotionSource(''); return; }
     setPhotoReply('');
     setBusy('make'); setNote('');
-    try { const out = await makeImage(prompt.trim(), undefined, undefined, { style, aspect }); load(out.src); setGallery((g) => [out.src, ...g].slice(0, 12)); } catch (e) { setNote(errorKey(e) === 'rate_limited' ? w('rate_limited') : w('image_failed')); } finally { setBusy(''); }
+    try { const out = await makeImage(prompt.trim(), undefined, undefined, { style, aspect }); load(out.src); setGallery((g) => [out.src, ...g].slice(0, 12)); } catch (e) { setNote(w(imageErrorKey(e))); } finally { setBusy(''); }
   };
   const blob = async () => {
     try {
@@ -122,7 +122,7 @@ export function ImagesPanel({ lang, aiImages, incoming, onIncomingUsed }: { lang
       const data = (unsigned.current || canvas.current).toDataURL('image/png');
       const out = await makeImage(editPrompt.trim(), await fitForUpload(data));
       load(out.src);
-    } catch (e) { setNote(errorKey(e) === 'rate_limited' ? w('rate_limited') : w('image_failed')); } finally { setBusy(''); }
+    } catch (e) { setNote(w(imageErrorKey(e))); } finally { setBusy(''); }
   };
   const slider = (key: 'brightness' | 'contrast' | 'saturate' | 'blur', label: string, min: number, max: number) => (
     <label className="flex items-center gap-2 text-[12px] text-stone-700">

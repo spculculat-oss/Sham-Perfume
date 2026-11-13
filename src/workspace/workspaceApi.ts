@@ -51,6 +51,17 @@ export const notionPage = (title: string, text: string) => owner<{ url?: string 
 export const slackSend = (text: string) => owner<{ ok: boolean }>('/api/workspace/owner/slack/send', { text });
 
 /** The visitor-facing words for an error (never a vendor name or a stack). */
+/** The honest sentence for an image that did not come: which of the workspace words says why. */
+export function imageErrorKey(error: unknown): 'image_unavailable' | 'image_quota' | 'image_refused' | 'rate_limited' | 'image_failed' {
+  if (error instanceof ApiUnavailableError) return 'image_unavailable';
+  if (error instanceof ApiError) {
+    if (error.code === 'NO_IMAGE_ENGINE' || error.status === 404) return 'image_unavailable';
+    if (error.code === 'IMAGE_QUOTA') return 'image_quota';
+    if (error.code === 'IMAGE_REFUSED') return 'image_refused';
+    if (error.status === 429) return 'rate_limited';
+  }
+  return 'image_failed';
+}
 export function errorKey(error: unknown): 'no_server' | 'busy' | 'rate_limited' | 'failed' {
   if (error instanceof ApiUnavailableError) return 'no_server';
   if (error instanceof ApiError) {

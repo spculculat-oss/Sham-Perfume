@@ -16,6 +16,7 @@ import { meantText, planTypedTurn, savedTypedFixes, saveTypedFix, typedNote, typ
 import { heardNote } from './heardFix';
 import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } from './api';
 import { savedDialectChoice } from './arabicDialect';
+import { forgetDrawings, freshReplies } from './shaheenDrawings';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
   loadStoredChatSession, saveChatSession, type ChatMessage, type ShaheenProvider } from './chatStorage';
 
@@ -214,6 +215,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
     clear() {
       controller?.abort(); generation++; typedPending = null;
       clearChatSession();
+      forgetDrawings();
       publish({ ...loadStoredChatSession(), messages: [DEFAULT_WELCOME_MESSAGE], isLoading: false });
     },
     /** Re-asks the question behind a trailing error bubble (removes both, then sends again). */
@@ -337,6 +339,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         const message: ChatMessage = { id: id('bot'), role: 'assistant', text: data?.reply, timestamp: timestamp(),
           toolReport: data?.toolReport, aiEngine: data?.engine, ...(data?.sources?.length ? { sources: data.sources } : {}) };
         if (!message.text?.trim() || !isChatMessage(message)) throw new Error('Invalid chat response');
+        freshReplies.add(message.id); // a picture it asks for is drawn once, now — not again on every reload
         publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false, busy: false });
         // «ذاكرة شاهين»: this browser keeps its opening questions for the day the server cannot be reached.
         if (!options.agent && !history.length && options.model !== 'council') memory.learn({ question: text, lang: options.language, mode: options.model, answer: message.text });
@@ -364,6 +367,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
             const message: ChatMessage = { id: id('bot'), role: 'assistant', text: fast?.reply, timestamp: timestamp(), aiEngine: fast?.engine,
               ...(fast?.sources?.length ? { sources: fast.sources } : {}) };
             if (message.text?.trim() && isChatMessage(message)) {
+              freshReplies.add(message.id);
               publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false, busy: false });
               if (!history.length) memory.learn({ question: text, lang: options.language, mode: 'fast', answer: message.text });
               return true;

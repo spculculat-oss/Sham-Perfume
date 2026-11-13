@@ -39,6 +39,7 @@ import { StaticHostingNotice } from './StaticHostingNotice';
 import { ShaheenModesPanel, ShaheenServiceStatus, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
 import { ShaheenMedia } from './ShaheenMedia';
+import { ShaheenDrawing } from './ShaheenDrawing';
 import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
 import { stripOpeningGreeting } from '../utils/shaheenText';
 import { ENGINE_BADGE, messageTime, modeBadge, visibleEngines, scrollChatToEnd } from './shaheenEngines';
@@ -279,6 +280,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const masterPrompts: string[] = [L('prompt_1'), L('prompt_2'), L('prompt_3'), L('prompt_4'), L('prompt_5')];
   // Same conversation store as the floating Shaheen window (one history, never overwritten by the other).
   const { messages, setMessages, daysRemaining, isLoading, busy, sendMessage, retryLast, clearHistory } = useShaheenChat();
+  const messageIds = React.useMemo(() => messages.map((x) => x.id), [messages]);
   const modelStatus = useShaheenModels();
   const selectedModel = modelStatus.selected;
   const setSelectedModel = modelStatus.setSelected;
@@ -691,6 +693,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                     <>
                       <ShaheenMarkdown text={activeDisplayContent} className="text-xs sm:text-sm leading-relaxed font-sans" />
                       {mediaRequest && <ShaheenMedia request={mediaRequest} lang={currentLang} />}
+                          {m.role === 'assistant' && !isError && m.id !== 'welcome' && <ShaheenDrawing messageId={m.id} text={m.text} messageIds={messageIds} lang={currentLang} />}
                     </>
                   ) : (
                     <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-line font-sans break-words space-y-2" dir="auto">
