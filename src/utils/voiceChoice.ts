@@ -1,7 +1,8 @@
 /**
  * «صوت شاهين»: the visitor picks exactly the voice he likes — any male or female voice his device offers for the
  * conversation's language — and how high and how fast it speaks. Kept in this browser; used by the voice
- * conversation and by «اسمع الرد». Only the browser's own voices (free, nothing sent anywhere).
+ * conversation and by «اسمع الرد». Names may refer to native voices or the optional local synthetic profiles.
+ * Local synthesis stays on the device; native device voices may use their provider's network service.
  */
 import { pickShaheenVoice, speaksLanguage, type ShaheenVoiceCandidate } from './shaheenVoice';
 

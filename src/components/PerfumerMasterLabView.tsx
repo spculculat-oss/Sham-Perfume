@@ -49,7 +49,7 @@ import { useShaheenModels } from '../hooks/useShaheenModels';
 import { useShaheenVoiceMode, type ShaheenVoiceTurn } from '../hooks/useShaheenVoiceMode';
 import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
 import { copyChatText } from '../utils/clipboard';
-import { readAloud } from '../utils/readAloud';
+import { useReadAloud } from '../hooks/useReadAloud';
 import { askMessages, lookingUpLine } from '../utils/heardFix';
 
 interface PerfumerMasterLabViewProps {
@@ -289,7 +289,6 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const [scaleWeight, setScaleWeight] = useState(14.85);
   const [dripping, setDripping] = useState(false);
   const [compoundingStep, setCompoundingStep] = useState(0);
-  const [isSpeaking, setIsSpeaking] = useState(false);
   const voiceSendRef = useRef<(text: string, turn?: ShaheenVoiceTurn) => Promise<boolean>>(async () => false);
   // Spoken replies carry the prices the visitor sees (his country's currency), not the stored Egyptian ones.
   const voiceMessages = useMemo(() => messages.map((message) => ({
@@ -306,6 +305,10 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     onSend: (text, turn) => voiceSendRef.current(text, turn),
     onAsk: (heard, question) => setMessages((list) => [...list, ...askMessages(heard, question, currentLang)]),
   });
+  const { isSpeaking, toggle: readReply, stop: stopReading } = useReadAloud({
+    language: currentLang, dialect: voice.dialect, onNoVoice: voice.reportNoVoice,
+  });
+  useEffect(() => { if (voice.active) stopReading(); }, [voice.active, stopReading]);
   // «ثواني أشوفلك البيانات»: while he really looks the question up (store, prices, stock…), he says so.
   const lookingUp = isLoading ? lookingUpLine(messages, currentLang, voice.dialect) : undefined;
 
@@ -319,16 +322,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
   const handleSpeech = (text: string) => {
     if (voice.active) voice.stop();
-    if ('speechSynthesis' in window) {
-      if (isSpeaking) {
-        window.speechSynthesis.cancel();
-        setIsSpeaking(false);
-        return;
-      }
-      // Said the way Shaheen talks (numbers, prices and lists as people say them), in the visitor's dialect.
-      setIsSpeaking(true);
-      readAloud(text, { language: currentLang, dialect: voice.dialect, onEnd: () => setIsSpeaking(false), onNoVoice: voice.reportNoVoice });
-    }
+    readReply(text);
   };
 
   // Copy & clear state trackers
@@ -341,7 +335,6 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
 
   useEffect(() => {
     scrollChatToEnd(messagesEndRef.current);
@@ -409,6 +402,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   };
 
   const handleClearHistory = () => {
+    stopReading(); voice.stop();
     clearHistory();
     setShowClearConfirm(false);
   };

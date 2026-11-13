@@ -52,7 +52,7 @@ import { isStaticHosting } from '../utils/api';
 import { copyChatText } from '../utils/clipboard';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { FloatingDock } from './FloatingDock';
-import { readAloud } from '../utils/readAloud';
+import { useReadAloud } from '../hooks/useReadAloud';
 import { askMessages, lookingUpLine } from '../utils/heardFix';
 
 
@@ -874,7 +874,6 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
 
   const [input, setInput] = useState('');
   const [compoundingStep, setCompoundingStep] = useState(0);
-  const [isSpeaking, setIsSpeaking] = useState(false);
   const voiceSendRef = useRef<(text: string, turn?: ShaheenVoiceTurn) => Promise<boolean>>(async () => false);
   // Spoken replies carry the prices the visitor sees (his country's currency), not the stored Egyptian ones.
   const voiceMessages = useMemo(() => messages.map((message) => ({
@@ -891,18 +890,21 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     onSend: (text, turn) => voiceSendRef.current(text, turn),
     onAsk: (heard, question) => setMessages((list) => [...list, ...askMessages(heard, question, currentLang)]),
   });
+  const { isSpeaking, toggle: readReply, stop: stopReading } = useReadAloud({
+    language: currentLang, dialect: voice.dialect, onNoVoice: voice.reportNoVoice,
+  });
+  useEffect(() => { if (voice.active) stopReading(); }, [voice.active, stopReading]);
   // «ثواني أشوفلك البيانات»: while he really looks the question up (store, prices, stock…), he says so.
   const lookingUp = isLoading ? lookingUpLine(messages, currentLang, voice.dialect) : undefined;
   const closeChat = useCallback(() => {
     voice.stop();
-    if (isSpeaking && typeof window !== 'undefined') window.speechSynthesis?.cancel();
-    setIsSpeaking(false);
+    stopReading();
     setIsOpen(false);
-  }, [isSpeaking, voice.stop]);
+  }, [stopReading, voice.stop]);
   useEffect(() => {
     if (hidden) closeChat();
-    else if (!isOpen) voice.stop();
-  }, [closeChat, hidden, isOpen, voice.stop]);
+    else if (!isOpen) { voice.stop(); stopReading(); }
+  }, [closeChat, hidden, isOpen, stopReading, voice.stop]);
 
   // Copy & Action tracking states
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -1032,24 +1034,15 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   };
 
   const handleClearHistory = () => {
+    stopReading(); voice.stop();
     clearHistory();
     setShowClearConfirm(false);
   };
 
-  useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
 
   const handleSpeech = (text: string) => {
     if (voice.active) voice.stop();
-    if ('speechSynthesis' in window) {
-      if (isSpeaking) {
-        window.speechSynthesis.cancel();
-        setIsSpeaking(false);
-        return;
-      }
-      // Said the way Shaheen talks (numbers, prices and lists as people say them), in the visitor's dialect.
-      setIsSpeaking(true);
-      readAloud(text, { language: currentLang, dialect: voice.dialect, onEnd: () => setIsSpeaking(false), onNoVoice: voice.reportNoVoice });
-    }
+    readReply(text);
   };
 
   return (

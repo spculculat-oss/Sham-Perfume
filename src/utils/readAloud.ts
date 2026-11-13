@@ -16,17 +16,24 @@ import { currentStoreCountry } from './storeCheckout';
 /** Reads the reply aloud; returns a function that stops it. `onEnd` runs once (finished, failed or stopped). */
 export function readAloud(text: string, { language, dialect, onEnd, onNoVoice }: {
   language: SupportedLanguage; dialect?: Dialect; onEnd?: () => void;
-  /** The device has no voice for this language: nothing is read (an English voice reading Hindi is gibberish). */
+  /** No suitable voice, synthesis/playback failure, or stalled engine. Written replies remain available. */
   onNoVoice?: () => void;
 }): () => void {
   let done = false;
   let timer: ReturnType<typeof setTimeout> | undefined;
   let current: SpeechSynthesisUtterance | undefined;
-  const end = () => { if (!done) { done = true; clearTimeout(timer); current = undefined; onEnd?.(); } };
+  const synth = typeof window === 'undefined' ? undefined : window.speechSynthesis;
+  const end = (failed = false, cancelNative = false) => {
+    if (done) return;
+    done = true; clearTimeout(timer); current = undefined;
+    // Cancel before onEnd: that callback can synchronously start a new reader.
+    if (cancelNative) { try { synth?.cancel(); } catch { /* Already quiet. */ } }
+    if (failed) onNoVoice?.();
+    onEnd?.();
+  };
   const choice = savedVoiceChoice();
   const local = resolveLocalVoice(choice.names[language], language);
-  if (typeof window === 'undefined' || (!local && (!window.speechSynthesis || !window.SpeechSynthesisUtterance))) { onNoVoice?.(); end(); return () => undefined; }
-  const synth = window.speechSynthesis;
+  if (typeof window === 'undefined' || (!local && (!window.speechSynthesis || !window.SpeechSynthesisUtterance))) { end(true); return () => undefined; }
   // «بلغة بلده ولهجتها»: his country's accent (fr-CA, es-MX), or for Arabic his dialect (else his Arab country's).
   const country = currentStoreCountry();
   const spokenDialect = language === 'ar' ? dialect || resolveDialect({ choice: savedDialectChoice(), texts: [], country }) : undefined;
@@ -36,12 +43,12 @@ export function readAloud(text: string, { language, dialect, onEnd, onNoVoice }:
   if (local) {
     try { synth?.cancel(); } catch { /* No queue. */ }
     const stop = playLocalVoice(chunks, { name: local.name, language, rate: choice.rate, pitch: choice.pitch,
-      onEnd: end, onError: () => { onNoVoice?.(); end(); } });
+      onEnd: () => end(), onError: () => end(true) });
     return () => { stop(); end(); };
   }
   let voices: SpeechSynthesisVoice[] = [];
-  try { voices = synth.getVoices(); } catch { /* No voice list yet: the engine picks one for the locale. */ }
-  if (deviceLacksVoice(voices, language)) { onNoVoice?.(); end(); return () => undefined; }
+  try { voices = synth!.getVoices(); } catch { /* No voice list yet: the engine picks one for the locale. */ }
+  if (deviceLacksVoice(voices, language)) { end(true); return () => undefined; }
   // «صوت شاهين»: the voice, pitch and pace the visitor chose (or Shaheen's usual voice).
   const voice = chosenVoice(voices, locale, language, choice);
   let index = 0;
@@ -55,13 +62,13 @@ export function readAloud(text: string, { language, dialect, onEnd, onNoVoice }:
       utterance.pitch = choice.pitch;
       if (voice) utterance.voice = voice;
       current = utterance;
-      utterance.onend = () => { clearTimeout(timer); current = undefined; index += 1; next(); };
-      utterance.onerror = () => { if (!done) onNoVoice?.(); end(); };
-      timer = setTimeout(() => { end(); try { synth.cancel(); } catch { /* stalled engine */ } }, Math.max(20000, chunks[index]!.length * 180));
-      synth.speak(current);
-    } catch { end(); }
+      utterance.onend = () => { if (done || current !== utterance) return; clearTimeout(timer); current = undefined; index += 1; next(); };
+      utterance.onerror = () => { if (current === utterance) end(true); };
+      timer = setTimeout(() => { if (current === utterance) end(true, true); }, Math.max(20000, chunks[index]!.length * 180));
+      synth!.speak(current);
+    } catch { end(true, true); }
   };
-  try { synth.cancel(); } catch { /* Nothing queued. */ }
+  try { synth!.cancel(); } catch { /* Nothing queued. */ }
   next();
-  return () => { end(); try { synth.cancel(); } catch { /* Already quiet. */ } };
+  return () => end(false, true);
 }

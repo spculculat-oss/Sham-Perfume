@@ -64,13 +64,16 @@ function pickNewest(deployments, sha = process.env.GITHUB_SHA) {
  * env rebuild of it, e.g. an earlier sync). Promoting also unpins a rolled-back project.
  */
 async function ensureLive(project, target) {
-  const live = await liveId(project);
-  if (!live || live === target.uid) return true;
-  if (target.sha) {
+  const details = await vercel(`/v9/projects/${encodeURIComponent(project)}`);
+  const live = details?.targets?.production?.id;
+  if (live === target.uid) return true;
+  if (live && target.sha) {
     const liveSha = (await vercel(`/v13/deployments/${encodeURIComponent(live)}`).catch(() => null))?.meta?.githubCommitSha;
     if (liveSha === target.sha) return true;
   }
-  await vercel(`/v10/projects/${encodeURIComponent(project)}/promote/${encodeURIComponent(target.uid)}`, { method: 'POST' });
+  // Unlike v9 idOrName lookups, the promote endpoint requires the project's immutable prj_ id.
+  if (!details?.id) throw new Error('Project lookup returned no id; refusing to promote by name');
+  await vercel(`/v10/projects/${encodeURIComponent(details.id)}/promote/${encodeURIComponent(target.uid)}`, { method: 'POST' });
   for (let i = 0; i < 24; i++) {
     if ((await liveId(project)) === target.uid) {
       note('notice', `Vercel ${project}`, `production was pinned to an older build (${live}) — promoted the newest build ${target.uid}; automatic go-live is back on`);

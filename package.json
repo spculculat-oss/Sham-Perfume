@@ -29,7 +29,8 @@
     "voice:bench": "node --import tsx --import ./tests/register-assets.mjs scripts/voice-bench.ts",
     "voice:talk": "node --import tsx --import ./tests/register-assets.mjs scripts/talk-drill.ts",
     "voice:languages": "node --import tsx --import ./tests/register-assets.mjs scripts/language-drill.ts",
-    "test:voices-browser": "node scripts/check-local-voices.mjs"
+    "test:voices-browser": "node scripts/check-local-voices.mjs",
+    "test:voices-lifecycle": "node scripts/check-voice-lifecycle.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
