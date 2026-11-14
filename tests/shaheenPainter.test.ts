@@ -11,7 +11,7 @@ import { WS_STRINGS } from '../src/workspace/strings';
 test('the painter training bank passes: known ideas are understood, gaps are admitted', () => {
   const report = runPaintTraining(PAINT_LESSONS);
   assert.equal(report.fail, 0, formatPaintReport(report));
-  assert.ok(report.known >= 14);
+  assert.ok(report.known >= 29);
   assert.ok(report.gaps.length >= 5);
   assert.equal(new Set(PAINT_LESSONS.map((l) => l.id)).size, PAINT_LESSONS.length);
 });
@@ -25,8 +25,8 @@ test('a painting is deterministic, sound, sized by the aspect and changes with t
 });
 
 test('an idea outside the vocabulary still gives a sound picture and names what is missing', () => {
-  const p = paintScene('حصان عربي يجري في الصحراء');
-  assert.equal(p.missing, 'horse');
+  const p = paintScene('أسد في الصحراء');
+  assert.equal(p.missing, 'lion');
   assert.equal(p.setting, 'desert');
   assert.deepEqual(soundSvg(p), []);
   assert.equal(paintScene('جمل في الصحراء').missing, undefined);
@@ -55,4 +55,26 @@ test('the painter steps in only when the engine is not there, never for refusals
 test('the painter notes say honestly that it is an illustration', () => {
   assert.match(WS_STRINGS.painter_note.ar, /مش صورة واقعية/);
   assert.match(WS_STRINGS.painter_partial.ar, /المكان والجو بس/);
+});
+
+test('stage two: the painter imagines extras, draws the new subjects and keeps every size sound', () => {
+  const dream = paintScene('قلعة في عالم خيالي بالليل', { seed: 2 });
+  assert.deepEqual(dream.subjects, ['castle']);
+  for (const extra of ['milky way', 'giant moon', 'floating islands', 'fireflies']) assert.ok(dream.extras.includes(extra), extra);
+  assert.equal(dream.missing, undefined);
+  assert.ok(!paintScene('قلعة وقت الغروب', { seed: 2 }).extras.includes('floating islands'));
+  assert.ok(paintScene('جبال وقت الغروب').extras.includes('light rays'));
+  for (const aspect of ['1:1', '3:4', '4:3', '9:16', '16:9'] as const) {
+    const p = paintScene('تنين ينفث النار فوق جزر طائرة وشلال وكوكب ومناطيد وفراشات وحصان وحوت وفنار واهرامات وكريستال وشجرة', { aspect, seed: 5 });
+    assert.deepEqual(soundSvg(p), [], aspect);
+    assert.equal(p.subjects.length, 12);
+    assert.equal(new Set(p.svg.match(/ id="[^"]+"/g)).size, (p.svg.match(/ id="[^"]+"/g) || []).length, 'duplicate ids');
+  }
+});
+
+test('words inside other words do not summon subjects', () => {
+  assert.ok(!paintScene('صورة تخيلية لبحر').subjects.includes('horse'));
+  assert.ok(!paintScene('حوت يطير فوق البحر').subjects.includes('falcon'));
+  assert.ok(!paintScene('فنار على البحر').extras.includes('fire'));
+  assert.ok(!paintScene('رجل قصير في حديقة').subjects.includes('castle'));
 });
