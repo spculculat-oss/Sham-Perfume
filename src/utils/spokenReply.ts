@@ -353,6 +353,8 @@ export function spokenReply(text: string, { language, dialect, words = 45, opene
     let s = sentence;
     if (arabic) {
       for (const [re, name] of SPOKEN_NAMES) s = s.replace(re, name);
+      // A product code («SKU: LAT-095») is for the screen, not for the ear (before its digits become words).
+      s = s.replace(/(?<![A-Za-z])SKU\s*[:：#]?\s*/gi, '').replace(/[([]?(?<![A-Za-z])[A-Z]{2,5}-\d{2,5}(?!\d)[)\]]?/g, ' ');
       s = arabicBrandNames(everydayWords(speakArabicNumbers(s, dialect), dialect), dialect);
     } else {
       s = speakWorldNumbers(worldTerms(s, language), language, speechLocale);

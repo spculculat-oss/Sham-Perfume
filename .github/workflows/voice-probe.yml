@@ -1,0 +1,33 @@
+name: Voice probe (temporary)
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - name: Which delivery note keeps the voice Arabic and faithful (transcripts only, never the key)
+        run: |
+          note() { echo "::notice title=$1::$(printf '%s' "$2" | head -c 1500 | tr '\n\r' '  ')"; }
+          A=https://generativelanguage.googleapis.com/v1beta/models
+          H="x-goog-api-key: $GEMINI_API_KEY"
+          T='أنصحك بديور سوفاج حجم مية مللي بسعر أربع تلاف جنيه، وكمان توم فورد عود وود. النوتات العليا فيها برغموت وفلفل. شحن مجاني لحد البيت.'
+          EN="Say this in a Egyptian Arabic accent, warm and friendly, natural conversational pace: $T"
+          EN2="Say this in a Egyptian Arabic accent, warm and friendly, natural conversational pace. Every word in Arabic, foreign names with an Egyptian accent: $T"
+          AR="اتكلم بالعامية المصرية، بصوت دافي وودود وبنبرة طبيعية، وانطق كل كلمة بالعربي: $T"
+          for m in gemini-3.8-flash-lite-tts; do for which in EN EN2 AR; do for run in 1 2; do
+            jq -n --arg t "${!which}" --arg v Achird \
+              '{contents:[{role:"user",parts:[{text:$t}]}],generationConfig:{responseModalities:["AUDIO"],speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:$v}}}}}' > /tmp/b.json
+            s=$(date +%s.%N)
+            code=$(curl -sS -m 60 -o /tmp/r.json -w '%{http_code}' -H "$H" -H 'Content-Type: application/json' -d @/tmp/b.json "$A/$m:generateContent")
+            e=$(date +%s.%N)
+            jq -r '.candidates[0].content.parts[0].inlineData.data // ""' /tmp/r.json | base64 -d > /tmp/a.wav 2>/dev/null
+            bytes=$(wc -c < /tmp/a.wav)
+            base64 -w0 /tmp/a.wav > /tmp/a.b64
+            jq -n --rawfile d /tmp/a.b64 '{contents:[{parts:[{inlineData:{mimeType:"audio/wav",data:$d}},{text:"Transcribe this audio exactly, word for word, in the script of the language actually spoken for each word (write English words in Latin letters). Then on a new line write ACCENT: and say whether any words were pronounced with an English accent rather than Arabic."}]}]}' > /tmp/tb.json
+            tr=$(curl -sS -m 60 -H "$H" -H 'Content-Type: application/json' -d @/tmp/tb.json "$A/gemini-2.5-flash:generateContent" | jq -r '.candidates[0].content.parts[0].text // .error.message // "?"')
+            note "$which run $run" "HTTP $code in $(echo "$e - $s" | bc)s, ~$(echo "$bytes / 48000" | bc)s audio. HEARD: $tr"
+          done; done; done
