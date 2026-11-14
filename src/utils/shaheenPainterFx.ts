@@ -20,10 +20,13 @@ const horizonGlow = (c: Stage) => c.tone.sky[c.tone.sky.length - 1];
 // ── Light and atmosphere ──────────────────────────────────────────────────────────────────────────────────
 export function rays(c: Stage, x: number, y: number): string {
   const reach = Math.hypot(c.W, c.H);
-  let out = `<defs><filter id="blur-ray" filterUnits="userSpaceOnUse" x="0" y="0" width="${c.W}" height="${c.H}"><feGaussianBlur stdDeviation="14"/></filter></defs><g filter="url(#blur-ray)" style="mix-blend-mode:screen" opacity="${c.time === 'day' ? 0.2 : c.time === 'night' ? 0.14 : 0.4}">`;
+  // Each shaft is cut to the canvas by hand: a bounded shape blurs the same in every renderer.
+  let out = `<g filter="url(#blur-m)" style="mix-blend-mode:screen" opacity="${c.time === 'day' ? 0.2 : c.time === 'night' ? 0.14 : 0.4}">`;
+  const inside = ([px, py]: number[]) => [Math.max(0, Math.min(c.W, px)), Math.max(0, Math.min(c.H, py))];
   for (let i = 0; i < 12; i++) {
-    const a = (i / 12) * Math.PI * 2 + c.r() * 0.4, spread = 0.025 + c.r() * 0.06;
-    out += `<path d="${pts([[x, y], [x + Math.cos(a - spread) * reach, y + Math.sin(a - spread) * reach], [x + Math.cos(a + spread) * reach, y + Math.sin(a + spread) * reach]])}" fill="${c.tone.light}" opacity="${n(0.25 + c.r() * 0.5)}"/>`;
+    const a = (i / 12) * Math.PI * 2 + c.r() * 0.4, spread = 0.025 + c.r() * 0.06, steps = 6;
+    const edge = (angle: number) => Array.from({ length: steps }, (_, k) => inside([x + Math.cos(angle) * reach * ((k + 1) / steps), y + Math.sin(angle) * reach * ((k + 1) / steps)]));
+    out += `<path d="${pts([inside([x, y]), ...edge(a - spread), ...edge(a + spread).reverse()])}" fill="${c.tone.light}" opacity="${n(0.25 + c.r() * 0.5)}"/>`;
   }
   return `${out}</g>`;
 }

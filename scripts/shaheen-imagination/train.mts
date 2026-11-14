@@ -9,8 +9,8 @@
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { PAINT_LESSONS } from './lessons';
-import { formatPaintReport, runPaintTraining } from './bench';
+import { PAINT_LESSONS, drillLessons } from './lessons';
+import { formatPaintReport, runDrill, runPaintTraining } from './bench';
 
 const args = process.argv.slice(2);
 const report = runPaintTraining(PAINT_LESSONS);
@@ -20,4 +20,8 @@ if (at >= 0 && args[at + 1]) {
   for (const r of report.results) writeFileSync(join(args[at + 1], `${r.id}.svg`), r.painting.svg);
 }
 console.log(formatPaintReport(report, args.includes('--verbose')));
-process.exit(report.fail ? 1 : 0);
+const drill = runDrill(drillLessons());
+console.log(`التمرين المكثّف (كل عنصر × كل مكان × كل وقت، عربي وإنجليزي): ${drill.pass}/${drill.total} — ${((drill.pass / drill.total) * 100).toFixed(1)}%`);
+for (const f of drill.failures.slice(0, 15)) console.log(`✗ ${f.idea} → ${f.problems.join('؛ ')}`);
+if (drill.failures.length > 15) console.log(`… و${drill.failures.length - 15} حالة تانية`);
+process.exit(report.fail || drill.failures.length ? 1 : 0);

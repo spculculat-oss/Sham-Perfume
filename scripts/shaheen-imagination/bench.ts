@@ -26,7 +26,8 @@ export function soundSvg(p: Painting): string[] {
 export function runLesson(lesson: PaintLesson): LessonResult {
   const painting = paintScene(lesson.idea, { seed: 7 });
   const problems = soundSvg(painting);
-  if (paintScene(lesson.idea, { seed: 7 }).svg !== painting.svg) problems.push('الرسمة مش ثابتة لنفس الفكرة');
+  if (!lesson.only && paintScene(lesson.idea, { seed: 7 }).svg !== painting.svg) problems.push('الرسمة مش ثابتة لنفس الفكرة');
+  if (painting.layers.back.length + painting.layers.front.length < painting.svg.length * 0.5) problems.push('طبقات الحركة ناقصة');
   if (lesson.beyond) {
     if (!painting.missing) problems.push('ما اعترفش إن العنصر الرئيسي مش من مفرداته');
   } else {
@@ -36,6 +37,8 @@ export function runLesson(lesson: PaintLesson): LessonResult {
     if (lesson.look && painting.look !== lesson.look) problems.push(`الأسلوب ${painting.look} والمطلوب ${lesson.look}`);
     for (const s of lesson.subjects || []) if (!painting.subjects.includes(s)) problems.push(`العنصر ${s} ما اترسمش`);
     for (const s of lesson.not || []) if (painting.subjects.includes(s)) problems.push(`رسم ${s} من غير ما حد يطلبه`);
+    for (const g of lesson.guessed || []) if (!painting.guessed.includes(g)) problems.push(`ما خمّنش «${g}»`);
+    if (lesson.only && painting.subjects.join() !== (lesson.subjects || []).join()) problems.push(`رسم [${painting.subjects.join(', ')}] والمطلوب [${(lesson.subjects || []).join(', ')}] بس`);
     for (const e of lesson.extras || []) if (!painting.extras.includes(e)) problems.push(`ما تخيّلش «${e}»`);
   }
   return { id: lesson.id, idea: lesson.idea, ok: problems.length === 0, beyond: Boolean(lesson.beyond), problems, painting };
@@ -58,8 +61,15 @@ export function formatPaintReport(report: PaintReport, verbose = false): string 
     if (r.ok && !verbose) continue;
     lines.push(`${r.ok ? '✓' : '✗'} ${r.id}: ${r.idea}`);
     for (const p of r.problems) lines.push(`    - ${p}`);
-    if (verbose) lines.push(`    ${r.painting.setting} / ${r.painting.time} / ${r.painting.look} / [${r.painting.subjects.join(', ')}]${r.painting.extras.length ? ` + خيال: ${r.painting.extras.join(', ')}` : ''}${r.painting.missing ? ` / ناقص: ${r.painting.missing}` : ''}`);
+    if (verbose) lines.push(`    ${r.painting.setting} / ${r.painting.time} / ${r.painting.look} / [${r.painting.subjects.join(', ')}]${r.painting.guessed.length ? ` + تخمين: ${r.painting.guessed.join(', ')}` : ''}${r.painting.extras.length ? ` + خيال: ${r.painting.extras.join(', ')}` : ''}${r.painting.missing ? ` / ناقص: ${r.painting.missing}` : ''}`);
   }
   if (report.gaps.length) lines.push(`الدروس الجاية (لسه ما يعرفش يرسمها وبيقول كده بصراحة): ${[...new Set(report.gaps)].join('، ')}`);
   return lines.join('\n');
+}
+
+/** The intensive drill: a score, and the first failures (not two thousand lines). */
+export function runDrill(lessons: PaintLesson[]): { total: number; pass: number; failures: LessonResult[] } {
+  const failures: LessonResult[] = [];
+  for (const lesson of lessons) { const result = runLesson(lesson); if (!result.ok) failures.push(result); }
+  return { total: lessons.length, pass: lessons.length - failures.length, failures };
 }

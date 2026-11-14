@@ -3,15 +3,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { PAINT_SIZES, paintScene } from '../src/utils/shaheenPainter';
 import { painterStepsIn } from '../src/workspace/paint';
-import { PAINT_LESSONS } from '../scripts/shaheen-imagination/lessons';
-import { formatPaintReport, runPaintTraining, soundSvg } from '../scripts/shaheen-imagination/bench';
+import { PAINT_LESSONS, drillLessons } from '../scripts/shaheen-imagination/lessons';
+import { depthFrame, motionFrame } from '../src/workspace/motion';
+import { formatPaintReport, runDrill, runPaintTraining, soundSvg } from '../scripts/shaheen-imagination/bench';
 import { ApiError, ApiUnavailableError } from '../src/utils/api';
 import { WS_STRINGS } from '../src/workspace/strings';
 
 test('the painter training bank passes: known ideas are understood, gaps are admitted', () => {
   const report = runPaintTraining(PAINT_LESSONS);
   assert.equal(report.fail, 0, formatPaintReport(report));
-  assert.ok(report.known >= 29);
+  assert.ok(report.known >= 52);
   assert.ok(report.gaps.length >= 5);
   assert.equal(new Set(PAINT_LESSONS.map((l) => l.id)).size, PAINT_LESSONS.length);
 });
@@ -77,4 +78,53 @@ test('words inside other words do not summon subjects', () => {
   assert.ok(!paintScene('حوت يطير فوق البحر').subjects.includes('falcon'));
   assert.ok(!paintScene('فنار على البحر').extras.includes('fire'));
   assert.ok(!paintScene('رجل قصير في حديقة').subjects.includes('castle'));
+});
+
+test('the intensive drill: every subject in every place at every time, Arabic and English, is understood exactly', () => {
+  const lessons = drillLessons();
+  assert.ok(lessons.length >= 1400);
+  const drill = runDrill(lessons);
+  assert.equal(drill.pass, drill.total, drill.failures.slice(0, 5).map((f) => `${f.idea}: ${f.problems.join('; ')}`).join('\n'));
+});
+
+test('stage three: a guess fills only what the words left open', () => {
+  const ramadan = paintScene('صورة عن رمضان');
+  assert.deepEqual(ramadan.subjects, ['lantern', 'mosque']);
+  assert.equal(ramadan.time, 'night');
+  assert.deepEqual(ramadan.guessed, ['ramadan']);
+  assert.equal(ramadan.missing, undefined);
+  const named = paintScene('جمل في الصحراء بالليل في رمضان');
+  assert.deepEqual(named.subjects, ['camel']);
+  assert.equal(named.setting, 'desert');
+  assert.deepEqual(paintScene('جبال وقت الفجر').guessed, []);
+  assert.notEqual(paintScene('ثلاث احصنة في الصحراء', { seed: 1 }).svg, paintScene('حصان في الصحراء', { seed: 1 }).svg);
+});
+
+test('real textures are lit from the sun side, and plain looks stay plain', () => {
+  const real = paintScene('جبال وقت الغروب').svg;
+  assert.match(real, /id="tx-rock"[^>]*>.*?feDiffuseLighting/);
+  assert.match(real, /filter="url\(#tx-rock\)"/);
+  assert.match(real, /feTurbulence type="fractalNoise" baseFrequency="0.0042 0.012"/);
+  const cartoon = paintScene('جبال وقت الغروب', { style: 'cartoon3d' }).svg;
+  assert.ok(!cartoon.includes('tx-rock'));
+});
+
+test('depth layers: two sound sheets, the front one see-through, and the clip moves them apart', () => {
+  const p = paintScene('حصان في الصحراء وقت الغروب');
+  for (const sheet of [p.layers.back, p.layers.front]) assert.deepEqual(soundSvg({ ...p, svg: sheet }), []);
+  assert.ok(p.layers.front.includes('<ellipse') && !p.layers.front.includes('url(#sky)'));
+  assert.ok(p.layers.back.includes('url(#sky)'));
+  const [backStart, frontStart] = depthFrame(0), [backEnd, frontEnd] = depthFrame(1);
+  assert.equal(backStart.zoom, frontStart.zoom);
+  assert.ok(frontEnd.zoom > backEnd.zoom && backEnd.zoom > 1);
+  assert.ok(Math.sign(frontEnd.x) !== Math.sign(backEnd.x));
+  assert.deepEqual(depthFrame(Number.NaN), depthFrame(0));
+  assert.ok(motionFrame(1).zoom > motionFrame(0).zoom);
+});
+
+test('the painter tools are named in every language without a vendor name', () => {
+  for (const key of ['painter_again', 'painter_hd', 'painter_svg'] as const) for (const text of Object.values(WS_STRINGS[key])) {
+    assert.ok(text.length > 2);
+    assert.doesNotMatch(text, /gemini|openai|chatgpt|claude|midjourney/i);
+  }
 });

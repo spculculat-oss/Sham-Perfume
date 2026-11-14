@@ -8,6 +8,12 @@ export function motionFrame(progress: number) {
   const ease = p * p * (3 - 2 * p);
   return { zoom: 1.04 + 0.12 * ease, x: -0.015 + 0.03 * ease, y: 0.01 - 0.02 * ease };
 }
+/** Depth for a painted scene: the place and what stands in front of it move apart a little, anchored at the ground line. */
+export function depthFrame(progress: number) {
+  const p = Math.max(0, Math.min(1, Number.isFinite(progress) ? progress : 0));
+  const ease = p * p * (3 - 2 * p);
+  return [{ zoom: 1.03 + 0.07 * ease, x: 0.012 - 0.024 * ease }, { zoom: 1.03 + 0.13 * ease, x: -0.012 + 0.024 * ease }];
+}
 export function wantsMotion(text: string) {
   return /(?:اعمل|اعملى|اعملي|اعمللي|اصنع|أنشئ|انشئ|حول|حوّل|حرك|حرّك|خل.?ها|make|create|animate|turn).{0,100}(?:فيديو|متحرك|حرك|video|animation|animate)|^(?:حرك|حرّك)\s+(?:الصورة|الصوره|دي|دى)|\banimate\s+(?:this|the|my)\s+(?:image|photo|picture)/i.test(text);
 }
@@ -25,7 +31,7 @@ export function canvasBlob(canvas: HTMLCanvasElement): Promise<Blob> {
     catch { reject(new Error('Image export blocked by browser/CORS')); }
   });
 }
-export async function recordMotion(source: HTMLCanvasElement, signal: AbortSignal): Promise<Blob> {
+export async function recordMotion(source: HTMLCanvasElement, signal: AbortSignal, layers?: HTMLCanvasElement[]): Promise<Blob> {
   signal.throwIfAborted();
   if (typeof MediaRecorder === 'undefined' || typeof source.captureStream !== 'function') throw new Error('VIDEO_UNSUPPORTED');
   const mime = videoMime((value) => MediaRecorder.isTypeSupported(value));
@@ -36,7 +42,15 @@ export async function recordMotion(source: HTMLCanvasElement, signal: AbortSigna
   canvas.height = Math.max(2, Math.round(source.height * scale / 2) * 2);
   const ctx = canvas.getContext('2d'); if (!ctx) throw new Error('CANVAS_UNSUPPORTED');
   const draw = (p: number) => {
-    const f = motionFrame(p); const { width: w, height: h } = canvas;
+    const { width: w, height: h } = canvas;
+    if (layers?.length === 2) {
+      // Zoom around a point low in the picture (where things stand), so feet stay on their ground.
+      const anchor = h * 0.66;
+      ctx.clearRect(0, 0, w, h);
+      depthFrame(p).forEach((f, i) => { ctx.save(); ctx.translate(w / 2 + f.x * w, anchor); ctx.scale(f.zoom, f.zoom); ctx.drawImage(layers[i], -w / 2, -anchor, w, h); ctx.restore(); });
+      signCanvas(ctx, w, h); return;
+    }
+    const f = motionFrame(p);
     ctx.clearRect(0, 0, w, h); ctx.save(); ctx.translate(w / 2 + f.x * w, h / 2 + f.y * h);
     ctx.scale(f.zoom, f.zoom); ctx.drawImage(source, -w / 2, -h / 2, w, h); ctx.restore();
     signCanvas(ctx, w, h);
