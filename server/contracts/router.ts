@@ -22,6 +22,7 @@ import { LEGAL_DECISION_ID, POLICY_VERSION, missingSender } from './policy';
 import { onContractApproved, onContractRevoked } from './integration';
 import type { FinanceService } from '../finance/service';
 import { createNotifier } from '../core/notify';
+import { adminSecret } from '../core/adminSecret';
 
 type Env = Record<string, string | undefined>;
 type Handler = (req: express.Request, res: express.Response) => Promise<void>;
@@ -72,7 +73,7 @@ export function createContractsRouter(
     } catch (error) { sendError(res, error); }
   };
 
-  const adminToken = env.SHAM_ADMIN_TOKEN?.trim() || '';
+  const adminToken = adminSecret(env);
   const authorised = (req: express.Request, res: express.Response) => {
     res.setHeader('Cache-Control', 'no-store');
     if (adminToken.length < 12) { res.status(503).json({ error: 'Admin is disabled. Set SHAM_ADMIN_TOKEN on the server.', code: 'ADMIN_NOT_CONFIGURED' }); return false; }

@@ -22,6 +22,7 @@ import * as hub from './hub';
 import * as chat from './messenger';
 import * as mail from './mail';
 import * as admin from './admin';
+import { adminSecret } from '../core/adminSecret';
 
 type Env = Record<string, string | undefined>;
 type Handler = (req: express.Request, res: express.Response) => Promise<unknown>;
@@ -152,7 +153,7 @@ export function createCommunityRouter(community: Community, options: { env?: Env
     } catch (error) { sendError(res, error); }
   };
 
-  const adminToken = env.SHAM_ADMIN_TOKEN?.trim() || '';
+  const adminToken = adminSecret(env);
   /** Administration route: the server's admin token (same as the dashboard). */
   const boss = (handler: (ctx: svc.Ctx, req: express.Request, res: express.Response) => Promise<unknown>): Handler => async (req, res) => {
     if (adminToken.length < 12) { res.status(503).json({ error: 'Admin is disabled. Set SHAM_ADMIN_TOKEN on the server.', code: 'ADMIN_NOT_CONFIGURED' }); return; }

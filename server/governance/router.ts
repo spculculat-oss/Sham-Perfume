@@ -4,6 +4,7 @@ import type { Store } from '../core/store';
 import { ValidationError } from '../core/repository';
 import { RateLimiter, clientKey } from '../core/rateLimit';
 import { GovernanceService } from './service';
+import { adminSecret } from '../core/adminSecret';
 
 /** Mounted AFTER admin auth. The separate owner secret is never bundled or logged. */
 export function createGovernanceRouter(store: Store, env: Record<string, string | undefined>) {
@@ -15,7 +16,7 @@ export function createGovernanceRouter(store: Store, env: Record<string, string 
   router.use((req, res, next) => {
     res.setHeader('Cache-Control', 'no-store');
     const secret = env.SHAM_GOVERNANCE_OWNER_TOKEN?.trim() || '';
-    if (secret.length < 24 || secret === env.SHAM_ADMIN_TOKEN?.trim()) {
+    if (secret.length < 24 || secret === adminSecret(env)) {
       res.status(503).json({ code: 'OWNER_NOT_CONFIGURED', error: 'يلزم إعداد مفتاح حوكمة خاص مستقل عن مفتاح الإدارة على الخادم.' }); return;
     }
     const provided = req.get('X-Sham-Owner') || '';

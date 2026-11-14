@@ -1,5 +1,6 @@
 /** Admin client. The token lives in sessionStorage only (cleared when the tab closes). */
 import { apiUrl } from '../utils/api';
+import { plainCode } from './ownerCode';
 export const ADMIN_TOKEN_KEY = 'sham_core_admin_token';
 
 export class AdminApiError extends Error {
@@ -14,7 +15,8 @@ export function setToken(token: string) { try { if (token) sessionStorage.setIte
  * Android keyboard's automatic trailing space, or a pasted line break — reads as a wrong password. It never
  * can be part of a valid token (the server trims its own value too), so the token is trimmed here once.
  */
-export const cleanToken = (token: string | undefined | null) => String(token ?? '').trim();
+// Invisible characters (a pasted direction mark) and Arabic digits can never be part of it either (src/admin/ownerCode.ts).
+export const cleanToken = (token: string | undefined | null) => plainCode(token);
 
 export async function adminRequest<T>(path: string, init: RequestInit = {}, token = getToken()): Promise<T> {
   const response = await fetch(apiUrl(`/api/admin${path}`), {

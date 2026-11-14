@@ -1,11 +1,12 @@
 import { Suspense, lazy, useCallback, useEffect, useState, type ReactNode } from 'react';
 import {
-  Activity, Banknote, Bot, CalendarDays, Clock3, Crown, ExternalLink, Globe, Inbox, KeyRound, Landmark, LayoutDashboard, Loader2, Lock, LogOut, MessagesSquare, Network, ShieldCheck, Siren,
+  Activity, Banknote, Bot, CalendarDays, Clock3, Crown, ExternalLink, Eye, EyeOff, Globe, Inbox, KeyRound, Landmark, LayoutDashboard, Loader2, Lock, LogOut, MessagesSquare, Network, ShieldCheck, Siren,
 } from 'lucide-react';
 import { T, TP, adminDir, adminLocale, useAdminLanguage } from './adminL10n';
 import { formatAdminClock } from './adminClock';
 import { AdminApiError, adminRequest, getToken, setToken } from './adminApi';
 import { isStaticHosting } from '../utils/api';
+import { codeCandidates, typedInArabic } from './ownerCode';
 import { OPS_CODE, verifyOpsCode } from '../utils/opsCode';
 import bundledControls from '../data/owner/controls.json';
 import bundledPrecheck from '../data/live/shaheen-precheck.json';
@@ -75,6 +76,7 @@ export default function OwnerSuite() {
   const [error, setError] = useState('');
   const [fails, setFails] = useState(0);
   const [section, setSection] = useState<Section>('home');
+  const [showCode, setShowCode] = useState(false);
 
   // Already signed in in this tab (admin code or map code) → straight in.
   useEffect(() => {
@@ -100,19 +102,29 @@ export default function OwnerSuite() {
   }, [access, lock]);
 
   const submit = async () => {
-    const candidate = code.trim();
-    if (!candidate) return;
+    // What he typed → what he meant: an Arabic keyboard («شسي» = "asd», «١٢٣» = "123") or a pasted invisible mark
+    // used to read as «wrong code» every time (src/admin/ownerCode.ts).
+    const candidates = codeCandidates(code);
+    if (!candidates.length) return;
     setChecking(true); setError('');
     try {
       if (!isStaticHosting) {
-        try { await adminRequest('/overview', {}, candidate); setToken(candidate); setCode(''); setFails(0); setAccess('full'); return; }
-        catch (e) { if (e instanceof AdminApiError && e.status === 429) { setError(T('محاولات كثيرة فاشلة. انتظر 15 دقيقة.')); return; } }
+        for (const candidate of candidates) {
+          try { await adminRequest('/overview', {}, candidate); setToken(candidate); setCode(''); setFails(0); setAccess('full'); return; }
+          catch (e) {
+            if (e instanceof AdminApiError && e.status === 429) { setError(T('محاولات كثيرة فاشلة. انتظر 15 دقيقة.')); return; }
+            if (e instanceof AdminApiError && e.status === 503) { setError(T('كود الإدارة مش متسجل على السيرفر: سجّله في فيرسال باسم SHAM_ADMIN_TOKEN (12 حرف أو أكتر).')); return; }
+            if (!(e instanceof AdminApiError)) { setError(T('السيرفر مش بيرد دلوقتي. جرّب تاني بعد دقيقة.')); return; }
+          }
+        }
       }
-      if (await verifyOpsCode(candidate)) { try { sessionStorage.setItem(MAP_KEY, OPS_CODE!.raw); } catch { /* ignore */ } setCode(''); setFails(0); setAccess('map'); return; }
+      for (const candidate of candidates) {
+        if (await verifyOpsCode(candidate)) { try { sessionStorage.setItem(MAP_KEY, OPS_CODE!.raw); } catch { /* ignore */ } setCode(''); setFails(0); setAccess('map'); return; }
+      }
       // A growing pause after each wrong code slows down guessing.
       await wait(Math.min(10_000, 1000 * (fails + 1)));
       setFails((n) => n + 1);
-      setError(T('الكود غير صحيح.'));
+      setError(T('الكود غير صحيح. دوس على العين عشان تشوف اللي كتبته، واتأكد من الحروف الكبيرة والصغيرة. الكود الصحيح هو المتسجل في فيرسال باسم SHAM_ADMIN_TOKEN.'));
     } finally { setChecking(false); }
   };
 
@@ -125,8 +137,15 @@ export default function OwnerSuite() {
             <h1 className="text-xl font-black text-amber-100">{T('جناح صاحب الموقع')}</h1>
             <p className="text-xs text-stone-400">{T('مكان خاص بصاحب الموقع بس. اكتب الكود السري بتاعك. الدخول بيفضل في الصفحة دي لحد ما تقفلها، وبيتقفل لوحده لو سبتها نص ساعة.')}</p>
           </div>
-          <input className="w-full rounded-xl border border-stone-700 bg-black px-3 py-2 text-center text-sm tracking-widest text-amber-100" type="password" dir="ltr" autoComplete="current-password" autoFocus
-            value={code} onChange={(e) => setCode(e.target.value)} placeholder={T('الكود السري')} aria-label={T('الكود السري')} />
+          <div className="relative">
+            <input className="w-full rounded-xl border border-stone-700 bg-black px-10 py-2 text-center text-sm tracking-widest text-amber-100" type={showCode ? 'text' : 'password'} dir="ltr" autoComplete="current-password" autoFocus
+              spellCheck={false} autoCapitalize="none" autoCorrect="off"
+              value={code} onChange={(e) => setCode(e.target.value)} placeholder={T('الكود السري')} aria-label={T('الكود السري')} />
+            <button type="button" onClick={() => setShowCode((v) => !v)} className="absolute inset-y-0 end-0 flex items-center px-3 text-stone-400 hover:text-amber-200" aria-label={showCode ? T('إخفاء الكود') : T('إظهار الكود')} title={showCode ? T('إخفاء الكود') : T('إظهار الكود')}>
+              {showCode ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+          {typedInArabic(code) && <p className="text-center text-[11px] text-amber-300/80">{T('الكيبورد شكله على العربي — مش مشكلة، هنقرأ الحروف الإنجليزي اللي على نفس الزراير.')}</p>}
           {error && <p role="alert" className="text-center text-xs text-red-400">{error}</p>}
           <button disabled={checking || !code.trim()} className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-500 px-3 py-2 text-sm font-black text-stone-950 disabled:opacity-40">
             {checking ? <Loader2 className="h-4 w-4 animate-spin" /> : <><KeyRound className="h-4 w-4" />{T('دخول')}</>}

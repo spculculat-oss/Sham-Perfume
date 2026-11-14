@@ -42,6 +42,7 @@ import {
   getEmailHistory,
   STATUS_LABELS_AR,
 } from './email';
+import { adminSecret } from './adminSecret';
 
 type Env = Record<string, string | undefined>;
 
@@ -247,7 +248,7 @@ export function createShamCore(options: CoreOptions = {}) {
 
   // ---------------- admin ----------------
   const admin = express.Router();
-  const token = env.SHAM_ADMIN_TOKEN?.trim() || '';
+  const token = adminSecret(env);
   const digest = (v: string) => createHash('sha256').update(v).digest();
   admin.use((req, res, next) => {
     res.setHeader('Cache-Control', 'no-store');
