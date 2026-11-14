@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { AudioLines, Ear, EarOff, Fingerprint, Keyboard, Languages, Mic, MicOff, Play, Trash2, VolumeX, X } from 'lucide-react';
+import { AudioLines, Ear, EarOff, Fingerprint, Keyboard, Languages, Mic, MicOff, Play, SlidersHorizontal, Trash2, VolumeX, X } from 'lucide-react';
 import { DEFAULT_VOICE_CHOICE } from '../utils/voiceChoice';
 import { DIALECT_INFO, DIALECTS, isDialectChoice } from '../utils/arabicDialect';
 import type { SupportedLanguage } from '../types/i18n';
@@ -65,6 +65,7 @@ const COPY = {
   voice_mood: { ar: 'صوته يتأقلم مع مزاجك (أهدى لو متضايق، أسرع لو مستعجل)', en: 'His voice follows your mood (calmer if you’re upset, quicker if you’re in a hurry)', fr: 'Sa voix suit votre humeur (plus calme si vous êtes contrarié, plus rapide si vous êtes pressé)', es: 'Su voz sigue tu ánimo (más calmada si estás molesto, más rápida si tienes prisa)', it: 'La sua voce segue il tuo umore (più calma se sei arrabbiato, più veloce se hai fretta)', de: 'Seine Stimme folgt deiner Stimmung (ruhiger, wenn du verärgert bist, schneller, wenn du es eilig hast)', ru: 'Голос подстраивается под ваше настроение (спокойнее, если вы расстроены, быстрее, если спешите)', zh: '他的声音会配合你的心情（你不高兴时更平静，你赶时间时更快）', tr: 'Sesi ruh haline uyar (üzgünsen daha sakin, aceleysen daha hızlı)', fa: 'صدایش با حال شما هماهنگ می‌شود (اگر ناراحت باشید آرام‌تر، اگر عجله داشته باشید سریع‌تر)' },
   voice_hint: { ar: 'صوتين بشريين بس: راجل وست، بلهجة مصرية. الجمل المتكررة متسجلة على الموقع، وباقي الرد بيتقال بنفس النوع من الصوت من سيرفر شام. لو الصوت مش متاح لحظتها، الرد بيفضل مكتوب في الشات. علّم شاهين النطق: «اسمها شانيل مش تشانيل».', en: 'Two human voices only: a man and a woman. Common lines are recorded on the site; the rest of each reply is spoken by Sham’s server. If the voice is unavailable for a moment, the reply stays written in chat. Teach Shaheen a pronunciation: “Kurkdjian is pronounced Kurkjan”.', fr: 'Deux voix humaines seulement : un homme et une femme. Les phrases courantes sont enregistrées sur le site ; le reste est dit par le serveur de Sham. Si la voix est indisponible, la réponse reste écrite. Apprenez-lui une prononciation : « Guerlain se prononce Guerlan ».', es: 'Solo dos voces humanas: un hombre y una mujer. Las frases comunes están grabadas en el sitio; el resto lo dice el servidor de Sham. Si la voz no está disponible, la respuesta queda escrita. Enséñale a pronunciar: «X se pronuncia Y».', it: 'Solo due voci umane: un uomo e una donna. Le frasi comuni sono registrate sul sito; il resto lo dice il server di Sham. Se la voce non è disponibile, la risposta resta scritta. Insegnagli la pronuncia: «X si pronuncia Y».', de: 'Nur zwei menschliche Stimmen: ein Mann und eine Frau. Häufige Sätze sind auf der Seite aufgenommen; den Rest spricht Shams Server. Ist die Stimme gerade nicht verfügbar, bleibt die Antwort als Text. Bring ihm die Aussprache bei: „X wird Y ausgesprochen“.', ru: 'Только два человеческих голоса: мужской и женский. Частые фразы записаны на сайте, остальное озвучивает сервер Sham. Если голос недоступен, ответ остаётся текстом. Научите произношению: «X произносится Y».', zh: '只有两种真人声音：男声和女声。常用句子已录制在网站上，其余由 Sham 服务器朗读。声音暂时不可用时，回复保留为文字。教他发音：“X读作Y”。', tr: 'Yalnızca iki insan sesi: bir erkek ve bir kadın. Sık cümleler sitede kayıtlı; gerisini Sham sunucusu söyler. Ses o an yoksa yanıt yazılı kalır. Telaffuz öğret: “X Y diye okunur”.', fa: 'فقط دو صدای انسانی: مرد و زن. جمله‌های پرتکرار روی سایت ضبط شده‌اند و بقیه را سرور شام می‌گوید. اگر صدا لحظه‌ای در دسترس نباشد، پاسخ نوشته می‌ماند. تلفظ را یادش بدهید: «X تلفظش Y».' },
   voice_sample: { ar: 'أهلاً بيك، أنا شاهين. تحب أساعدك تختار عطر النهارده؟', en: 'Hi, I’m Shaheen. Shall I help you choose a perfume today?', fr: 'Bonjour, je suis Shaheen. Je vous aide à choisir un parfum ?', es: 'Hola, soy Shaheen. ¿Te ayudo a elegir un perfume hoy?', it: 'Ciao, sono Shaheen. Ti aiuto a scegliere un profumo oggi?', de: 'Hallo, ich bin Shaheen. Soll ich dir heute bei einem Parfum helfen?', ru: 'Привет, я Шахин. Помочь вам выбрать аромат?', zh: '你好，我是 Shaheen。今天要我帮你挑一款香水吗？', tr: 'Merhaba, ben Shaheen. Bugün parfüm seçmene yardım edeyim mi?', fa: 'سلام، من شاهین هستم. کمکتان کنم امروز عطری انتخاب کنید؟' },
+  options: { ar: 'إعدادات الصوت', en: 'Voice settings', fr: 'Réglages de la voix', es: 'Ajustes de voz', it: 'Impostazioni voce', de: 'Stimmeinstellungen', ru: 'Настройки голоса', zh: '语音设置', tr: 'Ses ayarları', fa: 'تنظیمات صدا' },
   print_ignored: { ar: 'تجاهلت صوت تاني مش صوتك', en: 'I ignored a voice that isn’t yours', fr: 'J’ai ignoré une voix qui n’est pas la vôtre', es: 'Ignoré una voz que no es la tuya', it: 'Ho ignorato una voce che non è la tua', de: 'Eine fremde Stimme ignoriert', ru: 'Проигнорировал чужой голос', zh: '已忽略不是你的声音', tr: 'Senin olmayan bir sesi yok saydım', fa: 'صدایی را که مال شما نبود نادیده گرفتم' },
 } satisfies Record<string, LText>;
 
@@ -127,11 +128,12 @@ function useMicrophoneLevel(enabled: boolean) {
 }
 
 /**
- * The full-screen voice conversation: a living golden orb that breathes while it listens, follows the
- * visitor's voice, swirls while Shaheen thinks and pulses with every spoken word — with live captions and
- * mute / type / end controls. Tapping the orb while Shaheen speaks cuts him off and listens.
+ * The voice conversation, docked at the top of the chat itself (the owner, 2026-11-14: «مش صفحة خارجية» — the
+ * replies, products, prices and tables stay visible under it while he talks). A small living golden orb breathes
+ * while it listens, follows the visitor's voice, swirls while Shaheen thinks and pulses with every spoken word —
+ * next to a live caption and mute / options / type / end controls. Tapping the orb while Shaheen speaks cuts him off.
  */
-export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
+export function ShaheenVoiceStage({ language, voice }: {
   language: SupportedLanguage;
   voice: VoiceModeState;
   avatarSrc?: string;
@@ -147,6 +149,7 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
   earLevel.current = voice.micLevel;
   const [printPanel, setPrintPanel] = useState(false);
   const [voicePanel, setVoicePanel] = useState(false);
+  const [menu, setMenu] = useState(false);
   // «بصمتي»: offered once, with one tap, when the voice conversation opens (never again after a yes or a no).
   useEffect(() => {
     if (!voice.active || !voice.print.supported || voice.print.saved) return;
@@ -220,46 +223,32 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
 
   const status = phase === 'speaking' ? L('speaking') : phase === 'thinking' ? L('thinking') : phase === 'muted' ? L('muted') : L('listening');
   let caption: ReactNode;
-  if (phase === 'speaking') caption = voice.spokenText ? <p className="text-lg leading-relaxed text-white sm:text-xl">{voice.spokenText}</p> : null;
-  else if (phase === 'thinking') caption = voice.lastHeard ? <p className="text-base leading-relaxed text-amber-100/70"><span className="font-semibold text-amber-200/90">{L('you')}</span> {voice.lastHeard}</p> : null;
-  else if (phase === 'muted') caption = <p className="text-base text-stone-300">{L('muted_hint')}</p>;
+  if (phase === 'speaking') caption = voice.spokenText ? <p className="text-white">{voice.spokenText}</p> : null;
+  else if (phase === 'thinking') caption = voice.lastHeard ? <p className="text-amber-100/70"><span className="font-semibold text-amber-200/90">{L('you')}</span> {voice.lastHeard}</p> : null;
+  else if (phase === 'muted') caption = <p className="text-stone-300">{L('muted_hint')}</p>;
   else caption = voice.interim
-    ? <p className="text-lg leading-relaxed text-white sm:text-xl">{voice.interim}</p>
-    : <p className="text-base text-stone-300">{L('speak_now')}</p>;
+    ? <p className="text-white">{voice.interim}</p>
+    : <p className="text-stone-300">{L('speak_now')}</p>;
 
-  const stage = (
-    <div
+  const round = 'grid shrink-0 place-items-center rounded-full transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300';
+  const chip = 'flex items-center gap-1.5 rounded-full border px-3 py-1.5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300';
+  const overlay = (node: ReactNode) => (typeof document === 'undefined' ? node : createPortal(node, document.body));
+
+  return (
+    <section
       ref={stageRef}
-      className="sham-voice-stage fixed inset-0 z-[150] flex flex-col items-center justify-between overflow-hidden px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))] text-white"
+      className="sham-voice-dock relative shrink-0 overflow-hidden border-b border-amber-900/40 text-white shadow-md"
       data-phase={phase}
       dir={rtl ? 'rtl' : 'ltr'}
-      role="dialog"
-      aria-modal="true"
       aria-label={L('title')}
     >
       <div className="sham-voice-backdrop pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <header className="relative flex w-full max-w-xl items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5">
-          {avatarSrc && <img src={avatarSrc} alt="" className="h-9 w-9 rounded-full border border-amber-300/70 object-cover object-top" />}
-          <div>
-            <p className="text-sm font-bold text-amber-100">{L('title')}</p>
-            <p className="flex items-center gap-1.5 text-xs text-stone-300" role="status" aria-live="polite">
-              <span className={`h-1.5 w-1.5 rounded-full ${phase === 'listening' ? 'bg-emerald-400 motion-safe:animate-pulse' : phase === 'speaking' ? 'bg-amber-300' : phase === 'thinking' ? 'bg-sky-300 motion-safe:animate-pulse' : 'bg-stone-500'}`} aria-hidden="true" />
-              {status}
-            </p>
-          </div>
-        </div>
-        <button type="button" onClick={voice.stop} className="rounded-full p-2 text-stone-300 transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300" aria-label={L('end')} title={L('end')}>
-          <X className="h-5 w-5" aria-hidden="true" />
-        </button>
-      </header>
-
-      <div className="relative flex flex-1 flex-col items-center justify-center gap-8">
+      <div className="relative flex items-center gap-3 px-3 py-2.5 sm:px-4">
         <button
           type="button"
           onClick={onOrb}
-          className="sham-voice-orb group relative grid h-52 w-52 place-items-center rounded-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/60 sm:h-60 sm:w-60"
+          className="sham-voice-orb relative grid h-12 w-12 shrink-0 place-items-center rounded-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-300/60"
           aria-label={phase === 'speaking' ? L('interrupt_hint') : phase === 'muted' ? L('unmute') : L('orb_listen')}
           title={phase === 'speaking' ? L('interrupt_hint') : undefined}
         >
@@ -273,18 +262,44 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
           </span>
         </button>
 
-        <div className="min-h-[5.5rem] w-full max-w-xl text-center" aria-live="polite">
-          {caption && <div className="sham-voice-caption line-clamp-4 break-words">{caption}</div>}
-          {voice.noVoice && <p className="mt-2 rounded-2xl bg-white/10 px-3 py-2 text-xs leading-relaxed text-amber-100" role="status">{L('no_voice')}</p>}
-          {phase === 'speaking' && <p className="mt-3 text-xs text-amber-200/70">{voice.bargeEnabled ? L('barge_hint') : L('interrupt_hint')}</p>}
-          {ignoredNote && <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs text-stone-200"><VolumeX className="h-3.5 w-3.5" aria-hidden="true" />{L('print_ignored')}</p>}
+        <div className="min-w-0 flex-1">
+          <p className="flex items-center gap-1.5 text-xs font-bold text-amber-100" role="status" aria-live="polite">
+            <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${phase === 'listening' ? 'bg-emerald-400 motion-safe:animate-pulse' : phase === 'speaking' ? 'bg-amber-300' : phase === 'thinking' ? 'bg-sky-300 motion-safe:animate-pulse' : 'bg-stone-500'}`} aria-hidden="true" />
+            <span className="truncate">{status}</span>
+          </p>
+          <div className="mt-0.5 min-h-[1.25rem]" aria-live="polite">
+            {caption && <div className="sham-voice-caption line-clamp-2 break-words text-sm leading-snug">{caption}</div>}
+          </div>
+        </div>
+
+        <div className="flex shrink-0 items-center gap-1.5">
+          <button type="button" onClick={voice.toggleMute} aria-pressed={voice.muted} className={`${round} h-9 w-9 ${voice.muted ? 'bg-white text-stone-900 hover:bg-stone-200' : 'bg-white/15 text-white hover:bg-white/25'}`} aria-label={voice.muted ? L('unmute') : L('mute')} title={voice.muted ? L('unmute') : L('mute')}>
+            {voice.muted ? <MicOff className="h-4 w-4" aria-hidden="true" /> : <Mic className="h-4 w-4" aria-hidden="true" />}
+          </button>
+          <button type="button" onClick={() => setMenu(!menu)} aria-expanded={menu} className={`${round} h-9 w-9 ${menu ? 'bg-amber-300 text-stone-900' : 'bg-white/10 text-stone-100 hover:bg-white/20'}`} aria-label={L('options')} title={L('options')}>
+            <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+          </button>
+          <button type="button" onClick={voice.stop} className={`${round} hidden h-9 w-9 bg-white/10 text-stone-100 hover:bg-white/20 sm:grid`} aria-label={L('type')} title={L('type')}>
+            <Keyboard className="h-4 w-4" aria-hidden="true" />
+          </button>
+          <button ref={endRef} type="button" onClick={voice.stop} className={`${round} h-9 w-9 bg-rose-600 text-white hover:bg-rose-500 focus-visible:ring-rose-300`} aria-label={L('end')} title={L('end')}>
+            <X className="h-4 w-4" aria-hidden="true" />
+          </button>
         </div>
       </div>
 
-      <footer className="relative flex w-full max-w-xl flex-col items-center gap-4">
-        <div className="flex flex-wrap items-center justify-center gap-2 text-xs">
+      {(voice.noVoice || phase === 'speaking' || ignoredNote) && (
+        <div className="relative flex flex-wrap items-center gap-2 px-3 pb-2 text-[11px] sm:px-4">
+          {voice.noVoice && <p className="rounded-xl bg-white/10 px-2.5 py-1 leading-relaxed text-amber-100" role="status">{L('no_voice')}</p>}
+          {phase === 'speaking' && !voice.noVoice && <p className="text-amber-200/70">{voice.bargeEnabled ? L('barge_hint') : L('interrupt_hint')}</p>}
+          {ignoredNote && <p className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-stone-200"><VolumeX className="h-3.5 w-3.5" aria-hidden="true" />{L('print_ignored')}</p>}
+        </div>
+      )}
+
+      {menu && (
+        <div className="relative flex flex-wrap items-center gap-2 border-t border-white/10 px-3 py-2 text-xs sm:px-4">
           {voice.dialect && (
-            <label className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 py-1 pe-1 ps-3 text-stone-200 backdrop-blur">
+            <label className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 py-1 pe-1 ps-3 text-stone-200">
               <Languages className="h-3.5 w-3.5 text-amber-200" aria-hidden="true" />
               <span>{L('dialect')}</span>
               <select
@@ -303,17 +318,12 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
             onClick={() => voice.setBargeEnabled(!voice.bargeEnabled)}
             aria-pressed={voice.bargeEnabled}
             title={L('barge_tip')}
-            className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 backdrop-blur transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 ${voice.bargeEnabled ? 'border-amber-300/40 bg-amber-300/10 text-amber-100' : 'border-white/15 bg-white/5 text-stone-400'}`}
+            className={`${chip} ${voice.bargeEnabled ? 'border-amber-300/40 bg-amber-300/10 text-amber-100' : 'border-white/15 bg-white/5 text-stone-400'}`}
           >
             {voice.bargeEnabled ? <Ear className="h-3.5 w-3.5" aria-hidden="true" /> : <EarOff className="h-3.5 w-3.5" aria-hidden="true" />}
             {voice.bargeEnabled ? L('barge_on') : L('barge_off')}
           </button>
-          <button
-            type="button"
-            onClick={() => setVoicePanel(true)}
-            aria-haspopup="dialog"
-            className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-stone-300 backdrop-blur transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
-          >
+          <button type="button" onClick={() => setVoicePanel(true)} aria-haspopup="dialog" className={`${chip} border-white/15 bg-white/5 text-stone-200`}>
             <AudioLines className="h-3.5 w-3.5" aria-hidden="true" />
             {L('voice_button')}
           </button>
@@ -322,39 +332,30 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
               type="button"
               onClick={() => setPrintPanel(true)}
               aria-haspopup="dialog"
-              className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 backdrop-blur transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 ${voice.print.saved && voice.print.on ? 'border-emerald-300/40 bg-emerald-300/10 text-emerald-100' : 'border-white/15 bg-white/5 text-stone-300'}`}
+              className={`${chip} ${voice.print.saved && voice.print.on ? 'border-emerald-300/40 bg-emerald-300/10 text-emerald-100' : 'border-white/15 bg-white/5 text-stone-200'}`}
             >
               <Fingerprint className="h-3.5 w-3.5" aria-hidden="true" />
               {L('print_button')}
             </button>
           )}
+          <button type="button" onClick={voice.stop} className={`${chip} border-white/15 bg-white/5 text-stone-200 sm:hidden`}>
+            <Keyboard className="h-3.5 w-3.5" aria-hidden="true" />
+            {L('type')}
+          </button>
+          <p className="w-full text-[11px] text-stone-400">{L('private')}</p>
         </div>
-        <div className="flex items-center justify-center gap-5">
-          <button type="button" onClick={voice.stop} className="grid h-14 w-14 place-items-center rounded-full bg-white/10 text-stone-100 backdrop-blur transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300" aria-label={L('type')} title={L('type')}>
-            <Keyboard className="h-6 w-6" aria-hidden="true" />
-          </button>
-          <button type="button" onClick={voice.toggleMute} aria-pressed={voice.muted} className={`grid h-16 w-16 place-items-center rounded-full transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 ${voice.muted ? 'bg-white text-stone-900 hover:bg-stone-200' : 'bg-white/15 text-white backdrop-blur hover:bg-white/25'}`} aria-label={voice.muted ? L('unmute') : L('mute')} title={voice.muted ? L('unmute') : L('mute')}>
-            {voice.muted ? <MicOff className="h-7 w-7" aria-hidden="true" /> : <Mic className="h-7 w-7" aria-hidden="true" />}
-          </button>
-          <button ref={endRef} type="button" onClick={voice.stop} className="grid h-14 w-14 place-items-center rounded-full bg-rose-600 text-white shadow-lg shadow-rose-900/40 transition hover:bg-rose-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300" aria-label={L('end')} title={L('end')}>
-            <X className="h-6 w-6" aria-hidden="true" />
-          </button>
-        </div>
-        <p className="text-center text-[11px] text-stone-400">{L('private')}</p>
-      </footer>
+      )}
 
-      {voicePanel && <VoicePickerPanel L={L} voice={voice} onClose={() => setVoicePanel(false)} />}
-      {printPanel && (
+      {voicePanel && overlay(<VoicePickerPanel L={L} voice={voice} onClose={() => setVoicePanel(false)} />)}
+      {printPanel && overlay(
         <VoicePrintPanel
           L={L}
           voice={voice}
           onClose={() => { if (voice.enrolment) voice.closeEnrolment(); setPrintPanel(false); }}
-        />
+        />,
       )}
-    </div>
+    </section>
   );
-
-  return typeof document === 'undefined' ? stage : createPortal(stage, document.body);
 }
 
 const PRINT_ASKED = 'sham_voice_print_asked_v1';
@@ -367,7 +368,7 @@ function VoicePickerPanel({ L, voice, onClose }: { L: (key: keyof typeof COPY & 
   const { voiceChoice: choice, setVoiceChoice } = voice;
   const chip = (active: boolean) => `rounded-full px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 ${active ? 'bg-amber-300 text-stone-900' : 'bg-white/10 text-stone-200 hover:bg-white/20'}`;
   return (
-    <div className="absolute inset-0 z-10 flex items-end justify-center bg-black/60 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" aria-label={L('voice_title')}>
+    <div className="fixed inset-0 z-[160] flex items-end justify-center bg-black/60 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" aria-label={L('voice_title')}>
       <div className="flex max-h-[85vh] w-full max-w-md flex-col gap-3 rounded-3xl border border-white/10 bg-stone-900/95 p-5 shadow-2xl">
         <p className="flex items-center gap-2 text-base font-bold text-amber-100"><AudioLines className="h-5 w-5" aria-hidden="true" />{L('voice_title')}</p>
         <ul className="flex min-h-0 flex-col gap-1.5 overflow-y-auto pe-1" role="radiogroup" aria-label={L('voice_title')}>
@@ -465,7 +466,7 @@ function VoicePrintPanel({ L, voice, onClose }: { L: (key: keyof typeof COPY & s
     );
   }
   return (
-    <div className="absolute inset-0 z-10 flex items-end justify-center bg-black/60 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" aria-label={L('print_title')}>
+    <div className="fixed inset-0 z-[160] flex items-end justify-center bg-black/60 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" aria-label={L('print_title')}>
       <div className="flex w-full max-w-md flex-col gap-4 rounded-3xl border border-white/10 bg-stone-900/95 p-5 shadow-2xl">
         <p className="flex items-center gap-2 text-base font-bold text-amber-100"><Fingerprint className="h-5 w-5" aria-hidden="true" />{L('print_title')}</p>
         {body}

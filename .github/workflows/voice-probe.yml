@@ -9,18 +9,25 @@ jobs:
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:
-      - name: Probe the speech engine (status and error text only, never the key)
+      - name: Speed and faithfulness of the new request (status and transcript only, never the key)
         run: |
-          note() { echo "::notice title=$1::$(printf '%s' "$2" | head -c 1200 | tr '\n\r' '  ')"; }
-          [ -n "$GEMINI_API_KEY" ] || { note key "no GEMINI_API_KEY secret"; exit 0; }
-          A=https://generativelanguage.googleapis.com/v1beta
+          note() { echo "::notice title=$1::$(printf '%s' "$2" | head -c 1500 | tr '\n\r' '  ')"; }
+          A=https://generativelanguage.googleapis.com/v1beta/models
           H="x-goog-api-key: $GEMINI_API_KEY"
-          note models "$(curl -sS -m 30 -H "$H" "$A/models?pageSize=1000" | grep -o '"name": "models/[^"]*tts[^"]*"' | tr '\n' ' ')"
-          for m in gemini-3.8-flash-lite-tts gemini-3.8-flash-tts gemini-3.1-flash-tts-preview gemini-2.5-flash-preview-tts; do
-            body="{\"model\":\"$m\",\"input\":[{\"type\":\"user_input\",\"content\":[{\"type\":\"text\",\"text\":\"أهلاً بيك\",\"annotations\":[{\"type\":\"speech_metadata\",\"style\":\"Egyptian Arabic accent, warm and friendly\"}]}]}],\"response_format\":{\"type\":\"audio\",\"mime_type\":\"audio/wav\",\"sample_rate\":16000},\"generation_config\":{\"speech_config\":[{\"voice\":\"Achird\"}]},\"store\":false}"
-            code=$(curl -sS -m 60 -o /tmp/i.json -w '%{http_code}' -H "$H" -H 'Content-Type: application/json' -d "$body" "$A/interactions")
-            note "interactions $m" "HTTP $code $(head -c 700 /tmp/i.json | sed 's/"data": *"[^"]*"/"data":"<audio>"/g')"
-            gc="{\"contents\":[{\"parts\":[{\"text\":\"Say in a warm Egyptian Arabic accent: أهلاً بيك\"}]}],\"generationConfig\":{\"responseModalities\":[\"AUDIO\"],\"speechConfig\":{\"voiceConfig\":{\"prebuiltVoiceConfig\":{\"voiceName\":\"Achird\"}}}}}"
-            code=$(curl -sS -m 60 -o /tmp/g.json -w '%{http_code}' -H "$H" -H 'Content-Type: application/json' -d "$gc" "$A/models/$m:generateContent")
-            note "generateContent $m" "HTTP $code $(head -c 500 /tmp/g.json | sed 's/"data": *"[^"]*"/"data":"<audio>"/g')"
-          done
+          SHORT='أهلاً بيك يا فندم، عندنا عطر عود ملكي بسعر ألف ومية جنيه، وريحته بتفضل طول اليوم.'
+          LONG="$SHORT تحب أقترح عليك كمان اختيارات تانية؟ عندنا مسك أبيض ناعم، وعنبر دافي، وعطور فرنساوي فخمة، وكلها أصلية ومضمونة، والشحن لحد باب البيت في أي محافظة في مصر خلال يومين تلاتة."
+          for m in gemini-3.8-flash-lite-tts gemini-3.8-flash-tts; do for which in SHORT LONG; do
+            t="${!which}"
+            jq -n --arg t "Say this in a Egyptian Arabic accent, warm and friendly, natural conversational pace: $t" --arg v Achird \
+              '{contents:[{role:"user",parts:[{text:$t}]}],generationConfig:{responseModalities:["AUDIO"],speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:$v}}}}}' > /tmp/b.json
+            s=$(date +%s.%N)
+            code=$(curl -sS -m 60 -o /tmp/r.json -w '%{http_code}' -H "$H" -H 'Content-Type: application/json' -d @/tmp/b.json "$A/$m:generateContent")
+            e=$(date +%s.%N)
+            mime=$(jq -r '.candidates[0].content.parts[0].inlineData.mimeType // "none"' /tmp/r.json)
+            jq -r '.candidates[0].content.parts[0].inlineData.data // ""' /tmp/r.json | base64 -d > /tmp/a.wav 2>/dev/null
+            bytes=$(wc -c < /tmp/a.wav)
+            b64=$(base64 -w0 /tmp/a.wav)
+            jq -n --arg d "$b64" '{contents:[{parts:[{inlineData:{mimeType:"audio/wav",data:$d}},{text:"Transcribe this audio exactly, word for word, in the language spoken. Output only the transcript."}]}]}' > /tmp/tb.json
+            tr=$(curl -sS -m 60 -H "$H" -H 'Content-Type: application/json' -d @/tmp/tb.json "$A/gemini-2.5-flash:generateContent" | jq -r '.candidates[0].content.parts[0].text // .error.message // "?"')
+            note "$m $which" "HTTP $code in $(echo "$e - $s" | bc)s, $mime, $bytes bytes (~$(echo "$bytes / 48000" | bc)s audio). HEARD: $tr"
+          done; done

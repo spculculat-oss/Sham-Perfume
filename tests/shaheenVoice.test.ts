@@ -68,7 +68,7 @@ test('Shaheen reads replies with the most natural voice the device offers for th
   assert.equal(pickShaheenVoice([], 'ar-EG', 'ar'), undefined);
 });
 
-test('the full-screen voice stage speaks the site\'s ten main languages and keeps the privacy promise', async () => {
+test('the in-chat voice bar speaks the site\'s ten main languages and keeps the privacy promise', async () => {
   const { readFileSync } = await import('node:fs');
   const stage = readFileSync(new URL('../src/components/ShaheenVoiceStage.tsx', import.meta.url), 'utf8');
   const button = readFileSync(new URL('../src/components/ShaheenVoiceModeButton.tsx', import.meta.url), 'utf8');
@@ -82,5 +82,15 @@ test('the full-screen voice stage speaks the site\'s ten main languages and keep
   assert.match(stage, /prefers-reduced-motion/);
   // The level meter only reads loudness on the device; it never records or sends the sound.
   assert.doesNotMatch(stage, /MediaRecorder|fetch\(|sendBeacon|XMLHttpRequest/);
-  assert.match(button, /<ShaheenVoiceStage /);
+  // «جوه الشات نفسه»: docked above the messages of both chats, never a full-screen page over them.
+  assert.doesNotMatch(button, /<ShaheenVoiceStage /);
+  for (const path of ['../src/components/PerfumerAIChatbot.tsx', '../src/components/PerfumerMasterLabView.tsx']) {
+    const host = readFileSync(new URL(path, import.meta.url), 'utf8');
+    const dock = host.indexOf('<ShaheenVoiceStage ');
+    assert.ok(dock > 0, path);
+    assert.ok(dock < host.indexOf('overflow-y-auto', dock), 'the bar sits above the messages');
+  }
+  const main = stage.slice(stage.indexOf('export function ShaheenVoiceStage'), stage.indexOf('const PRINT_ASKED'));
+  assert.doesNotMatch(main, /fixed inset-0|aria-modal|role="dialog"/, 'the conversation is not a page over the chat');
+  assert.match(main, /sham-voice-dock/);
 });

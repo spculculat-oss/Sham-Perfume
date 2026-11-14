@@ -36,6 +36,7 @@ import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
 import { useShaheenVoiceMode, type ShaheenVoiceTurn } from '../hooks/useShaheenVoiceMode';
 import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
+import { ShaheenVoiceStage } from './ShaheenVoiceStage';
 import { ShaheenServiceStatus, ShaheenModesPanel, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
 import { ShaheenMedia } from './ShaheenMedia';
@@ -1276,6 +1277,9 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
               </div>
             )}
 
+            {/* The voice conversation lives here, on top of the chat, so the replies stay in view while he talks. */}
+            {voice.active && <ShaheenVoiceStage language={currentLang} voice={voice} />}
+
             {/* 2. Expanded Chat Board */}
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 bg-stone-50/60">
               {messages.map((msg, msgIndex) => {
@@ -1662,7 +1666,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
               }}
               className="p-3 bg-white border-t border-stone-200 flex items-center gap-2 shrink-0"
             >
-              <ShaheenVoiceModeButton language={currentLang} voice={voice} disabled={isStaticHosting || hidden} avatarSrc={perfumerImg} />
+              <ShaheenVoiceModeButton language={currentLang} voice={voice} disabled={isStaticHosting || hidden} />
               <input
                 ref={inputRef}
                 type="text"
