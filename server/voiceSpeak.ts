@@ -3,7 +3,7 @@
  * (a man's or a woman's, Egyptian Arabic for Arabic visitors), not the device's robotic voice.
  *
  *   GET  /api/voice/status                                           →  { human: boolean }
- *   POST /api/voice/speak  { text, language, dialect?, gender, mood? }  →  audio/wav (16 kHz mono)
+ *   POST /api/voice/speak  { text, language, dialect?, gender, mood? }  →  audio/wav (24 kHz mono)
  *   GET  /api/voice/say-words                                        →  { words: { written: said } }
  *   POST /api/voice/say-words  { from, to }                           →  { ok }   (src/utils/sayWords.ts)
  *
@@ -12,12 +12,12 @@
  *
  * The owner's rule (2026-10-22): use the AI platforms while they work, otherwise rely on ourselves. So the speech
  * engine's free tier is used through the key already on the server (GEMINI_API_KEY); when it is busy or its daily
- * quota is used up, this answers 503 and the site goes back to the visitor's device voice — never silence, never a
- * paid fallback. Visitors never see a vendor's name.
+ * quota is used up, this answers 503 and the chat shows the words (the owner removed the device voices on
+ * 2026-11-14) — never a paid fallback. Visitors never see a vendor's name.
  *
  * Environment (Vercel):
  *   SHAM_VOICE_ENGINE        'off' turns it off (default: on whenever GEMINI_API_KEY exists)
- *   SHAM_VOICE_MODEL         default gemini-3.8-flash-lite-tts (made for conversational voice agents)
+ *   SHAM_VOICE_MODEL         default gemini-3.8-flash-lite-tts (made for conversational voice agents); two others back it up
  *   SHAM_VOICE_DAILY_LIMIT   default 400 speech requests a day per server instance (max 5000)
  *   SHAM_VOICE_MALE / SHAM_VOICE_FEMALE   prebuilt voice names (default Achird «friendly» / Sulafat «warm»)
  */
@@ -36,7 +36,12 @@ const MOOD_STYLE: Record<SpeechMood, string> = {
   calm: 'calm, gentle and reassuring, a little slower', quick: 'brisk and to the point, slightly faster', warm: 'warm and friendly',
 };
 
-const API = 'https://generativelanguage.googleapis.com/v1beta/interactions';
+// 2026-11-14 live probe: the Interactions endpoint answered 400 «invalid argument» to every TTS model while
+// `models/<m>:generateContent` returned audio for all of them on the same key — so speech goes through generateContent.
+const API = 'https://generativelanguage.googleapis.com/v1beta/models';
+/** When the chosen model is busy or refuses, the next one says the line (each has its own free quota). */
+const BACKUP_MODELS = ['gemini-3.8-flash-lite-tts', 'gemini-3.8-flash-tts', 'gemini-2.5-flash-preview-tts'];
+export const voiceModels = (env: Env) => [...new Set([voiceModel(env), ...BACKUP_MODELS])].slice(0, 3);
 const LANGS = new Set<string>(SUPPORTED_LANGUAGES.map((l) => l.code));
 export const MAX_SPEECH_CHARS = 500;
 const DIALECT_STYLE: Record<string, string> = {
@@ -72,32 +77,69 @@ export function cleanSpeechRequest(body: unknown): SpeechRequest | undefined {
   return { text, language, ...(dialect ? { dialect } : {}), gender: b.gender === 'female' ? 'female' : 'male', ...(mood ? { mood } : {}) };
 }
 
+/** The engine's documented single-speaker form: a short delivery note, a colon, then the exact words. */
+export function speechPrompt(req: SpeechRequest): string {
+  return `Say this in a ${speechStyle(req.language, req.dialect, req.mood)}: ${req.text}`;
+}
+
 export function speechBody(env: Env, req: SpeechRequest) {
   return {
-    model: voiceModel(env),
-    input: [{ type: 'user_input', content: [{ type: 'text', text: req.text, annotations: [{ type: 'speech_metadata', style: speechStyle(req.language, req.dialect, req.mood) }] }] }],
-    response_format: { type: 'audio', mime_type: 'audio/wav', sample_rate: 16000 },
-    generation_config: { speech_config: [{ voice: voiceName(env, req.gender) }] },
-    store: false,
+    contents: [{ role: 'user', parts: [{ text: speechPrompt(req) }] }],
+    generationConfig: {
+      responseModalities: ['AUDIO'],
+      speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voiceName(env, req.gender) } } },
+    },
   };
 }
 
-/** The audio in the engine's reply (`steps[].content[]`, the last audio block), as bytes. */
+/** Raw 16-bit mono PCM («audio/L16; rate=24000») wrapped in a WAV header so every browser can play it. */
+export function pcmToWav(pcm: Buffer, rate = 24000): Buffer {
+  const header = Buffer.alloc(44);
+  header.write('RIFF', 0); header.writeUInt32LE(36 + pcm.length, 4); header.write('WAVE', 8);
+  header.write('fmt ', 12); header.writeUInt32LE(16, 16); header.writeUInt16LE(1, 20); header.writeUInt16LE(1, 22);
+  header.writeUInt32LE(rate, 24); header.writeUInt32LE(rate * 2, 28); header.writeUInt16LE(2, 32); header.writeUInt16LE(16, 34);
+  header.write('data', 36); header.writeUInt32LE(pcm.length, 40);
+  return Buffer.concat([header, pcm]);
+}
+
+/** The audio in the engine's reply (`candidates[].content.parts[].inlineData`, or the older `steps[].content[]`), as WAV bytes. */
 export function audioFromReply(data: unknown): Buffer | undefined {
-  const steps = (data as { steps?: unknown[] })?.steps;
-  if (!Array.isArray(steps)) return undefined;
-  let found: string | undefined;
-  for (const step of steps) {
-    const content = (step as { content?: unknown[] })?.content;
-    if (!Array.isArray(content)) continue;
-    for (const c of content) {
-      const item = c as { type?: string; data?: unknown };
-      if (item?.type === 'audio' && typeof item.data === 'string' && item.data) found = item.data;
+  const blocks: Array<{ mime: string; data: string }> = [];
+  const candidates = (data as { candidates?: unknown[] })?.candidates;
+  if (Array.isArray(candidates)) {
+    for (const c of candidates) {
+      const parts = (c as { content?: { parts?: unknown[] } })?.content?.parts;
+      if (!Array.isArray(parts)) continue;
+      for (const part of parts) {
+        const inline = (part as { inlineData?: { mimeType?: unknown; data?: unknown } })?.inlineData;
+        if (inline && typeof inline.data === 'string' && inline.data) blocks.push({ mime: String(inline.mimeType || ''), data: inline.data });
+      }
     }
   }
-  if (!found) return undefined;
-  const bytes = Buffer.from(found, 'base64');
-  return bytes.length > 44 ? bytes : undefined;
+  const steps = (data as { steps?: unknown[] })?.steps;
+  if (Array.isArray(steps)) {
+    for (const step of steps) {
+      const content = (step as { content?: unknown[] })?.content;
+      if (!Array.isArray(content)) continue;
+      for (const c of content) {
+        const item = c as { type?: string; data?: unknown; mime_type?: unknown };
+        if (item?.type === 'audio' && typeof item.data === 'string' && item.data) blocks.push({ mime: String(item.mime_type || 'audio/wav'), data: item.data });
+      }
+    }
+  }
+  const pcmParts: Buffer[] = [];
+  let rate = 24000;
+  for (const block of blocks) {
+    const bytes = Buffer.from(block.data, 'base64');
+    if (bytes.length > 44 && bytes.toString('ascii', 0, 4) === 'RIFF') return bytes;
+    if (/l16|pcm/i.test(block.mime)) {
+      const m = /rate=(\d{4,6})/i.exec(block.mime);
+      if (m) rate = Number(m[1]);
+      pcmParts.push(bytes);
+    }
+  }
+  const pcm = Buffer.concat(pcmParts);
+  return pcm.length > 0 ? pcmToWav(pcm, rate) : undefined;
 }
 
 export class SpeechError extends Error {
@@ -138,20 +180,26 @@ class AudioCache {
 export async function synthesize(env: Env, req: SpeechRequest, budget: VoiceBudget, fetcher: Fetch = fetch): Promise<Buffer> {
   if (!voiceEnabled(env)) throw new SpeechError(503, 'voice_off');
   if (!budget.take()) throw new SpeechError(503, 'voice_busy');
-  let response: Response;
-  try {
-    response = await fetcher(API, {
-      method: 'POST', signal: AbortSignal.timeout(25_000),
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY!.trim() },
-      body: JSON.stringify(speechBody(env, req)),
-    });
-  } catch { throw new SpeechError(503, 'voice_failed'); }
-  if (response.status === 429) { budget.pause(30 * 60_000); throw new SpeechError(503, 'voice_busy'); }
-  if (response.status === 401 || response.status === 403) { budget.pause(6 * 3600_000); throw new SpeechError(503, 'voice_off'); }
-  if (!response.ok) throw new SpeechError(503, 'voice_failed');
-  const audio = audioFromReply(await response.json().catch(() => undefined));
-  if (!audio) throw new SpeechError(503, 'voice_failed');
-  return audio;
+  const body = JSON.stringify(speechBody(env, req));
+  let busy = 0;
+  const models = voiceModels(env);
+  for (const model of models) {
+    let response: Response;
+    try {
+      response = await fetcher(`${API}/${encodeURIComponent(model)}:generateContent`, {
+        method: 'POST', signal: AbortSignal.timeout(20_000),
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY!.trim() },
+        body,
+      });
+    } catch { continue; }
+    if (response.status === 401 || response.status === 403) { budget.pause(6 * 3600_000); throw new SpeechError(503, 'voice_off'); }
+    if (response.status === 429) { busy += 1; continue; }
+    if (!response.ok) continue;
+    const audio = audioFromReply(await response.json().catch(() => undefined));
+    if (audio) return audio;
+  }
+  if (busy === models.length) { budget.pause(30 * 60_000); throw new SpeechError(503, 'voice_busy'); }
+  throw new SpeechError(503, 'voice_failed');
 }
 
 export function createVoiceRouter(deps: { env?: Env; fetch?: Fetch; memory?: ShaheenMemory } = {}) {

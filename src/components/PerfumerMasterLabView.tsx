@@ -48,6 +48,7 @@ import { useShaheenChat } from '../hooks/useShaheenChat';
 import { useShaheenModels } from '../hooks/useShaheenModels';
 import { useShaheenVoiceMode, type ShaheenVoiceTurn } from '../hooks/useShaheenVoiceMode';
 import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
+import { ShaheenVoiceStage } from './ShaheenVoiceStage';
 import { copyChatText } from '../utils/clipboard';
 import { useReadAloud } from '../hooks/useReadAloud';
 import { askMessages, lookingUpLine } from '../utils/heardFix';
@@ -600,6 +601,9 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
         )}
         <ShaheenServiceStatus language={currentLang} models={modelStatus.models} failed={modelStatus.failed}
           enabled={modelStatus.enabled} selected={selectedModel} />
+
+        {/* The voice conversation lives here, on top of the chat, so the replies stay in view while he talks. */}
+        {voice.active && <ShaheenVoiceStage language={currentLang} voice={voice} />}
 
         {/* Messages Stream Board */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 bg-stone-50/50">

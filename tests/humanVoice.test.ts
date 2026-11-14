@@ -3,7 +3,7 @@ import test from 'node:test';
 import express from 'express';
 import type { AddressInfo } from 'node:net';
 import {
-  audioFromReply, cleanSpeechRequest, createVoiceRouter, dailyVoiceLimit, speechBody, speechStyle, speechText, VoiceBudget, voiceEnabled, voiceModel,
+  audioFromReply, cleanSpeechRequest, createVoiceRouter, dailyVoiceLimit, speechBody, voiceModels, speechStyle, speechText, VoiceBudget, voiceEnabled, voiceModel,
 } from '../server/voiceSpeak';
 import { ShaheenMemory } from '../server/core/memory';
 import { MemoryStore } from '../server/core/store';
@@ -14,7 +14,7 @@ import { speechGroups } from '../src/utils/humanVoice';
 const VENDOR = /gemini|google|openai|chatgpt|claude|anthropic|deepseek/i;
 // A minimal 16 kHz WAV (44-byte header + a few samples), as the engine returns it.
 const WAV = Buffer.concat([Buffer.from('RIFF'), Buffer.alloc(40), Buffer.alloc(320, 1)]);
-const engineReply = () => new Response(JSON.stringify({ steps: [{ content: [{ type: 'audio', mime_type: 'audio/wav', data: WAV.toString('base64') }] }] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+const engineReply = () => new Response(JSON.stringify({ candidates: [{ content: { parts: [{ inlineData: { mimeType: 'audio/wav', data: WAV.toString('base64') } }] } }] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
 async function withServer(env: Record<string, string>, fetcher: typeof fetch, run: (base: string) => Promise<void>, memory?: ShaheenMemory) {
   const app = express();
@@ -38,9 +38,12 @@ test('human voice: on with the server key, off on request; a conversational mode
   assert.match(speechStyle('en', undefined, 'quick'), /brisk/);
   const male = speechBody({}, { text: 'أهلاً بيك', language: 'ar', gender: 'male' });
   const female = speechBody({}, { text: 'أهلاً بيك', language: 'ar', gender: 'female' });
-  assert.notEqual(male.generation_config.speech_config[0]!.voice, female.generation_config.speech_config[0]!.voice);
-  assert.equal(male.store, false, 'nothing is kept by the engine');
-  assert.equal(male.input[0]!.content[0]!.text, 'أهلاً بيك', 'the text is said word for word');
+  const voice = (b: typeof male) => b.generationConfig.speechConfig.voiceConfig.prebuiltVoiceConfig.voiceName;
+  assert.notEqual(voice(male), voice(female));
+  assert.deepEqual(male.generationConfig.responseModalities, ['AUDIO']);
+  assert.match(male.contents[0]!.parts[0]!.text, /Egyptian Arabic accent[^:]*: أهلاً بيك$/, 'a short delivery note, then the words exactly');
+  assert.equal(voiceModels({})[0], voiceModel({}));
+  assert.equal(voiceModels({ SHAM_VOICE_MODEL: 'x-tts' }).length, 3, 'the chosen model plus backups');
 });
 
 test('human voice: only clean visitor text reaches the engine (no tags, bounded length)', () => {
@@ -52,6 +55,26 @@ test('human voice: only clean visitor text reaches the engine (no tags, bounded 
   assert.deepEqual(cleanSpeechRequest({ text: 'Hi', language: 'en', gender: 'female', mood: 'calm' }), { text: 'Hi', language: 'en', gender: 'female', mood: 'calm' });
   assert.equal(audioFromReply({ steps: [] }), undefined);
   assert.equal(audioFromReply(null), undefined);
+  const pcm = Buffer.alloc(4800, 1);
+  const wav = audioFromReply({ candidates: [{ content: { parts: [{ inlineData: { mimeType: 'audio/L16;codec=pcm;rate=24000', data: pcm.toString('base64') } }] } }] })!;
+  assert.equal(wav.toString('ascii', 0, 4), 'RIFF', 'raw speech is wrapped so every browser can play it');
+  assert.equal(wav.readUInt32LE(24), 24000);
+  assert.equal(wav.length, 44 + pcm.length);
+});
+
+test('human voice: a model that refuses or is busy hands the line to the next one', async () => {
+  const urls: string[] = [];
+  const flaky = (async (url: string) => {
+    urls.push(String(url));
+    return urls.length === 1 ? new Response('{"error":{}}', { status: 400 }) : engineReply();
+  }) as unknown as typeof fetch;
+  await withServer({ GEMINI_API_KEY: 'k' }, flaky, async (base) => {
+    const res = await post(`${base}/speak`, { text: 'أهلاً بيك', language: 'ar' });
+    assert.equal(res.status, 200);
+    assert.equal(urls.length, 2);
+    assert.match(urls[0]!, /models\/gemini-[^/]+-tts:generateContent$/);
+    assert.notEqual(urls[0], urls[1]);
+  });
 });
 
 test('human voice: the day budget runs out and an engine «quota» pauses it', () => {

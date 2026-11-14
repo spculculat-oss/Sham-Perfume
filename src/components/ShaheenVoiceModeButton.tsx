@@ -4,7 +4,7 @@ import type { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
 import { loc, makeT, type LText } from '../لغات/localize';
 import type { useShaheenVoiceMode } from '../hooks/useShaheenVoiceMode';
-import { NO_VOICE_COPY, ShaheenVoiceStage } from './ShaheenVoiceStage';
+import { NO_VOICE_COPY } from './ShaheenVoiceStage';
 
 type VoiceModeState = ReturnType<typeof useShaheenVoiceMode>;
 
@@ -41,11 +41,12 @@ const COPY = {
  * The voice-mode entry in the chat's input bar. Starting it (after the microphone notice) opens the
  * full-screen voice stage; errors and the unsupported-browser note stay next to the button after it closes.
  */
-export function ShaheenVoiceModeButton({ language, voice, disabled = false, avatarSrc }: {
+export function ShaheenVoiceModeButton({ language, voice, disabled = false }: {
   language: SupportedLanguage;
   voice: VoiceModeState;
   disabled?: boolean;
   /** Shaheen's portrait for the voice stage header. */
+  /** Kept for older callers; the conversation itself now sits at the top of the chat (ShaheenVoiceStage). */
   avatarSrc?: string;
 }) {
   const [showDisclosure, setShowDisclosure] = useState(false);
@@ -92,8 +93,6 @@ export function ShaheenVoiceModeButton({ language, voice, disabled = false, avat
           <span className="relative whitespace-nowrap text-[11px] font-semibold">{L(voice.active ? 'stop_short' : 'voice_short')}</span>
         </button>
       </div>
-
-      {voice.active && <ShaheenVoiceStage language={language} voice={voice} avatarSrc={avatarSrc} />}
 
       {!voice.supported && !disabled && (
         <p className="absolute bottom-[calc(100%+0.65rem)] end-0 z-20 w-72 max-w-[80vw] rounded-xl border border-stone-200 bg-white p-3 text-xs leading-relaxed text-stone-600 shadow-lg" dir={rtl ? 'rtl' : 'ltr'} role="status">
