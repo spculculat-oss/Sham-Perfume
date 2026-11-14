@@ -3,9 +3,9 @@
  * showing only what is real: the member's own bio / country / craft level / join date, their visible posts,
  * shared recipes, real friends and the pictures of their posts. Block, report and messaging stay available.
  */
-import { useState } from 'react';
-import { BookOpen, Calendar, Edit3, FlaskConical, Flag, Image as ImageIcon, MapPin, MessageCircle, Share2, ShieldOff, Sparkles, UserCheck, UserMinus, UserPlus, Users } from 'lucide-react';
-import { cx, type ProfileView } from './api';
+import { useRef, useState } from 'react';
+import { BookOpen, Calendar, Edit3, FlaskConical, Flag, Image as ImageIcon, Loader2, MapPin, MessageCircle, Share2, ShieldOff, Sparkles, UserCheck, UserMinus, UserPlus, Users } from 'lucide-react';
+import { cx, resizeImage, type ProfileView } from './api';
 import { pulseNow } from './session';
 import { openFormulaInLab } from './sync';
 import { Avatar, Btn, Card, Empty, Spinner, errorText, timeAgo, tx, useLoad, type Lang } from './ui';
@@ -13,10 +13,26 @@ import { PostCard, RecipeCard } from './SocialPortal';
 
 type Tab = 'timeline' | 'about' | 'recipes' | 'friends' | 'photos';
 
+/** The largest cover the server stores (server/community/service.ts: image(banner, 450)). */
+export const BANNER_MAX_CHARS = 450 * 1370;
+/**
+ * Fits a device picture into the cover's size: tries a sharp wide version first, then smaller ones.
+ * Returns '' when even the smallest is too large.
+ */
+export async function bannerImage(file: File, resize: (file: File, max?: number, quality?: number) => Promise<string>): Promise<string> {
+  for (const [max, quality] of [[1600, 0.82], [1280, 0.75], [1000, 0.68], [800, 0.6]] as const) {
+    const picture = await resize(file, max, quality);
+    if (picture.length <= BANNER_MAX_CHARS) return picture;
+  }
+  return '';
+}
+
 export function ProfilePage({ handle, lang, go, toast, onOpenMessenger }: { handle: string; lang: Lang; go: (route: string) => void; toast: (s: string) => void; onOpenMessenger?: (userId: string) => void }) {
   const t = tx(lang);
   const { data, setData, loading, error, reload } = useLoad(() => cx<ProfileView>(`/community/profile/${encodeURIComponent(handle)}`), [handle]);
   const [tab, setTab] = useState<Tab>('timeline');
+  const bannerFile = useRef<HTMLInputElement>(null);
+  const [bannerBusy, setBannerBusy] = useState(false);
   if (loading) return <Spinner />;
   if (error || !data) return <Card><Empty title={errorText(error, lang)} /></Card>;
   const u = data.user;
@@ -25,6 +41,20 @@ export function ProfilePage({ handle, lang, go, toast, onOpenMessenger }: { hand
 
   const act = async (fn: () => Promise<unknown>, done?: string) => {
     try { await fn(); if (done) toast(done); void reload(true); void pulseNow(); } catch (e) { toast(errorText(e, lang)); }
+  };
+  // The cover comes from the member's own device (gallery or camera), fitted to a size the server accepts.
+  const pickBanner = async (file?: File) => {
+    if (!file || bannerBusy) return;
+    setBannerBusy(true);
+    try {
+      const picture = await bannerImage(file, resizeImage);
+      if (!picture) { toast(t('الصورة دي كبيرة قوي، جرّب صورة تانية', 'This picture is too large, try another one')); return; }
+      await cx('/community/profile', { method: 'PATCH', body: { banner: picture } });
+      toast(t('اتحدث البانر ✨', 'Banner updated ✨'));
+      void reload(true);
+    } catch (e) {
+      toast(e instanceof Error && /not an image|bad image|no canvas/.test(e.message) ? t('الصورة دي مش مدعومة', 'Unsupported image') : errorText(e, lang));
+    } finally { setBannerBusy(false); }
   };
   const message = () => (onOpenMessenger ? onOpenMessenger(u.id)
     : void act(async () => { const { id } = await cx<{ id: string }>('/community/chats/direct', { body: { userId: u.id } }); go(`messenger/${id}`); }));
@@ -61,10 +91,17 @@ export function ProfilePage({ handle, lang, go, toast, onOpenMessenger }: { hand
       <Card className="overflow-hidden shadow-md">
         <div className="relative h-40 w-full bg-gradient-to-br from-stone-900 via-amber-900 to-amber-600 sm:h-60">
           <div className="absolute inset-0 opacity-30 [background:radial-gradient(circle_at_20%_30%,rgba(251,191,36,.6),transparent_45%),radial-gradient(circle_at_80%_70%,rgba(244,63,94,.35),transparent_40%)]" />
+          {data.banner && <img src={data.banner} alt="" data-testid="profile-banner" className="absolute inset-0 h-full w-full object-cover" />}
           {isMe && (
-            <div className="absolute bottom-4 end-4 flex items-center gap-2">
-              <button type="button" onClick={() => { const b = prompt(t('رابط صورة البانر الجديد:', 'New banner image URL:')); if (b) void act(() => cx('/community/profile', { method: 'PATCH', body: { banner: b } }), t('اتحدث البانر ✨', 'Banner updated ✨')); }} className="flex items-center gap-1.5 rounded-xl bg-white/85 px-3 py-1.5 text-xs font-bold text-stone-900 shadow backdrop-blur hover:bg-white cursor-pointer">
-                <ImageIcon className="h-3.5 w-3.5" />{t('تعديل البانر', 'Edit banner')}
+            <div className="absolute bottom-4 end-4 flex flex-wrap items-center justify-end gap-2">
+              <input ref={bannerFile} type="file" accept="image/*" hidden data-testid="profile-banner-file" onChange={(e) => { const x = e.target.files?.[0]; e.target.value = ''; void pickBanner(x); }} />
+              {data.banner && !bannerBusy && (
+                <button type="button" onClick={() => void act(() => cx('/community/profile', { method: 'PATCH', body: { banner: null } }), t('اتشال البانر', 'Banner removed'))} className="flex items-center gap-1.5 rounded-xl bg-white/85 px-3 py-1.5 text-xs font-bold text-stone-900 shadow backdrop-blur hover:bg-white cursor-pointer">
+                  {t('إزالة البانر', 'Remove banner')}
+                </button>
+              )}
+              <button type="button" disabled={bannerBusy} onClick={() => bannerFile.current?.click()} className="flex items-center disabled:opacity-70 gap-1.5 rounded-xl bg-white/85 px-3 py-1.5 text-xs font-bold text-stone-900 shadow backdrop-blur hover:bg-white cursor-pointer">
+                {bannerBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ImageIcon className="h-3.5 w-3.5" />}{bannerBusy ? t('بيترفع…', 'Uploading…') : t('تعديل البانر', 'Edit banner')}
               </button>
               <button type="button" onClick={() => go('me/profile')} className="flex items-center gap-1.5 rounded-xl bg-white/85 px-3 py-1.5 text-xs font-bold text-stone-900 shadow backdrop-blur hover:bg-white cursor-pointer">
                 <Edit3 className="h-3.5 w-3.5" />{t('تعديل الملف', 'Edit profile')}

@@ -157,7 +157,7 @@ export async function relation(ctx: Ctx, viewerId: string, otherId: string): Pro
 }
 
 export async function profile(ctx: Ctx, viewerId: string, handle: string) {
-  const [row] = await ctx.sql.query(`SELECT ${USER_COLUMNS} FROM ${USER_FROM} WHERE u.handle = $1 AND u.status = 'active'`, [clean(handle, 40).toLowerCase()]);
+  const [row] = await ctx.sql.query(`SELECT ${USER_COLUMNS}, u.banner FROM ${USER_FROM} WHERE u.handle = $1 AND u.status = 'active'`, [clean(handle, 40).toLowerCase()]);
   if (!row) fail(404, 'NOT_FOUND');
   const [blockedMe] = await ctx.sql.query(`SELECT 1 FROM blocks WHERE blocker = $1 AND blocked = $2`, [row.id, viewerId]);
   if (blockedMe) fail(404, 'NOT_FOUND');
@@ -177,7 +177,7 @@ export async function profile(ctx: Ctx, viewerId: string, handle: string) {
        AND NOT EXISTS (SELECT 1 FROM blocks b WHERE (b.blocker = $1 AND b.blocked = u.id) OR (b.blocker = u.id AND b.blocked = $1))
      ORDER BY f.accepted_at DESC NULLS LAST LIMIT 9`, [viewerId, row.id]);
   return {
-    user: publicUser(row), since: iso(row.created_at), relation: await relation(ctx, viewerId, row.id), counts, friends: friendRows.map(publicUser),
+    user: publicUser(row), banner: row.banner || null, since: iso(row.created_at), relation: await relation(ctx, viewerId, row.id), counts, friends: friendRows.map(publicUser),
     posts: posts.map((p) => postView(p, viewerId)),
     recipes: recipes.map((r) => ({ id: r.id, title: r.title, data: r.data, updatedAt: iso(r.updated_at) })),
   };
