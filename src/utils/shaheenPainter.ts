@@ -12,14 +12,18 @@
  * give the same SVG; the browser turns it into a PNG (src/workspace/paint.ts).
  */
 import { craftImagePrompt, detectLettering, type ImageAspect, type ImageStyleId } from './imageCraft';
+import { FALL_DEF, aurora, balloon, butterflies, castle, crystals, dragon, foreground, haze, horse, island, lighthouse, milkyWay, motes, peaks, planet, pyramids, rays, shootingStar, tree, waterfall, whale } from './shaheenPainterFx';
 
 export type PaintTime = 'night' | 'sunset' | 'dawn' | 'day';
 export type PaintSetting = 'space' | 'desert' | 'sea' | 'mountains' | 'forest' | 'city' | 'garden' | 'studio' | 'abstract';
-export type PaintSubject = 'bottle' | 'rose' | 'falcon' | 'cat' | 'camel' | 'palm' | 'lantern' | 'mosque' | 'boat' | 'figure';
+export type PaintSubject = 'bottle' | 'dragon' | 'horse' | 'whale' | 'rose' | 'falcon' | 'cat' | 'camel' | 'palm' | 'lantern' | 'mosque' | 'boat' | 'figure'
+  | 'pyramid' | 'castle' | 'lighthouse' | 'balloon' | 'island' | 'waterfall' | 'planet' | 'crystal' | 'butterfly' | 'tree';
 export type PaintLook = 'flat' | 'watercolor' | 'sketch' | 'oil' | 'cinematic' | 'cartoon';
 
 export interface Painting {
   svg: string; width: number; height: number;
+  /** What the painter imagined on its own to enrich the scene (light rays, aurora, floating islands…). */
+  extras: string[];
   time: PaintTime; setting: PaintSetting; subjects: PaintSubject[]; look: PaintLook;
   /** A main subject the idea asks for that the painter cannot draw yet (English noun, for the report). */
   missing?: string;
@@ -42,23 +46,36 @@ const SETTINGS: [PaintSetting, RegExp][] = [
 ];
 const SUBJECTS: [PaintSubject, RegExp][] = [
   ['bottle', /عطر|عطور|زجاجه|قاروره|فلاكون|\bperfume\b|\bbottle\b|\bflacon\b|\bfragrance\b|\bcologne\b/],
+  ['dragon', /تنين|\bdragons?\b/],
+  ['horse', /حصان|احصنه|(?:^| )(?:ال)?خيل|\bhorses?\b|\bstallion\b/],
+  ['whale', /حوت|حيتان|\bwhales?\b/],
   ['rose', /ورد|زهر|زهور|ياسمين|\broses?\b|\bflowers?\b|\bjasmine\b|\bblossoms?\b|\bpetals\b/],
-  ['falcon', /صقر|شاهين|نسر|طائر|طير|عصفور|\bfalcon\b|\beagle\b|\bhawk\b|\bbirds?\b/],
+  ['falcon', /صقر|شاهين|نسر|طائر |(?:^| )(?:ال)?طير |طيور|عصفور|\bfalcon\b|\beagle\b|\bhawk\b|\bbirds?\b/],
   ['cat', /قطه|قط |قطط|\bcats?\b|\bkitten\b/],
   ['camel', /جمل|جمال |ناقه|ابل|\bcamels?\b/],
   ['palm', /نخل|نخيل|\bpalms?\b/],
   ['lantern', /فانوس|قنديل|مصباح|\blanterns?\b|\blamp\b/],
   ['mosque', /مسجد|جامع|مئذنه|قبه|\bmosque\b|\bminaret\b|\bdome\b/],
   ['boat', /مركب|قارب|سفينه|شراع|\bboat\b|\bship\b|\bsail(?:boat)?\b/],
+  ['pyramid', /هرم|اهرام|\bpyramids?\b/],
+  ['castle', /قصر |قصور|قلعه|\bpalace\b|\bcastle\b/],
+  ['lighthouse', /فنار|\blighthouse\b/],
+  ['balloon', /منطاد|مناطيد|بالون|\bballoons?\b/],
+  ['island', /جز(?:ر|يره|يرتين) (?:طاير|طائر|معلق|عايم|سابح)|\bfloating islands?\b/],
+  ['waterfall', /شلال|\bwaterfalls?\b/],
+  ['planet', /كوكب|كواكب|زحل|\bplanets?\b|\bsaturn\b/],
+  ['crystal', /كريستال|بلور|الماس|\bcrystals?\b|\bgems?\b|\bdiamonds?\b/],
+  ['butterfly', /فراش|\bbutterfl/],
+  ['tree', /شجره|\btree\b/],
   ['figure', /رجل|راجل|امراه|بنت|ولد|شخص|فارس|مسافر|رحاله|\bman\b|\bwoman\b|\bgirl\b|\bboy\b|\bperson\b|\bfigure\b|\btraveler\b|\btraveller\b|\bknight\b/],
 ];
 /** Often asked for, not drawable yet — named honestly instead of drawn badly. */
 const BEYOND: [string, RegExp][] = [
-  ['dragon', /تنين|\bdragon\b/], ['horse', /حصان|خيل|\bhorses?\b/], ['dog', /كلب|\bdogs?\b/], ['lion', /اسد|\blion\b/],
+  ['dog', /كلب|\bdogs?\b/], ['lion', /اسد|\blion\b/],
   ['car', /سياره|عربيه|\bcars?\b/], ['food', /اكل|طبق|كيك|قهوه|\bfood\b|\bdish\b|\bcake\b|\bcoffee\b/],
   ['face portrait', /بورتريه|وجه|\bportrait\b|\bface\b/], ['logo', /شعار|لوجو|\blogo\b|\bicon\b/],
-  ['animal', /حيوان|نمر|فيل|ذئب|ثعلب|حوت|سمك|\btiger\b|\belephant\b|\bwolf\b|\bfox\b|\bwhale\b|\bfish\b/],
-  ['building', /قصر|قلعه|برج ايفل|\bpalace\b|\bcastle\b|\btower\b|\bhouse\b|بيت/], ['robot', /روبوت|\brobot\b/],
+  ['animal', /حيوان|نمر|فيل|ذئب|ثعلب|سمك|\btiger\b|\belephant\b|\bwolf\b|\bfox\b|\bfish\b/],
+  ['building', /برج ايفل|\btower\b|\bhouse\b|بيت/], ['robot', /روبوت|\brobot\b/],
 ];
 const TIMES: [PaintTime, RegExp][] = [
   ['night', /ليل|قمر|مظلم|نيون|\bnight\b|\bmidnight\b|\bmoon(?:lit|light)?\b|\bdark\b|\bneon\b/],
@@ -312,8 +329,8 @@ export function paintScene(idea: string, choice: { style?: ImageStyleId; aspect?
   const subjects = SUBJECTS.filter(([, re]) => re.test(words)).map(([id]) => id);
   let setting = SETTINGS.find(([, re]) => re.test(words))?.[0];
   const beyond = BEYOND.find(([, re]) => re.test(words))?.[0];
-  if (!setting) setting = subjects.includes('bottle') || (subjects.includes('lantern') && subjects.length === 1) ? 'studio' : subjects.includes('mosque') ? 'city' : subjects.includes('camel') || subjects.includes('palm') ? 'desert' : subjects.includes('boat') ? 'sea' : subjects.includes('rose') ? 'garden' : subjects.length ? 'mountains' : 'abstract';
-  const time: PaintTime = setting === 'space' ? 'night' : TIMES.find(([, re]) => re.test(words))?.[0] || (setting === 'studio' ? 'night' : setting === 'desert' ? 'sunset' : 'day');
+  if (!setting) setting = subjects.includes('bottle') || (subjects.includes('lantern') && subjects.length === 1) ? 'studio' : subjects.includes('planet') ? 'space' : subjects.includes('crystal') && subjects.length === 1 ? 'studio' : subjects.includes('mosque') ? 'city' : subjects.includes('camel') || subjects.includes('palm') || subjects.includes('pyramid') || subjects.includes('horse') ? 'desert' : subjects.includes('boat') || subjects.includes('lighthouse') || subjects.includes('whale') ? 'sea' : subjects.includes('rose') || subjects.includes('butterfly') || subjects.includes('tree') ? 'garden' : subjects.length ? 'mountains' : 'abstract';
+  const time: PaintTime = setting === 'space' ? 'night' : TIMES.find(([, re]) => re.test(words))?.[0] || (setting === 'studio' || subjects.includes('lighthouse') || subjects.includes('dragon') ? 'night' : setting === 'desert' || subjects.includes('castle') ? 'sunset' : subjects.includes('island') || subjects.includes('balloon') ? 'dawn' : 'day');
   const named = COLOURS.filter(([, re]) => re.test(words)).map(([hex]) => hex);
   const fallback = setting === 'space' ? ['#7c3aed', '#2563eb'] : subjects.includes('rose') ? ['#e0457b', '#f59e0b'] : /فخم|فاخر|ملكي|lux|royal|premium/.test(words) ? ['#d4a017', '#7c2d12'] : time === 'sunset' ? ['#ea7a1f', '#a8366c'] : ['#d4a017', '#0ea5a4'];
   const accent = named[0] || fallback[0], second = named[1] || (named[0] ? mix(named[0], '#ffffff', 0.4) : fallback[1]);
@@ -324,45 +341,87 @@ export function paintScene(idea: string, choice: { style?: ImageStyleId; aspect?
   const silhouette = time === 'day' ? mix(tone.ink, '#000000', 0.1) : tone.ink;
   const orbX = W * (0.22 + r() * 0.56), orbY = setting === 'sea' || setting === 'desert' ? c.horizon - H * (time === 'sunset' || time === 'dawn' ? 0.06 : 0.3) : H * (0.16 + r() * 0.12);
 
-  // 1) The place.
-  let back = sky(c);
-  if (setting === 'space') back += stars(c, 420, H) + nebula(c) + (/مجر|galax/.test(words) || r() > 0.4 ? galaxy(c, W * (0.25 + r() * 0.5), H * (0.2 + r() * 0.2), Math.min(W, H) * 0.24) : '') + stars(c, 60, H);
-  else if (setting === 'abstract') back += nebula(c) + clouds(c, 4, H * 0.1, H * 0.8);
-  else if (setting === 'studio') back += `<ellipse cx="${n(W / 2)}" cy="${n(c.horizon - H * 0.2)}" rx="${n(W * 0.55)}" ry="${n(H * 0.42)}" fill="${mix(accent, '#ffffff', 0.25)}" opacity="0.4" filter="url(#blur-xl)"/>`;
+  // 1) The place, its light and its air.
+  const extras: string[] = [];
+  const wish = (re: RegExp) => re.test(words);
+  const has = (id: PaintSubject) => subjects.includes(id);
+  const dreamy = brief.style === 'fantasy' || wish(/خيال|تخيل|سحر|حلم|اسطور|عجيب|\bfantasy\b|\bmagic|\bdream|\bsurreal|\bmythic|\benchant/);
+  const outdoor = setting !== 'space' && setting !== 'abstract' && setting !== 'studio';
+  const least = Math.min(W, H), glow = tone.sky[tone.sky.length - 1];
+  const giantMoon = outdoor && (wish(/قمر عملاق|قمر كبير|قمر ضخم|بدر|giant moon|huge moon|full moon/) || (dreamy && time === 'night'));
+  let back = sky(c) + FALL_DEF;
+  if (setting === 'space') {
+    back += stars(c, 420, H) + milkyWay(c) + nebula(c) + (/مجر|galax/.test(words) || r() > 0.4 ? galaxy(c, W * (0.25 + r() * 0.5), H * (0.2 + r() * 0.2), least * 0.24) : '') + stars(c, 60, H);
+    const count = (has('planet') ? 2 : 1) + (dreamy ? 1 : 0), big = has('planet') && subjects.length === 1;
+    for (let i = 0; i < count; i++) back += planet(c, big && !i ? W * 0.5 : W * ([0.8, 0.16, 0.3][i] + r() * 0.06), big && !i ? H * 0.46 : H * ([0.2, 0.7, 0.16][i] + r() * 0.06), least * (big && !i ? 0.24 : [0.1, 0.055, 0.035][i]), [second, accent, '#e9b872'][i], i === 0, `s${i}`);
+    extras.push('planets');
+  } else if (setting === 'abstract') back += nebula(c) + clouds(c, 4, H * 0.1, H * 0.8) + motes(c, 40, mix(accent, '#ffffff', 0.4), 0, H);
+  else if (setting === 'studio') { back += `<ellipse cx="${n(W / 2)}" cy="${n(c.horizon - H * 0.2)}" rx="${n(W * 0.55)}" ry="${n(H * 0.42)}" fill="${mix(accent, '#ffffff', 0.25)}" opacity="0.4" filter="url(#blur-xl)"/>` + motes(c, 30, mix(second, '#ffffff', 0.3), H * 0.04, c.horizon - H * 0.04); extras.push('bokeh lights'); }
   else {
-    if (time === 'night') back += stars(c, 230, c.horizon);
-    back += orb(c, orbX, orbY, Math.min(W, H) * (time === 'night' ? 0.055 : 0.07));
+    if (time === 'night') { back += stars(c, 230, c.horizon) + milkyWay(c); extras.push('milky way'); }
+    if (time === 'night' && (wish(/شفق|\baurora\b|northern lights/) || (dreamy && r() > 0.35))) { back += aurora(c); extras.push('aurora'); }
+    if (giantMoon) { back += planet(c, orbX, c.horizon - H * 0.2, least * 0.2, '#ece6d2', false, 'moon', true); extras.push('giant moon'); }
+    else back += orb(c, orbX, orbY, least * (time === 'night' ? 0.055 : 0.07));
+    if (time !== 'night') { back += rays(c, orbX, orbY); extras.push('light rays'); }
+    if (has('planet') || (dreamy && time !== 'night')) { back += `<g opacity="${time === 'night' ? 1 : 0.6}">${planet(c, W - orbX, H * 0.17, least * 0.1, second, true, 'sky')}</g>`; extras.push('planet in the sky'); }
     if (!/صافي|clear sky/.test(words)) back += clouds(c, time === 'night' ? 3 : 5, H * 0.06, c.horizon * 0.62);
+    if (time === 'night' && (wish(/شهاب|شهب|نيزك|shooting star|\bmeteor/) || r() > 0.5)) { back += shootingStar(c); extras.push('shooting star'); }
   }
-  const far = (t: number) => mix(silhouette, tone.sky[tone.sky.length - 1], t);
-  if (setting === 'mountains') back += ridge(c, c.horizon + H * 0.02, H * 0.36, far(0.62), 1) + ridge(c, c.horizon + H * 0.1, H * 0.3, far(0.36), 2) + ridge(c, H * 0.92, H * 0.24, far(0.08), 3);
-  if (setting === 'forest') back += ridge(c, c.horizon, H * 0.22, far(0.6), 1) + pines(c, c.horizon + H * 0.06, 26, H * 0.2, far(0.42)) + pines(c, c.horizon + H * 0.2, 16, H * 0.34, far(0.2)) + `<rect y="${n(c.horizon + H * 0.2)}" width="${W}" height="${n(H)}" fill="${far(0.05)}"/>` + pines(c, H * 1.02, 9, H * 0.5, far(0));
-  if (setting === 'city') back += (subjects.includes('mosque') ? '' : skyline(c)) + `<rect y="${n(c.horizon + H * 0.06)}" width="${W}" height="${n(H)}" fill="${far(0.02)}"/>`;
-  if (setting === 'desert') back += ridge(c, c.horizon + H * 0.01, H * 0.1, far(0.6), 0) + dunes(c);
-  if (setting === 'sea') back += sea(c, orbX);
-  if (setting === 'garden') back += ridge(c, c.horizon + H * 0.02, H * 0.16, far(0.6), 1) + meadow(c);
+  const far = (t: number) => mix(silhouette, glow, t);
+  if (setting === 'mountains') {
+    const snow = time === 'sunset' ? mix(tone.light, '#ff9a7a', 0.35) : mix(tone.light, far(0.5), 0.12);
+    back += ridge(c, c.horizon + H * 0.02, H * 0.3, far(0.66), 1) + haze(c, c.horizon - H * 0.02, H * 0.1, glow, 0.5)
+      + peaks(c, c.horizon + H * 0.13, H * 0.44, far(0.24), mix(far(0.5), tone.light, time === 'night' ? 0.08 : 0.22), snow, 4, orbX < W / 2)
+      + haze(c, c.horizon + H * 0.14, H * 0.09, glow, 0.4) + ridge(c, H * 0.95, H * 0.22, far(0.06), 3);
+  }
+  if (setting === 'forest') back += ridge(c, c.horizon, H * 0.22, far(0.6), 1) + haze(c, c.horizon, H * 0.1, glow, 0.5) + pines(c, c.horizon + H * 0.06, 26, H * 0.2, far(0.42)) + haze(c, c.horizon + H * 0.08, H * 0.08, glow, 0.35) + pines(c, c.horizon + H * 0.2, 16, H * 0.34, far(0.2)) + `<rect y="${n(c.horizon + H * 0.2)}" width="${W}" height="${n(H)}" fill="${far(0.05)}"/>` + haze(c, c.horizon + H * 0.22, H * 0.06, glow, 0.22) + pines(c, H * 1.02, 9, H * 0.5, far(0));
+  if (setting === 'city') back += (has('mosque') ? '' : skyline(c)) + `<rect y="${n(c.horizon + H * 0.06)}" width="${W}" height="${n(H)}" fill="${far(0.02)}"/>` + haze(c, c.horizon + H * 0.05, H * 0.07, time === 'night' ? mix(accent, '#ffd98a', 0.5) : glow, 0.3);
+  if (setting === 'desert') back += ridge(c, c.horizon + H * 0.01, H * 0.1, far(0.6), 0) + haze(c, c.horizon, H * 0.08, glow, 0.45) + dunes(c);
+  if (setting === 'sea') back += sea(c, orbX) + haze(c, c.horizon, H * 0.05, glow, 0.5);
+  if (setting === 'garden') back += ridge(c, c.horizon + H * 0.02, H * 0.16, far(0.6), 1) + haze(c, c.horizon + H * 0.01, H * 0.08, glow, 0.4) + meadow(c);
   if (setting === 'studio') back += surface(c, words);
 
-  // 2) The subjects, the main one on a third.
+  // 2) The subjects: the wonders in the air first, then the landmarks, then the living things in front.
   const ground = setting === 'space' || setting === 'abstract' ? H * 0.78 : setting === 'studio' ? c.horizon + (H - c.horizon) * 0.42 : setting === 'sea' ? c.horizon + H * 0.1 : c.horizon + (H - c.horizon) * 0.45;
-  const main = subjects.includes('mosque') && subjects[0] === 'lantern' ? 'mosque' : subjects[0], side = W * (r() > 0.5 ? 0.34 : 0.66), other = W - side;
+  const PROPS: PaintSubject[] = ['rose', 'palm', 'lantern', 'butterfly', 'planet', 'tree', 'waterfall', 'island', 'crystal'];
+  const main = subjects.find((s) => !PROPS.includes(s)) || subjects[0], side = W * (r() > 0.5 ? 0.34 : 0.66), other = W - side, landmark = c.horizon + H * 0.03;
   let front = '';
-  if (subjects.includes('mosque')) front += mosque(c, main === 'mosque' ? W / 2 : other, c.horizon + H * 0.03, H * (main === 'mosque' ? 0.36 : 0.22), silhouette);
-  if (subjects.includes('palm')) { const count = main === 'palm' ? 3 : 2; for (let i = 0; i < count; i++) front += palm(c, W * (i ? 0.08 + r() * 0.2 + (i - 1) * 0.66 : 0.86), ground + H * 0.04, H * (0.3 + r() * 0.14), silhouette); }
-  if (subjects.includes('boat')) front += boat(main === 'boat' ? side : other, c.horizon + H * (main === 'boat' ? 0.12 : 0.05), H * (main === 'boat' ? 0.24 : 0.1), silhouette, time === 'day' ? '#ffffff' : mix(tone.light, accent, 0.25));
-  if (subjects.includes('camel')) { const count = main === 'camel' ? 3 : 1; for (let i = 0; i < count; i++) front += camel(side + (i - (count - 1) / 2) * H * 0.24, ground - i * H * 0.006, H * (0.2 - i * 0.02), silhouette); }
-  if (subjects.includes('figure')) front += figure(main === 'figure' ? side : other, ground, H * (main === 'figure' ? 0.3 : 0.2), silhouette);
-  if (subjects.includes('falcon')) front += flock(c, 5, silhouette) + falcon(main === 'falcon' ? W / 2 : other, H * (main === 'falcon' ? 0.34 : 0.22), (Math.min(W, H) / 1000) * (main === 'falcon' ? 2.3 : 1.1), time === 'day' ? '#3a2a1c' : silhouette);
-  if (subjects.includes('lantern')) front += lantern(c, main === 'lantern' ? W / 2 : other, ground, H * (main === 'lantern' ? 0.44 : 0.24));
-  if (subjects.includes('cat')) front += cat(c, main === 'cat' ? W / 2 : other, ground, H * (main === 'cat' ? 0.4 : 0.24), setting === 'space' ? '#e8842c' : silhouette, setting === 'space');
-  if (subjects.includes('bottle')) {
+  if (has('island') || (dreamy && outdoor)) {
+    const count = has('island') ? 3 : 2;
+    for (let i = count - 1; i >= 0; i--) front += island(c, W * ([0.2, 0.8, 0.52][i] + (r() - 0.5) * 0.06), H * [0.3, 0.2, 0.13][i], W * [0.13, 0.085, 0.05][i], [0.12, 0.4, 0.62][i], i === 0);
+    if (!has('island')) extras.push('floating islands');
+  }
+  if (has('balloon')) for (let i = 2; i >= 0; i--) front += balloon(c, W * ([0.3, 0.72, 0.54][i] + (r() - 0.5) * 0.05), H * [0.34, 0.22, 0.15][i], H * [0.32, 0.18, 0.1][i], i % 2 ? second : accent, i % 2 ? '#fff3d6' : second, `${i}`);
+  if (has('waterfall')) front += waterfall(c, main === 'waterfall' ? W * 0.5 : other, c.horizon - H * 0.2, H * 0.36, W * 0.045, far(0.2));
+  if (has('pyramid')) front += pyramids(c, main === 'pyramid' ? W * 0.5 : other, landmark + H * 0.03, H * (main === 'pyramid' ? 0.38 : 0.3));
+  if (has('castle')) front += castle(c, main === 'castle' ? W * 0.5 : other, landmark + H * 0.02, H * (main === 'castle' ? 0.42 : 0.26), silhouette);
+  if (has('lighthouse')) { const lx = main === 'lighthouse' ? side : other; front += lighthouse(c, lx, c.horizon + H * 0.07, H * (main === 'lighthouse' ? 0.48 : 0.3), lx < W / 2 ? 1 : -1); }
+  if (has('mosque')) front += mosque(c, main === 'mosque' ? W / 2 : other, landmark, H * (main === 'mosque' ? 0.36 : 0.22), silhouette);
+  if (has('tree')) front += tree(c, main === 'tree' ? W / 2 : other, ground + H * 0.04, H * (main === 'tree' ? 0.66 : 0.42), mix(silhouette, '#5a3a22', time === 'night' ? 0.15 : 0.5), dreamy ? accent : time === 'night' ? '#1c4a33' : time === 'day' ? '#3f8f4a' : '#8a8f3a');
+  if (has('palm')) { const count = main === 'palm' ? 3 : 2; for (let i = 0; i < count; i++) front += palm(c, W * (i ? 0.08 + r() * 0.2 + (i - 1) * 0.66 : 0.86), ground + H * 0.04, H * (0.3 + r() * 0.14), silhouette); }
+  if (has('boat')) front += boat(main === 'boat' ? side : other, c.horizon + H * (main === 'boat' ? 0.12 : 0.05), H * (main === 'boat' ? 0.24 : 0.1), silhouette, time === 'day' ? '#ffffff' : mix(tone.light, accent, 0.25));
+  if (has('whale')) front += whale(c, main === 'whale' ? W * 0.5 : other, setting === 'sea' && !dreamy ? c.horizon + H * 0.03 : H * 0.34, W * (main === 'whale' ? 0.4 : 0.24), mix(silhouette, '#27496b', time === 'night' ? 0.3 : 0.6));
+  if (has('dragon')) front += `<ellipse cx="${n(main === 'dragon' ? W * 0.5 : other)}" cy="${n(H * 0.3)}" rx="${n(W * 0.26)}" ry="${n(H * 0.2)}" fill="${mix(accent, tone.light, 0.3)}" opacity="0.3" filter="url(#blur-xl)"/>` + dragon(c, main === 'dragon' ? W * 0.5 : other, H * 0.34, W * (main === 'dragon' ? 0.5 : 0.3), mix(silhouette, accent, time === 'night' ? 0.38 : 0.2), wish(/(?:^| )نار|لهب|ينفث|\bfire\b|\bflames?\b/));
+  if (has('camel')) { const count = main === 'camel' ? 3 : 1; for (let i = 0; i < count; i++) front += camel(side + (i - (count - 1) / 2) * H * 0.24, ground - i * H * 0.006, H * (0.2 - i * 0.02), silhouette); }
+  if (has('horse')) front += `<ellipse cx="${n(side)}" cy="${n(ground)}" rx="${n(H * 0.16)}" ry="${n(H * 0.012)}" fill="${tone.ink}" opacity="0.35" filter="url(#blur-s)"/>` + horse(side, ground, H * (main === 'horse' ? 0.36 : 0.24), silhouette, side > W / 2);
+  if (has('figure')) front += figure(main === 'figure' ? side : other, ground, H * (main === 'figure' ? 0.3 : 0.2), silhouette);
+  if (has('falcon')) front += flock(c, 5, silhouette) + falcon(main === 'falcon' ? W / 2 : other, H * (main === 'falcon' ? 0.34 : 0.22), (least / 1000) * (main === 'falcon' ? 2.3 : 1.1), time === 'day' ? '#3a2a1c' : silhouette);
+  if (has('lantern')) front += lantern(c, main === 'lantern' ? W / 2 : other, ground, H * (main === 'lantern' ? 0.44 : 0.24));
+  if (has('crystal')) front += crystals(c, main === 'crystal' ? W / 2 : other, ground, H * (main === 'crystal' ? 0.44 : 0.2), accent);
+  if (has('cat')) front += cat(c, main === 'cat' ? W / 2 : other, ground, H * (main === 'cat' ? 0.4 : 0.24), setting === 'space' ? '#e8842c' : silhouette, setting === 'space');
+  if (has('bottle')) {
     const floating = setting === 'space' || setting === 'abstract' || setting === 'sea';
     const alone = main === 'bottle';
     front += bottle(c, alone ? W / 2 : other, floating && setting !== 'sea' ? H * 0.82 : ground, H * (alone ? 0.56 : 0.34), lettering, setting === 'space' || setting === 'abstract');
-    if (subjects.includes('rose')) for (let i = 0; i < 5; i++) front += rose((alone ? W / 2 : other) + (i - 2) * H * 0.09 + (r() - 0.5) * 20, ground + H * 0.03 + r() * H * 0.04, H * (0.028 + r() * 0.014), i % 2 ? accent : second, false);
-  } else if (subjects.includes('rose') && setting !== 'garden') for (let i = 0; i < 5; i++) front += rose(W * (0.2 + i * 0.15), ground - H * (0.12 + r() * 0.1), H * (0.05 + r() * 0.03), i % 2 ? accent : second);
+    if (has('rose')) for (let i = 0; i < 5; i++) front += rose((alone ? W / 2 : other) + (i - 2) * H * 0.09 + (r() - 0.5) * 20, ground + H * 0.03 + r() * H * 0.04, H * (0.028 + r() * 0.014), i % 2 ? accent : second, false);
+  } else if (has('rose') && setting !== 'garden') for (let i = 0; i < 5; i++) front += rose(W * (0.2 + i * 0.15), ground - H * (0.12 + r() * 0.1), H * (0.05 + r() * 0.03), i % 2 ? accent : second);
+  if (setting === 'mountains' || setting === 'forest') front += foreground(c, mix(silhouette, '#000000', 0.25));
+  if (setting === 'garden') front += foreground(c, time === 'night' ? '#07140d' : time === 'day' ? '#1f4a2a' : '#26331a');
+  if (has('butterfly') || (setting === 'garden' && time !== 'night')) { front += butterflies(c, has('butterfly') ? 11 : 4, accent, second, H * 0.3, H * 0.88); if (!has('butterfly')) extras.push('butterflies'); }
+  if (outdoor && time === 'night' && (setting === 'garden' || setting === 'forest' || dreamy || wish(/يراع|firefl/))) { front += motes(c, 60, '#d8ff8a', c.horizon - H * 0.08, H); extras.push('fireflies'); }
+  else if (dreamy) { front += motes(c, 36, mix(tone.light, accent, 0.3), H * 0.1, H); extras.push('glowing dust'); }
   front += weather(c, words);
-  if (lettering && !subjects.includes('bottle')) front += `<text x="${n(W / 2)}" y="${n(H * 0.93)}" text-anchor="middle" font-family="'Amiri','Noto Naskh Arabic','Times New Roman',serif" font-weight="700" font-size="${n(Math.min(H * 0.08, (W * 1.3) / Math.max(4, lettering.length)))}" fill="${tone.light}" stroke="${tone.ink}" stroke-width="1.5">${esc(lettering)}</text>`;
+  if (lettering && !has('bottle')) front += `<text x="${n(W / 2)}" y="${n(H * 0.93)}" text-anchor="middle" font-family="'Amiri','Noto Naskh Arabic','Times New Roman',serif" font-weight="700" font-size="${n(Math.min(H * 0.08, (W * 1.3) / Math.max(4, lettering.length)))}" fill="${tone.light}" stroke="${tone.ink}" stroke-width="1.5">${esc(lettering)}</text>`;
 
   // 3) The look.
   const defs = `<defs><filter id="blur-s" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter><filter id="blur-m" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter><filter id="blur-l" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="34"/></filter><filter id="blur-xl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="${n(Math.min(W, H) * 0.06)}"/></filter>`
@@ -372,11 +431,11 @@ export function paintScene(idea: string, choice: { style?: ImageStyleId; aspect?
     + '<radialGradient id="vignette" cx="0.5" cy="0.5" r="0.75"><stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>';
   const scene = `${back}${front}`;
   const body = look === 'watercolor' || look === 'oil' ? `<g filter="url(#wash)"><g transform="translate(${n(-W * 0.04)} ${n(-H * 0.04)}) scale(1.08)">${scene}</g></g>` : look === 'sketch' ? `<g filter="url(#ink)">${scene}</g>` : scene;
-  const finish = (look === 'flat' || look === 'cartoon' ? '' : `<rect width="${W}" height="${H}" filter="url(#grain)" opacity="${look === 'watercolor' || look === 'sketch' ? 0.5 : 0.22}" style="mix-blend-mode:${look === 'watercolor' || look === 'sketch' ? 'multiply' : 'overlay'}"/>`)
-    + (look === 'cinematic' || setting === 'studio' ? `<rect width="${W}" height="${H}" fill="url(#vignette)"/>` : '');
+  const finish = (look === 'cartoon' ? '' : `<rect width="${W}" height="${H}" filter="url(#grain)" opacity="${look === 'watercolor' || look === 'sketch' ? 0.5 : look === 'flat' ? 0.12 : 0.22}" style="mix-blend-mode:${look === 'watercolor' || look === 'sketch' ? 'multiply' : 'overlay'}"/>`)
+    + (look === 'cinematic' || setting === 'studio' ? `<rect width="${W}" height="${H}" fill="url(#vignette)"/>` : look === 'flat' || look === 'oil' ? `<rect width="${W}" height="${H}" fill="url(#vignette)" opacity="0.5"/>` : '');
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${defs}<rect width="${W}" height="${H}" fill="${look === 'sketch' ? '#f3efe6' : tone.sky[0]}"/>${body}${finish}</svg>`;
   // The main thing asked for is beyond the vocabulary when nothing drawable was named, or an undrawable noun leads.
-  const missing = beyond && (!subjects.length || beyond === 'face portrait' || brief.subject === 'emblem' || brief.subject === 'food' || (brief.subject === 'animal' && !subjects.some((s) => s === 'cat' || s === 'falcon' || s === 'camel'))) ? beyond
+  const missing = beyond && (!subjects.length || beyond === 'face portrait' || brief.subject === 'emblem' || brief.subject === 'food' || (brief.subject === 'animal' && !subjects.some((s) => ['cat', 'falcon', 'camel', 'horse', 'dragon', 'whale', 'butterfly'].includes(s)))) ? beyond
     : !subjects.length && setting === 'abstract' ? 'subject' : undefined;
-  return { svg, width: W, height: H, time, setting, subjects, look, ...(missing ? { missing } : {}) };
+  return { svg, width: W, height: H, extras, time, setting, subjects, look, ...(missing ? { missing } : {}) };
 }

@@ -91,6 +91,14 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     tags: ['صور', 'رسم', 'مرسم', 'images', 'painter', 'illustration'],
   },
   {
+    id: 'shaheen_painter_wonders', group: 'workspace', tab: 'workspace', docId: 'kb-platform-painter-wonders',
+    name: { ar: 'خيال مرسم شاهين والجرافيك', en: 'Shaheen painter imagination and graphics' },
+    summary: { ar: 'مرسم شاهين بقى يتخيّل ويضيف من عنده: أشعة ضوء، ضباب بين الجبال، درب التبانة، شفق قطبي، شهب، كواكب بحلقات وجزر طائرة، وبيرسم عناصر خيالية جديدة زي التنين والقلعة والأهرامات.', en: 'Shaheen own painter now imagines and adds on its own: light rays, haze between mountains, the milky way, aurora, shooting stars, ringed planets and floating islands, and draws new imaginative subjects such as a dragon, a castle and the pyramids.' },
+    details: { ar: 'العناصر الجديدة اللي مرسم شاهين بيرسمها: تنين (واكتب ينفث النار لو عايز لهب)، حصان، حوت، أهرامات، قلعة أو قصر، فنار، مناطيد، جزر طائرة، شلال، كوكب بحلقات، كريستال، فراشات وشجرة كبيرة. ولو كتبت كلمة زي خيالي أو سحري أو حلم، شاهين بيضيف من خياله جزر طائرة وكوكب في السما وغبار مضيء، وبالليل قمر عملاق وشفق قطبي ويراعات. كل مشهد بياخد إضاءة وعمق تلقائي: أشعة شمس وقت الغروب والفجر، ضباب بين الطبقات، قمم جبال بالثلج، درب التبانة والشهب بالليل. تقدر تطلبها بالاسم: شفق قطبي، قمر عملاق، شهاب، يراعات. الرسم لسه توضيحي مش واقعي، وبيتكتب تحت الرسمة.', en: 'New subjects Shaheen own painter draws: a dragon (write breathing fire for flames), a horse, a whale, the pyramids, a castle or palace, a lighthouse, hot-air balloons, floating islands, a waterfall, a ringed planet, crystals, butterflies and a great tree. If you write a word such as fantasy, magic or dream, Shaheen adds from his imagination floating islands, a planet in the sky and glowing dust, and at night a giant moon, aurora and fireflies. Every scene gets automatic light and depth: sun rays at sunset and dawn, haze between layers, snow peaks, the milky way and shooting stars at night. You can ask by name: aurora, giant moon, shooting star, fireflies. The drawing is still an illustration, not a realistic image, and the note under it says so.' },
+    keywords: ['خيال المرسم', 'جزر طائرة', 'شفق قطبي', 'قمر عملاق', 'ارسم تنين', 'جرافيك مبهر', 'floating islands', 'aurora drawing', 'painter imagination'],
+    tags: ['صور', 'رسم', 'خيال', 'جرافيك', 'images', 'painter', 'imagination'],
+  },
+  {
     id: 'concentration', group: 'lab', tab: 'concentration', docId: 'kb-concentration',
     name: { ar: 'حاسبة التركيز', en: 'Concentration calculator' },
     summary: {

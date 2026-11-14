@@ -35,6 +35,8 @@ export function runLesson(lesson: PaintLesson): LessonResult {
     if (lesson.time && painting.time !== lesson.time) problems.push(`الوقت ${painting.time} والمطلوب ${lesson.time}`);
     if (lesson.look && painting.look !== lesson.look) problems.push(`الأسلوب ${painting.look} والمطلوب ${lesson.look}`);
     for (const s of lesson.subjects || []) if (!painting.subjects.includes(s)) problems.push(`العنصر ${s} ما اترسمش`);
+    for (const s of lesson.not || []) if (painting.subjects.includes(s)) problems.push(`رسم ${s} من غير ما حد يطلبه`);
+    for (const e of lesson.extras || []) if (!painting.extras.includes(e)) problems.push(`ما تخيّلش «${e}»`);
   }
   return { id: lesson.id, idea: lesson.idea, ok: problems.length === 0, beyond: Boolean(lesson.beyond), problems, painting };
 }
@@ -56,7 +58,7 @@ export function formatPaintReport(report: PaintReport, verbose = false): string 
     if (r.ok && !verbose) continue;
     lines.push(`${r.ok ? '✓' : '✗'} ${r.id}: ${r.idea}`);
     for (const p of r.problems) lines.push(`    - ${p}`);
-    if (verbose) lines.push(`    ${r.painting.setting} / ${r.painting.time} / ${r.painting.look} / [${r.painting.subjects.join(', ')}]${r.painting.missing ? ` / ناقص: ${r.painting.missing}` : ''}`);
+    if (verbose) lines.push(`    ${r.painting.setting} / ${r.painting.time} / ${r.painting.look} / [${r.painting.subjects.join(', ')}]${r.painting.extras.length ? ` + خيال: ${r.painting.extras.join(', ')}` : ''}${r.painting.missing ? ` / ناقص: ${r.painting.missing}` : ''}`);
   }
   if (report.gaps.length) lines.push(`الدروس الجاية (لسه ما يعرفش يرسمها وبيقول كده بصراحة): ${[...new Set(report.gaps)].join('، ')}`);
   return lines.join('\n');
