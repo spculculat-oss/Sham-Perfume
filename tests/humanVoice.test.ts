@@ -3,7 +3,7 @@ import test from 'node:test';
 import express from 'express';
 import type { AddressInfo } from 'node:net';
 import {
-  audioFromReply, cleanSpeechRequest, createVoiceRouter, dailyVoiceLimit, speechBody, voiceModels, speechStyle, speechText, VoiceBudget, voiceEnabled, voiceModel,
+  audioFromReply, cleanSpeechRequest, createVoiceRouter, dailyVoiceLimit, speechBody, voiceModels, retryAfterMs, ModelRest, speechPrompt, speechStyle, speechText, VoiceBudget, voiceEnabled, voiceModel,
 } from '../server/voiceSpeak';
 import { ShaheenMemory } from '../server/core/memory';
 import { MemoryStore } from '../server/core/store';
@@ -43,7 +43,8 @@ test('human voice: on with the server key, off on request; a conversational mode
   assert.deepEqual(male.generationConfig.responseModalities, ['AUDIO']);
   assert.match(male.contents[0]!.parts[0]!.text, /Egyptian Arabic accent[^:]*: أهلاً بيك$/, 'a short delivery note, then the words exactly');
   assert.equal(voiceModels({})[0], voiceModel({}));
-  assert.equal(voiceModels({ SHAM_VOICE_MODEL: 'x-tts' }).length, 3, 'the chosen model plus backups');
+  assert.equal(voiceModels({ SHAM_VOICE_MODEL: 'x-tts' }).length, 4, 'the chosen model plus backups');
+  assert.equal(voiceModels({}).length, 4, 'four free quotas used in turn');
 });
 
 test('human voice: only clean visitor text reaches the engine (no tags, bounded length)', () => {
@@ -154,4 +155,48 @@ test('human voice: a short first group (he starts sooner), then longer ones', ()
   assert.equal(groups[1], `${'x'.repeat(170)} ${'y'.repeat(200)}`);
   assert.equal(groups[2], 'z'.repeat(200));
   assert.equal(groups.length, 3);
+});
+
+test('human voice: an Arabic line reaches the engine with no Latin words left, and the note stays English (never read aloud)', () => {
+  const prompt = speechPrompt({ text: 'الـ top notes فيها bergamot، جرب Ombre Nomade. SKU: LAT-095', language: 'ar', gender: 'male' });
+  assert.match(prompt, /^Say this in a Egyptian Arabic accent/);
+  const said = prompt.slice(prompt.indexOf(': ') + 2);
+  assert.doesNotMatch(said, /[A-Za-z]/, said);
+  assert.match(said, /النوتات العليا/);
+  assert.match(said, /برغموت/);
+  assert.doesNotMatch(said, /095/, 'a product code is for the screen');
+  assert.equal(speechPrompt({ text: 'Try Ombre Nomade', language: 'en', gender: 'male' }).endsWith(': Try Ombre Nomade'), true, 'other languages untouched');
+});
+
+test('human voice: a model that says «quota» rests until the time it gave; the next one speaks; all resting → busy with Retry-After', async () => {
+  assert.equal(retryAfterMs({ error: { details: [{ '@type': 'x.RetryInfo', retryDelay: '37s' }] } }), 37_000);
+  assert.equal(retryAfterMs({ error: { details: [{ retryDelay: '62180s' }] } }), 62_180_000);
+  assert.equal(retryAfterMs(undefined), 60_000);
+  const rest = new ModelRest();
+  rest.rest('a', 5000, 0);
+  assert.equal(rest.ready('a', 1000), false);
+  assert.equal(rest.wait(['a', 'b'], 1000), 0, 'another model is ready');
+  assert.equal(rest.wait(['a'], 1000), 4000);
+  const asked: string[] = [];
+  const quota = (url: string) => new Response(JSON.stringify({ error: { details: [{ retryDelay: url.includes('lite') ? '62000s' : '20s' }] } }), { status: 429 });
+  let n = 0;
+  const engine = (async (url: string) => {
+    asked.push(String(url));
+    n += 1;
+    return n < 3 ? quota(String(url)) : engineReply();
+  }) as unknown as typeof fetch;
+  await withServer({ GEMINI_API_KEY: 'k' }, engine, async (base) => {
+    assert.equal((await post(`${base}/speak`, { text: 'أهلاً بيك', language: 'ar' })).status, 200, 'the third model spoke');
+    asked.length = 0;
+    assert.equal((await post(`${base}/speak`, { text: 'تاني', language: 'ar' })).status, 200);
+    assert.equal(asked.length >= 1 && !asked[0]!.includes('3.8-flash-lite'), true, 'a resting model is not asked again');
+  });
+  const allBusy = (async (url: string) => quota(String(url))) as unknown as typeof fetch;
+  await withServer({ GEMINI_API_KEY: 'k' }, allBusy, async (base) => {
+    const res = await post(`${base}/speak`, { text: 'أهلاً', language: 'ar' });
+    assert.equal(res.status, 503);
+    assert.deepEqual(await res.json(), { code: 'voice_busy' });
+    assert.equal(res.headers.get('retry-after'), '20', 'the page is told how long');
+    assert.deepEqual(await (await fetch(`${base}/status`)).json(), { human: false });
+  });
 });

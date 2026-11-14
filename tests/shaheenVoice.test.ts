@@ -94,3 +94,14 @@ test('the in-chat voice bar speaks the site\'s ten main languages and keeps the 
   assert.doesNotMatch(main, /fixed inset-0|aria-modal|role="dialog"/, 'the conversation is not a page over the chat');
   assert.match(main, /sham-voice-dock/);
 });
+
+test('«يقف ويسمع ويتأكد»: a voice lowers him while it is judged, an unclear one holds the sentence, someone nearby lets him go on from the same word', () => {
+  const hook = readFileSync(new URL('../src/hooks/useShaheenVoiceMode.ts', import.meta.url), 'utf8');
+  const judge = hook.slice(hook.indexOf('const judgeCandidate = useCallback'), hook.indexOf('const judgeCandidateRef'));
+  assert.match(judge, /verdict\.to === 'unsure'[^]*?replyHandleRef\.current\?\.pause\(\)/, 'unclear → he holds the sentence and listens');
+  assert.match(judge, /replyHandleRef\.current\?\.resume\(\)[^]*?settleAside\(\)/, 'to someone nearby → on from the same word');
+  assert.doesNotMatch(judge, /cancelSpeech\(\)/, 'judging never drops the reply');
+  const consider = hook.slice(hook.indexOf('const considerBarge = useCallback'), hook.indexOf('const considerBargeRef'));
+  assert.match(consider, /duck\(true\)/, 'a voice lowers him while it is judged');
+  assert.match(consider, /now - aside\.at < 8000/, 'a side conversation does not stop him again and again');
+});
