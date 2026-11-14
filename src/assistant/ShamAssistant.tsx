@@ -164,7 +164,8 @@ export function ShamAssistant({ currentLang }: Props) {
   const abortRef = useRef<AbortController | null>(null);
   const recognitionRef = useRef<Recognition | null>(null);
   const canListen = useMemo(() => Boolean(RecognitionCtor()), []);
-  const canSpeak = typeof window !== 'undefined' && 'speechSynthesis' in window;
+  // «صوت شاهين البشري»: the reply plays as audio (src/utils/readAloud.ts), so any browser that plays sound can listen.
+  const canSpeak = typeof window !== 'undefined' && typeof Audio !== 'undefined';
 
   // Restore the visitor's last conversation (local copy; the server is the source of truth).
   useEffect(() => {
@@ -271,7 +272,7 @@ export function ShamAssistant({ currentLang }: Props) {
   const [editing, setEditing] = useState<string | null>(null);
 
   const stopReading = useRef<() => void>(() => undefined);
-  const stopSpeaking = () => { stopReading.current(); if (canSpeak) window.speechSynthesis.cancel(); setSpeakingId(null); };
+  const stopSpeaking = () => { stopReading.current(); setSpeakingId(null); };
   const speak = (m: UiMessage, key: string) => {
     if (!canSpeak) return;
     if (speakingId === key) { stopSpeaking(); return; }

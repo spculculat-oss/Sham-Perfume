@@ -1,11 +1,9 @@
-import { localVoiceOptions, resolveLocalVoice } from '../utils/localVoiceCatalog';
-import { playLocalVoice, unlockLocalAudio } from '../utils/localVoicePlayer';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { SupportedLanguage } from '../types/i18n';
-import { bargeIn, deviceLacksVoice, mergeHeard, speechLocaleFor, speechWindow, talkChunks } from '../utils/shaheenVoice';
-import { chosenVoice, saveVoiceChoice, savedVoiceChoice, voiceGender, voiceOptions, type VoiceChoice } from '../utils/voiceChoice';
-import { clipGender, humanClipId, humanClipUrl, playHumanClip } from '../utils/humanVoiceClips';
-import { humanVoiceAvailable, loadSharedSayWords, playHumanSpeech, saveSayWord, sayItRight, unlockHumanVoice } from '../utils/humanVoice';
+import { bargeIn, mergeHeard, speechLocaleFor, speechWindow, talkChunks } from '../utils/shaheenVoice';
+import { saveVoiceChoice, savedVoiceChoice, type VoiceChoice } from '../utils/voiceChoice';
+import { HUMAN_VOICES, clipFinder, clipGender, humanClipUrl, playHumanClip, type HumanVoiceName } from '../utils/humanVoiceClips';
+import { loadSharedSayWords, playHumanSpeech, saveSayWord, sayItRight, unlockHumanVoice } from '../utils/humanVoice';
 import { anchorPair, learnedLine, teachingPair } from '../utils/sayWords';
 import { tunedVoice, type VoiceMood } from '../utils/voiceMood';
 import { resolveDialect, saveDialectChoice, savedDialectChoice, type Dialect, type DialectChoice } from '../utils/arabicDialect';
@@ -155,7 +153,8 @@ function latestMessageId(messages: readonly ShaheenVoiceMessage[], role: Shaheen
 export function shaheenVoiceSupported(): boolean {
   return typeof window !== 'undefined'
     && Boolean(recognitionConstructor())
-    && ((typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined') || typeof AudioContext !== 'undefined');
+    // «صوت شاهين البشري»: the replies play as audio files (no device speech engine needed).
+    && typeof Audio !== 'undefined';
 }
 
 export function useShaheenVoiceMode({ language, messages, isLoading, disabled = false, onSend, onAsk }: UseShaheenVoiceModeOptions) {
@@ -200,7 +199,6 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const nativeUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const nativeSpeechTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const localStopRef = useRef<(() => void) | null>(null);
-  const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
   const localeRef = useRef(speechLocaleFor(language, currentStoreCountry()));
   const bargeEnabledRef = useRef(true);
   const bargeRecognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -242,7 +240,6 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   // «صوت شاهين»: the voice the visitor chose (by name per language, or a gender), how high and how fast.
   const [voiceChoice, setVoiceChoiceState] = useState<VoiceChoice>(() => savedVoiceChoice());
   const voiceChoiceRef = useRef<VoiceChoice>(voiceChoice);
-  const [voiceList, setVoiceList] = useState<SpeechSynthesisVoice[]>([]);
   const [voiceMood, setVoiceMood] = useState<VoiceMood>('neutral');
   // «ترتيب الحوار»: the pieces of the visitor's turn so far, whether Shaheen asked «خلصت ولا لسه؟», whether he is
   // listening for the rest of a sentence, and the timer that decides a silence.
@@ -284,15 +281,6 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     localeRef.current = speechLocaleFor(language, currentStoreCountry(), dialect);
   }, [dialect, language]);
   useEffect(() => { setNoVoice(false); }, [language]);
-  // Engines load their voice list late (Chrome fills it after the first `voiceschanged`), so keep it fresh.
-  useEffect(() => {
-    if (typeof window === 'undefined' || !window.speechSynthesis) return undefined;
-    const synth = window.speechSynthesis;
-    const load = () => { try { voicesRef.current = synth.getVoices(); } catch { voicesRef.current = []; } setVoiceList(voicesRef.current); };
-    load();
-    try { synth.addEventListener('voiceschanged', load); } catch { return undefined; }
-    return () => { try { synth.removeEventListener('voiceschanged', load); } catch { /* Already gone. */ } };
-  }, []);
   useEffect(() => { disabledRef.current = disabled; }, [disabled]);
   useEffect(() => { loadingRef.current = isLoading; }, [isLoading]);
   useEffect(() => { languageRef.current = language; }, [language]);
@@ -551,200 +539,55 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const startBargeWatchRef = useRef<() => void>(() => undefined);
   useEffect(() => { startBargeWatchRef.current = startBargeWatch; }, [startBargeWatch]);
 
-  const speakReply = useCallback((text: string, onComplete: () => void, deviceOnly = false) => {
-    const local = resolveLocalVoice(voiceChoiceRef.current.names[languageRef.current], languageRef.current);
-    // «أصوات بشرية محفوظة»: a line recorded in a human voice is played from the site (the device voice is the fallback).
-    // When the server's human voice is on, it says these lines too: one voice for the whole conversation.
-    const clip = deviceOnly || typeof window === 'undefined' || humanVoiceAvailable() ? undefined : humanClipId(text);
-    if (clip) {
-      cancelSpeech();
-      const sequence = speechSequenceRef.current;
-      replyTextRef.current = text;
-      spokenSoFarRef.current = '';
-      speechPosRef.current = { chunks: [text], index: 0, at: 0 };
-      bargeRestartsRef.current = 0;
-      watchHeardRef.current = '';
-      gateRef.current.startSpeaking();
-      setNoVoice(false);
-      speakingRef.current = true;
-      setSpeaking(true);
-      const choice = voiceChoiceRef.current;
-      const device = chosenVoice(voicesRef.current, localeRef.current, languageRef.current, choice);
-      const url = humanClipUrl(clip, clipGender(choice.gender, local?.gender, device ? voiceGender(device) : undefined));
-      let over = false;
-      const end = (failed: boolean) => {
-        if (over || sequence !== speechSequenceRef.current) return;
-        over = true;
-        localStopRef.current = null;
-        stopBargeWatch();
-        speakingRef.current = false;
-        setSpeaking(false);
-        setSpokenText('');
-        if (failed) speakReply(text, onComplete, true); else onComplete();
-      };
-      localStopRef.current = playHumanClip(url, {
-        rate: choice.rate / 0.96,
-        onStart: () => {
-          if (sequence !== speechSequenceRef.current) return;
-          speakStartRef.current = typeof performance !== 'undefined' ? performance.now() : 0;
-          setSpokenText(text); spokenSoFarRef.current = text;
-          setSpeechBeat((beat) => (beat + 1) % 1_000_000);
-          startBargeWatchRef.current();
-        },
-        onEnd: () => end(false), onError: () => end(true),
-      });
-      return;
-    }
-    // «صوت شاهين البشري»: any reply, any length, in the human voice from our server (the device voice finishes it if
-    // the server is busy). «بيتعلم النطق من الناس»: the words visitors taught are said their way.
-    if (!deviceOnly && humanVoiceAvailable()) {
-      const said = sayItRight(text);
-      const talk = talkChunks(said);
-      if (!talk.length) { onComplete(); return; }
-      cancelSpeech();
-      const sequence = speechSequenceRef.current;
-      replyTextRef.current = text;
-      spokenSoFarRef.current = '';
-      speechPosRef.current = { chunks: talk, index: 0, at: 0 };
-      bargeRestartsRef.current = 0;
-      watchHeardRef.current = '';
-      gateRef.current.startSpeaking();
-      setNoVoice(false);
-      speakingRef.current = true;
-      setSpeaking(true);
-      const choice = voiceChoiceRef.current;
-      const device = chosenVoice(voicesRef.current, localeRef.current, languageRef.current, choice);
-      const tune = tunedVoice(choice, messagesRef.current.filter((message) => message.role === 'user').map((message) => message.text));
-      setVoiceMood(tune.mood);
-      let over = false;
-      let started = false;
-      const end = (rest?: string[]) => {
-        if (over || sequence !== speechSequenceRef.current) return;
-        over = true;
-        localStopRef.current = null;
-        stopBargeWatch();
-        speakingRef.current = false;
-        setSpeaking(false);
-        setSpokenText('');
-        if (rest?.length) speakReply(rest.join(' '), onComplete, true); else onComplete();
-      };
-      localStopRef.current = playHumanSpeech(talk, {
-        language: languageRef.current, dialect: dialectRef.current,
-        gender: clipGender(choice.gender, local?.gender, device ? voiceGender(device) : undefined),
-        mood: tune.mood === 'upset' || tune.mood === 'low' ? 'calm' : tune.mood === 'hurried' ? 'quick' : 'warm',
-        rate: choice.rate / 0.96,
-        onChunk: (chunk, index, groups) => {
-          if (sequence !== speechSequenceRef.current) return;
-          if (!started) { started = true; speakStartRef.current = typeof performance !== 'undefined' ? performance.now() : 0; startBargeWatchRef.current(); }
-          speechPosRef.current = { chunks: groups, index, at: 0 };
-          setSpokenText(chunk); spokenSoFarRef.current = groups.slice(0, index + 1).join(' ');
-          setSpeechBeat((beat) => (beat + 1) % 1_000_000);
-        },
-        onEnd: () => end(), onError: (rest) => end(rest.length ? rest : undefined),
-      });
-      return;
-    }
-    if (typeof window === 'undefined' || (!local && (!window.speechSynthesis || !window.SpeechSynthesisUtterance))) {
-      setError('speech');
-      onComplete();
-      return;
-    }
-    // The first sentence alone, then a sentence per utterance: he starts talking sooner and breathes between ideas.
-    const chunks = talkChunks(deviceOnly ? text : sayItRight(text));
-    if (!chunks.length) { onComplete(); return; }
-
+  const speakReply = useCallback((text: string, onComplete: () => void) => {
+    // «صوت شاهين البشري» only (the owner's decision, 2026-11-14: the device's robotic voices are gone): the recorded
+    // sentences from the site in the voices he chose, every other sentence in the human voice from our server.
+    // «بيتعلم النطق من الناس»: the words visitors taught are said their way.
+    const talk = talkChunks(sayItRight(text));
+    if (!talk.length) { onComplete(); return; }
     cancelSpeech();
     const sequence = speechSequenceRef.current;
-    const locale = localeRef.current;
     replyTextRef.current = text;
     spokenSoFarRef.current = '';
-    speechPosRef.current = { chunks, index: 0, at: 0 };
+    speechPosRef.current = { chunks: talk, index: 0, at: 0 };
     bargeRestartsRef.current = 0;
     watchHeardRef.current = '';
-    speakStartRef.current = typeof performance !== 'undefined' ? performance.now() : 0;
     gateRef.current.startSpeaking();
-    let voices = voicesRef.current;
-    if (!voices.length) { try { voices = window.speechSynthesis.getVoices(); } catch { voices = []; } }
-    // No voice on this device speaks his language: an English voice reading Hindi is gibberish. The reply stays
-    // written in the chat, he is told why, and Shaheen goes back to listening.
-    if (!local && deviceLacksVoice(voices, languageRef.current)) {
-      setNoVoice(true);
-      onComplete();
-      return;
-    }
     setNoVoice(false);
-    const choice = voiceChoiceRef.current;
-    const voice = chosenVoice(voices, locale, languageRef.current, choice);
-    // «مزاج الكلام»: calmer for someone upset, quicker for someone in a hurry (his chosen voice, nudged a little).
-    const tune = tunedVoice(choice, messagesRef.current.filter((message) => message.role === 'user').map((message) => message.text));
-    setVoiceMood(tune.mood);
-    let index = 0;
-    let finished = false;
     speakingRef.current = true;
     setSpeaking(true);
-
-    const finish = (failed = false) => {
-      if (finished || sequence !== speechSequenceRef.current) return;
-      finished = true;
-      clearTimeout(nativeSpeechTimerRef.current);
-      nativeUtteranceRef.current = null;
+    const choice = voiceChoiceRef.current;
+    const gender = clipGender(choice.gender);
+    // «مزاج الكلام»: calmer for someone upset, brisker for someone in a hurry.
+    const tune = tunedVoice(choice, messagesRef.current.filter((message) => message.role === 'user').map((message) => message.text));
+    setVoiceMood(tune.mood);
+    let over = false;
+    let started = false;
+    const end = (failed: boolean) => {
+      if (over || sequence !== speechSequenceRef.current) return;
+      over = true;
+      localStopRef.current = null;
       stopBargeWatch();
       speakingRef.current = false;
       setSpeaking(false);
       setSpokenText('');
-      if (failed) setError('speech');
+      // The human voice could not say it (server busy or not reachable): the reply stays written, he is told why.
+      if (failed) setNoVoice(true);
       onComplete();
     };
-    if (local) {
-      localStopRef.current = playLocalVoice(chunks, {
-        name: local.name, language: languageRef.current, rate: tune.rate, pitch: tune.pitch,
-        onChunk: (chunk, index) => {
-          if (sequence !== speechSequenceRef.current) return;
-          if (index === 0) { speakStartRef.current = performance.now(); startBargeWatchRef.current(); }
-          speechPosRef.current = { chunks, index, at: 0 };
-          setSpokenText(chunk); spokenSoFarRef.current = chunks.slice(0, index + 1).join(' ');
-          setSpeechBeat((beat) => (beat + 1) % 1_000_000);
-        }, onEnd: () => finish(), onError: () => finish(true),
-      });
-      return;
-    }
-    const speakNext = () => {
-      if (sequence !== speechSequenceRef.current || !activeRef.current) { finish(); return; }
-      if (index >= chunks.length) { finish(); return; }
-      try {
-        const utterance = new window.SpeechSynthesisUtterance(chunks[index]);
-        utterance.lang = locale;
-        utterance.rate = tune.rate;
-        utterance.pitch = tune.pitch;
-        if (voice) utterance.voice = voice;
-        utterance.onstart = () => {
-          if (sequence !== speechSequenceRef.current) return;
-          speechPosRef.current = { chunks, index, at: 0 };
-          setSpokenText(chunks[index] || '');
-          spokenSoFarRef.current = chunks.slice(0, index + 1).join(' ');
-        };
-        utterance.onboundary = (event) => {
-          if (sequence !== speechSequenceRef.current) return;
-          setSpeechBeat((beat) => (beat + 1) % 1_000_000);
-          // Where he is in the sentence, so an interruption tells the server exactly what he had said.
-          const at = typeof event?.charIndex === 'number' ? event.charIndex : -1;
-          if (at > 0) {
-            spokenSoFarRef.current = [...chunks.slice(0, index), (chunks[index] || '').slice(0, at)].join(' ').trim();
-            speechPosRef.current = { chunks, index, at };
-          }
-        };
-        utterance.onend = () => { if (sequence !== speechSequenceRef.current || nativeUtteranceRef.current !== utterance) return; clearTimeout(nativeSpeechTimerRef.current); nativeUtteranceRef.current = null; index += 1; speakNext(); };
-        utterance.onerror = () => { if (nativeUtteranceRef.current === utterance) finish(true); };
-        nativeSpeechTimerRef.current = setTimeout(() => { if (nativeUtteranceRef.current !== utterance) return; try { window.speechSynthesis.cancel(); } catch { /* stalled engine */ } finish(true); }, Math.max(20000, chunks[index].length * 180));
-        nativeUtteranceRef.current = utterance;
-        window.speechSynthesis.speak(utterance);
-      } catch {
-        finish(true);
-      }
-    };
-    speakNext();
-    // Give the engine a moment to start talking before the interruption listener opens.
-    setTimeout(() => { if (sequence === speechSequenceRef.current) startBargeWatchRef.current(); }, 400);
+    localStopRef.current = playHumanSpeech(talk, {
+      language: languageRef.current, ...(dialectRef.current ? { dialect: dialectRef.current } : {}), gender,
+      mood: tune.mood === 'upset' || tune.mood === 'low' ? 'calm' : tune.mood === 'hurried' ? 'quick' : 'warm',
+      rate: choice.rate / 0.96, clipFor: clipFinder(gender),
+      onChunk: (chunk, index, groups) => {
+        if (sequence !== speechSequenceRef.current) return;
+        if (!started) { started = true; speakStartRef.current = typeof performance !== 'undefined' ? performance.now() : 0; startBargeWatchRef.current(); }
+        speechPosRef.current = { chunks: groups, index, at: 0 };
+        setSpokenText(chunk); spokenSoFarRef.current = groups.slice(0, index + 1).join(' ');
+        setSpeechBeat((beat) => (beat + 1) % 1_000_000);
+      },
+      onEnd: () => end(false), onError: () => end(true),
+    });
   }, [cancelSpeech, stopBargeWatch]);
 
   const scheduleListening = useCallback((delay = 250) => {
@@ -795,49 +638,17 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
    * stock, delivery…). Not a reply: the reply cuts it off as soon as it is ready.
    */
   const sayWhileLooking = useCallback((line: string) => {
-    // A recorded human line plays from the site; the reply's cancelSpeech() cuts it off like any other speech.
-    if (humanVoiceAvailable() && !speakingRef.current) {
-      const choice = voiceChoiceRef.current;
-      const local = resolveLocalVoice(choice.names[languageRef.current], languageRef.current);
-      const device = chosenVoice(voicesRef.current, localeRef.current, languageRef.current, choice);
-      localStopRef.current?.();
-      const clear = () => { setSpokenText((now) => (now === line ? '' : now)); };
-      localStopRef.current = playHumanSpeech([line], {
-        language: languageRef.current, dialect: dialectRef.current, rate: choice.rate / 0.96,
-        gender: clipGender(choice.gender, local?.gender, device ? voiceGender(device) : undefined),
-        onChunk: () => setSpokenText(line), onEnd: clear, onError: clear,
-      });
-      return;
-    }
-    const clip = typeof window === 'undefined' ? undefined : humanClipId(line);
-    if (clip && !speakingRef.current) {
-      const choice = voiceChoiceRef.current;
-      const local = resolveLocalVoice(choice.names[languageRef.current], languageRef.current);
-      const device = chosenVoice(voicesRef.current, localeRef.current, languageRef.current, choice);
-      localStopRef.current?.();
-      setSpokenText(line);
-      const clear = () => { setSpokenText((now) => (now === line ? '' : now)); };
-      localStopRef.current = playHumanClip(humanClipUrl(clip, clipGender(choice.gender, local?.gender, device ? voiceGender(device) : undefined)), {
-        rate: choice.rate / 0.96, onEnd: clear, onError: clear,
-      });
-      return;
-    }
-    // The short loading acknowledgement must not suddenly use a different, possibly wrong-language native voice.
-    if (resolveLocalVoice(voiceChoiceRef.current.names[languageRef.current], languageRef.current)) return;
-    if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
-    try {
-      const utterance = new window.SpeechSynthesisUtterance(line);
-      utterance.lang = localeRef.current;
-      utterance.rate = Math.min(1.3, voiceChoiceRef.current.rate + 0.04);
-      utterance.pitch = voiceChoiceRef.current.pitch;
-      let voices = voicesRef.current;
-      if (!voices.length) { try { voices = window.speechSynthesis.getVoices(); } catch { voices = []; } }
-      const voice = chosenVoice(voices, localeRef.current, languageRef.current, voiceChoiceRef.current);
-      if (voice) utterance.voice = voice;
-      setSpokenText(line);
-      utterance.onend = () => setSpokenText((now) => (now === line ? '' : now));
-      window.speechSynthesis.speak(utterance);
-    } catch { /* Silence is fine: the chat shows the same line. */ }
+    // «ثواني أدخل أشوفلك البيانات»: in his human voice (a recorded clip when there is one); the reply's cancelSpeech()
+    // cuts it off like any other speech. Silence is fine when it cannot play: the chat shows the same line.
+    if (speakingRef.current) return;
+    const gender = clipGender(voiceChoiceRef.current.gender);
+    localStopRef.current?.();
+    const clear = () => { setSpokenText((now) => (now === line ? '' : now)); };
+    localStopRef.current = playHumanSpeech([sayItRight(line)], {
+      language: languageRef.current, ...(dialectRef.current ? { dialect: dialectRef.current } : {}), gender,
+      rate: voiceChoiceRef.current.rate / 0.96, clipFor: clipFinder(gender),
+      onChunk: () => setSpokenText(line), onEnd: clear, onError: clear,
+    });
   }, []);
 
   const sendRecognizedText = useCallback(async (rawText: string, confidence?: number) => {
@@ -1162,7 +973,6 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     // «صوت شاهين البشري»: this tap lets phones play his human voice later in the conversation.
     unlockHumanVoice();
     void loadSharedSayWords();
-    if (resolveLocalVoice(voiceChoiceRef.current.names[languageRef.current], languageRef.current)) { try { unlockLocalAudio(); } catch { setError('speech'); } }
     if (disabledRef.current) return false;
     if (!shaheenVoiceSupported()) {
       setError('unsupported');
@@ -1340,7 +1150,6 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
 
   /** «صوت شاهين»: keep his choice (voice, pitch, pace); the next sentence Shaheen says uses it. */
   const setVoiceChoice = useCallback((choice: VoiceChoice) => {
-    if (resolveLocalVoice(choice.names[languageRef.current], languageRef.current)) { try { unlockLocalAudio(); } catch { setError('speech'); } }
     voiceChoiceRef.current = choice;
     setVoiceChoiceState(choice);
     saveVoiceChoice(choice);
@@ -1349,40 +1158,25 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const previewVoice = useCallback((name: string, sample: string) => {
     if (typeof window === 'undefined' || speakingRef.current) return;
     cancelSpeech(); cancelRecognition(); clearListenTimer();
+    unlockHumanVoice();
     const sequence = speechSequenceRef.current;
-    const local = resolveLocalVoice(name, languageRef.current);
+    const option = HUMAN_VOICES.find((item) => item.name === name) || HUMAN_VOICES[0]!;
     let finished = false;
     const done = (failed = false) => {
       if (finished || sequence !== speechSequenceRef.current) return;
-      finished = true; clearTimeout(nativeSpeechTimerRef.current); nativeUtteranceRef.current = null;
+      finished = true; localStopRef.current = null;
       speakingRef.current = false; setSpeaking(false); setSpokenText('');
       if (failed) setError('speech');
       scheduleListening(300);
     };
-    if (local) {
-      try { unlockLocalAudio(); } catch { done(true); return; }
-      speakingRef.current = true; setSpeaking(true); setSpokenText(sample);
-      localStopRef.current = playLocalVoice(talkChunks(sample), { name, language: languageRef.current,
-        rate: voiceChoiceRef.current.rate, pitch: voiceChoiceRef.current.pitch,
-        onEnd: () => done(), onError: () => done(true),
-      });
-      return;
-    }
-    if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) { done(true); return; }
-    const voice = voicesRef.current.find((item) => item.name === name);
-    try {
-      const utterance = new window.SpeechSynthesisUtterance(sample);
-      utterance.lang = voice?.lang || localeRef.current;
-      if (voice) utterance.voice = voice;
-      utterance.rate = voiceChoiceRef.current.rate; utterance.pitch = voiceChoiceRef.current.pitch;
-      utterance.onend = () => done(); utterance.onerror = () => done(true);
-      speakingRef.current = true; setSpeaking(true); setSpokenText(sample);
-      nativeUtteranceRef.current = utterance;
-      nativeSpeechTimerRef.current = setTimeout(() => { done(true); try { window.speechSynthesis.cancel(); } catch { /* Stalled preview. */ } }, 30000);
-      window.speechSynthesis.speak(utterance);
-    } catch { done(true); }
+    speakingRef.current = true; setSpeaking(true); setSpokenText(sample);
+    // His own recorded sample (the voices the owner chose), at his chosen pace.
+    localStopRef.current = playHumanClip(humanClipUrl('sample', option.gender), {
+      rate: voiceChoiceRef.current.rate / 0.96, onEnd: () => done(), onError: () => done(true),
+    });
   }, [cancelRecognition, cancelSpeech, clearListenTimer, scheduleListening]);
-  const voices = useMemo(() => [...voiceOptions(voiceList, localeRef.current, language), ...localVoiceOptions(language)], [voiceList, language, dialect]);
+  /** «صوت شاهين»: only his human voices — a man's and a woman's (no device or robotic voices). */
+  const voices = HUMAN_VOICES;
 
   /** Turn «المقاطعة بالصوت» on or off (kept in this browser). */
   const setBargeEnabled = useCallback((on: boolean) => {
@@ -1511,7 +1305,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     voiceChoice,
     setVoiceChoice,
     previewVoice,
-    currentVoiceName: resolveLocalVoice(voiceChoice.names[language], language)?.name || chosenVoice(voiceList, localeRef.current, language, voiceChoice)?.name,
+    currentVoiceName: `shaheen-${clipGender(voiceChoice.gender)}` as HumanVoiceName,
     voiceMood,
   };
 }

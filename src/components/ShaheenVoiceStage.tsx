@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { AudioLines, Ear, EarOff, Fingerprint, Keyboard, Languages, Mic, MicOff, Play, Trash2, VolumeX, X } from 'lucide-react';
-import { DEFAULT_VOICE_CHOICE, type VoiceGender } from '../utils/voiceChoice';
+import { DEFAULT_VOICE_CHOICE } from '../utils/voiceChoice';
 import { DIALECT_INFO, DIALECTS, isDialectChoice } from '../utils/arabicDialect';
 import type { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
@@ -11,7 +11,7 @@ import type { useShaheenVoiceMode } from '../hooks/useShaheenVoiceMode';
 type VoiceModeState = ReturnType<typeof useShaheenVoiceMode>;
 
 /** «جهازك مفيهوش صوت للغة دي»: shown in the stage and next to the voice button. */
-export const NO_VOICE_COPY: LText = { ar: 'الصوت المختار مش متاح دلوقتي، والرد موجود مكتوب في الشات. من «صوت شاهين» جرّب نمط «محلي آلي» لو ظاهر للغتك، أو اختار صوت جهاز تاني. تقدر كمان تضيف صوت من إعدادات اللغة والكلام في الجهاز.', en: 'The selected voice is unavailable right now; the reply is still written in chat. In Shaheen’s voice settings, try a Local synthetic profile if available for your language, or another device voice. You can also install a voice in your device’s language and speech settings.', fr: 'La voix choisie est indisponible ; la réponse reste écrite. Essayez un profil Local synthetic disponible pour votre langue, une autre voix, ou installez une voix dans les réglages de langue et de parole.', es: 'La voz elegida no está disponible; la respuesta sigue escrita. Prueba un perfil Local synthetic para tu idioma, otra voz del dispositivo o instala una en los ajustes de idioma y voz.', it: 'La voce scelta non è disponibile; la risposta resta scritta. Prova un profilo Local synthetic per la tua lingua, un’altra voce o installane una nelle impostazioni di lingua e voce.', de: 'Die gewählte Stimme ist nicht verfügbar; die Antwort bleibt im Chat. Versuche ein Local synthetic-Profil für deine Sprache oder eine andere Gerätestimme. Weitere Stimmen gibt es in den Spracheinstellungen.', ru: 'Выбранный голос сейчас недоступен; ответ остаётся в чате. Попробуйте профиль Local synthetic для вашего языка или другой голос устройства. Голоса можно добавить в настройках языка и речи.', zh: '所选语音暂不可用，文字回复仍在聊天中。请在语音设置中尝试适合当前语言的 Local synthetic 配置或另一设备语音，也可在设备语言设置中安装语音。', tr: 'Seçilen ses şu an kullanılamıyor; yazılı yanıt sohbette duruyor. Dilin için varsa Local synthetic profili veya başka bir cihaz sesi dene. Dil ve konuşma ayarlarından da ses ekleyebilirsin.', fa: 'صدای انتخابی فعلاً در دسترس نیست؛ پاسخ نوشتاری در گفتگو می‌ماند. نمایه Local synthetic برای زبان خود یا صدای دیگری را امتحان کنید. از تنظیمات زبان و گفتار هم می‌توانید صدا اضافه کنید.' };
+export const NO_VOICE_COPY: LText = { ar: 'صوت شاهين البشري مش متاح اللحظة دي، والرد موجود مكتوب في الشات. جرّب تاني بعد شوية.', en: 'Shaheen’s human voice is unavailable right now; the reply is written in chat. Please try again shortly.', fr: 'La voix humaine de Shaheen est indisponible pour le moment ; la réponse est écrite dans le chat. Réessayez bientôt.', es: 'La voz humana de Shaheen no está disponible ahora; la respuesta está escrita en el chat. Inténtalo de nuevo en un rato.', it: 'La voce umana di Shaheen non è disponibile ora; la risposta è scritta in chat. Riprova tra poco.', de: 'Shaheens menschliche Stimme ist gerade nicht verfügbar; die Antwort steht im Chat. Versuche es gleich noch einmal.', ru: 'Человеческий голос Шахина сейчас недоступен; ответ написан в чате. Попробуйте чуть позже.', zh: 'Shaheen 的真人声音暂时不可用，回复已显示在聊天中。请稍后再试。', tr: 'Shaheen’in insan sesi şu an kullanılamıyor; yanıt sohbette yazılı. Biraz sonra tekrar dene.', fa: 'صدای انسانی شاهین الان در دسترس نیست؛ پاسخ در گفتگو نوشته شده است. کمی بعد دوباره امتحان کنید.' };
 
 const COPY = {
   title: { ar: 'التحدث مع شاهين', en: 'Talking with Shaheen', fr: 'Conversation avec Shaheen', es: 'Hablando con Shaheen', it: 'Parli con Shaheen', de: 'Gespräch mit Shaheen', ru: 'Разговор с Шахином', zh: '与 Shaheen 语音对话', tr: 'Shaheen ile konuşma', fa: 'گفتگو با شاهین' },
@@ -63,7 +63,7 @@ const COPY = {
   no_voice: NO_VOICE_COPY,
   voice_none: { ar: 'الجهاز ده مفيهوش أصوات للغة دي غير الصوت العادي.', en: 'This device has no other voices for this language.', fr: 'Cet appareil n’a pas d’autres voix pour cette langue.', es: 'Este dispositivo no tiene otras voces para este idioma.', it: 'Questo dispositivo non ha altre voci per questa lingua.', de: 'Dieses Gerät hat keine weiteren Stimmen für diese Sprache.', ru: 'На этом устройстве нет других голосов для этого языка.', zh: '此设备没有该语言的其他声音。', tr: 'Bu cihazda bu dil için başka ses yok.', fa: 'این دستگاه صدای دیگری برای این زبان ندارد.' },
   voice_mood: { ar: 'صوته يتأقلم مع مزاجك (أهدى لو متضايق، أسرع لو مستعجل)', en: 'His voice follows your mood (calmer if you’re upset, quicker if you’re in a hurry)', fr: 'Sa voix suit votre humeur (plus calme si vous êtes contrarié, plus rapide si vous êtes pressé)', es: 'Su voz sigue tu ánimo (más calmada si estás molesto, más rápida si tienes prisa)', it: 'La sua voce segue il tuo umore (più calma se sei arrabbiato, più veloce se hai fretta)', de: 'Seine Stimme folgt deiner Stimmung (ruhiger, wenn du verärgert bist, schneller, wenn du es eilig hast)', ru: 'Голос подстраивается под ваше настроение (спокойнее, если вы расстроены, быстрее, если спешите)', zh: '他的声音会配合你的心情（你不高兴时更平静，你赶时间时更快）', tr: 'Sesi ruh haline uyar (üzgünsen daha sakin, aceleysen daha hızlı)', fa: 'صدایش با حال شما هماهنگ می‌شود (اگر ناراحت باشید آرام‌تر، اگر عجله داشته باشید سریع‌تر)' },
-  voice_hint: { ar: 'أصوات الجهاز بجانب ١٢ نمط نطق آلي محلي للغات المدعومة، وليست ١٢ متحدثاً بشرياً. ملفات النطق والقاموس تتحمّل حسب اللغة عند أول استخدام؛ النص لا يغادر جهازك لهذا النطق. جودة العربي آلية وليست لهجة مصرية طبيعية. عند الفشل يبقى الرد مكتوباً. لإيقاف التجربة اضغط على شاهين أو إنهاء. بعض أصوات الجهاز قد تستخدم خدمة شبكية.', en: 'Device voices plus 12 local synthetic profiles for supported languages, not 12 human speakers. Local speech files and dictionaries download on first use, per language; synthesis text stays on your device. Arabic sounds robotic, not natural Egyptian speech. Failures leave the written reply available. Tap Shaheen or End to stop the preview. Some device voices may use a network service.', fr: 'Voix de l’appareil et 12 profils synthétiques locaux, pas 12 personnes. Fichiers et dictionnaires chargés au premier usage, par langue ; le texte reste sur l’appareil. Qualité robotique. En cas d’échec, la réponse reste écrite. Touchez Shaheen ou Terminer pour arrêter. Certaines voix système utilisent le réseau.', es: 'Voces del dispositivo y 12 perfiles sintéticos locales, no 12 personas. Descarga local inicial según idioma; el texto queda en el dispositivo. Calidad robótica. Si falla, queda la respuesta escrita. Toca Shaheen o Terminar para parar. Algunas voces del sistema usan la red.', it: 'Voci del dispositivo e 12 profili sintetici locali, non 12 persone. Download locale iniziale per lingua; testo sul dispositivo. Qualità robotica. In caso di errore resta il testo. Tocca Shaheen o Termina per fermare. Alcune voci di sistema usano la rete.', de: 'Gerätestimmen und 12 lokale synthetische Profile, keine 12 Personen. Lokaler Download beim ersten Gebrauch je Sprache; Text bleibt auf dem Gerät. Robotische Qualität. Bei Fehlern bleibt die Textantwort. Shaheen oder Beenden stoppt die Vorschau. Manche Systemstimmen nutzen das Netz.', ru: 'Голоса устройства и 12 локальных синтетических профилей, не 12 людей. Первая загрузка файлов зависит от языка; текст остаётся на устройстве. Роботизированное звучание. При ошибке остаётся текст. Нажмите Шахин или Завершить для остановки. Некоторые системные голоса используют сеть.', zh: '设备语音及支持语言的12种本地合成配置，并非12位真人。首次使用时按语言下载本地语音文件；合成文本留在设备上。声音偏机械。失败时保留文字回复。点按 Shaheen 或结束可停止试听。部分系统语音可能联网。', tr: 'Cihaz sesleri ve 12 yerel sentetik profil; 12 insan konuşmacı değil. İlk kullanımda dile göre yerel dosyalar indirilir; metin cihazda kalır. Robotik kalite. Hata olursa yazılı yanıt kalır. Durdurmak için Shaheen veya Bitir. Bazı cihaz sesleri ağ kullanabilir.', fa: 'صداهای دستگاه و ۱۲ نمایه مصنوعی محلی، نه ۱۲ انسان. بارگیری نخست فایل‌ها بر اساس زبان؛ متن روی دستگاه می‌ماند. کیفیت رباتیک. در خطا پاسخ نوشتاری می‌ماند. برای توقف شاهین یا پایان را بزنید. بعضی صداهای دستگاه از شبکه استفاده می‌کنند.' },
+  voice_hint: { ar: 'صوتين بشريين بس: راجل وست، بلهجة مصرية. الجمل المتكررة متسجلة على الموقع، وباقي الرد بيتقال بنفس النوع من الصوت من سيرفر شام. لو الصوت مش متاح لحظتها، الرد بيفضل مكتوب في الشات. علّم شاهين النطق: «اسمها شانيل مش تشانيل».', en: 'Two human voices only: a man and a woman. Common lines are recorded on the site; the rest of each reply is spoken by Sham’s server. If the voice is unavailable for a moment, the reply stays written in chat. Teach Shaheen a pronunciation: “Kurkdjian is pronounced Kurkjan”.', fr: 'Deux voix humaines seulement : un homme et une femme. Les phrases courantes sont enregistrées sur le site ; le reste est dit par le serveur de Sham. Si la voix est indisponible, la réponse reste écrite. Apprenez-lui une prononciation : « Guerlain se prononce Guerlan ».', es: 'Solo dos voces humanas: un hombre y una mujer. Las frases comunes están grabadas en el sitio; el resto lo dice el servidor de Sham. Si la voz no está disponible, la respuesta queda escrita. Enséñale a pronunciar: «X se pronuncia Y».', it: 'Solo due voci umane: un uomo e una donna. Le frasi comuni sono registrate sul sito; il resto lo dice il server di Sham. Se la voce non è disponibile, la risposta resta scritta. Insegnagli la pronuncia: «X si pronuncia Y».', de: 'Nur zwei menschliche Stimmen: ein Mann und eine Frau. Häufige Sätze sind auf der Seite aufgenommen; den Rest spricht Shams Server. Ist die Stimme gerade nicht verfügbar, bleibt die Antwort als Text. Bring ihm die Aussprache bei: „X wird Y ausgesprochen“.', ru: 'Только два человеческих голоса: мужской и женский. Частые фразы записаны на сайте, остальное озвучивает сервер Sham. Если голос недоступен, ответ остаётся текстом. Научите произношению: «X произносится Y».', zh: '只有两种真人声音：男声和女声。常用句子已录制在网站上，其余由 Sham 服务器朗读。声音暂时不可用时，回复保留为文字。教他发音：“X读作Y”。', tr: 'Yalnızca iki insan sesi: bir erkek ve bir kadın. Sık cümleler sitede kayıtlı; gerisini Sham sunucusu söyler. Ses o an yoksa yanıt yazılı kalır. Telaffuz öğret: “X Y diye okunur”.', fa: 'فقط دو صدای انسانی: مرد و زن. جمله‌های پرتکرار روی سایت ضبط شده‌اند و بقیه را سرور شام می‌گوید. اگر صدا لحظه‌ای در دسترس نباشد، پاسخ نوشته می‌ماند. تلفظ را یادش بدهید: «X تلفظش Y».' },
   voice_sample: { ar: 'أهلاً بيك، أنا شاهين. تحب أساعدك تختار عطر النهارده؟', en: 'Hi, I’m Shaheen. Shall I help you choose a perfume today?', fr: 'Bonjour, je suis Shaheen. Je vous aide à choisir un parfum ?', es: 'Hola, soy Shaheen. ¿Te ayudo a elegir un perfume hoy?', it: 'Ciao, sono Shaheen. Ti aiuto a scegliere un profumo oggi?', de: 'Hallo, ich bin Shaheen. Soll ich dir heute bei einem Parfum helfen?', ru: 'Привет, я Шахин. Помочь вам выбрать аромат?', zh: '你好，我是 Shaheen。今天要我帮你挑一款香水吗？', tr: 'Merhaba, ben Shaheen. Bugün parfüm seçmene yardım edeyim mi?', fa: 'سلام، من شاهین هستم. کمکتان کنم امروز عطری انتخاب کنید؟' },
   print_ignored: { ar: 'تجاهلت صوت تاني مش صوتك', en: 'I ignored a voice that isn’t yours', fr: 'J’ai ignoré une voix qui n’est pas la vôtre', es: 'Ignoré una voz que no es la tuya', it: 'Ho ignorato una voce che non è la tua', de: 'Eine fremde Stimme ignoriert', ru: 'Проигнорировал чужой голос', zh: '已忽略不是你的声音', tr: 'Senin olmayan bir sesi yok saydım', fa: 'صدایی را که مال شما نبود نادیده گرفتم' },
 } satisfies Record<string, LText>;
@@ -360,42 +360,18 @@ export function ShaheenVoiceStage({ language, voice, avatarSrc }: {
 const PRINT_ASKED = 'sham_voice_print_asked_v1';
 
 /**
- * «صوت شاهين»: every voice the device has for this language, male and female, each with «اسمع» to hear it first, plus
- * how high and how fast he talks. Kept in this browser.
+ * «صوت شاهين»: only his human voices — the man's and the woman's the owner chose (2026-11-14: the device's robotic
+ * voices are gone), each with «اسمع» to hear it first, plus how fast he talks. Kept in this browser.
  */
 function VoicePickerPanel({ L, voice, onClose }: { L: (key: keyof typeof COPY & string) => string; voice: VoiceModeState; onClose: () => void }) {
-  const [show, setShow] = useState<VoiceGender | 'all'>(voice.voiceChoice.gender || 'all');
   const { voiceChoice: choice, setVoiceChoice } = voice;
-  const base = voice.language;
-  const list = voice.voices.filter((option) => show === 'all' || option.gender === show);
   const chip = (active: boolean) => `rounded-full px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 ${active ? 'bg-amber-300 text-stone-900' : 'bg-white/10 text-stone-200 hover:bg-white/20'}`;
-  const pickGender = (gender: VoiceGender | 'all') => {
-    setShow(gender);
-    const { gender: _old, ...rest } = choice;
-    const names = { ...choice.names };
-    // A gender chosen: his picked voice stays only if it is that gender.
-    const current = voice.voices.find((option) => option.name === names[base]);
-    if (gender !== 'all' && current && current.gender !== gender) delete names[base];
-    setVoiceChoice(gender === 'all' ? { ...rest, names } : { ...rest, names, gender });
-  };
   return (
     <div className="absolute inset-0 z-10 flex items-end justify-center bg-black/60 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" aria-label={L('voice_title')}>
       <div className="flex max-h-[85vh] w-full max-w-md flex-col gap-3 rounded-3xl border border-white/10 bg-stone-900/95 p-5 shadow-2xl">
         <p className="flex items-center gap-2 text-base font-bold text-amber-100"><AudioLines className="h-5 w-5" aria-hidden="true" />{L('voice_title')}</p>
-        <div className="flex flex-wrap gap-2" role="group">
-          {(['all', 'male', 'female'] as const).map((gender) => (
-            <button key={gender} type="button" aria-pressed={show === gender} onClick={() => pickGender(gender)} className={chip(show === gender)}>
-              {L(gender === 'all' ? 'voice_all' : gender === 'male' ? 'voice_male' : 'voice_female')}
-            </button>
-          ))}
-        </div>
-        <p className="text-xs text-stone-400" dir="ltr">
-          <a href={`${import.meta.env.BASE_URL}voice-engine/LICENSE.txt`} target="_blank" rel="noopener noreferrer" className="underline">eSpeak NG · GPL-3.0+</a>
-          {' · '}<a href={`${import.meta.env.BASE_URL}voice-engine/BUILD-SOURCE.md`} target="_blank" rel="noopener noreferrer" className="underline">Source / build / notices</a>
-        </p>
         <ul className="flex min-h-0 flex-col gap-1.5 overflow-y-auto pe-1" role="radiogroup" aria-label={L('voice_title')}>
-          {list.length === 0 && <li className="text-sm text-stone-300">{L('voice_none')}</li>}
-          {list.map((option) => {
+          {voice.voices.map((option) => {
             const selected = option.name === voice.currentVoiceName;
             return (
               <li key={option.name} className={`flex items-center gap-2 rounded-2xl border px-3 py-2 ${selected ? 'border-amber-300/60 bg-amber-300/10' : 'border-white/10 bg-white/5'}`}>
@@ -403,12 +379,11 @@ function VoicePickerPanel({ L, voice, onClose }: { L: (key: keyof typeof COPY & 
                   type="button"
                   role="radio"
                   aria-checked={selected}
-                  onClick={() => setVoiceChoice({ ...choice, names: { ...choice.names, [base]: option.name } })}
+                  onClick={() => setVoiceChoice({ ...choice, gender: option.gender })}
                   className="flex min-w-0 flex-1 items-center gap-2 text-start text-sm text-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
                 >
                   <span className={`h-3 w-3 shrink-0 rounded-full border ${selected ? 'border-amber-300 bg-amber-300' : 'border-stone-400'}`} aria-hidden="true" />
-                  <span className="truncate" dir="ltr">{option.label}</span>
-                  {option.gender && <span className="shrink-0 text-[11px] text-stone-400">{L(option.gender === 'male' ? 'voice_male' : 'voice_female')}</span>}
+                  <span className="truncate">{L(option.gender === 'male' ? 'voice_male' : 'voice_female')}</span>
                 </button>
                 <button type="button" onClick={() => voice.previewVoice(option.name, L('voice_sample'))} className="flex shrink-0 items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-xs text-stone-100 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300">
                   <Play className="h-3 w-3" aria-hidden="true" />{L('voice_listen')}
@@ -418,12 +393,8 @@ function VoicePickerPanel({ L, voice, onClose }: { L: (key: keyof typeof COPY & 
           })}
         </ul>
         <label className="flex flex-col gap-1 text-xs text-stone-300">
-          {L('voice_pitch')}
-          <input type="range" min={0.6} max={1.5} step={0.05} value={choice.pitch} onChange={(event) => setVoiceChoice({ ...choice, pitch: Number(event.target.value) })} className="accent-amber-300" />
-        </label>
-        <label className="flex flex-col gap-1 text-xs text-stone-300">
           {L('voice_rate')}
-          <input type="range" min={0.7} max={1.3} step={0.02} value={choice.rate} onChange={(event) => setVoiceChoice({ ...choice, rate: Number(event.target.value) })} className="accent-amber-300" />
+          <input type="range" min={0.86} max={1.1} step={0.02} value={choice.rate} onChange={(event) => setVoiceChoice({ ...choice, rate: Number(event.target.value) })} className="accent-amber-300" />
         </label>
         <label className="flex items-center gap-2 text-xs text-stone-200">
           <input type="checkbox" checked={choice.mood !== false} onChange={(event) => { const { mood: _mood, ...rest } = choice; setVoiceChoice(event.target.checked ? rest : { ...rest, mood: false }); }} className="h-4 w-4 accent-amber-300" />
@@ -431,7 +402,7 @@ function VoicePickerPanel({ L, voice, onClose }: { L: (key: keyof typeof COPY & 
         </label>
         <p className="text-[11px] leading-relaxed text-stone-400">{L('voice_hint')}</p>
         <div className="flex flex-wrap justify-center gap-2">
-          <button type="button" onClick={() => { setShow('all'); setVoiceChoice({ ...DEFAULT_VOICE_CHOICE, names: {} }); }} className={chip(false)}>{L('voice_default')}</button>
+          <button type="button" onClick={() => setVoiceChoice({ ...DEFAULT_VOICE_CHOICE, names: {} })} className={chip(false)}>{L('voice_default')}</button>
           <button type="button" onClick={onClose} className={chip(false)}>{L('print_close')}</button>
         </div>
       </div>
