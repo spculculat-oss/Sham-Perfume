@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
+import type { AddressInfo } from 'node:net';
+import express from 'express';
+import { createCommunity, createCommunityRouter } from '../server/community/router';
 import { after, before, test } from 'node:test';
 import { Vault } from '../server/community/crypto';
 import { SCHEMA, SCHEMA_VERSION, connectPglite, migrate, type Sql } from '../server/community/db';
@@ -78,4 +81,55 @@ test('adding a schema statement without raising SCHEMA_VERSION fails here, not o
   // The live database only re-runs the schema when the version goes up. When you add a statement:
   // raise SCHEMA_VERSION in server/community/db.ts, then update BOTH numbers below.
   assert.deepEqual({ version: SCHEMA_VERSION, statements: SCHEMA.length }, { version: 11, statements: SCHEMA_STATEMENTS });
+});
+
+test('the whole road: the page\'s own address saves a large device picture over HTTP and the member page returns it', async () => {
+  const page = readFileSync(new URL('../src/community/ProfilePage.tsx', import.meta.url), 'utf8');
+  // The address is read from the page itself, so a wrong one fails here instead of in front of a member.
+  const path = page.match(/cx\('([^']+)', \{ method: 'PATCH', body: \{ banner: picture \} \}\)/)?.[1];
+  assert.ok(path, 'the upload call is in the page');
+  const env = { SHAM_DATA_KEY: 'test-data-key-0123456789-abcdefghijklmnop' };
+  const app = express();
+  app.use(['/api/community', '/api/admin/community'], express.json({ limit: '3mb' }));
+  app.use(express.json({ limit: '128kb' }));
+  app.use('/api', createCommunityRouter(createCommunity({ env, sql, fx: ctx.fx }), { env }));
+  const server = app.listen(0, '127.0.0.1');
+  await new Promise((done) => server.once('listening', done));
+  const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}/api`;
+  const call = async (to: string, init: { method?: string; body?: unknown; token?: string } = {}) => {
+    const res = await fetch(`${base}${to}`, { method: init.method || (init.body ? 'POST' : 'GET'), headers: { 'content-type': 'application/json', ...(init.token ? { authorization: `Bearer ${init.token}` } : {}) }, body: init.body === undefined ? undefined : JSON.stringify(init.body) });
+    return { status: res.status, data: await res.json().catch(() => null) as any };
+  };
+  try {
+    const reg = await call('/community/auth/register', { body: { name: 'Road Test', email: 'road.test@example.com', password: 'Sham2026pass' } });
+    assert.equal(reg.status, 200);
+    const token = reg.data.token as string;
+    const big = `data:image/jpeg;base64,${'A'.repeat(BANNER_MAX_CHARS - 100)}`; // the largest cover the page may send
+    const saved = await call(path!, { method: 'PATCH', token, body: { banner: big } });
+    assert.equal(saved.status, 200, JSON.stringify(saved.data).slice(0, 200));
+    const seen = await call(`/community/profile/${reg.data.me.handle}`, { token });
+    assert.equal(seen.status, 200);
+    assert.equal(seen.data.banner, big);
+    assert.equal((await call(path!, { method: 'PATCH', token, body: { banner: null } })).status, 200);
+    assert.equal((await call(`/community/profile/${reg.data.me.handle}`, { token })).data.banner, null);
+  } finally { await new Promise((done) => server.close(done)); }
+});
+
+test('every fixed address the community pages call exists on the server with the same method', () => {
+  const router = readFileSync(new URL('../server/community/router.ts', import.meta.url), 'utf8');
+  const routes = [...router.matchAll(/router\.(get|post|patch|put|delete)\('([^']+)'/g)].map((m) => ({ method: m[1]!, re: new RegExp(`^${m[2]!.replace(/:\w+/g, '[^/]+')}$`) }));
+  assert.ok(routes.length > 100);
+  const dir = new URL('../src/community/', import.meta.url);
+  const missing: string[] = []; let checked = 0;
+  for (const name of readdirSync(dir).filter((f) => /\.tsx?$/.test(f))) {
+    const source = readFileSync(new URL(name, dir), 'utf8');
+    for (const m of source.matchAll(/cx(?:<[^(]*?>)?\(\s*'(\/community\/[^']*)'\s*(?:,\s*\{([^}]*))?/g)) {
+      const path = m[1]!.split('?')[0]!; const options = m[2] || '';
+      const method = (options.match(/^\s*method:\s*'(\w+)'/)?.[1] || (/\bbody\b/.test(options) ? 'POST' : 'GET')).toLowerCase();
+      checked += 1;
+      if (!routes.some((r) => r.method === method && r.re.test(path))) missing.push(`${name}: ${method.toUpperCase()} ${path}`);
+    }
+  }
+  assert.ok(checked > 60, `checked ${checked}`);
+  assert.deepEqual(missing, []);
 });
