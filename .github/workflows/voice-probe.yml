@@ -6,17 +6,21 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:
-      - name: Probe the live voice server
+      - name: Probe the speech engine (status and error text only, never the key)
         run: |
-          B=https://sham-perfume-49bf.vercel.app
-          note() { echo "::notice title=$1::$(printf '%s' "$2" | head -c 900 | tr '\n\r' '  ')"; }
-          note health "$(curl -sS -m 20 $B/api/health | head -c 600)"
-          note status "$(curl -sS -m 20 -i $B/api/voice/status | head -c 700)"
-          for t in 'أهلاً بيك' 'Hello there'; do
-            h=$(curl -sS -m 40 -o /tmp/out.bin -D - -X POST -H 'Content-Type: application/json' -H 'Origin: https://spculculat-oss.github.io' \
-              --data "{\"text\":\"$t\",\"language\":\"ar\",\"gender\":\"male\"}" $B/api/voice/speak | head -c 600)
-            note "speak $t" "$h BODY($(wc -c < /tmp/out.bin) bytes): $(head -c 200 /tmp/out.bin | tr -cd '[:print:]')"
+          note() { echo "::notice title=$1::$(printf '%s' "$2" | head -c 1200 | tr '\n\r' '  ')"; }
+          [ -n "$GEMINI_API_KEY" ] || { note key "no GEMINI_API_KEY secret"; exit 0; }
+          A=https://generativelanguage.googleapis.com/v1beta
+          H="x-goog-api-key: $GEMINI_API_KEY"
+          note models "$(curl -sS -m 30 -H "$H" "$A/models?pageSize=1000" | grep -o '"name": "models/[^"]*tts[^"]*"' | tr '\n' ' ')"
+          for m in gemini-3.8-flash-lite-tts gemini-3.8-flash-tts gemini-3.1-flash-tts-preview gemini-2.5-flash-preview-tts; do
+            body="{\"model\":\"$m\",\"input\":[{\"type\":\"user_input\",\"content\":[{\"type\":\"text\",\"text\":\"أهلاً بيك\",\"annotations\":[{\"type\":\"speech_metadata\",\"style\":\"Egyptian Arabic accent, warm and friendly\"}]}]}],\"response_format\":{\"type\":\"audio\",\"mime_type\":\"audio/wav\",\"sample_rate\":16000},\"generation_config\":{\"speech_config\":[{\"voice\":\"Achird\"}]},\"store\":false}"
+            code=$(curl -sS -m 60 -o /tmp/i.json -w '%{http_code}' -H "$H" -H 'Content-Type: application/json' -d "$body" "$A/interactions")
+            note "interactions $m" "HTTP $code $(head -c 700 /tmp/i.json | sed 's/"data": *"[^"]*"/"data":"<audio>"/g')"
+            gc="{\"contents\":[{\"parts\":[{\"text\":\"Say in a warm Egyptian Arabic accent: أهلاً بيك\"}]}],\"generationConfig\":{\"responseModalities\":[\"AUDIO\"],\"speechConfig\":{\"voiceConfig\":{\"prebuiltVoiceConfig\":{\"voiceName\":\"Achird\"}}}}}"
+            code=$(curl -sS -m 60 -o /tmp/g.json -w '%{http_code}' -H "$H" -H 'Content-Type: application/json' -d "$gc" "$A/models/$m:generateContent")
+            note "generateContent $m" "HTTP $code $(head -c 500 /tmp/g.json | sed 's/"data": *"[^"]*"/"data":"<audio>"/g')"
           done
-          note after "$(curl -sS -m 20 $B/api/voice/status)"
-          note preflight "$(curl -sS -m 20 -i -X OPTIONS -H 'Origin: https://spculculat-oss.github.io' -H 'Access-Control-Request-Method: POST' -H 'Access-Control-Request-Headers: content-type' $B/api/voice/speak | head -c 600)"
