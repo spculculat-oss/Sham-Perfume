@@ -1,7 +1,7 @@
 import { wantsRealPhoto } from '../utils/realPhotos';
 import type { ImageAspect, ImageStyleId } from '../utils/imageCraft';
 /** «مساحة شاهين»: the browser side of /api/workspace (see server/workspace.ts). */
-import { ApiError, ApiUnavailableError, isStaticHosting, requestApi, visitorId } from '../utils/api';
+import { ApiError, ApiUnavailableError, apiUrl, isStaticHosting, requestApi, visitorId } from '../utils/api';
 import { getToken } from '../admin/adminApi';
 import type { SupportedLanguage } from '../types/i18n';
 
@@ -21,6 +21,70 @@ export function workspaceStatus(signal?: AbortSignal) {
 }
 export function ask(body: { messages: WsMessage[]; language: SupportedLanguage; task?: 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard'; context?: WsContextFile[]; search?: boolean }, signal?: AbortSignal) {
   return requestApi<{ reply: string; sources: WsSource[] }>('/api/workspace/ask', { ...json(body), signal }, 75_000);
+}
+export type AskStreamEvent =
+  | { type: 'stage'; stage: 'searching' | 'writing' }
+  | { type: 'sources'; sources: WsSource[] }
+  | { type: 'delta'; text: string }
+  | { type: 'reset' };
+/** Splits a server-sent stream into its JSON events; `rest` is the unfinished tail to carry to the next piece. */
+export function sseEvents(buffer: string): { events: unknown[]; rest: string } {
+  const events: unknown[] = [];
+  let rest = buffer.replace(/\r\n/g, '\n');
+  let index: number;
+  while ((index = rest.indexOf('\n\n')) >= 0) {
+    const data = rest.slice(0, index).split('\n').filter((line) => line.startsWith('data:')).map((line) => line.slice(5).trim()).join('');
+    rest = rest.slice(index + 2);
+    if (!data) continue;
+    try { events.push(JSON.parse(data)); } catch { /* a damaged line is skipped, the final reply still arrives whole */ }
+  }
+  return { events, rest };
+}
+/**
+ * The same turn as `ask`, written live. Falls back to the plain request when the server cannot stream
+ * (an older deployment, a proxy that buffers), as long as nothing was shown yet.
+ */
+export async function askStream(body: Parameters<typeof ask>[0], onEvent: (event: AskStreamEvent) => void, signal?: AbortSignal, request: typeof fetch = fetch): Promise<{ reply: string; sources: WsSource[] }> {
+  if (isStaticHosting) throw new ApiUnavailableError();
+  let started = false;
+  const controller = new AbortController();
+  const stop = () => controller.abort();
+  signal?.addEventListener('abort', stop);
+  // No sign of life for 50 seconds (the server sends a quiet line every 12) means the line is dead.
+  let idle: ReturnType<typeof setTimeout> | undefined;
+  const alive = () => { clearTimeout(idle); idle = setTimeout(stop, 50_000); };
+  try {
+    alive();
+    const response = await request(apiUrl('/api/workspace/ask/stream'), { ...json(body), signal: controller.signal });
+    if (response.status === 429) throw new ApiError(429, 'RATE_LIMITED');
+    if (!response.ok || !response.body || !(response.headers.get('content-type') || '').includes('text/event-stream')) throw new Error('NO_STREAM');
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      alive();
+      const parsed = sseEvents(buffer + decoder.decode(value, { stream: true }));
+      buffer = parsed.rest;
+      for (const raw of parsed.events) {
+        const event = raw as { type?: string; output?: { reply: string; sources: WsSource[] }; status?: number; code?: string };
+        started = true;
+        if (event.type === 'done' && event.output) return event.output;
+        if (event.type === 'error') throw new ApiError(event.status || 500, event.code);
+        if (event.type === 'stage' || event.type === 'sources' || event.type === 'delta' || event.type === 'reset') onEvent(event as AskStreamEvent);
+      }
+    }
+    throw new ApiError(502, 'STREAM_INCOMPLETE');
+  } catch (error) {
+    if (signal?.aborted) throw error;
+    if (error instanceof ApiError && error.code !== 'STREAM_INCOMPLETE') throw error;
+    if (started) { onEvent({ type: 'reset' }); }
+    return ask(body, signal);
+  } finally {
+    clearTimeout(idle);
+    signal?.removeEventListener('abort', stop);
+  }
 }
 export function search(q: string, language: SupportedLanguage, signal?: AbortSignal) {
   return requestApi<{ answer?: string; results: WsSource[]; kind: 'web' | 'encyclopedia' }>('/api/workspace/search', { ...json({ q, language }), signal }, 40_000);

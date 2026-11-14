@@ -3,12 +3,12 @@ import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
 import { ShaheenMedia } from '../components/ShaheenMedia';
 import { MotionCard } from './MotionCard';
 import { wantsMotion } from './motion';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Copy, Globe, Loader2, Paperclip, Plus, Save, Send, Square, Volume2, X } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { ShaheenMarkdown } from '../components/ShaheenMarkdown';
 import { readAloud } from '../utils/readAloud';
-import { ask, errorKey, imageErrorKey, makeImage, isGeneratedImageData, type WsContextFile, type WsSource } from './workspaceApi';
+import { askStream, errorKey, imageErrorKey, makeImage, isGeneratedImageData, type WsContextFile, type WsSource } from './workspaceApi';
 import { imageRequest, segments, stripImageRequest, type CodeBlock } from './codeBlocks';
 import { parseImageRequest } from '../utils/imageCraft';
 import { drawOrPaint } from './paint';
@@ -21,15 +21,36 @@ import { safeFileName } from './officeWriters';
 import { parseMarkdown } from './markdownDoc';
 import { wsText, type WsKey } from './strings';
 import { pickArEn } from '../لغات/localize';
+import { useSmoothText } from '../hooks/useSmoothText';
 
-export interface ChatItem { role: 'user' | 'assistant'; text: string; sources?: WsSource[]; image?: string; files?: string[]; error?: boolean; regenerateImage?: boolean; painted?: 'whole' | 'partial'; imageNote?: ReturnType<typeof imageErrorKey> }
+export interface ChatItem { role: 'user' | 'assistant'; text: string; sources?: WsSource[]; image?: string; files?: string[]; error?: boolean; regenerateImage?: boolean; painted?: 'whole' | 'partial'; imageNote?: ReturnType<typeof imageErrorKey>;
+  /** The reply is still being written (never saved in this state). */
+  streaming?: boolean; id?: string }
 const STORE_KEY = 'sham_workspace_chat_v1';
 export function loadChat(): ChatItem[] {
-  try { const raw = JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); return Array.isArray(raw) ? raw.slice(-60).map((item: ChatItem) => item.image && !isGeneratedImageData(item.image) ? { ...item, image: undefined, regenerateImage: true } : item) : []; } catch { return []; }
+  try { const raw = JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); return Array.isArray(raw) ? raw.filter((item: ChatItem) => !item.streaming).slice(-60).map((item: ChatItem) => item.image && !isGeneratedImageData(item.image) ? { ...item, image: undefined, regenerateImage: true } : item) : []; } catch { return []; }
 }
 function storeChat(items: ChatItem[]) {
   // Big generated images (data URLs) stay for this visit only.
-  try { localStorage.setItem(STORE_KEY, JSON.stringify(items.slice(-60).map((m) => (m.image && m.image.length > 150_000 ? { ...m, image: undefined } : m)))); } catch { /* full or blocked */ }
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(items.filter((m) => !m.streaming).slice(-60).map((m) => (m.image && m.image.length > 150_000 ? { ...m, image: undefined } : m)))); } catch { /* full or blocked */ }
+}
+
+/** One reply's text. While it is still arriving it is shown at a steady pace with a writing mark at its end. */
+function LiveReply({ text, streaming, lang, onOpenEditor, onAskFix, onGrow }: {
+  text: string; streaming: boolean; lang: SupportedLanguage; onOpenEditor: (block: CodeBlock) => void; onAskFix: (block: CodeBlock, error: string) => void; onGrow: () => void;
+}) {
+  const shown = useSmoothText(text, streaming, { polish: true });
+  const writing = streaming || shown.length < text.length;
+  useEffect(() => { if (writing) onGrow(); }, [shown.length, writing, onGrow]);
+  const parts = segments(stripMediaBlock(stripImageRequest(shown)));
+  return (
+    <>
+      {parts.map((s, j) => (s.kind === 'text'
+        ? <ShaheenMarkdown key={j} text={s.text} />
+        : <CodeCard key={j} block={s.block} lang={lang} index={j + 1} onOpenEditor={onOpenEditor} onAskFix={onAskFix} />))}
+      {writing && <span data-testid="ws-writing" className="inline-block h-4 w-1.5 animate-pulse rounded-sm bg-amber-500 align-middle" aria-hidden />}
+    </>
+  );
 }
 
 export function ChatPanel({ lang, items, setItems, attachments, setAttachments, onOpenEditor, offline }: {
@@ -41,6 +62,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
   const [input, setInput] = useState('');
   const [web, setWeb] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [stage, setStage] = useState<'thinking' | 'searching_web' | 'writing'>('thinking');
   const [flash, setFlash] = useState<{ i: number; text: string } | null>(null);
   const [speaking, setSpeaking] = useState<number | null>(null);
   const stopSpeech = useRef<(() => void) | null>(null);
@@ -51,6 +73,14 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
   useEffect(() => { storeChat(items); }, [items]);
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, [items.length, busy]);
   useEffect(() => () => { abort.current?.abort(); stopSpeech.current?.(); }, []);
+
+  // While a reply is being written the page follows it — only if the reader is already at the bottom.
+  const follow = useCallback(() => {
+    const end = endRef.current;
+    if (!end || typeof window === 'undefined') return;
+    const gap = end.getBoundingClientRect().top - window.innerHeight;
+    if (gap > 0 && gap < 220) end.scrollIntoView({ block: 'end' });
+  }, []);
 
   const say = (i: number, text: string) => { setFlash({ i, text }); setTimeout(() => setFlash(null), 1800); };
 
@@ -75,23 +105,48 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
         return;
       }
       const messages = next.filter((m) => !m.error).map((m) => ({ role: m.role, text: m.text })).slice(-24);
-      const out = await ask({ messages, language: lang, context: files, search: web }, controller.signal);
-      if (controller.signal.aborted) return;
+      // Written live: the words appear as they are produced instead of after a long silent wait.
+      const draftId = `draft-${Date.now()}`;
+      let draft = '';
+      let draftSources: WsSource[] | undefined;
+      const showDraft = () => setItems((prev) => {
+        const item: ChatItem = { role: 'assistant', text: draft, streaming: true, id: draftId, ...(draftSources?.length ? { sources: draftSources } : {}) };
+        return prev.some((m) => m.id === draftId) ? prev.map((m) => (m.id === draftId ? item : m)) : [...prev, item];
+      });
+      const dropDraft = () => setItems((prev) => prev.filter((m) => m.id !== draftId));
+      setStage('thinking');
+      let out: Awaited<ReturnType<typeof askStream>>;
+      try {
+        out = await askStream({ messages, language: lang, context: files, ...(web ? { search: true } : {}) }, (event) => {
+          if (controller.signal.aborted) return;
+          if (event.type === 'stage') setStage(event.stage === 'searching' ? 'searching_web' : 'writing');
+          else if (event.type === 'sources') draftSources = event.sources;
+          else if (event.type === 'delta') { draft += event.text; showDraft(); }
+          else if (event.type === 'reset') { draft = ''; dropDraft(); setStage('thinking'); }
+        }, controller.signal);
+      } catch (error) {
+        // Stopped by the visitor: what was written so far stays as the reply.
+        if (controller.signal.aborted && draft.trim()) { setItems((prev) => prev.map((m) => (m.id === draftId ? { role: 'assistant', text: draft.trim(), ...(draftSources?.length ? { sources: draftSources } : {}) } : m))); return; }
+        dropDraft();
+        throw error;
+      }
+      if (controller.signal.aborted) { dropDraft(); return; }
       // Only generate when the assistant supplies an explicit image request; do not override refusals.
       const wanted = imageRequest(out.reply);
-      const reply: ChatItem = { role: 'assistant', text: out.reply, ...(out.sources.length ? { sources: out.sources } : {}) };
-      setItems((prev) => [...prev, reply]);
+      // The finished reply takes the draft's place (same bubble, so the words already on screen do not jump).
+      const reply: ChatItem = { role: 'assistant', text: out.reply, id: draftId, ...(out.sources.length ? { sources: out.sources } : {}) };
+      setItems((prev) => (prev.some((m) => m.id === draftId) ? prev.map((m) => (m.id === draftId ? reply : m)) : [...prev, reply]));
       if (wanted) {
         try {
           // «EDIT: …» changes the picture Shaheen just drew; without one still on screen it is drawn afresh.
           const asked = parseImageRequest(wanted);
           const img = await drawOrPaint(asked.prompt, asked.mode === 'edit' && isGeneratedImageData(previousImage) ? await fitForUpload(previousImage) : undefined, controller.signal);
           if (controller.signal.aborted) return;
-          setItems((prev) => prev.map((m) => (m === reply ? { ...m, image: img.src, ...(img.painted ? { painted: img.painted } : {}) } : m)));
+          setItems((prev) => prev.map((m) => (m.id === draftId ? { ...m, image: img.src, ...(img.painted ? { painted: img.painted } : {}) } : m)));
         } catch (error) {
           // The reason sits beside the reply, never inside its text: the next turn must not read «I failed» as
           // something Shaheen said and start apologising for it.
-          if (!controller.signal.aborted) setItems((prev) => prev.map((m) => m === reply ? { ...m, imageNote: imageErrorKey(error) } : m));
+          if (!controller.signal.aborted) setItems((prev) => prev.map((m) => m.id === draftId ? { ...m, imageNote: imageErrorKey(error) } : m));
         }
       }
     } catch (error) {
@@ -141,9 +196,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
                 </>
               ) : (
                 <div dir="auto" className="space-y-1">
-                  {segments(stripMediaBlock(stripImageRequest(m.text))).map((s, j) => (s.kind === 'text'
-                    ? <ShaheenMarkdown key={j} text={s.text} />
-                    : <CodeCard key={j} block={s.block} lang={lang} index={j + 1} onOpenEditor={onOpenEditor} onAskFix={askFix} />))}
+                  <LiveReply text={m.text} streaming={Boolean(m.streaming)} lang={lang} onOpenEditor={onOpenEditor} onAskFix={askFix} onGrow={follow} />
                   {imageRequest(m.text) && !m.image && busy && i === items.length - 1 && <p className="text-[12px] text-stone-500"><Loader2 className="inline h-3 w-3 animate-spin" /> {w('drawing')}</p>}
                   {extractMediaRequest(m.text) && <ShaheenMedia request={extractMediaRequest(m.text)!} lang={lang} />}
                   {m.imageNote && !m.image && <p role="status" className="rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs text-amber-900">{w(m.imageNote)}</p>}
@@ -158,7 +211,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
                       </ol>
                     </details>
                   ) : null}
-                  {!m.error && (
+                  {!m.error && !m.streaming && (
                     <div className="mt-2 flex flex-wrap items-center gap-1.5 border-t border-stone-100 pt-2">
                       <button type="button" onClick={() => { void navigator.clipboard?.writeText(m.text).then(() => say(i, w('copied')), () => undefined); }} className="inline-flex items-center gap-1 rounded-lg border border-stone-200 px-2 py-1 text-[11px] font-bold text-stone-700 cursor-pointer"><Copy className="h-3 w-3" />{w('copy')}</button>
                       <button type="button" onClick={() => listen(i, m.text)} aria-pressed={speaking === i} className="inline-flex items-center gap-1 rounded-lg border border-stone-200 px-2 py-1 text-[11px] font-bold text-stone-700 cursor-pointer"><Volume2 className="h-3 w-3" />{speaking === i ? w('stop') : w('listen')}</button>
@@ -173,7 +226,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
             </div>
           </div>
         ))}
-        {busy && <p className="text-end text-[12px] text-stone-500"><Loader2 className="inline h-3.5 w-3.5 animate-spin" /> {w('thinking')}</p>}
+        {busy && !items.some((m) => m.streaming && m.text) && <p role="status" className="text-end text-[12px] text-stone-500"><Loader2 className="inline h-3.5 w-3.5 animate-spin" /> {w(stage)}</p>}
         <div ref={endRef} />
       </div>
 

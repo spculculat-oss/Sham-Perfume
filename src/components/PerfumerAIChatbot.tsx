@@ -1,3 +1,4 @@
+import { useSmoothText } from '../hooks/useSmoothText';
 import { ShaheenAgentPanel, ShaheenAgentReport } from './ShaheenAgentPanel';
 import { useChatPrices } from '../utils/storeCheckout';
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
@@ -926,6 +927,10 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // A reply that has just arrived is written out once at reading pace (FreshReply); saved history is shown as it is.
+  const lastLoadingAt = useRef(0);
+  if (isLoading) lastLoadingAt.current = Date.now();
+
   const scrollToBottom = () => {
     scrollChatToEnd(messagesEndRef.current);
   };
@@ -1369,7 +1374,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                       {/* Text Payload */}
                       {msg.role === 'assistant' && !isError ? (
                         <>
-                          <ShaheenMarkdown text={activeDisplayContent} className="font-sans" />
+                          <FreshReply text={activeDisplayContent} fresh={msgIndex === messages.length - 1 && msg.id !== 'welcome' && Date.now() - lastLoadingAt.current < 1500} onGrow={scrollToBottom} />
                           {mediaRequest && <ShaheenMedia request={mediaRequest} lang={currentLang} />}
                           {msg.role === 'assistant' && !isError && msg.id !== 'welcome' && <ShaheenDrawing messageId={msg.id} text={msg.text} messageIds={messageIds} lang={currentLang} />}
                         </>
@@ -1694,3 +1699,12 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     </div>
   );
 };
+
+/** The newest reply, written out once at a steady pace instead of dropping on the page as one block. */
+function FreshReply({ text, fresh, onGrow }: { text: string; fresh: boolean; onGrow: () => void }) {
+  const shown = useSmoothText(text, false, { fresh });
+  const grow = useRef(onGrow);
+  grow.current = onGrow;
+  useEffect(() => { if (shown.length < text.length) grow.current(); }, [shown.length, text.length]);
+  return <ShaheenMarkdown text={shown} className="font-sans" />;
+}

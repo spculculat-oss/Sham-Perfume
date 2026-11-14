@@ -20,6 +20,7 @@ import { createHash, timingSafeEqual } from 'node:crypto';
 import { lookup as dnsLookup } from 'node:dns/promises';
 import { isIP } from 'node:net';
 import type { EngineHealth } from './core/engineHealth';
+import { NATURAL_TALK_INSTRUCTION, polishReply } from '../src/utils/naturalTalk';
 import { callEngine, engineStatuses, GEMINI_DEFAULT_MODEL, type EngineFailure, type EngineTurn } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { cleanVideoRequest, dailyLimit, DailyBudget, readJob, signJob, startVideo, videoAccess, videoBytes, VideoError, videoStatus } from './videoEngine';
@@ -46,6 +47,7 @@ export type WorkspaceTask = 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard
 export function workspaceInstruction(language: SupportedLanguage, task: WorkspaceTask = 'chat'): string {
   const name = SUPPORTED_LANGUAGES.find((l) => l.code === language)?.name || 'العربية';
   const base = `${CONTINUITY_INSTRUCTION}\n${REAL_PHOTO_INSTRUCTION}\nأنت «شاهين»، مساعد ذكاء اصطناعي شامل داخل منصة «شام». بتساعد في أي موضوع: كتابة، ترجمة، دراسة وشرح، برمجة ومواقع، تحليل بيانات وجداول، أفكار وتسويق، شغل ومستندات، أسئلة عامة — والعطور تخصصك العميق مش حدودك.
+${NATURAL_TALK_INSTRUCTION}
 هويتك «شاهين» بس: ما تذكرش اسم أي نموذج أو شركة ذكاء اصطناعي، ولو اتسألت قول إنك مساعد منصة شام والتفاصيل التقنية مش متاحة.
 رد بلغة المستخدم (${name}). لو بيكتب عربي مصري رد بالمصري العامي الواضح؛ ولو لهجة تانية رد بيها؛ ولو فصحى رد بفصحى بسيطة. افهم السياق والكلام اللي فات، وادخل في الإجابة على طول من غير مقدمات.
 كن صادق: ما تخترعش مصادر أو أرقام أو روابط أو أحداث، وقول «مش متأكد» لما الدليل مش كفاية. ما تدّعيش إنك شغّلت كود أو فتحت ملف أو موقع إلا لو نتيجته موجودة قدامك في الرسالة.
@@ -384,7 +386,15 @@ export function askFailureCode(failures: readonly { kind: AskFailure }[]): { sta
 }
 const RETRYABLE: readonly AskFailure[] = ['upstream_error', 'timeout', 'unreachable', 'empty', 'rate_limited'];
 
-export async function askWorkspace(body: AskBody, { env, fetch: request = fetch, signal, now = () => new Date(), retryDelayMs = 700, health }: { env: Env; fetch?: typeof fetch; signal?: AbortSignal; now?: () => Date; retryDelayMs?: number; health?: EngineHealth }): Promise<{ reply: string; sources: SearchResult[]; via?: 'search' }> {
+/** What a streamed turn reports while it is being written (POST /api/workspace/ask/stream). */
+export type AskEvent =
+  | { type: 'stage'; stage: 'searching' | 'writing' }
+  | { type: 'sources'; sources: SearchResult[] }
+  | { type: 'delta'; text: string }
+  /** The platform writing the reply failed midway: what was shown so far is dropped and another one starts over. */
+  | { type: 'reset' };
+
+export async function askWorkspace(body: AskBody, { env, fetch: request = fetch, signal, now = () => new Date(), retryDelayMs = 700, health, onEvent }: { env: Env; fetch?: typeof fetch; signal?: AbortSignal; now?: () => Date; retryDelayMs?: number; health?: EngineHealth; onEvent?: (event: AskEvent) => void }): Promise<{ reply: string; sources: SearchResult[]; via?: 'search' }> {
   const language = languageOf(body.language);
   const task: WorkspaceTask = (['plan', 'summarize', 'site', 'storyboard'] as const).find((t) => t === body.task) || 'chat';
   const json = task === 'plan' || task === 'site' || task === 'storyboard';
@@ -397,6 +407,7 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
   let found: { results: SearchResult[]; answer?: string } = { results: [] };
   const lastQuestion = rawTurns[rawTurns.length - 1]!.text;
   if (body.search === true || (body.search !== false && task === 'chat' && wantsLiveInfo(lastQuestion))) {
+    onEvent?.({ type: 'stage', stage: 'searching' });
     const searchTurns = askTurns({ ...body, context: [] }, false);
     const latest = searchTurns[searchTurns.length - 1]!.text;
     const focus = conversationFocus(latest, searchTurns.slice(0, -1));
@@ -411,6 +422,7 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
       turns[turns.length - 1] = { role: 'user', text: `نتايج بحث ويب لسه طالعة:\n${list}${found.answer ? `\n\nملخص البحث: ${found.answer.slice(0, 4000)}` : ''}\n\n---\n\n${last.text}` };
     }
   }
+  if (sources.length) onEvent?.({ type: 'sources', sources });
   // What a live search already answered is never thrown away because the writing platforms are down.
   const fromSearch = (): { reply: string; sources: SearchResult[]; via: 'search' } | undefined => {
     if (found.answer?.trim() && sources.length) return { reply: found.answer.trim().slice(0, 6000), sources, via: 'search' };
@@ -425,19 +437,27 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
   const system = `${workspaceInstruction(language, task)}\nتاريخ النهارده ${today}. لو السؤال عن حاجة بتتغير مع الوقت (أخبار، أسعار، طقس، نتايج، مناصب) ومفيش نتايج بحث ويب قدامك في الرسالة، قول بصراحة في أول سطر إن معلوماتك ممكن تكون أقدم من النهارده، وبعدها اشرح الخلفية اللي تعرفها من غير ما تخترع أحداث أو أرقام جديدة.`;
   const started = Date.now();
   const failures: { id: string; kind: AskFailure; status?: number }[] = [];
+  // Chat and summaries are written live, letter by letter; the JSON tasks arrive whole (half a JSON is no use).
+  const live = Boolean(onEvent) && !json;
+  const finish = (reply: string) => (json ? reply : polishReply(reply).trim() || reply);
   const tryEngine = async (id: (typeof engines)[number], timeoutMs: number): Promise<string | undefined> => {
     let failed: { kind: EngineFailure; status?: number } | undefined;
+    let sent = false;
+    const dropped = () => { if (sent) { sent = false; onEvent?.({ type: 'reset' }); } };
     try {
       const reply = await callEngine(id, system, turns, {
         env, fetch: request, signal: AbortSignal.any([AbortSignal.timeout(timeoutMs), ...(signal ? [signal] : [])]),
         temperature: task === 'plan' ? 0.2 : json ? 0.5 : 0.6, maxTokens: task === 'plan' ? 1200 : task === 'storyboard' ? 2500 : task === 'site' ? 8000 : 6000, maxChars: 60_000,
         onFailure: (kind, status) => { failed = { kind, status }; },
+        ...(live ? { onToken: (text: string) => { if (!sent) { sent = true; onEvent?.({ type: 'stage', stage: 'writing' }); } onEvent?.({ type: 'delta', text }); } } : {}),
       });
-      if (typeof reply === 'string' && reply.trim()) { health?.ok(id); return reply.trim(); }
+      if (typeof reply === 'string' && reply.trim()) { health?.ok(id); return finish(reply.trim()); }
+      dropped();
       failures.push({ id, ...(failed || { kind: 'empty' as const }) });
       health?.fail(id, failed?.kind || 'empty');
     } catch (error) {
       const name = error instanceof Error ? error.name : '';
+      dropped();
       const timedOut = name === 'TimeoutError' || name === 'AbortError';
       failures.push({ id, kind: timedOut ? 'timeout' : 'unreachable' });
       if (!signal?.aborted) health?.fail(id, timedOut ? 'timeout' : 'upstream_error');
@@ -529,6 +549,23 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
       notion: Boolean(env.NOTION_TOKEN?.trim()), slack: Boolean(env.SLACK_WEBHOOK_URL?.trim()),
       video: videoAccess(env), videoLeft: videoAccess(env) === 'off' ? 0 : budget.left(dailyLimit(env)),
     });
+  });
+  // The same turn, written live: stages, sources, then the reply in pieces, then the final (polished) reply.
+  router.post('/ask/stream', limited('ask'), async (req, res) => {
+    const controller = new AbortController();
+    res.on('close', () => { if (!res.writableFinished) controller.abort(); });
+    res.writeHead(200, { 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-store, no-transform', Connection: 'keep-alive', 'X-Accel-Buffering': 'no' });
+    res.flushHeaders?.();
+    const write = (event: object) => { if (!res.writableEnded) res.write(`data: ${JSON.stringify(event)}\n\n`); };
+    // A quiet line now and then keeps phones and proxies from closing a turn that is still thinking.
+    const beat = setInterval(() => { if (!res.writableEnded) res.write(': keep\n\n'); }, 12_000);
+    try {
+      const output = await askWorkspace(req.body || {}, { env, fetch: request, signal: controller.signal, health: options.health, onEvent: write });
+      write({ type: 'done', output });
+    } catch (error) {
+      if (error instanceof ReadError) write({ type: 'error', status: error.status, code: error.code });
+      else { console.error('[workspace]', error instanceof Error ? error.message : error); write({ type: 'error', status: 500, code: 'INTERNAL' }); }
+    } finally { clearInterval(beat); res.end(); }
   });
   router.post('/ask', limited('ask'), async (req, res) => {
     const controller = new AbortController();
