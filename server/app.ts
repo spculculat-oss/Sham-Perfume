@@ -70,7 +70,7 @@ app.use('/api', createShaheenRouter({ repo: shamCore.repo, runtime: shamCore.run
 app.use('/api/specialists', createSpecialistsRouter({ repo: shamCore.repo, runtime: shamCore.runtime, memory: shamCore.memory }));
 app.use('/api', createMediaRouter());
 // «مساحة شاهين»: Shaheen as a general assistant (any subject) — search, reading pages and PDFs, images, the owner's Notion/Slack.
-app.use('/api/workspace', createWorkspaceRouter());
+app.use('/api/workspace', createWorkspaceRouter({ health: shamCore.runtime.health }));
 // «نشرة شاهين — شاهين يشرحلك الخبر»: POST /api/news/explain (server/newsExplain.ts).
 app.use('/api/news', createNewsRouter());
 // «صوت شاهين البشري»: replies in a human man's or woman's voice — POST /api/voice/speak (server/voiceSpeak.ts).

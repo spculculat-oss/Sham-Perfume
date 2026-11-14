@@ -62,10 +62,14 @@ export function imageErrorKey(error: unknown): 'image_unavailable' | 'image_quot
   }
   return 'image_failed';
 }
-export function errorKey(error: unknown): 'no_server' | 'busy' | 'rate_limited' | 'failed' {
+export function errorKey(error: unknown): 'no_server' | 'busy' | 'rate_limited' | 'failed' | 'ai_quota' | 'ai_slow' | 'ai_off' {
   if (error instanceof ApiUnavailableError) return 'no_server';
   if (error instanceof ApiError) {
     if (error.status === 429) return 'rate_limited';
+    // The real reason, when the server knows it: a used-up quota, a slow answer, or no platform connected at all.
+    if (error.code === 'ENGINES_QUOTA') return 'ai_quota';
+    if (error.code === 'ENGINES_TIMEOUT') return 'ai_slow';
+    if (error.code === 'NO_ENGINE' || error.code === 'ENGINES_MISCONFIGURED') return 'ai_off';
     if (error.status === 503 || error.status === 502 || error.status === 504) return 'busy';
     if (error.status === 404) return 'no_server';
   }

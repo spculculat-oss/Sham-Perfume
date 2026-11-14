@@ -19,14 +19,15 @@ import express from 'express';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { lookup as dnsLookup } from 'node:dns/promises';
 import { isIP } from 'node:net';
-import { callEngine, engineStatuses, GEMINI_DEFAULT_MODEL, type EngineTurn } from './core/engines';
+import type { EngineHealth } from './core/engineHealth';
+import { callEngine, engineStatuses, GEMINI_DEFAULT_MODEL, type EngineFailure, type EngineTurn } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { cleanVideoRequest, dailyLimit, DailyBudget, readJob, signJob, startVideo, videoAccess, videoBytes, VideoError, videoStatus } from './videoEngine';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../src/types/i18n';
 
 type Env = Record<string, string | undefined>;
 type Lookup = (host: string) => Promise<string[]>;
-export interface WorkspaceOptions { env?: Env; fetch?: typeof fetch; lookup?: Lookup; videoBudget?: DailyBudget }
+export interface WorkspaceOptions { env?: Env; fetch?: typeof fetch; lookup?: Lookup; videoBudget?: DailyBudget; health?: EngineHealth }
 
 /** The AI platforms a workspace turn may use, best first (live search has its own route). */
 const ORDER = ['gemini', 'openai', 'claude', 'deepseek', 'openrouter', 'self_hosted'] as const;
@@ -361,7 +362,29 @@ export function askTurns(body: AskBody, resolveReferences = true): EngineTurn[] 
   return turns;
 }
 
-export async function askWorkspace(body: AskBody, { env, fetch: request = fetch, signal }: { env: Env; fetch?: typeof fetch; signal?: AbortSignal }): Promise<{ reply: string; sources: SearchResult[] }> {
+/**
+ * A question whose honest answer changes by the day — news, prices, weather, scores, «النهارده», «آخر» — is
+ * answered from a live web search even when the visitor did not press the web button.
+ */
+export function wantsLiveInfo(text: string): boolean {
+  const q = text.normalize('NFKC').replace(/[\u064B-\u065F\u0670\u0640]/g, '').replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').toLowerCase();
+  if (q.length > 600) return false; // a long paste is a document to work on, not a question about today
+  return /اخبار|اخر (?:ال)?(?:مستجدات|تطورات|اخبار|اسعار|سعر)|مستجدات|تطورات|عاجل|حصل ايه|ايه اللي حصل|ماذا حدث|(?:ال)?(?:وضع|اوضاع) (?:في|فى)|هدنه|انتخابات|زلزال|سعر (?:ال)?(?:دولار|يورو|ذهب|دهب|جنيه|ريال|درهم|بترول|نفط|بنزين|بيتكوين|فضه)|اسعار (?:ال)?(?:ذهب|دهب|عملات|صرف|نفط|بترول)|بكام (?:ال)?(?:دولار|ذهب|دهب|يورو)|البورصه|(?:حاله )?(?:ال)?طقس|درجه الحراره|نتيجه (?:ال)?(?:مباراه|ماتش)|مباراه (?:اليوم|النهارده)|ماتش النهارده|مين (?:كسب|فاز)|\bnews\b|\bheadlines\b|\bbreaking\b|\blatest (?:on|news|update)|what(?:'s| is) happening|\bceasefire\b|\belection results?\b|\b(?:gold|oil|dollar|euro|bitcoin|stock) price|\bprice of (?:gold|oil|bitcoin)\b|\bexchange rate\b|\bweather\b|\bforecast\b|\bscore of\b|\bwho won\b/.test(q)
+    || (/النهارده|انهارده|اليوم|دلوقتي|حاليا|الان |هذا الاسبوع|الاسبوع ده|\btoday\b|\bright now\b|\bcurrently\b|\bthis week\b|\btonight\b/.test(`${q} `) && /ايه|ما |ماذا|مين|من |كام|كم |هل |فين|اين|\?|؟|\bwhat\b|\bwho\b|\bhow much\b|\bis there\b|\bany\b/.test(`${q} `) && !/اكتب|ترجم|لخص|ارسم|صمم|\bwrite\b|\btranslate\b|\bdraw\b|\bsummar/.test(q));
+}
+
+export type AskFailure = EngineFailure | 'timeout' | 'unreachable' | 'empty';
+/** Why every platform failed, as one honest code for the visitor (and one line in the server log for the owner). */
+export function askFailureCode(failures: readonly { kind: AskFailure }[]): { status: number; code: string } {
+  const all = (...kinds: AskFailure[]) => failures.length > 0 && failures.every((f) => kinds.includes(f.kind));
+  if (all('rate_limited', 'no_credit')) return { status: 503, code: 'ENGINES_QUOTA' };
+  if (all('timeout')) return { status: 504, code: 'ENGINES_TIMEOUT' };
+  if (all('invalid_key', 'model_not_found', 'region_blocked', 'no_credit')) return { status: 503, code: 'ENGINES_MISCONFIGURED' };
+  return { status: 503, code: 'ENGINES_BUSY' };
+}
+const RETRYABLE: readonly AskFailure[] = ['upstream_error', 'timeout', 'unreachable', 'empty', 'rate_limited'];
+
+export async function askWorkspace(body: AskBody, { env, fetch: request = fetch, signal, now = () => new Date(), retryDelayMs = 700, health }: { env: Env; fetch?: typeof fetch; signal?: AbortSignal; now?: () => Date; retryDelayMs?: number; health?: EngineHealth }): Promise<{ reply: string; sources: SearchResult[]; via?: 'search' }> {
   const language = languageOf(body.language);
   const task: WorkspaceTask = (['plan', 'summarize', 'site', 'storyboard'] as const).find((t) => t === body.task) || 'chat';
   const json = task === 'plan' || task === 'site' || task === 'storyboard';
@@ -371,13 +394,15 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
   if (photoReply) return { reply: photoReply, sources: [] };
   const turns = askTurns(body);
   let sources: SearchResult[] = [];
-  if (body.search === true) {
+  let found: { results: SearchResult[]; answer?: string } = { results: [] };
+  const lastQuestion = rawTurns[rawTurns.length - 1]!.text;
+  if (body.search === true || (body.search !== false && task === 'chat' && wantsLiveInfo(lastQuestion))) {
     const searchTurns = askTurns({ ...body, context: [] }, false);
     const latest = searchTurns[searchTurns.length - 1]!.text;
     const focus = conversationFocus(latest, searchTurns.slice(0, -1));
     const asked = (focus ? `${focus.question} — ${latest}` : latest).slice(0, 300);
     // Never search a contextless 'show me pictures' or a JSON context wrapper.
-    const found = isContextFollowUp(latest) && !focus ? { results: [] as SearchResult[], answer: undefined }
+    found = isContextFollowUp(latest) && !focus ? { results: [] as SearchResult[], answer: undefined }
       : await webSearch(asked, language, { env, fetch: request }).catch(() => ({ results: [] as SearchResult[], answer: undefined }));
     sources = found.results;
     if (sources.length) {
@@ -386,20 +411,59 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
       turns[turns.length - 1] = { role: 'user', text: `نتايج بحث ويب لسه طالعة:\n${list}${found.answer ? `\n\nملخص البحث: ${found.answer.slice(0, 4000)}` : ''}\n\n---\n\n${last.text}` };
     }
   }
-  const engines = configuredEngines(env);
-  if (!engines.length) throw new ReadError(503, 'NO_ENGINE', 'No AI platform is open right now');
-  const system = workspaceInstruction(language, task);
-  for (const id of engines) {
-    if (signal?.aborted) break;
+  // What a live search already answered is never thrown away because the writing platforms are down.
+  const fromSearch = (): { reply: string; sources: SearchResult[]; via: 'search' } | undefined => {
+    if (found.answer?.trim() && sources.length) return { reply: found.answer.trim().slice(0, 6000), sources, via: 'search' };
+    // No written summary, but real pages were found: show them as they are rather than an error.
+    if (sources.length) return { reply: sources.slice(0, 5).map((r, i) => `**[${i + 1}] ${r.title}**\n${r.snippet}`.trim()).join('\n\n'), sources, via: 'search' };
+    return undefined;
+  };
+  // The shared health record (the one the admin panel shows): platforms known to be down are tried last.
+  const engines = health ? health.order(configuredEngines(env)) : configuredEngines(env);
+  if (!engines.length) { const answered = fromSearch(); if (answered) return answered; throw new ReadError(503, 'NO_ENGINE', 'No AI platform is open right now'); }
+  const today = now().toISOString().slice(0, 10);
+  const system = `${workspaceInstruction(language, task)}\nتاريخ النهارده ${today}. لو السؤال عن حاجة بتتغير مع الوقت (أخبار، أسعار، طقس، نتايج، مناصب) ومفيش نتايج بحث ويب قدامك في الرسالة، قول بصراحة في أول سطر إن معلوماتك ممكن تكون أقدم من النهارده، وبعدها اشرح الخلفية اللي تعرفها من غير ما تخترع أحداث أو أرقام جديدة.`;
+  const started = Date.now();
+  const failures: { id: string; kind: AskFailure; status?: number }[] = [];
+  const tryEngine = async (id: (typeof engines)[number], timeoutMs: number): Promise<string | undefined> => {
+    let failed: { kind: EngineFailure; status?: number } | undefined;
     try {
       const reply = await callEngine(id, system, turns, {
-        env, fetch: request, signal: AbortSignal.any([AbortSignal.timeout(45_000), ...(signal ? [signal] : [])]),
+        env, fetch: request, signal: AbortSignal.any([AbortSignal.timeout(timeoutMs), ...(signal ? [signal] : [])]),
         temperature: task === 'plan' ? 0.2 : json ? 0.5 : 0.6, maxTokens: task === 'plan' ? 1200 : task === 'storyboard' ? 2500 : task === 'site' ? 8000 : 6000, maxChars: 60_000,
+        onFailure: (kind, status) => { failed = { kind, status }; },
       });
-      if (typeof reply === 'string' && reply.trim()) return { reply: reply.trim(), sources };
-    } catch { /* the next platform */ }
+      if (typeof reply === 'string' && reply.trim()) { health?.ok(id); return reply.trim(); }
+      failures.push({ id, ...(failed || { kind: 'empty' as const }) });
+      health?.fail(id, failed?.kind || 'empty');
+    } catch (error) {
+      const name = error instanceof Error ? error.name : '';
+      const timedOut = name === 'TimeoutError' || name === 'AbortError';
+      failures.push({ id, kind: timedOut ? 'timeout' : 'unreachable' });
+      if (!signal?.aborted) health?.fail(id, timedOut ? 'timeout' : 'upstream_error');
+    }
+    return undefined;
+  };
+  for (const id of engines) {
+    if (signal?.aborted) break;
+    const reply = await tryEngine(id, 45_000);
+    if (reply) return { reply, sources };
   }
-  throw new ReadError(503, 'ENGINES_BUSY', 'The AI platforms are busy, try again in a minute');
+  // One more round for the platforms that only stumbled (overload, a slow answer, a per-minute limit) — while there is still time.
+  const again = engines.filter((id) => failures.some((f) => f.id === id && RETRYABLE.includes(f.kind)));
+  if (again.length && !signal?.aborted && Date.now() - started < 25_000) {
+    if (retryDelayMs > 0) await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+    for (const id of again) {
+      if (signal?.aborted || Date.now() - started > 50_000) break;
+      const reply = await tryEngine(id, 20_000);
+      if (reply) return { reply, sources };
+    }
+  }
+  const answered = fromSearch();
+  if (answered) return answered;
+  if (failures.length) console.warn(`[workspace] ask: every platform failed — ${failures.map((f) => `${f.id}=${f.kind}${f.status ? `(${f.status})` : ''}`).join(' ')}`);
+  const { status, code } = askFailureCode(failures);
+  throw new ReadError(status, code, 'The AI platforms could not answer, try again in a minute');
 }
 
 // ── The owner's Notion and Slack ────────────────────────────────────────────────────────────────────────────
@@ -469,7 +533,7 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
   router.post('/ask', limited('ask'), async (req, res) => {
     const controller = new AbortController();
     res.on('close', () => { if (!res.writableFinished) controller.abort(); });
-    try { res.json(await askWorkspace(req.body || {}, { env, fetch: request, signal: controller.signal })); } catch (error) { fail(res, error); }
+    try { res.json(await askWorkspace(req.body || {}, { env, fetch: request, signal: controller.signal, health: options.health })); } catch (error) { fail(res, error); }
   });
   router.post('/search', limited('search'), async (req, res) => {
     const q = typeof req.body?.q === 'string' ? req.body.q.trim() : '';
