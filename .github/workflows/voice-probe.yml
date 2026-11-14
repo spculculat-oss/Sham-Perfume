@@ -1,0 +1,22 @@
+name: Voice probe (temporary)
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe the live voice server
+        run: |
+          B=https://sham-perfume-49bf.vercel.app
+          echo "== health"; curl -sS -m 20 $B/api/health | head -c 400; echo
+          echo "== status"; curl -sS -m 20 -i $B/api/voice/status | head -20; echo
+          for t in 'أهلاً بيك' 'Hello there'; do
+            echo "== speak $t"
+            curl -sS -m 40 -o /tmp/out.bin -D - -X POST -H 'Content-Type: application/json' -H 'Origin: https://spculculat-oss.github.io' \
+              --data "{\"text\":\"$t\",\"language\":\"ar\",\"gender\":\"male\"}" $B/api/voice/speak | head -20
+            echo "bytes: $(wc -c < /tmp/out.bin)"; head -c 300 /tmp/out.bin | strings | head -5; echo
+          done
+          echo "== status after"; curl -sS -m 20 $B/api/voice/status; echo
+          echo "== say-words"; curl -sS -m 20 $B/api/voice/say-words; echo
