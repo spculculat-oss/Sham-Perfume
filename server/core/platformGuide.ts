@@ -107,6 +107,14 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     tags: ['صور', 'رسم', 'تخمين', 'أدوات', 'فيديو', 'images', 'painter', 'tools'],
   },
   {
+    id: 'shaheen_live_chat', group: 'workspace', tab: 'workspace', docId: 'kb-platform-live-chat',
+    name: { ar: 'رد شاهين بيتكتب قدامك والأخبار ببحث حي', en: 'Shaheen writes live, with today’s news' },
+    summary: { ar: 'في مساحة شاهين الرد بيظهر كلمة كلمة وهو بيتكتب بدل ما تستنى في صمت، وأسئلة الأخبار والطقس والحاجات اللي بتتغير كل يوم بتتبحث في الويب لوحدها ويظهر معاها المصادر.', en: 'In Shaheen’s workspace the reply appears word by word as it is written instead of after a silent wait, and news, price and weather questions search the web by themselves and show their sources.' },
+    details: { ar: 'تحت الرسالة بيظهر سطر صغير يقول شاهين بيعمل إيه: «بدوّر في الويب» أو «بكتب الرد». زر «إيقاف» بيوقف الكتابة ويسيب اللي اتكتب. لو كل المنصات مش متاحة وسؤالك عن خبر، شاهين بيعرض اللي لقاه في البحث بمصادره؛ ولو السؤال محتاج كتابة أو شرح بيقول السبب الحقيقي (الحصة خلصت، الرد اتأخر، أو الخدمة مش متوصلة) بدل رسالة عامة. شاهين بيرد من غير مقدمات ولا خواتيم حشو، وطول الرد على قد السؤال. زر «اسمع» ما بيقراش أرقام المصادر ولا الكلام المشطوب.', en: 'A small line under your message says what Shaheen is doing: searching the web or writing the reply. The Stop button stops the writing and keeps what was written. If every platform is unavailable and you asked about news or a price, Shaheen shows what the search found with its sources; if the question needs writing or explaining, it tells the real reason (quota used up, slow answer, or the service not connected) instead of a general message. Shaheen answers without filler openers or closers, at a length that fits the question. The Listen button does not read source numbers or crossed-out words.' },
+    keywords: ['آخر الأخبار', 'الرد بيتكتب', 'المنصات مشغولة', 'بحث في الويب', 'live reply', 'today news', 'web search'],
+    tags: ['شات', 'أخبار', 'بحث', 'مساحة شاهين', 'chat', 'news', 'search'],
+  },
+  {
     id: 'concentration', group: 'lab', tab: 'concentration', docId: 'kb-concentration',
     name: { ar: 'حاسبة التركيز', en: 'Concentration calculator' },
     summary: {

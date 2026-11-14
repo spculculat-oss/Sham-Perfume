@@ -340,6 +340,17 @@ export interface SpokenReply {
  * The reply as Shaheen says it. `words` = about how much he says before asking «تحب أكمّلك؟» (Infinity = all of it,
  * for the «اسمع الرد» button). A short tail (under a fifth more) is said too rather than cut.
  */
+/**
+ * Written-only marks nobody says aloud: source numbers «[1] [2]», crossed-out words, and footnote stars.
+ * (Links, code and tables are handled by prepareShaheenSpeech.)
+ */
+export function speechTidy(text: string): string {
+  return text
+    .replace(/~~[^~\n]{1,200}~~[ \t]?/g, '')
+    .replace(/[ \t]*\[\d{1,3}\](?!\()/g, '')
+    .replace(/(?<=\p{L})(?:\u00B9|\u00B2|\u00B3|[\u2070-\u2079])+/gu, '');
+}
+
 export function spokenReply(text: string, { language, dialect, words = 45, opener = false, locale }: {
   language: SupportedLanguage; dialect?: Dialect; words?: number;
   /** «بص،» / «بصراحة،» now and then, like talk (the live voice conversation; not the «اسمع الرد» button). */
@@ -357,12 +368,12 @@ export function spokenReply(text: string, { language, dialect, words = 45, opene
     } else {
       s = speakWorldNumbers(worldTerms(s, language), language, speechLocale);
     }
-    return s.replace(/\s+([،,.!?؟])/g, '$1').replace(/[،,]+(?=[.!?؟]|$)/gu, '').replace(/([،,])[،,]+/gu, '$1').replace(/\s+/g, ' ').trim();
+    return s.replace(/^[\s،,]+/u, '').replace(/\s+([،,.!?؟])/g, '$1').replace(/[،,]+(?=[.!?؟]|$)/gu, '').replace(/([،,])[،,]+/gu, '$1').replace(/\s+/g, ' ').trim();
   };
   // «شاهين بيحكي مش بيقرا» (talkStyle.ts): lists, labels, steps and written verbs re-said as talk first.
   // Arabic and Persian pause on «،»; the other languages' voices on «,».
   const comma = arabic || language === 'fa' ? '، ' : ', ';
-  const sentences = sentencesOf(talkLines(talkify(text, { language, dialect, opener }), comma), comma).map(prepared).filter((s) => /[\p{L}\p{N}]/u.test(s));
+  const sentences = sentencesOf(talkLines(talkify(speechTidy(text), { language, dialect, opener }), comma), comma).map(prepared).filter((s) => /[\p{L}\p{N}]/u.test(s));
   if (!sentences.length) return { say: '', rest: '' };
   const total = sentences.reduce((sum, s) => sum + wordCount(s), 0);
   if (!Number.isFinite(words) || total <= words * 1.2) return { say: sentences.join(' '), rest: '' };

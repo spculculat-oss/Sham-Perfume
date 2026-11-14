@@ -1,6 +1,7 @@
 import { REAL_PHOTO_INSTRUCTION, realPhotoReply } from '../src/utils/realPhotos';
 import { IMAGE_CRAFT_INSTRUCTION, IMAGE_HONESTY_INSTRUCTION } from '../src/utils/imageCraft';
 import { CONTINUITY_INSTRUCTION, contextualMessage, isContextFollowUp } from '../src/utils/conversationContext';
+import { NATURAL_TALK_INSTRUCTION, polishReply } from '../src/utils/naturalTalk';
 import { createResearchSpider } from '../src/utils/researchSpider';
 /**
  * «الخبير شاهين» — the perfume-design chat (floating window + the lab page).
@@ -316,7 +317,7 @@ export function systemInstruction(language: SupportedLanguage, extra = '', style
 أجب باللغة المطلوبة: ${languageName} (${language}).${regionLine} اتبع سياق الحوار وأجب عن السؤال مباشرة. إذا طلب المستخدم تصميم عطر وذكر اتجاهه أو مكوناته الرئيسية (مثل عود وورد) أو الحجم أو التركيز، فقدّم فوراً مقترحاً تجريبياً كاملاً بنسب واضحة مع سياج sham-formula، ثم اختم بسؤال أو سؤالين اختياريين لتحسينه؛ لا تؤجل التركيبة بأسئلة توضيحية. اسأل قبل التركيبة فقط إذا لم يذكر أي اتجاه عطري أو مكون، وإذا نقص الحجم أو التركيز فاستخدم قيمة شائعة (50 مل، EDP 20%) واذكر أنها قابلة للتعديل.
 لا تستخدم LaTeX أبداً: لا علامات $ ولا أوامر مثل \\frac أو \\times أو \\text. اكتب المعادلات نصاً عادياً بالرموز × و÷ و= و≈، مثل: كمية الكحول = 70 × 1000 ÷ 96 ≈ 729 مل.
 كن واضحاً وودوداً، واتعامل كخبير طبيعي في حوار متصل: افهم المقصود من الكلام والسياق، ${dialectInstruction(talk?.dialect || 'egyptian').replace(/\.$/, '')}، وادخل في الإجابة من غير مقدمات آلية أو تكرار السؤال. اسأل سؤال توضيح واحداً بس لما يلزم. حلل داخلياً، ولا تعرض سلسلة تفكيرك.
-قبل الرد افحص صلة الإجابة بالسؤال ومدى دعمها بمراجع شاهين الموثقة أو بمصادر البحث المتاحة؛ قارن المعلومات، واستبعد الخارج عن الموضوع أو المتعارض أو غير المدعوم. لو الدليل مش كفاية، قول إنك مش متأكد بدل ما تعرضه كحقيقة مدققة.
+${talk?.voice ? '' : `${NATURAL_TALK_INSTRUCTION}\n`}قبل الرد افحص صلة الإجابة بالسؤال ومدى دعمها بمراجع شاهين الموثقة أو بمصادر البحث المتاحة؛ قارن المعلومات، واستبعد الخارج عن الموضوع أو المتعارض أو غير المدعوم. لو الدليل مش كفاية، قول إنك مش متأكد بدل ما تعرضه كحقيقة مدققة.
 ما تعرضش أسماء المصادر أو روابطها تلقائياً؛ أظهرها فقط لما المستخدم يطلبها صراحة، ولا تخترع مرجعاً أو رابطاً. عند طلب المصادر، اعرض الروابط التي وصلت فعلاً فقط ووضّح إن الرابط لا يعني اعتماداً من متخصص.
 كن واضحاً وودوداً. استخدم Markdown بسيطاً عند الحاجة: عناوين قصيرة بـ ###، نقاط، **عريض**، وجداول صغيرة للنِّسب. لا تدّع أنك إنسان أو طبيب أو أنك أجريت تجربة مخبرية أو استشرت محركات أخرى.
 لا تختلق مصادر أو شهادات IFRA أو نسب أمان عامة لكل المواد. السلامة تعتمد على المادة والتركيز النهائي وفئة المنتج وشهادة المورد؛ لا تضمن الأمان أو الثبات بالساعات.
@@ -516,7 +517,7 @@ export function publicChatResult(result: { reply: string; mode?: string; sources
   const sources = result.sources ? safeChatSources(result.sources) : undefined;
   const normalized = normalizeMediaBlocks(result.reply);
   const visible = asksForSources(question) ? normalized : hideUnrequestedSources(normalized);
-  return { reply: stripOpeningGreeting(visible, question), mode, ...(sources?.length ? { sources } : {}), engine: { id: mode, provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' } };
+  return { reply: polishReply(stripOpeningGreeting(visible, question)), mode, ...(sources?.length ? { sources } : {}), engine: { id: mode, provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' } };
 }
 
 export interface EngineProbe {

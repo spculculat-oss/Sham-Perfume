@@ -1,3 +1,4 @@
+import { useSmoothText } from '../hooks/useSmoothText';
 import { trackInsight } from '../utils/insightsTracker';
 import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -505,14 +506,17 @@ export function ShamAssistant({ currentLang }: Props) {
 
 function Bubble({ role, text, engine, lang = 'ar', streaming, stopped }: { role: 'user' | 'assistant'; text: string; engine?: string; lang?: SupportedLanguage; streaming?: boolean; stopped?: boolean }) {
   const user = role === 'user';
+  // The words come out at a steady pace, whatever bursts the network delivers them in.
+  const shown = useSmoothText(text, Boolean(streaming) && !user);
+  const writing = Boolean(streaming) || shown.length < text.length;
   const label = engine === 'human' ? loc(lang, S.human) : engine && engine !== 'system' ? (engine === 'sham_local' ? 'Sham Core' : 'Sham Core · AI') : '';
   return (
     <div className={`flex ${user ? 'justify-end' : 'justify-start'}`}>
       <div className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap shadow-sm ${user ? 'bg-stone-900 text-white rounded-ee-sm' : engine === 'human' ? 'bg-emerald-50 border border-emerald-200 text-stone-900 rounded-es-sm' : 'bg-white border border-stone-200 text-stone-800 rounded-es-sm'}`}>
-        {text}
-        {streaming && <span className="inline-block w-1.5 h-4 align-middle ms-0.5 bg-amber-500 animate-pulse rounded-sm" aria-hidden />}
+        {shown}
+        {writing && <span className="inline-block w-1.5 h-4 align-middle ms-0.5 bg-amber-500 animate-pulse rounded-sm" aria-hidden />}
         {stopped && <span className="block mt-1.5 text-[10px] font-semibold text-amber-700">⏹ {loc(lang, S.stopped)}</span>}
-        {label && !streaming && <span className="block mt-1.5 text-[10px] text-stone-400">{label}</span>}
+        {label && !writing && <span className="block mt-1.5 text-[10px] text-stone-400">{label}</span>}
       </div>
     </div>
   );
