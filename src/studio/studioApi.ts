@@ -120,3 +120,19 @@ export function scenePicturePrompt(board: Storyboard, i: number): string {
   const scene = board.scenes[i]!;
   return `${SHOT_PROMPT[shotFor(i, board.scenes.length, scene.prompt)]}, ${stylePrompt(visualPrompt(scene.prompt), board.style)}, same characters: ${castOf(board)}`;
 }
+
+// ── The design tools (graphic design, code blocks, robots) ────────────────────────────────────────────────────
+/**
+ * One design request to the AI platforms; `undefined` when they are not reachable or fail, so every tool falls back
+ * to its own on-device engine instead of showing an error.
+ */
+export async function askDesign(task: 'graphic' | 'block' | 'bot', text: string, language: SupportedLanguage, { ai }: { ai: boolean }, signal?: AbortSignal): Promise<string | undefined> {
+  if (!ai || !serverReachable()) return undefined;
+  try {
+    const { reply } = await ask({ task, language, search: false, messages: [{ role: 'user', text: text.slice(0, 6000) }] }, signal);
+    return reply;
+  } catch (error) {
+    if (signal?.aborted) throw error;
+    return undefined;
+  }
+}

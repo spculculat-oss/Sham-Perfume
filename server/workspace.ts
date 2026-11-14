@@ -44,7 +44,7 @@ const LANGS = new Set(SUPPORTED_LANGUAGES.map((l) => l.code));
 const languageOf = (value: unknown): SupportedLanguage => (typeof value === 'string' && LANGS.has(value as SupportedLanguage) ? value as SupportedLanguage : 'ar');
 
 /** Who Shaheen is in the workspace: a general assistant (perfume is his deepest specialty, not his limit). */
-export type WorkspaceTask = 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard';
+export type WorkspaceTask = 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard' | 'graphic' | 'block' | 'bot';
 export function workspaceInstruction(language: SupportedLanguage, task: WorkspaceTask = 'chat'): string {
   const name = SUPPORTED_LANGUAGES.find((l) => l.code === language)?.name || 'العربية';
   const base = `${CONTINUITY_INSTRUCTION}\n${REAL_PHOTO_INSTRUCTION}\nأنت «شاهين»، مساعد ذكاء اصطناعي شامل داخل منصة «شام». بتساعد في أي موضوع: كتابة، ترجمة، دراسة وشرح، برمجة ومواقع، تحليل بيانات وجداول، أفكار وتسويق، شغل ومستندات، أسئلة عامة — والعطور تخصصك العميق مش حدودك.
@@ -56,6 +56,7 @@ ${NATURAL_TALK_INSTRUCTION}
 لو في نتايج بحث ويب مرقّمة، استشهد بيها برقمها [1] [2] ومتستخدمش غيرها كمصدر.
 البرمجة: اكتب الكود كامل وشغّال جوّه سياج بلغته (\`\`\`python، \`\`\`javascript، \`\`\`html…). موقع أو صفحة = ملف HTML واحد كامل فيه الـ CSS والـ JavaScript جوّاه في سياج \`\`\`html، علشان المستخدم يشوفه «معاينة حية» على طول. كود بايثون لازم يشتغل في المتصفح (مكتبات بايثون القياسية، وnumpy وpandas وmatplotlib مسموحين) ويطبع نتيجته بـ print.
 المستندات: لو طلب مستند أو تقرير أو عرض، اكتبه Markdown منظم (عنوان بـ #، أقسام بـ ##، نقاط، وجداول Markdown للأرقام) — الموقع بيحوّله Word أو Excel أو PowerPoint أو PDF بضغطة. للعرض التقديمي: كل شريحة قسم ## بعنوانها ونقاط قصيرة.
+«استوديو الإنشاء» في المساحة فيه أدوات تصميم جاهزة: بناء موقع كامل، بلوكات برمجية (HTML وReact وVue)، تصميم جرافيك (بوست، ستوري، غلاف فيسبوك، صورة يوتيوب، بوستر، كارت شخصي) بتنزل PNG وSVG، شعار وهوية، تصميم روبوتات محادثة بتشتغل في أي موقع من غير سيرفر (ترد وتاخد حجوزات وطلبات وتحوّل على واتساب)، فيديو خيالي، وأدوات المصممين (ألوان ودرجاتها، فحص وضوح الكلام، تدرّجات، ظلال، مقاسات خطوط ومسافات). لو المستخدم طلب حاجة من دول، ساعده في الشات وقوله إن الأداة موجودة في «استوديو الإنشاء» عشان يعدّل وينزّل بنفسه.
 ${IMAGE_CRAFT_INSTRUCTION}
 ${IMAGE_HONESTY_INSTRUCTION}
 الفيديو المتحرك: الموقع يدعم تصدير فيديو قصير محلياً من صورة بتقريب وتحريك الكاميرا بلا صوت عبر زر «عمل فيديو متحرك» تحت الصورة. ده مش توليد فيديو بالذكاء الاصطناعي ولا تحريك أشخاص أو أشياء داخل المشهد؛ وضّح الفرق بصراحة، ولا تدّعي إنشاء فيديو قبل ضغط الزر ونجاح التسجيل. لو طلب فيديو متحرك، جهّز صورة أساسية بوصف داخل سياج sham-video بدلاً من رفض كل الحركة أو توجيهه لمواقع أخرى. تحريك صورة موجودة يتم محلياً. صيغة الفيديو حسب المتصفح WebM أو MP4، ولا تدّعي دعم GIF أو MP4 تحديداً قبل التحقق.
@@ -81,6 +82,24 @@ ${IMAGE_HONESTY_INSTRUCTION}
 مهمتك دلوقتي: إنت مخرج فيديوهات خيالية في «استوديو شاهين». حوّل فكرة المستخدم لقصة مصوّرة من 3 لـ 10 مشاهد. رد بـ JSON بس (من غير أي كلام قبله أو بعده) بالشكل:
 {"title":"عنوان الفيديو","scenes":[{"caption":"جملة قصيرة تظهر على الشاشة بلغة المستخدم","prompt":"detailed English description of the picture for this scene, same characters and style across scenes","seconds":4,"motion":"zoom-in|zoom-out|pan-left|pan-right|pan-up|still","effect":"none|rain|snow|embers|stars|dust|fog|sparkles|light"}]}
 خلي المشاهد ليها بداية ووسط ونهاية، والوصف الإنجليزي محدد (المكان، الإضاءة، زاوية الكاميرا، الشخصيات بنفس الشكل في كل مشهد). الجمل على الشاشة قصيرة (أقل من 12 كلمة). نوّع اللقطات زي المخرجين: لقطة واسعة (wide shot) في الأول، متوسطة في النص، وقريبة (close-up) في اللحظة الكبيرة. و effect هو جو المشهد (مطر، تلج، شرار نار، نجوم، غبار، ضباب، لمعة سحرية، أشعة شمس) أو none.`;
+  }
+  if (task === 'graphic') {
+    return `${base}
+مهمتك دلوقتي: إنت مصمم جرافيك ومعلن محترف في «استوديو شاهين». حوّل طلب المستخدم لتصميم (بوست، ستوري، غلاف، بوستر، كارت…). رد بـ JSON بس (من غير أي كلام قبله أو بعده) بالشكل:
+{"format":"post|story|x|yt|fb_cover|banner|poster|card","layout":"center|split|band|frame|bold|minimal","bg":"gradient|solid|pattern|image","base":"#8a5a2b","harmony":"complementary|analogous|triadic|split|mono","dark":false,"font":"cairo|tajawal|amiri|reem|playfair|poppins|serif|grotesk","headline":"عنوان قصير قوي (أقل من 8 كلمات)","sub":"جملة أو جملتين بتشرح","cta":"كلمتين للزرار أو فاضي","footer":"تليفون/موقع/عنوان المستخدم لو إداه، وإلا فاضي","imagePrompt":"English description of a background photo with calm empty space for text, no text in the image"}
+اكتب الكلام بلغة المستخدم وبأسلوب إعلاني جذاب ومختصر. ما تخترعش أسعار أو خصومات أو تواريخ أو أرقام تليفون مش موجودة في الطلب. اختار المقاس من المنصة اللي ذكرها (ستوري للستوري والريلز، yt لصورة يوتيوب…) والألوان والخط اللي يناسبوا الهوية.`;
+  }
+  if (task === 'block') {
+    return `${base}
+مهمتك دلوقتي: إنت مطوّر واجهات محترف في «استوديو شاهين». اكتب «بلوك» واحد لصفحة ويب حسب الطلب: HTML نضيف ومتجاوب جوّه سياج \`\`\`html واحد، فيه <section class="sb"> و<div class="sb-in"> و<style> صغير خاص بيه في الأول.
+استخدم متغيرات الألوان دي بس (من غير ألوان ثابتة): var(--p) الأساسي، var(--a) المكمّل، var(--bg) الخلفية، var(--sf) الكروت، var(--tx) الكلام، var(--mu) الكلام الخفيف، var(--on) الكلام على الأساسي، var(--r) الحواف. والكلاسات الجاهزة: sb-title للعنوان، sb-btn للزرار (وsb-btn ghost للزرار المفرّغ)، sb-card للكارت، sb-grid للشبكة، sb-field للخانات.
+ممنوع <script> أو onclick أو أي JavaScript، وممنوع روابط أو صور خارجية (استخدم <div class="sb-ph"> مكان الصورة). الكلام بلغة المستخدم واتجاهه مظبوط، ومن غير أسعار أو آراء أو أرقام مخترعة (حط 000 أو «اكتب هنا…»). خلي الكلاسات الجديدة كلها تبدأ بـ sb-.`;
+  }
+  if (task === 'bot') {
+    return `${base}
+مهمتك دلوقتي: إنت مصمم روبوتات محادثة في «استوديو شاهين». صمّم روبوت محادثة لموقع المستخدم حسب وصفه. رد بـ JSON بس (من غير أي كلام قبله أو بعده) بالشكل:
+{"name":"اسم قصير","avatar":"إيموجي واحد","color":"#8a5a2b","kind":"support|sales|booking|faq|tutor|custom","tone":"friendly|formal|fun|expert","role":"وظيفته في جملة","greeting":"أول رسالة","rules":["قاعدة"],"quick":["زرار سريع"],"faq":[{"q":"السؤال بكذا صيغة يقولها الناس","a":"الإجابة"}],"collect":{"trigger":"كلمات تبدأ الحجز أو الطلب مفصولة بفاصلة","fields":[{"label":"السؤال اللي يسأله","kind":"text|phone|email|date"}],"done":"جملة بعد ما يخلص"},"handoff":{"whatsapp":"رقم المستخدم بكود الدولة أرقام بس لو إداه","email":"إيميله لو إداه"}}
+الكلام بلغة المستخدم ولهجته. من 3 لـ 10 أسئلة، و«q» فيه الكلمات اللي الناس فعلاً بتكتبها (مثلاً: «بكام / السعر كام / الأسعار»). أي معلومة مش في الوصف (أسعار، مواعيد، عنوان، سياسات) خلي إجابتها «اكتب هنا …» بدل ما تخترعها. ما تخترعش أرقام تليفون أو إيميلات.`;
   }
   if (task === 'summarize') return `${base}\nمهمتك دلوقتي: لخّص المحتوى اللي جاي بوضوح: الفكرة الأساسية في سطرين، وبعدين أهم النقاط، وأي أرقام أو تواريخ مهمة. لو المستخدم طلب حاجة معينة من المحتوى، ركّز عليها.`;
   return base;
@@ -397,8 +416,9 @@ export type AskEvent =
 
 export async function askWorkspace(body: AskBody, { env, fetch: request = fetch, signal, now = () => new Date(), retryDelayMs = 700, health, onEvent }: { env: Env; fetch?: typeof fetch; signal?: AbortSignal; now?: () => Date; retryDelayMs?: number; health?: EngineHealth; onEvent?: (event: AskEvent) => void }): Promise<{ reply: string; sources: SearchResult[]; via?: 'search' }> {
   const language = languageOf(body.language);
-  const task: WorkspaceTask = (['plan', 'summarize', 'site', 'storyboard'] as const).find((t) => t === body.task) || 'chat';
-  const json = task === 'plan' || task === 'site' || task === 'storyboard';
+  const task: WorkspaceTask = (['plan', 'summarize', 'site', 'storyboard', 'graphic', 'block', 'bot'] as const).find((t) => t === body.task) || 'chat';
+  // The design tasks arrive whole too (a JSON, or one fenced block of HTML).
+  const json = task === 'plan' || task === 'site' || task === 'storyboard' || task === 'graphic' || task === 'block' || task === 'bot';
   const rawTurns = askTurns({ ...body, context: [] }, false);
   const latest = rawTurns[rawTurns.length - 1]!;
   const photoReply = task === 'chat' ? realPhotoReply(latest.text, rawTurns.slice(0, -1), language) : undefined;
@@ -448,7 +468,7 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
     try {
       const reply = await callEngine(id, system, turns, {
         env, fetch: request, signal: AbortSignal.any([AbortSignal.timeout(timeoutMs), ...(signal ? [signal] : [])]),
-        temperature: task === 'plan' ? 0.2 : json ? 0.5 : 0.6, maxTokens: task === 'plan' ? 1200 : task === 'storyboard' ? 2500 : task === 'site' ? 8000 : 6000, maxChars: 60_000,
+        temperature: task === 'plan' ? 0.2 : json ? 0.5 : 0.6, maxTokens: task === 'plan' ? 1200 : task === 'graphic' ? 900 : task === 'storyboard' || task === 'bot' ? 2500 : task === 'site' ? 8000 : 6000, maxChars: 60_000,
         onFailure: (kind, status) => { failed = { kind, status }; },
         ...(live ? { onToken: (text: string) => { if (!sent) { sent = true; onEvent?.({ type: 'stage', stage: 'writing' }); } onEvent?.({ type: 'delta', text }); } } : {}),
       });

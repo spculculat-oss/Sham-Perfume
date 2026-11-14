@@ -1,24 +1,36 @@
 /**
  * «استوديو شاهين»: Shaheen's creation studio inside the workspace — a website builder (pages, design, pictures,
  * editing by words, ZIP to publish anywhere), an imaginative-video maker (storyboard → drawn scenes → camera motion,
- * words and original music → a real video file) and a logo & identity designer. The site being built is kept here so
+ * words and original music → a real video file), a logo & identity designer, graphic design (posts, stories, covers,
+ * posters, cards), code blocks (HTML / React / Vue), a robot designer (chat robots for any site) and the designer's
+ * toolbox. The site being built is kept here so
  * the logo made in one tab can go into the site in another, and «تراجع» works across both.
  */
 import React, { useCallback, useEffect, useState } from 'react';
-import { Clapperboard, Globe, Palette as PaletteIcon } from 'lucide-react';
+import { Bot, Blocks, Clapperboard, Globe, PenTool, Palette as PaletteIcon, Ruler } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { cleanSiteSpec, type SiteSpec } from './siteSpec';
 import { stText, type StudioKey } from './studioStrings';
 import { SitePanel } from './SitePanel';
 import { VideoPanel } from './VideoPanel';
 import { LogoPanel } from './LogoPanel';
+import { GraphicPanel } from './GraphicPanel';
+import { BlocksPanel } from './BlocksPanel';
+import { BotPanel } from './BotPanel';
+import { ToolsPanel } from './ToolsPanel';
+import { dsText, type DesignKey } from './designStrings';
 
-type Sub = 'site' | 'video' | 'logo';
-const SUBS: Array<{ id: Sub; key: StudioKey; icon: typeof Globe }> = [
+type Sub = 'site' | 'blocks' | 'graphic' | 'logo' | 'bots' | 'video' | 'tools';
+const SUBS: Array<{ id: Sub; key: StudioKey | DesignKey; icon: typeof Globe }> = [
   { id: 'site', key: 'st_site', icon: Globe },
-  { id: 'video', key: 'st_video', icon: Clapperboard },
+  { id: 'blocks', key: 'st_blocks', icon: Blocks },
+  { id: 'graphic', key: 'st_graphic', icon: PenTool },
   { id: 'logo', key: 'st_logo', icon: PaletteIcon },
+  { id: 'bots', key: 'st_bots', icon: Bot },
+  { id: 'video', key: 'st_video', icon: Clapperboard },
+  { id: 'tools', key: 'st_tools', icon: Ruler },
 ];
+const isDesignKey = (k: string): k is DesignKey => k === 'st_blocks' || k === 'st_graphic' || k === 'st_bots' || k === 'st_tools';
 const DRAFT = 'sham-studio-site-v1';
 
 export interface SiteHistory { spec: SiteSpec | null; past: SiteSpec[]; future: SiteSpec[] }
@@ -62,12 +74,16 @@ export default function StudioPanel({ lang, ai, onOpenCode }: { lang: SupportedL
         {SUBS.map(({ id, key, icon: Icon }) => (
           <button key={id} type="button" role="tab" aria-selected={sub === id} onClick={() => setSub(id)} data-testid={`studio-${id}`}
             className={`inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-[12.5px] font-black cursor-pointer ${sub === id ? 'bg-stone-900 text-white' : 'border border-stone-200 bg-white text-stone-700 hover:border-amber-400'}`}>
-            <Icon className="h-4 w-4" />{st(key)}
+            <Icon className="h-4 w-4" />{isDesignKey(key) ? dsText(lang, key) : st(key as StudioKey)}
           </button>
         ))}
       </div>
       {sub === 'site' && <SitePanel lang={lang} st={st} ai={ai} history={history} commit={commit} replace={replace} checkpoint={checkpoint} undo={undo} redo={redo} onOpenCode={onOpenCode} />}
       {sub === 'video' && <VideoPanel lang={lang} st={st} ai={ai} />}
+      {sub === 'blocks' && <BlocksPanel lang={lang} st={st} ai={ai} onOpenCode={onOpenCode} />}
+      {sub === 'graphic' && <GraphicPanel lang={lang} st={st} ai={ai} />}
+      {sub === 'bots' && <BotPanel lang={lang} st={st} ai={ai} onOpenCode={onOpenCode} />}
+      {sub === 'tools' && <ToolsPanel lang={lang} st={st} />}
       {sub === 'logo' && <LogoPanel lang={lang} st={st} spec={history.spec} commit={commit} onDone={() => setSub('site')} />}
     </div>
   );

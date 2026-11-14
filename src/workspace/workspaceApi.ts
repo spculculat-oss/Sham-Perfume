@@ -19,7 +19,7 @@ export const serverReachable = () => !isStaticHosting;
 export function workspaceStatus(signal?: AbortSignal) {
   return requestApi<WsStatus>('/api/workspace/status', { signal }, 10_000);
 }
-export function ask(body: { messages: WsMessage[]; language: SupportedLanguage; task?: 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard'; context?: WsContextFile[]; search?: boolean }, signal?: AbortSignal) {
+export function ask(body: { messages: WsMessage[]; language: SupportedLanguage; task?: 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard' | 'graphic' | 'block' | 'bot'; context?: WsContextFile[]; search?: boolean }, signal?: AbortSignal) {
   return requestApi<{ reply: string; sources: WsSource[] }>('/api/workspace/ask', { ...json(body), signal }, 75_000);
 }
 export type AskStreamEvent =
