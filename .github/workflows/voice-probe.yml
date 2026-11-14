@@ -26,8 +26,8 @@ jobs:
             mime=$(jq -r '.candidates[0].content.parts[0].inlineData.mimeType // "none"' /tmp/r.json)
             jq -r '.candidates[0].content.parts[0].inlineData.data // ""' /tmp/r.json | base64 -d > /tmp/a.wav 2>/dev/null
             bytes=$(wc -c < /tmp/a.wav)
-            b64=$(base64 -w0 /tmp/a.wav)
-            jq -n --arg d "$b64" '{contents:[{parts:[{inlineData:{mimeType:"audio/wav",data:$d}},{text:"Transcribe this audio exactly, word for word, in the language spoken. Output only the transcript."}]}]}' > /tmp/tb.json
+            base64 -w0 /tmp/a.wav > /tmp/a.b64
+            jq -n --rawfile d /tmp/a.b64 '{contents:[{parts:[{inlineData:{mimeType:"audio/wav",data:$d}},{text:"Transcribe this audio exactly, word for word, in the language spoken. Output only the transcript."}]}]}' > /tmp/tb.json
             tr=$(curl -sS -m 60 -H "$H" -H 'Content-Type: application/json' -d @/tmp/tb.json "$A/gemini-2.5-flash:generateContent" | jq -r '.candidates[0].content.parts[0].text // .error.message // "?"')
             note "$m $which" "HTTP $code in $(echo "$e - $s" | bc)s, $mime, $bytes bytes (~$(echo "$bytes / 48000" | bc)s audio). HEARD: $tr"
           done; done
