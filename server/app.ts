@@ -14,6 +14,7 @@ import { articlesFromCollected } from './newsFallback';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { createWorkspaceRouter } from './workspace';
 import { createNewsRouter } from './newsExplain';
+import { createVoiceRouter } from './voiceSpeak';
 import { corsMiddleware } from './cors';
 import { createCommunity, createCommunityRouter } from './community/router';
 import { createContractsRouter } from './contracts/router';
@@ -72,6 +73,8 @@ app.use('/api', createMediaRouter());
 app.use('/api/workspace', createWorkspaceRouter());
 // «نشرة شاهين — شاهين يشرحلك الخبر»: POST /api/news/explain (server/newsExplain.ts).
 app.use('/api/news', createNewsRouter());
+// «صوت شاهين البشري»: replies in a human man's or woman's voice — POST /api/voice/speak (server/voiceSpeak.ts).
+app.use('/api/voice', createVoiceRouter({ memory: shamCore.memory }));
 // «منارة شاهين»: the live SEO files and the public status snapshot. The static build also ships copies of
 // robots/sitemap/llms/feed, so crawlers are served even on GitHub Pages.
 app.use('/api', createSeoRouter(shamCore.seo));
