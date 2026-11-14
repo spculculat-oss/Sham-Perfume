@@ -26,6 +26,8 @@ import { createHash } from 'node:crypto';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import type { ShaheenMemory } from './core/memory';
 import { cleanSayPair, sayKey } from '../src/utils/sayWords';
+import { arabicSpeechText } from '../src/utils/latinToArabic';
+import type { Dialect } from '../src/utils/arabicDialect';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../src/types/i18n';
 
 type Env = Record<string, string | undefined>;
@@ -39,9 +41,35 @@ const MOOD_STYLE: Record<SpeechMood, string> = {
 // 2026-11-14 live probe: the Interactions endpoint answered 400 «invalid argument» to every TTS model while
 // `models/<m>:generateContent` returned audio for all of them on the same key — so speech goes through generateContent.
 const API = 'https://generativelanguage.googleapis.com/v1beta/models';
-/** When the chosen model is busy or refuses, the next one says the line (each has its own free quota). */
-const BACKUP_MODELS = ['gemini-3.8-flash-lite-tts', 'gemini-3.8-flash-tts', 'gemini-2.5-flash-preview-tts'];
-export const voiceModels = (env: Env) => [...new Set([voiceModel(env), ...BACKUP_MODELS])].slice(0, 3);
+/**
+ * When the chosen model is busy or refuses, the next one says the line. 2026-11-14 live probe: on the free tier each
+ * of these allows only about 10 requests a DAY for the whole site (the 3.1 preview: 3 a minute) — each has its own
+ * quota, so all four are used in turn, and one that said «quota» is skipped until the time the engine gave.
+ */
+const BACKUP_MODELS = ['gemini-3.8-flash-lite-tts', 'gemini-3.1-flash-tts-preview', 'gemini-3.8-flash-tts', 'gemini-2.5-flash-preview-tts'];
+export const voiceModels = (env: Env) => [...new Set([voiceModel(env), ...BACKUP_MODELS])].slice(0, 4);
+
+/** «Try again in …» from the engine's quota answer (RetryInfo.retryDelay, e.g. "37s"), in ms; a minute when not said. */
+export function retryAfterMs(body: unknown): number {
+  const details = (body as { error?: { details?: unknown[] } })?.error?.details;
+  if (Array.isArray(details)) {
+    for (const d of details) {
+      const delay = (d as { retryDelay?: unknown })?.retryDelay;
+      const m = typeof delay === 'string' ? /^(\d+(?:\.\d+)?)s$/.exec(delay.trim()) : null;
+      if (m) return Math.min(24 * 3600_000, Math.max(1000, Math.ceil(Number(m[1]) * 1000)));
+    }
+  }
+  return 60_000;
+}
+
+/** Which models are resting after a «quota» answer, and until when (per server instance). */
+export class ModelRest {
+  private until = new Map<string, number>();
+  rest(model: string, ms: number, now = Date.now()) { this.until.set(model, Math.max(this.until.get(model) || 0, now + ms)); }
+  ready(model: string, now = Date.now()) { return (this.until.get(model) || 0) <= now; }
+  /** ms until the first of these models can be asked again (0 = one is ready now). */
+  wait(models: readonly string[], now = Date.now()) { return Math.max(0, Math.min(...models.map((m) => (this.until.get(m) || 0) - now))); }
+}
 const LANGS = new Set<string>(SUPPORTED_LANGUAGES.map((l) => l.code));
 export const MAX_SPEECH_CHARS = 500;
 const DIALECT_STYLE: Record<string, string> = {
@@ -79,7 +107,10 @@ export function cleanSpeechRequest(body: unknown): SpeechRequest | undefined {
 
 /** The engine's documented single-speaker form: a short delivery note, a colon, then the exact words. */
 export function speechPrompt(req: SpeechRequest): string {
-  return `Say this in a ${speechStyle(req.language, req.dialect, req.mood)}: ${req.text}`;
+  // The delivery note stays in English: written in Arabic, the engine read it aloud (live probe, 2026-11-14).
+  // An Arabic line gets no Latin words left in it (they were said in English mid-sentence: «بيتكلم إنجليزي مع العربي»).
+  const text = req.language === 'ar' ? arabicSpeechText(req.text, (req.dialect || 'egyptian') as Dialect) : req.text;
+  return `Say this in a ${speechStyle(req.language, req.dialect, req.mood)}: ${text}`;
 }
 
 export function speechBody(env: Env, req: SpeechRequest) {
@@ -143,7 +174,7 @@ export function audioFromReply(data: unknown): Buffer | undefined {
 }
 
 export class SpeechError extends Error {
-  constructor(public status: number, public code: 'voice_off' | 'voice_busy' | 'voice_failed') { super(code); }
+  constructor(public status: number, public code: 'voice_off' | 'voice_busy' | 'voice_failed', public retryMs = 0) { super(code); }
 }
 
 /** Per-instance day budget (resets with the UTC date) and a pause after the engine says «quota». */
@@ -177,13 +208,14 @@ class AudioCache {
   }
 }
 
-export async function synthesize(env: Env, req: SpeechRequest, budget: VoiceBudget, fetcher: Fetch = fetch): Promise<Buffer> {
+export async function synthesize(env: Env, req: SpeechRequest, budget: VoiceBudget, fetcher: Fetch = fetch, rest: ModelRest = new ModelRest()): Promise<Buffer> {
   if (!voiceEnabled(env)) throw new SpeechError(503, 'voice_off');
+  const models = voiceModels(env);
+  if (rest.wait(models) > 0) throw new SpeechError(503, 'voice_busy', rest.wait(models));
   if (!budget.take()) throw new SpeechError(503, 'voice_busy');
   const body = JSON.stringify(speechBody(env, req));
-  let busy = 0;
-  const models = voiceModels(env);
   for (const model of models) {
+    if (!rest.ready(model)) continue;
     let response: Response;
     try {
       response = await fetcher(`${API}/${encodeURIComponent(model)}:generateContent`, {
@@ -193,12 +225,13 @@ export async function synthesize(env: Env, req: SpeechRequest, budget: VoiceBudg
       });
     } catch { continue; }
     if (response.status === 401 || response.status === 403) { budget.pause(6 * 3600_000); throw new SpeechError(503, 'voice_off'); }
-    if (response.status === 429) { busy += 1; continue; }
+    if (response.status === 429) { rest.rest(model, retryAfterMs(await response.json().catch(() => undefined))); continue; }
     if (!response.ok) continue;
     const audio = audioFromReply(await response.json().catch(() => undefined));
     if (audio) return audio;
   }
-  if (busy === models.length) { budget.pause(30 * 60_000); throw new SpeechError(503, 'voice_busy'); }
+  const wait = rest.wait(models);
+  if (wait > 0) throw new SpeechError(503, 'voice_busy', wait);
   throw new SpeechError(503, 'voice_failed');
 }
 
@@ -207,12 +240,13 @@ export function createVoiceRouter(deps: { env?: Env; fetch?: Fetch; memory?: Sha
   const router = express.Router();
   const limiter = new RateLimiter(40, 60_000);
   const budget = new VoiceBudget(dailyVoiceLimit(env));
+  const rest = new ModelRest();
   const cache = new AudioCache();
   const pending = new Map<string, Promise<Buffer>>();
 
   router.get('/status', (_req, res) => {
     res.setHeader('Cache-Control', 'no-store');
-    res.json({ human: voiceEnabled(env) && budget.available() });
+    res.json({ human: voiceEnabled(env) && budget.available() && rest.wait(voiceModels(env)) === 0 });
   });
 
   // «شاهين بيتعلم النطق من الناس»: what visitors taught often enough (text only, no visitor data).
@@ -244,7 +278,7 @@ export function createVoiceRouter(deps: { env?: Env; fetch?: Fetch; memory?: Sha
       let audio = cache.get(key);
       if (!audio) {
         let job = pending.get(key);
-        if (!job) { job = synthesize(env, speech, budget, deps.fetch); pending.set(key, job); }
+        if (!job) { job = synthesize(env, speech, budget, deps.fetch, rest); pending.set(key, job); }
         try { audio = await job; } finally { pending.delete(key); }
         cache.set(key, audio);
       }
@@ -253,6 +287,8 @@ export function createVoiceRouter(deps: { env?: Env; fetch?: Fetch; memory?: Sha
       res.send(audio);
     } catch (error) {
       const e = error instanceof SpeechError ? error : new SpeechError(503, 'voice_failed');
+      // How long until a voice can speak again (seconds), so the page waits that long instead of guessing.
+      if (e.retryMs > 0) res.setHeader('Retry-After', String(Math.ceil(e.retryMs / 1000)));
       res.status(e.status).json({ code: e.code });
     }
   });

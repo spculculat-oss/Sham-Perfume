@@ -167,6 +167,8 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const [error, setError] = useState<VoiceError | null>(null);
   /** The device has no voice for the conversation's language (the replies stay written). */
   const [noVoice, setNoVoice] = useState(false);
+  // «لحظة، بسمعك»: he paused mid-sentence to hear whether the visitor is talking to him.
+  const [holding, setHolding] = useState(false);
   const [replyReady, setReplyReady] = useState(false);
   // The full-screen voice stage: a muted microphone keeps the conversation open without listening; `hearing`
   // is true while the engine detects speech; `spokenText` is the sentence being read aloud now and
@@ -331,6 +333,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     // Nothing to decide any more: he goes on from the very word he was on, at his normal volume.
     const reply = replyHandleRef.current;
     if (reply) { reply.resume(); reply.duck(false); }
+    setHolding(false);
   }, []);
   /** He is talking to someone near him: Shaheen goes on a little lower, back to normal once it is quiet a moment. */
   const settleAside = useCallback(() => {
@@ -485,6 +488,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     // listens a little longer (up to about two and a half seconds) for more of the visitor's words.
     if (verdict.to === 'unsure' && elapsed < 2400) {
       replyHandleRef.current?.pause();
+      setHolding(true);
       candidate.timer = setTimeout(() => judgeCandidateRef.current(), 2500 - elapsed);
       return;
     }
@@ -495,6 +499,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     // again, and for a few seconds this side conversation does not stop him again.
     candidateRef.current = null;
     replyHandleRef.current?.resume();
+    setHolding(false);
     settleAside();
     if (!candidate.said) return;
     asideRef.current = { said: candidate.said, at: now };
@@ -1304,6 +1309,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     active,
     listening,
     speaking,
+    holding,
     waiting,
     interim,
     error,

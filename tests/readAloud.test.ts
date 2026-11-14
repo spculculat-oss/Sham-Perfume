@@ -92,3 +92,36 @@ test('read-aloud: a one-off failure is asked again (it never silences him for mi
   assert.equal(out, 'end');
   assert.equal(calls, 2, 'asked once more after the glitch');
 });
+
+test('read-aloud: «busy for a few seconds» is waited, not cut; a long rest follows the time the server gave', async (t) => {
+  const { restFor, unlockHumanVoice, playHumanSpeech, SHORT_WAIT_MS } = await import('../src/utils/humanVoice');
+  assert.equal(restFor({ status: 503, code: 'voice_busy', retryMs: 3 * 3600_000 }), 3600_000, 'capped at an hour, then tried again');
+  assert.ok(SHORT_WAIT_MS >= 10_000);
+  let calls = 0;
+  browser(t, () => (++calls === 1
+    ? new Response('{"code":"voice_busy"}', { status: 503, headers: { 'Content-Type': 'application/json', 'Retry-After': '1' } })
+    : new Response(new Blob([new Uint8Array(400)], { type: 'audio/wav' }), { headers: { 'Content-Type': 'audio/wav' } })));
+  unlockHumanVoice();
+  const out = await new Promise<string>((resolve) => {
+    playHumanSpeech(['العطر ده فيه عود.'], { language: 'ar', gender: 'male', onEnd: () => resolve('end'), onError: () => resolve('error') });
+  });
+  assert.equal(out, 'end', 'he waited a second and went on');
+  assert.equal(calls, 2);
+});
+
+test('read-aloud: a reply can be held exactly where it is and go on from there (he stops to listen, the sentence is kept)', async (t) => {
+  const { unlockHumanVoice, playHumanSpeech } = await import('../src/utils/humanVoice');
+  browser(t, () => new Response(new Blob([new Uint8Array(400)], { type: 'audio/wav' }), { headers: { 'Content-Type': 'audio/wav' } }));
+  unlockHumanVoice();
+  let ended = false;
+  const handle = playHumanSpeech(['جملة أولى. جملة تانية.'], { language: 'ar', gender: 'male', onEnd: () => { ended = true; }, onError: () => { ended = true; } });
+  handle.pause();
+  assert.equal(handle.paused, true);
+  await new Promise((r) => setTimeout(r, 40));
+  assert.equal(ended, false, 'held, not finished or dropped');
+  handle.duck(true);
+  handle.resume();
+  assert.equal(handle.paused, false);
+  await new Promise((r) => setTimeout(r, 40));
+  assert.equal(ended, true, 'went on to the end');
+});

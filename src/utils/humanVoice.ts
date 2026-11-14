@@ -114,14 +114,17 @@ export interface HumanSpeechOptions {
 }
 
 class VoiceRefusal extends Error {
-  constructor(public status: number, public code: string) { super(`voice ${status} ${code}`); }
+  constructor(public status: number, public code: string, public retryMs = 0) { super(`voice ${status} ${code}`); }
 }
 /** How long the server's answer asks us to leave the voice alone (0 = just try again). */
-export function restFor(error: { status: number; code: string }): number {
+export function restFor(error: { status: number; code: string; retryMs?: number }): number {
   if (error.status === 429) return 20_000;
-  if (error.code === 'voice_busy' || error.code === 'voice_off') return OFF_MS;
+  if (error.code === 'voice_busy') return error.retryMs ? Math.min(60 * 60_000, error.retryMs) : OFF_MS;
+  if (error.code === 'voice_off') return OFF_MS;
   return 0;
 }
+/** «Free again in a few seconds» (a per-minute limit): worth waiting for instead of cutting the reply. */
+export const SHORT_WAIT_MS = 25_000;
 
 /**
  * The playing reply: call it to stop. `pause()` / `resume()` hold it exactly where it is (the sentence is not
@@ -139,7 +142,9 @@ export interface HumanSpeechHandle {
 /** Plays the reply in the human voice. */
 export function playHumanSpeech(chunks: readonly string[], options: HumanSpeechOptions): HumanSpeechHandle {
   const findClip = options.clipFor || (() => undefined);
-  const plain = speechGroups(chunks, 180, 480);
+  // One request for a whole reply when it fits (the free voice allows only a few requests): fewer requests, and no
+  // seam between parts in the middle of what he says.
+  const plain = speechGroups(chunks, 480, 480);
   // A recorded line only when it is the whole thing (one voice through a reply).
   const clipFor = plain.length === 1 && findClip(plain[0]!) ? findClip : () => undefined;
   const groups = plain;
@@ -168,7 +173,8 @@ export function playHumanSpeech(chunks: readonly string[], options: HumanSpeechO
       body: JSON.stringify({ text: groups[i], language: options.language, dialect: options.dialect, gender: options.gender, mood: options.mood }),
     }).then(async (response) => {
       if (!response.ok || !(response.headers.get('content-type') || '').includes('audio')) {
-        throw new VoiceRefusal(response.status, await response.json().then((body: { code?: unknown }) => String(body?.code || '')).catch(() => ''));
+        const retry = Number(response.headers.get('retry-after'));
+        throw new VoiceRefusal(response.status, await response.json().then((body: { code?: unknown }) => String(body?.code || '')).catch(() => ''), Number.isFinite(retry) && retry > 0 ? retry * 1000 : 0);
       }
       const url = URL.createObjectURL(await response.blob());
       urls.push(url);
@@ -176,9 +182,15 @@ export function playHumanSpeech(chunks: readonly string[], options: HumanSpeechO
     });
     // Only «busy» / «off» / «too many» rests the voice; a one-off failure (a network hiccup, one engine glitch) is
     // asked once more — before 2026-11-14 any failure silenced him for ten minutes.
+    // «الصوت بيقطع»: the engine's per-minute limit used to end the reply in the middle; a wait of a few seconds is
+    // now waited (the next part comes a little later) instead of cutting him off.
     job = ask().catch((error: unknown) => {
       if (controller.signal.aborted) throw error;
-      const rest = error instanceof VoiceRefusal ? restFor(error) : 0;
+      const refusal = error instanceof VoiceRefusal ? error : undefined;
+      if (refusal?.code === 'voice_busy' && refusal.retryMs > 0 && refusal.retryMs <= SHORT_WAIT_MS) {
+        return new Promise<void>((resolve) => { setTimeout(resolve, refusal.retryMs + 300); }).then(ask);
+      }
+      const rest = refusal ? restFor(refusal) : 0;
       if (rest) { restHumanVoice(rest); throw error; }
       return new Promise<void>((resolve) => { setTimeout(resolve, 600); }).then(ask);
     });
