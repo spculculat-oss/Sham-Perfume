@@ -2,8 +2,9 @@
  * «أصوات بشرية محفوظة على الموقع» — the owner's request (2026-11-14): the short lines Shaheen says most often in
  * voice chat are recorded once in professional human voices (a man and a woman, Egyptian Arabic, chosen by the
  * owner) and stored with the site in public/voice-clips/. No paid voice service is called at run time: the browser
- * plays a small mp3 (~10 KB). Every other line is said in the human voice from our server (src/utils/humanVoice.ts),
- * and the visitor's device voice only when that server cannot.
+ * plays a small mp3 (~10 KB). Every other line is said in the human voice from our server (src/utils/humanVoice.ts).
+ * The owner's decision (2026-11-14): the device's robotic voices are gone — only these human voices speak.
+ * A recorded sentence inside a longer reply is played from its clip too (sentence by sentence).
  *
  * A clip plays only when the WHOLE line is exactly a recorded one (punctuation and spaces aside), so the words heard
  * are always the words written in the chat.
@@ -16,6 +17,12 @@ export const HUMAN_CLIPS = {
   patience: 'اصبر عليا شوية، براجع البيانات.',
   lookup: 'ثواني أدخل أشوفلك البيانات.',
   repeat: 'معلش ماسمعتكش كويس، ممكن تعيد تاني؟',
+  // «اسمع» in «صوت شاهين» (the voice picker) — the same sentence as voice_sample in ShaheenVoiceStage.
+  sample: 'أهلاً بيك، أنا شاهين. تحب أساعدك تختار عطر النهارده؟',
+  // Said at the end of a long reply (src/utils/spokenReply.ts) — played as its own sentence.
+  more: 'تحب أكمّلك الباقي؟',
+  // The start of «تمام، اتعلمتها. من هنا ورايح هقولها …» (src/utils/sayWords.ts).
+  learned: 'تمام، اتعلمتها.',
 } as const;
 export type HumanClipId = keyof typeof HUMAN_CLIPS;
 export const CLIP_GENDERS: readonly VoiceGender[] = ['male', 'female'];
@@ -62,3 +69,16 @@ export function playHumanClip(url: string, options: { rate?: number; onStart?: (
   } catch { setTimeout(() => finish(true), 0); }
   return () => { done = true; stop(); };
 }
+
+/** For src/utils/humanVoice.ts: the recorded clip of a sentence in this voice, if there is one. */
+export const clipFinder = (gender: VoiceGender) => (sentence: string): string | undefined => {
+  const id = humanClipId(sentence);
+  return id ? humanClipUrl(id, gender) : undefined;
+};
+
+/** «صوت شاهين»: the only voices he speaks with — the owner's chosen man's and woman's voices. */
+export type HumanVoiceName = 'shaheen-male' | 'shaheen-female';
+export const HUMAN_VOICES: readonly { name: HumanVoiceName; gender: VoiceGender }[] = [
+  { name: 'shaheen-male', gender: 'male' },
+  { name: 'shaheen-female', gender: 'female' },
+];

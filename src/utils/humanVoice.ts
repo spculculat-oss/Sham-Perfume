@@ -66,17 +66,21 @@ export const restHumanVoice = (ms = OFF_MS, now = Date.now()) => { offUntil = Ma
 
 /**
  * Sentences joined into groups: a short first one (he starts talking sooner), then longer ones (fewer requests,
- * smoother breathing between ideas).
+ * smoother breathing between ideas). A sentence with a recorded clip (`isClip`) is always a group of its own.
  */
-export function speechGroups(chunks: readonly string[], first = 180, rest = 480): string[] {
+export function speechGroups(chunks: readonly string[], first = 180, rest = 480, isClip: (sentence: string) => boolean = () => false): string[] {
   const out: string[] = [];
+  let open = false; // the last group can still take more sentences
   for (const raw of chunks) {
-    const chunk = raw.replace(/\s+/g, ' ').trim();
-    if (!chunk) continue;
-    const last = out[out.length - 1];
-    const limit = out.length === 1 ? first : rest;
-    if (last !== undefined && last.length + 1 + chunk.length <= limit) out[out.length - 1] = `${last} ${chunk}`;
-    else out.push(chunk);
+    for (const sentence of raw.replace(/\s+/g, ' ').trim().split(/(?<=[.!?؟؛…])\s+/u)) {
+      const chunk = sentence.trim();
+      if (!chunk) continue;
+      if (isClip(chunk)) { out.push(chunk); open = false; continue; }
+      const last = out[out.length - 1];
+      const limit = out.length === 1 ? first : rest;
+      if (open && last !== undefined && last.length + 1 + chunk.length <= limit) out[out.length - 1] = `${last} ${chunk}`;
+      else { out.push(chunk); open = true; }
+    }
   }
   return out;
 }
@@ -101,13 +105,17 @@ export interface HumanSpeechOptions {
   /** A group starts playing (index into the groups returned by speechGroups). */
   onChunk?: (chunk: string, index: number, groups: string[]) => void;
   onEnd: () => void;
-  /** It stopped before the end: the groups not yet said, for the device voice to finish. */
+  /** It stopped before the end (the server could not say a sentence): the groups not yet said. */
   onError: (rest: string[]) => void;
+  /** The site's recorded clip for a sentence, if there is one (played without asking the server). */
+  clipFor?: (sentence: string) => string | undefined;
 }
 
 /** Plays the reply in the human voice. Returns a stop function. */
 export function playHumanSpeech(chunks: readonly string[], options: HumanSpeechOptions): () => void {
-  const groups = speechGroups(chunks);
+  const clipFor = options.clipFor || (() => undefined);
+  const groups = speechGroups(chunks, 180, 480, (sentence) => Boolean(clipFor(sentence)));
+  const server = humanVoiceAvailable();
   let done = false;
   let index = 0;
   let timer: ReturnType<typeof setTimeout> | undefined;
@@ -119,6 +127,9 @@ export function playHumanSpeech(chunks: readonly string[], options: HumanSpeechO
   const fetchGroup = (i: number): Promise<string> => {
     let job = jobs.get(i);
     if (job) return job;
+    const clip = clipFor(groups[i]!);
+    if (clip) { job = Promise.resolve(clip); jobs.set(i, job); return job; }
+    if (!server) { job = Promise.reject(new Error('no voice server')); job.catch(() => undefined); jobs.set(i, job); return job; }
     job = fetch(apiUrl('/api/voice/speak'), {
       method: 'POST', signal: AbortSignal.any ? AbortSignal.any([controller.signal, AbortSignal.timeout(i === 0 ? 15_000 : 25_000)]) : controller.signal,
       headers: { 'Content-Type': 'application/json' },
@@ -170,7 +181,7 @@ export function playHumanSpeech(chunks: readonly string[], options: HumanSpeechO
     }, () => fail());
   };
 
-  if (!audio || !groups.length || !humanVoiceAvailable()) {
+  if (!audio || !groups.length) {
     setTimeout(() => (groups.length ? fail() : finish()), 0);
     return () => { done = true; };
   }
