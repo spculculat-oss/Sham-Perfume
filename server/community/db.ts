@@ -502,6 +502,8 @@ export const SCHEMA: string[] = [
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_2fa_pending_method text NOT NULL DEFAULT ''`,
   /* v10 — a pending phone destination expires with its one-time code. */
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_2fa_pending_expires_at timestamptz`,
+  /* The member page's cover picture, chosen from the member's own device (a resized data image, like the avatar). */
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS banner text`,
 ];
 
 /** Creates the tables (idempotent) and records the schema version. */

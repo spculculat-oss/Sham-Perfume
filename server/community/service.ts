@@ -373,6 +373,8 @@ export async function updateProfile(ctx: Ctx, userId: string, input: Record<stri
   if (input.name !== undefined) set('name', required(input.name, 'name', 2, 60));
   if (input.bio !== undefined) set('bio', clean(input.bio, 500));
   if (input.avatar !== undefined) set('avatar', image(input.avatar, 250));
+  // The cover of the member's page: a picture from the device (never a link); null or '' removes it.
+  if (input.banner !== undefined) set('banner', image(input.banner, 450));
   if (input.country !== undefined) { const c = clean(input.country, 2).toUpperCase(); set('country', isCountry(c) ? c : ''); }
   if (input.lang !== undefined && LANG.test(clean(input.lang, 10))) set('lang', clean(input.lang, 10));
   if (input.craftLevel !== undefined && CRAFT.includes(String(input.craftLevel))) set('craft_level', String(input.craftLevel));

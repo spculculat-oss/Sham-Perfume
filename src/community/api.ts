@@ -87,7 +87,7 @@ export interface ProductReview {
 }
 export interface ReviewSummary { sku: string; count: number; average: number; spread: number[]; reviews: ProductReview[]; canVerify: boolean }
 export interface ProfileView {
-  user: PublicUser; since: string | null; relation: 'self' | 'friends' | 'requested' | 'incoming' | 'blocked' | 'none';
+  user: PublicUser; banner?: string | null; since: string | null; relation: 'self' | 'friends' | 'requested' | 'incoming' | 'blocked' | 'none';
   counts: { friends: number; posts: number; recipes: number }; friends: PublicUser[]; posts: Post[];
   recipes: { id: string; title: string; data: Record<string, unknown>; updatedAt: string }[];
 }
