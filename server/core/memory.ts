@@ -15,6 +15,7 @@ import {
   type MemoryEntry, type MemoryFile, type RecallPreference,
 } from '../../src/utils/shaheenMemory';
 import { learnablePair } from '../../src/utils/heardFix';
+import { cleanSayPair, sayKey } from '../../src/utils/sayWords';
 import { liveDataEnabled, loadLive } from './liveData';
 import type { Store } from './store';
 
@@ -140,6 +141,33 @@ export class ShaheenMemory {
       if (!best[fix.from] || best[fix.from]!.hits < fix.hits) best[fix.from] = { to: fix.to, hits: fix.hits };
     }
     return Object.fromEntries(Object.entries(best).slice(0, 500).map(([from, fix]) => [from, fix.to]));
+  }
+
+  /**
+   * «شاهين بيتعلم النطق من الناس»: a visitor taught how a word is said («اسمها شانيل مش تشانيل»). Kept as text only
+   * (never audio, never who taught it); shared with everyone only after several teachings (see sayWords()).
+   */
+  async learnSayWord(from: unknown, to: unknown): Promise<boolean> {
+    const pair = cleanSayPair(from, to);
+    if (!pair) return false;
+    const id = docId(`say|${sayKey(pair.from)}|${sayKey(pair.to)}`);
+    const target = this.durable || this.store;
+    const old = await target.get('sayWords', id).catch(() => undefined);
+    const entry = { id, from: pair.from, to: pair.to, hits: (old?.hits || 0) + 1, at: new Date().toISOString() };
+    await target.put('sayWords', id, entry).catch(() => undefined);
+    return true;
+  }
+
+  /** The pronunciations taught often enough to use for everyone: written → said (the most taught wins). */
+  async sayWords(min = 3): Promise<Record<string, string>> {
+    const all = await (this.durable || this.store).list('sayWords').catch(() => []);
+    const best: Record<string, { to: string; hits: number }> = {};
+    for (const word of all) {
+      if (!word || word.hits < min || !cleanSayPair(word.from, word.to)) continue;
+      const key = sayKey(word.from);
+      if (!best[key] || best[key]!.hits < word.hits) best[key] = { to: word.to, hits: word.hits };
+    }
+    return Object.fromEntries(Object.entries(best).slice(0, 1000).map(([from, word]) => [from, word.to]));
   }
 
   /** A remembered answer was used: it rises (and the use reaches the shared file through the bots). */

@@ -42,7 +42,7 @@ export const AI_TOOLS: AiToolDef[] = [
   {
     id: 'shaheen_chat', nameAr: 'شات الخبير شاهين', nameEn: 'Master Shahin chat',
     descriptionAr: 'المحادثة العائمة وصفحة خبير المعمل: تصميم التركيبات والحسابات، كتابةً أو بوضع تحدث اختياري يستخدم التعرف على الكلام وقراءة الرد في المتصفح. النص المفرغ يمر بمسار المحادثة الحالي؛ لا يوجد مسار ذكاء أو رفع صوت جديد.',
-    sources: ['server/agentModel.ts', 'server/agent.ts', 'server/agentRouter.ts', 'server/shaheen.ts', 'src/hooks/useShaheenVoiceMode.ts', 'src/utils/shaheenVoice.ts', 'src/components/ShaheenVoiceModeButton.tsx', 'src/components/ShaheenVoiceStage.tsx', 'src/utils/arabicDialect.ts'], routes: ['/api/chat', '/api/agent/chat', '/api/agent/capabilities'], acceptsGuidance: true,
+    sources: ['server/agentModel.ts', 'server/agent.ts', 'server/agentRouter.ts', 'server/shaheen.ts', 'src/hooks/useShaheenVoiceMode.ts', 'src/utils/shaheenVoice.ts', 'src/components/ShaheenVoiceModeButton.tsx', 'src/components/ShaheenVoiceStage.tsx', 'src/utils/arabicDialect.ts', 'server/voiceSpeak.ts', 'src/utils/humanVoice.ts'], routes: ['/api/chat', '/api/agent/chat', '/api/agent/capabilities', '/api/voice/speak'], acceptsGuidance: true,
   },
   {
     id: 'sham_assistant', nameAr: 'مساعد شام للخدمات', nameEn: 'Sham services assistant',

@@ -2,7 +2,8 @@
  * «أصوات بشرية محفوظة على الموقع» — the owner's request (2026-11-14): the short lines Shaheen says most often in
  * voice chat are recorded once in professional human voices (a man and a woman, Egyptian Arabic, chosen by the
  * owner) and stored with the site in public/voice-clips/. No paid voice service is called at run time: the browser
- * plays a small mp3 (~10 KB). Replies that change with every question still use the visitor's own device voice.
+ * plays a small mp3 (~10 KB). Every other line is said in the human voice from our server (src/utils/humanVoice.ts),
+ * and the visitor's device voice only when that server cannot.
  *
  * A clip plays only when the WHOLE line is exactly a recorded one (punctuation and spaces aside), so the words heard
  * are always the words written in the chat.

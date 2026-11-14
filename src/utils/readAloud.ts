@@ -5,11 +5,15 @@ import { playLocalVoice } from './localVoicePlayer';
  * symbols, lists and digits read literally, in the device's default voice, and cut off by Chrome after ~15 seconds.
  * Now the reply is said the way Shaheen talks (src/utils/spokenReply.ts), in the visitor's dialect and accent, with
  * the most natural voice the device has, sentence by sentence.
+ * «صوت شاهين البشري» (2026-11-14): first in the human voice from our server (src/utils/humanVoice.ts), with the
+ * pronunciations visitors taught; the device voice takes over whenever the server cannot (and finishes the reply).
  */
 import type { SupportedLanguage } from '../types/i18n';
 import { resolveDialect, savedDialectChoice, type Dialect } from './arabicDialect';
 import { deviceLacksVoice, speechLocaleFor, splitShaheenSpeech } from './shaheenVoice';
-import { chosenVoice, savedVoiceChoice } from './voiceChoice';
+import { chosenVoice, savedVoiceChoice, voiceGender } from './voiceChoice';
+import { clipGender } from './humanVoiceClips';
+import { humanVoiceAvailable, loadSharedSayWords, playHumanSpeech, sayItRight, unlockHumanVoice } from './humanVoice';
 import { spokenReply } from './spokenReply';
 import { currentStoreCountry } from './storeCheckout';
 
@@ -33,13 +37,35 @@ export function readAloud(text: string, { language, dialect, onEnd, onNoVoice }:
   };
   const choice = savedVoiceChoice();
   const local = resolveLocalVoice(choice.names[language], language);
-  if (typeof window === 'undefined' || (!local && (!window.speechSynthesis || !window.SpeechSynthesisUtterance))) { end(true); return () => undefined; }
+  const human = humanVoiceAvailable();
+  if (typeof window === 'undefined' || (!human && !local && (!window.speechSynthesis || !window.SpeechSynthesisUtterance))) { end(true); return () => undefined; }
   // «بلغة بلده ولهجتها»: his country's accent (fr-CA, es-MX), or for Arabic his dialect (else his Arab country's).
   const country = currentStoreCountry();
   const spokenDialect = language === 'ar' ? dialect || resolveDialect({ choice: savedDialectChoice(), texts: [], country }) : undefined;
   const locale = speechLocaleFor(language, country, spokenDialect);
-  const chunks = splitShaheenSpeech(spokenReply(text, { language, dialect: spokenDialect, words: Infinity, locale }).say);
+  const chunks = splitShaheenSpeech(sayItRight(spokenReply(text, { language, dialect: spokenDialect, words: Infinity, locale }).say));
   if (!chunks.length) { end(); return () => undefined; }
+  if (human) {
+    // Inside the tap: phones then allow the voice to play once it arrives.
+    unlockHumanVoice();
+    void loadSharedSayWords();
+    let voices: SpeechSynthesisVoice[] = [];
+    try { voices = synth?.getVoices() || []; } catch { /* No list yet. */ }
+    const device = chosenVoice(voices, locale, language, choice);
+    let stop: () => void = () => undefined;
+    stop = playHumanSpeech(chunks, {
+      language, ...(spokenDialect ? { dialect: spokenDialect } : {}), rate: choice.rate / 0.96,
+      gender: clipGender(choice.gender, local?.gender, device ? voiceGender(device) : undefined),
+      onEnd: () => end(),
+      // The server could not (busy, quota, no audio): the device voice says the rest.
+      onError: (rest) => { if (!done) stop = readOnDevice(rest); },
+    });
+    return () => { stop(); end(false, true); };
+  }
+  return readOnDevice(chunks);
+
+  function readOnDevice(chunks: string[]): () => void {
+  if (typeof window === 'undefined' || (!local && (!window.speechSynthesis || !window.SpeechSynthesisUtterance))) { end(true); return () => undefined; }
   if (local) {
     try { synth?.cancel(); } catch { /* No queue. */ }
     const stop = playLocalVoice(chunks, { name: local.name, language, rate: choice.rate, pitch: choice.pitch,
@@ -71,4 +97,5 @@ export function readAloud(text: string, { language, dialect, onEnd, onNoVoice }:
   try { synth!.cancel(); } catch { /* Nothing queued. */ }
   next();
   return () => end(false, true);
+  }
 }
