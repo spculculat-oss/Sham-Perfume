@@ -25,6 +25,7 @@ import { callEngine, engineStatuses, GEMINI_DEFAULT_MODEL, type EngineFailure, t
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { cleanVideoRequest, dailyLimit, DailyBudget, readJob, signJob, startVideo, videoAccess, videoBytes, VideoError, videoStatus } from './videoEngine';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../src/types/i18n';
+import { adminSecret } from './core/adminSecret';
 
 type Env = Record<string, string | undefined>;
 type Lookup = (host: string) => Promise<string[]>;
@@ -599,7 +600,7 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
   // The owner only: his Notion and Slack (the keys never leave the server).
   const digest = (v: string) => createHash('sha256').update(v).digest();
   const owner = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const token = env.SHAM_ADMIN_TOKEN?.trim() || '';
+    const token = adminSecret(env);
     const provided = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
     if (token.length < 12) { res.status(503).json({ error: 'Admin is disabled', code: 'ADMIN_NOT_CONFIGURED' }); return; }
     if (!provided || !timingSafeEqual(digest(provided), digest(token))) { res.status(401).json({ error: 'Unauthorized', code: 'UNAUTHORIZED' }); return; }
@@ -607,7 +608,7 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
   };
   // The professional video engine: owner-only or everyone (the owner decides), a daily budget, signed jobs.
   const signedIn = (req: express.Request) => {
-    const token = env.SHAM_ADMIN_TOKEN?.trim() || '';
+    const token = adminSecret(env);
     const provided = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
     return token.length >= 12 && Boolean(provided) && timingSafeEqual(digest(provided), digest(token));
   };

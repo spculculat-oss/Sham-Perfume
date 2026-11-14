@@ -31,6 +31,7 @@ import type {
 import type { AgentResult } from '../../server/core/adminAgent';
 import { AdminApiError, adminRequest, cleanToken, getToken, send, setToken } from './adminApi';
 import { apiUrl, isStaticHosting } from '../utils/api';
+import { codeCandidates } from './ownerCode';
 import { parseDoctorIssue, type DoctorReport } from './doctorReport';
 import { LocalizedNumberInput } from '../components/LocalizedNumberInput';
 import { formatAdminClock } from './adminClock';
@@ -129,9 +130,16 @@ export default function AdminApp() {
     setChecking(true); setLoginError('');
     // Spaces and line breaks can never be part of the server's token (it trims its own value), so a
     // pasted line break or the keyboard's automatic space is not "a wrong password".
-    const clean = cleanToken(candidate);
+    // An Arabic keyboard («شسي» = "asd») is read as the keys pressed (src/admin/ownerCode.ts).
+    const tries = codeCandidates(candidate);
     try {
-      await adminRequest('/overview', {}, clean);
+      let last: unknown = new AdminApiError(401, 'UNAUTHORIZED', 'Unauthorized');
+      let clean = '';
+      for (const t of tries.length ? tries : [cleanToken(candidate)]) {
+        try { await adminRequest('/overview', {}, t); clean = t; break; }
+        catch (e) { last = e; if (!(e instanceof AdminApiError) || e.status !== 401) break; }
+      }
+      if (!clean) throw last;
       setToken(clean); setTok(clean); setAuthed(true);
     } catch (e) {
       setToken('');
