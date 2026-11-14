@@ -61,7 +61,7 @@ export const sayItRight = (text: string): string => applySayWords(text, mergeSay
 /** Can the human voice be tried now? (not on a site without our server, not right after it said «busy»). */
 export const humanVoiceAvailable = (now = Date.now()): boolean =>
   !isStaticHosting && typeof window !== 'undefined' && typeof Audio !== 'undefined' && typeof fetch !== 'undefined' && now >= offUntil;
-/** The server said busy / quota used up: the device voice for a while (no waiting on every reply). */
+/** The server said busy / quota used up: the reply stays written for a while (no waiting on every reply). */
 export const restHumanVoice = (ms = OFF_MS, now = Date.now()) => { offUntil = Math.max(offUntil, now + ms); };
 
 /**
@@ -91,13 +91,15 @@ let player: HTMLAudioElement | undefined;
 const sharedPlayer = () => (player ??= new Audio());
 /** Call from a tap (the voice button, «اسمع الرد»): unlocks audio on phones. */
 export function unlockHumanVoice(): void {
+  // He asked for the voice himself: an earlier «busy» rest gives way to one fresh try.
+  offUntil = 0;
   if (typeof Audio === 'undefined') return;
   try {
     const audio = sharedPlayer();
     if (audio.src && !audio.paused) return;
     audio.src = SILENT;
     void audio.play().catch(() => undefined);
-  } catch { /* Audio blocked: the device voice is used. */ }
+  } catch { /* Audio blocked: the reply stays written. */ }
 }
 
 export interface HumanSpeechOptions {
@@ -109,6 +111,16 @@ export interface HumanSpeechOptions {
   onError: (rest: string[]) => void;
   /** The site's recorded clip for a sentence, if there is one (played without asking the server). */
   clipFor?: (sentence: string) => string | undefined;
+}
+
+class VoiceRefusal extends Error {
+  constructor(public status: number, public code: string) { super(`voice ${status} ${code}`); }
+}
+/** How long the server's answer asks us to leave the voice alone (0 = just try again). */
+export function restFor(error: { status: number; code: string }): number {
+  if (error.status === 429) return 20_000;
+  if (error.code === 'voice_busy' || error.code === 'voice_off') return OFF_MS;
+  return 0;
 }
 
 /** Plays the reply in the human voice. Returns a stop function. */
@@ -130,16 +142,25 @@ export function playHumanSpeech(chunks: readonly string[], options: HumanSpeechO
     const clip = clipFor(groups[i]!);
     if (clip) { job = Promise.resolve(clip); jobs.set(i, job); return job; }
     if (!server) { job = Promise.reject(new Error('no voice server')); job.catch(() => undefined); jobs.set(i, job); return job; }
-    job = fetch(apiUrl('/api/voice/speak'), {
+    const ask = () => fetch(apiUrl('/api/voice/speak'), {
       method: 'POST', signal: AbortSignal.any ? AbortSignal.any([controller.signal, AbortSignal.timeout(i === 0 ? 15_000 : 25_000)]) : controller.signal,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: groups[i], language: options.language, dialect: options.dialect, gender: options.gender, mood: options.mood }),
     }).then(async (response) => {
-      if (response.status === 503 || response.status === 429) restHumanVoice();
-      if (!response.ok || !(response.headers.get('content-type') || '').includes('audio')) throw new Error(`voice ${response.status}`);
+      if (!response.ok || !(response.headers.get('content-type') || '').includes('audio')) {
+        throw new VoiceRefusal(response.status, await response.json().then((body: { code?: unknown }) => String(body?.code || '')).catch(() => ''));
+      }
       const url = URL.createObjectURL(await response.blob());
       urls.push(url);
       return url;
+    });
+    // Only «busy» / «off» / «too many» rests the voice; a one-off failure (a network hiccup, one engine glitch) is
+    // asked once more — before 2026-11-14 any failure silenced him for ten minutes.
+    job = ask().catch((error: unknown) => {
+      if (controller.signal.aborted) throw error;
+      const rest = error instanceof VoiceRefusal ? restFor(error) : 0;
+      if (rest) { restHumanVoice(rest); throw error; }
+      return new Promise<void>((resolve) => { setTimeout(resolve, 600); }).then(ask);
     });
     job.catch(() => undefined);
     jobs.set(i, job);

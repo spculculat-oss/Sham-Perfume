@@ -70,3 +70,25 @@ test('read-aloud: other sentences in the server’s human voice; a busy server i
   assert.equal(busy.length, 1);
   assert.equal(humanVoiceAvailable(), false, 'after «busy» the server rests a while');
 });
+
+test('read-aloud: a one-off failure is asked again (it never silences him for minutes); only «busy» / «off» rests the voice', async (t) => {
+  const { restFor } = await import('../src/utils/humanVoice');
+  assert.equal(restFor({ status: 503, code: 'voice_failed' }), 0);
+  assert.equal(restFor({ status: 500, code: '' }), 0);
+  assert.ok(restFor({ status: 503, code: 'voice_busy' }) >= 60_000);
+  assert.ok(restFor({ status: 503, code: 'voice_off' }) >= 60_000);
+  assert.equal(restFor({ status: 429, code: 'rate_limited' }), 20_000);
+  const { playHumanSpeech, unlockHumanVoice } = await import('../src/utils/humanVoice');
+  let calls = 0;
+  browser(t, () => (++calls === 1
+    ? new Response('{"code":"voice_failed"}', { status: 503, headers: { 'Content-Type': 'application/json' } })
+    : new Response(new Blob([new Uint8Array(400)], { type: 'audio/wav' }), { headers: { 'Content-Type': 'audio/wav' } })));
+  assert.equal(humanVoiceAvailable(), false, 'still resting after the «busy» above');
+  unlockHumanVoice();
+  assert.equal(humanVoiceAvailable(), true, 'his own tap on the voice button gives it a fresh try');
+  const out = await new Promise<string>((resolve) => {
+    playHumanSpeech(['العطر ده فيه عود.'], { language: 'ar', gender: 'male', onEnd: () => resolve('end'), onError: () => resolve('error') });
+  });
+  assert.equal(out, 'end');
+  assert.equal(calls, 2, 'asked once more after the glitch');
+});
