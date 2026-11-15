@@ -187,6 +187,10 @@ test('HTTP: SSE stream, feedback, privacy endpoints and admin quality/agent APIs
     assert.equal(study.plan[0].source, 'negative_feedback');
     assert.equal(study.focus, study.plan[0].field);
     assert.equal(study.totals.open, 1);
+    // The same page carries his knowledge structure and the report read from the real conversations.
+    assert.ok(study.shelves.length >= 10 && study.shelves.some((s: { lessons: number }) => s.lessons > 0));
+    assert.ok(study.report.conversations >= 1 && study.report.questions >= study.report.conversations);
+    assert.equal(study.report.ratings.down, 1);
     assert.notEqual((await fetch(`${base}/admin/self-study`)).status, 200);
     const ignored = await (await fetch(`${base}/admin/gaps/${gaps.items[0].id}`, { method: 'PATCH', headers: auth, body: JSON.stringify({ status: 'ignored' }) })).json();
     assert.equal(ignored.item.status, 'ignored');

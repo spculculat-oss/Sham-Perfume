@@ -7,7 +7,7 @@
  * point for the lesson. Nothing enters his knowledge by itself: the owner approves every lesson
  * (PATCH /api/admin/gaps/:id), which is the rule for anything Shaheen learns.
  */
-import type { KnowledgeGap } from './types';
+import type { Conversation, KnowledgeDoc, KnowledgeGap } from './types';
 
 export const STUDY_FIELDS = ['perfume', 'store', 'media', 'design', 'marketing', 'code', 'writing', 'science', 'health', 'religion', 'general'] as const;
 export type StudyField = (typeof STUDY_FIELDS)[number];
@@ -105,4 +105,96 @@ export function hintFrom(results: readonly { doc: { id: string; title: string; t
   if (!best) return undefined;
   const text = best.doc.text.replace(/\s+/g, ' ').trim();
   return { docId: best.doc.id, title: best.doc.title, excerpt: text.length > 320 ? `${text.slice(0, 320).replace(/\s+\S*$/, '')}…` : text, score: Math.round(best.score * 10) / 10 };
+}
+
+/* ───────────────────────── «الهيكل المعلوماتي»: what he knows, field by field ───────────────────────── */
+
+export type ShelfStrength = 'strong' | 'fair' | 'weak' | 'empty';
+export interface KnowledgeShelf {
+  field: StudyField;
+  /** Lessons and documents he holds in this field. */
+  lessons: number;
+  /** Their size in words — ten one-line notes are not ten lessons. */
+  words: number;
+  /** Open questions of this field that visitors are waiting on. */
+  waiting: number;
+  mastery: number | null;
+  strength: ShelfStrength;
+}
+const wordsOf = (text: string) => (text.trim() ? text.trim().split(/\s+/u).length : 0);
+/** A document's field: its title and tags say it best; the opening of its text is the fallback. */
+export function docField(doc: Pick<KnowledgeDoc, 'title' | 'tags' | 'content'>): StudyField {
+  const named = studyField(`${doc.title} ${doc.tags.join(' ')}`);
+  return named !== 'general' ? named : studyField(doc.content.slice(0, 400));
+}
+export function shelfStrength(shelf: Pick<KnowledgeShelf, 'lessons' | 'words' | 'waiting' | 'mastery'>): ShelfStrength {
+  if (!shelf.lessons) return 'empty';
+  if (shelf.lessons < 3 || shelf.words < 300 || shelf.waiting >= 5 || (shelf.mastery !== null && shelf.mastery < 40)) return 'weak';
+  if (shelf.lessons >= 8 && shelf.words >= 1500 && (shelf.mastery === null || shelf.mastery >= 70)) return 'strong';
+  return 'fair';
+}
+/** Every field appears, even an empty one: an empty shelf is the first thing the owner should see. */
+export function knowledgeMap(docs: readonly Pick<KnowledgeDoc, 'title' | 'tags' | 'content'>[], fields: readonly FieldScore[] = []): KnowledgeShelf[] {
+  const shelves = new Map<StudyField, KnowledgeShelf>(STUDY_FIELDS.map((field) => {
+    const score = fields.find((f) => f.field === field);
+    return [field, { field, lessons: 0, words: 0, waiting: score?.waiting || 0, mastery: score?.mastery ?? null, strength: 'empty' as ShelfStrength }];
+  }));
+  for (const doc of docs) {
+    const shelf = shelves.get(docField(doc))!;
+    shelf.lessons += 1; shelf.words += wordsOf(doc.content);
+  }
+  const order: Record<ShelfStrength, number> = { empty: 0, weak: 1, fair: 2, strong: 3 };
+  return [...shelves.values()].map((shelf) => ({ ...shelf, strength: shelfStrength(shelf) }))
+    .sort((a, b) => order[a.strength] - order[b.strength] || b.waiting - a.waiting || a.field.localeCompare(b.field));
+}
+
+/* ───────────────────────── «تحليل الأداء»: what the conversations themselves say ───────────────────────── */
+
+export interface ChatReport {
+  conversations: number; last7: number;
+  /** Visitor questions in all conversations, and the average per conversation. */
+  questions: number; avgQuestions: number;
+  /** Where visitors leave: after how many of their own questions the conversation ended. */
+  leave: { afterOne: number; afterFew: number; afterMany: number };
+  /** Share (0-100) of conversations that ended after a single question. */
+  oneQuestionShare: number | null;
+  /** Conversations that ended right after a question Shaheen could not answer. */
+  leftUnanswered: number;
+  ratings: { up: number; down: number; satisfaction: number | null };
+  /** What people ask about, largest first. */
+  byField: { field: StudyField; questions: number; share: number }[];
+  /** Opening questions asked by more than one visitor. */
+  topQuestions: { question: string; count: number }[];
+}
+const questionKey = (text: string) => plain(text).replace(/[^\p{L}\p{N}\s]/gu, ' ').replace(/\s+/g, ' ').trim().slice(0, 120);
+export function chatReport(conversations: readonly Conversation[], gaps: readonly KnowledgeGap[] = [], { now = Date.now(), top = 8 }: { now?: number; top?: number } = {}): ChatReport {
+  const pct = (part: number, whole: number) => (whole ? Math.round((part / whole) * 100) : null);
+  const unanswered = new Map<string, number>();
+  for (const gap of gaps) if (gap.source === 'no_answer' && gap.conversationId) unanswered.set(gap.conversationId, Date.parse(gap.lastAt) || 0);
+  const leave = { afterOne: 0, afterFew: 0, afterMany: 0 };
+  const fields = new Map<StudyField, number>();
+  const openers = new Map<string, { question: string; count: number }>();
+  let total = 0; let last7 = 0; let questions = 0; let leftUnanswered = 0; let up = 0; let down = 0;
+  for (const conversation of conversations) {
+    const asked = conversation.messages.filter((m) => m.role === 'user' && m.text.trim());
+    if (!asked.length) continue; // opened and closed without a word: not a conversation
+    total += 1;
+    if (now - Date.parse(conversation.updatedAt || conversation.startedAt) <= 7 * DAY) last7 += 1;
+    questions += asked.length;
+    if (asked.length === 1) leave.afterOne += 1; else if (asked.length <= 3) leave.afterFew += 1; else leave.afterMany += 1;
+    for (const m of asked) { const field = studyField(m.text); fields.set(field, (fields.get(field) || 0) + 1); }
+    for (const m of conversation.messages) { if (m.feedback?.rating === 'up') up += 1; else if (m.feedback?.rating === 'down') down += 1; }
+    const gapAt = unanswered.get(conversation.id);
+    // He did not know, and the visitor never wrote again (a few seconds of slack for the clocks).
+    if (gapAt !== undefined && (Date.parse(asked[asked.length - 1]!.at) || 0) <= gapAt + 5000) leftUnanswered += 1;
+    const key = questionKey(asked[0]!.text);
+    if (key.length >= 6) { const seen = openers.get(key); if (seen) seen.count += 1; else openers.set(key, { question: asked[0]!.text.trim().slice(0, 140), count: 1 }); }
+  }
+  return {
+    conversations: total, last7, questions, avgQuestions: total ? Math.round((questions / total) * 10) / 10 : 0,
+    leave, oneQuestionShare: pct(leave.afterOne, total), leftUnanswered,
+    ratings: { up, down, satisfaction: pct(up, up + down) },
+    byField: [...fields.entries()].map(([field, n]) => ({ field, questions: n, share: pct(n, questions) || 0 })).sort((a, b) => b.questions - a.questions || a.field.localeCompare(b.field)),
+    topQuestions: [...openers.values()].filter((q) => q.count >= 2).sort((a, b) => b.count - a.count || a.question.localeCompare(b.question)).slice(0, Math.max(1, top)),
+  };
 }

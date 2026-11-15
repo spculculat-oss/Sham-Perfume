@@ -102,3 +102,36 @@ export function revealStep(shown: number, target: string, dtMs: number, { rate =
   if (next < total && /[\uDC00-\uDFFF]/.test(target[next]!)) next += 1;
   return next;
 }
+
+/* ───────────────────── «فهم احتياج الزائر»: what he needs right now, from his own words ───────────────────── */
+
+/**
+ * Read from the words the person just wrote — nothing stored, no profile, no guess about who he is.
+ * It only changes HOW the same honest answer is given (shorter, simpler, more detailed, calmer, more decisive).
+ */
+export type VisitorNeed = 'hurried' | 'detail' | 'simple' | 'upset' | 'undecided';
+const flat = (text: string) => text.normalize('NFKC').replace(/[\u064B-\u065F\u0670\u0640]/g, '').replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').toLowerCase();
+const NEED_WORDS: [VisitorNeed, RegExp][] = [
+  ['upset', /زهقت|تعبت منك|مش شغال|مش نافع|برضه غلط|لسه غلط|تاني غلط|قلتلك|مش ده اللي|ما فهمتنيش|مفهمتنيش|!{3,}|\bstill (?:not|wrong|broken)\b|doesn'?t work|not working|i (?:already )?told you|that'?s not what|frustrat|useless/],
+  ['hurried', /مستعجل|بسرعه|باختصار|في سطر|في كلمتين|من غير شرح|الخلاصه|عالسريع|\bquick(?:ly)?\b|\bbrief(?:ly)?\b|in short|tl;?dr|one line|just the answer|no explanation/],
+  ['detail', /بالتفصيل|تفصيلي|خطوه خطوه|خطوه بخطوه|اشرح اكتر|وضح اكتر|كل التفاصيل|شرح كامل|in detail|step by step|more detail|elaborate|thorough|deep dive|walk me through/],
+  ['simple', /مبتدئ|مش فاهم|مش فاهمه|ببساطه|بطريقه سهله|بشكل مبسط|يعني ايه|لطفل|كاني طفل|beginner|i don'?t understand|in simple (?:terms|words)|explain like|eli5|for dummies|what does .{1,40} mean/],
+  ['undecided', /محتار|محتاره|مش عارف اختار|مش عارفه اختار|انهي احسن|ايهما افضل|ايه الاحسن|اختار ايه|تنصحني ب|متردد|can'?t decide|which (?:one )?(?:is|would be) (?:better|best)|which should i|what would you (?:pick|choose|recommend)|torn between/],
+];
+export function readNeed(message: string): VisitorNeed | undefined {
+  const text = flat(message);
+  if (text.length > 1500) return undefined; // a pasted document, not a way of asking
+  return NEED_WORDS.find(([, words]) => words.test(text))?.[0];
+}
+export const NEED_HINT: Record<VisitorNeed, string> = {
+  hurried: 'الشخص مستعجل: الإجابة نفسها في سطر أو اتنين، من غير مقدمة ولا شرح زيادة، ولو في خطوة واحدة مهمة قولها.',
+  detail: 'الشخص طالب تفاصيل: اشرح خطوة خطوة بترتيب واضح، بمثال حقيقي، ومن غير ما تقفز على خطوة.',
+  simple: 'الشخص عايز تبسيط: كلمات سهلة من غير مصطلحات، تشبيه أو مثال من الحياة، وفكرة واحدة في كل جملة.',
+  upset: 'الشخص متضايق من رد سابق: جملة واحدة قصيرة تعترف بالمشكلة من غير تبرير، وبعدها الحل المحدد على طول. ما تكررش اللي اتقال قبل كده.',
+  undecided: 'الشخص محتار بين اختيارات: رشّح اختيار واحد واضح بسببه الحقيقي، واذكر بديل واحد وإمتى يبقى أنسب. ما ترصّش كل الاحتمالات وتسيبه محتار، وما تضغطش عليه.',
+};
+/** The line added to the instructions for this turn ('' when his words ask for nothing special). */
+export function needInstruction(message: string): string {
+  const need = readNeed(message);
+  return need ? `\n${NEED_HINT[need]}` : '';
+}

@@ -21,7 +21,7 @@ import { createHash, timingSafeEqual } from 'node:crypto';
 import { lookup as dnsLookup } from 'node:dns/promises';
 import { isIP } from 'node:net';
 import type { EngineHealth } from './core/engineHealth';
-import { NATURAL_TALK_INSTRUCTION, polishReply } from '../src/utils/naturalTalk';
+import { NATURAL_TALK_INSTRUCTION, needInstruction, polishReply } from '../src/utils/naturalTalk';
 import {
   DEEP_PLAN_INSTRUCTION, THINKING_CRAFT_INSTRUCTION, fixReply, needsRevision, profileQuestion, reviewReply, revisionRequest, thinkingHint, withPlan,
 } from '../src/utils/thinkingCraft';
@@ -466,7 +466,7 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
   const profile = profileQuestion(lastQuestion, rawTurns.length > 1);
   const craft = task === 'chat' ? `\n${THINKING_CRAFT_INSTRUCTION}${thinkingHint(profile) ? `\n${thinkingHint(profile)}` : ''}` : '';
   const deep = body.deep === true && task === 'chat';
-  const system = `${workspaceInstruction(language, task)}${craft}\nتاريخ النهارده ${today}. لو السؤال عن حاجة بتتغير مع الوقت (أخبار، أسعار، طقس، نتايج، مناصب) ومفيش نتايج بحث ويب قدامك في الرسالة، قول بصراحة في أول سطر إن معلوماتك ممكن تكون أقدم من النهارده، وبعدها اشرح الخلفية اللي تعرفها من غير ما تخترع أحداث أو أرقام جديدة.`;
+  const system = `${workspaceInstruction(language, task)}${craft}\nتاريخ النهارده ${today}. لو السؤال عن حاجة بتتغير مع الوقت (أخبار، أسعار، طقس، نتايج، مناصب) ومفيش نتايج بحث ويب قدامك في الرسالة، قول بصراحة في أول سطر إن معلوماتك ممكن تكون أقدم من النهارده، وبعدها اشرح الخلفية اللي تعرفها من غير ما تخترع أحداث أو أرقام جديدة.${task === 'chat' ? needInstruction(lastQuestion) : ''}`;
   const started = Date.now();
   let invalidTool = false;
   const failures: { id: string; kind: AskFailure; status?: number }[] = [];

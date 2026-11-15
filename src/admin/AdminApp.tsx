@@ -2012,7 +2012,16 @@ interface SelfStudyView {
   fields: { field: string; open: number; resolved: number; ignored: number; waiting: number; mastery: number | null }[];
   focus: string | null;
   plan: { id: string; question: string; field: string; count: number; source: 'no_answer' | 'negative_feedback'; priority: number; hint?: { docId: string; title: string; excerpt: string; score: number } }[];
+  shelves?: { field: string; lessons: number; words: number; waiting: number; mastery: number | null; strength: 'strong' | 'fair' | 'weak' | 'empty' }[];
+  report?: {
+    conversations: number; last7: number; questions: number; avgQuestions: number;
+    leave: { afterOne: number; afterFew: number; afterMany: number }; oneQuestionShare: number | null; leftUnanswered: number;
+    ratings: { up: number; down: number; satisfaction: number | null };
+    byField: { field: string; questions: number; share: number }[]; topQuestions: { question: string; count: number }[];
+  };
 }
+const SHELF_STYLE: Record<string, string> = { strong: 'bg-emerald-50 border-emerald-200 text-emerald-900', fair: 'bg-amber-50 border-amber-200 text-amber-900', weak: 'bg-red-50 border-red-200 text-red-900', empty: 'bg-stone-100 border-stone-300 text-stone-600' };
+const SHELF_LABELS = reactiveMap<Record<string, string>>(() => ({ strong: T('قوي'), fair: T('متوسط'), weak: T('ضعيف'), empty: T('فاضي') }));
 const STUDY_FIELD_LABELS = reactiveMap<Record<string, string>>(() => ({
   perfume: T('العطور'), store: T('المتجر والطلبات'), media: T('الميديا والإخراج'), design: T('الجرافيك والتصميم'), marketing: T('التسويق'),
   code: T('البرمجة والمواقع'), writing: T('الكتابة والترجمة'), science: T('العلوم'), health: T('الصحة'), religion: T('الدين'), general: T('عام'),
@@ -2047,6 +2056,44 @@ function SelfStudyCard({ onStudy }: { onStudy: (id: string, question: string, st
               {data.trend.direction === 'better' ? T('بيتحسن') : data.trend.direction === 'worse' ? T('محتاج مذاكرة أكتر') : T('ثابت')}
             </span>
           </p>
+          {data.shelves && (
+            <div data-testid="self-study-shelves">
+              <h3 className="mb-1.5 text-xs font-bold text-stone-700">{T('هيكل معلومات شاهين')}</h3>
+              <div className="grid gap-1.5 sm:grid-cols-2 xl:grid-cols-3">
+                {data.shelves.map((shelf) => (
+                  <div key={shelf.field} className={`rounded-lg border p-2 text-[11px] ${SHELF_STYLE[shelf.strength]}`}>
+                    <p className="flex items-center justify-between font-bold"><span>{label(shelf.field)}</span><span>{SHELF_LABELS[shelf.strength]}</span></p>
+                    <p className="mt-0.5 opacity-80">{TP('{lessons} درس · {words} كلمة', { lessons: formatAdminNumber(shelf.lessons), words: formatAdminNumber(shelf.words) })}{shelf.waiting ? ` · ${TP('{n} زائر مستني', { n: formatAdminNumber(shelf.waiting) })}` : ''}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {data.report && (
+            <div data-testid="self-study-report">
+              <h3 className="mb-1.5 text-xs font-bold text-stone-700">{T('تحليل أداء المحادثات')}</h3>
+              {!data.report.conversations
+                ? <p className="text-xs text-stone-500">{T('لسه مفيش محادثات كفاية للتحليل.')}</p>
+                : (
+                  <div className="space-y-1.5 text-xs text-stone-700">
+                    <p>{TP('{total} محادثة ({week} في آخر ٧ أيام) · {q} سؤال · متوسط {avg} سؤال في المحادثة.', { total: formatAdminNumber(data.report.conversations), week: formatAdminNumber(data.report.last7), q: formatAdminNumber(data.report.questions), avg: formatAdminNumber(data.report.avgQuestions) })}</p>
+                    <p>{TP('الزوار بيمشوا فين: {one} بعد سؤال واحد · {few} بعد سؤالين أو تلاتة · {many} بعد أربعة أو أكتر.', { one: formatAdminNumber(data.report.leave.afterOne), few: formatAdminNumber(data.report.leave.afterFew), many: formatAdminNumber(data.report.leave.afterMany) })}</p>
+                    {data.report.leftUnanswered > 0 && <p className="font-bold text-red-700">{TP('{n} محادثة انتهت بعد سؤال شاهين ما عرفش يرد عليه.', { n: formatAdminNumber(data.report.leftUnanswered) })}</p>}
+                    <div className="flex flex-wrap gap-1.5">
+                      {data.report.byField.slice(0, 6).map((f) => <span key={f.field} className="rounded-full border border-stone-200 bg-stone-50 px-2.5 py-1 text-[11px]">{label(f.field)} · <span dir="ltr">{formatAdminNumber(f.share)}%</span></span>)}
+                    </div>
+                    {data.report.topQuestions.length > 0 && (
+                      <div>
+                        <p className="font-bold">{T('أسئلة بيبدأ بيها أكتر من زائر:')}</p>
+                        <ul className="mt-1 list-disc ps-5 text-[11px] text-stone-600">
+                          {data.report.topQuestions.map((q) => <li key={q.question} dir="auto">{q.question} <span className="text-stone-400" dir="ltr">×{formatAdminNumber(q.count)}</span></li>)}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
+            </div>
+          )}
           {!data.plan.length
             ? <p className="text-xs text-emerald-700">{T('مفيش أسئلة مفتوحة دلوقتي. شاهين مذاكر كل اللي اتسأل فيه.')}</p>
             : (

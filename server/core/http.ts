@@ -3,7 +3,7 @@
  *   /api/assistant/*  public visitor API (rate limited)
  *   /api/admin/*      management API (Bearer SHAM_ADMIN_TOKEN, constant-time compare)
  */
-import { HINT_MIN_SCORE, buildSelfStudy, hintFrom } from './selfStudy';
+import { HINT_MIN_SCORE, buildSelfStudy, chatReport, hintFrom, knowledgeMap } from './selfStudy';
 import { createGovernanceRouter } from '../governance/router';
 import { createOwnerRoomRouter } from '../ownerRoom';
 import { createStateAgentRouter } from '../stateAgent';
@@ -504,8 +504,9 @@ export function createShamCore(options: CoreOptions = {}) {
   // «شاهين بيذاكر لنفسه»: his own study plan from the real gaps — fields, mastery, what to learn next, and the
   // closest thing in his library for each question. Read-only; a lesson still needs the owner's approval above.
   admin.get('/self-study', wrap(async (_req, res) => {
-    const [gaps, index] = await Promise.all([repo.gaps(), repo.searchIndex()]);
-    res.json(buildSelfStudy(gaps, { hint: (question) => hintFrom(index.search(question, 4, HINT_MIN_SCORE)) }));
+    const [gaps, index, docs, conversations] = await Promise.all([repo.gaps(), repo.searchIndex(), repo.allKnowledge(), repo.conversations()]);
+    const study = buildSelfStudy(gaps, { hint: (question) => hintFrom(index.search(question, 4, HINT_MIN_SCORE)) });
+    res.json({ ...study, shelves: knowledgeMap(docs, study.fields), report: chatReport(conversations, gaps) });
   }));
   admin.get('/feedback', wrap(async (_req, res) => {
     const items = (await repo.conversations()).flatMap((c) => c.messages.map((m, i) => ({ m, i, c }))
