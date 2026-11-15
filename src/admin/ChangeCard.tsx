@@ -8,6 +8,7 @@ import { sendDeskRequest } from './deskRequest';
 import { changeDraft } from '../utils/ownerDesk';
 import { changesListUrl, changeVerdict, planChange, type ChangePlan, type FileEdit } from '../utils/ownerFiles';
 import type { ChangeDecision } from '../utils/ownerRoom';
+import { reviewEdits, type Finding } from '../utils/shaheenCoder';
 
 /**
  * The card under a reply in which Shaheen proposed a change: what changes, whether it is small and safe, and the
@@ -17,6 +18,7 @@ export default function ChangeCard({ edits, summary, decision, onDecide, onRetur
   edits: FileEdit[]; summary: string; decision?: ChangeDecision; onDecide: (d: ChangeDecision) => void; onReturn: () => void;
 }) {
   const [plan, setPlan] = useState<ChangePlan | null>(null);
+  const [findings, setFindings] = useState<Finding[]>([]);
   const [open, setOpen] = useState(false);
   const [agree, setAgree] = useState(false);
   const [note, setNote] = useState('');
@@ -29,13 +31,14 @@ export default function ChangeCard({ edits, summary, decision, onDecide, onRetur
       if (!alive) return;
       const files = new Map(pairs);
       setPlan(planChange(edits, (p) => files.get(p)));
+      setFindings(reviewEdits(edits, (p) => files.get(p)));
     });
     return () => { alive = false; };
   }, [edits]);
 
   if (!plan) return <div className="mt-2 flex items-center gap-2 text-xs text-stone-400"><Loader2 className="h-3.5 w-3.5 animate-spin" />{T('بجهز كارت التعديل…')}</div>;
   const verdict = changeVerdict(readControls(bundledControls), plan);
-  const blocked = plan.problems.length > 0 || !plan.files.length;
+  const blocked = plan.problems.length > 0 || !plan.files.length || findings.some((f) => f.severity === 'block');
 
   const approve = async () => {
     setBusy(true); setNote('');
@@ -68,6 +71,15 @@ export default function ChangeCard({ edits, summary, decision, onDecide, onRetur
           <ul className="list-disc ps-4">{plan.problems.map((p, i) => <li key={i}>{p}</li>)}</ul>
           <p className="mt-1 text-red-300/80">{T('قول لشاهين المشكلة وهو يظبط الاقتراح.')}</p>
           {!decision && <button type="button" onClick={onReturn} className="mt-1 inline-flex items-center gap-1 rounded-lg border border-red-800 px-2 py-1 text-red-100"><Undo2 className="h-3.5 w-3.5" />{T('رجّعه بملاحظة')}</button>}
+        </div>
+      )}
+      {findings.length > 0 && (
+        <div className="mb-2 rounded-lg border border-amber-900 bg-amber-950/40 p-2 text-amber-100">
+          <div className="mb-1 font-bold">🔎 {T('ملاحظات الفحص الآلي:')}</div>
+          <ul className="list-disc space-y-0.5 ps-4">{findings.map((f) => (
+            <li key={`${f.path}:${f.id}`} className={f.severity === 'block' ? 'text-red-200' : f.severity === 'fix' ? 'text-amber-100' : 'text-stone-300'}>
+              <code dir="ltr" className="text-[10px] text-stone-400">{f.path}</code> {f.ar}</li>
+          ))}</ul>
         </div>
       )}
       <button type="button" className="mb-2 text-[11px] text-amber-300 underline" onClick={() => setOpen(!open)}>{open ? T('اخفي التفاصيل') : T('وريني التعديل بالظبط')}</button>

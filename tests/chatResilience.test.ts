@@ -74,3 +74,30 @@ test('the platform is told today\'s date and to admit when its knowledge may be 
   await askWorkspace(plain, { env, fetch: w.request, now: () => new Date('2026-11-13T10:00:00Z') });
   assert.match(w.seen.system, /2026-11-13/);
 });
+
+test('«فكّر بعمق»: a private plan first, then the answer; a reply that fails the check is rewritten once', async () => {
+  const say = (content: string) => () => Response.json({ choices: [{ message: { content } }] });
+  const bodies: string[] = [];
+  const english = 'This answer drifted into English and keeps going about the topic for quite a while. '.repeat(4);
+  const good = 'الفرق في التركيز:\n\n| النوع | التركيز |\n| --- | --- |\n| EDP | أعلى |\n| EDT | أخف |\n\nللصيف خد EDT.';
+  const replies = [say('- المطلوب: مقارنة\n- الشكل: جدول'), say(english), say(good)];
+  const request = (async (_url: string | URL | Request, init?: RequestInit) => { bodies.push(String(init?.body || '')); return replies[bodies.length - 1]!(); }) as typeof fetch;
+  const stages: string[] = [];
+  const out = await askWorkspace({ messages: [{ role: 'user', text: 'إيه الفرق بين EDP و EDT؟' }], search: false, deep: true }, { env, fetch: request, onEvent: (e) => { if (e.type === 'stage') stages.push(e.stage); } });
+  assert.equal(bodies.length, 3, 'plan, draft, rewrite');
+  assert.match(bodies[0]!, /تفكير داخلي/);
+  assert.match(bodies[1]!, /ملاحظات تفكيرك الداخلي/, 'the plan reaches the writer');
+  assert.match(bodies[2]!, /المراجعة لقت/);
+  assert.equal(out.reply, good);
+  assert.deepEqual(stages.filter((s, i) => s !== stages[i - 1]), ['thinking', 'writing', 'reviewing', 'writing']);
+});
+
+test('without «فكّر بعمق» there is one call, the craft habits ride in the system prompt, and slips are mended in place', async () => {
+  const bodies: string[] = [];
+  const request = (async (_url: string | URL | Request, init?: RequestInit) => { bodies.push(String(init?.body || '')); return Response.json({ choices: [{ message: { content: 'اتفضل:\n```js\nconsole.log(1)' } }] }); }) as typeof fetch;
+  const out = await askWorkspace({ messages: [{ role: 'user', text: 'اكتبلي كود يطبع رقم' }], search: false }, { env, fetch: request });
+  assert.equal(bodies.length, 1);
+  assert.match(bodies[0]!, /طريقة التفكير/);
+  assert.match(bodies[0]!, /نوع السؤال: برمجة/);
+  assert.ok(out.reply.trimEnd().endsWith('```'), 'the open code block is closed');
+});

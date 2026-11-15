@@ -1477,6 +1477,8 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   '📂 شاهين يقدر يشوف كل ملفات الموقع. أي تعديل يقترحه مابيتنفذش غير لما توافق عليه.': { en: "📂 Shaheen can see every file of the site. Nothing he proposes changes until you approve it." },
   'مثلاً: «شوف الفوتر وقولي فيه إيه» أو «غيّر جملة الترحيب في الصفحة الرئيسية».': { en: "For example: “look at the footer and tell me what's in it” or “change the welcome line on the home page”." },
   '📂 شاهين بيقرا:': { en: "📂 Shaheen is reading:" },
+  'شاهين بيراجع تعديله': { en: 'Shaheen is reviewing his change' },
+  'ملاحظات الفحص الآلي:': { en: 'Automatic review notes:' },
   'شيل': { en: "Remove" },
   'اكتب جزء من اسم الملف… مثلاً Footer': { en: "Type part of a file name… e.g. Footer" },
   'دور على ملف': { en: "Find a file" },

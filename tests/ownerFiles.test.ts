@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import {
-  CHANGE_TITLE_PREFIX, changeFromIssue, changeIssue, changeRule, changeSummary, changeVerdict, decodeChange, displayReply, encodeChange,
+  CHANGE_TITLE_PREFIX, FILE_LIMITS, changeFromIssue, changeIssue, changeRule, changeSummary, changeVerdict, decodeChange, displayReply, encodeChange,
   fileForShaheen, fileIndex, mentionedFiles, newIssueUrl, parseChanges, planChange, readRequests,
 } from '../src/utils/ownerFiles';
 import { defaultControls } from '../src/utils/ownerAuthority';
@@ -128,7 +128,7 @@ test('the room server takes the files, checks them, and keeps them for Shaheen o
   assert.equal(r.index, 'src/components: Footer.tsx');
   assert.equal(validateRoomRequest({ to: 'secretary', history, files: [{ path: 'src/components/Footer.tsx', content: FOOTER }] }).files, undefined);
   assert.throws(() => validateRoomRequest({ to: 'shaheen', history, files: [{ path: '../etc/passwd', content: 'x' }] }), /Invalid file/);
-  assert.throws(() => validateRoomRequest({ to: 'shaheen', history, files: [1, 2, 3, 4].map((i) => ({ path: `a${i}.ts`, content: 'x' })) }), /Too many files/);
+  assert.throws(() => validateRoomRequest({ to: 'shaheen', history, files: Array.from({ length: FILE_LIMITS.files + 1 }, (_, i) => i).map((i) => ({ path: `a${i}.ts`, content: 'x' })) }), /Too many files/);
 });
 
 test('the owner\'s answers to proposals are kept only for messages that exist', () => {
