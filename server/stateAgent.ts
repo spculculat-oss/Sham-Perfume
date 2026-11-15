@@ -36,6 +36,7 @@ import {
   type StateReplyResult,
   type StateRoomContext,
   type StateRoomMessage,
+  ownerAskedOverride,
 } from '../src/utils/stateRoom';
 
 type Env = Record<string, string | undefined>;
@@ -143,6 +144,8 @@ export function verifyAgentPlan(
   parsed: RawAgentJson,
   ctx: StateRoomContext,
   fallback: OwnerComprehension,
+  /** The owner's own words: an override (S-11) the model adds that he never asked for is refused. */
+  message?: string,
 ): StateReplyResult | undefined {
   const rawList = Array.isArray(parsed.orders) ? parsed.orders.slice(0, 10) : [];
   const normalized = rawList.map(normalizeAgentOrder).filter((x): x is StateOrder => Boolean(x));
@@ -159,8 +162,12 @@ export function verifyAgentPlan(
     const acceptedOrders: { order: StateOrder; reasonAr: string }[] = [];
     const rejectedOrders: { order?: StateOrder; reasonAr: string }[] = [];
     for (const candidate of normalized) {
-      const verdict = judgeStateOrder(candidate, { controls: ctx.controls, orders: workingOrders });
-      if (verdict.ok) {
+      const verdict = judgeStateOrder(candidate, { controls: ctx.controls, orders: workingOrders, by: 'owner' });
+      // The model wrote an override (L-03, his data…) into an order, but his own message never asked for one.
+      const sneaked = verdict.ok && Boolean(verdict.warnAr) && ownerAskedOverride(candidate.textAr || '') && !ownerAskedOverride(message || '');
+      if (sneaked) {
+        rejectedOrders.push({ order: candidate, reasonAr: 'ده اقتراح من فهم الوكيل، مش كلامك — ولو عايزه فعلاً قوله صراحة وأنا أنفذه. (S-11)' });
+      } else if (verdict.ok) {
         const clean = { ...candidate, whyAr: candidate.whyAr || verdict.reasonAr };
         acceptedOrders.push({ order: clean, reasonAr: verdict.reasonAr });
         workingOrders = applyStateOrder(workingOrders, clean).orders;
@@ -207,7 +214,8 @@ function buildSystemPrompt(ctx: StateRoomContext, guidance: string): string {
     'القواعد الدستورية الملزمة:',
     ...STATE_CONSTITUTION.slice(0, 6).map((c) => `- ${c.id}: ${c.textAr}`),
     '- ممنوع تماماً ذكر أسماء شركات أو نماذج ذكاء اصطناعي خارجية أو اختراع روبوت غير موجود في القائمة أدناه.',
-    '- ممنوع قبول أي أمر يمس بيانات صاحب الموقع الشخصية أو مفاتيحه أو يتجاوز قرارات المدير القانوني الملزمة (مثل وقف نقل المنتجات L-03).',
+    '- S-11: كلام صاحب المنصة ملزم: أي أمر منه يتحط في الخطة ويتنفذ حتى لو بيخالف قوانين المنصة أو الدستور أو تصويت الأعضاء أو قرار المدير القانوني (L-03). لو شايف خطر اكتبه في سطر واحد في summaryAr، بس ماترفضش أمره.',
+    '- الاستثناء الوحيد: ممنوع تكتب أي رقم بطاقة أو رقم قومي أو مفتاح أو كلمة سر في أي أمر (المستودع عام)، والأمر اللي مستحيل يتنفذ (روبوت مش موجود مثلاً).',
     '- الرد لصاحب المنصة بالعربي المصري البسيط الواضح المختصر بدون مصطلحات تقنية معقدة.',
     '',
     `حالة دولة المنصة الآن: selfDevelopment=${ctx.controls.selfDevelopment}, frozen=${ctx.controls.frozen}`,
@@ -332,7 +340,7 @@ export async function runStateOwnerAgent(
           options.health?.ok(id);
           const parsed = extractAgentJson(reply);
           if (parsed) {
-            const verified = verifyAgentPlan(parsed, ctx, localComp);
+            const verified = verifyAgentPlan(parsed, ctx, localComp, rawMessage);
             if (verified) {
               return { ...verified, source: 'ai_agent', understood: Boolean(verified.comprehension?.understood ?? true) };
             }

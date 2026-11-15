@@ -127,7 +127,7 @@ export async function executeOwnerRequest(
   let executedCount = 0;
 
   for (const order of planned) {
-    const verdict = judgeStateOrder(order, { controls: deps.controls, orders });
+    const verdict = judgeStateOrder(order, { controls: deps.controls, orders, by: 'owner' });
     if (!verdict.ok) {
       lines.push(`❌ مش هنفذ الأمر ده: ${verdict.reasonAr}`);
       stepNotes.push(`#${req.number}: رفضت — ${verdict.reasonAr}`);
@@ -141,7 +141,7 @@ export async function executeOwnerRequest(
       continue;
     }
     executedCount++;
-    lines.push(`✅ ${done.noteAr}`);
+    lines.push(`✅ ${done.noteAr}${verdict.warnAr ? ` ⚠️ ${verdict.warnAr}` : ''}`);
     stepNotes.push(`#${req.number}: ${done.noteAr}`);
   }
 

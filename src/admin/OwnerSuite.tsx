@@ -1,3 +1,4 @@
+import NetGateCard from './NetGateCard';
 import { Suspense, lazy, useCallback, useEffect, useState, type ReactNode } from 'react';
 import {
   Activity, Banknote, Bot, CalendarDays, Clock3, Crown, ExternalLink, Eye, EyeOff, Globe, Inbox, KeyRound, Landmark, LayoutDashboard, Loader2, Lock, LogOut, MessagesSquare, Network, ShieldCheck, Siren,
@@ -310,6 +311,7 @@ function OwnerHome({ go, access }: { go: (s: Section) => void; access: Access })
           <div className="text-xs text-stone-400">{access === 'full' ? T('ربط وورلد فيرست أول الصفحة') : T('محتاجة الكود السري بتاع الإدارة')}</div>
         </button>
       </div>
+      {access === 'full' && <NetGateCard />}
     </div>
   );
 }

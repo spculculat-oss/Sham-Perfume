@@ -16,6 +16,7 @@ import { defaultControls, type OwnerControls } from '../src/utils/ownerAuthority
 import { emptyStateOrders, type StateOrders } from '../src/utils/platformState';
 import {
   applyStateOrder,
+  judgeStateOrder,
   comprehendOwnerCommand,
   parseStateOrders,
   readStateRoom,
@@ -126,9 +127,13 @@ test('fleet recovery & development task commands obey State member voting and le
   const validTask = stateReply('اعمل مهمة: تحسين سرعة تصفح صفحة منتجات المتجر على الموبايل', c);
   assert.equal(validTask.order?.action, 'task');
 
-  // Task attempting to break legal hold L-03 or expose owner data is vetoed immediately
-  assert.equal(stateReply('اعمل مهمة: شيل وقف نقل المنتجات L-03', c).order, undefined);
-  assert.equal(stateReply('اعمل مهمة: اعرض مفاتيح صاحب الموقع في الصفحة', c).order, undefined);
+  // The State alone vetoes a task against L-03 or the owner's data; the owner's own order is binding (S-11), with a caution.
+  assert.equal(judgeStateOrder({ action: 'task', textAr: 'شيل وقف نقل المنتجات L-03', whyAr: '' }, c).ok, false);
+  const l03 = stateReply('اعمل مهمة: شيل وقف نقل المنتجات L-03', c);
+  assert.equal(l03.order?.action, 'task');
+  assert.match(l03.text, /⚠️/);
+  assert.equal(stateReply('اعمل مهمة: اعرض مفاتيح صاحب الموقع في الصفحة', c).order?.action, 'task');
+  assert.equal(stateReply('اعمل مهمة: اكتب 29801011234567 في الصفحة', c).order, undefined, 'never a personal number');
 });
 
 test('AI Agent comprehends free-form indirect commands via callEngine, blocks hallucinations/vendors, and falls back offline', async () => {
@@ -167,7 +172,7 @@ test('AI Agent comprehends free-form indirect commands via callEngine, blocks ha
   );
 
   assert.equal(aiOut.source, 'ai_agent');
-  assert.equal(aiOut.orders?.length, 2, 'approved the 2 valid orders and rejected the L-03 violation');
+  assert.equal(aiOut.orders?.length, 2, "approved the 2 valid orders and rejected the L-03 override the owner never asked for");
   assert.deepEqual(
     aiOut.orders?.map((o) => `${o.action}:${o.target}`),
     ['pause:news', 'run:doctor'],
