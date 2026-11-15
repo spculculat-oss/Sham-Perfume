@@ -38,6 +38,7 @@ import { isStaticHosting } from '../utils/api';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { ShaheenModesPanel, ShaheenServiceStatus, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
+import { ChatImageCard, ImageAttachButton, ImagePickPreview, useImagePick } from './ShaheenImagePicker';
 import { ShaheenMedia } from './ShaheenMedia';
 import { ShaheenDrawing } from './ShaheenDrawing';
 import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
@@ -281,6 +282,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   const masterPrompts: string[] = [L('prompt_1'), L('prompt_2'), L('prompt_3'), L('prompt_4'), L('prompt_5')];
   // Same conversation store as the floating Shaheen window (one history, never overwritten by the other).
   const { messages, setMessages, daysRemaining, isLoading, busy, sendMessage, retryLast, clearHistory } = useShaheenChat();
+  const imagePick = useImagePick(currentLang);
   const messageIds = React.useMemo(() => messages.map((x) => x.id), [messages]);
   const modelStatus = useShaheenModels();
   const selectedModel = modelStatus.selected;
@@ -362,9 +364,11 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
 
   const handleSend = async (customText?: string, overrideModel?: ShaheenModelChoice, fromVoice = false, voiceTurnInfo?: ShaheenVoiceTurn): Promise<boolean> => {
     const text = (customText || input).trim();
-    if (!text || text.length > 4000 || isLoading || isStaticHosting) return false;
+    // «شاهين يقرا الصور»: the picture waiting above the box goes with the typed question (or alone).
+    const picture = !customText && !fromVoice ? imagePick.picked : null;
+    if ((!text && !picture) || text.length > 4000 || isLoading || isStaticHosting) return false;
     // Only an explicit transfer command applies an earlier formula (never "…حول تركيبة…").
-    if (isFormulaTransferCommand(text)) {
+    if (!picture && isFormulaTransferCommand(text)) {
       for (let i = messages.length - 1; i >= 0; i--) {
         if (messages[i].role === 'assistant' && messages[i].kind !== 'error') {
           const formula = extractFormulaFromAIMessage(messages[i].text);
@@ -373,10 +377,12 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
       }
     }
     if (!customText) setInput('');
+    if (picture) imagePick.clear();
     const voiceTurn = !fromVoice && voice.beginOutgoingTurn();
     try {
       const sent = await sendMessage({ text, model: overrideModel || selectedModel, language: currentLang,
-        errorText: (error) => chatErrorText(currentLang, error), ...(fromVoice ? { voice: voiceTurnInfo || {} } : {}) });
+        errorText: (error) => chatErrorText(currentLang, error), ...(fromVoice ? { voice: voiceTurnInfo || {} } : {}),
+        ...(picture ? { image: { dataUrl: picture.dataUrl, thumb: picture.thumb, name: picture.name } } : {}) });
       if (voiceTurn) voice.finishOutgoingTurn(sent !== false);
       return sent !== false;
     } catch {
@@ -695,6 +701,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                     </>
                   ) : (
                     <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-line font-sans break-words space-y-2" dir="auto">
+                      {m.image && <ChatImageCard image={m.image} lang={currentLang} />}
                       {activeDisplayContent}
                     </div>
                   )}
@@ -953,27 +960,32 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
         </div>
 
         {/* 4. Large Interactive Input Bar */}
+        <ImagePickPreview pick={imagePick} />
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleSend();
           }}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={imagePick.onDrop}
           className="p-3.5 sm:p-4 bg-white border-t border-stone-200 flex items-center gap-3 shrink-0"
         >
           <ShaheenVoiceModeButton language={currentLang} voice={voice} disabled={isStaticHosting} />
+          <ImageAttachButton pick={imagePick} disabled={isStaticHosting || isLoading || modelStatus.isUnavailable(selectedModel)} />
           <input
             ref={inputRef}
+            onPaste={imagePick.onPaste}
             type="text"
             placeholder={L('input_ph')}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             maxLength={4000}
             disabled={isStaticHosting || modelStatus.isUnavailable(selectedModel)}
-            className="flex-1 px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-xs sm:text-sm text-stone-900 focus:outline-none focus:border-amber-700 focus:bg-white transition-all shadow-inner"
+            className="flex-1 min-w-0 px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-xs sm:text-sm text-stone-900 focus:outline-none focus:border-amber-700 focus:bg-white transition-all shadow-inner"
           />
           <button
             type="submit"
-            disabled={!input.trim() || isLoading || isStaticHosting || modelStatus.isUnavailable(selectedModel)}
+            disabled={(!input.trim() && !imagePick.picked) || imagePick.busy || isLoading || isStaticHosting || modelStatus.isUnavailable(selectedModel)}
             className="px-6 py-3 bg-amber-800 hover:bg-amber-900 disabled:opacity-40 text-white rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer shrink-0 shadow-xs"
           >
             <span>{L('send')}</span>

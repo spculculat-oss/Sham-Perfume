@@ -25,6 +25,7 @@ import { NATURAL_TALK_INSTRUCTION, needInstruction, polishReply } from '../src/u
 import {
   DEEP_PLAN_INSTRUCTION, THINKING_CRAFT_INSTRUCTION, fixReply, needsRevision, profileQuestion, reviewReply, revisionRequest, thinkingHint, withPlan,
 } from '../src/utils/thinkingCraft';
+import { ImageReadError, readImage } from './imageReader';
 import { callEngine, engineStatuses, GEMINI_DEFAULT_MODEL, type EngineFailure, type EngineTurn } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { cleanVideoRequest, dailyLimit, DailyBudget, readJob, signJob, startVideo, videoAccess, videoBytes, VideoError, videoStatus } from './videoEngine';
@@ -602,7 +603,7 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
   const lookup = options.lookup || defaultLookup;
   const router = express.Router();
   router.use(express.json({ limit: '4mb' }));
-  const limits = { ask: new RateLimiter(30, 60_000), search: new RateLimiter(20, 60_000), read: new RateLimiter(20, 60_000), image: new RateLimiter(8, 60_000), owner: new RateLimiter(30, 60_000), video: new RateLimiter(3, 60 * 60_000), videoPoll: new RateLimiter(120, 60_000) };
+  const limits = { ask: new RateLimiter(30, 60_000), search: new RateLimiter(20, 60_000), read: new RateLimiter(20, 60_000), image: new RateLimiter(8, 60_000), vision: new RateLimiter(10, 60_000), owner: new RateLimiter(30, 60_000), video: new RateLimiter(3, 60 * 60_000), videoPoll: new RateLimiter(120, 60_000) };
   const budget = options.videoBudget || new DailyBudget();
   const fail = (res: express.Response, error: unknown) => {
     if (error instanceof VideoError && error.detail) console.warn(`[workspace] video engine: ${error.code} ${error.detail}`);
@@ -671,6 +672,15 @@ export function createWorkspaceRouter(options: WorkspaceOptions = {}): express.R
       if (result.failure !== 'no_engine') console.warn(`[workspace] image engine: ${told.code} status=${result.status ?? '-'} ${result.detail || ''}`.trim());
       res.status(told.status).json({ error: 'No image', code: told.code });
     } catch (error) { fail(res, error); }
+  });
+
+  // «شاهين يقرا الصور»: the words in a visitor's picture and what it shows (nothing kept; the chat answers after).
+  router.post('/read-image', limited('vision'), async (req, res) => {
+    try { res.json(await readImage(req.body?.image, languageOf(req.body?.language), { env, fetch: request })); }
+    catch (error) {
+      if (error instanceof ImageReadError) { res.status(error.status).json({ error: error.message, code: error.code }); return; }
+      fail(res, error);
+    }
   });
 
   // The owner only: his Notion and Slack (the keys never leave the server).
