@@ -75,3 +75,81 @@ test('nothing is learned without the owner: the study module only reads, and nev
   const http = readFileSync(new URL('../server/core/http.ts', import.meta.url), 'utf8');
   assert.match(http, /admin\.get\('\/self-study'/);
 });
+
+import { chatReport, docField, knowledgeMap, shelfStrength } from '../server/core/selfStudy';
+import { NEED_HINT, needInstruction, readNeed } from '../src/utils/naturalTalk';
+import { askWorkspace } from '../server/workspace';
+import type { Conversation } from '../server/core/types';
+
+const doc = (title: string, words: number, tags: string[] = []) => ({ title, tags, content: Array.from({ length: words }, () => 'كلمة').join(' ') });
+
+test('the knowledge structure shows every field, the empty and weak ones first', () => {
+  assert.equal(docField({ title: 'تثبيت العطر', tags: [], content: '' }), 'perfume');
+  assert.equal(docField({ title: 'ملاحظة', tags: [], content: 'طريقة مونتاج فيديو قصير' }), 'media', 'falls back to the text');
+  const docs = [...Array.from({ length: 9 }, (_, i) => doc(`درس عطر ${i}`, 200)), doc('تصميم لوجو', 50), doc('حملة تسويق', 400), doc('إعلان تسويق', 400), doc('خطة مبيعات', 400)];
+  const map = knowledgeMap(docs, [{ field: 'marketing', open: 3, resolved: 1, ignored: 0, waiting: 6, mastery: 25 }]);
+  assert.equal(map.length, STUDY_FIELDS.length);
+  const of = (field: string) => map.find((s) => s.field === field)!;
+  assert.deepEqual([of('perfume').lessons, of('perfume').words, of('perfume').strength], [9, 1800, 'strong']);
+  assert.equal(of('design').strength, 'weak', 'one short note is not knowledge');
+  assert.equal(of('marketing').strength, 'weak', 'visitors are waiting and most questions are unanswered');
+  assert.equal(of('code').strength, 'empty');
+  assert.equal(map[0]!.strength, 'empty');
+  assert.equal(map[map.length - 1]!.field, 'perfume');
+  assert.equal(shelfStrength({ lessons: 4, words: 900, waiting: 0, mastery: null }), 'fair');
+});
+
+const talk = (id: string, questions: string[], over: Partial<Conversation> = {}, rate?: 'up' | 'down'): Conversation => ({
+  id, visitorId: `v-${id}`, language: 'ar', status: 'open', memory: {}, startedAt: ago(3), updatedAt: ago(3),
+  messages: questions.flatMap((text, i) => [
+    { role: 'user' as const, text, at: new Date(NOW - 3 * 86_400_000 + i * 60_000).toISOString() },
+    { role: 'assistant' as const, text: 'رد', at: new Date(NOW - 3 * 86_400_000 + i * 60_000 + 1000).toISOString(), ...(rate && i === 0 ? { feedback: { rating: rate, at: ago(3) } } : {}) },
+  ]), ...over,
+});
+
+test('the performance report counts what really happened in the conversations', () => {
+  const conversations = [
+    talk('a', ['ازاي أثبت العطر؟'], {}, 'up'),
+    talk('b', ['ازاي أثبت العطر ؟!', 'وسعر الشحن كام؟']),
+    talk('c', ['عايز لوجو', 'وبانر', 'وألوان', 'وكمان فيديو'], { updatedAt: ago(20), startedAt: ago(20) }, 'down'),
+    talk('d', ['سؤال ما لوش إجابة عن الفلك']),
+    { ...talk('e', []), messages: [] },
+  ];
+  const gaps = [gap('سؤال ما لوش إجابة عن الفلك', { conversationId: 'd', lastAt: new Date(NOW - 3 * 86_400_000 + 2000).toISOString() })];
+  const report = chatReport(conversations, gaps, { now: NOW });
+  assert.equal(report.conversations, 4, 'an empty conversation is not counted');
+  assert.equal(report.last7, 3);
+  assert.deepEqual([report.questions, report.avgQuestions], [8, 2]);
+  assert.deepEqual(report.leave, { afterOne: 2, afterFew: 1, afterMany: 1 });
+  assert.equal(report.oneQuestionShare, 50);
+  assert.equal(report.leftUnanswered, 1);
+  assert.deepEqual(report.ratings, { up: 1, down: 1, satisfaction: 50 });
+  assert.deepEqual(report.topQuestions, [{ question: 'ازاي أثبت العطر؟', count: 2 }]);
+  assert.equal(report.byField[0]!.field, 'design');
+  assert.equal(report.byField.reduce((sum, f) => sum + f.questions, 0), 8);
+  // He asked again after the unanswered question: that conversation did not end there.
+  const stayed = chatReport([talk('d', ['سؤال ما لوش إجابة عن الفلك', 'طيب سؤال تاني'])], gaps, { now: NOW });
+  assert.equal(stayed.leftUnanswered, 0);
+  const none = chatReport([], [], { now: NOW });
+  assert.deepEqual([none.conversations, none.oneQuestionShare, none.ratings.satisfaction, none.avgQuestions], [0, null, null, 0]);
+});
+
+test('the visitor\'s need is read from his own words only, and changes how — never what — is answered', async () => {
+  const cases: [string, string | undefined][] = [
+    ['باختصار ايه هو العود؟', 'hurried'], ['اشرحلي بالتفصيل خطوة خطوة', 'detail'], ['أنا مبتدئ ومش فاهم يعني ايه تركيز', 'simple'],
+    ['قلتلك الكود مش شغال برضه غلط', 'upset'], ['محتار بين العود والمسك انهي احسن؟', 'undecided'], ['ليه السما زرقا؟', undefined],
+    ['tl;dr what is oud', 'hurried'], ['I can\'t decide, which one is better?', 'undecided'], ['it still doesn\'t work', 'upset'],
+  ];
+  for (const [message, need] of cases) assert.equal(readNeed(message), need, message);
+  assert.equal(needInstruction('ليه السما زرقا؟'), '');
+  assert.equal(readNeed(`باختصار ${'كلمة '.repeat(600)}`), undefined, 'a long paste is a document, not a way of asking');
+  // Honest by construction: no hint tells Shaheen to press, hide, exaggerate or invent.
+  for (const hint of Object.values(NEED_HINT)) assert.doesNotMatch(hint, /اضغط عليه|استعجله|خوّفه|آخر فرصة|الكمية محدودة/);
+  assert.match(NEED_HINT.undecided, /ما تضغطش/);
+  let system = '';
+  const request = (async (_url: string | URL | Request, init?: RequestInit) => { system = String(init?.body); return Response.json({ choices: [{ message: { content: 'رد' } }] }); }) as typeof fetch;
+  await askWorkspace({ messages: [{ role: 'user', text: 'باختصار ايه هو العود؟' }] }, { env: { OPENAI_API_KEY: 'test' }, fetch: request });
+  assert.ok(system.includes('الشخص مستعجل'));
+  await askWorkspace({ messages: [{ role: 'user', text: 'ليه السما زرقا؟' }] }, { env: { OPENAI_API_KEY: 'test' }, fetch: request });
+  assert.ok(!system.includes('الشخص مستعجل'));
+});
