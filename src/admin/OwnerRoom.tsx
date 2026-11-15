@@ -9,7 +9,8 @@ import OrderCard from './OrderCard';
 import { displayOrders, parseOrders } from '../utils/ownerDesk';
 import { repoCodeMap, repoFile, repoFiles, repoTree } from './repoFiles';
 import { formatHits, searchCodeMap, searchPaths } from '../utils/codeMap';
-import { LESSONS_PATH, fitHistory, lessonMarks, lessonsEdit, lookupFollowUp, mustFix, repairRequest, reviewEdits, searchRequests, selfCheckNote, withLessonChange } from '../utils/shaheenCoder';
+import { gateBrief, type GateAnswer } from '../utils/netGate';
+import { LESSONS_PATH, webRequests, webResult, fitHistory, lessonMarks, lessonsEdit, lookupFollowUp, mustFix, repairRequest, reviewEdits, searchRequests, selfCheckNote, withLessonChange } from '../utils/shaheenCoder';
 import { FILE_LIMITS, changeSummary, planChange, displayReply, fileIndex, isReadablePath, mentionedFiles, parseChanges, readRequests } from '../utils/ownerFiles';
 import {
   emptyRoom, isSealedRoom, openRoom, roomHistory, ROOM_LIMITS, ROOM_STORAGE_KEY, sealRoom, secretaryNotes,
@@ -109,10 +110,18 @@ export default function OwnerRoom({ code }: { code: string }) {
       for (let round = 0; to === 'shaheen' && !answer.offline && round < FILE_LIMITS.reads; round++) {
         const wanted = readRequests(answer.reply).filter((p) => isReadablePath(p) && (!tree.length || tree.includes(p)));
         const searches = searchRequests(answer.reply);
-        if (!wanted.length && !searches.length) break;
-        setReading([...wanted, ...searches.map((q) => `🔎 ${q}`)]);
+        const web = webRequests(answer.reply);
+        if (!wanted.length && !searches.length && !web.length) break;
+        setReading([...wanted, ...searches.map((q) => `🔎 ${q}`), ...web.map((q) => `🌐 ${q}`)]);
         const map = searches.length ? await repoCodeMap() : undefined;
         const results = searches.map((q) => formatHits(q, map ? searchCodeMap(map, q, 6) : searchPaths(tree, q, 6)));
+        // «بوابة الإنترنت»: what the code can't tell him, from the web through the platform's one door.
+        for (const q of web) {
+          try {
+            const found = await adminRequest<GateAnswer>('/gate', send('POST', { kind: 'ask', bot: 'owner_room', q, lang: 'ar' }));
+            results.push(webResult(q, gateBrief(found, 3500)));
+          } catch (e) { results.push(webResult(q, undefined, e instanceof AdminApiError ? e.message : undefined)); }
+        }
         if (wanted.length) shown = [...shown.filter((f) => !wanted.includes(f.path)), ...(await repoFiles(wanted))].slice(-FILE_LIMITS.files);
         const missing = wanted.filter((p) => !shown.some((f) => f.path === p));
         answer = await again(answer.reply, lookupFollowUp(shown.map((f) => f.path), missing, results));

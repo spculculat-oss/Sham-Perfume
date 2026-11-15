@@ -145,6 +145,8 @@ export const AI_INFRASTRUCTURE = [
   'server/core/manus.ts', 'scripts/shaheen-manus/run.mts',
   // «مختبر عقل شاهين»: examines Shaheen's own trained brain on the runner's open model (never an AI platform).
   'scripts/shaheen-brain/exam.mts',
+  // «بوابة الإنترنت»: the one door between every robot and the web (src/utils/netGate.ts).
+  'server/core/netGate.ts', 'scripts/net-gate.mts',
 ];
 
 export const aiTool = (id: string) => AI_TOOLS.find((t) => t.id === id);

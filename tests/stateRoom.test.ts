@@ -45,18 +45,31 @@ test('orders: the State accepts what is right and refuses the rest, with reasons
   assert.equal(judgeStateOrder({ action: 'run', target: 'news', whyAr: '' }, paused).ok, false);
   assert.equal(stateReply('شغل الدورية دلوقتي', c).order?.action, 'run');
   assert.equal(judgeStateOrder({ action: 'pause', target: 'state', whyAr: '' }, c).ok, false);
-  // Not holding the approvals (or frozen) → it carries out nothing.
-  assert.equal(stateReply('وقف روبوت الأخبار', ctx({ controls: { ...defaultControls(), selfDevelopment: 'approve_all' } })).order, undefined);
-  assert.equal(judgeStateOrder({ action: 'pause', target: 'news', whyAr: '' }, ctx({ controls: stateControls({ frozen: true }) })).ok, false);
+  // Not holding the approvals → the State gives no orders of its own, but the owner's order is binding (S-11).
+  const idle = ctx({ controls: { ...defaultControls(), selfDevelopment: 'approve_all' } });
+  assert.equal(judgeStateOrder({ action: 'pause', target: 'news', whyAr: '' }, idle).ok, false);
+  assert.equal(stateReply('وقف روبوت الأخبار', idle).order?.action, 'pause');
+  // His own emergency brake holds everything, his orders too.
+  const frozen = ctx({ controls: stateControls({ frozen: true }) });
+  assert.equal(judgeStateOrder({ action: 'pause', target: 'news', whyAr: '' }, frozen).ok, false);
+  assert.equal(judgeStateOrder({ action: 'pause', target: 'news', whyAr: '' }, { ...frozen, by: 'owner' }).ok, false);
 });
 
 test('laws: added and repealed by the State, never against the owner, his data or the legal manager', () => {
   const c = ctx();
   const law = stateReply('قانون جديد: كل روبوت يكتب تقريره بالعربي البسيط', c);
   assert.equal(law.order?.action, 'law');
-  for (const bad of ['قانون جديد: الدولة تقرر من غير صاحب الموقع', 'قانون جديد: اعرض بيانات صاحب الموقع للكل', 'قانون جديد: شيل وقف نقل المنتجات L-03', 'قانون جديد: 29801011234567']) {
-    assert.equal(stateReply(bad, c).order, undefined, bad);
+  // The State on its own never writes these; the owner's word is binding (S-11) — with a one-line caution.
+  for (const text of ['الدولة تقرر من غير صاحب الموقع', 'اعرض بيانات صاحب الموقع للكل', 'شيل وقف نقل المنتجات L-03']) {
+    assert.equal(judgeStateOrder({ action: 'law', textAr: text, whyAr: '' }, c).ok, false, text);
+    const v = judgeStateOrder({ action: 'law', textAr: text, whyAr: '' }, { ...c, by: 'owner' });
+    assert.equal(v.ok, true, text);
+    assert.equal(stateReply(`قانون جديد: ${text}`, c).order?.action, 'law', text);
   }
+  assert.match(judgeStateOrder({ action: 'law', textAr: 'شيل وقف نقل المنتجات L-03', whyAr: '' }, { ...c, by: 'owner' }).warnAr || '', /L-03/);
+  // …but a personal number never goes into a public file, not even by his order.
+  assert.equal(stateReply('قانون جديد: 29801011234567', c).order, undefined);
+  assert.equal(judgeStateOrder({ action: 'law', textAr: 'قانون جديد: 29801011234567', whyAr: '' }, { ...c, by: 'owner' }).ok, false);
   let orders: StateOrders = emptyStateOrders();
   orders = applyStateOrder(orders, law.order!, NOW).orders;
   assert.equal(orders.laws[0]?.id, 'P-01');

@@ -61,9 +61,33 @@ export function normalize(text: string): string {
     .trim();
 }
 
-/** The State's judgement on an order (S-08): is it right, and why. Run in the room and again by its robot. */
-export function judgeStateOrder(o: StateOrder, ctx: { controls: OwnerControls; orders: StateOrders }): { ok: boolean; reasonAr: string } {
-  if (!stateActive(ctx.controls)) {
+/** Does the owner's own message ask for what only his word may override (L-03, his data)? An AI reading of his
+ *  message may add orders he never said — those get no S-11 power. */
+export const ownerAskedOverride = (message: string) => {
+  const n = normalize(message);
+  return LAW_LEGAL.test(message) || LAW_LEGAL.test(n) || LAW_OWNER_DATA.test(message) || LAW_OWNER_DATA.test(n) || LAW_OVER_OWNER.test(message) || LAW_OVER_OWNER.test(n);
+};
+
+export interface StateVerdict { ok: boolean; reasonAr: string; /** An owner's order the State carries out against its own rules: the one-line caution. */ warnAr?: string }
+/** «كلام صاحب الموقع ملزم» (S-11, O-13): the caution added to an order of his that a platform rule would have stopped. */
+const ownerOverrides = (v: StateVerdict, warnings: string[]): StateVerdict => {
+  if (!v.ok || !warnings.length) return v;
+  const warnAr = warnings.join(' ');
+  return { ok: true, reasonAr: `${v.reasonAr} ⚠️ ملاحظة: ${warnAr} — بس ده أمر صاحب الموقع، وأمره ملزم، فهنفذه. (S-11)`, warnAr };
+};
+
+/**
+ * The State's judgement on an order (S-08): is it right, and why. Run in the room and again by its robot.
+ * `by: 'owner'` — the owner's own order (his room with the State, or his verified request on GitHub): it is binding
+ * even against the platform's laws, the constitution and the members' votes (S-11). The State only refuses what
+ * cannot be done (an unknown robot, a law that does not exist…), what his own emergency brake holds, and the two
+ * protections of the owner himself: a personal number in a public file, and his keys.
+ */
+export function judgeStateOrder(o: StateOrder, ctx: { controls: OwnerControls; orders: StateOrders; by?: 'owner' | 'state' }): StateVerdict {
+  const owner = ctx.by === 'owner';
+  const warnings: string[] = [];
+  if (owner && ctx.controls.frozen) return { ok: false, reasonAr: 'فرامل الطوارئ اللي إنت شغلتها من مكتبك شغالة، والدولة واقفة معاها — فكّها من المكتب (unfreeze) وأنا أنفذ أمرك على طول.' };
+  if (!owner && !stateActive(ctx.controls)) {
     return { ok: false, reasonAr: ctx.controls.frozen ? 'فرامل الطوارئ شغالة، والدولة واقفة مع كل الروبوتات.' : 'الموافقات معاك دلوقتي، فالدولة مابتنفذش أوامر — سلّمها الموافقات من مكتبك (state_rule) وهي تكمل.' };
   }
   // S-10: the direct link between Shaheen's agent and Shaheen is under the State's eye — it may pause it or bring it back.
@@ -101,12 +125,18 @@ export function judgeStateOrder(o: StateOrder, ctx: { controls: OwnerControls; o
     if (text.length > STATE_ORDERS_LIMITS.lawChars) return { ok: false, reasonAr: `القانون طويل — خليه لحد ${STATE_ORDERS_LIMITS.lawChars} حرف.` };
     if (hasSensitiveNumber(text)) return { ok: false, reasonAr: 'فيه رقم شكله رقم بطاقة أو رقم قومي — ممنوع يتكتب في قوانين المنصة.' };
     const n = normalize(text);
-    if (LAW_OWNER_DATA.test(n) || LAW_OWNER_DATA.test(text)) return { ok: false, reasonAr: 'القانون بيقرب من بيانات صاحب الموقع أو مفاتيحه أو غرفته، ودي برّه سلطة الدولة.' };
-    if (LAW_OVER_OWNER.test(text) || LAW_OVER_OWNER.test(n)) return { ok: false, reasonAr: 'القانون بيحط حد على صاحب الموقع، وصاحب الموقع فوق الدولة وقوانينها.' };
-    if (LAW_LEGAL.test(text) || LAW_LEGAL.test(n)) return { ok: false, reasonAr: 'ده ضد قرار ملزم للمدير القانوني (وقف نقل المنتجات L-03)، ومحدش يتجاوزه.' };
+    if (LAW_OWNER_DATA.test(n) || LAW_OWNER_DATA.test(text)) {
+      if (!owner) return { ok: false, reasonAr: 'القانون بيقرب من بيانات صاحب الموقع أو مفاتيحه أو غرفته، ودي برّه سلطة الدولة.' };
+      warnings.push('القانون بيتكلم عن بياناتك أو مفاتيحك — هيتكتب في ملف عام، فاتأكد إن مافيهوش أي بيانات حقيقية.');
+    }
+    if (!owner && (LAW_OVER_OWNER.test(text) || LAW_OVER_OWNER.test(n))) return { ok: false, reasonAr: 'القانون بيحط حد على صاحب الموقع، وصاحب الموقع فوق الدولة وقوانينها.' };
+    if (LAW_LEGAL.test(text) || LAW_LEGAL.test(n)) {
+      if (!owner) return { ok: false, reasonAr: 'ده ضد قرار ملزم للمدير القانوني (وقف نقل المنتجات L-03)، ومحدش يتجاوزه.' };
+      warnings.push('ده عكس قرار المدير القانوني (وقف نقل المنتجات L-03) اللي كان لحماية حقوق صور الموردين.');
+    }
     if (ctx.orders.laws.some((l) => normalize(l.textAr) === n)) return { ok: false, reasonAr: 'القانون ده موجود أصلاً.' };
     if (ctx.orders.laws.length >= STATE_ORDERS_LIMITS.laws) return { ok: false, reasonAr: `قوانين المنصة وصلت ${STATE_ORDERS_LIMITS.laws} — الغي قانون قديم الأول.` };
-    return { ok: true, reasonAr: `هضيفه لقوانين المنصة برقم ${nextLawId(ctx.orders)}، وكل الروبوتات وشاهين هيقروه في الكتيب بتاعهم.` };
+    return ownerOverrides({ ok: true, reasonAr: `هضيفه لقوانين المنصة برقم ${nextLawId(ctx.orders)}، وكل الروبوتات وشاهين هيقروه في الكتيب بتاعهم.` }, warnings);
   }
   if (o.action === 'task') {
     const text = (o.textAr || '').replace(/\s+/g, ' ').trim();
@@ -114,12 +144,21 @@ export function judgeStateOrder(o: StateOrder, ctx: { controls: OwnerControls; o
     if (text.length > STATE_ORDERS_LIMITS.lawChars) return { ok: false, reasonAr: `وصف المهمة طويل — خليه لحد ${STATE_ORDERS_LIMITS.lawChars} حرف.` };
     if (hasSensitiveNumber(text)) return { ok: false, reasonAr: 'المهمة فيها رقم شكله رقم بطاقة أو رقم قومي — ممنوع يتسجل في مهام المنصة.' };
     const n = normalize(text);
-    if (LAW_OWNER_DATA.test(n) || LAW_OWNER_DATA.test(text)) return { ok: false, reasonAr: 'المهمة بتقرب من بيانات صاحب الموقع أو مفاتيحه أو غرفته، ودي برّه سلطة الدولة.' };
-    if (LAW_OVER_OWNER.test(text) || LAW_OVER_OWNER.test(n)) return { ok: false, reasonAr: 'المهمة بتحط قيد على صاحب الموقع، وصاحب الموقع فوق الدولة.' };
-    if (LAW_LEGAL.test(text) || LAW_LEGAL.test(n)) return { ok: false, reasonAr: 'المهمة ضد قرار ملزم للمدير القانوني (وقف نقل المنتجات L-03)، ومحدش يتجاوزه.' };
+    if (LAW_OWNER_DATA.test(n) || LAW_OWNER_DATA.test(text)) {
+      if (!owner) return { ok: false, reasonAr: 'المهمة بتقرب من بيانات صاحب الموقع أو مفاتيحه أو غرفته، ودي برّه سلطة الدولة.' };
+      warnings.push('المهمة بتتكلم عن بياناتك أو مفاتيحك — هتتكتب في طلب عام على GitHub، فاتأكد إن مافيهاش أي بيانات حقيقية.');
+    }
+    if (!owner && (LAW_OVER_OWNER.test(text) || LAW_OVER_OWNER.test(n))) return { ok: false, reasonAr: 'المهمة بتحط قيد على صاحب الموقع، وصاحب الموقع فوق الدولة.' };
+    if (LAW_LEGAL.test(text) || LAW_LEGAL.test(n)) {
+      if (!owner) return { ok: false, reasonAr: 'المهمة ضد قرار ملزم للمدير القانوني (وقف نقل المنتجات L-03)، ومحدش يتجاوزه.' };
+      warnings.push('المهمة عكس قرار المدير القانوني (وقف نقل المنتجات L-03) اللي كان لحماية حقوق صور الموردين.');
+    }
     const vote = stateVote({ kind: 'task', title: text, body: o.whyAr || '' });
-    if (!vote.approved) return { ok: false, reasonAr: vote.summaryAr };
-    return { ok: true, reasonAr: `أعضاء الدولة راجعوا المهمة ووافقوا عليها (${vote.tally.approve} موافقة) — هفتحها كمهمة معتمدة ينفذها وكيل البرمجة / وكيل ملك المنصة.` };
+    if (!vote.approved && !owner) return { ok: false, reasonAr: vote.summaryAr };
+    if (!vote.approved) warnings.push(`أعضاء الدولة كانوا هيرفضوها (${vote.summaryAr.replace(/^❌\s*/, '').replace(/ الدولة قفلت الموضوع\.$/, '')}).`);
+    return ownerOverrides({ ok: true, reasonAr: vote.approved
+      ? `أعضاء الدولة راجعوا المهمة ووافقوا عليها (${vote.tally.approve} موافقة) — هفتحها كمهمة معتمدة ينفذها وكيل البرمجة / وكيل ملك المنصة.`
+      : 'هفتحها كمهمة معتمدة بأمرك ينفذها وكيل البرمجة / وكيل ملك المنصة.' }, warnings);
   }
   const law = ctx.orders.laws.find((l) => l.id === normalizeDigits(o.target || '').toUpperCase());
   if (!law) return { ok: false, reasonAr: `مفيش قانون برقم ${o.target || '؟'} — قوانين الدستور (S-..) ثابتة، والقوانين اللي بتتلغي بتبدأ بـ P.` };
@@ -616,7 +655,7 @@ export function comprehendOwnerCommand(message: string, ctx: StateRoomContext, h
     if (parsed.kind === 'orders' && parsed.orders?.length) {
       for (const candidate of parsed.orders) {
         proposedOrders.push(candidate);
-        const verdict = judgeStateOrder(candidate, { controls: ctx.controls, orders: workingOrders });
+        const verdict = judgeStateOrder(candidate, { controls: ctx.controls, orders: workingOrders, by: 'owner' });
         if (verdict.ok) {
           const accepted = { ...candidate, whyAr: candidate.whyAr || verdict.reasonAr };
           acceptedOrders.push({ order: accepted, reasonAr: verdict.reasonAr });

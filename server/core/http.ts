@@ -7,6 +7,7 @@ import { HINT_MIN_SCORE, buildSelfStudy, chatReport, hintFrom, knowledgeMap } fr
 import { createGovernanceRouter } from '../governance/router';
 import { createOwnerRoomRouter } from '../ownerRoom';
 import { createStateAgentRouter } from '../stateAgent';
+import { createNetGateRouter, sharedNetGate } from './netGate';
 import { mailProvider, mailProviderLabel } from './mailer';
 import express from 'express';
 import { FinanceService } from '../finance/service';
@@ -275,6 +276,8 @@ export function createShamCore(options: CoreOptions = {}) {
   admin.use('/owner-room', createOwnerRoomRouter({ env, fetch: options.fetch, health: runtime.health }));
   // «وكيل صاحب المنصة في روبوت دولة المنصة»: understands owner commands with constitutional checks & zero storage.
   admin.use('/state-agent', createStateAgentRouter({ env, fetch: options.fetch, health: runtime.health }));
+  // «بوابة الإنترنت»: the one door between the robots and the internet (search, read, ask) — counts only, no content kept.
+  admin.use('/gate', createNetGateRouter(sharedNetGate(env, options.fetch)));
 
   // What this server learned (questions + answers, no visitor data): merged into
   // src/data/live/shaheen-memory.json by scripts/shaheen-memory every two hours.

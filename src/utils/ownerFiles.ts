@@ -104,6 +104,7 @@ export function displayReply(reply: string): string {
     .replace(BLOCK, (_m, path: string) => `\n> 🛠️ اقتراح تعديل على \`${path.trim()}\` — التفاصيل في الكارت تحت.\n`)
     .replace(READ_MARK, (_m, path: string) => `📂 \`${path.trim()}\``)
     .replace(/\[\[\s*(?:ابحث|إبحث|دور|دوّر|search)\s*:\s*([^\]\n]{2,120}?)\s*\]\]/giu, (_m, q: string) => `🔎 «${q.trim()}»`)
+    .replace(/\[\[\s*(?:ويب|إنترنت|انترنت|web)\s*:\s*([^\]\n]{2,200}?)\s*\]\]/giu, (_m, q: string) => `🌐 «${q.trim()}»`)
     .replace(/\n{3,}/g, '\n\n').trim();
 }
 

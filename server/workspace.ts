@@ -45,7 +45,7 @@ export const configuredEngines = (env: Env) => {
 const MAX_CONTEXT = 60_000;
 const MAX_READ = 40_000;
 const LANGS = new Set(SUPPORTED_LANGUAGES.map((l) => l.code));
-const languageOf = (value: unknown): SupportedLanguage => (typeof value === 'string' && LANGS.has(value as SupportedLanguage) ? value as SupportedLanguage : 'ar');
+export const languageOf = (value: unknown): SupportedLanguage => (typeof value === 'string' && LANGS.has(value as SupportedLanguage) ? value as SupportedLanguage : 'ar');
 
 /** Who Shaheen is in the workspace: a general assistant (perfume is his deepest specialty, not his limit). */
 export type WorkspaceTask = 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard' | 'graphic' | 'block' | 'bot' | 'blocks';
