@@ -1,3 +1,4 @@
+import { toolBuilderBench } from '../../src/utils/shaheenToolBuilder';
 /**
  * How Shaheen tests each AI tool: real requests to the live site (the same API GitHub Pages uses), or a
  * look at the files a tool publishes. Questions rotate every run, so answer caches do not hide problems.
@@ -120,6 +121,7 @@ async function workspaceProbes(ctx: ProbeContext): Promise<Probe[]> {
   const status = await timed(() => json<{ ai?: boolean; search?: string; image?: string }>(ctx.fetch, `${ctx.site}/api/workspace/status`));
   const s = status.value;
   const statusFindings: Probe['findings'] = [];
+  for (const check of toolBuilderBench()) if (!check.ok) statusFindings.push({ severe: true, text: `فشل اختبار تشغيل بلوكات مساحة شاهين: ${check.id}` });
   if (!status.error && s && /gemini|openai|claude|deepseek|perplexity/i.test(JSON.stringify(s))) statusFindings.push({ severe: true, text: 'حالة المساحة بتكشف اسم منصة ذكاء للزوار' });
   if (!status.error && s && s.ai === false) statusFindings.push({ severe: false, text: 'المساحة من غير منصة ذكاء متاحة دلوقتي' });
   const q = 'اكتبلي 3 نصايح قصيرة علشان أنظم وقتي في المذاكرة';
@@ -260,6 +262,7 @@ function schoolProbes(ctx: ProbeContext): Probe[] {
   const school = readLive<School>(ctx, 'shaheen-school.json');
   if (!school) return [{ tool: 'shaheen_school', question: 'تقرير مدرسة شاهين', answer: '', ms: 0, ok: false, error: 'التقرير غير موجود (لم تعمل المدرسة بعد)', findings: [] }];
   const findings = [] as Probe['findings'];
+  for (const check of toolBuilderBench()) if (!check.ok) findings.push({ severe: true, text: `فشل تشغيل مثال مصنع البلوكات: ${check.id}` });
   const ageH = (ctx.now - Date.parse(school.updatedAt)) / 3600_000;
   if (ageH > 13) findings.push({ severe: false, text: `المدرسة لم تعمل منذ ${Math.round(ageH)} ساعة` });
   if (school.reliance.score < 50) findings.push({ severe: false, text: `شاهين يرد وحده على ${school.reliance.score}% فقط من أسئلة الامتحان` });

@@ -1,3 +1,4 @@
+import { blockBuilderReply } from './shaheenToolBuilder';
 import { cardOfferReply, hasSensitiveNumber, isOwnerClaim, offersCardDetails, ownerClaimReply, sensitiveNumberReply } from './ownerAuthority';
 import type { SupportedLanguage } from '../types/i18n';
 import { reflexAnswer } from './shaheenReflex';
@@ -16,7 +17,7 @@ import { reflexAnswer } from './shaheenReflex';
  * (designing a perfume, comparing, a missing number) goes to Shaheen's AI engines as before. The answers
  * are calculations, not imitations of the AI, and say so («⚡ حاسبة شاهين الفورية»).
  */
-export type QuickAppId = 'alcohol' | 'concentration' | 'units' | 'thanks' | 'identity' | 'owner' | 'privacy' | 'reflex';
+export type QuickAppId = 'alcohol' | 'concentration' | 'units' | 'thanks' | 'identity' | 'owner' | 'privacy' | 'reflex' | 'blocks';
 export interface QuickAnswer { app: QuickAppId; reply: string }
 
 type Lang = 'ar' | 'en';
@@ -178,6 +179,8 @@ export function quickAnswer(text: string, language: SupportedLanguage): QuickAns
   if (isOwnerClaim(text)) return { app: 'owner', reply: ownerClaimReply(language) };
   const lang: Lang | undefined = language === 'ar' ? 'ar' : language === 'en' ? 'en' : undefined;
   if (!lang) return undefined;
+  const blocks = blockBuilderReply(text, language);
+  if (blocks) return { app: 'blocks', reply: blocks };
   const clean = asciiDigits(text.trim());
   if (!clean || clean.length > 220) return undefined;
   // «الانعكاس»: أسئلة الشحن والجمارك المتكررة بتتجاوب فورًا من جدول مبني على محرك السعر نفسه —
@@ -192,6 +195,7 @@ export function quickAnswer(text: string, language: SupportedLanguage): QuickAns
 
 /** Labels for the admin dashboard and the supervisor's report. */
 export const QUICK_APPS: Record<QuickAppId, { ar: string; en: string }> = {
+  blocks: { ar: 'بناء أداة بالبلوكات', en: 'Build a block tool' },
   alcohol: { ar: 'تخفيف الكحول', en: 'Alcohol dilution' },
   concentration: { ar: 'كميات الزيت والكحول', en: 'Oil and alcohol amounts' },
   reflex: { ar: 'إجابة فورية من شبكة العقل', en: 'Instant answer from the mind' },

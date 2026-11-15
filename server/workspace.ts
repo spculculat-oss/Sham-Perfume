@@ -1,3 +1,4 @@
+import { blockBuilderReply, parseToolSpec, runTool, TOOL_BUILDER_INSTRUCTION } from '../src/utils/shaheenToolBuilder';
 import { REAL_PHOTO_INSTRUCTION, realPhotoReply, wantsRealPhoto } from '../src/utils/realPhotos';
 import { IMAGE_CRAFT_INSTRUCTION, IMAGE_HONESTY_INSTRUCTION, craftEditPrompt, craftImagePrompt, isImageAspect, isImageStyle, type ImageAspect, type ImageStyleId } from '../src/utils/imageCraft';
 import { CONTINUITY_INSTRUCTION, contextualMessage, conversationFocus, isContextFollowUp } from '../src/utils/conversationContext';
@@ -47,7 +48,7 @@ const LANGS = new Set(SUPPORTED_LANGUAGES.map((l) => l.code));
 const languageOf = (value: unknown): SupportedLanguage => (typeof value === 'string' && LANGS.has(value as SupportedLanguage) ? value as SupportedLanguage : 'ar');
 
 /** Who Shaheen is in the workspace: a general assistant (perfume is his deepest specialty, not his limit). */
-export type WorkspaceTask = 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard' | 'graphic' | 'block' | 'bot';
+export type WorkspaceTask = 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard' | 'graphic' | 'block' | 'bot' | 'blocks';
 export function workspaceInstruction(language: SupportedLanguage, task: WorkspaceTask = 'chat'): string {
   const name = SUPPORTED_LANGUAGES.find((l) => l.code === language)?.name || 'العربية';
   const base = `${CONTINUITY_INSTRUCTION}\n${REAL_PHOTO_INSTRUCTION}\nأنت «شاهين»، مساعد ذكاء اصطناعي شامل داخل منصة «شام». بتساعد في أي موضوع: كتابة، ترجمة، دراسة وشرح، برمجة ومواقع، تحليل بيانات وجداول، أفكار وتسويق، شغل ومستندات، أسئلة عامة — والعطور تخصصك العميق مش حدودك.
@@ -65,6 +66,7 @@ ${IMAGE_HONESTY_INSTRUCTION}
 الفيديو المتحرك: الموقع يدعم تصدير فيديو قصير محلياً من صورة بتقريب وتحريك الكاميرا بلا صوت عبر زر «عمل فيديو متحرك» تحت الصورة. ده مش توليد فيديو بالذكاء الاصطناعي ولا تحريك أشخاص أو أشياء داخل المشهد؛ وضّح الفرق بصراحة، ولا تدّعي إنشاء فيديو قبل ضغط الزر ونجاح التسجيل. لو طلب فيديو متحرك، جهّز صورة أساسية بوصف داخل سياج sham-video بدلاً من رفض كل الحركة أو توجيهه لمواقع أخرى. تحريك صورة موجودة يتم محلياً. صيغة الفيديو حسب المتصفح WebM أو MP4، ولا تدّعي دعم GIF أو MP4 تحديداً قبل التحقق.
 توقيع الصور المضاف بواسطة الموقع هو sharing ai فقط (توقيع شاهين). لا تطلب كتابة اسم المزود على الصورة ولا تختلق مصدرها، ولا تمح أو تخفِ علامة منشأ أو حقوق مدمجة أصلاً. التوقيع علامة شام وليس إثباتاً أن نموذجاً خاصاً بشام ولّد الصورة.
 ممنوع: المساعدة في أذى أو اختراق أو احتيال أو محتوى جنسي لقاصرين أو سلاح؛ ونصايح طبية أو قانونية أو مالية خطيرة من غير ما توجّه لمختص.`;
+  if (task === 'blocks') return `${base}\n${TOOL_BUILDER_INSTRUCTION}`;
   if (task === 'plan') {
     return `${base}
 مهمتك دلوقتي: تقسّم طلب المستخدم لخطوات تنفّذها أدوات الموقع. رد بـ JSON بس (من غير أي كلام قبله أو بعده) بالشكل:
@@ -419,11 +421,13 @@ export type AskEvent =
 
 export async function askWorkspace(body: AskBody, { env, fetch: request = fetch, signal, now = () => new Date(), retryDelayMs = 700, health, onEvent }: { env: Env; fetch?: typeof fetch; signal?: AbortSignal; now?: () => Date; retryDelayMs?: number; health?: EngineHealth; onEvent?: (event: AskEvent) => void }): Promise<{ reply: string; sources: SearchResult[]; via?: 'search' }> {
   const language = languageOf(body.language);
-  const task: WorkspaceTask = (['plan', 'summarize', 'site', 'storyboard', 'graphic', 'block', 'bot'] as const).find((t) => t === body.task) || 'chat';
+  const task: WorkspaceTask = (['plan', 'summarize', 'site', 'storyboard', 'graphic', 'block', 'bot', 'blocks'] as const).find((t) => t === body.task) || 'chat';
   // The design tasks arrive whole too (a JSON, or one fenced block of HTML).
-  const json = task === 'plan' || task === 'site' || task === 'storyboard' || task === 'graphic' || task === 'block' || task === 'bot';
+  const json = task === 'plan' || task === 'site' || task === 'storyboard' || task === 'graphic' || task === 'block' || task === 'bot' || task === 'blocks';
   const rawTurns = askTurns({ ...body, context: [] }, false);
   const latest = rawTurns[rawTurns.length - 1]!;
+  const blocksReply = task === 'chat' && !(Array.isArray(body.context) && body.context.length) && !body.search ? blockBuilderReply(latest.text, language) : undefined;
+  if (blocksReply) return { reply: blocksReply, sources: [] };
   const photoReply = task === 'chat' ? realPhotoReply(latest.text, rawTurns.slice(0, -1), language) : undefined;
   if (photoReply) return { reply: photoReply, sources: [] };
   const turns = askTurns(body);
@@ -464,6 +468,7 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
   const deep = body.deep === true && task === 'chat';
   const system = `${workspaceInstruction(language, task)}${craft}\nتاريخ النهارده ${today}. لو السؤال عن حاجة بتتغير مع الوقت (أخبار، أسعار، طقس، نتايج، مناصب) ومفيش نتايج بحث ويب قدامك في الرسالة، قول بصراحة في أول سطر إن معلوماتك ممكن تكون أقدم من النهارده، وبعدها اشرح الخلفية اللي تعرفها من غير ما تخترع أحداث أو أرقام جديدة.`;
   const started = Date.now();
+  let invalidTool = false;
   const failures: { id: string; kind: AskFailure; status?: number }[] = [];
   /** A whole answer from the first platform that gives one (no live writing): the private plan and the rewrite. */
   const quietCall = async (sys: string, quietTurns: EngineTurn[], maxTokens: number, timeoutMs: number, temperature: number): Promise<string | undefined> => {
@@ -511,7 +516,18 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
         onFailure: (kind, status) => { failed = { kind, status }; },
         ...(live ? { onToken: (text: string) => { if (!sent) { sent = true; onEvent?.({ type: 'stage', stage: 'writing' }); } onEvent?.({ type: 'delta', text }); } } : {}),
       });
-      if (typeof reply === 'string' && reply.trim()) { health?.ok(id); return finish(reply.trim()); }
+      if (typeof reply === 'string' && reply.trim()) {
+        if (task === 'blocks') {
+          try {
+            const raw = reply.trim().replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```$/, '');
+            const tool = parseToolSpec(raw);
+            if (!runTool(tool).ok) throw new Error('DEFAULT_RUN_FAILED');
+            health?.ok(id);
+            return `\`\`\`json\n${JSON.stringify(tool, null, 2)}\n\`\`\``;
+          } catch { invalidTool = true; return undefined; }
+        }
+        health?.ok(id); return finish(reply.trim());
+      }
       dropped();
       failures.push({ id, ...(failed || { kind: 'empty' as const }) });
       health?.fail(id, failed?.kind || 'empty');
@@ -542,6 +558,7 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
   const answered = fromSearch();
   if (answered) return answered;
   if (failures.length) console.warn(`[workspace] ask: every platform failed — ${failures.map((f) => `${f.id}=${f.kind}${f.status ? `(${f.status})` : ''}`).join(' ')}`);
+  if (invalidTool) throw new ReadError(422, 'INVALID_TOOL_DEFINITION', 'No valid executable block definition was produced');
   const { status, code } = askFailureCode(failures);
   throw new ReadError(status, code, 'The AI platforms could not answer, try again in a minute');
 }

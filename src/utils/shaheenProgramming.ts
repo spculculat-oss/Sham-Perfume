@@ -1,0 +1,25 @@
+/** A bounded, inspectable programming syllabus. Descriptions are learning material, not installed compilers. */
+export const PROGRAMMING_PATHS = [
+  { id: 'javascript', name: 'JavaScript', ar: 'واجهات الويب والأحداث والوعود. افصل البيانات عن العرض واختبر الحالات غير المتزامنة.', en: 'Web interfaces, events and promises. Separate data from rendering and test asynchronous cases.' },
+  { id: 'typescript', name: 'TypeScript', ar: 'أنواع واتحادات وتضييق الأنواع. الأنواع لا تغني عن التحقق من بيانات المستخدم وقت التشغيل.', en: 'Types, unions and narrowing. Static types do not replace runtime validation of user data.' },
+  { id: 'python', name: 'Python', ar: 'دوال وقوائم وتحليل بيانات واختبارات. الكود يحتاج مفسراً؛ لا تتحول أمثلته إلى تشغيل تلقائي على الخادم.', en: 'Functions, collections, data analysis and tests. Code needs an interpreter, not automatic server execution.' },
+  { id: 'html-css', name: 'HTML / CSS', ar: 'بنية دلالية وتنسيق متجاوب وإتاحة للوحة المفاتيح. ليستا بديلاً لمنطق الحساب أو حماية الخادم.', en: 'Semantic structure, responsive styling and keyboard accessibility. Neither replaces application logic or server security.' },
+  { id: 'sql', name: 'SQL', ar: 'جداول وعلاقات ومعاملات وفهارس. استخدم معاملات الاستعلام والصلاحيات المحدودة؛ البلوكات الحالية لا تتصل بقاعدة البيانات.', en: 'Tables, relationships, transactions and indexes. Use parameterized queries and least privilege; current blocks have no database access.' },
+  { id: 'c-cpp', name: 'C / C++', ar: 'ذاكرة ومؤشرات وملكية موارد وبناء مترجم. اختبر الحدود وتجنب تجاوز الذاكرة والسلوك غير المعرّف.', en: 'Memory, pointers, resource ownership and compilation. Check bounds and avoid undefined behaviour.' },
+  { id: 'rust', name: 'Rust', ar: 'ملكية واستعارة وأنواع Result وOption. افصل الأخطاء المتوقعة عن الانهيارات.', en: 'Ownership, borrowing, Result and Option. Separate expected errors from panics.' },
+  { id: 'java-csharp', name: 'Java / C#', ar: 'نمذجة كائنية وواجهات وحقن اعتماديات واختبارات وحدات. لا تضع الأسرار في المصدر.', en: 'Objects, interfaces, dependency injection and unit tests. Keep secrets out of source code.' },
+  { id: 'go', name: 'Go', ar: 'خدمات وتزامن وContext وإلغاء ومهل. كل عمل متزامن يحتاج حدوداً وإدارة موارد.', en: 'Services, concurrency, context, cancellation and timeouts. Bound concurrent work and manage resources.' },
+  { id: 'mobile', name: 'Kotlin / Swift / Dart', ar: 'واجهات ودورة حياة وأذونات وتخزين محلي. لا تطلب إذناً لا تحتاجه الأداة.', en: 'UI, lifecycle, permissions and local storage. Request only permissions the tool needs.' },
+  { id: 'shell', name: 'Shell', ar: 'أتمتة موثوقة مع اقتباس المدخلات وفحص رموز الخروج. لا تُشغّل أوامر مولدة من مدخلات الزائر.', en: 'Reliable automation, quoting and exit codes. Never execute shell commands generated from visitor input.' },
+  { id: 'r-julia', name: 'R / Julia', ar: 'تحليل عددي وإحصاء ومصفوفات. وثّق الوحدات والفرضيات ولا تعتبر نتيجة المثال دليلاً علمياً عاماً.', en: 'Numerical analysis, statistics and matrices. Document units and assumptions; a sample result is not general scientific evidence.' },
+] as const;
+export const TOOL_BUILDING_LESSONS = [
+  { id: 'tool-contract', title: 'عقد الأداة قبل البرمجة', text: 'ابدأ بهدف محدود ومدخلات بأنواع ووحدات وحدود ونتيجة متوقعة. عرّف مثالاً عادياً وحدياً وخاطئاً، ولا تعد ببناء أي أداة بلا متطلبات.' },
+  { id: 'tool-flow', title: 'تركيب بلوكات تدفق البيانات', text: 'الأداة المحلية تتكون من inputs ثم nodes ثم outputs. كل node له id فريد وتعبير من literal أو input أو ref أو op أو if أو map. ref يشير لبلوك سابق فقط، وبذلك نمنع الدورات والمراجع المفقودة قبل التشغيل.' },
+  { id: 'tool-branch', title: 'القرار والتكرار المحدود', text: 'if يختبر قيمة منطقية وينفذ الفرع المختار فقط. map يمر على قائمة محدودة، وitem قيمة العنصر الحالي. التكرار ليس مفتوحاً: قوائم بحد أقصى 100 عنصر وتشغيل بميزانية 5000 خطوة.' },
+  { id: 'tool-types', title: 'الأنواع والتحقق من المدخلات', text: 'number وtext وboolean وlist أنواع البلوكات. لا تجمع رقماً مع نص ضمناً، وارفض القيم غير العددية والأعداد غير المنتهية والقسمة على صفر. افحص JSON قبل التشغيل ولا تعتبر TypeScript حماية وقت التشغيل.' },
+  { id: 'tool-tests', title: 'اختبار أداة مولدة', text: 'افصل التحقق البنيوي عن اختبار النتائج: شغّل أمثلة بمدخلات معلومة وقارن الناتج المتوقع، واختبر الفشل والحدود. نجاح خمسة أمثلة لا يثبت صحة كل أداة يكتبها المستخدم.' },
+  { id: 'tool-security', title: 'حدود تشغيل الأدوات', text: 'لغة البلوكات ليست eval ولا JavaScript. لا شبكة ولا أسرار ولا ملفات ولا DOM ولا أوامر نظام ولا نشر. أسماء الإجراءات قائمة مغلقة. أي موصل جديد يحتاج مراجعة صلاحيات واختبارات وموافقة المالك.' },
+  { id: 'tool-algorithms', title: 'الخوارزميات وهياكل البيانات', text: 'اختر بين قائمة وخريطة ومجموعة حسب الوصول المطلوب. افهم O(n) وO(n log n) وO(n²)، وافحص حجم البيانات قبل المعالجة. الترتيب العددي يحتاج مقارنة عددية لا ترتيب نصي.' },
+  { id: 'tool-architecture', title: 'هندسة الأداة واختبارها ونشرها', text: 'افصل الوصف عن المفسر والواجهة. احتفظ بنسخة JSON قابلة للمراجعة والتصدير. التوليد ليس تثبيتاً في الموقع: النشر يمر بالاختبارات والبناء ومراجعة المالك، مع خطة تراجع ومن غير تغيير المدفوعات أو الصلاحيات تلقائياً.' },
+] as const;

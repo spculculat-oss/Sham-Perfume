@@ -77,8 +77,8 @@ export const AI_TOOLS: AiToolDef[] = [
   },
   {
     id: 'shaheen_workspace', nameAr: 'مساحة شاهين — المساعد الشامل', nameEn: 'Shaheen Workspace — general assistant',
-    descriptionAr: 'شاهين كمساعد في أي موضوع (مش العطور بس): محادثة بالسياق والملفات، بحث ويب بمصادره، قراءة وتلخيص الصفحات والـ PDF بأمان (عناوين عامة بس)، خطط مهام متعددة الخطوات، ورسم الصور. الكود والملفات والمستندات وتعديل الصور والقراءة بالصوت وتحريك تقريب/كاميرا من صورة لتصدير فيديو صامت بتوقيع sharing ai بتحصل في متصفح الزائر؛ التحريك ليس توليد فيديو للمشهد، وملفاته مش بتتخزن على السيرفر.',
-    sources: ['server/workspace.ts', 'server/videoEngine.ts'], routes: ['/api/workspace/status', '/api/workspace/ask', '/api/workspace/ask/stream', '/api/workspace/search', '/api/workspace/read', '/api/workspace/image', '/api/workspace/video/start'], acceptsGuidance: false,
+    descriptionAr: 'شاهين كمساعد في أي موضوع (مش العطور بس): محادثة بالسياق والملفات، بحث ويب بمصادره، قراءة وتلخيص الصفحات والـ PDF بأمان (عناوين عامة بس)، خطط مهام متعددة الخطوات، ورسم الصور، ومصنع بلوكات يركّب أمثلة محلية ويصمم تعريفات أدوات جديدة اختيارياً عبر المحرك المهيأ؛ كل تعريف يُفحص ويجرب محلياً بلا صلاحية نشر أو شبكة أو ملفات. الكود والملفات والمستندات وتعديل الصور والقراءة بالصوت وتحريك تقريب/كاميرا من صورة لتصدير فيديو صامت بتوقيع sharing ai بتحصل في متصفح الزائر؛ التحريك ليس توليد فيديو للمشهد، وملفاته مش بتتخزن على السيرفر.',
+    sources: ['server/workspace.ts', 'server/videoEngine.ts', 'src/utils/shaheenToolBuilder.ts', 'src/workspace/BlocksPanel.tsx'], routes: ['/api/workspace/status', '/api/workspace/ask', '/api/workspace/ask/stream', '/api/workspace/search', '/api/workspace/read', '/api/workspace/image', '/api/workspace/video/start'], acceptsGuidance: false,
   },
   {
     id: 'store_advisor', nameAr: 'مستشار التسوق «اسأل شاهين» في المتجر', nameEn: 'Store shopping advisor',
@@ -98,7 +98,7 @@ export const AI_TOOLS: AiToolDef[] = [
   {
     id: 'shaheen_school', nameAr: 'مدرسة شاهين (الاعتماد على النفس)', nameEn: "Shaheen's school (self-reliance)",
     descriptionAr: 'كل 6 ساعات يمتحن شاهين نفسه على كل المسارات (العطور، جميع لغات البرمجة، بناء بلوكات البرمجة وجدولتها، هندسة البرمجة، الجرافيك والديزاين، صيانة المواقع، الذكاء الاصطناعي بجميع مهاراته وأحدث العلوم، ومجال كل أداة ذكاء اصطناعي)، يتعلم من مكتبته بدون ذكاء اصطناعي (تعليم مكثف)، ويذاكر الباقي بمساعدة محرك متاح بالاعتماد على مراجع المكتبة الداخلية الموثقة فقط؛ نتائج البحث الخارجي غير المراجعة لا تتحول إلى ذاكرة أو دروس مدرسية. كمان يبني برامجه بالبلوكات ويجدولها (مذاكرة، صيانة موقع، تطوير الأدوات، إدارة ذاتية) في سجل بلوكات شاهين.',
-    sources: ['scripts/shaheen-school/run.mts'], routes: [], acceptsGuidance: true,
+    sources: ['scripts/shaheen-school/run.mts', 'src/utils/shaheenToolBuilder.ts', 'src/workspace/BlocksPanel.tsx'], routes: [], acceptsGuidance: true,
   },
   {
     id: 'seo_agent', nameAr: 'منارة شاهين — المندوب الإعلامي', nameEn: 'Manaret Shaheen — SEO & media agent',

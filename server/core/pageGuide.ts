@@ -17,7 +17,7 @@ import { normalize } from './text';
 export type PageId =
   | 'home' | 'store' | 'productDetail' | 'concentration' | 'pyramid' | 'alcohol' | 'costing'
   | 'molecule_studio' | 'maceration_simulator' | 'raw_materials' | 'world_perfumes' | 'perfume_news'
-  | 'master_ai' | 'library' | 'community' | 'community/merchant' | 'community/me' | 'guide' | 'perfumes' | 'cosmetics'
+  | 'workspace' | 'master_ai' | 'library' | 'community' | 'community/merchant' | 'community/me' | 'guide' | 'perfumes' | 'cosmetics'
   | 'perfume_designers' | 'cosmetic_designers';
 
 /** What an answer must contain to count as a sensible answer *on that page*. */
@@ -48,6 +48,12 @@ export interface PageGuide {
 }
 
 export const PAGES: PageGuide[] = [
+  {
+    id: 'workspace', label: { ar: 'مساحة شاهين', en: 'Shaheen Workspace' },
+    what: { ar: 'الزائر في مساحة شاهين: محادثة وبرمجة وملفات وصور، وتبويب بلوكات لبناء أدوات محلية محدودة من تعريف JSON.', en: 'The visitor is in Shaheen Workspace: chat, code, files, images and a Blocks tab for bounded local JSON tools.' },
+    offer: { ar: 'وجّهه لتبويب بلوكات لاختيار مثال أو تعديل التعريف وفحصه ثم تشغيله. الحفظ على الجهاز فقط، ولا نشر أو وصول للشبكة أو الأسرار.', en: 'Offer the Blocks tab: choose an example or edit a definition, validate, then run. Saving is device-only, with no deployment, network or secret access.' },
+    questions: [{ ar: 'ازاي أستخدم مصنع أدوات شاهين؟', en: 'How do I use the block tool workshop?', expect: 'any' }, { ar: 'مصنع أدوات شاهين بيحفظ الأداة فين؟', en: 'Where does the block tool workshop save my tool?', expect: 'any' }],
+  },
   {
     id: 'home', label: { ar: 'الرئيسية', en: 'Home' },
     what: { ar: 'الزائر في الصفحة الرئيسية: بيشوف أقسام الموقع (المعمل، المتجر، المكتبة، المجتمع) وبيدور على نقطة بداية.', en: 'The visitor is on the home page: the site sections (lab, store, library, community) and a place to start.' },

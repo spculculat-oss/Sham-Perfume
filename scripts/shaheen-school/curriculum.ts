@@ -1,3 +1,4 @@
+import { TOOL_BUILDING_LESSONS } from '../../src/utils/shaheenProgramming';
 /**
  * «أكاديمية مدرسة شاهين» — the new missions of the school (scripts/shaheen-school):
  *   1. ALL known programming languages (100+) — what each one is and what it is used for.
@@ -693,6 +694,7 @@ const PERFUME_SKILLS: AcademyPair[] = [
 ];
 const PAIRS: AcademyPair[] = [
   ...PROGRAMMING_LANGUAGES.map((l) => ask(lang(...l), `ايه هي لغة ${l[0]}؟`, 'lang', 'prog_langs')),
+  ...TOOL_BUILDING_LESSONS.map((entry) => ask(lesson(entry.id, 'blocks', 'blocks', entry.title, entry.text), `ايه هي ${entry.title}؟`)),
   ...LANG_CONCEPTS, ...BLOCK_LESSONS, ...SOFTWARE_LESSONS, ...GRAPHICS_LESSONS, ...IMAGINATION_LESSONS, ...WEBCARE_LESSONS, ...AI_LESSONS,
   ...SECURITY_LESSONS, ...HACKING_LESSONS, ...THREAT_LESSONS, ...QUANTUM_LESSONS, ...toolPairs(),
   ...AI_PROJECT_LESSONS, ...IT_LESSONS, ...FRONTIER_LESSONS, ...CHEM_LESSONS, ...PHYS_LESSONS, ...MATH_LESSONS,

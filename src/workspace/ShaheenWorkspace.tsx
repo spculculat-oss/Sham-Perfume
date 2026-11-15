@@ -17,14 +17,17 @@ import { AutomationPanel } from './AutomationPanel';
 import { ConnectPanel } from './ConnectPanel';
 import { serverReachable, workspaceStatus, type WsContextFile, type WsStatus } from './workspaceApi';
 import type { CodeBlock, Runnable } from './codeBlocks';
+import type { ToolSpec } from '../utils/shaheenToolBuilder';
 import { wsText, type WsKey } from './strings';
 
 /** «استوديو شاهين» (sites, videos, logos) loads only when opened. */
+const BlocksPanel = lazyWithReload(() => import('./BlocksPanel'));
 const StudioPanel = lazyWithReload(() => import('../studio/StudioPanel'));
 
-type Tab = 'chat' | 'studio' | 'search' | 'code' | 'files' | 'images' | 'auto' | 'connect';
+type Tab = 'chat' | 'blocks' | 'studio' | 'search' | 'code' | 'files' | 'images' | 'auto' | 'connect';
 const TABS: Array<{ id: Tab; key: WsKey; icon: typeof MessageSquare }> = [
   { id: 'chat', key: 'tab_chat', icon: MessageSquare },
+  { id: 'blocks', key: 'tab_blocks', icon: Workflow },
   { id: 'studio', key: 'tab_studio', icon: Wand2 },
   { id: 'search', key: 'tab_search', icon: Search },
   { id: 'code', key: 'tab_code', icon: Code2 },
@@ -39,6 +42,7 @@ export default function ShaheenWorkspace({ currentLang }: { currentLang: Support
   const w = (k: WsKey) => wsText(lang, k);
   const dir = SUPPORTED_LANGUAGES.find((l) => l.code === lang)?.dir || 'ltr';
   const [tab, setTab] = useState<Tab>('chat');
+  const [toolDraft, setToolDraft] = useState<ToolSpec | undefined>();
   const [status, setStatus] = useState<WsStatus | null>(null);
   const [offline, setOffline] = useState(!serverReachable());
   const [items, setItems] = useState<ChatItem[]>(loadChat);
@@ -80,13 +84,14 @@ export default function ShaheenWorkspace({ currentLang }: { currentLang: Support
         ))}
       </nav>
       <div className="rounded-3xl border border-stone-200 bg-stone-50/60 p-3 sm:p-5">
-        {tab === 'chat' && <ChatPanel lang={lang} items={items} setItems={setItems} attachments={attachments} setAttachments={setAttachments} onOpenEditor={openEditor} offline={offline} />}
+        {tab === 'chat' && <ChatPanel lang={lang} items={items} setItems={setItems} attachments={attachments} setAttachments={setAttachments} onOpenEditor={openEditor} onOpenBlocks={(tool) => { setToolDraft(tool); setTab('blocks'); }} offline={offline} />}
         {tab === 'studio' && (
           <Suspense fallback={<p className="flex items-center gap-2 p-4 text-sm text-stone-500"><Loader2 className="h-4 w-4 animate-spin" />…</p>}>
             <StudioPanel lang={lang} ai={Boolean(status?.ai) && !offline} onOpenCode={(code) => openEditor({ lang: 'html', code })} />
           </Suspense>
         )}
         {tab === 'search' && <SearchPanel lang={lang} onToChat={useInChat} />}
+        {tab === 'blocks' && <Suspense fallback={<p>…</p>}><BlocksPanel lang={lang} initialTool={toolDraft} /></Suspense>}
         {tab === 'code' && <CodePanel lang={lang} editor={editor} setEditor={setEditor} />}
         {tab === 'files' && <FilesPanel lang={lang} onUseInChat={useInChat} onOpenCode={(l, code) => openEditor({ lang: l, code })} onEditImage={(b) => { setIncomingImage(b); setTab('images'); }} />}
         {tab === 'images' && <ImagesPanel lang={lang} aiImages={status?.image === 'ai'} incoming={incomingImage} onIncomingUsed={clearIncoming} />}
