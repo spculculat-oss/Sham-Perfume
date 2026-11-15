@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   AlertTriangle, BookOpen, Check, CheckCircle2, ChevronDown, Copy, FlaskConical, Leaf, MessageCircle, Printer, Search,
-  ShieldCheck, Sparkles, Store, Thermometer, Timer, Droplets, PenLine,
+  ShieldCheck, Sparkles, Store, Thermometer, Timer, Droplets, PenLine, Bookmark, X,
 } from 'lucide-react';
 import { designersText } from '../لغات/designersL10n';
 import type { SupportedLanguage } from '../types/i18n';
@@ -109,6 +109,34 @@ function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; chi
   );
 }
 
+/** One saved formula: only the choices, so it is rebuilt with the current, checked rules when reopened. */
+export interface SavedCosmetic { product: CosmeticProduct; skin: SkinType; concerns: Concern[]; batch: number; scent: boolean; nutFree: boolean; vegan: boolean; at: number }
+export const COSMETICS_SAVED_KEY = 'sham-cosmetics-saved-v1';
+const SAVED_MAX = 20;
+
+/** Reads the saved list from this device; anything broken or unknown is dropped, never trusted. */
+export function readSavedCosmetics(raw: string | null): SavedCosmetic[] {
+  try {
+    const list = JSON.parse(raw || '[]');
+    if (!Array.isArray(list)) return [];
+    return list.filter((x): x is SavedCosmetic => Boolean(x) && (COSMETIC_PRODUCTS as string[]).includes(x.product) && (SKIN_TYPES as string[]).includes(x.skin)
+      && Array.isArray(x.concerns) && x.concerns.every((c: unknown) => (CONCERNS as unknown[]).includes(c)) && Number.isFinite(x.batch))
+      .map((x) => ({ ...x, batch: Math.min(2000, Math.max(10, Math.round(x.batch))), concerns: x.concerns.slice(0, 3), scent: Boolean(x.scent), nutFree: Boolean(x.nutFree), vegan: Boolean(x.vegan), at: Number(x.at) || 0 }))
+      .slice(0, SAVED_MAX);
+  } catch { return []; }
+}
+
+/** Adds a formula on top; the same choices saved twice stay one entry. */
+export function addSavedCosmetic(list: SavedCosmetic[], item: SavedCosmetic): SavedCosmetic[] {
+  const same = (a: SavedCosmetic) => a.product === item.product && a.skin === item.skin && a.batch === item.batch && a.scent === item.scent
+    && a.nutFree === item.nutFree && a.vegan === item.vegan && a.concerns.join() === item.concerns.join();
+  return [item, ...list.filter((x) => !same(x))].slice(0, SAVED_MAX);
+}
+
+function loadSaved(): SavedCosmetic[] {
+  try { return readSavedCosmetics(localStorage.getItem(COSMETICS_SAVED_KEY)); } catch { return []; }
+}
+
 function Formulator({ lang, onNavigate }: { lang: SupportedLanguage; onNavigate: (tab: string) => void }) {
   const ct = (k: CosmeticsUiKey) => cosmeticsText(lang, k);
   const [product, setProduct] = useState<CosmeticProduct>('face_cream');
@@ -119,6 +147,14 @@ function Formulator({ lang, onNavigate }: { lang: SupportedLanguage; onNavigate:
   const [nutFree, setNutFree] = useState(false);
   const [vegan, setVegan] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState<SavedCosmetic[]>(loadSaved);
+  const [justSaved, setJustSaved] = useState(false);
+  useEffect(() => { try { localStorage.setItem(COSMETICS_SAVED_KEY, JSON.stringify(saved)); } catch { /* storage blocked */ } }, [saved]);
+  const save = () => {
+    setSaved((list) => addSavedCosmetic(list, { product, skin, concerns, batch, scent, nutFree, vegan, at: Date.now() }));
+    setJustSaved(true); setTimeout(() => setJustSaved(false), 1800);
+  };
+  const reopen = (x: SavedCosmetic) => { setProduct(x.product); setSkin(x.skin); setConcerns(x.concerns); setBatch(x.batch); setScent(x.scent); setNutFree(x.nutFree); setVegan(x.vegan); };
   const formula = useMemo(() => formulateCosmetic({ product, skin, concerns, batch, scent, nutFree, vegan }), [product, skin, concerns, batch, scent, nutFree, vegan]);
   const problems = useMemo(() => checkCosmeticFormula(formula), [formula]);
   const toggle = (c: Concern) => setConcerns((list) => (list.includes(c) ? list.filter((x) => x !== c) : [...list, c].slice(-3)));
@@ -180,6 +216,23 @@ function Formulator({ lang, onNavigate }: { lang: SupportedLanguage; onNavigate:
             </label>
           ))}
         </div>
+        {saved.length > 0 && (
+          <div className="space-y-2 border-t border-stone-100 pt-4" data-testid="cos-saved">
+            <p className="text-xs font-bold text-stone-700">{ct('savedTitle')}</p>
+            <div className="flex flex-wrap gap-1.5">
+              {saved.map((x) => (
+                <span key={x.at} className="inline-flex items-center rounded-xl border border-rose-200 bg-white text-[11px] font-bold text-rose-800">
+                  <button type="button" onClick={() => reopen(x)} className="px-2.5 py-1.5 hover:bg-rose-50 rounded-s-xl cursor-pointer">
+                    {PRODUCT_ICON[x.product]} {cosmeticTitle(formulateCosmetic(x), lang)}
+                  </button>
+                  <button type="button" aria-label={ct('savedRemove')} title={ct('savedRemove')} onClick={() => setSaved((list) => list.filter((y) => y.at !== x.at))} className="px-1.5 py-1.5 text-stone-400 hover:text-red-700 cursor-pointer">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       <section className="bg-white rounded-3xl border border-stone-200/80 p-5 sm:p-6 shadow-xs space-y-5" data-testid="cosmetics-sheet">
@@ -194,6 +247,9 @@ function Formulator({ lang, onNavigate }: { lang: SupportedLanguage; onNavigate:
             </button>
             <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-stone-200 text-xs font-bold hover:bg-stone-50 cursor-pointer">
               <Printer className="w-3.5 h-3.5" /> {ct('print')}
+            </button>
+            <button type="button" onClick={save} data-testid="cos-save" className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-800 text-xs font-bold hover:bg-rose-100 cursor-pointer">
+              {justSaved ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Bookmark className="w-3.5 h-3.5" />} {ct(justSaved ? 'savedOk' : 'save')}
             </button>
           </div>
         </div>
