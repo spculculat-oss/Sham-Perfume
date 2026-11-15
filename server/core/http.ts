@@ -3,6 +3,7 @@
  *   /api/assistant/*  public visitor API (rate limited)
  *   /api/admin/*      management API (Bearer SHAM_ADMIN_TOKEN, constant-time compare)
  */
+import { HINT_MIN_SCORE, buildSelfStudy, hintFrom } from './selfStudy';
 import { createGovernanceRouter } from '../governance/router';
 import { createOwnerRoomRouter } from '../ownerRoom';
 import { createStateAgentRouter } from '../stateAgent';
@@ -500,6 +501,12 @@ export function createShamCore(options: CoreOptions = {}) {
     res.json({ items });
   }));
   admin.patch('/gaps/:id', wrap(async (req, res) => { res.json({ item: await repo.resolveGap(String(req.params.id), req.body || {}) }); }));
+  // «شاهين بيذاكر لنفسه»: his own study plan from the real gaps — fields, mastery, what to learn next, and the
+  // closest thing in his library for each question. Read-only; a lesson still needs the owner's approval above.
+  admin.get('/self-study', wrap(async (_req, res) => {
+    const [gaps, index] = await Promise.all([repo.gaps(), repo.searchIndex()]);
+    res.json(buildSelfStudy(gaps, { hint: (question) => hintFrom(index.search(question, 4, HINT_MIN_SCORE)) }));
+  }));
   admin.get('/feedback', wrap(async (_req, res) => {
     const items = (await repo.conversations()).flatMap((c) => c.messages.map((m, i) => ({ m, i, c }))
       .filter(({ m }) => m.feedback)

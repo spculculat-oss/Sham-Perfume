@@ -181,6 +181,13 @@ test('HTTP: SSE stream, feedback, privacy endpoints and admin quality/agent APIs
     assert.equal(overview.notifications.configured, false);
     const gaps = await (await fetch(`${base}/admin/gaps`, { headers: auth })).json();
     assert.equal(gaps.items[0].source, 'negative_feedback');
+    // «شاهين بيذاكر لنفسه»: the same gap shows up in his study plan, sorted into a field, and the plan needs the admin token.
+    const study = await (await fetch(`${base}/admin/self-study`, { headers: auth })).json();
+    assert.equal(study.plan[0].id, gaps.items[0].id);
+    assert.equal(study.plan[0].source, 'negative_feedback');
+    assert.equal(study.focus, study.plan[0].field);
+    assert.equal(study.totals.open, 1);
+    assert.notEqual((await fetch(`${base}/admin/self-study`)).status, 200);
     const ignored = await (await fetch(`${base}/admin/gaps/${gaps.items[0].id}`, { method: 'PATCH', headers: auth, body: JSON.stringify({ status: 'ignored' }) })).json();
     assert.equal(ignored.item.status, 'ignored');
     const feedback = await (await fetch(`${base}/admin/feedback`, { headers: auth })).json();

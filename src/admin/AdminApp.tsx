@@ -2005,6 +2005,86 @@ function SpecialtiesReviewCard() {
   );
 }
 
+interface SelfStudyView {
+  generatedAt: string;
+  totals: { open: number; resolved: number; ignored: number; mastery: number | null };
+  trend: { last7: number; prev7: number; direction: 'better' | 'worse' | 'same' };
+  fields: { field: string; open: number; resolved: number; ignored: number; waiting: number; mastery: number | null }[];
+  focus: string | null;
+  plan: { id: string; question: string; field: string; count: number; source: 'no_answer' | 'negative_feedback'; priority: number; hint?: { docId: string; title: string; excerpt: string; score: number } }[];
+}
+const STUDY_FIELD_LABELS = reactiveMap<Record<string, string>>(() => ({
+  perfume: T('العطور'), store: T('المتجر والطلبات'), media: T('الميديا والإخراج'), design: T('الجرافيك والتصميم'), marketing: T('التسويق'),
+  code: T('البرمجة والمواقع'), writing: T('الكتابة والترجمة'), science: T('العلوم'), health: T('الصحة'), religion: T('الدين'), general: T('عام'),
+}));
+
+/** «شاهين بيذاكر لنفسه»: his study plan from the real gaps. `onStudy` opens the lesson editor with his starting point. */
+function SelfStudyCard({ onStudy }: { onStudy: (id: string, question: string, start: string) => void }) {
+  const { data, error, loading, reload } = useLoad<SelfStudyView>('/self-study');
+  const label = (field: string) => STUDY_FIELD_LABELS[field] || field;
+  return (
+    <section className={`${card} mb-4`} data-testid="self-study">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 className="font-bold text-sm flex items-center gap-1.5"><Brain className="w-4 h-4 text-amber-600" />{T('شاهين بيذاكر لنفسه')}</h2>
+          <p className="text-[11px] text-stone-500 mt-0.5">{T('شاهين بيراجع الأسئلة اللي ما عرفش يرد عليها، يقسمها لمجالات، ويرتب يذاكر إيه الأول. كل درس محتاج موافقتك قبل ما يدخل معرفته.')}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          {data && data.totals.mastery !== null && (
+            <span className={`rounded-full px-3 py-1 text-xs font-bold ${data.totals.mastery >= 80 ? 'bg-emerald-100 text-emerald-800' : data.totals.mastery >= 50 ? 'bg-amber-100 text-amber-900' : 'bg-red-100 text-red-800'}`}>
+              {T('نسبة اللي اتعلمه')} <span dir="ltr">{formatAdminNumber(data.totals.mastery)}%</span>
+            </span>
+          )}
+          <button onClick={reload} className={`${btn} bg-white border border-stone-300`} disabled={loading}>{loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}{T('تحديث')}</button>
+        </div>
+      </div>
+      <Feedback error={error} loading={loading && !data} />
+      {data && (
+        <div className="mt-3 space-y-3">
+          <p className="text-xs text-stone-600">
+            {TP('أسئلة جديدة ما عرفش يرد عليها: {last} في آخر ٧ أيام، و{prev} في السبعة اللي قبلهم.', { last: formatAdminNumber(data.trend.last7), prev: formatAdminNumber(data.trend.prev7) })}{' '}
+            <span className={data.trend.direction === 'better' ? 'font-bold text-emerald-700' : data.trend.direction === 'worse' ? 'font-bold text-red-700' : 'text-stone-500'}>
+              {data.trend.direction === 'better' ? T('بيتحسن') : data.trend.direction === 'worse' ? T('محتاج مذاكرة أكتر') : T('ثابت')}
+            </span>
+          </p>
+          {!data.plan.length
+            ? <p className="text-xs text-emerald-700">{T('مفيش أسئلة مفتوحة دلوقتي. شاهين مذاكر كل اللي اتسأل فيه.')}</p>
+            : (
+              <>
+                {data.focus && <p className="text-xs rounded-lg bg-amber-50 border border-amber-200 p-2 text-amber-900">{TP('أول مجال يذاكره: {field} — فيه أكتر زوار مستنيين إجابة.', { field: label(data.focus) })}</p>}
+                <div className="flex flex-wrap gap-1.5">
+                  {data.fields.map((f) => (
+                    <span key={f.field} className="rounded-full border border-stone-200 bg-stone-50 px-2.5 py-1 text-[11px] text-stone-700">
+                      {label(f.field)} · <span dir="ltr">{f.mastery === null ? '—' : `${formatAdminNumber(f.mastery)}%`}</span> · {TP('{n} مفتوح', { n: formatAdminNumber(f.open) })}
+                    </span>
+                  ))}
+                </div>
+                <ol className="space-y-2">
+                  {data.plan.map((item, i) => (
+                    <li key={item.id} className="rounded-lg border border-stone-200 p-2.5 text-xs">
+                      <div className="flex flex-wrap items-start justify-between gap-2">
+                        <p className="font-bold text-stone-800" dir="auto"><span className="text-stone-400" dir="ltr">{formatAdminNumber(i + 1)}.</span> {item.question}</p>
+                        <button type="button" onClick={() => onStudy(item.id, item.question, item.hint?.excerpt || '')} className={`${btn} bg-amber-800 text-white`}>{T('اكتب الدرس')}</button>
+                      </div>
+                      <p className="mt-1 text-[11px] text-stone-500">
+                        {label(item.field)} · {TP('اتسأل {n} مرة', { n: formatAdminNumber(item.count) })}{item.source === 'negative_feedback' ? ` · ${T('زائر ما عجبوش الرد')}` : ''}
+                      </p>
+                      {item.hint && (
+                        <p className="mt-1.5 rounded bg-stone-50 p-2 text-[11px] text-stone-600" dir="auto">
+                          <span className="font-bold">{T('أقرب حاجة يعرفها:')}</span> {item.hint.title} — {item.hint.excerpt}
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </>
+            )}
+        </div>
+      )}
+    </section>
+  );
+}
+
 function QualityPanel() {
   const gaps = useLoad<{ items: KnowledgeGap[] }>('/gaps');
   const feedback = useLoad<{ items: FeedbackItem[] }>('/feedback');
@@ -2037,8 +2117,9 @@ function QualityPanel() {
       {error && <p role="alert" className="mb-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
       <PagesReviewCard />
       <SpecialtiesReviewCard />
+      <SelfStudyCard onStudy={(id, question, start) => { setEditing(id); setDraft({ title: question, content: start }); document.querySelector('[data-testid="gap-list"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} />
       <div className="grid xl:grid-cols-2 gap-4">
-        <section className={card}>
+        <section className={card} data-testid="gap-list">
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-bold text-sm flex items-center gap-1.5"><Lightbulb className="w-4 h-4 text-amber-600" />{T('فجوات المعرفة')}</h2>
             <div className="flex text-xs rounded-lg border border-stone-200 overflow-hidden">
