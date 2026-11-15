@@ -1,3 +1,4 @@
+import { toolBuilderBench } from '../../src/utils/shaheenToolBuilder';
 /**
  * «تدريب وش عمل» — Shaheen's hands-on practice: real exercises that RUN and are VERIFIED on every school run.
  * Code actually executes, calculations are actually computed, perfume formulas are designed and their
@@ -166,6 +167,7 @@ export function runPractice(memory: MemoryFile, at: string): PracticeReport {
   };
 
   for (const e of [...CODE_EXERCISES, ...MATH_EXERCISES]) push(e);
+  for (const check of toolBuilderBench()) items.push({ id: `blocks-tool-${check.id}`, titleAr: `بناء وتشغيل أداة بلوكات: ${check.id}`, ok: check.ok, detail: check.ok ? 'شُغّل تعريف الأداة فعلاً وطابقت المخرجات المثال المتوقع؛ ليس اعتماداً لكل المدخلات.' : 'نتيجة الأداة لم تطابق المثال المتوقع.' });
 
   // The design exercises: a real formula is designed, its percentages are checked, and the answer is taught.
   for (const d of DESIGN_QUESTIONS) {

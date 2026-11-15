@@ -1,3 +1,4 @@
+import { blockBuilderReply, toolFromReply, type ToolSpec } from '../utils/shaheenToolBuilder';
 import { realPhotoReply } from '../utils/realPhotos';
 import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
 import { ShaheenMedia } from '../components/ShaheenMedia';
@@ -53,10 +54,10 @@ function LiveReply({ text, streaming, lang, onOpenEditor, onAskFix, onGrow }: {
   );
 }
 
-export function ChatPanel({ lang, items, setItems, attachments, setAttachments, onOpenEditor, offline }: {
+export function ChatPanel({ lang, items, setItems, attachments, setAttachments, onOpenEditor, onOpenBlocks, offline }: {
   lang: SupportedLanguage; items: ChatItem[]; setItems: React.Dispatch<React.SetStateAction<ChatItem[]>>;
   attachments: WsContextFile[]; setAttachments: React.Dispatch<React.SetStateAction<WsContextFile[]>>;
-  onOpenEditor: (block: CodeBlock) => void; offline: boolean;
+  onOpenEditor: (block: CodeBlock) => void; onOpenBlocks?: (tool: ToolSpec) => void; offline: boolean;
 }) {
   const w = (k: WsKey) => wsText(lang, k);
   const [input, setInput] = useState('');
@@ -99,6 +100,8 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
     const controller = new AbortController();
     abort.current = controller;
     try {
+      const blocksReply = !files.length && !web ? blockBuilderReply(text, lang) : undefined;
+      if (blocksReply) { setItems((prev) => [...prev, { role: 'assistant', text: blocksReply }]); return; }
       const photoReply = realPhotoReply(text, items, lang);
       if (photoReply) { setItems((prev) => [...prev, { role: 'assistant', text: photoReply }]); return; }
       // An explicit motion request about an existing image is local, with no extra AI quota.
@@ -200,6 +203,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
               ) : (
                 <div dir="auto" className="space-y-1">
                   <LiveReply text={m.text} streaming={Boolean(m.streaming)} lang={lang} onOpenEditor={onOpenEditor} onAskFix={askFix} onGrow={follow} />
+                  {onOpenBlocks && !m.streaming && toolFromReply(m.text) && <button type="button" onClick={() => onOpenBlocks(toolFromReply(m.text)!)} className="rounded-xl bg-amber-800 px-3 py-2 text-sm font-bold text-white">{pickArEn(lang, 'افتح في البلوكات', 'Open in blocks')}</button>}
                   {imageRequest(m.text) && !m.image && busy && i === items.length - 1 && <p className="text-[12px] text-stone-500"><Loader2 className="inline h-3 w-3 animate-spin" /> {w('drawing')}</p>}
                   {extractMediaRequest(m.text) && <ShaheenMedia request={extractMediaRequest(m.text)!} lang={lang} />}
                   {m.imageNote && !m.image && <p role="status" className="rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs text-amber-900">{w(m.imageNote)}</p>}
