@@ -49,7 +49,7 @@ export function ProfilePage({ handle, lang, go, toast, onOpenMessenger }: { hand
     try {
       const picture = await bannerImage(file, resizeImage);
       if (!picture) { toast(t('الصورة دي كبيرة قوي، جرّب صورة تانية', 'This picture is too large, try another one')); return; }
-      await cx('/community/profile', { method: 'PATCH', body: { banner: picture } });
+      await cx('/community/me', { method: 'PATCH', body: { banner: picture } });
       toast(t('اتحدث البانر ✨', 'Banner updated ✨'));
       void reload(true);
     } catch (e) {
@@ -96,7 +96,7 @@ export function ProfilePage({ handle, lang, go, toast, onOpenMessenger }: { hand
             <div className="absolute bottom-4 end-4 flex flex-wrap items-center justify-end gap-2">
               <input ref={bannerFile} type="file" accept="image/*" hidden data-testid="profile-banner-file" onChange={(e) => { const x = e.target.files?.[0]; e.target.value = ''; void pickBanner(x); }} />
               {data.banner && !bannerBusy && (
-                <button type="button" onClick={() => void act(() => cx('/community/profile', { method: 'PATCH', body: { banner: null } }), t('اتشال البانر', 'Banner removed'))} className="flex items-center gap-1.5 rounded-xl bg-white/85 px-3 py-1.5 text-xs font-bold text-stone-900 shadow backdrop-blur hover:bg-white cursor-pointer">
+                <button type="button" onClick={() => void act(() => cx('/community/me', { method: 'PATCH', body: { banner: null } }), t('اتشال البانر', 'Banner removed'))} className="flex items-center gap-1.5 rounded-xl bg-white/85 px-3 py-1.5 text-xs font-bold text-stone-900 shadow backdrop-blur hover:bg-white cursor-pointer">
                   {t('إزالة البانر', 'Remove banner')}
                 </button>
               )}
