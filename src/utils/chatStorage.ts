@@ -31,6 +31,19 @@ export interface ChatMessage {
   /** Kept out of the visible reply; sent back only so sources can be shown if the visitor asks. */
   sources?: ChatSource[];
   activePerspectiveTab?: string;
+  /** «شاهين يقرا الصور»: a picture he attached — only a tiny thumbnail and what was read from it are kept. */
+  image?: ChatImage;
+}
+export interface ChatImage { thumb: string; name?: string; text?: string; description?: string; source?: 'ai' | 'device' }
+const THUMB = /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/;
+export function validChatImage(value: unknown): value is ChatImage {
+  if (!value || typeof value !== 'object') return false;
+  const i = value as ChatImage;
+  return typeof i.thumb === 'string' && i.thumb.length <= 60_000 && THUMB.test(i.thumb) &&
+    (i.name === undefined || (typeof i.name === 'string' && i.name.length <= 120)) &&
+    (i.text === undefined || (typeof i.text === 'string' && i.text.length <= 8000)) &&
+    (i.description === undefined || (typeof i.description === 'string' && i.description.length <= 2000)) &&
+    (i.source === undefined || i.source === 'ai' || i.source === 'device');
 }
 
 export interface StoredChatSession {
@@ -75,6 +88,7 @@ export function isChatMessage(value: unknown): value is ChatMessage {
       typeof message.aiEngine.badge === 'string' && PROVIDERS.includes(message.aiEngine.provider))) &&
     (message.activePerspectiveTab === undefined || typeof message.activePerspectiveTab === 'string') &&
     (message.sources === undefined || safeChatSources(message.sources) !== undefined) &&
+    (message.image === undefined || (message.role === 'user' && validChatImage(message.image))) &&
     (message.perspectives === undefined || (Array.isArray(message.perspectives) && message.perspectives.every((p) =>
       p && PROVIDERS.includes(p.provider) && PROVIDERS.includes(p.modelId) &&
       typeof p.name === 'string' && typeof p.badge === 'string' && typeof p.color === 'string' &&
