@@ -16,7 +16,8 @@ export const SITE_REPO = 'spculculat-oss/Sham-Perfume';
 export const SITE_BRANCH = 'main';
 /** Every change request from the room starts with this, so the owner's desk knows it (and nothing else) is one. */
 export const CHANGE_TITLE_PREFIX = '[شاهين] ';
-export const FILE_LIMITS = { perFile: 16_000, total: 48_000, files: 3, index: 12_000, reads: 2 } as const;
+/** reads: rounds of searching and reading before he answers; fixes: rounds in which he mends his own change after the review. */
+export const FILE_LIMITS = { perFile: 16_000, total: 64_000, files: 4, index: 12_000, reads: 4, fixes: 2 } as const;
 export const CHANGE_LIMITS = { files: 8, lines: 400, urlChars: 7_500 } as const;
 
 // ── Which files Shaheen may read and change ─────────────────────────────────────────────────────────────────
@@ -102,6 +103,7 @@ export function displayReply(reply: string): string {
   return reply
     .replace(BLOCK, (_m, path: string) => `\n> 🛠️ اقتراح تعديل على \`${path.trim()}\` — التفاصيل في الكارت تحت.\n`)
     .replace(READ_MARK, (_m, path: string) => `📂 \`${path.trim()}\``)
+    .replace(/\[\[\s*(?:ابحث|إبحث|دور|دوّر|search)\s*:\s*([^\]\n]{2,120}?)\s*\]\]/giu, (_m, q: string) => `🔎 «${q.trim()}»`)
     .replace(/\n{3,}/g, '\n\n').trim();
 }
 

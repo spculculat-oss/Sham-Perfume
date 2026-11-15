@@ -21,6 +21,9 @@ import { lookup as dnsLookup } from 'node:dns/promises';
 import { isIP } from 'node:net';
 import type { EngineHealth } from './core/engineHealth';
 import { NATURAL_TALK_INSTRUCTION, polishReply } from '../src/utils/naturalTalk';
+import {
+  DEEP_PLAN_INSTRUCTION, THINKING_CRAFT_INSTRUCTION, fixReply, needsRevision, profileQuestion, reviewReply, revisionRequest, thinkingHint, withPlan,
+} from '../src/utils/thinkingCraft';
 import { callEngine, engineStatuses, GEMINI_DEFAULT_MODEL, type EngineFailure, type EngineTurn } from './core/engines';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { cleanVideoRequest, dailyLimit, DailyBudget, readJob, signJob, startVideo, videoAccess, videoBytes, VideoError, videoStatus } from './videoEngine';
@@ -355,7 +358,7 @@ export const IMAGE_FAILURE_RESPONSE: Record<ImageFailure, { status: number; code
 };
 
 // ── The conversation ────────────────────────────────────────────────────────────────────────────────────────
-interface AskBody { messages?: unknown; language?: unknown; task?: unknown; context?: unknown; search?: unknown }
+interface AskBody { messages?: unknown; language?: unknown; task?: unknown; context?: unknown; search?: unknown; deep?: unknown }
 export function askTurns(body: AskBody, resolveReferences = true): EngineTurn[] {
   const raw = Array.isArray(body.messages) ? body.messages.slice(-24) : [];
   const turns = raw.flatMap((m) => {
@@ -408,7 +411,7 @@ const RETRYABLE: readonly AskFailure[] = ['upstream_error', 'timeout', 'unreacha
 
 /** What a streamed turn reports while it is being written (POST /api/workspace/ask/stream). */
 export type AskEvent =
-  | { type: 'stage'; stage: 'searching' | 'writing' }
+  | { type: 'stage'; stage: 'searching' | 'writing' | 'thinking' | 'reviewing' }
   | { type: 'sources'; sources: SearchResult[] }
   | { type: 'delta'; text: string }
   /** The platform writing the reply failed midway: what was shown so far is dropped and another one starts over. */
@@ -455,9 +458,45 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
   const engines = health ? health.order(configuredEngines(env)) : configuredEngines(env);
   if (!engines.length) { const answered = fromSearch(); if (answered) return answered; throw new ReadError(503, 'NO_ENGINE', 'No AI platform is open right now'); }
   const today = now().toISOString().slice(0, 10);
-  const system = `${workspaceInstruction(language, task)}\nتاريخ النهارده ${today}. لو السؤال عن حاجة بتتغير مع الوقت (أخبار، أسعار، طقس، نتايج، مناصب) ومفيش نتايج بحث ويب قدامك في الرسالة، قول بصراحة في أول سطر إن معلوماتك ممكن تكون أقدم من النهارده، وبعدها اشرح الخلفية اللي تعرفها من غير ما تخترع أحداث أو أرقام جديدة.`;
+  // «عقل شاهين»: the habits of a careful expert, and the shape this kind of question needs (src/utils/thinkingCraft.ts).
+  const profile = profileQuestion(lastQuestion, rawTurns.length > 1);
+  const craft = task === 'chat' ? `\n${THINKING_CRAFT_INSTRUCTION}${thinkingHint(profile) ? `\n${thinkingHint(profile)}` : ''}` : '';
+  const deep = body.deep === true && task === 'chat';
+  const system = `${workspaceInstruction(language, task)}${craft}\nتاريخ النهارده ${today}. لو السؤال عن حاجة بتتغير مع الوقت (أخبار، أسعار، طقس، نتايج، مناصب) ومفيش نتايج بحث ويب قدامك في الرسالة، قول بصراحة في أول سطر إن معلوماتك ممكن تكون أقدم من النهارده، وبعدها اشرح الخلفية اللي تعرفها من غير ما تخترع أحداث أو أرقام جديدة.`;
   const started = Date.now();
   const failures: { id: string; kind: AskFailure; status?: number }[] = [];
+  /** A whole answer from the first platform that gives one (no live writing): the private plan and the rewrite. */
+  const quietCall = async (sys: string, quietTurns: EngineTurn[], maxTokens: number, timeoutMs: number, temperature: number): Promise<string | undefined> => {
+    for (const id of engines) {
+      if (signal?.aborted) return undefined;
+      try {
+        const out = await callEngine(id, sys, quietTurns, { env, fetch: request, signal: AbortSignal.any([AbortSignal.timeout(timeoutMs), ...(signal ? [signal] : [])]), temperature, maxTokens, maxChars: 60_000 });
+        if (typeof out === 'string' && out.trim()) { health?.ok(id); return out.trim(); }
+      } catch { /* the next platform; a failed extra pass never fails the answer */ }
+    }
+    return undefined;
+  };
+  // «فكّر بعمق»: a private outline first (what is really asked, the facts, the steps, the traps, the shape)…
+  if (deep) {
+    onEvent?.({ type: 'stage', stage: 'thinking' });
+    const plan = await quietCall(`${workspaceInstruction(language, 'chat')}\n${DEEP_PLAN_INSTRUCTION}\nتاريخ النهارده ${today}.`, turns, 900, 22_000, 0.3);
+    if (plan) { const last = turns[turns.length - 1]!; turns[turns.length - 1] = { ...last, text: withPlan(last.text, plan) }; }
+  }
+  // …and after writing, the checklist: small slips mended here, real ones rewritten once in deep mode.
+  const finalize = async (reply: string): Promise<string> => {
+    if (task !== 'chat') return reply;
+    const notes = reviewReply(lastQuestion, reply, profile);
+    const mended = fixReply(reply);
+    if (!deep || !needsRevision(notes) || signal?.aborted || Date.now() - started > 40_000) return mended;
+    onEvent?.({ type: 'stage', stage: 'reviewing' });
+    const rewritten = await quietCall(system, [{ role: 'user', text: revisionRequest(lastQuestion, reply, notes) }], 6000, 30_000, 0.4);
+    if (!rewritten) return mended;
+    const better = fixReply(polishReply(rewritten).trim() || rewritten);
+    const left = reviewReply(lastQuestion, better, profile).filter((n) => n.severity === 'revise').length;
+    if (left >= notes.filter((n) => n.severity === 'revise').length) return mended;
+    if (live) { onEvent?.({ type: 'reset' }); onEvent?.({ type: 'stage', stage: 'writing' }); onEvent?.({ type: 'delta', text: better }); }
+    return better;
+  };
   // Chat and summaries are written live, letter by letter; the JSON tasks arrive whole (half a JSON is no use).
   const live = Boolean(onEvent) && !json;
   const finish = (reply: string) => (json ? reply : polishReply(reply).trim() || reply);
@@ -488,7 +527,7 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
   for (const id of engines) {
     if (signal?.aborted) break;
     const reply = await tryEngine(id, 45_000);
-    if (reply) return { reply, sources };
+    if (reply) return { reply: await finalize(reply), sources };
   }
   // One more round for the platforms that only stumbled (overload, a slow answer, a per-minute limit) — while there is still time.
   const again = engines.filter((id) => failures.some((f) => f.id === id && RETRYABLE.includes(f.kind)));
@@ -497,7 +536,7 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
     for (const id of again) {
       if (signal?.aborted || Date.now() - started > 50_000) break;
       const reply = await tryEngine(id, 20_000);
-      if (reply) return { reply, sources };
+      if (reply) return { reply: await finalize(reply), sources };
     }
   }
   const answered = fromSearch();

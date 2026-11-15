@@ -7,8 +7,10 @@ import { hasSensitiveNumber, maskSensitive } from '../utils/ownerAuthority';
 import ChangeCard from './ChangeCard';
 import OrderCard from './OrderCard';
 import { displayOrders, parseOrders } from '../utils/ownerDesk';
-import { repoFiles, repoTree } from './repoFiles';
-import { FILE_LIMITS, changeSummary, displayReply, fileIndex, isReadablePath, mentionedFiles, parseChanges, readRequests } from '../utils/ownerFiles';
+import { repoCodeMap, repoFile, repoFiles, repoTree } from './repoFiles';
+import { formatHits, searchCodeMap, searchPaths } from '../utils/codeMap';
+import { LESSONS_PATH, fitHistory, lessonMarks, lessonsEdit, lookupFollowUp, mustFix, repairRequest, reviewEdits, searchRequests, selfCheckNote, withLessonChange } from '../utils/shaheenCoder';
+import { FILE_LIMITS, changeSummary, planChange, displayReply, fileIndex, isReadablePath, mentionedFiles, parseChanges, readRequests } from '../utils/ownerFiles';
 import {
   emptyRoom, isSealedRoom, openRoom, roomHistory, ROOM_LIMITS, ROOM_STORAGE_KEY, sealRoom, secretaryNotes,
   type ChangeDecision, type RoomData, type RoomMessage, type RoomSpeaker, type SealedRoom,
@@ -96,21 +98,45 @@ export default function OwnerRoom({ code }: { code: string }) {
       const index = to === 'shaheen' && tree.length ? fileIndex(tree) : undefined;
       const history = roomHistory(base.messages);
       let shown = to === 'shaheen' ? await repoFiles(files) : [];
-      let answer = await adminRequest<Answer>('/owner-room', send('POST', { to, history, ...(index ? { index } : {}), ...(shown.length ? { files: shown } : {}) }));
-      // «شاهين يشوف كل الملفات»: when he asks for files, the room fetches them and asks him again (twice at most).
+      let talk = fitHistory(history);
+      const again = async (reply: string, followUp: string) => {
+        talk = [...talk, { by: 'shaheen' as const, text: reply.slice(0, ROOM_LIMITS.chars) }, { by: 'owner' as const, text: followUp.slice(0, ROOM_LIMITS.chars) }].slice(-ROOM_LIMITS.history);
+        talk = fitHistory(talk);
+        return adminRequest<Answer>('/owner-room', send('POST', { to, ...(index ? { index } : {}), ...(shown.length ? { files: shown } : {}), history: talk }));
+      };
+      let answer = await adminRequest<Answer>('/owner-room', send('POST', { to, history: talk, ...(index ? { index } : {}), ...(shown.length ? { files: shown } : {}) }));
+      // «وكيل البرمجة»: he searches the code map and reads files; the room fetches them and asks him again.
       for (let round = 0; to === 'shaheen' && !answer.offline && round < FILE_LIMITS.reads; round++) {
         const wanted = readRequests(answer.reply).filter((p) => isReadablePath(p) && (!tree.length || tree.includes(p)));
-        if (!wanted.length) break;
-        setReading(wanted);
-        shown = [...shown.filter((f) => !wanted.includes(f.path)), ...(await repoFiles(wanted))].slice(-FILE_LIMITS.files);
+        const searches = searchRequests(answer.reply);
+        if (!wanted.length && !searches.length) break;
+        setReading([...wanted, ...searches.map((q) => `🔎 ${q}`)]);
+        const map = searches.length ? await repoCodeMap() : undefined;
+        const results = searches.map((q) => formatHits(q, map ? searchCodeMap(map, q, 6) : searchPaths(tree, q, 6)));
+        if (wanted.length) shown = [...shown.filter((f) => !wanted.includes(f.path)), ...(await repoFiles(wanted))].slice(-FILE_LIMITS.files);
         const missing = wanted.filter((p) => !shown.some((f) => f.path === p));
-        const followUp = [`📂 دي الملفات اللي طلبتها: ${shown.map((f) => f.path).join('، ') || 'مفيش'}.`,
-          missing.length ? `مقدرتش أجيب: ${missing.join('، ')} (مش موجودة أو مش ملف نص).` : '', 'كمل ردك عليّا من غير ما تطلب نفس الملفات تاني.'].filter(Boolean).join(' ');
-        answer = await adminRequest<Answer>('/owner-room', send('POST', {
-          to, ...(index ? { index } : {}), ...(shown.length ? { files: shown } : {}),
-          history: [...history, { by: 'shaheen', text: answer.reply.slice(0, ROOM_LIMITS.chars) }, { by: 'owner', text: followUp }].slice(-ROOM_LIMITS.history),
-        }));
+        answer = await again(answer.reply, lookupFollowUp(shown.map((f) => f.path), missing, results));
       }
+      // The automatic review: his change is applied to the real files and checked; he mends it before the owner sees it.
+      let fixes = 0;
+      let left = 0;
+      for (; to === 'shaheen' && !answer.offline; fixes++) {
+        const edits = parseChanges(answer.reply);
+        if (!edits.length) break;
+        const paths = [...new Set(edits.map((e) => e.path))];
+        const current = new Map(await Promise.all(paths.map(async (p) => [p, await repoFile(p)] as const)));
+        const plan = planChange(edits, (p) => current.get(p));
+        const findings = mustFix(reviewEdits(edits, (p) => current.get(p)));
+        left = plan.problems.length + findings.length;
+        if (!left || fixes >= FILE_LIMITS.fixes) break;
+        setReading([`🔎 ${T('شاهين بيراجع تعديله')}`]);
+        shown = [...shown.filter((f) => !current.has(f.path)), ...paths.flatMap((p) => { const c = current.get(p); return c === undefined ? [] : [{ path: p, content: c }]; })].slice(-FILE_LIMITS.files);
+        answer = await again(answer.reply, repairRequest(plan.problems, findings));
+      }
+      if (fixes > 0) answer = { ...answer, reply: answer.reply + selfCheckNote(fixes, left) };
+      // «دفتر الدروس»: a lesson he wrote becomes a change to the notebook that the owner approves like any other.
+      const lessons = to === 'shaheen' ? lessonMarks(answer.reply) : [];
+      if (lessons.length) answer = { ...answer, reply: withLessonChange(answer.reply, lessonsEdit(await repoFile(LESSONS_PATH), lessons, now().slice(0, 10))) };
       const msg: RoomMessage = { id: uid(), by: answer.by, text: answer.reply, at: now(), ...(answer.offline ? { offline: true } : {}) };
       await save({ ...base, messages: [...base.messages, msg].slice(-ROOM_LIMITS.messages) });
     } catch (e) {

@@ -3,6 +3,7 @@
  * private). The list is fetched once per tab; each file once per tab too.
  */
 import { isReadablePath, rawFileUrl, treeUrl } from '../utils/ownerFiles';
+import { CODE_MAP_FILE, readCodeMap, type CodeMap } from '../utils/codeMap';
 
 const TREE_KEY = 'sham_owner_tree_v1';
 const TREE_TTL = 30 * 60_000;
@@ -49,3 +50,15 @@ export async function repoFiles(paths: string[]): Promise<{ path: string; conten
 
 /** Forget cached copies (after a change went live, the card re-reads the newest files). */
 export const forgetRepoFiles = () => { fileCache.clear(); };
+
+let mapCache: Promise<CodeMap | undefined> | undefined;
+/** «خريطة الكود» that the build put next to the site (src/utils/codeMap.ts), once per tab; undefined when missing. */
+export function repoCodeMap(): Promise<CodeMap | undefined> {
+  if (!mapCache) {
+    mapCache = fetch(`${import.meta.env.BASE_URL || '/'}${CODE_MAP_FILE}`, { cache: 'no-cache' })
+      .then(async (r) => (r.ok ? readCodeMap(await r.json()) : undefined))
+      .catch(() => undefined);
+    mapCache.then((m) => { if (!m) mapCache = undefined; }, () => { mapCache = undefined; });
+  }
+  return mapCache;
+}

@@ -4,7 +4,7 @@ import { ShaheenMedia } from '../components/ShaheenMedia';
 import { MotionCard } from './MotionCard';
 import { wantsMotion } from './motion';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Copy, Globe, Loader2, Paperclip, Plus, Save, Send, Square, Volume2, X } from 'lucide-react';
+import { Brain, Copy, Globe, Loader2, Paperclip, Plus, Save, Send, Square, Volume2, X } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { ShaheenMarkdown } from '../components/ShaheenMarkdown';
 import { readAloud } from '../utils/readAloud';
@@ -61,8 +61,11 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
   const w = (k: WsKey) => wsText(lang, k);
   const [input, setInput] = useState('');
   const [web, setWeb] = useState(false);
+  // «فكّر بعمق»: a private plan first and a check before sending (server/workspace.ts → src/utils/thinkingCraft.ts).
+  const [deep, setDeep] = useState(() => { try { return localStorage.getItem('sham_workspace_deep_v1') === '1'; } catch { return false; } });
+  useEffect(() => { try { localStorage.setItem('sham_workspace_deep_v1', deep ? '1' : '0'); } catch { /* blocked */ } }, [deep]);
   const [busy, setBusy] = useState(false);
-  const [stage, setStage] = useState<'thinking' | 'searching_web' | 'writing'>('thinking');
+  const [stage, setStage] = useState<'thinking' | 'searching_web' | 'writing' | 'deep_thinking' | 'reviewing'>('thinking');
   const [flash, setFlash] = useState<{ i: number; text: string } | null>(null);
   const [speaking, setSpeaking] = useState<number | null>(null);
   const stopSpeech = useRef<(() => void) | null>(null);
@@ -117,9 +120,9 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
       setStage('thinking');
       let out: Awaited<ReturnType<typeof askStream>>;
       try {
-        out = await askStream({ messages, language: lang, context: files, ...(web ? { search: true } : {}) }, (event) => {
+        out = await askStream({ messages, language: lang, context: files, ...(web ? { search: true } : {}), ...(deep ? { deep: true } : {}) }, (event) => {
           if (controller.signal.aborted) return;
-          if (event.type === 'stage') setStage(event.stage === 'searching' ? 'searching_web' : 'writing');
+          if (event.type === 'stage') setStage(event.stage === 'searching' ? 'searching_web' : event.stage === 'thinking' ? 'deep_thinking' : event.stage === 'reviewing' ? 'reviewing' : 'writing');
           else if (event.type === 'sources') draftSources = event.sources;
           else if (event.type === 'delta') { draft += event.text; showDraft(); }
           else if (event.type === 'reset') { draft = ''; dropDraft(); setStage('thinking'); }
@@ -226,7 +229,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
             </div>
           </div>
         ))}
-        {busy && !items.some((m) => m.streaming && m.text) && <p role="status" className="text-end text-[12px] text-stone-500"><Loader2 className="inline h-3.5 w-3.5 animate-spin" /> {w(stage)}</p>}
+        {busy && (stage === 'reviewing' || !items.some((m) => m.streaming && m.text)) && <p role="status" className="text-end text-[12px] text-stone-500"><Loader2 className="inline h-3.5 w-3.5 animate-spin" /> {w(stage)}</p>}
         <div ref={endRef} />
       </div>
 
@@ -249,6 +252,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
           <input ref={fileRef} type="file" multiple className="hidden" onChange={(e) => { void attach(e.target.files); }} />
           <button type="button" onClick={() => fileRef.current?.click()} className="inline-flex items-center gap-1 rounded-xl border border-stone-200 px-2.5 py-1.5 text-[12px] font-bold text-stone-700 cursor-pointer"><Paperclip className="h-3.5 w-3.5" />{w('attach')}</button>
           <button type="button" onClick={() => setWeb((v) => !v)} aria-pressed={web} className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-[12px] font-bold cursor-pointer ${web ? 'border-sky-500 bg-sky-50 text-sky-800' : 'border-stone-200 text-stone-700'}`}><Globe className="h-3.5 w-3.5" />{w('web_toggle')}</button>
+          <button type="button" onClick={() => setDeep((v) => !v)} aria-pressed={deep} title={w('deep_hint')} data-testid="ws-deep" className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-[12px] font-bold cursor-pointer ${deep ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-stone-200 text-stone-700'}`}><Brain className="h-3.5 w-3.5" />{w('deep_toggle')}</button>
           <button type="button" onClick={() => { abort.current?.abort(); setItems([]); setAttachments([]); }} className="inline-flex items-center gap-1 rounded-xl border border-stone-200 px-2.5 py-1.5 text-[12px] font-bold text-stone-700 cursor-pointer"><Plus className="h-3.5 w-3.5" />{w('new_chat')}</button>
           <span className="flex-1" />
           {busy

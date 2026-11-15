@@ -35,6 +35,7 @@ app.use('/api', corsMiddleware(process.env.SHAM_CORS_ORIGINS));
 app.use(['/api/community', '/api/admin/community'], express.json({ limit: '3mb' }));
 // «مساحة شاهين»: the visitor's files and pages travel with his question (an image to edit too).
 app.use('/api/workspace', express.json({ limit: '4mb' }));
+app.use('/api/admin/owner-room', express.json({ limit: '512kb' })); // the files Shaheen reads in the owner's room
 app.use(express.json({ limit: '128kb' }));
 app.use((error: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (error?.type === 'entity.parse.failed' || error?.type === 'entity.too.large') {
