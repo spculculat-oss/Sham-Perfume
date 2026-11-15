@@ -142,6 +142,11 @@ test('the visitor\'s need is read from his own words only, and changes how — n
   ];
   for (const [message, need] of cases) assert.equal(readNeed(message), need, message);
   assert.equal(needInstruction('ليه السما زرقا؟'), '');
+  // «النقاش والوعي»: an objection is neither a complaint to soothe nor a fight to win.
+  for (const message of ['انت غلطان، العود مش من شجر', 'مش مقتنع بكلامك', 'ايه دليلك؟', "I disagree, that's not true", 'says who?']) assert.equal(readNeed(message), 'disagrees', message);
+  assert.match(NEED_HINT.disagrees, /عندك حق/);
+  assert.match(NEED_HINT.disagrees, /ما توافقش علشان ترضيه/);
+  assert.match(NEED_HINT.disagrees, /مش متأكد/);
   assert.equal(readNeed(`باختصار ${'كلمة '.repeat(600)}`), undefined, 'a long paste is a document, not a way of asking');
   // Honest by construction: no hint tells Shaheen to press, hide, exaggerate or invent.
   for (const hint of Object.values(NEED_HINT)) assert.doesNotMatch(hint, /اضغط عليه|استعجله|خوّفه|آخر فرصة|الكمية محدودة/);

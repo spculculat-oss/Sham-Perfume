@@ -1,7 +1,7 @@
 import { REAL_PHOTO_INSTRUCTION, realPhotoReply } from '../src/utils/realPhotos';
 import { IMAGE_CRAFT_INSTRUCTION, IMAGE_HONESTY_INSTRUCTION } from '../src/utils/imageCraft';
 import { CONTINUITY_INSTRUCTION, contextualMessage, isContextFollowUp } from '../src/utils/conversationContext';
-import { NATURAL_TALK_INSTRUCTION, polishReply } from '../src/utils/naturalTalk';
+import { NATURAL_TALK_INSTRUCTION, needInstruction, polishReply } from '../src/utils/naturalTalk';
 import { THINKING_CRAFT_INSTRUCTION } from '../src/utils/thinkingCraft';
 import { createResearchSpider } from '../src/utils/researchSpider';
 /**
@@ -410,7 +410,7 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   const total = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 50000), ...(options.signal ? [options.signal] : [])]);
   // Questions about news get the real headlines Shaheen collected (every 12 h) instead of invented ones.
   // «علم البيع»: a buying conversation tells the engine how this visitor should be spoken to (his style, motive…).
-  const instruction = systemInstruction(input.language, settings.instructions, style, input) + await newsContext(input.message, input.language, env).catch(() => '')
+  const instruction = systemInstruction(input.language, settings.instructions, style, input) + needInstruction(input.message) + await newsContext(input.message, input.language, env).catch(() => '')
     + await supervisorGuidance('shaheen_chat', env).catch(() => '') + (shopping ? `\n${shoppingBrief(input.message, input.conversationHistory, input.language)}` : '');
   // «شاهين ابن الناس»: an upset, formal, older or foreign visitor is spoken to accordingly; a complaint is cleaned.
   const social = socialBrief(input.message, input.conversationHistory, input.language);

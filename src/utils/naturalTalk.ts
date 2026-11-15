@@ -109,9 +109,11 @@ export function revealStep(shown: number, target: string, dtMs: number, { rate =
  * Read from the words the person just wrote — nothing stored, no profile, no guess about who he is.
  * It only changes HOW the same honest answer is given (shorter, simpler, more detailed, calmer, more decisive).
  */
-export type VisitorNeed = 'hurried' | 'detail' | 'simple' | 'upset' | 'undecided';
+export type VisitorNeed = 'disagrees' | 'hurried' | 'detail' | 'simple' | 'upset' | 'undecided';
 const flat = (text: string) => text.normalize('NFKC').replace(/[\u064B-\u065F\u0670\u0640]/g, '').replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').toLowerCase();
 const NEED_WORDS: [VisitorNeed, RegExp][] = [
+  // He objects to what was said: checked first, because «انت غلطان» is a discussion, not a complaint.
+  ['disagrees', /انت غلطان|انتي غلطانه|كلامك غلط|ده مش صح|دا مش صح|مش صحيح|غير صحيح|مش مقتنع|مش موافق|اختلف معاك|مين قال كده|ايه دليلك|ايه الدليل|you'?re wrong|you are wrong|that'?s (?:not true|wrong|incorrect)|i disagree|i don'?t agree|not convinced|says who|what'?s your (?:evidence|source|proof)/],
   ['upset', /زهقت|تعبت منك|مش شغال|مش نافع|برضه غلط|لسه غلط|تاني غلط|قلتلك|مش ده اللي|ما فهمتنيش|مفهمتنيش|!{3,}|\bstill (?:not|wrong|broken)\b|doesn'?t work|not working|i (?:already )?told you|that'?s not what|frustrat|useless/],
   ['hurried', /مستعجل|بسرعه|باختصار|في سطر|في كلمتين|من غير شرح|الخلاصه|عالسريع|\bquick(?:ly)?\b|\bbrief(?:ly)?\b|in short|tl;?dr|one line|just the answer|no explanation/],
   ['detail', /بالتفصيل|تفصيلي|خطوه خطوه|خطوه بخطوه|اشرح اكتر|وضح اكتر|كل التفاصيل|شرح كامل|in detail|step by step|more detail|elaborate|thorough|deep dive|walk me through/],
@@ -124,6 +126,7 @@ export function readNeed(message: string): VisitorNeed | undefined {
   return NEED_WORDS.find(([, words]) => words.test(text))?.[0];
 }
 export const NEED_HINT: Record<VisitorNeed, string> = {
+  disagrees: 'الشخص معترض على كلامك: راجع النقطة من أولها بجد قبل ما ترد. لو هو صح قول «عندك حق» وصحّح الغلط بوضوح. لو كلامك هو الصح اثبت عليه بهدوء وبالدليل ووضّح نقطة الخلاف بالظبط — ما توافقش علشان ترضيه وما تعاندش علشان تكسب. ولو الموضوع فيه أكتر من رأي معتبر أو إنت مش متأكد، قول كده صراحة.',
   hurried: 'الشخص مستعجل: الإجابة نفسها في سطر أو اتنين، من غير مقدمة ولا شرح زيادة، ولو في خطوة واحدة مهمة قولها.',
   detail: 'الشخص طالب تفاصيل: اشرح خطوة خطوة بترتيب واضح، بمثال حقيقي، ومن غير ما تقفز على خطوة.',
   simple: 'الشخص عايز تبسيط: كلمات سهلة من غير مصطلحات، تشبيه أو مثال من الحياة، وفكرة واحدة في كل جملة.',
