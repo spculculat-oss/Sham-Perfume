@@ -205,6 +205,18 @@ const S = {
     tr: 'Maliyet marjları ve üretim kartları',
     fa: 'محاسبه هزینه‌ها، سود و کارت‌های تولید',
   },
+  btn_cosmetics: {
+    ar: 'عالم التجميل',
+    en: 'Cosmetics world',
+    fr: 'L’univers cosmétique',
+    es: 'Mundo de la cosmética',
+    it: 'Mondo della cosmetica',
+    de: 'Welt der Kosmetik',
+    ru: 'Мир косметики',
+    zh: '美妆世界',
+    tr: 'Kozmetik dünyası',
+    fa: 'دنیای آرایشی و بهداشتی',
+  },
   hero_alt: {
     ar: 'قارورة عطر فاخرة في مختبر تصميم العطور مع شام',
     en: 'Luxury perfume bottle in the Sham fragrance design laboratory',
@@ -298,6 +310,16 @@ export const Hero: React.FC<HeroProps> = ({ onQuickStart, currentLang = 'ar' }) 
               >
                 <Sparkles className="w-4 h-4 text-emerald-400" />
                 <span>{t('hero_btn_ai', currentLang)}</span>
+              </button>
+
+              {/* Owner-approved (#548): a doorway to the cosmetics section. */}
+              <button
+                onClick={() => onQuickStart('cosmetics')}
+                data-testid="hero-cosmetics"
+                className="flex items-center gap-2 px-5 py-3.5 text-xs sm:text-sm font-bold text-rose-100 bg-gradient-to-r from-rose-950/80 to-stone-900 hover:from-rose-900/80 border border-rose-500/30 rounded-xl shadow-lg transition-all hover:scale-[1.02] cursor-pointer"
+              >
+                <Sparkles className="w-4 h-4 text-rose-300" />
+                <span>{L('btn_cosmetics')}</span>
               </button>
             </div>
 

@@ -37,6 +37,10 @@ export const COSMETICS_UI = {
   print: { ar: 'اطبع التركيبة', en: 'Print the formula' },
   copy: { ar: 'انسخ التركيبة', en: 'Copy the formula' },
   copied: { ar: 'اتنسخت', en: 'Copied' },
+  save: { ar: 'احفظ التركيبة', en: 'Save the formula' },
+  savedOk: { ar: 'اتحفظت على جهازك', en: 'Saved on this device' },
+  savedTitle: { ar: 'تركيباتك المحفوظة على الجهاز ده', en: 'Your formulas saved on this device' },
+  savedRemove: { ar: 'امسح التركيبة دي', en: 'Delete this formula' },
   // Formula sheet
   sheetTitle: { ar: 'ورقة التركيبة', en: 'Formula sheet' },
   colIngredient: { ar: 'الخامة', en: 'Ingredient' },
