@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-11-12T23:41:44.888Z",
- "nextUpdateAt": "2026-11-13T11:41:44.888Z",
+ "updatedAt": "2026-11-16T07:41:42.538Z",
+ "nextUpdateAt": "2026-11-16T19:41:42.538Z",
  "intervalHours": 12,
  "editor": "feeds",
  "digest": {
@@ -10,16 +10,80 @@
  },
  "sources": [
   {
-   "name": "Now Smell This",
-   "count": 4
-  },
-  {
    "name": "Trend Hunter",
    "count": 3
   },
   {
-   "name": "Hypebae",
+   "name": "CaFleureBon",
    "count": 2
+  },
+  {
+   "name": "Paris Select Book",
+   "count": 2
+  },
+  {
+   "name": "Vietnam.vn",
+   "count": 2
+  },
+  {
+   "name": "stupidDOPE",
+   "count": 2
+  },
+  {
+   "name": "Manchester Evening News",
+   "count": 1
+  },
+  {
+   "name": "The Nation Newspaper",
+   "count": 1
+  },
+  {
+   "name": "WWD",
+   "count": 1
+  },
+  {
+   "name": "https://the-ethos.co/",
+   "count": 1
+  },
+  {
+   "name": "صحيفة المرصد",
+   "count": 1
+  },
+  {
+   "name": "موقع تاجك",
+   "count": 1
+  },
+  {
+   "name": "Byrdie",
+   "count": 1
+  },
+  {
+   "name": "البوابة نيوز",
+   "count": 1
+  },
+  {
+   "name": "Metro Mode",
+   "count": 1
+  },
+  {
+   "name": "تليجراف مصر",
+   "count": 1
+  },
+  {
+   "name": "Philstar Life",
+   "count": 1
+  },
+  {
+   "name": "مجلة سيدتي",
+   "count": 1
+  },
+  {
+   "name": "صحيفة اليوم السعودية",
+   "count": 1
+  },
+  {
+   "name": "Vanguard News",
+   "count": 1
   },
   {
    "name": "EcoRéseau Business",
@@ -27,10 +91,6 @@
   },
   {
    "name": "WhatNow",
-   "count": 1
-  },
-  {
-   "name": "CaFleureBon",
    "count": 1
   },
   {
@@ -44,69 +104,369 @@
   {
    "name": "Woman & Home",
    "count": 1
-  },
-  {
-   "name": "stupidDOPE",
-   "count": 1
-  },
-  {
-   "name": "Ouest-France",
-   "count": 1
-  },
-  {
-   "name": "موقع تاجك",
-   "count": 1
-  },
-  {
-   "name": "YouTube",
-   "count": 1
-  },
-  {
-   "name": "https://www.sabanew.net/",
-   "count": 1
-  },
-  {
-   "name": "FashionNetwork India",
-   "count": 1
-  },
-  {
-   "name": "www.grazia.fr",
-   "count": 1
-  },
-  {
-   "name": "Cosmetics Business",
-   "count": 1
-  },
-  {
-   "name": "Grazia",
-   "count": 1
-  },
-  {
-   "name": "Magzter",
-   "count": 1
-  },
-  {
-   "name": "Roastbrief US",
-   "count": 1
-  },
-  {
-   "name": "Sin Chew Daily",
-   "count": 1
-  },
-  {
-   "name": "Madame Figaro",
-   "count": 1
-  },
-  {
-   "name": "Vietnam.vn",
-   "count": 1
-  },
-  {
-   "name": "Cosmopolitan",
-   "count": 1
   }
  ],
  "items": [
+  {
+   "id": "n2rxnsu",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQNDlJM2UtaVVfN0ZWaFpTazVBcmFDcTl0S2ZtMF91UVpfU2NYeDNuQXZ1SDd2b0pyVTdTRWVYMW50SjBWazkxajE4MV8yTmo3ZWE4ei1ZM0RjMkpNZXFLVWJoX2stT3FZQjBpNG9yb1k2aThWQWhKWjhTNWNtY1BIcERJcEtIa00tNFR5ZHlZZ3c1cjY2OVRDbHVrMXhabmlFLUVv0gGoAUFVX3lxTFBPSTdWdWtmYlBXMXZlQ3hFdmtHMW1IaVB4Tnltb1NXcmttWnBhU2NYd1BkSmFYNEdXYjVCV2Q0ZUIyVVNwSXhnMnBVdkgyVWdVT1ZPaTlITVBmdzNjaWt4VDVoRWJHSjFtZ1NlTDhxSl9Gelh6Q01TVkxDenFtXzNMRlM3WkZKY0t4Z1U1ZkxXY3lfWFJMQ3hieU5uN2VWOHlIZjlnRFFWdg?oc=5",
+   "source": "Manchester Evening News",
+   "publishedAt": "2026-11-16T07:00:00.000Z",
+   "original": "I unboxed a £90 perfume advent calendar and was floored by the £200-worth of luxury scents inside",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "I unboxed a £90 perfume advent calendar and was floored by the £200-worth of luxury scents inside",
+    "en": "I unboxed a £90 perfume advent calendar and was floored by the £200-worth of luxury scents inside"
+   },
+   "summary": {
+    "ar": "خبر عن صناعة العطور من «Manchester Evening News»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
+    "en": "I unboxed a £90 perfume advent calendar and was floored by the £200-worth of luxury scents inside"
+   }
+  },
+  {
+   "id": "n1uga54l",
+   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxNd2lNWDd3bm5SWDRSOFJiZHdCLTh2X19ZTTdSZ1l3LXRpamJRcXRYUzItSGduZGpOSG10NHJPSlJ0VjU3d0hpejRxVWNva0pfM2R3SUhMdFMtdlV5UHRqZk1iY3BfbVlMdHF6eVpJdXpyTGlZbUlzd0dFbmpyWjVZMnVaMNIBiAFBVV95cUxOTTBqWGQzbXQyd3cyeTBoMldFdi01R29JbWhvcTA4bzhUdXpWeXhhd0pHeVRJLUg1bWE2TmJHNTdIckpzcXYtWEZTS1ZZTlBGYU1HSDBReUNsVHB0ZndvYjJzcjhIXy1yaUlObkw4QTlkdm94Umw0YTNDS1ZwdDIzalpXcm1KQVRk?oc=5",
+   "source": "The Nation Newspaper",
+   "publishedAt": "2026-11-16T05:39:41.000Z",
+   "original": "United Kingdom perfume brand debuts in Nigeria",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "United Kingdom perfume brand debuts in Nigeria",
+    "en": "United Kingdom perfume brand debuts in Nigeria"
+   },
+   "summary": {
+    "ar": "خبر عن صناعة العطور من «The Nation Newspaper»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
+    "en": "United Kingdom perfume brand debuts in Nigeria"
+   }
+  },
+  {
+   "id": "n1df19q9",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQYjVFS0tqbmZ0a09GdFZEbDNNTHhWdE9veXMwdkNjR1pMamJ5aFMtcWRUWU8tVEU0YVlFUUdJejFtRE84dnpQUENRYU1FRXZRTExnU241aVlnZ3lsTmVZTEgtdnZoSUtMR0I0UEx2WTNyY3VpY05VVkZIOE11OVd4VVh1bmw5bUpWTE5TTGtvT0FxcklldUpqdWJOTzdnaDdtS3N0dmJ4TWFkaXcxeld3SUdscGZmUQ?oc=5",
+   "source": "WWD",
+   "publishedAt": "2026-11-16T03:54:36.000Z",
+   "original": "Scentbird Is Leading the Charge In Personalized Fragrance",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Scentbird Is Leading the Charge In Personalized Fragrance",
+    "en": "Scentbird Is Leading the Charge In Personalized Fragrance"
+   },
+   "summary": {
+    "ar": "خبر عن صناعة العطور من «WWD»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
+    "en": "Scentbird Is Leading the Charge In Personalized Fragrance"
+   }
+  },
+  {
+   "id": "n1sfh4zx",
+   "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBjeGV1N2k3c2hDQldJVkhEYl9fWFl5eUx2S0IwZmNocVUwWlQwTGlyWEJOZmg2UkpTZEFXVkJ4bEQ3TWFjQXFiRU1weDlyVlBjOGlncUM5ZGU1UTdtTm1aTktoWmthS1ZFc3U5R2FQQQ?oc=5",
+   "source": "https://the-ethos.co/",
+   "publishedAt": "2026-11-16T03:04:22.000Z",
+   "original": "Bella Hadid's Newest Orebella Scent Wears Like Your Favorite Sweater: 'It Just Feels Like You'",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Bella Hadid's Newest Orebella Scent Wears Like Your Favorite Sweater: 'It Just Feels Like You'",
+    "en": "Bella Hadid's Newest Orebella Scent Wears Like Your Favorite Sweater: 'It Just Feels Like You'"
+   },
+   "summary": {
+    "ar": "خبر عن صناعة العطور من «https://the-ethos.co/»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
+    "en": "Bella Hadid's Newest Orebella Scent Wears Like Your Favorite Sweater: 'It Just Feels Like You'"
+   }
+  },
+  {
+   "id": "n1dpyye0",
+   "url": "https://news.google.com/rss/articles/CBMi6wVBVV95cUxOVVVNQXNWVWRTNVgzbDc0alhhQkVQMG90M0paRHJ3V0VScndObEFWekljN09JdkRUd3B3T2tDRDFOMTVDd2NfRndsNUR5aWUwT2p6WUhGa015dG1OYzZKdGlKdG1Md0Q3aWQyel9CSkJUdmhaZTJnemtnU2c0WGdGWVNqLVlVVkw3RDFZSmQ4QWFRdlladWtHZlotQy1SOUlZSnMwU2J5SkhxcTFWUmFTS1hnNVRhZWN0NGNjZFNocWl1SGl3STR1ZXJRazl6RHNQdmRUT3NkclZmS3RPNlpaMTByUkRuMVdPNE5XZ3l3TDFveWJyeXFtZFpEYUtXcFpIMjN6YWxxUHVYeFQ0QzdaWHR6SENZaWVCWEcwdHpIc2w4WUhzdVJNWlh2cW9CRXpnX0lDU1AwT05sT2xYTTlhMVJqU1BIakd4YjVOM2UwbDBYRW41Z200UEtwYTY4aVNZQjN4Y25wYkRsbkpHd1dQandteW96b2ZMcXFYa2VVd0NBZmtNQmdmRU9hYmc2UHEwdTBkbWl5X1ppNF9MYXplTl82V3dRNTNJek9DS3I1dklqcElkUVpEQmptQUNXRkp2c3BsY0JGQmVNM3FDZzlfVmU5YUo4QkJDOVhhM190bkJYOWhzUkxTb3hBdkdNOGZJOWR6LWhKRkRsa2ZWSm5ZeFFvNnJlT3pPZC1ObWh0bmpUdHljLTgyTGZ5cXMwUnNIWUJ5c1FCZXZPUmJTM1pWVjc3NV9tVmtudC0tbXh2cTdTZ2k4V1RQTU5JLXp6TkZhZWdxMTZfTFh5T1F2ZlZHWVNDS2Z6M0lBclZFb21iRGluMndxczZ4VzlTc0U2VExuV0E3Q1FhLWZNUjgxTmxhSk1EVTN1WUNNVndLV2s3SUFFNkQzbFluZ0RGZWFQNmp0djczbVU4N1VqbkpLN1dUbDlURDJYdGhzcmxacjBpSmc4Qmx1blF4djk2LVZ1ZHE3MUJZb2JlaHFzLTQ?oc=5",
+   "source": "صحيفة المرصد",
+   "publishedAt": "2026-11-15T22:00:06.000Z",
+   "original": "أغلى من الذهب … بالفيديو: مختص يكشف عن أنواع من العود النادر تتجاوز أسعارها مليون ريال",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "أغلى من الذهب … بالفيديو: مختص يكشف عن أنواع من العود النادر تتجاوز أسعارها مليون ريال",
+    "en": "أغلى من الذهب … بالفيديو: مختص يكشف عن أنواع من العود النادر تتجاوز أسعارها مليون ريال"
+   },
+   "summary": {
+    "ar": "أغلى من الذهب … بالفيديو: مختص يكشف عن أنواع من العود النادر تتجاوز أسعارها مليون ريال",
+    "en": "أغلى من الذهب … بالفيديو: مختص يكشف عن أنواع من العود النادر تتجاوز أسعارها مليون ريال"
+   }
+  },
+  {
+   "id": "nv19nk",
+   "url": "https://cafleurebon.com/vintage-guerlain-samsara-parfum-review-jean-paul-guerlain-1989-sensual-opulence/?utm_source=rss&utm_medium=rss&utm_campaign=vintage-guerlain-samsara-parfum-review-jean-paul-guerlain-1989-sensual-opulence",
+   "source": "CaFleureBon",
+   "publishedAt": "2026-11-15T21:15:04.000Z",
+   "original": "Vintage Guerlain Samsara Parfum Review (Jean-Paul Guerlain) 1989 “Sensual Opulence”",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 2,
+   "title": {
+    "ar": "Vintage Guerlain Samsara Parfum Review (Jean-Paul Guerlain) 1989 “Sensual Opulence”",
+    "en": "Vintage Guerlain Samsara Parfum Review (Jean-Paul Guerlain) 1989 “Sensual Opulence”"
+   },
+   "summary": {
+    "ar": "خبر عن المواد الخام من «CaFleureBon»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
+    "en": "Vintage Guerlain Samsara Parfum has rounded, semi-gourmand sensuality. The extraordinary proportion of jasmine and sandalwood is intoxicating. The post Vintage Guerlain Samsara Parfum Review (Jean-Paul Guerlain) 1989 “Sensual Opulence” appeared first on ÇaFleureBon Perfume Blog ."
+   }
+  },
+  {
+   "id": "na7anec",
+   "url": "https://news.google.com/rss/articles/CBMiuAJBVV95cUxQaFFaSDNvSXJDSnJqbXRhRXRtWUxDMUtROXBnTTVyM1hGdV82eXJ5dW12MzVCVVRZQnlIa0FUNmpVa1Nib1ctNWZxVFRTeFJsRjBZakltVHJSemNvR25ZamZwWjRtRDFtZzRVQ3FsMFEwQ21mc0dENHhzZlVFdzJELTZ2UDdFdGpMaGVDUnVjTTRhQUZ1UUR0dHhDM2ZMQmFqd2xJU3ZDWTNHNzBOTE81SEtZUmxDUjlkQU9BVURkQkM3QlNjWUpEaUFXN3hpZm1YeHdrbk54LVpOVGsyVkpqWUdBakIzdjI4eFFtX0R5ZThCVl9mUE9iblViZ3NqSFpVUHJBYzNLajAtN1VzT2JMM0J3Vlk5UndxaTRvcEVNZUNGYnBXVFk1anV4anRjZUFMV2UzdF9rOEPSAb4CQVVfeXFMTTFOeUlsUWowWGdVM2drazVtNUM1UjJ0cXJzNUxVeUdhc3dTWXJodjFyT0kxcFpaV0Z3R1ljQ2F3cFVlODNVSzJKZDZTWGVaalM4QmxQZE9TMjBzTGt0SGxVNEVtQkNaazA0dEgwaUUzckFKNHhDZUVCMDlpcnRwX0xFdG5nZEpHSnVKbjk5QzdSSy1xODBQMzBpdmNvRGU3VXlpQjZnb0xxRy1keEtnQUdxX2M3eS1mb0ZhZUhqZjduN3h2UnBEYTY2b0ttX1oyUGh2LVFwdy1DY3l5eEFpaGhTN1ZWTzhFTmN5VmlZeHd5eDRkZ0JaSTAzM21kSG5wQkpfTnFia2ViY2M4d1psYjA4eXZTOVpfRktuN2k0b21fbFBvZ2tLNFNMR01LRllOMW9sVXBNdU80dHB1SVh3?oc=5",
+   "source": "موقع تاجك",
+   "publishedAt": "2026-11-15T21:05:03.000Z",
+   "original": "سيجناتشر: سحر الفانيليا البودرية في عطر كريستينا آجيوليرا",
+   "lang": "ar",
+   "category": "ingredients",
+   "importance": 2,
+   "title": {
+    "ar": "سيجناتشر: سحر الفانيليا البودرية في عطر كريستينا آجيوليرا",
+    "en": "سيجناتشر: سحر الفانيليا البودرية في عطر كريستينا آجيوليرا"
+   },
+   "summary": {
+    "ar": "سيجناتشر: سحر الفانيليا البودرية في عطر كريستينا آجيوليرا",
+    "en": "سيجناتشر: سحر الفانيليا البودرية في عطر كريستينا آجيوليرا"
+   }
+  },
+  {
+   "id": "n1h5fkob",
+   "url": "https://news.google.com/rss/articles/CBMihwJBVV95cUxNR1d3eDRjN0NnejN4NC1rdWEzaGxQOTQwWnhJalhnc2VCY2ZBZTNSaVJSZG1GXzNIN3EtLXJrZDd2SE1BYmFDNVI4NXBvV20yV2Q1ZlhoUktLZGlsYTRSeVdHQTdRM202Y0EyQ3Q4Qk44a0FhTDJVSm44VlRBTk5MTG9PaDkyNGFIYlNFTktVUnVxcUdXbzJVYzJvUHhTRmdmZ0U4M1ZrVENBVTVNUzQzeEpBUUZET0ZwbWFKUzhOeXJnMXVnVUpKMkROUkMzaTUyTElaVUF5MjVpUUd6eFVNN1FDbldJcmpLZVNxbnU5QmkzTkRWTFJLaXotZTE4U0hLU05FZmw1Yw?oc=5",
+   "source": "Paris Select Book",
+   "publishedAt": "2026-11-15T19:00:07.000Z",
+   "original": "Five Bottles in the World: J'adore Diamond River Dior Unites High Jewellery and Perfumery in a Flacon Composed by Francis Kurkdjian",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Five Bottles in the World: J'adore Diamond River Dior Unites High Jewellery and Perfumery in a Flacon Composed by Francis Kurkdjian",
+    "en": "Five Bottles in the World: J'adore Diamond River Dior Unites High Jewellery and Perfumery in a Flacon Composed by Francis Kurkdjian"
+   },
+   "summary": {
+    "ar": "خبر عن صناعة العطور من «Paris Select Book»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
+    "en": "Five Bottles in the World: J'adore Diamond River Dior Unites High Jewellery and Perfumery in a Flacon Composed by Francis Kurkdjian"
+   }
+  },
+  {
+   "id": "n1fx1ff8",
+   "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxPUnRfejdUMG5PMWg0VUpMbjAzaHl1Z0p5cTBtSHNwSWxFajNKVE9nNmZqN1FTYVVxYjBSOGpqQnVCTlRseXdtZVFDMlAwN1luZGNYbk9MUXk1SzVuR0tmUXJURll1U2gwN3BkVWtDdmNfTC1kNzdseHpabFU4aDMzU0JybDVfc0hHS2pDblZRVFphQ2V2b1BaaUhnN1ZlUzRxWWNpX1RYNXY3Y1BUWUZNemtYeHVmVmdKSGVlekwzVHNzSXpzR0xWR1NQSmgzUWYwOE9TbDdDNmlMQkprdEdmR1JabUtHQzBld2FWb1lsUGpQMUZuWFpfLTJDMHFLNFhRV19GUHhsLVVacy1jOVZGRw?oc=5",
+   "source": "Paris Select Book",
+   "publishedAt": "2026-11-15T16:49:22.000Z",
+   "original": "Cinq exemplaires dans le monde : J'adore Diamond River Dior unit haute joaillerie et parfumerie dans un flacon que Francis Kurkdjian a composé",
+   "lang": "fr",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Cinq exemplaires dans le monde : J'adore Diamond River Dior unit haute joaillerie et parfumerie dans un flacon que Francis Kurkdjian a composé",
+    "en": "Cinq exemplaires dans le monde : J'adore Diamond River Dior unit haute joaillerie et parfumerie dans un flacon que Francis Kurkdjian a composé"
+   },
+   "summary": {
+    "ar": "خبر عن صناعة العطور من «Paris Select Book»، منشور بالفرنساوي. شاهين يقدر يشرحه لك بالعربي.",
+    "en": "Cinq exemplaires dans le monde : J'adore Diamond River Dior unit haute joaillerie et parfumerie dans un flacon que Francis Kurkdjian a composé"
+   }
+  },
+  {
+   "id": "nkjn8q4",
+   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFB5SERPYUJVYklENHphR1VJLXBuN2l6QllDWUhWOWtiWU5aNXB6Q0NPSkhzaURpbTU2a0hDVHQwaGtYTWhsc21NRlNkbkVtdzZWbzhSZDVEc2hSaGJ5M0I0R0V3XzJlSzdPODZRSzM4V2VYdWhfV3FONVJxMWRLZw?oc=5",
+   "source": "Byrdie",
+   "publishedAt": "2026-11-15T14:00:00.000Z",
+   "original": "Thanks to Kristin Ess, Your Hair Now Has Its Own Fragrance Wardrobe",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "Thanks to Kristin Ess, Your Hair Now Has Its Own Fragrance Wardrobe",
+    "en": "Thanks to Kristin Ess, Your Hair Now Has Its Own Fragrance Wardrobe"
+   },
+   "summary": {
+    "ar": "خبر عن صناعة العطور من «Byrdie»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
+    "en": "Thanks to Kristin Ess, Your Hair Now Has Its Own Fragrance Wardrobe"
+   }
+  },
+  {
+   "id": "n1srxeuo",
+   "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9DSFRBWVhhVmhMRlMyLVVQcG9HVDFNcE5NakFSSUZXYjA5a1VCS2lscEp1OVU4S2xmeXZBOUNzSGVPSHBqT0ZSd0dNU20?oc=5",
+   "source": "البوابة نيوز",
+   "publishedAt": "2026-11-15T13:22:00.000Z",
+   "original": "من القاهرة إلى ليبزيج.. الموسيقى المصرية تتألق في افتتاح مهرجان العود الدولي بألمانيا",
+   "lang": "ar",
+   "category": "events",
+   "importance": 2,
+   "title": {
+    "ar": "من القاهرة إلى ليبزيج.. الموسيقى المصرية تتألق في افتتاح مهرجان العود الدولي بألمانيا",
+    "en": "من القاهرة إلى ليبزيج.. الموسيقى المصرية تتألق في افتتاح مهرجان العود الدولي بألمانيا"
+   },
+   "summary": {
+    "ar": "من القاهرة إلى ليبزيج.. الموسيقى المصرية تتألق في افتتاح مهرجان العود الدولي بألمانيا",
+    "en": "من القاهرة إلى ليبزيج.. الموسيقى المصرية تتألق في افتتاح مهرجان العود الدولي بألمانيا"
+   }
+  },
+  {
+   "id": "njpiehs",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNNmhqeG9ETW44WHV6M1dRZ2NWRGpSZkpMOUF4T1QwLUFGM0g4RHBGeUZhZzFuQmRDdzZqYmE2REs5R0xoOE5xVnFvWDRnNUhyVzJXZ0tSZTV4dFRJZkkyMDFjLTdNUTl2YW9uLTlDOTU4Z0JkMWg5ZUxTaF8yVmRrMGpwUk5JMGNNUlU0OVJWRWJNbDRZR04wVV9YSmZFU2xJbUtQQlJLTFRYX2ZnRUxsR2hOeXd3Z2VVS241RDczZGc?oc=5",
+   "source": "Metro Mode",
+   "publishedAt": "2026-11-15T13:20:52.000Z",
+   "original": "LOEWE x The Nightmare Before Christmas – the most magical festive fragrance collection is available exclusively at NK!",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "LOEWE x The Nightmare Before Christmas – the most magical festive fragrance collection is available exclusively at NK!",
+    "en": "LOEWE x The Nightmare Before Christmas – the most magical festive fragrance collection is available exclusively at NK!"
+   },
+   "summary": {
+    "ar": "خبر عن صناعة العطور من «Metro Mode»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
+    "en": "LOEWE x The Nightmare Before Christmas – the most magical festive fragrance collection is available exclusively at NK!"
+   }
+  },
+  {
+   "id": "n1pvbzwl",
+   "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxOdXYtLU0yRFBaVkVjN2VzcDB0WTdmZzd4UVlfTTBSU0ZfWUFrU3UzQVRKMkVrN1dCZllrakdWQWZTVHNEaktBU2IxQktLcnpPV3hjMl8xUzdpQlUxQ0tmV3ZWTHc4cTk2VzBMS0RnbTFHN2Q5VElvQWowR29Wd25oLUl6b3dxTnNxX0ptUGNZUlNmYU5hdGpYTHhZaFlITEhyRWd6dkppQ3BueVM3eUxxdkNMVjNIa1plUlQwN2luc0JUUkhGdC1ldndsS1BiMWJxa1F6MWhJOA?oc=5",
+   "source": "Vietnam.vn",
+   "publishedAt": "2026-11-15T12:11:50.000Z",
+   "original": "قدم وفد من مكاتب الجمعية الوطنية في فيتنام ولاوس البخور لإحياء ذكرى الرئيس هو تشي منه والشهداء الأبطال.",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "قدم وفد من مكاتب الجمعية الوطنية في فيتنام ولاوس البخور لإحياء ذكرى الرئيس هو تشي منه والشهداء الأبطال.",
+    "en": "قدم وفد من مكاتب الجمعية الوطنية في فيتنام ولاوس البخور لإحياء ذكرى الرئيس هو تشي منه والشهداء الأبطال."
+   },
+   "summary": {
+    "ar": "قدم وفد من مكاتب الجمعية الوطنية في فيتنام ولاوس البخور لإحياء ذكرى الرئيس هو تشي منه والشهداء الأبطال.",
+    "en": "قدم وفد من مكاتب الجمعية الوطنية في فيتنام ولاوس البخور لإحياء ذكرى الرئيس هو تشي منه والشهداء الأبطال."
+   }
+  },
+  {
+   "id": "nf4143l",
+   "url": "https://news.google.com/rss/articles/CBMiigNBVV95cUxPUWZzR2RwY2VrUWsxRlZ6UlN0aTd3LS1YWkxBY3psNGM5TmNtNEJKdEJvV21aaE5jeVgybW9SSzVCR3ZJNTBJbzFEUnN0M0lNM3FLbW1rdzBKZC11TmVFeFhWektvOWNNdTRjLThaajNYUm02M1VUZ292LXRfdkZ3QWlmQ3k5UVpvM1d5M20yVTFpV2M5QkYxVF9TV2w2cXJXbjlBOEVRRnVXVDg4TGs2c1lra1Bsem55bzZfcEpkVEtyWDBITFZ2aWpuQlVwVGRBbTdxVjlBLXNpSmU5NWFMV2hLMHU0a0NCQ3pTc1BkZ0NYZG1ZM0YteDk4WGZXakY2amFRN3BRQTBVS1gxdzZsVkJQU1RMRThuXzB4aXJOVG5kVEtVUFltZlNhbjA3MWg3b0llbFpBMUFFSUZGSWZqQ2xCckFQaExnYW1HR2hhQWYwNkp0SEhyVW9oY1ZaZW92bW45aEplWGRia3lEMG9uMEs4bWFOT2NINjJhZThRV0lBQkRrY0NSREp3?oc=5",
+   "source": "تليجراف مصر",
+   "publishedAt": "2026-11-15T10:59:12.000Z",
+   "original": "الذكاء الاصطناعي يدخل عالم العطور.. كيف تساعد التقنيات في الإنتاج؟",
+   "lang": "ar",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "الذكاء الاصطناعي يدخل عالم العطور.. كيف تساعد التقنيات في الإنتاج؟",
+    "en": "الذكاء الاصطناعي يدخل عالم العطور.. كيف تساعد التقنيات في الإنتاج؟"
+   },
+   "summary": {
+    "ar": "الذكاء الاصطناعي يدخل عالم العطور.. كيف تساعد التقنيات في الإنتاج؟",
+    "en": "الذكاء الاصطناعي يدخل عالم العطور.. كيف تساعد التقنيات في الإنتاج؟"
+   }
+  },
+  {
+   "id": "ndi7l37",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOUW41ZUtPWURxMzZzN3pGaE8xSHdPOFF3Rnk1bktiVjctU1lyWTNSbXMwYTJub25vUlhPS2UwNDE2YXYwaWZmU0VRMmpaMHZvSE1HUHZvY1ctNU5OS0oxTXM5VWRRMEpZbUo0bnJxdmZrQnZPVzJSN2xSU1U1STRJNGVLbXBpanE2UFJFRmlJcVUxbmJQ0gGUAUFVX3lxTE5RbjVlS09ZRHEzNnM3ekZoTzFId084UXdGeTVuS2JWNy1TWXJZM1JtczBhMm5vbm9SWE9LZTA0MTZhdjBpZmZTRVEyalowdm9ITUdQdm9jVy01Tk5LSjFNczlVZFEwSlltSjRucnF2ZmtCdk9XMlI3bFJTVTVJNEk0ZUttcGlqcTZQUkVGaUlxVTFuYlA?oc=5",
+   "source": "Philstar Life",
+   "publishedAt": "2026-11-15T09:00:00.000Z",
+   "original": "LIST: Filipino fragrance brands worth checking out",
+   "lang": "en",
+   "category": "industry",
+   "importance": 2,
+   "title": {
+    "ar": "LIST: Filipino fragrance brands worth checking out",
+    "en": "LIST: Filipino fragrance brands worth checking out"
+   },
+   "summary": {
+    "ar": "خبر عن صناعة العطور من «Philstar Life»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
+    "en": "LIST: Filipino fragrance brands worth checking out"
+   }
+  },
+  {
+   "id": "n5c58a7",
+   "url": "https://news.google.com/rss/articles/CBMi-AJBVV95cUxNeTZYRHFYcWJSTFhkY3cxdEozYWpCVnc0V05jenNuaHpGOC14NWhpcElDYy11aDhxVFZ5emJ3OTNRMWZRT184Q2FNcGw0RVJYbW1vYnNsMkJfNUc2c09wa0RzellPMUVKTWhSNXN3Qzh2UFNmbWhiOFJCS3FvWEJpWXdfNHlydlYtWUdBRzg4UTVJUzAtWDlnckg0djk3UFd4OE1xMWFtTjQyb2t4a1BGQlJ2SldTZEgyWW16SGVJUWs2Z2hpLVZrS2U4X0wtUnVmNU1jaXhLdGo2SlhzWUF6bGM1endiWVcxRTI5c1h4eU1pTDQ4c1o2RTVPODBBTTBPaHVGNVpZNjVOYnk5SmVfellWLVROYXYxSXI1ZFJZUE0zelYtc1FLMlB6cG5SMlR5eVlZcGJqYlJmM0d0ZDBOV2FXeGJaNDVWQy1haUVKYnNVRmlWY2VBNGhQdGM0eHB2RU16aWlJcjVQOUZYbG1ra2REcXZBa01r?oc=5",
+   "source": "مجلة سيدتي",
+   "publishedAt": "2026-11-15T08:50:53.000Z",
+   "original": "عودة المكياج القوي في شتاء 2026.. ألوان جريئة ولمسات لامعة تتصدر المشهد",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "عودة المكياج القوي في شتاء 2026.. ألوان جريئة ولمسات لامعة تتصدر المشهد",
+    "en": "عودة المكياج القوي في شتاء 2026.. ألوان جريئة ولمسات لامعة تتصدر المشهد"
+   },
+   "summary": {
+    "ar": "عودة المكياج القوي في شتاء 2026.. ألوان جريئة ولمسات لامعة تتصدر المشهد",
+    "en": "عودة المكياج القوي في شتاء 2026.. ألوان جريئة ولمسات لامعة تتصدر المشهد"
+   }
+  },
+  {
+   "id": "n1v56qz6",
+   "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE1sSEFiWEZFVUpGOUhJR1JZZmRpTUEtQXFaYl9oQVdqZjlGdWpyTnNjc3N1VW53c1FSMFN2dEdpR2NlZEZfWU4zVWlrLVFJN2hicUt30gFTQVVfeXFMTWxIQWJYRkVVSkY5SElHUllmZGlNQS1BcVpiX2hBV2pmOUZ1anJOc2Nzc3VVbndzUVIwU3Z0R2lHY2VkRl9ZTjNVaWstUUk3aGJxS3c?oc=5",
+   "source": "صحيفة اليوم السعودية",
+   "publishedAt": "2026-11-15T06:46:00.000Z",
+   "original": "'سبيس إكس' تنجح في التقاط مركبة 'ستارشيب' لدى عودتها من الفضاء",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "'سبيس إكس' تنجح في التقاط مركبة 'ستارشيب' لدى عودتها من الفضاء",
+    "en": "'سبيس إكس' تنجح في التقاط مركبة 'ستارشيب' لدى عودتها من الفضاء"
+   },
+   "summary": {
+    "ar": "'سبيس إكس' تنجح في التقاط مركبة 'ستارشيب' لدى عودتها من الفضاء",
+    "en": "'سبيس إكس' تنجح في التقاط مركبة 'ستارشيب' لدى عودتها من الفضاء"
+   }
+  },
+  {
+   "id": "nq9m8tj",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQaGhrMndXSmJzMFYzWG9qLU1XYXh5SDZ5YUl4V0p4MF9CN3g4US0yd3dKQ1hOU1NBa1NwSXdSVGMyY0NZbkFGSUhpdzNiSnE1clpPVWlSQkRsSmI0ZGdDdlpPUGxlTGZRcWlqNTJ5ODlEbjNfNUw4blBYX05xdTl5WmZCeThwTXhYc0RoamtDaldsTDVXeWUxQk51TGFsdDN2eWstd25CZHZNS3Q3SzJxRkYycDDSAbQBQVVfeXFMUGhoazJ3V0piczBWM1hvai1NV2F4eUg2eWFJeFdKeDBfQjd4OFEtMnd3SkNYTlNTQWtTcEl3UlRjMmNDWW5BRklIaXczYkpxNXJaT1VpUkJEbEpiNGRnQ3ZaT1BsZUxmUXFpajUyeTg5RG4zXzVMOG5QWF9OcXU5eVpmQnk4cE14WHNEaGprQ2pXbEw1V3llMUJOdUxhbHQzdnlrLXduQmR2TUt0N0sycUZGMnAw?oc=5",
+   "source": "Vanguard News",
+   "publishedAt": "2026-11-15T05:38:41.000Z",
+   "original": "Scentified storms Nigerian market with Andraste fragrance, opens new store",
+   "lang": "en",
+   "category": "market",
+   "importance": 2,
+   "title": {
+    "ar": "Scentified storms Nigerian market with Andraste fragrance, opens new store",
+    "en": "Scentified storms Nigerian market with Andraste fragrance, opens new store"
+   },
+   "summary": {
+    "ar": "خبر عن سوق العطور من «Vanguard News»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
+    "en": "Scentified storms Nigerian market with Andraste fragrance, opens new store"
+   }
+  },
+  {
+   "id": "nqgcvuz",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxORmcxd3ZHNUJmdmNIZjBCSWNHbmJWNEZqZndKLU0tYUg0aGJneU5Sam1QLWF2Z0Jmaks0ZHZWT3Y1U3FkVk5TcVV4cXNGc1JGaFlKckR4Qk5McnU0OFdwX1daUHNLVG9oei1jdFhDanlnZllwVzlfUml1c0RobmtBYVl6X0lXUWt2QnFKMktBOUUtQQ?oc=5",
+   "source": "stupidDOPE",
+   "publishedAt": "2026-11-15T02:06:35.000Z",
+   "original": "retaW Brings Allen and Loeb to a New Roll-On Oil Perfume",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 2,
+   "title": {
+    "ar": "retaW Brings Allen and Loeb to a New Roll-On Oil Perfume",
+    "en": "retaW Brings Allen and Loeb to a New Roll-On Oil Perfume"
+   },
+   "summary": {
+    "ar": "خبر عن المواد الخام من «stupidDOPE»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
+    "en": "retaW Brings Allen and Loeb to a New Roll-On Oil Perfume"
+   }
+  },
+  {
+   "id": "n8cshsa",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9CQktnWS1QN2FuTk1sNDNHRE5FUlJXZFE4SVVSUmk0X1p4bTZEYnAyWUJjZlRrLUV4MGMydmJHUHQ0Z1Q1VlgzblFWdElmY0pVZW10bVd1aU1rNFdHMFJNM1FPWFhJdzIwMzNDSjc1cUs5SE1kRHp1Yw?oc=5",
+   "source": "Vietnam.vn",
+   "publishedAt": "2026-11-15T01:38:54.000Z",
+   "original": "جذب الزبائن من خلال قصة قرية صناعة أعواد البخور التقليدية.",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 2,
+   "title": {
+    "ar": "جذب الزبائن من خلال قصة قرية صناعة أعواد البخور التقليدية.",
+    "en": "جذب الزبائن من خلال قصة قرية صناعة أعواد البخور التقليدية."
+   },
+   "summary": {
+    "ar": "جذب الزبائن من خلال قصة قرية صناعة أعواد البخور التقليدية.",
+    "en": "جذب الزبائن من خلال قصة قرية صناعة أعواد البخور التقليدية."
+   }
+  },
   {
    "id": "n1iya1g8",
    "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQd2tZMHJSWjBNRXYxUGNmUWVqWW9RdFRiYm8tQnUxNVEtMjFmb3FiZllCOGdfTl9iaERDcGdOTzNGLXNGLW02QUk3SENkYU9NOUNVSS1XdlVIV2x5Y3NQT0o4bEZxUGp4STdhUkxiQ0MwQ1BEX1gybDZlWWNkNk9qc19Ka1pscl8xS3k5RG03akxpVnhEclZjYmJCSGhSS3lNVWluNw?oc=5",
@@ -285,366 +645,6 @@
    "summary": {
     "ar": "خبر عن إطلاق عطر جديد من «stupidDOPE»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
     "en": "GUIZIO Heaven Knows Fragrance: Notes, Price and Launch Date"
-   }
-  },
-  {
-   "id": "nnbvhw1",
-   "url": "https://nstperfume.com/2026/11/12/heeley-chiris-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-11-12T16:10:55.000Z",
-   "original": "Heeley Chiris ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "Heeley Chiris ~ new fragrance",
-    "en": "Heeley Chiris ~ new fragrance"
-   },
-   "summary": {
-    "ar": "خبر عن إطلاق عطر جديد من «Now Smell This»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "Niche line Heeley has introduced Chiris, a new unisex fragrance..."
-   }
-  },
-  {
-   "id": "nzw0yo1",
-   "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQUUozanFwemxITlRFQ2RGY3A5bU5JdGZVV1JxVTBYb1ZmUXl5N0V4SW9BR0hzWkpDdkhyc05MTVF4RUhEaVNfTGFmT3ptbnEzYXFfUU9XWDB3Q1JlMUlYV2tkQlFwZEZhS2pkZlhsYU9teFVwY0wyM09IOFdrN3ZRY0NGNVVPd1hFaVBObzA2cmQxdzZYRC1DZmxmRGtYbVBvSmNBWHpPeV9RZzAwdkl2aHBBSG04eTVJMzM3VnpibXdqNFZBektjeElWd1FWZw?oc=5",
-   "source": "Ouest-France",
-   "publishedAt": "2026-11-12T16:04:03.000Z",
-   "original": "Offre Spéciale Parfum : Profitez de Promotions Sephora",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Offre Spéciale Parfum : Profitez de Promotions Sephora",
-    "en": "Offre Spéciale Parfum : Profitez de Promotions Sephora"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Ouest-France»، منشور بالفرنساوي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "Offre Spéciale Parfum : Profitez de Promotions Sephora"
-   }
-  },
-  {
-   "id": "n1672jh8",
-   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNb2lMWVZKNGxOU1NDWGltMV96NV8tMWc4V212LXp6bG1sd3ZGeXVDaDNxLWdEeTc0cUZVOG5MSU5fUkZlaTFjTTQ2aDZjcXNGR1VfME5tWWdzT1diaHFnQkJKcXJNMjhSOVZGYWRpWmFmZHlVbTdVMElYSHNpZ2h0Skd3RWNoUF90RVFPWWhfUTJWVWPSAZgBQVVfeXFMTUl5QkdsWWdGdlUwaUk4UG9ZUTA2WTVvN3RUV2pVR3lINzZTWWhFTVBXUkNlTm80d1pEZ3JuYTdMeWc3SkZ5N3BNYV9BLVF1WlJGVFFQVzZGRHlrV0hWVThWTkZXb3p6WTh4YVJNcGhCVi04Y0N6V2hLU3R4QWIxelh5a3llMHhOWHl3d09fTjdnVFota0dsZDM?oc=5",
-   "source": "موقع تاجك",
-   "publishedAt": "2026-11-12T15:57:57.000Z",
-   "original": "اكتشفي سحر الحب الأبدي مع عطر لوف راش من باريس هيلتون",
-   "lang": "ar",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "اكتشفي سحر الحب الأبدي مع عطر لوف راش من باريس هيلتون",
-    "en": "اكتشفي سحر الحب الأبدي مع عطر لوف راش من باريس هيلتون"
-   },
-   "summary": {
-    "ar": "اكتشفي سحر الحب الأبدي مع عطر لوف راش من باريس هيلتون",
-    "en": "اكتشفي سحر الحب الأبدي مع عطر لوف راش من باريس هيلتون"
-   }
-  },
-  {
-   "id": "n11d1qem",
-   "url": "https://nstperfume.com/2026/11/12/thursday-scent-of-the-day-11-12-2/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-11-12T15:19:07.000Z",
-   "original": "Thursday scent of the day 11/12",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Thursday scent of the day 11/12",
-    "en": "Thursday scent of the day 11/12"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Now Smell This»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "Happy Almost-Friday! It's also World Pneumonia Day . Birthdays: Grace Kelly , Booker T Jones , Neil Young . What fragrance are you wearing? I might deserve a fraction of a point for Guerlain Spiritueuse Double Vanille ? Reminder: 11/13 will be Shalimar Friday..."
-   }
-  },
-  {
-   "id": "n12arugv",
-   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPSHEyVEZDUVVFbVM5Ny1PZDZ5U3Zkd0ctZF93eGl2U0lESHE5LUN1NkMwc3J5bVN4Z0MyNDNGd3hOOGxuMzNhZ29ZTUdNV2NRa2VYSmRVZjlFd05LME5hZ3hJREtIR3lNUXlmal9fTEUzdFFTSkFlYmJ0dmY0ZmxNSE5ESUc4SzJtTnVuSw?oc=5",
-   "source": "Hypebae",
-   "publishedAt": "2026-11-12T15:06:27.000Z",
-   "original": "Rina Lipa Fronts GCDS' First-Ever Perfume Launch",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "Rina Lipa Fronts GCDS' First-Ever Perfume Launch",
-    "en": "Rina Lipa Fronts GCDS' First-Ever Perfume Launch"
-   },
-   "summary": {
-    "ar": "خبر عن إطلاق عطر جديد من «Hypebae»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "Rina Lipa Fronts GCDS' First-Ever Perfume Launch"
-   }
-  },
-  {
-   "id": "nk8xrzl",
-   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBkN2xiLXNpcllaMU5nZlFvOWJ6anE0TGFobnp3WVJQUk5HZEJOdUxjb0tuU3duQzh6OTFfRGs5b3FBc3NkVW9mZmJ3QWI5eGx1ejNxR2xReUtFOXhJ?oc=5",
-   "source": "YouTube",
-   "publishedAt": "2026-11-12T15:00:09.000Z",
-   "original": "Late Night Music - Arabic Oud of Longing | ليل وحنين",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "Late Night Music - Arabic Oud of Longing | ليل وحنين",
-    "en": "Late Night Music - Arabic Oud of Longing | ليل وحنين"
-   },
-   "summary": {
-    "ar": "Late Night Music - Arabic Oud of Longing | ليل وحنين",
-    "en": "Late Night Music - Arabic Oud of Longing | ليل وحنين"
-   }
-  },
-  {
-   "id": "n1jj7ubn",
-   "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE04VmtLSUZDbDBJQmxpTmU5T24xYzY1QmxEOTUxSFVPcWplTFBROTdQY0V6aXFXN0UySkd5cHFPWkZTWk5ub19rUS1TWDlQV3Jq?oc=5",
-   "source": "https://www.sabanew.net/",
-   "publishedAt": "2026-11-12T14:13:17.000Z",
-   "original": "السفير العود يبحث مع مسؤولين إسبان مستجدات الأوضاع الحقوقية والإنسانية في اليمن",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "السفير العود يبحث مع مسؤولين إسبان مستجدات الأوضاع الحقوقية والإنسانية في اليمن",
-    "en": "السفير العود يبحث مع مسؤولين إسبان مستجدات الأوضاع الحقوقية والإنسانية في اليمن"
-   },
-   "summary": {
-    "ar": "السفير العود يبحث مع مسؤولين إسبان مستجدات الأوضاع الحقوقية والإنسانية في اليمن",
-    "en": "السفير العود يبحث مع مسؤولين إسبان مستجدات الأوضاع الحقوقية والإنسانية في اليمن"
-   }
-  },
-  {
-   "id": "n1r6nd5g",
-   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPWnRxeXNob2dGanVrbEFwS3EtSjVZMXkwM3dnRlZTOU5EN05GLXhzbHJpZnd0MmFreWNiczVjd0Y2cm9iM0s4UzlVclIyZFRpSWlxNDRDT0hiZS1vWDJqXzZxdFJqeVlPQkdzOXVBS2lHQ0xVWVZaUkdpVUttZks2WXFFZW9pZEhJZHo1ZVRHZkpOUXlVcEhBT1I0Slg1VWVoVC1MLVhCcEY2cjhERVRJbzZ0c0Zkdw?oc=5",
-   "source": "FashionNetwork India",
-   "publishedAt": "2026-11-12T14:05:59.000Z",
-   "original": "From heel to fragrance - Gcds makes its debut in perfumery with Morso",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "From heel to fragrance - Gcds makes its debut in perfumery with Morso",
-    "en": "From heel to fragrance - Gcds makes its debut in perfumery with Morso"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «FashionNetwork India»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "From heel to fragrance - Gcds makes its debut in perfumery with Morso"
-   }
-  },
-  {
-   "id": "nlru9r7",
-   "url": "https://news.google.com/rss/articles/CBMingJBVV95cUxOMWRia0tYQnhMdEhSQW0tbjNFRlBubldHeEEwcU53QnFWSjJLQkZZajJFVGQwR2RhWkE5NmVlWlR6WVNEXy1CZE5uRWY3RjVoSnVHdUlINmx1Y2l1ZUxWLTBYOGdFUWptSzFuRHotSUJzbTZPR01oeENhaFRXTndsRzVkempmeHJwdnNycU9yV21kbXA1RWNXMFFtdWVuVC1rWjBENldIa1VZOWd4bk45bUpJMFZWbE1xUVh0QW15bnhKRHIxWTE1dmd5TFV0ZnRlZ05pS2JzTXgwNlNvNTZyYUJTOTlJUEVwQnh2VkxlSXRKV3N2dDh6cTBKTkhwblZRV1RiMmsxRXc2X3ZQbVBSdFlGb0FrRmlFTnlHZGZ3?oc=5",
-   "source": "www.grazia.fr",
-   "publishedAt": "2026-11-12T12:46:19.000Z",
-   "original": "\"Il se revend très cher en seconde main\" : 30 ans après son lancement, ce parfum Lolita Lempicka devenu rarissime continue de faire tourner les têtes",
-   "lang": "fr",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "\"Il se revend très cher en seconde main\" : 30 ans après son lancement, ce parfum Lolita Lempicka devenu rarissime continue de faire tourner les têtes",
-    "en": "\"Il se revend très cher en seconde main\" : 30 ans après son lancement, ce parfum Lolita Lempicka devenu rarissime continue de faire tourner les têtes"
-   },
-   "summary": {
-    "ar": "خبر عن إطلاق عطر جديد من «www.grazia.fr»، منشور بالفرنساوي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "\"Il se revend très cher en seconde main\" : 30 ans après son lancement, ce parfum Lolita Lempicka devenu rarissime continue de faire tourner les têtes"
-   }
-  },
-  {
-   "id": "n1wk0k24",
-   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQbWVXNk9ia1ozcjFZYWFGYmFJbGUwdzRWSGZMMEw5dEVuUTBMblFVelM2dndlc0dwSzNQV1hldlRNemxKZDJNQloxZjNLSjJLTGd6MGU2WE8zVzNoaERwODRCamJQMk9HcDh4QjBDTXZXWXhKVm45X1Z4YkVodXNPM0F1ajM?oc=5",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-11-12T12:43:23.000Z",
-   "original": "Are we going back to the 2000s celebrity fragrance wardrobe era?",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Are we going back to the 2000s celebrity fragrance wardrobe era?",
-    "en": "Are we going back to the 2000s celebrity fragrance wardrobe era?"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Cosmetics Business»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "Are we going back to the 2000s celebrity fragrance wardrobe era?"
-   }
-  },
-  {
-   "id": "ngwfp7w",
-   "url": "https://news.google.com/rss/articles/CBMihwJBVV95cUxPa0pobmcxcEcyeHJMVTNNY3Y5SjlkM3NySE5UZUswNjNnR1VGa1dzN1J3RGhuOHRSX09PUDN5RkhCLWJDcXJzRDdnSlZOYzhiaTZrYkV4cXBBeE5DOU83WWRLc3B2RU16VGY1VnR0bjg3bVRBSnFDY2E5MGtwb0VVeXR0X29ILVZmSHZzVFF0MGVTM2JZZGxYVVotQTYwc0N3REpybTZUSWt2Tm42OEVhbFpKdS1KUzdral9VNFQ4NkMyemdRTzhBRE91TEdvZzNpaUV0MllCMDZHc2FCWG1SUlNZRlUtZFBQb0dBYmU3RTkwTGRKRVpJc25lck4yc3dsbjFsRXRvSQ?oc=5",
-   "source": "Grazia",
-   "publishedAt": "2026-11-11T17:06:35.000Z",
-   "original": "\"Son odeur tenait des jours entiers\" : les internautes pleurent tous ce parfum culte des années 1990 devenu très difficile à trouver",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "\"Son odeur tenait des jours entiers\" : les internautes pleurent tous ce parfum culte des années 1990 devenu très difficile à trouver",
-    "en": "\"Son odeur tenait des jours entiers\" : les internautes pleurent tous ce parfum culte des années 1990 devenu très difficile à trouver"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Grazia»، منشور بالفرنساوي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "\"Son odeur tenait des jours entiers\" : les internautes pleurent tous ce parfum culte des années 1990 devenu très difficile à trouver"
-   }
-  },
-  {
-   "id": "n1mr4aa",
-   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPYllQX3BJSWJhcW4wZ0lUWnZPWmthV0JENW1aSDdReUlwQzBBSGZJYUZTWHFOT2ZQXzZyVmdjMjBuSDNWOVdoSWVkVlhHUlZ6QnRweGlZaEVaclR5RTBOX1V5OEVoMzE0bkdubGZ0VjRPVmRtUVFoTFgwNzRDbzM5bzlGLWw?oc=5",
-   "source": "Magzter",
-   "publishedAt": "2026-11-11T16:50:45.000Z",
-   "original": "The scent of silence | Manila Bulletin - newspaper",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "The scent of silence | Manila Bulletin - newspaper",
-    "en": "The scent of silence | Manila Bulletin - newspaper"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Magzter»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "The scent of silence | Manila Bulletin - newspaper"
-   }
-  },
-  {
-   "id": "n18le2ol",
-   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOTmZueXpyTEU0RzlHVFVGOHpNaG51OHBxTjczcjZOek9XNWR2MkxvZV8wa2dFUWpCTkN6LUVwSGh1T2d5YUJtVEY0ODdjcHBlaVNoRnlhRDg2V2VTeTJPZjRINWY1U0ROWF80NFI1b2xpU2lvUjVUekExZ0ZwaHVGSFdGa201dmoyZll0cFIyeTJ2ZEhCYnR1WVczNDRkSW9RemlhYmVMbw?oc=5",
-   "source": "Roastbrief US",
-   "publishedAt": "2026-11-11T16:25:41.000Z",
-   "original": "From Sweet to Sophisticated: How Gourmand Is Breaking New Ground in Fine Perfumery",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "From Sweet to Sophisticated: How Gourmand Is Breaking New Ground in Fine Perfumery",
-    "en": "From Sweet to Sophisticated: How Gourmand Is Breaking New Ground in Fine Perfumery"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Roastbrief US»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "From Sweet to Sophisticated: How Gourmand Is Breaking New Ground in Fine Perfumery"
-   }
-  },
-  {
-   "id": "n1mfzwdo",
-   "url": "https://nstperfume.com/2026/11/11/loewe-moonlight-new-fragrance/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-11-11T16:17:17.000Z",
-   "original": "Loewe Moonlight ~ new fragrance",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "Loewe Moonlight ~ new fragrance",
-    "en": "Loewe Moonlight ~ new fragrance"
-   },
-   "summary": {
-    "ar": "خبر عن إطلاق عطر جديد من «Now Smell This»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "Spanish luxury brand Loewe has launched Moonlight, a new limited edition fragrance inspired by Tim Burton’s The Nightmare Before Christmas..."
-   }
-  },
-  {
-   "id": "n1bu3meo",
-   "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1SUV9EX1BYN3Z0VFlMTkFFdmJ6eVJ4NTltM1gyZXZrdWpjdEJqZmtTTGM0dUJkQU9SM2ZkdktVSUp6QUNtZWVRSmxZMW1jQThReXlZRE1DbWtPa0tYNDh3aExjSXFYUnppT3c?oc=5",
-   "source": "Sin Chew Daily",
-   "publishedAt": "2026-11-11T15:42:00.000Z",
-   "original": "Eternal Beauty Holdings Releases the \"2026 Hong Kong Daily Mood Index and Fragrance Trends White Paper\"",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Eternal Beauty Holdings Releases the \"2026 Hong Kong Daily Mood Index and Fragrance Trends White Paper\"",
-    "en": "Eternal Beauty Holdings Releases the \"2026 Hong Kong Daily Mood Index and Fragrance Trends White Paper\""
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Sin Chew Daily»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "Eternal Beauty Holdings Releases the \"2026 Hong Kong Daily Mood Index and Fragrance Trends White Paper\""
-   }
-  },
-  {
-   "id": "nqkjc75",
-   "url": "https://nstperfume.com/2026/11/11/prestige-led/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-11-11T15:00:45.000Z",
-   "original": "Prestige-led",
-   "lang": "en",
-   "category": "market",
-   "importance": 2,
-   "title": {
-    "ar": "Prestige-led",
-    "en": "Prestige-led"
-   },
-   "summary": {
-    "ar": "خبر عن سوق العطور من «Now Smell This»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "Coty appears to be narrowing into a prestige-centered fragrance and cosmetics business. In the span of a week, three developments from the US beauty group point to restructuring toward a leaner, prestige-led company, with mass-market beauty increasingly sidelined. — Read more in Coty sharpens prestige focus with Marc Jacobs deal and French job cuts at […]"
-   }
-  },
-  {
-   "id": "n1gncqcf",
-   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQc05TZzY2Ty1oSWttWk1iTk9KYmpnWHpmR1hHbTBoeVN0cEpnazBpUG5LbFJBazRtTUlOREpzcmNwZGpMN1hfSG5SdlMtYmNJR3lacU5tQ2lDeEhCVEJ0NVplUjlJMnpWVTktM1FVX2lMTlA4NzctbmlELXMwaFljS2ZIdklpVkRqR2lJZFltWXVaMDl4am5vZDZKY3dCSkFqMjYzNFJJcGRlSXdfLWlmVEloZnJ6MkdqOFE?oc=5",
-   "source": "Madame Figaro",
-   "publishedAt": "2026-11-11T14:23:08.000Z",
-   "original": "Fraise, cerise, fruits rouges : les nouveaux accords gourmands de la parfumerie",
-   "lang": "fr",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Fraise, cerise, fruits rouges : les nouveaux accords gourmands de la parfumerie",
-    "en": "Fraise, cerise, fruits rouges : les nouveaux accords gourmands de la parfumerie"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Madame Figaro»، منشور بالفرنساوي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "Fraise, cerise, fruits rouges : les nouveaux accords gourmands de la parfumerie"
-   }
-  },
-  {
-   "id": "nrc05mg",
-   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNZkNBR2hYbXF1bjVadWVqTEg1T3FaQkZBZU1Cb21RRG1WN2NBSGFGQXBhU3JIUEV2UVh4UTM1aVFLbGJhQjZuTDBrVFVCT3ZjSWRzSVRaQXpRRUVCWjVjT0NSamRCZUpmOGZlVFpUQnNDSW1YdXBPemdQeWpXY3oxMkpnOVhCQQ?oc=5",
-   "source": "Hypebae",
-   "publishedAt": "2026-11-11T14:00:19.000Z",
-   "original": "GUIZIO Has Entered the Fragrance Category",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "GUIZIO Has Entered the Fragrance Category",
-    "en": "GUIZIO Has Entered the Fragrance Category"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Hypebae»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "GUIZIO Has Entered the Fragrance Category"
-   }
-  },
-  {
-   "id": "n1l2mf2",
-   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPMHhRaGRvMmllbGdnUG5TdFRfcFRUeXZ1cjZRTzNwSHF6YnVCcVlWcjV3RWFxekJiMTAtMDdId2ktdWpueV9mTVNPTVNlQmxsV3JCWjluU3pFOEVaOV9FQjBadFUtMVB4dkdBR3RhNWtYUXcwS2ZaTjJFWHpSOElybW53MUtNeXNuRkFfSGhn?oc=5",
-   "source": "Vietnam.vn",
-   "publishedAt": "2026-11-11T13:47:04.000Z",
-   "original": "قام وفد مدينة هو تشي منه بتقديم البخور في المواقع التاريخية في ها تينه.",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "قام وفد مدينة هو تشي منه بتقديم البخور في المواقع التاريخية في ها تينه.",
-    "en": "قام وفد مدينة هو تشي منه بتقديم البخور في المواقع التاريخية في ها تينه."
-   },
-   "summary": {
-    "ar": "قام وفد مدينة هو تشي منه بتقديم البخور في المواقع التاريخية في ها تينه.",
-    "en": "قام وفد مدينة هو تشي منه بتقديم البخور في المواقع التاريخية في ها تينه."
-   }
-  },
-  {
-   "id": "nts7q3y",
-   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNVFp6eGZnZ1Z2ckFxVFZKQ050N01LRzFpNDFKVUlDT0gxbllja29rejRHVGdNRUtTWDlpX2FJcjc1eWYzS1lPZGZSdXhmdEczNzZxb3hpc0lzWWpwZ2tHd1FQdVZVYnFCQlNISHNDM2dQV3BoVUg2R1RoR2NYTU9Yb0l4NHBLRW16QnZNa05lQXBBby1mMWZ5SjJMTm9NbFRwQW83OHBsQ0pzUC1rczVF?oc=5",
-   "source": "Cosmopolitan",
-   "publishedAt": "2026-11-11T12:45:00.000Z",
-   "original": "\"It's a magnet for compliments\": This £22 M&S perfume has replaced my designer scents this winter",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "\"It's a magnet for compliments\": This £22 M&S perfume has replaced my designer scents this winter",
-    "en": "\"It's a magnet for compliments\": This £22 M&S perfume has replaced my designer scents this winter"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Cosmopolitan»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "\"It's a magnet for compliments\": This £22 M&S perfume has replaced my designer scents this winter"
    }
   }
  ]
