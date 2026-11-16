@@ -8,10 +8,18 @@ import { CHAT_BANK } from '../scripts/inspect/chat-bank';
 const wiki = () => Response.json({ query: { search: [{ title: 'صفحة', snippet: 'ملخص', pageid: 3 }] } });
 const ok = () => Response.json({ choices: [{ message: { content: 'رد' } }] });
 const down = (status = 503, body = '{"error":{"status":"UNAVAILABLE"}}') => new Response(body, { status });
-function fake(engine: (n: number) => Response) {
-  const seen = { writes: 0, searches: 0, system: '' };
+// «بحث جوجل»: the search Gemini runs with its google_search tool (the pages it used come back as grounding).
+const google = () => Response.json({ candidates: [{ content: { parts: [{ text: 'ملخص البحث من جوجل' }] }, groundingMetadata: { groundingChunks: [{ web: { uri: 'https://www.youm7.com/a', title: 'صفحة' } }] } }] });
+function fake(engine: (n: number) => Response, { googleDown = false } = {}) {
+  const seen = { writes: 0, searches: 0, wiki: 0, system: '' };
   const request = (async (url: string | URL | Request, init?: RequestInit) => {
-    if (new URL(String(url)).hostname.endsWith('wikipedia.org')) { seen.searches += 1; return wiki(); }
+    if (new URL(String(url)).hostname.endsWith('wikipedia.org')) { seen.searches += 1; seen.wiki += 1; return wiki(); }
+    if (new URL(String(url)).hostname === 'generativelanguage.googleapis.com') {
+      // Only the search itself is answered here; Gemini as a writer is shut (so the other platform writes).
+      if (!String(init?.body || '').includes('دوّر في جوجل وجاوب')) return down(401, '{"error":{"status":"UNAUTHENTICATED"}}');
+      seen.searches += 1;
+      return googleDown ? down(429, '{"error":{"status":"RESOURCE_EXHAUSTED"}}') : google();
+    }
     seen.writes += 1;
     seen.system = String(init?.body || '');
     return engine(seen.writes);
@@ -19,6 +27,7 @@ function fake(engine: (n: number) => Response) {
   return { request, seen };
 }
 const env = { OPENAI_API_KEY: 'test' };
+const newsEnv = { OPENAI_API_KEY: 'test', GEMINI_API_KEY: 'g' };
 const news = { messages: [{ role: 'user', text: 'ايه اخبار الحرب فى الشرق الاوسط انهارده' }] };
 const plain = { messages: [{ role: 'user', text: 'ليه السما لونها أزرق؟' }] };
 const silent = async <T>(run: () => Promise<T>): Promise<T> => { const warn = console.warn; console.warn = () => {}; try { return await run(); } finally { console.warn = warn; } };
@@ -28,18 +37,25 @@ test('the whole question bank is sorted correctly into live and timeless questio
   for (const item of CHAT_BANK) assert.equal(wantsLiveInfo(item.text), item.live, item.text);
 });
 
-test('a news question searches the web by itself; a timeless one does not; search:false is respected', async () => {
-  const a = fake(ok); const out = await askWorkspace(news, { env, fetch: a.request });
+test('a news question searches Google by itself; a timeless one does not; search:false is respected', async () => {
+  const a = fake(ok); const out = await silent(() => askWorkspace(news, { env: newsEnv, fetch: a.request }));
   assert.equal(a.seen.searches > 0, true); assert.equal(out.sources.length > 0, true); assert.equal(out.reply, 'رد');
+  assert.equal(a.seen.wiki, 0); assert.equal(out.sources[0]!.url, 'https://www.youm7.com/a');
   const b = fake(ok); await askWorkspace(plain, { env, fetch: b.request }); assert.equal(b.seen.searches, 0);
   const c = fake(ok); await askWorkspace({ ...news, search: false }, { env, fetch: c.request }); assert.equal(c.seen.searches, 0);
 });
 
-test('a news question never ends in "busy": search results are shown when every platform is down or none exists', async () => {
-  for (const e of [env, {}]) {
-    const w = fake(() => down());
-    const out = await silent(() => askWorkspace(news, { env: e, fetch: w.request, retryDelayMs: 0 }));
-    assert.equal(out.via, 'search'); assert.match(out.reply, /صفحة/); assert.ok(out.sources.length > 0);
+test('a news question never ends in "busy": the Google answer is shown when every writing platform is down', async () => {
+  const w = fake(() => down());
+  const out = await silent(() => askWorkspace(news, { env: newsEnv, fetch: w.request, retryDelayMs: 0 }));
+  assert.equal(out.via, 'search'); assert.match(out.reply, /جوجل/); assert.ok(out.sources.length > 0);
+});
+
+test("today's news is never answered from the encyclopedia when Google search fails (Bahrain 2011 is not today's news)", async () => {
+  for (const e of [newsEnv, {}]) {
+    const w = fake(() => down(), { googleDown: true });
+    await silent(() => assert.rejects(askWorkspace(news, { env: e, fetch: w.request, retryDelayMs: 0 }), (err: unknown) => err instanceof ReadError));
+    assert.equal(w.seen.wiki, 0);
   }
 });
 

@@ -5,7 +5,7 @@ import { NATURAL_TALK_INSTRUCTION, needInstruction, polishReply } from '../src/u
 import { THINKING_CRAFT_INSTRUCTION } from '../src/utils/thinkingCraft';
 import { createResearchSpider } from '../src/utils/researchSpider';
 import { IMAGE_WEB_INSTRUCTION, chatWebAsks, isPictureTalk, stripWebAsks, webFindings } from '../src/utils/imageReading';
-import { LIVE_CACHE_WINDOW_MS, LIVE_SEARCH_MS, LIVE_WEB_ASK_INSTRUCTION, dateLabel, isLiveWebTalk, liveWebBlock, liveWebQueries, needsLiveWeb } from '../src/utils/liveWeb';
+import { GENERAL_WEB_ASK_INSTRUCTION, LIVE_CACHE_WINDOW_MS, LIVE_SEARCH_MS, LIVE_WEB_ASK_INSTRUCTION, dateLabel, isLiveWebTalk, liveWebBlock, liveWebQueries, needsLiveWeb } from '../src/utils/liveWeb';
 import { gateBrief, type GateAnswer } from '../src/utils/netGate';
 import { createNetGate, sharedNetGate } from './core/netGate';
 /**
@@ -363,17 +363,19 @@ export const PICTURE_TOTAL_MS = 46_000;
 /** A live question searches first (up to LIVE_SEARCH_MS), then the engines answer: the most it may take in all. */
 export const LIVE_TOTAL_MS = 48_000;
 /** One search of the gate inside a chat answer (a slow search must not eat the whole answer's time). */
-export const PICTURE_SEARCH_MS = 12_000;
+export const PICTURE_SEARCH_MS = 17_000; // room for a Google search tried on a second model
 /** «بوابة الإنترنت» as the chat uses it (server/core/netGate.ts). */
 export interface ChatWebGate { fetch(body: unknown): Promise<GateAnswer> }
 /** One search of the gate for the chat, within `ms`; its links join `sources`. No result → no brief (never thrown). */
-async function gateSearch(gate: ChatWebGate, q: string, lang: string, ms: number, sources: ExternalSearchSource[]): Promise<{ q: string; brief?: string; answer?: string }> {
+async function gateSearch(gate: ChatWebGate, q: string, lang: string, ms: number, sources: ExternalSearchSource[], liveOnly = false): Promise<{ q: string; brief?: string; answer?: string }> {
   let timer: ReturnType<typeof setTimeout> | undefined;
   try {
     const answer = await Promise.race([
       gate.fetch({ kind: 'search', bot: 'shaheen_chat', q, lang }),
       new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error('slow search')), ms); timer.unref?.(); }),
     ]);
+    // Today's news from an encyclopedia (Bahrain 2011) is no news: an honest «the search did not answer» instead.
+    if (liveOnly && answer.via === 'encyclopedia') return { q };
     for (const s of answer.sources) if (!sources.some((x) => x.url === s.url)) sources.push({ title: s.title, url: s.url });
     return answer.answer || answer.sources.length ? { q, brief: gateBrief(answer, 2500), ...(answer.answer ? { answer: answer.answer.trim() } : {}) } : { q };
   } catch { return { q }; } finally { if (timer) clearTimeout(timer); }
@@ -446,7 +448,7 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   let live = '';
   if (liveAsk) {
     const today = options.now?.() || new Date();
-    const found = await Promise.all(liveWebQueries(input.message, input.language, today).map((q) => gateSearch(options.webGate!, q, input.language, LIVE_SEARCH_MS, liveSources)));
+    const found = await Promise.all(liveWebQueries(input.message, input.language, today).map((q) => gateSearch(options.webGate!, q, input.language, LIVE_SEARCH_MS, liveSources, true)));
     live = liveWebBlock(found, today, input.language);
   }
   const instruction = systemInstruction(input.language, settings.instructions, style, input) + needInstruction(input.message) + (liveAsk ? live : await newsContext(input.message, input.language, env).catch(() => ''))
@@ -458,8 +460,12 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   const pictureWeb = Boolean(options.webGate) && isPictureTalk(input.message, input.conversationHistory);
   // A live conversation («حللهالي أكتر» after the news) may ask the gate for more itself, like the picture chat.
   const liveWeb = Boolean(options.webGate) && !pictureWeb && !shopping && isLiveWebTalk(input.message, input.conversationHistory);
-  const webTalk = pictureWeb || liveWeb;
-  const fullInstruction = (social ? `${instruction}\n${social}` : instruction) + (pictureWeb ? IMAGE_WEB_INSTRUCTION : liveWeb ? LIVE_WEB_ASK_INSTRUCTION : '');
+  // «بحث جوجل عند الحاجة»: in every other conversation too — Gemini searches Google itself; another engine asks the gate.
+  const generalAsk = Boolean(options.webGate) && !pictureWeb && !liveWeb && !shopping;
+  const webTalkFor = (provider: Provider) => pictureWeb || liveWeb || (generalAsk && provider !== 'gemini');
+  const baseInstruction = social ? `${instruction}\n${social}` : instruction;
+  const instructionFor = (provider: Provider) => baseInstruction + (pictureWeb ? IMAGE_WEB_INSTRUCTION : liveWeb ? LIVE_WEB_ASK_INSTRUCTION
+    : generalAsk && provider !== 'gemini' ? GENERAL_WEB_ASK_INSTRUCTION : '');
   // A deep analysis plus its formula block used to be cut before the closing fence: give it room.
   const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
     : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
@@ -475,11 +481,16 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
     let refusal: { failure: EngineFailure; status: number; detail: string } | undefined;
     const sources: ExternalSearchSource[] = [...liveSources];
     const addSources = (found: readonly ExternalSearchSource[]) => { for (const s of found) if (s?.url && !sources.some((x) => x.url === s.url)) sources.push(s); };
+    const fullInstruction = instructionFor(provider);
+    const webTalk = webTalkFor(provider);
+    // «بحث جوجل»: Gemini searches Google itself whenever the answer needs it (not for the store's own questions).
+    const googleSearch = provider === 'gemini' && Boolean(options.webGate) && !shopping;
+    let searched = false;
     try {
       const first = await callEngine(provider, fullInstruction, turns, {
         env, fetch: options.fetch, signal, temperature: settings.temperature, model,
-        maxTokens: useLite ? Math.min(maxTokens, 1536) : maxTokens, maxChars: 32000,
-        onSources: addSources,
+        maxTokens: useLite ? Math.min(maxTokens, 1536) : maxTokens, maxChars: 32000, googleSearch,
+        onSources: (found) => { if (provider === 'gemini' && found.length) searched = true; addSources(found); },
         onFailure: (failure, httpStatus, detail) => { refusal = { failure, status: httpStatus, detail }; },
       });
       if (signal.aborted) throw signal.reason;
@@ -488,7 +499,8 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
       // with the findings — one more call, never a third (it may not ask again).
       const asks = webTalk && typeof first === 'string' ? chatWebAsks(first) : [];
       if (asks.length && options.webGate) {
-        const found = await Promise.all(asks.map((q) => gateSearch(options.webGate!, q, input.language, PICTURE_SEARCH_MS, sources)));
+        searched = true;
+        const found = await Promise.all(asks.map((q) => gateSearch(options.webGate!, q, input.language, PICTURE_SEARCH_MS, sources, liveAsk || liveWeb || needsLiveWeb(q))));
         if (total.aborted) throw total.reason;
         const again = AbortSignal.any([total, AbortSignal.timeout(options.timeoutMs ?? 28000)]);
         reply = await callEngine(provider, fullInstruction, [...turns, { role: 'assistant', text: first!.trim() }, { role: 'user', text: webFindings(found) }], {
@@ -508,7 +520,7 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
         const polished = complaint ? polishRelations(reply.trim()) : shopping ? polishSale(reply.trim()) : reply.trim();
         const citationCleaned = hideUnrequestedSources(polished);
         // A live answer always shows where it came from (today's news without its links is not checkable).
-        const answer = asksForSources(input.message) || (liveAsk && sources.length) ? appendRequestedSources(citationCleaned, sources.slice(0, 5), input.language)
+        const answer = asksForSources(input.message) || ((liveAsk || searched) && sources.length) ? appendRequestedSources(citationCleaned, sources.slice(0, 5), input.language)
           : provider === 'perplexity' ? citationCleaned : polished;
         return { outcome: 'ok', value: { reply: answer, mode: requested, ...(sources.length ? { sources } : {}), engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
           badge: ENGINE_INFO[provider].name, model, accentColor: ENGINE_INFO[provider].color } } };
@@ -648,7 +660,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   const answerFromGate = async (input: ChatRequest, mode: string, res: express.Response): Promise<boolean> => {
     const sources: ExternalSearchSource[] = [];
     const today = new Date();
-    const found = await Promise.all(liveWebQueries(input.message, input.language, today).map((q) => gateSearch(webGate, q, input.language, LIVE_SEARCH_MS, sources))).catch(() => []);
+    const found = await Promise.all(liveWebQueries(input.message, input.language, today).map((q) => gateSearch(webGate, q, input.language, LIVE_SEARCH_MS, sources, true))).catch(() => []);
     const answers = found.map((f) => f.answer).filter((a): a is string => Boolean(a));
     if (!answers.length || res.destroyed) return false;
     const ar = input.language === 'ar';
