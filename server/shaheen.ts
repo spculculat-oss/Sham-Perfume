@@ -5,6 +5,7 @@ import { NATURAL_TALK_INSTRUCTION, needInstruction, polishReply } from '../src/u
 import { THINKING_CRAFT_INSTRUCTION } from '../src/utils/thinkingCraft';
 import { createResearchSpider } from '../src/utils/researchSpider';
 import { IMAGE_WEB_INSTRUCTION, chatWebAsks, isPictureTalk, stripWebAsks, webFindings } from '../src/utils/imageReading';
+import { LIVE_CACHE_WINDOW_MS, LIVE_SEARCH_MS, LIVE_WEB_ASK_INSTRUCTION, dateLabel, isLiveWebTalk, liveWebBlock, liveWebQueries, needsLiveWeb } from '../src/utils/liveWeb';
 import { gateBrief, type GateAnswer } from '../src/utils/netGate';
 import { createNetGate, sharedNetGate } from './core/netGate';
 /**
@@ -359,10 +360,24 @@ export const AUTO_TOTAL_MS = 20_000;
 /** A picture conversation may search «بوابة الإنترنت» and ask the engine again: more time, still inside Vercel's 60 s. */
 export const PICTURE_ENGINE_MS = 22_000;
 export const PICTURE_TOTAL_MS = 46_000;
+/** A live question searches first (up to LIVE_SEARCH_MS), then the engines answer: the most it may take in all. */
+export const LIVE_TOTAL_MS = 48_000;
 /** One search of the gate inside a chat answer (a slow search must not eat the whole answer's time). */
 export const PICTURE_SEARCH_MS = 12_000;
 /** «بوابة الإنترنت» as the chat uses it (server/core/netGate.ts). */
 export interface ChatWebGate { fetch(body: unknown): Promise<GateAnswer> }
+/** One search of the gate for the chat, within `ms`; its links join `sources`. No result → no brief (never thrown). */
+async function gateSearch(gate: ChatWebGate, q: string, lang: string, ms: number, sources: ExternalSearchSource[]): Promise<{ q: string; brief?: string; answer?: string }> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    const answer = await Promise.race([
+      gate.fetch({ kind: 'search', bot: 'shaheen_chat', q, lang }),
+      new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error('slow search')), ms); timer.unref?.(); }),
+    ]);
+    for (const s of answer.sources) if (!sources.some((x) => x.url === s.url)) sources.push({ title: s.title, url: s.url });
+    return answer.answer || answer.sources.length ? { q, brief: gateBrief(answer, 2500), ...(answer.answer ? { answer: answer.answer.trim() } : {}) } : { q };
+  } catch { return { q }; } finally { if (timer) clearTimeout(timer); }
+}
 
 /** «مترجم ردود شاهين»: the most a translation may take, and the whole answer's limit (Vercel stops at 60 s). */
 const TRANSLATE_MS = 15_000;
@@ -384,8 +399,10 @@ export interface ExecuteOptions {
   health?: EngineHealth;
   /** «تلقائي»: Shaheen answers himself when the platforms refuse, so a «too many requests» is not waited out. */
   selfBacked?: boolean;
-  /** «شاهين يقرا الصور»: in a picture conversation the engine may ask «بوابة الإنترنت» for what it needs. */
+  /** «شاهين يقرا الصور» / «شاهين والإنترنت»: a picture or a live question (news, today's prices) uses «بوابة الإنترنت». */
   webGate?: ChatWebGate;
+  /** Today, for the live search (tests fix it). */
+  now?: () => Date;
 }
 
 /** Only the provider that actually answered is credited. Auto is failover, not a fake panel. */
@@ -422,14 +439,27 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   const total = AbortSignal.any([AbortSignal.timeout(options.totalTimeoutMs ?? 50000), ...(options.signal ? [options.signal] : [])]);
   // Questions about news get the real headlines Shaheen collected (every 12 h) instead of invented ones.
   // «علم البيع»: a buying conversation tells the engine how this visitor should be spoken to (his style, motive…).
-  const instruction = systemInstruction(input.language, settings.instructions, style, input) + needInstruction(input.message) + await newsContext(input.message, input.language, env).catch(() => '')
+  // «شاهين والإنترنت»: today's news, a live price, «روح للنت» — searched on «بوابة الإنترنت» before any engine answers,
+  // so he answers from what is on the internet now (with its links), never «I have no internet» or month-old news.
+  const liveAsk = Boolean(options.webGate) && !shopping && needsLiveWeb(input.message);
+  const liveSources: ExternalSearchSource[] = [];
+  let live = '';
+  if (liveAsk) {
+    const today = options.now?.() || new Date();
+    const found = await Promise.all(liveWebQueries(input.message, input.language, today).map((q) => gateSearch(options.webGate!, q, input.language, LIVE_SEARCH_MS, liveSources)));
+    live = liveWebBlock(found, today, input.language);
+  }
+  const instruction = systemInstruction(input.language, settings.instructions, style, input) + needInstruction(input.message) + (liveAsk ? live : await newsContext(input.message, input.language, env).catch(() => ''))
     + await supervisorGuidance('shaheen_chat', env).catch(() => '') + (shopping ? `\n${shoppingBrief(input.message, input.conversationHistory, input.language)}` : '');
   // «شاهين ابن الناس»: an upset, formal, older or foreign visitor is spoken to accordingly; a complaint is cleaned.
   const social = socialBrief(input.message, input.conversationHistory, input.language);
   const complaint = isComplaintTurn(input.message);
   // «شاهين يقرا الصور»: about a visitor's picture, the engine may ask «بوابة الإنترنت» before answering.
   const pictureWeb = Boolean(options.webGate) && isPictureTalk(input.message, input.conversationHistory);
-  const fullInstruction = (social ? `${instruction}\n${social}` : instruction) + (pictureWeb ? IMAGE_WEB_INSTRUCTION : '');
+  // A live conversation («حللهالي أكتر» after the news) may ask the gate for more itself, like the picture chat.
+  const liveWeb = Boolean(options.webGate) && !pictureWeb && !shopping && isLiveWebTalk(input.message, input.conversationHistory);
+  const webTalk = pictureWeb || liveWeb;
+  const fullInstruction = (social ? `${instruction}\n${social}` : instruction) + (pictureWeb ? IMAGE_WEB_INSTRUCTION : liveWeb ? LIVE_WEB_ASK_INSTRUCTION : '');
   // A deep analysis plus its formula block used to be cut before the closing fence: give it room.
   const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
     : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
@@ -443,30 +473,22 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
     const useLite = lite && provider === 'gemini';
     const model = useLite ? liteModel(env) : settings.models[provider] || status.model;
     let refusal: { failure: EngineFailure; status: number; detail: string } | undefined;
-    let sources: ExternalSearchSource[] = [];
+    const sources: ExternalSearchSource[] = [...liveSources];
+    const addSources = (found: readonly ExternalSearchSource[]) => { for (const s of found) if (s?.url && !sources.some((x) => x.url === s.url)) sources.push(s); };
     try {
       const first = await callEngine(provider, fullInstruction, turns, {
         env, fetch: options.fetch, signal, temperature: settings.temperature, model,
         maxTokens: useLite ? Math.min(maxTokens, 1536) : maxTokens, maxChars: 32000,
-        onSources: (found) => { sources = found; },
+        onSources: addSources,
         onFailure: (failure, httpStatus, detail) => { refusal = { failure, status: httpStatus, detail }; },
       });
       if (signal.aborted) throw signal.reason;
       let reply = first;
-      // It asked «بوابة الإنترنت» (only in a picture conversation): the searches run, then the same engine answers
+      // It asked «بوابة الإنترنت» (a picture or a live conversation): the searches run, then the same engine answers
       // with the findings — one more call, never a third (it may not ask again).
-      const asks = pictureWeb && typeof first === 'string' ? chatWebAsks(first) : [];
+      const asks = webTalk && typeof first === 'string' ? chatWebAsks(first) : [];
       if (asks.length && options.webGate) {
-        const found = await Promise.all(asks.map(async (q) => {
-          try {
-            const answer = await Promise.race([
-              options.webGate!.fetch({ kind: 'search', bot: 'shaheen_chat', q, lang: input.language }),
-              new Promise<never>((_, reject) => { setTimeout(() => reject(new Error('slow search')), PICTURE_SEARCH_MS).unref?.(); }),
-            ]);
-            for (const s of answer.sources) if (!sources.some((x) => x.url === s.url)) sources.push({ title: s.title, url: s.url });
-            return { q, brief: gateBrief(answer, 2500) };
-          } catch { return { q }; }
-        }));
+        const found = await Promise.all(asks.map((q) => gateSearch(options.webGate!, q, input.language, PICTURE_SEARCH_MS, sources)));
         if (total.aborted) throw total.reason;
         const again = AbortSignal.any([total, AbortSignal.timeout(options.timeoutMs ?? 28000)]);
         reply = await callEngine(provider, fullInstruction, [...turns, { role: 'assistant', text: first!.trim() }, { role: 'user', text: webFindings(found) }], {
@@ -476,7 +498,7 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
         });
         if (again.aborted) throw again.reason;
       }
-      if (pictureWeb && typeof reply === 'string') reply = stripWebAsks(reply);
+      if (webTalk && typeof reply === 'string') reply = stripWebAsks(reply);
       if (typeof reply === 'string' && reply.trim()) {
         if (provider === 'perplexity' && (shouldSearch || asksForSources(input.message)) && !sources.length) {
           health?.fail(provider, 'empty');
@@ -485,7 +507,8 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
         health?.ok(provider);
         const polished = complaint ? polishRelations(reply.trim()) : shopping ? polishSale(reply.trim()) : reply.trim();
         const citationCleaned = hideUnrequestedSources(polished);
-        const answer = asksForSources(input.message) ? appendRequestedSources(citationCleaned, sources, input.language)
+        // A live answer always shows where it came from (today's news without its links is not checkable).
+        const answer = asksForSources(input.message) || (liveAsk && sources.length) ? appendRequestedSources(citationCleaned, sources.slice(0, 5), input.language)
           : provider === 'perplexity' ? citationCleaned : polished;
         return { outcome: 'ok', value: { reply: answer, mode: requested, ...(sources.length ? { sources } : {}), engine: { id: provider, provider, name: ENGINE_INFO[provider].name,
           badge: ENGINE_INFO[provider].name, model, accentColor: ENGINE_INFO[provider].color } } };
@@ -554,9 +577,10 @@ export function publicChatResult(result: { reply: string; mode?: string; sources
   const mode = (SHAHEEN_MODES as readonly string[]).includes(result.mode || '') ? result.mode! : 'auto';
   // The model sometimes labels the visual-aid block ```json or leaves it open: send one canonical block.
   // A real question gets the answer straight away, not «أهلاً بك.» first. Source links stay metadata until requested.
-  const sources = result.sources ? safeChatSources(result.sources) : undefined;
+  const sources = result.sources ? safeChatSources(result.sources.slice(0, 5)) : undefined;
   const normalized = normalizeMediaBlocks(result.reply);
-  const visible = asksForSources(question) ? normalized : hideUnrequestedSources(normalized);
+  // A live answer (today's news, «روح للنت») keeps its links: news without where it came from cannot be checked.
+  const visible = asksForSources(question) || needsLiveWeb(question) ? normalized : hideUnrequestedSources(normalized);
   return { reply: polishReply(stripOpeningGreeting(visible, question)), mode, ...(sources?.length ? { sources } : {}), engine: { id: mode, provider: 'shaheen', name: 'الخبير شاهين', badge: 'شاهين', accentColor: 'amber' } };
 }
 
@@ -620,6 +644,19 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   const router = express.Router();
   // The server's one gate (shared counts, memory and daily allowance); a test's injected fetch gets its own.
   const webGate: ChatWebGate = options.webGate || (options.fetch ? createNetGate({ env, fetch: options.fetch }) : sharedNetGate(env));
+  /** «شاهين والإنترنت» with no platform to analyse it: the gate's own answers, dated and with their links. */
+  const answerFromGate = async (input: ChatRequest, mode: string, res: express.Response): Promise<boolean> => {
+    const sources: ExternalSearchSource[] = [];
+    const today = new Date();
+    const found = await Promise.all(liveWebQueries(input.message, input.language, today).map((q) => gateSearch(webGate, q, input.language, LIVE_SEARCH_MS, sources))).catch(() => []);
+    const answers = found.map((f) => f.answer).filter((a): a is string => Boolean(a));
+    if (!answers.length || res.destroyed) return false;
+    const ar = input.language === 'ar';
+    const head = `${ar ? 'من الإنترنت النهارده' : 'From the internet today'} (${dateLabel(today, ar ? 'ar' : input.language)}):`;
+    const reply = appendRequestedSources(`${head}\n\n${answers.join('\n\n')}`, sources.slice(0, 5), input.language);
+    res.json({ ...publicChatResult({ reply, mode, sources }, input.message), memory: 'live' });
+    return true;
+  };
   const capacity = capacityConfig(env);
   // Per visitor (IP + anonymous browser id, so people behind one mobile-carrier IP are told apart)
   // and a looser per-IP ceiling that bounds anyone rotating browser ids.
@@ -889,13 +926,14 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       // «الربط المباشر» (S-10), platforms open: a question about the store is answered from the store itself (real
       // products, prices, notes — what no platform knows); the rest goes to the platforms and what they say is learned.
       // The supervisor's probes (memory:false) keep testing the platforms themselves.
-      if (linkOn && !own && shaheen.enabled && req.body?.memory !== false && mode !== 'council') {
+      if (linkOn && !own && shaheen.enabled && req.body?.memory !== false && mode !== 'council' && !needsLiveWeb(input.message)) {
         const mine = await ownAnswer(input, mode, true, opening, undefined, true);
         if (mine.done) return;
       }
       // With the platforms closed, «وكيل شاهين» (src/utils/shaheenAgent.ts) answers instead of the old-answer shortcut:
       // his memory is one source among the school's experts, not the answer by default.
-      if (useMemory && memory && opening && !own) {
+      // A live question (today's news, «روح للنت») is never answered from what was saved before.
+      if (useMemory && memory && opening && !own && !needsLiveWeb(input.message)) {
         // The usual answers first: the same question, or one worded almost the same («العطر بيثبت ازاي؟» after «ازاي
         // العطر يثبت؟») — the platforms are kept for questions that are really new.
         const hit = await memory.recall(input.message, input.language, mode).catch(() => undefined)
@@ -909,6 +947,8 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       // «مصمم شاهين الذاتي» and «وكيل شاهين»: his own answer — when the platforms are closed, or on «تلقائي» when none works.
       let agent: AgentResult | undefined;
       let recorded = false;
+      // Platforms closed, a live question: what the gate found is the answer (his own memory has no today).
+      if (own && needsLiveWeb(input.message) && await answerFromGate(input, mode, res)) { runtime?.record({ ms: Date.now() - started, status: 200, code: 'LIVE_GATE' }); return; }
       if (own) {
         const mine = await ownAnswer(input, mode, useMemory, opening);
         if (mine.done) return;
@@ -921,16 +961,20 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       // if none answers, Shaheen's own brain takes over instead of leaving the visitor waiting on a dead connection.
       const auto = switchMode === 'auto';
       // «شاهين يقرا الصور»: a picture conversation may search «بوابة الإنترنت» and ask again — it gets more time.
+      // «شاهين والإنترنت»: so does a live question (news, today's prices) — it is searched before the engines answer.
       const picture = isPictureTalk(input.message, input.conversationHistory);
+      const liveQuestion = needsLiveWeb(input.message);
       const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate, owner: visitor, health, selfBacked: auto, webGate,
-        ...(picture ? { timeoutMs: PICTURE_ENGINE_MS, totalTimeoutMs: PICTURE_TOTAL_MS }
+        ...(picture || liveQuestion || isLiveWebTalk(input.message, input.conversationHistory) ? { timeoutMs: PICTURE_ENGINE_MS, totalTimeoutMs: liveQuestion ? LIVE_TOTAL_MS : PICTURE_TOTAL_MS }
           : auto ? { timeoutMs: options.autoEngineTimeoutMs ?? AUTO_ENGINE_MS, totalTimeoutMs: options.autoTotalTimeoutMs ?? AUTO_TOTAL_MS } : {}) });
       let result: ChatAnswer;
       if (!input.conversationHistory.length && capacity.cacheTtlMs > 0 && capacity.cacheEntries > 0) {
         // Opening question: answered from the shared cache, or by ONE provider call shared by everyone
         // asking it right now. That call must not follow one visitor's disconnect, so it gets no signal.
         // A spoken reply (short, said the way people talk) and a written one are different answers, and so is each dialect.
-        const key = cacheKey([normalizeQuestion(input.message), input.language, input.model, shaheen, input.dialect || '', input.voice ? 'voice' : 'text']);
+        // Today's news is shared for a quarter of an hour only, not for the cache's hours.
+        const key = cacheKey([normalizeQuestion(input.message), input.language, input.model, shaheen, input.dialect || '', input.voice ? 'voice' : 'text',
+          ...(liveQuestion ? [`live:${Math.floor(Date.now() / LIVE_CACHE_WINDOW_MS)}`] : [])]);
         result = await abortable(answers.getOrLoad(key, () => run(), (r) => Boolean(r.reply)), controller.signal);
       } else {
         result = await run(controller.signal);
@@ -940,7 +984,7 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       // Other provider answers are kept for the day the packages run out — but live-search results are not
       // automatically promoted into memory or the school: their linked sources are still unreviewed.
       // Follow-ups are kept under the question as Shaheen understood it («طب وللصيف؟» → the whole question).
-      if (memory && mode !== 'council' && result.reply && result.engine.provider !== 'perplexity') {
+      if (memory && mode !== 'council' && result.reply && result.engine.provider !== 'perplexity' && !liveQuestion) {
         const asked = opening ? input.message : learnedQuestion(input.message, input.conversationHistory);
         // «شاهين بيتعلم من المنصات»: kept with how it was said (the dialect, and a short spoken reply for voice), so the
         // day the platforms are down he still answers a Gulf visitor in Gulf Arabic and a spoken turn briefly.
@@ -949,6 +993,9 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       }
     } catch (error) {
       if (res.destroyed) return;
+      // No platform answered a live question: what «بوابة الإنترنت» found is answered as it is, with its links.
+      if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput && needsLiveWeb(chatInput.input.message)
+        && await answerFromGate(chatInput.input, chatInput.mode, res)) { runtime?.record({ ms: Date.now() - started, status: 200, code: `${error.code}+LIVE_GATE` }); return; }
       // «تلقائي»: the platforms were expected to answer and did not (a key, a balance, a limit, an outage) — Shaheen
       // answers on his own right away, exactly as when they are closed; the engine health parks the failing ones.
       if (error instanceof ChatError && OFFLINE_CODES.has(error.code) && chatInput && switchMode === 'auto' && !chatInput.ownTried) {
