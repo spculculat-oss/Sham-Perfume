@@ -4,6 +4,9 @@ import { CONTINUITY_INSTRUCTION, contextualMessage, isContextFollowUp } from '..
 import { NATURAL_TALK_INSTRUCTION, needInstruction, polishReply } from '../src/utils/naturalTalk';
 import { THINKING_CRAFT_INSTRUCTION } from '../src/utils/thinkingCraft';
 import { createResearchSpider } from '../src/utils/researchSpider';
+import { IMAGE_WEB_INSTRUCTION, chatWebAsks, isPictureTalk, stripWebAsks, webFindings } from '../src/utils/imageReading';
+import { gateBrief, type GateAnswer } from '../src/utils/netGate';
+import { createNetGate, sharedNetGate } from './core/netGate';
 /**
  * «الخبير شاهين» — the perfume-design chat (floating window + the lab page).
  *
@@ -353,6 +356,13 @@ export function isSimpleQuestion(input: Pick<ChatRequest, 'message' | 'conversat
 /** «تلقائي»: how long one platform, and the whole chain, may take before his own brain answers. */
 export const AUTO_ENGINE_MS = 15_000;
 export const AUTO_TOTAL_MS = 20_000;
+/** A picture conversation may search «بوابة الإنترنت» and ask the engine again: more time, still inside Vercel's 60 s. */
+export const PICTURE_ENGINE_MS = 22_000;
+export const PICTURE_TOTAL_MS = 46_000;
+/** One search of the gate inside a chat answer (a slow search must not eat the whole answer's time). */
+export const PICTURE_SEARCH_MS = 12_000;
+/** «بوابة الإنترنت» as the chat uses it (server/core/netGate.ts). */
+export interface ChatWebGate { fetch(body: unknown): Promise<GateAnswer> }
 
 /** «مترجم ردود شاهين»: the most a translation may take, and the whole answer's limit (Vercel stops at 60 s). */
 const TRANSLATE_MS = 15_000;
@@ -374,6 +384,8 @@ export interface ExecuteOptions {
   health?: EngineHealth;
   /** «تلقائي»: Shaheen answers himself when the platforms refuse, so a «too many requests» is not waited out. */
   selfBacked?: boolean;
+  /** «شاهين يقرا الصور»: in a picture conversation the engine may ask «بوابة الإنترنت» for what it needs. */
+  webGate?: ChatWebGate;
 }
 
 /** Only the provider that actually answered is credited. Auto is failover, not a fake panel. */
@@ -415,7 +427,9 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   // «شاهين ابن الناس»: an upset, formal, older or foreign visitor is spoken to accordingly; a complaint is cleaned.
   const social = socialBrief(input.message, input.conversationHistory, input.language);
   const complaint = isComplaintTurn(input.message);
-  const fullInstruction = social ? `${instruction}\n${social}` : instruction;
+  // «شاهين يقرا الصور»: about a visitor's picture, the engine may ask «بوابة الإنترنت» before answering.
+  const pictureWeb = Boolean(options.webGate) && isPictureTalk(input.message, input.conversationHistory);
+  const fullInstruction = (social ? `${instruction}\n${social}` : instruction) + (pictureWeb ? IMAGE_WEB_INSTRUCTION : '');
   // A deep analysis plus its formula block used to be cut before the closing fence: give it room.
   const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
     : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
@@ -431,13 +445,38 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
     let refusal: { failure: EngineFailure; status: number; detail: string } | undefined;
     let sources: ExternalSearchSource[] = [];
     try {
-      const reply = await callEngine(provider, fullInstruction, turns, {
+      const first = await callEngine(provider, fullInstruction, turns, {
         env, fetch: options.fetch, signal, temperature: settings.temperature, model,
         maxTokens: useLite ? Math.min(maxTokens, 1536) : maxTokens, maxChars: 32000,
         onSources: (found) => { sources = found; },
         onFailure: (failure, httpStatus, detail) => { refusal = { failure, status: httpStatus, detail }; },
       });
       if (signal.aborted) throw signal.reason;
+      let reply = first;
+      // It asked «بوابة الإنترنت» (only in a picture conversation): the searches run, then the same engine answers
+      // with the findings — one more call, never a third (it may not ask again).
+      const asks = pictureWeb && typeof first === 'string' ? chatWebAsks(first) : [];
+      if (asks.length && options.webGate) {
+        const found = await Promise.all(asks.map(async (q) => {
+          try {
+            const answer = await Promise.race([
+              options.webGate!.fetch({ kind: 'search', bot: 'shaheen_chat', q, lang: input.language }),
+              new Promise<never>((_, reject) => { setTimeout(() => reject(new Error('slow search')), PICTURE_SEARCH_MS).unref?.(); }),
+            ]);
+            for (const s of answer.sources) if (!sources.some((x) => x.url === s.url)) sources.push({ title: s.title, url: s.url });
+            return { q, brief: gateBrief(answer, 2500) };
+          } catch { return { q }; }
+        }));
+        if (total.aborted) throw total.reason;
+        const again = AbortSignal.any([total, AbortSignal.timeout(options.timeoutMs ?? 28000)]);
+        reply = await callEngine(provider, fullInstruction, [...turns, { role: 'assistant', text: first!.trim() }, { role: 'user', text: webFindings(found) }], {
+          env, fetch: options.fetch, signal: again, temperature: settings.temperature, model,
+          maxTokens: useLite ? Math.min(maxTokens, 1536) : maxTokens, maxChars: 32000,
+          onFailure: (failure, httpStatus, detail) => { refusal = { failure, status: httpStatus, detail }; },
+        });
+        if (again.aborted) throw again.reason;
+      }
+      if (pictureWeb && typeof reply === 'string') reply = stripWebAsks(reply);
       if (typeof reply === 'string' && reply.trim()) {
         if (provider === 'perplexity' && (shouldSearch || asksForSources(input.message)) && !sources.length) {
           health?.fail(provider, 'empty');
@@ -574,9 +613,13 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
   agentLink?: boolean;
   /** Test-only timeout overrides for the platform-first fallback. */
   autoEngineTimeoutMs?: number;
-  autoTotalTimeoutMs?: number }) {
+  autoTotalTimeoutMs?: number;
+  /** «بوابة الإنترنت» for picture conversations (tests inject it; default: the server's one gate). */
+  webGate?: ChatWebGate }) {
   const env = options.env || process.env;
   const router = express.Router();
+  // The server's one gate (shared counts, memory and daily allowance); a test's injected fetch gets its own.
+  const webGate: ChatWebGate = options.webGate || (options.fetch ? createNetGate({ env, fetch: options.fetch }) : sharedNetGate(env));
   const capacity = capacityConfig(env);
   // Per visitor (IP + anonymous browser id, so people behind one mobile-carrier IP are told apart)
   // and a looser per-IP ceiling that bounds anyone rotating browser ids.
@@ -877,8 +920,11 @@ export function createShaheenRouter(options: { repo: Repository; env?: Environme
       // «تلقائي»: try the configured platforms first, but cap one slow provider at 15 s and the full chain at 20 s;
       // if none answers, Shaheen's own brain takes over instead of leaving the visitor waiting on a dead connection.
       const auto = switchMode === 'auto';
-      const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate, owner: visitor, health, selfBacked: auto,
-        ...(auto ? { timeoutMs: options.autoEngineTimeoutMs ?? AUTO_ENGINE_MS, totalTimeoutMs: options.autoTotalTimeoutMs ?? AUTO_TOTAL_MS } : {}) });
+      // «شاهين يقرا الصور»: a picture conversation may search «بوابة الإنترنت» and ask again — it gets more time.
+      const picture = isPictureTalk(input.message, input.conversationHistory);
+      const run = (signal?: AbortSignal) => executeChat(input, { env, fetch: options.fetch, signal, settings: shaheen, council, gate, owner: visitor, health, selfBacked: auto, webGate,
+        ...(picture ? { timeoutMs: PICTURE_ENGINE_MS, totalTimeoutMs: PICTURE_TOTAL_MS }
+          : auto ? { timeoutMs: options.autoEngineTimeoutMs ?? AUTO_ENGINE_MS, totalTimeoutMs: options.autoTotalTimeoutMs ?? AUTO_TOTAL_MS } : {}) });
       let result: ChatAnswer;
       if (!input.conversationHistory.length && capacity.cacheTtlMs > 0 && capacity.cacheEntries > 0) {
         // Opening question: answered from the shared cache, or by ONE provider call shared by everyone

@@ -41,7 +41,7 @@ export const AI_TOOLS: AiToolDef[] = [
   },
   {
     id: 'shaheen_chat', nameAr: 'شات الخبير شاهين', nameEn: 'Master Shahin chat',
-    descriptionAr: 'المحادثة العائمة وصفحة خبير المعمل: تصميم التركيبات والحسابات، كتابةً أو بوضع تحدث اختياري يستخدم التعرف على الكلام وقراءة الرد في المتصفح. النص المفرغ يمر بمسار المحادثة الحالي؛ لا يوجد مسار ذكاء أو رفع صوت جديد. ويقرا الصور اللي الزائر يرفقها: الكلام المكتوب فيها ووصفها، ويحللها ويجاوب أسئلته عنها.',
+    descriptionAr: 'المحادثة العائمة وصفحة خبير المعمل: تصميم التركيبات والحسابات، كتابةً أو بوضع تحدث اختياري يستخدم التعرف على الكلام وقراءة الرد في المتصفح. النص المفرغ يمر بمسار المحادثة الحالي؛ لا يوجد مسار ذكاء أو رفع صوت جديد. ويقرا الصور اللي الزائر يرفقها: الكلام المكتوب فيها ووصفها، ويحللها ويجاوب أسئلته عنها، ولو احتاج معلومة مش في الصورة بيسأل «بوابة الإنترنت».',
     sources: ['server/agentModel.ts', 'server/agent.ts', 'server/agentRouter.ts', 'server/shaheen.ts', 'src/hooks/useShaheenVoiceMode.ts', 'src/utils/shaheenVoice.ts', 'src/components/ShaheenVoiceModeButton.tsx', 'src/components/ShaheenVoiceStage.tsx', 'src/utils/arabicDialect.ts', 'server/voiceSpeak.ts', 'src/utils/humanVoice.ts', 'server/imageReader.ts', 'src/utils/imageReading.ts', 'src/utils/browserOcr.ts', 'src/components/ShaheenImagePicker.tsx'], routes: ['/api/chat', '/api/agent/chat', '/api/agent/capabilities', '/api/voice/speak', '/api/workspace/read-image'], acceptsGuidance: true,
   },
   {
