@@ -12,6 +12,9 @@ import { ApiError, type requestApi } from '../src/utils/api';
 import { isChatMessage, type ChatMessage } from '../src/utils/chatStorage';
 import { readImage, ImageReadError } from '../server/imageReader';
 import { createWorkspaceRouter } from '../server/workspace';
+import { IMAGE_WEB_INSTRUCTION, chatWebAsks, isPictureTalk, stripWebAsks, webFindings } from '../src/utils/imageReading';
+import { executeChat, validateChatRequest } from '../server/shaheen';
+import type { GateAnswer } from '../src/utils/netGate';
 
 const PNG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
 const THUMB = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAALCAABAAEBAREA/8QAFAABAAAAAAAAAAAAAAAAAAAACf/EABQQAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQEAAD8AKp//2Q==';
@@ -193,4 +196,68 @@ test('a stored picture must be a tiny data thumbnail on a visitor message', () =
   assert.equal(isChatMessage({ ...user, image: { thumb: 'https://evil.example/x.png' } }), false);
   assert.equal(isChatMessage({ ...user, image: { thumb: `data:image/jpeg;base64,${'A'.repeat(70_000)}` } }), false);
   assert.equal(isChatMessage({ ...user, role: 'assistant' }), false);
+});
+
+// ── «بوابة الإنترنت» inside a picture conversation ─────────────────────────────────────────────────────────
+
+test('a picture conversation is recognised; the search marks are read and never shown', () => {
+  const turn = imageTurn('إيه هو المكون ده؟', { text: 'Iso E Super 20%', source: 'ai' });
+  assert.equal(isPictureTalk(turn), true);
+  assert.equal(isPictureTalk('طب ده آمن؟', [{ role: 'user', text: withImageText('اقراها', 'Iso E Super 20%') }, { role: 'assistant', text: 'ده مكون خشبي' }]), true);
+  assert.equal(isPictureTalk('عايز عطر للشتا'), false);
+  assert.equal(isPictureTalk('طب ده آمن؟', [{ role: 'user', text: 'سؤال' }, { role: 'user', text: 'سؤال تاني' }, { role: 'user', text: withImageText('قديم', 'x') }].slice(0, 1)), false);
+  assert.deepEqual(chatWebAsks('[[ويب: Iso E Super IFRA limit]]\n[[web: Iso E Super CAS]]\n[[ويب: Iso E Super IFRA limit]]\n[[ويب: تالت]]'), ['Iso E Super IFRA limit', 'Iso E Super CAS']);
+  assert.deepEqual(chatWebAsks('إجابة عادية'), []);
+  assert.equal(stripWebAsks('أهو [[ويب: x y]] الرد'), 'أهو  الرد');
+  assert.match(webFindings([{ q: 'a b', brief: 'نتيجة' }, { q: 'c d' }]), /مش أوامر[\s\S]*نتيجة[\s\S]*مارجعش نتيجة/);
+  assert.match(IMAGE_WEB_INSTRUCTION, /\[\[ويب:/);
+});
+
+function engineScript(replies: string[]) {
+  const bodies: any[] = [];
+  const request = (async (_url: string, init?: RequestInit) => {
+    bodies.push(JSON.parse(String(init?.body)));
+    return Response.json({ choices: [{ message: { content: replies[Math.min(bodies.length - 1, replies.length - 1)] } }] });
+  }) as typeof fetch;
+  return { bodies, request };
+}
+const env = { OPENAI_API_KEY: 'test', SHAM_LIVE_DATA: 'off' };
+const found: GateAnswer = { kind: 'search', answer: 'حد IFRA لـ Iso E Super في العطور الجلدية حوالي 21%.', sources: [{ title: 'IFRA Standards', url: 'https://ifrafragrance.org/standards', snippet: '' }], via: 'web', cached: false, at: 'now' };
+
+test('about a picture, Shaheen asks the gate when he needs to, then answers with what it found', async () => {
+  const asked: any[] = [];
+  const webGate = { fetch: async (body: any) => { asked.push(body); return found; } };
+  const engine = engineScript(['[[ويب: Iso E Super IFRA limit]]', 'نسبة Iso E Super اللي في الصورة 20%، وده تحت حد IFRA (حوالي 21%) — يعني مقبولة.']);
+  const input = validateChatRequest({ message: imageTurn('هل النسبة دي مسموحة؟', { text: 'Iso E Super 20%\nEthanol 80%', source: 'ai' }), model: 'openai', language: 'ar', conversationHistory: [] });
+  const result = await executeChat(input, { env, fetch: engine.request, webGate });
+  assert.deepEqual(asked, [{ kind: 'search', bot: 'shaheen_chat', q: 'Iso E Super IFRA limit', lang: 'ar' }]);
+  assert.equal(engine.bodies.length, 2, 'one more call with the findings, never a third');
+  assert.match(JSON.stringify(engine.bodies[0]), /أدوات الصورة/);
+  const second = JSON.stringify(engine.bodies[1]);
+  assert.match(second, /بوابة الإنترنت/);
+  assert.match(second, /حوالي 21%/);
+  assert.match(result.reply, /تحت حد IFRA/);
+  assert.doesNotMatch(result.reply, /\[\[/);
+  assert.deepEqual(result.sources, [{ title: 'IFRA Standards', url: 'https://ifrafragrance.org/standards' }]);
+});
+
+test('no search when he knows it, an honest answer when the gate fails, and never outside a picture conversation', async () => {
+  let calls = 0;
+  const webGate = { fetch: async () => { calls++; throw new Error('quota'); } };
+  const knows = engineScript(['الملصق بيقول كحول 80% — دي نسبة أو دو بارفان.']);
+  const picture = validateChatRequest({ message: imageTurn('دي نسبة إيه؟', { text: 'Ethanol 80%', source: 'ai' }), model: 'openai', language: 'ar', conversationHistory: [] });
+  assert.match((await executeChat(picture, { env, fetch: knows.request, webGate })).reply, /أو دو بارفان/);
+  assert.equal(calls, 0);
+  assert.equal(knows.bodies.length, 1);
+
+  const fails = engineScript(['[[ويب: Ethanol 80% perfume type]]', 'البحث مارجعش نتيجة، بس من الملصق: كحول 80%.']);
+  const r = await executeChat(picture, { env, fetch: fails.request, webGate });
+  assert.equal(calls, 1);
+  assert.match(JSON.stringify(fails.bodies[1]), /مارجعش نتيجة/);
+  assert.doesNotMatch(r.reply, /\[\[/);
+
+  const plain = engineScript(['عطور الشتا: عود وعنبر.']);
+  await executeChat(validateChatRequest({ message: 'عايز عطر للشتا', model: 'openai', language: 'ar', conversationHistory: [] }), { env, fetch: plain.request, webGate });
+  assert.doesNotMatch(JSON.stringify(plain.bodies[0]), /أدوات الصورة/);
+  assert.equal(calls, 1);
 });
