@@ -17,6 +17,7 @@ import { fitForUpload } from './motion';
 import { CodeCard } from './CodeCard';
 import { ExportMenu } from './ExportMenu';
 import { MAX_FILE_BYTES, saveFile } from './fileStore';
+import { isPictureFile, pickAttachment, readPictureText, readScannedPages } from '../utils/attachmentPick';
 import { fileText } from './fileText';
 import { safeFileName } from './officeWriters';
 import { parseMarkdown } from './markdownDoc';
@@ -168,7 +169,16 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
     for (const file of Array.from(list).slice(0, 6)) {
       if (file.size > MAX_FILE_BYTES) { setItems((p) => [...p, { role: 'assistant', text: `${file.name}: ${w('too_big')}`, error: true }]); continue; }
       void saveFile(file.name, file, file.type).catch(() => undefined);
-      const text = await fileText(file, file.name);
+      let text = await fileText(file, file.name).catch(() => '');
+      // «استقبال الملفات»: a photo or a scanned PDF has no text inside — its words are read like Shaheen's chat reads pictures.
+      if (text.replace(/\s+/g, '').length < 20 && (isPictureFile(file) || /\.pdf$/i.test(file.name))) {
+        const read = await pickAttachment(file).then(async (picked) => {
+          if (picked.kind === 'image') { const r = await readPictureText(picked.dataUrl, lang); return r ? [r.text, r.description].filter(Boolean).join('\n\n') : ''; }
+          if (picked.text) return picked.text;
+          return picked.scans?.length ? (await readScannedPages(picked.scans, lang))?.text || '' : '';
+        }).catch(() => '');
+        if (read.trim()) text = read;
+      }
       if (!text.trim()) { setItems((p) => [...p, { role: 'assistant', text: `${file.name}: ${w('no_text')}`, error: true }]); continue; }
       setAttachments((prev) => [...prev.filter((f) => f.name !== file.name), { name: file.name, text }]);
     }

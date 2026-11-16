@@ -34,7 +34,7 @@ import { ShaheenToolLinks } from './ShaheenToolLinks';
 import { extractFormulaFromAIMessage, extractFormulasFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { useShaheenChat } from '../hooks/useShaheenChat';
-import { ChatImageCard, ImageAttachButton, ImagePickPreview, useImagePick } from './ShaheenImagePicker';
+import { ChatFileCard, ChatImageCard, ImageAttachButton, ImagePickPreview, attachmentForSend, useImagePick } from './ShaheenImagePicker';
 import { useShaheenModels } from '../hooks/useShaheenModels';
 import { useShaheenVoiceMode, type ShaheenVoiceTurn } from '../hooks/useShaheenVoiceMode';
 import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
@@ -995,7 +995,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
     try {
       const sent = await sendMessage({ text, model: activeModelChoice, language: currentLang,
         errorText: (error) => chatErrorText(currentLang, error), ...(fromVoice ? { voice: voiceTurnInfo || {} } : {}),
-        ...(picture ? { image: { dataUrl: picture.dataUrl, thumb: picture.thumb, name: picture.name } } : {}) });
+        ...attachmentForSend(picture) });
       if (voiceTurn) voice.finishOutgoingTurn(sent !== false);
       return sent !== false;
     } catch {
@@ -1387,6 +1387,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                       ) : (
                         <div className="whitespace-pre-line break-words font-sans space-y-2" dir="auto">
                           {msg.image && <ChatImageCard image={msg.image} lang={currentLang} />}
+{msg.file && <ChatFileCard file={msg.file} lang={currentLang} />}
                           {activeDisplayContent}
                         </div>
                       )}

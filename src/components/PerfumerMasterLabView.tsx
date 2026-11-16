@@ -38,7 +38,7 @@ import { isStaticHosting } from '../utils/api';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { ShaheenModesPanel, ShaheenServiceStatus, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
-import { ChatImageCard, ImageAttachButton, ImagePickPreview, useImagePick } from './ShaheenImagePicker';
+import { ChatFileCard, ChatImageCard, ImageAttachButton, ImagePickPreview, attachmentForSend, useImagePick } from './ShaheenImagePicker';
 import { ShaheenMedia } from './ShaheenMedia';
 import { ShaheenDrawing } from './ShaheenDrawing';
 import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
@@ -382,7 +382,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     try {
       const sent = await sendMessage({ text, model: overrideModel || selectedModel, language: currentLang,
         errorText: (error) => chatErrorText(currentLang, error), ...(fromVoice ? { voice: voiceTurnInfo || {} } : {}),
-        ...(picture ? { image: { dataUrl: picture.dataUrl, thumb: picture.thumb, name: picture.name } } : {}) });
+        ...attachmentForSend(picture) });
       if (voiceTurn) voice.finishOutgoingTurn(sent !== false);
       return sent !== false;
     } catch {
@@ -702,6 +702,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                   ) : (
                     <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-line font-sans break-words space-y-2" dir="auto">
                       {m.image && <ChatImageCard image={m.image} lang={currentLang} />}
+{m.file && <ChatFileCard file={m.file} lang={currentLang} />}
                       {activeDisplayContent}
                     </div>
                   )}
