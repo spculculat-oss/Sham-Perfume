@@ -59,12 +59,12 @@ export const REACTIONS: { id: string; emoji: string; ar: string; en: string }[] 
 ];
 
 export const SCENT_FEELINGS = [
-  { id: 'fresh', icon: '🌿', ar: 'ينعش حواسه مع الحمضيات والبرغموت', en: 'feeling fresh with bergamot' },
-  { id: 'oud', icon: '🪵', ar: 'يعيش أجواء الفخامة مع دهن العود المعتق', en: 'feeling regal with aged oud' },
-  { id: 'rose', icon: '🌹', ar: 'يتأمل جمال الورد الدمشقي والياسمين', en: 'inspired by damask rose' },
-  { id: 'warm', icon: '🔥', ar: 'يختبر تركيزاً شتوياً دافئاً بالعنبر والتوباكو', en: 'experimenting warm amber' },
-  { id: 'lab', icon: '🧪', ar: 'في ورشة المعمل يوازن الهرم العطري', en: 'in lab balancing pyramid' },
-  { id: 'question', icon: '💡', ar: 'يبحث عن مشورة في التعتيق والمثبتات', en: 'seeking maceration advice' },
+  { id: 'fresh', icon: '🌿', ar: 'يطرح فكرة منعشة أو رؤية جديدة للحياة', en: 'sharing a fresh life perspective' },
+  { id: 'oud', icon: '🪵', ar: 'يغوص في عمق الفلسفة والتاريخ', en: 'deep diving into philosophy & history' },
+  { id: 'rose', icon: '🌹', ar: 'يتأمل جمال الفن والأدب والابداع', en: 'inspired by art, literature & creation' },
+  { id: 'warm', icon: '🔥', ar: 'يناقش تحديات التكنولوجيا والمستقبل', en: 'debating tech & future challenges' },
+  { id: 'lab', icon: '🧪', ar: 'يختبر فكرة جريمة علمية أو فكرية', en: 'experimenting a bold intellectual idea' },
+  { id: 'question', icon: '💡', ar: 'يبحث عن حوار عميق ومشورة فكرية', en: 'seeking profound dialogue & wisdom' },
 ];
 
 type Go = (route: string) => void;
