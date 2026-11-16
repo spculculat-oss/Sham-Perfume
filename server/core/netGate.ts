@@ -6,6 +6,8 @@
  * and server modules call `sharedNetGate(env)` directly. Nothing is stored: answers live in memory for a while.
  */
 import express from 'express';
+import { googleHealth } from './googleHealth';
+import { needsLiveWeb } from '../../src/utils/liveWeb';
 import { languageOf, readPage, ReadError, webSearch } from '../workspace';
 import {
   checkGateRequest, emptyUse, gateCacheKey, GATE_LIMITS, type GateAnswer, type GateKind, type GateRequest, type GateStats, type GateUse,
@@ -38,7 +40,8 @@ export function createNetGate({ env, fetch: request = fetch, lookup, now = Date.
   };
 
   const search = async (r: GateRequest): Promise<GateAnswer> => {
-    const found = await webSearch(r.q!, languageOf(r.lang), { env, fetch: request });
+    // About today: the encyclopedia is never handed back as news (src/utils/liveWeb.ts).
+    const found = await webSearch(r.q!, languageOf(r.lang), { env, fetch: request, live: needsLiveWeb(r.q!) });
     return { kind: 'search', ...(found.answer ? { answer: found.answer.slice(0, 6000) } : {}), sources: found.results.slice(0, 8), via: found.kind, cached: false, at: new Date(now()).toISOString() };
   };
   const read = async (url: string) => {
@@ -98,7 +101,7 @@ export function createNetGate({ env, fetch: request = fetch, lookup, now = Date.
     },
     stats(): GateStats {
       roll();
-      return { day, total: { ...total }, bots: Object.fromEntries(Object.entries(bots).map(([k, v]) => [k, { ...v }])), cacheEntries: cache.size, live: Boolean(env.GEMINI_API_KEY?.trim()) };
+      return { day, total: { ...total }, bots: Object.fromEntries(Object.entries(bots).map(([k, v]) => [k, { ...v }])), cacheEntries: cache.size, live: Boolean(env.GEMINI_API_KEY?.trim()), google: googleHealth.snapshot() };
     },
   };
 }

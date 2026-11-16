@@ -98,10 +98,13 @@ test('a platform that breaks midway is dropped from the screen before the next o
 
 test('JSON tasks are not streamed, and a search reports its stage and sources first', async () => {
   const events: AskEvent[] = [];
-  const request = (async (url: string | URL | Request) => (new URL(String(url)).hostname.endsWith('wikipedia.org')
-    ? Response.json({ query: { search: [{ title: 'صفحة', snippet: 'ملخص', pageid: 3 }] } })
+  // «بحث جوجل»: the search answers with its pages; Gemini as a writer is shut here, so the other platform writes.
+  const request = (async (url: string | URL | Request, init?: RequestInit) => (new URL(String(url)).hostname === 'generativelanguage.googleapis.com'
+    ? (String(init?.body || '').includes('دوّر في جوجل وجاوب')
+      ? Response.json({ candidates: [{ content: { parts: [{ text: 'ملخص' }] }, groundingMetadata: { groundingChunks: [{ web: { uri: 'https://www.youm7.com/a', title: 'صفحة' } }] } }] })
+      : new Response('{"error":{"status":"UNAUTHENTICATED"}}', { status: 401 }))
     : sse('رد.'))) as typeof fetch;
-  await askWorkspace({ messages: [{ role: 'user', text: 'إيه آخر أخبار مصر؟' }] }, { env: { OPENAI_API_KEY: 'test' }, fetch: request, onEvent: (e) => events.push(e) });
+  await askWorkspace({ messages: [{ role: 'user', text: 'إيه آخر أخبار مصر؟' }] }, { env: { OPENAI_API_KEY: 'test', GEMINI_API_KEY: 'g' }, fetch: request, onEvent: (e) => events.push(e) });
   assert.deepEqual(events.map((e) => (e.type === 'stage' ? e.stage : e.type)).slice(0, 3), ['searching', 'sources', 'writing']);
   events.length = 0;
   const plain = (async () => Response.json({ choices: [{ message: { content: '{"goal":"x","steps":[]}' } }] })) as typeof fetch;

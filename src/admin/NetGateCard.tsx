@@ -34,6 +34,16 @@ export default function NetGateCard() {
           </div>
           <div className="mb-1 h-1.5 overflow-hidden rounded-full bg-stone-800"><div className="h-full bg-sky-500" style={{ width: `${summary.usedPercent}%` }} /></div>
           <p className="mb-2 text-[11px] text-stone-400">{TP('اتستخدم {p}% من حصة النهارده · لكل روبوت لحد {s} بحث و{r} صفحة في اليوم', { p: summary.usedPercent, s: GATE_LIMITS.perBot.search, r: GATE_LIMITS.perBot.read })}</p>
+          {stats.google && (
+            <p className="mb-2 text-[11px] leading-relaxed" data-testid="google-search-health">
+              <b className="text-sky-200">{T('بحث جوجل:')}</b>{' '}
+              {stats.google.ok === 0 && stats.google.failed === 0 ? <span className="text-stone-500">{T('لسه محدش دوّر من ساعة ما السيرفر اشتغل.')}</span>
+                : <span>{TP('اشتغل {ok} مرة · فشل {failed} مرة', { ok: stats.google.ok, failed: stats.google.failed })}</span>}
+              {stats.google.lastError && (!stats.google.lastOk || stats.google.lastError.at > stats.google.lastOk.at) && (
+                <span className="block text-amber-200" dir="auto">{TP('آخر فشل: {model} · كود {status} {detail}', { model: stats.google.lastError.model, status: stats.google.lastError.status, detail: stats.google.lastError.detail || '' })}</span>
+              )}
+            </p>
+          )}
           {summary.top.length > 0
             ? <ul className="space-y-0.5">{summary.top.map((b) => <li key={b.id} className="flex justify-between gap-2"><span>{b.nameAr}</span><b className="tabular-nums" dir="ltr">{b.calls}</b></li>)}</ul>
             : <p className="text-stone-500">{T('محدش من الروبوتات استخدمها النهارده لسه.')}</p>}

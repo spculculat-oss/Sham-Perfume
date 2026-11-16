@@ -10,6 +10,7 @@
  *  perplexity  : answers grounded in a live web search (Agent API, presets fast/low/medium/high — PERPLEXITY_PRESET).
  *  sham_local  : Sham's own deterministic composer — works with zero keys and zero cost.
  */
+import { googleHealth } from './googleHealth';
 import { createHash } from 'node:crypto';
 import { nextDailyRenewal } from './engineHealth';
 import type { EngineId, ModelEngineId } from './types';
@@ -53,6 +54,24 @@ const PERPLEXITY_PRESETS = new Set(['fast', 'low', 'medium', 'high', 'xhigh']);
 
 /** A public link returned by the live-search provider; it is evidence to inspect, not a certified source. */
 export interface ExternalSearchSource { title: string; url: string }
+
+/** Gemini models (per key) whose Google search was refused lately: answered without it until the time is up. */
+const googleRefused = new Map<string, number>();
+const googleRefusedNow = (key: string) => { const until = googleRefused.get(key); if (until && until > Date.now()) return true; googleRefused.delete(key); return false; };
+/** Tests only. */
+export function resetGoogleRefusals() { googleRefused.clear(); }
+
+/** The pages in a Gemini answer's Google grounding (safe HTTPS links only). */
+export function groundingSources(meta: unknown): ExternalSearchSource[] {
+  const chunks = (meta as { groundingChunks?: { web?: { uri?: unknown; title?: unknown } }[] } | undefined)?.groundingChunks;
+  if (!Array.isArray(chunks)) return [];
+  return chunks.flatMap((c) => {
+    const uri = c?.web?.uri;
+    if (typeof uri !== 'string' || !/^https:\/\/[^\s]+$/.test(uri) || uri.length > 2000) return [];
+    const title = typeof c.web?.title === 'string' && c.web.title.trim() ? c.web.title.trim().slice(0, 160) : new URL(uri).hostname;
+    return [{ title, url: uri }];
+  });
+}
 
 /**
  * Perplexity's Agent API puts web results in `search_results` output items. Accept only safe public HTTPS
@@ -478,7 +497,9 @@ export async function callEngine(
   id: ModelEngineId,
   system: string,
   turns: EngineTurn[],
-  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; onSources?: (sources: ExternalSearchSource[]) => void; model?: string; maxTokens?: number; maxChars?: number; contextFacts?: string[]; onConfidence?: (score: EngineOutputScore) => void; onFailure?: (failure: EngineFailure, status: number, detail: string) => void; onModel?: (model: string) => void },
+  options: { env?: Env; fetch?: typeof fetch; signal: AbortSignal; temperature: number; onToken?: (text: string) => void; onSources?: (sources: ExternalSearchSource[]) => void; model?: string; maxTokens?: number; maxChars?: number; contextFacts?: string[]; onConfidence?: (score: EngineOutputScore) => void; onFailure?: (failure: EngineFailure, status: number, detail: string) => void; onModel?: (model: string) => void;
+    /** «بحث جوجل»: Gemini may search Google itself when the answer needs it (its pages come back through onSources). */
+    googleSearch?: boolean },
 ): Promise<string | undefined> {
   const env = options.env || process.env;
   const request = options.fetch || fetch;
@@ -495,6 +516,17 @@ export async function callEngine(
   const maxTokens = options.maxTokens ?? 1200;
   const maxChars = options.maxChars ?? 12000;
   const stream = Boolean(options.onToken);
+  const searchKey = (model: string) => (id === 'gemini' ? geminiCacheKey(env.GEMINI_API_KEY!.trim(), model) : '');
+  let searching = id === 'gemini' && Boolean(options.googleSearch) && !isGemma(status.model) && !googleRefusedNow(searchKey(status.model));
+  const searchTool = (model: string) => (searching && !isGemma(model) ? { tools: [{ google_search: {} }] } : {});
+  /** The pages Google found for this answer (when it searched at all). */
+  const reportGrounding = (metas: unknown[]) => {
+    const found = metas.flatMap((m) => groundingSources(m));
+    const unique = found.filter((s, i) => found.findIndex((x) => x.url === s.url) === i).slice(0, 8);
+    if (!unique.length) return;
+    googleHealth.ok(usedModel, 'chat');
+    try { options.onSources?.(unique); } catch { /* citation rendering must never break the answer */ }
+  };
   let url: string;
   let headers: Record<string, string> = { 'Content-Type': 'application/json' };
   let body: object;
@@ -511,7 +543,7 @@ export async function callEngine(
   } else if (id === 'gemini') {
     url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(status.model)}:${stream ? 'streamGenerateContent?alt=sse' : 'generateContent'}`;
     headers['x-goog-api-key'] = env.GEMINI_API_KEY!.trim();
-    body = geminiBody(status.model, system, turns, options.temperature, maxTokens);
+    body = { ...geminiBody(status.model, system, turns, options.temperature, maxTokens), ...searchTool(status.model) };
   } else if (id === 'claude') {
     url = 'https://api.anthropic.com/v1/messages';
     headers = { ...headers, 'x-api-key': env.ANTHROPIC_API_KEY!.trim(), 'anthropic-version': '2023-06-01' };
@@ -541,7 +573,7 @@ export async function callEngine(
     if (better && better !== status.model) {
       usedModel = better;
       url = url.replace(`/models/${encodeURIComponent(status.model)}:`, `/models/${encodeURIComponent(better)}:`);
-      body = geminiBody(better, system, turns, options.temperature, maxTokens);
+      body = { ...geminiBody(better, system, turns, options.temperature, maxTokens), ...searchTool(better) };
       response = await request(url, { method: 'POST', headers, body: JSON.stringify(body), signal: options.signal });
     }
   }
@@ -558,7 +590,7 @@ export async function callEngine(
     for (const next of geminiQuotaFallbacks(await listGeminiModels(apiKey, request, options.signal), failed)) {
       if (options.signal.aborted) break;
       const nextUrl = url.replace(`/models/${encodeURIComponent(failed)}:`, `/models/${encodeURIComponent(next)}:`);
-      const nextBody = geminiBody(next, system, turns, options.temperature, maxTokens);
+      const nextBody = { ...geminiBody(next, system, turns, options.temperature, maxTokens), ...searchTool(next) };
       const attempt = await request(nextUrl, { method: 'POST', headers, body: JSON.stringify(nextBody), signal: options.signal });
       if (attempt.ok) {
         // A model out of its DAILY quota stays out until Google renews it — no visitor pays for the failed try again.
@@ -572,6 +604,21 @@ export async function callEngine(
       await attempt.body?.cancel().catch(() => {});
     }
   }
+  // «بحث جوجل» refused (not open to this model or key, its own quota): the owner sees why, and the visitor still gets
+  // an answer — the same model once more without the search tool.
+  if (!response.ok && searching && !options.signal.aborted) {
+    const text = errorBody ?? await response.text().catch(() => '');
+    googleHealth.fail(usedModel, response.status, failureDetail(text), 'chat');
+    errorBody = text;
+    // Not open to this model (400/403): tried again in an hour; its search quota (429): in ten minutes.
+    if (response.status === 400 || response.status === 403 || response.status === 429) googleRefused.set(searchKey(usedModel), Date.now() + (response.status === 429 ? 600_000 : 3600_000));
+    if (response.status !== 401) {
+      const plain = await request(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(usedModel)}:${stream ? 'streamGenerateContent?alt=sse' : 'generateContent'}`,
+        { method: 'POST', headers, body: JSON.stringify(geminiBody(usedModel, system, turns, options.temperature, maxTokens)), signal: options.signal }).catch(() => undefined);
+      if (plain?.ok) { response = plain; errorBody = undefined; searching = false; }
+      else await plain?.body?.cancel().catch(() => {});
+    }
+  }
   if (!response.ok) {
     const text = errorBody ?? await response.text().catch(() => '');
     if (options.onFailure) options.onFailure(classifyEngineFailure(response.status, text), response.status, failureDetail(text));
@@ -582,12 +629,14 @@ export async function callEngine(
   const isStream = stream && response.body && (response.headers.get('content-type') || '').includes('text/event-stream');
   if (isStream) {
     const filter = new ThinkFilter();
+    const grounding: unknown[] = [];
     let full = '';
     const emit = (text: string) => { if (text) { full += text; options.onToken!(text); } };
     for await (const data of sseData(response.body!)) {
       if (!data || data === '[DONE]') continue;
       let event: any;
       try { event = JSON.parse(data); } catch { continue; }
+      if (id === 'gemini' && event.candidates?.[0]?.groundingMetadata) grounding.push(event.candidates[0].groundingMetadata);
       const piece = id === 'gemini'
         ? (event.candidates?.[0]?.content?.parts || []).filter((p: { thought?: boolean }) => !p.thought).map((p: { text?: string }) => p.text || '').join('')
         : id === 'claude'
@@ -597,6 +646,7 @@ export async function callEngine(
       if (full.length > maxChars) return undefined;
     }
     emit(filter.flush());
+    if (searching) reportGrounding(grounding);
     const trimmedStream = full.trim();
     if (trimmedStream && options.onConfidence) options.onConfidence(scoreEngineOutput(trimmedStream, options.contextFacts));
     return trimmedStream || undefined;
@@ -610,6 +660,7 @@ export async function callEngine(
   if (id === 'perplexity') {
     try { options.onSources?.(perplexitySources(data)); } catch { /* citation rendering must never break the answer */ }
   }
+  if (searching) reportGrounding([(data.candidates?.[0] as { groundingMetadata?: unknown } | undefined)?.groundingMetadata]);
   const reply = id === 'perplexity' ? perplexityText(data) : id === 'gemini'
     ? data.candidates?.[0]?.content?.parts?.filter((p) => !p.thought).map((p) => p.text || '').join('')
     : id === 'claude'

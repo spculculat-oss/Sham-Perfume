@@ -160,7 +160,13 @@ export function gateBrief(a: GateAnswer, max = 4000): string {
 
 // ── The counts the owner sees ──────────────────────────────────────────────────────────────────────────────
 export interface GateUse { search: number; read: number; ask: number; cached: number; refused: number; failed: number }
-export interface GateStats { day: string; total: GateUse; bots: Record<string, GateUse>; cacheEntries: number; live: boolean }
+/** «بحث جوجل»: how many searches worked or failed since the server started, and the last of each (admin only). */
+export interface GoogleSearchHealth {
+  ok: number; failed: number;
+  lastOk?: { at: string; model: string; via: 'chat' | 'search' };
+  lastError?: { at: string; model: string; status: number; via: 'chat' | 'search'; detail?: string };
+}
+export interface GateStats { day: string; total: GateUse; bots: Record<string, GateUse>; cacheEntries: number; live: boolean; google?: GoogleSearchHealth }
 export const emptyUse = (): GateUse => ({ search: 0, read: 0, ask: 0, cached: 0, refused: 0, failed: 0 });
 
 /** The status as the suite shows it: the busiest robots first, and how much of today's allowance is used. */
