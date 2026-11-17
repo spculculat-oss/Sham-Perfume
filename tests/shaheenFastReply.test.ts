@@ -82,3 +82,36 @@ test('Google search starts on the fast model and a stuck model does not end the 
   assert.equal(out.kind, 'web');
   assert.equal(out.answer, 'ملخص');
 });
+
+test('an answer stuck in a loop is stopped and written again plainly, without the search tool', async () => {
+  const { runaway } = await import('../server/core/engines');
+  assert.equal(runaway(`| المعيار | أ |\n|:${'-'.repeat(200)}`), true);
+  assert.equal(runaway('سطر مكرر هنا تمام\n'.repeat(8)), true);
+  assert.equal(runaway('| أ | ب |\n|:---|:---|\n| 1 | 2 |\n| 3 | 4 |'), false);
+  const calls: boolean[] = [];
+  const out = await askWorkspace({ messages: [{ role: 'user', text: 'إيه الفرق بين الشاي الأخضر والشاي الأسود؟' }], language: 'ar' } as never, {
+    env: { GEMINI_API_KEY: 'k-loop' }, retryDelayMs: 0, onEvent: () => {},
+    fetch: (async (_input: string | URL | Request, init?: RequestInit) => {
+      const search = String(init?.body || '').includes('google_search');
+      calls.push(search);
+      return search ? sse(`| المعيار | الأخضر | الأسود |\n|:${'-'.repeat(400)}`) : sse('| المعيار | الأخضر | الأسود |\n|:---|:---|:---|\n| التخمير | لا | نعم |');
+    }) as typeof fetch,
+  });
+  assert.deepEqual(calls, [true, false]);
+  assert.match(out.reply, /التخمير/);
+});
+
+test('Google search refused by its own limit: the same model answers at once without it', async () => {
+  const calls: string[] = [];
+  const reply = await callEngine('gemini', 'sys', [{ role: 'user', text: 'مين رئيس وزراء الهند؟' }], {
+    env: { GEMINI_API_KEY: 'k-search-limit' }, temperature: 0.5, signal: AbortSignal.timeout(10_000), model: 'gemini-2.5-flash', googleSearch: true, onToken: () => {},
+    fetch: (async (input: string | URL | Request, init?: RequestInit) => {
+      const search = String(init?.body || '').includes('google_search');
+      calls.push(`${String(input).match(/models\/([^:?]+)/)?.[1] || 'list'}${search ? '+search' : ''}`);
+      if (search) return json({ error: { code: 429, status: 'RESOURCE_EXHAUSTED' } }, 429);
+      return sse('ناريندرا مودي.');
+    }) as typeof fetch,
+  });
+  assert.equal(reply, 'ناريندرا مودي.');
+  assert.deepEqual(calls, ['gemini-2.5-flash+search', 'gemini-2.5-flash']);
+});

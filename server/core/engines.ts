@@ -345,6 +345,11 @@ export const GEMINI_DEFAULT_MODEL = 'gemini-flash-latest';
  * once out, sometimes held the line 30-45 s before refusing. The owner's GEMINI_MODEL (or SHAM_FAST_MODEL) wins.
  */
 export const GEMINI_FAST_MODEL = 'gemini-2.5-flash';
+/** The tail of an answer stuck in a loop: one character 80+ times in a row, or the same line six times running. */
+export function runaway(text: string): boolean {
+  const tail = text.slice(-1500);
+  return /(\S)\1{79,}/u.test(tail) || /(^|\n)([^\n]{12,})(?:\n\2){5,}/u.test(tail);
+}
 export const fastGeminiModel = (env: Env = process.env) => env.GEMINI_MODEL?.trim() || env.SHAM_FAST_MODEL?.trim() || GEMINI_FAST_MODEL;
 /** A live (streamed) answer that has not started within this long is a stuck model: the next one is tried. */
 export const GEMINI_FIRST_WORD_MS = 12_000;
@@ -605,6 +610,19 @@ export async function callEngine(
   }
   let errorBody: string | undefined;
   if (id === 'gemini' && (response.status === 429 || response.status >= 500)) errorBody = await response.text().catch(() => '');
+  // «بحث جوجل» refused by its own limit (429) while the model itself works: the same model answers at once without
+  // the search tool (measured: the other models refused the search too, and the last one held the line 12 s).
+  if (id === 'gemini' && searching && response.status === 429 && !options.signal.aborted) {
+    googleHealth.fail(usedModel, 429, failureDetail(errorBody), 'chat');
+    googleRefused.set(searchKey(usedModel), Date.now() + 600_000);
+    const plain = await send(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(usedModel)}:${stream ? 'streamGenerateContent?alt=sse' : 'generateContent'}`,
+      { method: 'POST', headers, body: JSON.stringify(geminiBody(usedModel, system, turns, options.temperature, maxTokens)), signal: options.signal }).catch(() => undefined);
+    if (plain) {
+      searching = false;
+      response = plain;
+      errorBody = plain.ok ? undefined : (plain.status === 429 || plain.status >= 500) ? await plain.text().catch(() => '') : undefined;
+    }
+  }
   // Quota is per model: an exhausted model does not mean the key is dead — try others for an hour.
   const exhausted = response.status === 429 && /RESOURCE_EXHAUSTED|QuotaFailure|quota/i.test(errorBody || '');
   // Google also answers 503 UNAVAILABLE ("high demand") for one model while the others work: same remedy, for 10 minutes.
@@ -660,6 +678,9 @@ export async function callEngine(
     let full = '';
     const emit = (text: string) => { if (text) { full += text; options.onToken!(text); } };
     for await (const data of sseData(response.body!)) {
+      // A model stuck repeating itself (measured: a table rule «|:---» running to 48,000 characters) is stopped
+      // at once; the caller then tries again another way instead of waiting for the whole budget.
+      if (runaway(full)) return undefined;
       if (!data || data === '[DONE]') continue;
       let event: any;
       try { event = JSON.parse(data); } catch { continue; }
@@ -673,6 +694,7 @@ export async function callEngine(
       if (full.length > maxChars) return undefined;
     }
     emit(filter.flush());
+    if (runaway(full)) return undefined;
     if (searching) reportGrounding(grounding);
     const trimmedStream = full.trim();
     if (trimmedStream && options.onConfidence) options.onConfidence(scoreEngineOutput(trimmedStream, options.contextFacts));
@@ -693,7 +715,7 @@ export async function callEngine(
     : id === 'claude'
       ? data.content?.filter((p) => p.type === 'text').map((p) => p.text).join('\n')
       : data.choices?.[0]?.message?.content;
-  if (typeof reply !== 'string') return undefined;
+  if (typeof reply !== 'string' || runaway(reply)) return undefined;
   // Strip visible chain-of-thought some open reasoning models emit (<think>…</think>, <thinking>…</thinking>, <考え>…</考え>, etc.).
   const clean = reply.replace(STRIP_REASONING_RE, '').trim();
   if (clean && options.onConfidence) options.onConfidence(scoreEngineOutput(clean, options.contextFacts));

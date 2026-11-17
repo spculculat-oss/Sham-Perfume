@@ -543,7 +543,7 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
   // Chat and summaries are written live, letter by letter; the JSON tasks arrive whole (half a JSON is no use).
   const live = Boolean(onEvent) && !json;
   const finish = (reply: string) => (json ? reply : polishReply(reply).trim() || reply);
-  const tryEngine = async (id: (typeof engines)[number], timeoutMs: number): Promise<string | undefined> => {
+  const tryEngine = async (id: (typeof engines)[number], timeoutMs: number, { plain = false }: { plain?: boolean } = {}): Promise<string | undefined> => {
     let failed: { kind: EngineFailure; status?: number } | undefined;
     let sent = false;
     const dropped = () => { if (sent) { sent = false; onEvent?.({ type: 'reset' }); } };
@@ -552,10 +552,10 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
         env, fetch: request, signal: AbortSignal.any([AbortSignal.timeout(timeoutMs), ...(signal ? [signal] : [])]),
         // «سرعة شاهين»: everyday answers start on the fast model; «فكّر بعمق» keeps the strongest one.
         ...(id === 'gemini' && !deep ? { model: fastGeminiModel(env) } : {}),
-        temperature: task === 'plan' ? 0.2 : json ? 0.5 : 0.6, maxTokens: task === 'plan' ? 1200 : task === 'graphic' ? 900 : task === 'storyboard' || task === 'bot' ? 2500 : task === 'site' ? 8000 : 6000, maxChars: 60_000,
+        temperature: task === 'plan' ? 0.2 : json ? 0.5 : plain ? 0.4 : 0.6, maxTokens: task === 'plan' ? 1200 : task === 'graphic' ? 900 : task === 'storyboard' || task === 'bot' ? 2500 : task === 'site' ? 8000 : 6000, maxChars: 60_000,
         onFailure: (kind, status) => { failed = { kind, status }; },
         // «بحث جوجل»: in a chat, Gemini searches Google itself whenever the answer needs it.
-        ...(task === 'chat' && (googleHelps(lastQuestion, profile) || liveQuestion || body.search === true) ? { googleSearch: true, onSources: (found: { title: string; url: string }[]) => {
+        ...(task === 'chat' && !plain && (googleHelps(lastQuestion, profile) || liveQuestion || body.search === true) ? { googleSearch: true, onSources: (found: { title: string; url: string }[]) => {
           for (const f of found) if (!sources.some((x) => x.url === f.url)) sources.push({ ...f, snippet: '' });
           onEvent?.({ type: 'sources', sources });
         } } : {}),
@@ -573,13 +573,11 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
         }
         health?.ok(id); return finish(reply.trim());
       }
-      if (process.env.ZZ_DEBUG) console.log(`  [debug] ${id} empty: failed=${JSON.stringify(failed)} replyType=${typeof reply} len=${typeof reply === 'string' ? reply.length : -1}`);
       dropped();
       failures.push({ id, ...(failed || { kind: 'empty' as const }) });
       health?.fail(id, failed?.kind || 'empty');
     } catch (error) {
       const name = error instanceof Error ? error.name : '';
-      if (process.env.ZZ_DEBUG) console.log(`  [debug] ${id} threw ${name}: ${(error as Error)?.message?.slice(0, 120)}`);
       dropped();
       const timedOut = name === 'TimeoutError' || name === 'AbortError';
       failures.push({ id, kind: timedOut ? 'timeout' : 'unreachable' });
@@ -591,6 +589,11 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
     if (signal?.aborted) break;
     const reply = await tryEngine(id, 45_000);
     if (reply) return { reply: await finalize(reply), sources };
+    // An answer that went round in circles: once more right away, plainly (no search tool, a calmer temperature).
+    if (failures.at(-1)?.id === id && failures.at(-1)?.kind === 'empty' && !signal?.aborted && Date.now() - started < 30_000) {
+      const again = await tryEngine(id, 30_000, { plain: true });
+      if (again) return { reply: await finalize(again), sources };
+    }
   }
   // One more round for the platforms that only stumbled (overload, a slow answer, a per-minute limit) — while there is still time.
   const again = engines.filter((id) => failures.some((f) => f.id === id && RETRYABLE.includes(f.kind)));

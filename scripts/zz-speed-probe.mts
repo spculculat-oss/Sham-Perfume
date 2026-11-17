@@ -17,7 +17,7 @@ const timed: typeof fetch = async (input, init) => {
     return new Response(a, { status: res.status, statusText: res.statusText, headers: res.headers });
   } catch (error) { console.log(`  ${tag} → threw ${(error as Error).name} after ${t0() - start}ms`); throw error; }
 };
-const qs: [string, string][] = [['simple2', 'إيه الفرق بين الشاي الأخضر والشاي الأسود؟'], ['hello', 'أهلاً، إزيك؟'], ['simple', 'إيه الفرق بين القهوة التركي والإسبريسو؟'], ['code', 'اكتبلي دالة بايثون بتعكس كلمة'], ['news', 'إيه أخبار مصر النهارده؟'], ['fact', 'مين رئيس وزراء الهند؟']];
+const qs: [string, string][] = [['compare2', 'قارن بين آيفون وسامسونج'], ['simple2', 'إيه الفرق بين الشاي الأخضر والشاي الأسود؟'], ['hello', 'أهلاً، إزيك؟'], ['simple', 'إيه الفرق بين القهوة التركي والإسبريسو؟'], ['code', 'اكتبلي دالة بايثون بتعكس كلمة'], ['news', 'إيه أخبار مصر النهارده؟'], ['fact', 'مين رئيس وزراء الهند؟']];
 const configured = ['GEMINI_API_KEY', 'OPENAI_API_KEY', 'ANTHROPIC_API_KEY', 'DEEPSEEK_API_KEY', 'OPENROUTER_API_KEY'].filter((k) => process.env[k]?.trim());
 console.log(`configured: ${configured.join(', ')}`);
 for (const [name, q] of qs) {
