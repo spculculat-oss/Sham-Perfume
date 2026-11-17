@@ -1,28 +1,30 @@
-// Temporary: which Gemini models answer fast with this key right now. Prints models, statuses, timings only.
-import { failureDetail, geminiThinking, rankGeminiModels } from '../server/core/engines';
-const key = process.env.GEMINI_API_KEY!.trim();
-const base = 'https://generativelanguage.googleapis.com/v1beta';
-const list = await (await fetch(`${base}/models?pageSize=200`, { headers: { 'x-goog-api-key': key } })).json() as { models: { name: string; supportedGenerationMethods: string[] }[] };
-const ranked = rankGeminiModels(list.models);
-console.log(`ranked: ${ranked.slice(0, 14).join(' ')}`);
-const pick = [...new Set(['gemini-flash-latest', 'gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite', ...ranked.slice(0, 8)])].filter((m) => ranked.includes(m) || /2\.5/.test(m));
-const ask = async (model: string, thinking: Record<string, unknown>, search: boolean) => {
-  const body = { systemInstruction: { parts: [{ text: 'رد بالمصري باختصار.' }] }, contents: [{ role: 'user', parts: [{ text: 'إيه الفرق بين القهوة التركي والإسبريسو؟' }] }], generationConfig: { temperature: 0.6, ...thinking }, ...(search ? { tools: [{ google_search: {} }] } : {}) };
-  const start = Date.now();
+// Temporary: where does a workspace turn spend its time? Prints hosts, models, statuses and timings only.
+import { askWorkspace } from '../server/workspace';
+const t0 = () => Date.now();
+const timed: typeof fetch = async (input, init) => {
+  const url = String(input instanceof Request ? input.url : input);
+  const host = new URL(url).host; const model = url.match(/models\/([^:?]+)/)?.[1] || '';
+  const body = typeof init?.body === 'string' ? init.body : '';
+  const tag = `${host}${model ? ` ${model}` : ''}${body.includes('google_search') ? ' +search' : ''}${url.includes('stream') ? ' stream' : ''}`;
+  const start = t0();
   try {
-    const res = await fetch(`${base}/models/${model}:streamGenerateContent?alt=sse`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, body: JSON.stringify(body), signal: AbortSignal.timeout(30_000) });
-    const head = Date.now() - start;
-    if (!res.ok) return `${res.status} ${failureDetail(await res.text()).slice(0, 160)} (${head}ms)`;
-    const reader = res.body!.getReader(); const dec = new TextDecoder(); let first = 0; let text = '';
-    for (;;) { const { value, done } = await reader.read(); if (done) break; const s = dec.decode(value); if (!first && /"text"/.test(s)) first = Date.now() - start; text += s; }
-    return `ok head ${head}ms · first text ${first}ms · end ${Date.now() - start}ms`;
-  } catch (e) { return `threw ${(e as Error).name} after ${Date.now() - start}ms`; }
+    const res = await fetch(input, init);
+    const head = t0() - start;
+    if (!res.body) { console.log(`  ${tag} → ${res.status} head ${head}ms`); return res; }
+    let firstChunk = 0;
+    const [a, b] = res.body.tee();
+    (async () => { const r = b.getReader(); const { done } = await r.read(); firstChunk = t0() - start; if (!done) { while (!(await r.read()).done) { /* drain */ } } console.log(`  ${tag} → ${res.status} head ${head}ms · first chunk ${firstChunk}ms · body end ${t0() - start}ms`); })().catch(() => {});
+    return new Response(a, { status: res.status, statusText: res.statusText, headers: res.headers });
+  } catch (error) { console.log(`  ${tag} → threw ${(error as Error).name} after ${t0() - start}ms`); throw error; }
 };
-for (const model of pick) {
-  const t = geminiThinking(model, 1500);
-  console.log(`${model} [${JSON.stringify((t as { thinkingConfig?: unknown }).thinkingConfig || {})}]: ${await ask(model, t, false)}`);
-  if (/flash-latest|2\.5-flash$/.test(model)) {
-    for (const level of ['minimal', 'low']) if (/latest|gemini-3/.test(model)) console.log(`  ${model} thinking=${level}: ${await ask(model, { maxOutputTokens: 3500, thinkingConfig: { thinkingLevel: level } }, false)}`);
-    console.log(`  ${model} +search: ${await ask(model, t, true)}`);
-  }
+const qs: [string, string][] = [['hello', 'أهلاً، إزيك؟'], ['simple', 'إيه الفرق بين القهوة التركي والإسبريسو؟'], ['code', 'اكتبلي دالة بايثون بتعكس كلمة'], ['news', 'إيه أخبار مصر النهارده؟'], ['fact', 'مين رئيس وزراء الهند؟']];
+const configured = ['GEMINI_API_KEY', 'OPENAI_API_KEY', 'ANTHROPIC_API_KEY', 'DEEPSEEK_API_KEY', 'OPENROUTER_API_KEY'].filter((k) => process.env[k]?.trim());
+console.log(`configured: ${configured.join(', ')}`);
+for (const [name, q] of qs) {
+  const start = t0(); let first = 0;
+  console.log(`## ${name}`);
+  try {
+    const out = await askWorkspace({ messages: [{ role: 'user', text: q }], language: 'ar' } as never, { env: process.env, fetch: timed, onEvent: (e: { type: string }) => { if (e.type === 'delta' && !first) first = t0() - start; } } as never);
+    console.log(`=> ${name}: first word ${first}ms · total ${t0() - start}ms · ${out.reply.length} chars`);
+  } catch (error) { console.log(`=> ${name}: failed ${(error as Error).message} after ${t0() - start}ms`); }
 }

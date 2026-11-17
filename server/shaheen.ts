@@ -27,7 +27,7 @@ import { localizeReply, needsTranslation, translationInstruction, TranslationCac
 import type { SupportedLanguage } from '../src/types/i18n';
 import { normalizeMediaBlocks } from '../src/utils/mediaBlock';
 import { stripOpeningGreeting } from '../src/utils/shaheenText';
-import { callEngine, engineStatuses, type EngineFailure, type ExternalSearchSource } from './core/engines';
+import { callEngine, engineStatuses, fastGeminiModel, type EngineFailure, type ExternalSearchSource } from './core/engines';
 import { EngineHealth, seedQuotaPauses } from './core/engineHealth';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { AnswerCache, GateBusyError, ProviderGate, VISITOR_ID, cacheKey, capacityConfig, normalizeQuestion, retryHintMs } from './core/capacity';
@@ -482,7 +482,8 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
     const signal = AbortSignal.any([total, AbortSignal.timeout(options.timeoutMs ?? 28000)]);
     const status = engineStatuses(env).find((s) => s.id === provider)!;
     const useLite = lite && provider === 'gemini';
-    const model = useLite ? liteModel(env) : settings.models[provider] || status.model;
+    // «سرعة شاهين»: unless the owner picked a model, Gemini answers on the fast one (server/core/engines.ts).
+    const model = useLite ? liteModel(env) : settings.models[provider] || (provider === 'gemini' ? fastGeminiModel(env) : status.model);
     let refusal: { failure: EngineFailure; status: number; detail: string } | undefined;
     const sources: ExternalSearchSource[] = [...liveSources];
     const addSources = (found: readonly ExternalSearchSource[]) => { for (const s of found) if (s?.url && !sources.some((x) => x.url === s.url)) sources.push(s); };

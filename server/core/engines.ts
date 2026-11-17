@@ -339,6 +339,19 @@ export function geminiThinking(model: string, maxTokens: number): Record<string,
  * so the default is Google's own rolling alias and a "model not found" answer triggers discovery.
  */
 export const GEMINI_DEFAULT_MODEL = 'gemini-flash-latest';
+/**
+ * «سرعة شاهين»: the model a visitor's chat starts with. Measured with the live key (11-17): it starts writing in
+ * ~0.4 s (1.5 s with Google search), while the rolling alias above gave only 20 answers a day on the free tier and,
+ * once out, sometimes held the line 30-45 s before refusing. The owner's GEMINI_MODEL (or SHAM_FAST_MODEL) wins.
+ */
+export const GEMINI_FAST_MODEL = 'gemini-2.5-flash';
+export const fastGeminiModel = (env: Env = process.env) => env.GEMINI_MODEL?.trim() || env.SHAM_FAST_MODEL?.trim() || GEMINI_FAST_MODEL;
+/** A live (streamed) answer that has not started within this long is a stuck model: the next one is tried. */
+export const GEMINI_FIRST_WORD_MS = 12_000;
+const firstWordMs = (env: Env) => {
+  const n = Number(env.SHAM_FIRST_WORD_MS);
+  return Number.isFinite(n) && n >= 2_000 && n <= 60_000 ? n : GEMINI_FIRST_WORD_MS;
+};
 
 export interface GeminiModelInfo { name?: string; supportedGenerationMethods?: string[] }
 
@@ -565,7 +578,20 @@ export async function callEngine(
   }
 
   let usedModel = status.model;
-  let response = await request(url, { method: 'POST', headers, body: JSON.stringify(body), signal: options.signal });
+  // A live answer whose line opens but stays silent is treated like Google's «busy» (503): the busy remedy below
+  // moves to another model at once instead of the visitor waiting out the whole timeout.
+  const silentMs = firstWordMs(env);
+  const send: typeof request = id === 'gemini' && stream ? async (input, init) => {
+    const quiet = new AbortController();
+    const timer = setTimeout(() => quiet.abort(), silentMs);
+    try {
+      return await request(input, { ...init, signal: init?.signal ? AbortSignal.any([init.signal, quiet.signal]) : quiet.signal });
+    } catch (error) {
+      if (quiet.signal.aborted && !init?.signal?.aborted) return new Response(JSON.stringify({ error: { code: 503, status: 'UNAVAILABLE' } }), { status: 503, headers: { 'Content-Type': 'application/json', 'X-Sham-Silent': '1' } });
+      throw error;
+    } finally { clearTimeout(timer); }
+  } : request;
+  let response = await send(url, { method: 'POST', headers, body: JSON.stringify(body), signal: options.signal });
   if (id === 'gemini' && response.status === 404) {
     // The configured model was retired or is not open to this key: switch to the best available one.
     const apiKey = env.GEMINI_API_KEY!.trim();
@@ -574,7 +600,7 @@ export async function callEngine(
       usedModel = better;
       url = url.replace(`/models/${encodeURIComponent(status.model)}:`, `/models/${encodeURIComponent(better)}:`);
       body = { ...geminiBody(better, system, turns, options.temperature, maxTokens), ...searchTool(better) };
-      response = await request(url, { method: 'POST', headers, body: JSON.stringify(body), signal: options.signal });
+      response = await send(url, { method: 'POST', headers, body: JSON.stringify(body), signal: options.signal });
     }
   }
   let errorBody: string | undefined;
@@ -591,7 +617,7 @@ export async function callEngine(
       if (options.signal.aborted) break;
       const nextUrl = url.replace(`/models/${encodeURIComponent(failed)}:`, `/models/${encodeURIComponent(next)}:`);
       const nextBody = { ...geminiBody(next, system, turns, options.temperature, maxTokens), ...searchTool(next) };
-      const attempt = await request(nextUrl, { method: 'POST', headers, body: JSON.stringify(nextBody), signal: options.signal });
+      const attempt = await send(nextUrl, { method: 'POST', headers, body: JSON.stringify(nextBody), signal: options.signal });
       if (attempt.ok) {
         // A model out of its DAILY quota stays out until Google renews it — no visitor pays for the failed try again.
         const daily = exhausted && /PerDay|per day|daily/i.test(failureDetail(errorBody));
@@ -606,14 +632,15 @@ export async function callEngine(
   }
   // «بحث جوجل» refused (not open to this model or key, its own quota): the owner sees why, and the visitor still gets
   // an answer — the same model once more without the search tool.
-  if (!response.ok && searching && !options.signal.aborted) {
+  // (A model that stayed silent says nothing about the search tool.)
+  if (!response.ok && searching && !options.signal.aborted && response.headers.get('X-Sham-Silent') !== '1') {
     const text = errorBody ?? await response.text().catch(() => '');
     googleHealth.fail(usedModel, response.status, failureDetail(text), 'chat');
     errorBody = text;
     // Not open to this model (400/403): tried again in an hour; its search quota (429): in ten minutes.
     if (response.status === 400 || response.status === 403 || response.status === 429) googleRefused.set(searchKey(usedModel), Date.now() + (response.status === 429 ? 600_000 : 3600_000));
     if (response.status !== 401) {
-      const plain = await request(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(usedModel)}:${stream ? 'streamGenerateContent?alt=sse' : 'generateContent'}`,
+      const plain = await send(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(usedModel)}:${stream ? 'streamGenerateContent?alt=sse' : 'generateContent'}`,
         { method: 'POST', headers, body: JSON.stringify(geminiBody(usedModel, system, turns, options.temperature, maxTokens)), signal: options.signal }).catch(() => undefined);
       if (plain?.ok) { response = plain; errorBody = undefined; searching = false; }
       else await plain?.body?.cancel().catch(() => {});
