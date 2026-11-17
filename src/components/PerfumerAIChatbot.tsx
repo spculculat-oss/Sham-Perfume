@@ -56,7 +56,7 @@ import { copyChatText } from '../utils/clipboard';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { FloatingDock } from './FloatingDock';
 import { useReadAloud } from '../hooks/useReadAloud';
-import { askMessages, lookingUpLine } from '../utils/heardFix';
+import { askMessages } from '../utils/heardFix';
 
 
 const S = {
@@ -899,7 +899,6 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   });
   useEffect(() => { if (voice.active) stopReading(); }, [voice.active, stopReading]);
   // «ثواني أشوفلك البيانات»: while he really looks the question up (store, prices, stock…), he says so.
-  const lookingUp = isLoading ? lookingUpLine(messages, currentLang, voice.dialect) : undefined;
   const closeChat = useCallback(() => {
     voice.stop();
     stopReading();
@@ -1145,7 +1144,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                   <div className="text-[10px] text-amber-300/80 flex items-center gap-1" aria-live="polite">
                     <span className={`w-1.5 h-1.5 rounded-full ${isLoading ? 'bg-amber-400 animate-pulse' : enabledEngineCount > 0 && modelStatus.enabled ? 'bg-emerald-400' : 'bg-stone-500'}`} />
                     <span>
-                      {isLoading ? lookingUp || compoundingMessages[compoundingStep]
+                      {isLoading ? compoundingMessages[compoundingStep]
                         : enabledEngineCount > 0 && modelStatus.enabled ? fmt(L('status_ready_tpl'), { n: enabledEngineCount })
                         : modelStatus.models ? L('status_offline') : '…'}
                     </span>
@@ -1627,7 +1626,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                       <span>{L('loading_title')}</span>
                     </div>
                     <div className="text-[11px] text-amber-800 leading-relaxed" aria-live="polite">
-                      {lookingUp || compoundingMessages[compoundingStep]}
+                      {compoundingMessages[compoundingStep]}
                     </div>
                     {busy && (
                       <p role="status" className="rounded-lg bg-amber-100/80 px-2 py-1.5 text-[11px] font-semibold leading-relaxed text-amber-900">{busyNoteText(currentLang)}</p>

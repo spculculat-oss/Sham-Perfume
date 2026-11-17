@@ -90,3 +90,15 @@ test('«لا أنا ما بتكلمش عن كده، أنا بقولك…»: the 
   assert.doesNotMatch(needInstruction(said, { answered: false }), /بيصحح/);
   assert.match(PRECISE_ANSWER_INSTRUCTION, /صناعة العطور الحديثة/);
 });
+
+test('«شيل جملة الانتظار خالص»: nothing is said or shown before the reply, and English replies start with the answer', async () => {
+  const hook = readFileSync('src/hooks/useShaheenVoiceMode.ts', 'utf8');
+  assert.doesNotMatch(hook, /patienceLine|sayWhileLooking|plan\.filler/);
+  for (const file of ['src/components/PerfumerAIChatbot.tsx', 'src/components/PerfumerMasterLabView.tsx']) {
+    assert.doesNotMatch(readFileSync(file, 'utf8'), /lookingUpLine/, file);
+  }
+  const { talkify } = await import('../src/utils/talkStyle');
+  for (const reply of ['The oud is strong. It lasts all day on the skin.', 'Rose and musk go well together. Try it in the evening.', 'This one is fresh. It suits the summer.', 'Amber is warm. It is best in winter.']) {
+    assert.doesNotMatch(talkify(reply, { language: 'en' }), /^(?:So|Well|Honestly),/);
+  }
+});

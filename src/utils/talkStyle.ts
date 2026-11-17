@@ -321,7 +321,8 @@ const OPENERS: Record<Talk, string[]> = {
   egyptian: ['بص،', 'بصراحة،', 'طيب،', 'شوف،'],
   white: ['شوف،', 'بصراحة،', 'طيب،'],
   msa: [],
-  en: ['So,', 'Well,', 'Honestly,'],
+  // English replies start with the answer itself (the owner, 2026-11-17: no word glued before every English reply).
+  en: [],
 };
 const NO_OPENER = /^(?:آه|اه|أه|تقصد|قصدك|من الآخر|باختصار|في الثبات|نعتذر|نأسف|آسف|اسف|إحنا آسفين|حقك علينا|معلش|للأسف|عذراً|sorry|we apologi|I'm sorry|I am sorry|فهمت|حاضر|أهلا|اهلا|أهلاً|اهلاً|مرحب|السلام|صباح|مساء|أيوه|ايوه|أيوة|لا\b|لأ|نعم|أكيد|اكيد|تمام|طبعاً|طبعا|بص|بصراحة|طيب|شوف|معلش|للأسف|عفواً|hi\b|hello|hey|yes|no\b|sure|so,|well,|honestly|sorry|unfortunately)/iu;
 const hash = (text: string) => { let h = 0; for (const ch of text) h = (h * 31 + ch.codePointAt(0)!) >>> 0; return h; };
