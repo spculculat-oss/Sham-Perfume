@@ -11,7 +11,7 @@ import { currentStoreCountry } from '../utils/storeCheckout';
 import { initialTalkLanguage, languageAfterSentence, saveTalkLanguage, savedTalkLanguage, sayAgainLine, writtenLanguage } from '../utils/talkLanguage';
 import { learnablePair, planVoiceTurn, readingsFrom, type PendingConfirm } from '../utils/heardFix';
 import { spokenReply, wantsMore } from '../utils/spokenReply';
-import { addressee, askDoneLine, finishedAnswer, joinTurn, learnBarge, patienceLine, restOfReply, saveBargeMemory, savedBargeMemory, settleUnsure, turnState, type BargeMemory } from '../utils/turnTaking';
+import { addressee, askDoneLine, finishedAnswer, joinTurn, learnBarge, restOfReply, saveBargeMemory, savedBargeMemory, settleUnsure, turnState, type BargeMemory } from '../utils/turnTaking';
 import { baseLexicon, buildLexicon, type Lexicon } from '../utils/shaheenSpelling';
 import { isStaticHosting, requestApi } from '../utils/api';
 import { activeVoicePrint, bargeDecision, deleteVoicePrint, earSupported, openEar, otherVoice, savedVoicePrint, saveVoicePrint,
@@ -712,25 +712,6 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setReplyReady(true);
   }, [clearPendingTurn, scheduleListening]);
 
-  /**
-   * «استنى شوية هدخل أشوف البيانات»: one short line said while he really looks something up (the store, prices,
-   * stock, delivery…). Not a reply: the reply cuts it off as soon as it is ready.
-   */
-  const sayWhileLooking = useCallback((line: string) => {
-    // «ثواني أدخل أشوفلك البيانات»: in his human voice (a recorded clip when there is one); the reply's cancelSpeech()
-    // cuts it off like any other speech. Silence is fine when it cannot play: the chat shows the same line.
-    if (speakingRef.current) return;
-    const gender = clipGender(voiceChoiceRef.current.gender);
-    localStopRef.current?.();
-    const clear = () => { setSpokenText((now) => (now === line ? '' : now)); };
-    const said = voiceFor(line);
-    localStopRef.current = playHumanSpeech([sayItRight(line)], {
-      language: said.language, ...(said.dialect ? { dialect: said.dialect } : {}), gender,
-      rate: voiceChoiceRef.current.rate / 0.96, clipFor: clipFinder(gender),
-      onChunk: () => setSpokenText(line), onEnd: clear, onError: clear,
-    });
-  }, [voiceFor]);
-
   const sendRecognizedText = useCallback(async (rawText: string, confidence?: number) => {
     const said = rawText.replace(/\s+/g, ' ').trim();
     const alternatives = alternativesRef.current;
@@ -808,15 +789,10 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     for (const fix of plan.heard) if (fix.confirmed) saveHeardFix(fix.from, fix.to);
     const text = plan.text;
     setLastHeard(text);
-    if (plan.filler) sayWhileLooking(plan.filler);
-    // «اصبر عليا هراجع البيانات»: the answer is taking a while — he says so (once), and the answer cuts it off.
+    // «شيل جملة الانتظار خالص» (the owner, 2026-11-17): no «One moment, let me check the details» / «اصبر عليا شوية»
+    // before the reply any more — it came out in the wrong language and, fetched late, sometimes over the next reply.
+    // He waits quietly; the reply itself is the first thing he says.
     clearPatience();
-    if (!plan.filler) {
-      patienceTimerRef.current = setTimeout(() => {
-        patienceTimerRef.current = null;
-        if (waitingRef.current && activeRef.current && !speakingRef.current) sayWhileLooking(patienceLine(languageRef.current, dialectRef.current));
-      }, 2600);
-    }
     const turn: ShaheenVoiceTurn = {
       ...(interruptedRef.current ? { interrupted: interruptedRef.current } : {}),
       ...(plan.heard.length ? { heard: plan.heard } : {}),
@@ -828,7 +804,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     } catch {
       finishOutgoingTurn(false);
     }
-  }, [beginOutgoingTurn, cancelRecognition, clearListenTimer, clearPatience, finishOutgoingTurn, sayWhileLooking, scheduleListening, speakReply]);
+  }, [beginOutgoingTurn, cancelRecognition, clearListenTimer, clearPatience, finishOutgoingTurn, scheduleListening, speakReply]);
 
   /** The visitor's turn is complete: all its pieces, in order, gathered into one message. */
   const sendTurn = useCallback((confidence?: number) => {

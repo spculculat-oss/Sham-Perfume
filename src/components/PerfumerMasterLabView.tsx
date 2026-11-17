@@ -52,7 +52,7 @@ import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
 import { ShaheenVoiceStage } from './ShaheenVoiceStage';
 import { copyChatText } from '../utils/clipboard';
 import { useReadAloud } from '../hooks/useReadAloud';
-import { askMessages, lookingUpLine } from '../utils/heardFix';
+import { askMessages } from '../utils/heardFix';
 
 interface PerfumerMasterLabViewProps {
   currentLang?: SupportedLanguage;
@@ -313,7 +313,6 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   });
   useEffect(() => { if (voice.active) stopReading(); }, [voice.active, stopReading]);
   // «ثواني أشوفلك البيانات»: while he really looks the question up (store, prices, stock…), he says so.
-  const lookingUp = isLoading ? lookingUpLine(messages, currentLang, voice.dialect) : undefined;
 
   // Multi-AI Model Orchestrator State
   const [comparingMsgId, setComparingMsgId] = useState<string | null>(null);
@@ -926,7 +925,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                   <span>{L('loading_status')}</span>
                 </div>
                 <p className="text-xs text-amber-800 leading-relaxed" aria-live="polite">
-                  {lookingUp || compoundingPhrases[compoundingStep]}
+                  {compoundingPhrases[compoundingStep]}
                 </p>
                 {busy && (
                   <p role="status" className="rounded-lg bg-amber-100/80 px-2 py-1.5 text-[11px] font-semibold leading-relaxed text-amber-900">{busyNoteText(currentLang)}</p>
