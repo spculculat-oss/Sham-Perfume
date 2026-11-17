@@ -4,23 +4,21 @@ permissions: { contents: read }
 jobs:
   probe:
     runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
     steps:
-      - name: Measure workspace chat speed
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with: { node-version: 22 }
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+      - run: bun install --frozen-lockfile
+      - name: Where the time goes
         run: |
-          S=https://sham-perfume-49bf.vercel.app
-          cat > /tmp/p.mjs <<'JS'
-          const S = process.env.S;
-          const qs = [['hello-ar','أهلاً، إزيك؟'],['simple','إيه الفرق بين القهوة التركي والإسبريسو؟'],['code','اكتبلي دالة بايثون بتعكس كلمة'],['news','إيه أخبار مصر النهارده؟']];
-          for (const [name, q] of qs) {
-            const t0 = Date.now(); let first = 0; let stages = []; let len = 0; let err = '';
-            try {
-              const r = await fetch(`${S}/api/workspace/ask/stream`, { method: 'POST', headers: { 'content-type': 'application/json', origin: 'https://spculculat-oss.github.io', 'x-sham-visitor': 'probe-speed-01' }, body: JSON.stringify({ messages: [{ role: 'user', text: q }], language: 'ar' }) });
-              const reader = r.body.getReader(); const dec = new TextDecoder(); let buf = '';
-              for (;;) { const { value, done } = await reader.read(); if (done) break; buf += dec.decode(value, { stream: true });
-                let i; while ((i = buf.indexOf('\n\n')) >= 0) { const line = buf.slice(0, i); buf = buf.slice(i + 2); const d = line.split('\n').filter(l => l.startsWith('data:')).map(l => l.slice(5).trim()).join(''); if (!d) continue; let e; try { e = JSON.parse(d); } catch { continue; }
-                  if (e.type === 'stage') stages.push(`${e.stage}@${Date.now()-t0}`); if (e.type === 'delta' && !first) first = Date.now() - t0; if (e.type === 'done') len = e.output?.reply?.length || 0; if (e.type === 'error') err = `${e.status} ${e.code}`; } }
-            } catch (e) { err = String(e); }
-            console.log(`::notice title=${name}::first word ${first} ms · total ${Date.now()-t0} ms · ${len} chars · stages ${stages.join(',')} ${err}`);
-          }
-          JS
-          S=$S node /tmp/p.mjs
+          timeout 600 node --import tsx scripts/zz-speed-probe.mts > /tmp/out.txt 2>&1 || true
+          grep -v "^\s*$" /tmp/out.txt | grep -iv "key\|token" | head -80 > /tmp/o2.txt
+          split -l 20 /tmp/o2.txt /tmp/part_
+          for f in /tmp/part_*; do echo "::notice title=$(basename $f)::$(sed ':a;N;$!ba;s/\n/%0A/g' $f)"; done
