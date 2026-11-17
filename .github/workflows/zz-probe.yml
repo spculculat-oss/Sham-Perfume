@@ -18,7 +18,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: Where the time goes
         run: |
-          timeout 600 node --import tsx scripts/zz-speed-probe.mts > /tmp/out.txt 2>&1 || true
+          ZZ_DEBUG=1 timeout 600 node --import tsx scripts/zz-speed-probe.mts > /tmp/out.txt 2>&1 || true
           grep -v "^\s*$" /tmp/out.txt | grep -iv "key\|token" | head -80 > /tmp/o2.txt
           split -l 20 /tmp/o2.txt /tmp/part_
           for f in /tmp/part_*; do echo "::notice title=$(basename $f)::$(sed ':a;N;$!ba;s/\n/%0A/g' $f)"; done

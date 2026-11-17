@@ -573,11 +573,13 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
         }
         health?.ok(id); return finish(reply.trim());
       }
+      if (process.env.ZZ_DEBUG) console.log(`  [debug] ${id} empty: failed=${JSON.stringify(failed)} replyType=${typeof reply} len=${typeof reply === 'string' ? reply.length : -1}`);
       dropped();
       failures.push({ id, ...(failed || { kind: 'empty' as const }) });
       health?.fail(id, failed?.kind || 'empty');
     } catch (error) {
       const name = error instanceof Error ? error.name : '';
+      if (process.env.ZZ_DEBUG) console.log(`  [debug] ${id} threw ${name}: ${(error as Error)?.message?.slice(0, 120)}`);
       dropped();
       const timedOut = name === 'TimeoutError' || name === 'AbortError';
       failures.push({ id, kind: timedOut ? 'timeout' : 'unreachable' });
