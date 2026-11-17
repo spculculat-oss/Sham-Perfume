@@ -26,7 +26,7 @@ import {
   DEEP_PLAN_INSTRUCTION, THINKING_CRAFT_INSTRUCTION, fixReply, needsRevision, profileQuestion, reviewReply, revisionRequest, thinkingHint, withPlan,
 } from '../src/utils/thinkingCraft';
 import { ImageReadError, readImage } from './imageReader';
-import { callEngine, engineStatuses, failureDetail, groundingSources, GEMINI_DEFAULT_MODEL, type EngineFailure, type EngineTurn } from './core/engines';
+import { callEngine, engineStatuses, failureDetail, fastGeminiModel, groundingSources, GEMINI_DEFAULT_MODEL, type EngineFailure, type EngineTurn } from './core/engines';
 import { googleHealth } from './core/googleHealth';
 import { needsLiveWeb } from '../src/utils/liveWeb';
 import { RateLimiter, clientKey } from './core/rateLimit';
@@ -225,6 +225,17 @@ export async function readPage(raw: string, { fetch: request = fetch, lookup = d
   return { url: url.href, title: page.title || url.hostname, text: page.text.slice(0, MAX_READ), kind: /html|xml/.test(type) ? 'html' : 'text', truncated: page.text.length > MAX_READ };
 }
 
+/**
+ * «بحث جوجل عند الاحتياج»: Google is opened for questions that need facts. Not for a greeting or thanks, code,
+ * creative writing or feelings — searching there only adds seconds before the first word.
+ */
+const SMALL_TALK = /^(?:(?:يا\s*)?(?:اهلا|أهلا|اهلين|هلا|مرحبا|السلام عليكم|سلام|صباح الخير|مساء الخير|صباح النور|مساء النور|ازيك|إزيك|ازيكم|عامل ايه|عامل إيه|اخبارك|أخبارك|شكرا|شكراً|متشكر|تسلم|تمام|ماشي|اوك|أوك|حلو|جميل|برافو|تمام كده|hi|hello|hey|thanks|thank you|ok|okay|good morning|good evening|great|cool)(?:\s*(?:يا\s*)?(?:شاهين|صاحبي|باشا|معلم|حبيبي|يا))?[\s.!?؟،,]*)+$/iu;
+export function googleHelps(text: string, profile = profileQuestion(text)): boolean {
+  const t = text.normalize('NFC').replace(/[\u064B-\u065F\u0670\u0640]/g, '').trim();
+  if (!t || SMALL_TALK.test(t)) return false;
+  return !(['code', 'creative', 'feelings'] as const).includes(profile.kind as 'code');
+}
+
 // ── Web search ──────────────────────────────────────────────────────────────────────────────────────────────
 export interface SearchResult { title: string; url: string; snippet: string }
 /** Gemini models tried in turn for a Google search (a model whose own quota or access refuses the search tool → the next). */
@@ -239,13 +250,14 @@ export async function webSearch(query: string, language: SupportedLanguage, { en
   // 1) «بحث جوجل»: the AI platform's own Google search (its answer with the pages it used), model after model.
   if (env.GEMINI_API_KEY?.trim() && env.SHAM_WORKSPACE_WEB_SEARCH?.trim().toLowerCase() !== 'off') {
     const started = Date.now();
-    const models = [...new Set([env.GEMINI_SEARCH_MODEL?.trim() || GEMINI_DEFAULT_MODEL, ...GOOGLE_SEARCH_MODELS])];
+    // The fast model first (it searched and answered in ~1.5-5 s when measured); the rolling alias last (20 a day, may hang).
+    const models = [...new Set([env.GEMINI_SEARCH_MODEL?.trim() || GOOGLE_SEARCH_MODELS[0], ...GOOGLE_SEARCH_MODELS, GEMINI_DEFAULT_MODEL])];
     for (const model of models) {
       const left = GOOGLE_SEARCH_BUDGET_MS - (Date.now() - started);
       if (left < 3000) break;
       try {
         const response = await request(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-          method: 'POST', signal: AbortSignal.timeout(Math.min(12_000, left)),
+          method: 'POST', signal: AbortSignal.timeout(Math.min(10_000, left)),
           headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY.trim() },
           body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: `${q}\n\n(${language === 'ar' ? 'دوّر في جوجل وجاوب بالعربي باختصار ومن نتايج البحث بس' : `Search Google and answer briefly in ${language}, from the search results only`})` }] }], tools: [{ google_search: {} }] }),
         });
@@ -263,7 +275,8 @@ export async function webSearch(query: string, language: SupportedLanguage, { en
       } catch (error) {
         const timedOut = error instanceof Error && (error.name === 'TimeoutError' || error.name === 'AbortError');
         googleHealth.fail(model, timedOut ? 408 : 0, timedOut ? 'TIMEOUT' : 'UNREACHABLE', 'search');
-        if (timedOut) break; // the budget is spent
+        // A stuck model is not a spent budget: the loop tries the next one while at least 3 s are left.
+        if (!timedOut) continue;
       }
     }
   }
@@ -500,7 +513,7 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
     for (const id of engines) {
       if (signal?.aborted) return undefined;
       try {
-        const out = await callEngine(id, sys, quietTurns, { env, fetch: request, signal: AbortSignal.any([AbortSignal.timeout(timeoutMs), ...(signal ? [signal] : [])]), temperature, maxTokens, maxChars: 60_000 });
+        const out = await callEngine(id, sys, quietTurns, { env, fetch: request, signal: AbortSignal.any([AbortSignal.timeout(timeoutMs), ...(signal ? [signal] : [])]), temperature, maxTokens, maxChars: 60_000, ...(id === 'gemini' ? { model: fastGeminiModel(env) } : {}) });
         if (typeof out === 'string' && out.trim()) { health?.ok(id); return out.trim(); }
       } catch { /* the next platform; a failed extra pass never fails the answer */ }
     }
@@ -530,17 +543,19 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
   // Chat and summaries are written live, letter by letter; the JSON tasks arrive whole (half a JSON is no use).
   const live = Boolean(onEvent) && !json;
   const finish = (reply: string) => (json ? reply : polishReply(reply).trim() || reply);
-  const tryEngine = async (id: (typeof engines)[number], timeoutMs: number): Promise<string | undefined> => {
+  const tryEngine = async (id: (typeof engines)[number], timeoutMs: number, { plain = false }: { plain?: boolean } = {}): Promise<string | undefined> => {
     let failed: { kind: EngineFailure; status?: number } | undefined;
     let sent = false;
     const dropped = () => { if (sent) { sent = false; onEvent?.({ type: 'reset' }); } };
     try {
       const reply = await callEngine(id, system, turns, {
         env, fetch: request, signal: AbortSignal.any([AbortSignal.timeout(timeoutMs), ...(signal ? [signal] : [])]),
-        temperature: task === 'plan' ? 0.2 : json ? 0.5 : 0.6, maxTokens: task === 'plan' ? 1200 : task === 'graphic' ? 900 : task === 'storyboard' || task === 'bot' ? 2500 : task === 'site' ? 8000 : 6000, maxChars: 60_000,
+        // «سرعة شاهين»: everyday answers start on the fast model; «فكّر بعمق» keeps the strongest one.
+        ...(id === 'gemini' && !deep ? { model: fastGeminiModel(env) } : {}),
+        temperature: task === 'plan' ? 0.2 : json ? 0.5 : plain ? 0.4 : 0.6, maxTokens: task === 'plan' ? 1200 : task === 'graphic' ? 900 : task === 'storyboard' || task === 'bot' ? 2500 : task === 'site' ? 8000 : 6000, maxChars: 60_000,
         onFailure: (kind, status) => { failed = { kind, status }; },
         // «بحث جوجل»: in a chat, Gemini searches Google itself whenever the answer needs it.
-        ...(task === 'chat' ? { googleSearch: true, onSources: (found: { title: string; url: string }[]) => {
+        ...(task === 'chat' && !plain && (googleHelps(lastQuestion, profile) || liveQuestion || body.search === true) ? { googleSearch: true, onSources: (found: { title: string; url: string }[]) => {
           for (const f of found) if (!sources.some((x) => x.url === f.url)) sources.push({ ...f, snippet: '' });
           onEvent?.({ type: 'sources', sources });
         } } : {}),
@@ -574,6 +589,11 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
     if (signal?.aborted) break;
     const reply = await tryEngine(id, 45_000);
     if (reply) return { reply: await finalize(reply), sources };
+    // An answer that went round in circles: once more right away, plainly (no search tool, a calmer temperature).
+    if (failures.at(-1)?.id === id && failures.at(-1)?.kind === 'empty' && !signal?.aborted && Date.now() - started < 30_000) {
+      const again = await tryEngine(id, 30_000, { plain: true });
+      if (again) return { reply: await finalize(again), sources };
+    }
   }
   // One more round for the platforms that only stumbled (overload, a slow answer, a per-minute limit) — while there is still time.
   const again = engines.filter((id) => failures.some((f) => f.id === id && RETRYABLE.includes(f.kind)));
