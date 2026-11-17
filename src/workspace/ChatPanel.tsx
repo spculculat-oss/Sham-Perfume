@@ -9,7 +9,7 @@ import { Brain, Copy, Globe, Loader2, Paperclip, Plus, Save, Send, Square, Volum
 import type { SupportedLanguage } from '../types/i18n';
 import { ShaheenMarkdown } from '../components/ShaheenMarkdown';
 import { readAloud } from '../utils/readAloud';
-import { askStream, errorKey, imageErrorKey, makeImage, isGeneratedImageData, type WsContextFile, type WsSource } from './workspaceApi';
+import { askStream, errorKey, serverReachable, imageErrorKey, makeImage, isGeneratedImageData, type WsContextFile, type WsSource } from './workspaceApi';
 import { imageRequest, segments, stripImageRequest, type CodeBlock } from './codeBlocks';
 import { parseImageRequest } from '../utils/imageCraft';
 import { drawOrPaint } from './paint';
@@ -55,10 +55,10 @@ function LiveReply({ text, streaming, lang, onOpenEditor, onAskFix, onGrow }: {
   );
 }
 
-export function ChatPanel({ lang, items, setItems, attachments, setAttachments, onOpenEditor, onOpenBlocks, offline }: {
+export function ChatPanel({ lang, items, setItems, attachments, setAttachments, onOpenEditor, onOpenBlocks, offline, onReached }: {
   lang: SupportedLanguage; items: ChatItem[]; setItems: React.Dispatch<React.SetStateAction<ChatItem[]>>;
   attachments: WsContextFile[]; setAttachments: React.Dispatch<React.SetStateAction<WsContextFile[]>>;
-  onOpenEditor: (block: CodeBlock) => void; onOpenBlocks?: (tool: ToolSpec) => void; offline: boolean;
+  onOpenEditor: (block: CodeBlock) => void; onOpenBlocks?: (tool: ToolSpec) => void; offline: boolean; onReached?: () => void;
 }) {
   const w = (k: WsKey) => wsText(lang, k);
   const [input, setInput] = useState('');
@@ -138,6 +138,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
         throw error;
       }
       if (controller.signal.aborted) { dropDraft(); return; }
+      onReached?.();
       // Only generate when the assistant supplies an explicit image request; do not override refusals.
       const wanted = imageRequest(out.reply);
       // The finished reply takes the draft's place (same bubble, so the words already on screen do not jump).
@@ -247,7 +248,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
         <div ref={endRef} />
       </div>
 
-      {offline && <p className="rounded-xl bg-amber-50 p-3 text-[12px] text-amber-900">{w('no_server')}</p>}
+      {offline && <p className="rounded-xl bg-amber-50 p-3 text-[12px] text-amber-900" data-testid="workspace-offline">{w(serverReachable() ? 'reconnecting' : 'no_server')}</p>}
       {attachments.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {attachments.map((f) => (

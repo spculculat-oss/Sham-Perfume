@@ -16,8 +16,30 @@ const json = (body: unknown, extra: Record<string, string> = {}): RequestInit =>
 });
 export const serverReachable = () => !isStaticHosting;
 
-export function workspaceStatus(signal?: AbortSignal) {
-  return requestApi<WsStatus>('/api/workspace/status', { signal }, 10_000);
+export function workspaceStatus(signal?: AbortSignal, timeoutMs = 20_000) {
+  return requestApi<WsStatus>('/api/workspace/status', { signal }, timeoutMs);
+}
+/**
+ * One failed look at the server is not «no server»: a phone's weak line or a server waking up can miss a single
+ * try. Tries again a few times (a longer wait each time) before giving up.
+ */
+export async function checkServer(signal?: AbortSignal, { tries = 3, wait = (ms: number) => new Promise<void>((done) => setTimeout(done, ms)), look = workspaceStatus }: { tries?: number; wait?: (ms: number) => Promise<void>; look?: typeof workspaceStatus } = {}): Promise<WsStatus> {
+  let last: unknown;
+  for (let attempt = 0; attempt < tries; attempt += 1) {
+    if (attempt) await wait(attempt === 1 ? 1_500 : 4_000);
+    signal?.throwIfAborted();
+    try { return await look(signal, attempt ? 25_000 : 15_000); } catch (error) {
+      if (signal?.aborted || isStaticHosting) throw error;
+      last = error;
+    }
+  }
+  throw last;
+}
+/** The line did not get through at all (weak internet, the server waking up), as opposed to a server that answered «no». */
+export function lineDropped(error: unknown): boolean {
+  if (error instanceof ApiUnavailableError || error instanceof ApiError) return false;
+  const name = (error as { name?: string } | null)?.name;
+  return error instanceof TypeError || name === 'TimeoutError' || name === 'NetworkError' || name === 'AbortError';
 }
 export function ask(body: { messages: WsMessage[]; language: SupportedLanguage; task?: 'chat' | 'plan' | 'summarize' | 'site' | 'storyboard' | 'graphic' | 'block' | 'bot' | 'blocks'; context?: WsContextFile[]; search?: boolean; deep?: boolean }, signal?: AbortSignal) {
   return requestApi<{ reply: string; sources: WsSource[] }>('/api/workspace/ask', { ...json(body), signal }, body.deep ? 120_000 : 75_000);
@@ -126,8 +148,9 @@ export function imageErrorKey(error: unknown): 'image_unavailable' | 'image_quot
   }
   return 'image_failed';
 }
-export function errorKey(error: unknown): 'no_server' | 'busy' | 'rate_limited' | 'failed' | 'ai_quota' | 'ai_slow' | 'ai_off' {
+export function errorKey(error: unknown): 'no_server' | 'unreachable' | 'busy' | 'rate_limited' | 'failed' | 'ai_quota' | 'ai_slow' | 'ai_off' {
   if (error instanceof ApiUnavailableError) return 'no_server';
+  if (lineDropped(error)) return 'unreachable';
   if (error instanceof ApiError) {
     if (error.status === 429) return 'rate_limited';
     // The real reason, when the server knows it: a used-up quota, a slow answer, or no platform connected at all.

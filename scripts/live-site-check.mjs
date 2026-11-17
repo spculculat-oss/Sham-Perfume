@@ -51,6 +51,12 @@ for (const [title, base] of [['GitHub Pages site', PAGES], ['Vercel site', `${SI
 const preflight = await get(`${SITE}/api/chat`, { method: 'OPTIONS', headers: { origin: PAGES_ORIGIN, 'access-control-request-method': 'POST', 'access-control-request-headers': 'content-type' } });
 const allow = preflight.headers.get('access-control-allow-origin');
 report('CORS for the Pages site', preflight.status < 400 && allow === PAGES_ORIGIN, `preflight HTTP ${preflight.status} · allow-origin=${allow || 'none'}`);
+// «مساحة شاهين» on the Pages site asks this first; when it fails the workspace shows its «trying to reach» note.
+const wsStarted = Date.now();
+const wsStatus = await get(`${SITE}/api/workspace/status`, { headers: { origin: PAGES_ORIGIN } });
+const wsData = json(wsStatus.text);
+report('Shaheen workspace status (from Pages)', wsStatus.status === 200 && wsStatus.headers.get('access-control-allow-origin') === PAGES_ORIGIN && wsData?.ai === true,
+  `HTTP ${wsStatus.status} · ${Date.now() - wsStarted} ms · ai=${wsData?.ai} · search=${wsData?.search}`);
 
 // 3) Core endpoints.
 const health = await get(`${SITE}/api/health`);
