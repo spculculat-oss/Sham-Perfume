@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { askFailureCode, askWorkspace, ReadError, wantsLiveInfo } from '../server/workspace';
 import { ApiError } from '../src/utils/api';
-import { errorKey } from '../src/workspace/workspaceApi';
+import { checkServer, errorKey, lineDropped, type WsStatus } from '../src/workspace/workspaceApi';
+import { WS_STRINGS } from '../src/workspace/strings';
 import { CHAT_BANK } from '../scripts/inspect/chat-bank';
 
 const wiki = () => Response.json({ query: { search: [{ title: 'صفحة', snippet: 'ملخص', pageid: 3 }] } });
@@ -116,4 +117,34 @@ test('without «فكّر بعمق» there is one call, the craft habits ride in 
   assert.match(bodies[0]!, /طريقة التفكير/);
   assert.match(bodies[0]!, /نوع السؤال: برمجة/);
   assert.ok(out.reply.trimEnd().endsWith('```'), 'the open code block is closed');
+});
+
+test('one missed look at the server is not «not connected»: it tries again before giving up', async () => {
+  const ready: WsStatus = { ai: true, search: 'web', image: 'ai', notion: false, slack: false };
+  let calls = 0;
+  const waits: number[] = [];
+  const timeouts: number[] = [];
+  const out = await checkServer(undefined, { wait: async (ms) => { waits.push(ms); }, look: async (_signal, timeoutMs) => {
+    calls += 1; timeouts.push(timeoutMs ?? 0);
+    if (calls < 3) throw new TypeError('Failed to fetch');
+    return ready;
+  } });
+  assert.deepEqual(out, ready);
+  assert.equal(calls, 3);
+  assert.deepEqual(waits, [1_500, 4_000]);
+  assert.ok(timeouts.every((ms) => ms >= 15_000), 'a waking server gets more than the old 10 seconds');
+  let tries = 0;
+  await assert.rejects(checkServer(undefined, { wait: async () => {}, look: async () => { tries += 1; throw new TypeError('Failed to fetch'); } }));
+  assert.equal(tries, 3);
+});
+
+test('a dropped line says «send it again», not «this copy has no server»', () => {
+  assert.equal(errorKey(new TypeError('Failed to fetch')), 'unreachable');
+  assert.equal(errorKey(new DOMException('API request timed out', 'TimeoutError')), 'unreachable');
+  assert.equal(lineDropped(new ApiError(503)), false);
+  assert.equal(errorKey(new ApiError(503)), 'busy');
+  for (const key of ['unreachable', 'reconnecting'] as const) {
+    assert.ok(WS_STRINGS[key].ar && WS_STRINGS[key].en, key);
+    assert.doesNotMatch(WS_STRINGS[key].ar, /النسخة دي من الموقع/);
+  }
 });

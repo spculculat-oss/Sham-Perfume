@@ -15,7 +15,7 @@ import { FilesPanel } from './FilesPanel';
 import { ImagesPanel } from './ImagesPanel';
 import { AutomationPanel } from './AutomationPanel';
 import { ConnectPanel } from './ConnectPanel';
-import { serverReachable, workspaceStatus, type WsContextFile, type WsStatus } from './workspaceApi';
+import { checkServer, serverReachable, type WsContextFile, type WsStatus } from './workspaceApi';
 import type { CodeBlock, Runnable } from './codeBlocks';
 import type { ToolSpec } from '../utils/shaheenToolBuilder';
 import { wsText, type WsKey } from './strings';
@@ -50,12 +50,31 @@ export default function ShaheenWorkspace({ currentLang }: { currentLang: Support
   const [editor, setEditor] = useState<EditorState>({ lang: 'python', code: STARTERS.python });
   const [incomingImage, setIncomingImage] = useState<Blob | null>(null);
 
+  // A missed look is tried again (weak line, server waking up), and while it is missing it keeps looking: every
+  // 20 seconds, when the internet comes back and when the visitor returns to the tab. Never stuck on «not connected».
   useEffect(() => {
     if (!serverReachable()) return;
     const controller = new AbortController();
-    workspaceStatus(controller.signal).then((s) => { setStatus(s); setOffline(false); }, () => { if (!controller.signal.aborted) setOffline(true); });
-    return () => controller.abort();
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let looking = false;
+    const look = () => {
+      if (looking || controller.signal.aborted) return;
+      looking = true;
+      clearTimeout(timer);
+      checkServer(controller.signal).then((s) => { setStatus(s); setOffline(false); }, () => {
+        if (controller.signal.aborted) return;
+        setOffline(true);
+        timer = setTimeout(look, 20_000);
+      }).finally(() => { looking = false; });
+    };
+    const again = () => { if (document.visibilityState !== 'hidden') look(); };
+    look();
+    window.addEventListener('online', again);
+    document.addEventListener('visibilitychange', again);
+    return () => { controller.abort(); clearTimeout(timer); window.removeEventListener('online', again); document.removeEventListener('visibilitychange', again); };
   }, []);
+  // A reply that came back proves the server is there, whatever the last look said.
+  const reached = useCallback(() => setOffline(false), []);
 
   const openEditor = useCallback((block: CodeBlock | { lang: Runnable; code: string }) => {
     const runnable = 'runnable' in block ? block.runnable : block.lang;
@@ -84,7 +103,7 @@ export default function ShaheenWorkspace({ currentLang }: { currentLang: Support
         ))}
       </nav>
       <div className="rounded-3xl border border-stone-200 bg-stone-50/60 p-3 sm:p-5">
-        {tab === 'chat' && <ChatPanel lang={lang} items={items} setItems={setItems} attachments={attachments} setAttachments={setAttachments} onOpenEditor={openEditor} onOpenBlocks={(tool) => { setToolDraft(tool); setTab('blocks'); }} offline={offline} />}
+        {tab === 'chat' && <ChatPanel lang={lang} items={items} setItems={setItems} attachments={attachments} setAttachments={setAttachments} onOpenEditor={openEditor} onOpenBlocks={(tool) => { setToolDraft(tool); setTab('blocks'); }} offline={offline} onReached={reached} />}
         {tab === 'studio' && (
           <Suspense fallback={<p className="flex items-center gap-2 p-4 text-sm text-stone-500"><Loader2 className="h-4 w-4 animate-spin" />…</p>}>
             <StudioPanel lang={lang} ai={Boolean(status?.ai) && !offline} onOpenCode={(code) => openEditor({ lang: 'html', code })} />
