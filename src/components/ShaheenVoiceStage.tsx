@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { AudioLines, Ear, EarOff, Fingerprint, Keyboard, Languages, Mic, MicOff, Play, SlidersHorizontal, Trash2, VolumeX, X } from 'lucide-react';
 import { DEFAULT_VOICE_CHOICE } from '../utils/voiceChoice';
 import { DIALECT_INFO, DIALECTS, isDialectChoice } from '../utils/arabicDialect';
-import type { SupportedLanguage } from '../types/i18n';
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
 import { makeT, type LText } from '../لغات/localize';
 import type { useShaheenVoiceMode } from '../hooks/useShaheenVoiceMode';
@@ -23,6 +23,7 @@ const COPY = {
   barge_on: { ar: 'المقاطعة بالصوت شغالة', en: 'Voice interruption on', fr: 'Interruption vocale activée', es: 'Interrupción por voz activada', it: 'Interruzione vocale attiva', de: 'Unterbrechen per Stimme an', ru: 'Перебивать голосом: вкл.', zh: '语音打断：开', tr: 'Sesle araya girme açık', fa: 'قطع با صدا روشن' },
   barge_off: { ar: 'المقاطعة بالصوت مقفولة', en: 'Voice interruption off', fr: 'Interruption vocale désactivée', es: 'Interrupción por voz desactivada', it: 'Interruzione vocale disattivata', de: 'Unterbrechen per Stimme aus', ru: 'Перебивать голосом: выкл.', zh: '语音打断：关', tr: 'Sesle araya girme kapalı', fa: 'قطع با صدا خاموش' },
   barge_tip: { ar: 'لو شاهين بيقف لوحده من صوته هو، اقفلها أو استخدم سماعة أذن.', en: 'If Shaheen stops on his own voice, turn this off or use earphones.', fr: 'Si Shaheen s’arrête à cause de sa propre voix, désactivez ou utilisez des écouteurs.', es: 'Si Shaheen se detiene por su propia voz, desactívalo o usa auriculares.', it: 'Se Shaheen si ferma per la sua stessa voce, disattiva o usa gli auricolari.', de: 'Wenn Shaheen bei seiner eigenen Stimme stoppt, schalte es aus oder nutze Kopfhörer.', ru: 'Если Шахин останавливается от собственного голоса, выключите это или наденьте наушники.', zh: '如果 Shaheen 被自己的声音打断，请关闭此项或使用耳机。', tr: 'Shaheen kendi sesiyle duruyorsa bunu kapat veya kulaklık kullan.', fa: 'اگر شاهین با صدای خودش متوقف می‌شود، این را خاموش کنید یا از هدفون استفاده کنید.' },
+  talk_in: { ar: 'شاهين بيسمعك بلغة: {lang} — اضغط عشان تغيّر', en: 'Shaheen hears you in {lang} — tap to change', fr: 'Shaheen vous entend en {lang} — touchez pour changer', es: 'Shaheen te escucha en {lang}: toca para cambiar', it: 'Shaheen ti ascolta in {lang} — tocca per cambiare', de: 'Shaheen hört dich auf {lang} – tippe zum Wechseln', ru: 'Шахин слушает вас на языке: {lang} — нажмите, чтобы сменить', zh: 'Shaheen 正在用{lang}聆听——点按切换', tr: 'Shaheen seni {lang} dinliyor — değiştirmek için dokun', fa: 'شاهین به {lang} گوش می‌دهد — برای تغییر بزنید' },
   dialect: { ar: 'اللهجة', en: 'Dialect', fr: 'Dialecte', es: 'Dialecto', it: 'Dialetto', de: 'Dialekt', ru: 'Диалект', zh: '方言', tr: 'Lehçe', fa: 'لهجه' },
   dialect_auto: { ar: 'تلقائي', en: 'Automatic', fr: 'Automatique', es: 'Automático', it: 'Automatico', de: 'Automatisch', ru: 'Авто', zh: '自动', tr: 'Otomatik', fa: 'خودکار' },
   interrupt_hint: { ar: 'اضغط على شاهين عشان تقاطعه وتتكلم', en: 'Tap Shaheen to interrupt and speak', fr: 'Touchez Shaheen pour l’interrompre et parler', es: 'Toca a Shaheen para interrumpir y hablar', it: 'Tocca Shaheen per interromperlo e parlare', de: 'Tippe auf Shaheen, um zu unterbrechen und zu sprechen', ru: 'Нажмите на Шахина, чтобы перебить и говорить', zh: '点按 Shaheen 即可打断并开始说话', tr: 'Sözünü kesip konuşmak için Shaheen’e dokun', fa: 'برای قطع کردن و صحبت، روی شاهین بزنید' },
@@ -140,6 +141,7 @@ export function ShaheenVoiceStage({ language, voice }: {
   avatarSrc?: string;
 }) {
   const L = makeT(language, COPY);
+  const talkName = SUPPORTED_LANGUAGES.find((l) => l.code === voice.talkLanguage)?.nativeName || voice.talkLanguage;
   const rtl = isRTL(language);
   const phase = stagePhase(voice);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -274,6 +276,13 @@ export function ShaheenVoiceStage({ language, voice }: {
         </div>
 
         <div className="flex shrink-0 items-center gap-1.5">
+          {/* «بيسمعك بلغة إيه»: the language he hears and answers in — one tap moves it (Arabic ↔ the page's or English). */}
+          <button type="button" data-testid="voice-talk-language"
+            onClick={() => voice.setTalkLanguage(voice.talkLanguage !== 'ar' ? 'ar' : language === 'ar' ? 'en' : language)}
+            className={`${round} h-9 min-w-9 bg-white/10 px-2 text-[11px] font-bold text-amber-100 hover:bg-white/20`}
+            aria-label={L('talk_in').replace('{lang}', talkName)} title={L('talk_in').replace('{lang}', talkName)}>
+            <span lang={voice.talkLanguage} dir="auto">{voice.talkLanguage === 'ar' ? 'ع' : voice.talkLanguage.toUpperCase()}</span>
+          </button>
           <button type="button" onClick={voice.toggleMute} aria-pressed={voice.muted} className={`${round} h-9 w-9 ${voice.muted ? 'bg-white text-stone-900 hover:bg-stone-200' : 'bg-white/15 text-white hover:bg-white/25'}`} aria-label={voice.muted ? L('unmute') : L('mute')} title={voice.muted ? L('unmute') : L('mute')}>
             {voice.muted ? <MicOff className="h-4 w-4" aria-hidden="true" /> : <Mic className="h-4 w-4" aria-hidden="true" />}
           </button>

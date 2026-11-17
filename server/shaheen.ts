@@ -1,10 +1,11 @@
 import { REAL_PHOTO_INSTRUCTION, realPhotoReply } from '../src/utils/realPhotos';
 import { IMAGE_CRAFT_INSTRUCTION, IMAGE_HONESTY_INSTRUCTION } from '../src/utils/imageCraft';
 import { CONTINUITY_INSTRUCTION, contextualMessage, isContextFollowUp } from '../src/utils/conversationContext';
-import { NATURAL_TALK_INSTRUCTION, needInstruction, polishReply } from '../src/utils/naturalTalk';
+import { NATURAL_TALK_INSTRUCTION, PRECISE_ANSWER_INSTRUCTION, needInstruction, polishReply } from '../src/utils/naturalTalk';
 import { THINKING_CRAFT_INSTRUCTION } from '../src/utils/thinkingCraft';
 import { createResearchSpider } from '../src/utils/researchSpider';
 import { IMAGE_WEB_INSTRUCTION, chatWebAsks, isPictureTalk, stripWebAsks, webFindings } from '../src/utils/imageReading';
+import { replyLanguageFor } from '../src/utils/talkLanguage';
 import { GENERAL_WEB_ASK_INSTRUCTION, LIVE_CACHE_WINDOW_MS, LIVE_SEARCH_MS, LIVE_WEB_ASK_INSTRUCTION, dateLabel, isLiveWebTalk, liveWebBlock, liveWebQueries, needsLiveWeb } from '../src/utils/liveWeb';
 import { gateBrief, type GateAnswer } from '../src/utils/netGate';
 import { createNetGate, sharedNetGate } from './core/netGate';
@@ -133,9 +134,12 @@ export function validateChatRequest(body: unknown, country?: string): ChatReques
     return { role: turn.role, text: maskSensitive(turn.text.trim()), ...(sources ? { sources } : {}) };
   });
   if (size > 16000) throw new ChatError(400, 'INVALID_HISTORY', 'History exceeds 16000 characters');
-  const request: ChatRequest = { message: message.trim(), model: model as ChatRequest['model'], language: language as SupportedLanguage, conversationHistory: history };
+  // «يرد باللغة اللي اتكلم بيها»: an Arabic question on the English page is answered in Arabic, an English one on the
+  // Arabic page in English (src/utils/talkLanguage.ts) — the page's language only when his own can't be told.
+  const replyIn = replyLanguageFor(message.trim(), language as SupportedLanguage);
+  const request: ChatRequest = { message: message.trim(), model: model as ChatRequest['model'], language: replyIn, conversationHistory: history };
   // «لهجات شاهين»: his pick → how he writes (this message, then his last ones) → his Arab country → Egyptian.
-  if (language === 'ar') {
+  if (replyIn === 'ar') {
     const said = [request.message, ...history.filter((turn) => turn.role === 'user').slice(-4).reverse().map((turn) => turn.text)];
     const spoken = resolveDialect({ choice: dialect, texts: said, country: country ?? (body as Record<string, unknown>).country });
     // Egyptian is the instruction's own default, so only another dialect is carried.
@@ -143,7 +147,7 @@ export function validateChatRequest(body: unknown, country?: string): ChatReques
   } else {
     // «بلغة بلده ولهجتها»: French from Canada, Spanish from Mexico, Portuguese from Brazil… (only where it differs).
     const from = country ?? (body as Record<string, unknown>).country;
-    if (regionalLocale(language as SupportedLanguage, from)) request.region = String(from).trim().toUpperCase();
+    if (regionalLocale(replyIn, from)) request.region = String(from).trim().toUpperCase();
   }
   if (voice && typeof voice === 'object' && !Array.isArray(voice)) {
     const cut = (voice as Record<string, unknown>).interrupted;
@@ -451,7 +455,8 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
     const found = await Promise.all(liveWebQueries(input.message, input.language, today).map((q) => gateSearch(options.webGate!, q, input.language, LIVE_SEARCH_MS, liveSources, true)));
     live = liveWebBlock(found, today, input.language);
   }
-  const instruction = systemInstruction(input.language, settings.instructions, style, input) + needInstruction(input.message) + (liveAsk ? live : await newsContext(input.message, input.language, env).catch(() => ''))
+  const instruction = systemInstruction(input.language, settings.instructions, style, input) + PRECISE_ANSWER_INSTRUCTION
+    + needInstruction(input.message, { answered: input.conversationHistory.some((turn) => turn.role === 'assistant') }) + (liveAsk ? live : await newsContext(input.message, input.language, env).catch(() => ''))
     + await supervisorGuidance('shaheen_chat', env).catch(() => '') + (shopping ? `\n${shoppingBrief(input.message, input.conversationHistory, input.language)}` : '');
   // «شاهين ابن الناس»: an upset, formal, older or foreign visitor is spoken to accordingly; a complaint is cleaned.
   const social = socialBrief(input.message, input.conversationHistory, input.language);
