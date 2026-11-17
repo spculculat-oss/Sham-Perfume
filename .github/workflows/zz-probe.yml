@@ -1,0 +1,26 @@
+name: Temporary speed probe
+on: pull_request
+permissions: { contents: read }
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Measure workspace chat speed
+        run: |
+          S=https://sham-perfume-49bf.vercel.app
+          cat > /tmp/p.mjs <<'JS'
+          const S = process.env.S;
+          const qs = [['hello-ar','أهلاً، إزيك؟'],['simple','إيه الفرق بين القهوة التركي والإسبريسو؟'],['code','اكتبلي دالة بايثون بتعكس كلمة'],['news','إيه أخبار مصر النهارده؟']];
+          for (const [name, q] of qs) {
+            const t0 = Date.now(); let first = 0; let stages = []; let len = 0; let err = '';
+            try {
+              const r = await fetch(`${S}/api/workspace/ask/stream`, { method: 'POST', headers: { 'content-type': 'application/json', origin: 'https://spculculat-oss.github.io', 'x-sham-visitor': 'probe-speed-01' }, body: JSON.stringify({ messages: [{ role: 'user', text: q }], language: 'ar' }) });
+              const reader = r.body.getReader(); const dec = new TextDecoder(); let buf = '';
+              for (;;) { const { value, done } = await reader.read(); if (done) break; buf += dec.decode(value, { stream: true });
+                let i; while ((i = buf.indexOf('\n\n')) >= 0) { const line = buf.slice(0, i); buf = buf.slice(i + 2); const d = line.split('\n').filter(l => l.startsWith('data:')).map(l => l.slice(5).trim()).join(''); if (!d) continue; let e; try { e = JSON.parse(d); } catch { continue; }
+                  if (e.type === 'stage') stages.push(`${e.stage}@${Date.now()-t0}`); if (e.type === 'delta' && !first) first = Date.now() - t0; if (e.type === 'done') len = e.output?.reply?.length || 0; if (e.type === 'error') err = `${e.status} ${e.code}`; } }
+            } catch (e) { err = String(e); }
+            console.log(`::notice title=${name}::first word ${first} ms · total ${Date.now()-t0} ms · ${len} chars · stages ${stages.join(',')} ${err}`);
+          }
+          JS
+          S=$S node /tmp/p.mjs
