@@ -1,0 +1,24 @@
+name: Temporary workspace probe
+on: pull_request
+permissions: { contents: read }
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe workspace status
+        run: |
+          S=https://sham-perfume-49bf.vercel.app
+          O=https://spculculat-oss.github.io
+          for i in 1 2 3 4 5; do
+            R=$(curl -s -o /tmp/b -w '%{http_code} %{time_total}s' -H "Origin: $O" "$S/api/workspace/status" || echo curlfail)
+            H=$(curl -s -D - -o /dev/null -H "Origin: $O" "$S/api/workspace/status" | tr -d '\r' | grep -i '^access-control-allow-origin\|^content-type' | tr '\n' ' ')
+            echo "::notice title=status $i::$R $(head -c 300 /tmp/b) | $H"
+            sleep 2
+          done
+          P=$(curl -s -o /dev/null -w '%{http_code}' -X OPTIONS -H "Origin: $O" -H 'Access-Control-Request-Method: POST' -H 'Access-Control-Request-Headers: content-type,x-sham-visitor' "$S/api/workspace/ask/stream")
+          echo "::notice title=preflight stream::$P"
+          R=$(curl -s -o /tmp/h -w '%{http_code} %{time_total}s' "$S/api/health"); echo "::notice title=health::$R $(head -c 200 /tmp/h)"
+          curl -s https://spculculat-oss.github.io/Sham-Perfume/ -o /tmp/p.html
+          JS=$(grep -o 'assets/index-[^"]*\.js' /tmp/p.html | head -1)
+          curl -s "https://spculculat-oss.github.io/Sham-Perfume/$JS" -o /tmp/p.js
+          echo "::notice title=pages bundle::$JS 49bf=$(grep -c 'sham-perfume-49bf' /tmp/p.js) size=$(wc -c </tmp/p.js)"
