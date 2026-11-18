@@ -13,6 +13,7 @@ import {
   Check,
 } from 'lucide-react';
 import { SavedFormula } from '../types/perfume';
+import type { FragranceProject } from '../types/fragranceProject';
 import { CURATED_FORMULA_PRESETS } from '../data/presets';
 import { SupportedLanguage } from '../types/i18n';
 import { getCommonLabel, isRTL } from '../لغات/localizedContent';
@@ -24,6 +25,9 @@ interface FormulaLibraryProps {
   onLoadFormula: (formula: SavedFormula) => void;
   onDeleteFormula: (id: string) => void;
   onPrintFormula: (formula: SavedFormula) => void;
+  projects?: FragranceProject[];
+  onOpenProject?: (project: FragranceProject) => void;
+  onOpenStudio?: () => void;
 }
 
 const S = {
@@ -167,6 +171,9 @@ export const FormulaLibrary: React.FC<FormulaLibraryProps> = ({
   onLoadFormula,
   onDeleteFormula,
   onPrintFormula,
+  projects = [],
+  onOpenProject,
+  onOpenStudio,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<'all' | 'custom' | 'presets'>('all');
@@ -198,6 +205,18 @@ export const FormulaLibrary: React.FC<FormulaLibraryProps> = ({
           {L('page_desc')}
         </p>
       </div>
+
+      <section className="rounded-2xl border border-amber-200 bg-amber-50/60 p-4" data-testid="project-library-link">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <div><h3 className="font-bold text-stone-900">{currentLang === 'ar' ? 'مشاريع الاستوديو' : 'Studio projects'}</h3><p className="text-xs text-stone-600">{currentLang === 'ar' ? 'مشاريعك المحلية مرتبطة بأدوات المعمل.' : 'Your local projects, connected to lab tools.'}</p></div>
+          <button type="button" onClick={onOpenStudio} className="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold">{currentLang === 'ar' ? 'فتح الاستوديو' : 'Open Studio'}</button>
+        </div>
+        {projects.filter((project) => project.status === 'active').length === 0
+          ? <p className="text-xs text-stone-500">{currentLang === 'ar' ? 'لا توجد مشاريع نشطة بعد.' : 'No active projects yet.'}</p>
+          : <div className="flex flex-wrap gap-2">{projects.filter((project) => project.status === 'active').map((project) => <button type="button" key={project.id} onClick={() => onOpenProject?.(project)} className="min-w-40 rounded-xl border border-stone-200 bg-white px-3 py-2 text-start hover:border-amber-500">
+            <span className="block truncate text-xs font-bold">{project.name}</span><span className="mt-1 block text-[10px] text-stone-500">{localeDate(currentLang, new Date(project.updatedAt))}</span>
+          </button>)}</div>}
+      </section>
 
       {/* Filter and Search Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">

@@ -225,7 +225,7 @@ export async function readPage(raw: string, { fetch: request = fetch, lookup = d
 
 // ── Web search ──────────────────────────────────────────────────────────────────────────────────────────────
 export interface SearchResult { title: string; url: string; snippet: string }
-export async function webSearch(query: string, language: SupportedLanguage, { env, fetch: request = fetch }: { env: Env; fetch?: typeof fetch }): Promise<{ answer?: string; results: SearchResult[]; kind: 'web' | 'encyclopedia' }> {
+export async function webSearch(query: string, language: SupportedLanguage, { env, fetch: request = fetch, googleOnly = false }: { env: Env; fetch?: typeof fetch; googleOnly?: boolean }): Promise<{ answer?: string; results: SearchResult[]; kind: 'web' | 'encyclopedia' }> {
   const q = query.trim().slice(0, 300);
   // 1) The AI platform's own live web search (its answer with the pages it used).
   if (env.GEMINI_API_KEY?.trim() && env.SHAM_WORKSPACE_WEB_SEARCH?.trim().toLowerCase() !== 'off') {
@@ -241,10 +241,11 @@ export async function webSearch(query: string, language: SupportedLanguage, { en
         const candidate = data.candidates?.[0];
         const answer = (candidate?.content?.parts || []).map((p) => p.text || '').join('').trim();
         const results = (candidate?.groundingMetadata?.groundingChunks || []).flatMap((c) => (c.web?.uri ? [{ title: c.web.title || c.web.uri, url: c.web.uri, snippet: '' }] : [])).slice(0, 8);
-        if (answer && results.length) return { answer, results, kind: 'web' };
+        if (answer && (results.length || googleOnly)) return { answer, results, kind: 'web' };
       }
     } catch { /* falls through to the next source */ }
   }
+  if (googleOnly) return { results: [], kind: 'web' };
   // 2) A live-search platform, when one is connected.
   const statuses = engineStatuses(env);
   if (statuses.find((s) => s.id === 'perplexity')?.configured) {
@@ -394,9 +395,32 @@ export function askTurns(body: AskBody, resolveReferences = true): EngineTurn[] 
  * A question whose honest answer changes by the day — news, prices, weather, scores, «النهارده», «آخر» — is
  * answered from a live web search even when the visitor did not press the web button.
  */
+function normalizedQuery(text: string) {
+  return text.normalize('NFKC').replace(/[\u064B-\u065F\u0670\u0640]/g, '').replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').toLowerCase();
+}
+
+/** Current clock/date questions must be grounded in Google Search, never a visitor device clock or server guess. */
+export function asksCurrentDateTime(text: string): boolean {
+  const q = normalizedQuery(text);
+  return /(?:الوقت\s*و\s*التاريخ|(?:الوقت|الساعه).{0,14}(?:دلوقتي|حاليا|الان|كام|الحالي)|(?:كام|كم|ايه).{0,10}(?:الساعه|التاريخ)|(?:تاريخ|التاريخ).{0,12}(?:اليوم|النهارده|النهارده)|(?:اليوم|النهارده).{0,10}(?:كام|تاريخ)|\b(?:what time is it|what(?:'s| is) the time|current time|time now|today'?s date|current date|date today|what date is it)\b)/i.test(q);
+}
+
+/** Default an unqualified clock question to Sham's Cairo locale; keep an explicitly named place untouched. */
+export function dateTimeSearchQuery(text: string, language: SupportedLanguage = 'ar'): string {
+  const q = text.trim().slice(0, 260);
+  const hasPlace = /\bin\s+(?!the\b)[\p{L}][\p{L}\s-]{1,40}/iu.test(q)
+    || /\b(?:in|at)\s+the\s+(?:time\s+zone|city\s+of)\b/i.test(q)
+    || /في\s+(?!الوقت|التاريخ|اليوم|النهارده|النهارده|الساعه|حاليا|دلوقتي)\S+/u.test(q)
+    || /بتوقيت\s+\S+/u.test(q);
+  if (hasPlace) return q;
+  if (language === 'ar') return `${q} — الوقت والتاريخ الحاليان في القاهرة، مصر`;
+  return `${q} — current local time and date in Cairo, Egypt`;
+}
+
 export function wantsLiveInfo(text: string): boolean {
-  const q = text.normalize('NFKC').replace(/[\u064B-\u065F\u0670\u0640]/g, '').replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').toLowerCase();
+  const q = normalizedQuery(text);
   if (q.length > 600) return false; // a long paste is a document to work on, not a question about today
+  if (asksCurrentDateTime(q)) return true;
   return /اخبار|اخر (?:ال)?(?:مستجدات|تطورات|اخبار|اسعار|سعر)|مستجدات|تطورات|عاجل|حصل ايه|ايه اللي حصل|ماذا حدث|(?:ال)?(?:وضع|اوضاع) (?:في|فى)|هدنه|انتخابات|زلزال|سعر (?:ال)?(?:دولار|يورو|ذهب|دهب|جنيه|ريال|درهم|بترول|نفط|بنزين|بيتكوين|فضه)|اسعار (?:ال)?(?:ذهب|دهب|عملات|صرف|نفط|بترول)|بكام (?:ال)?(?:دولار|ذهب|دهب|يورو)|البورصه|(?:حاله )?(?:ال)?طقس|درجه الحراره|نتيجه (?:ال)?(?:مباراه|ماتش)|مباراه (?:اليوم|النهارده)|ماتش النهارده|مين (?:كسب|فاز)|\bnews\b|\bheadlines\b|\bbreaking\b|\blatest (?:on|news|update)|what(?:'s| is) happening|\bceasefire\b|\belection results?\b|\b(?:gold|oil|dollar|euro|bitcoin|stock) price|\bprice of (?:gold|oil|bitcoin)\b|\bexchange rate\b|\bweather\b|\bforecast\b|\bscore of\b|\bwho won\b/.test(q)
     || (/النهارده|انهارده|اليوم|دلوقتي|حاليا|الان |هذا الاسبوع|الاسبوع ده|\btoday\b|\bright now\b|\bcurrently\b|\bthis week\b|\btonight\b/.test(`${q} `) && /ايه|ما |ماذا|مين|من |كام|كم |هل |فين|اين|\?|؟|\bwhat\b|\bwho\b|\bhow much\b|\bis there\b|\bany\b/.test(`${q} `) && !/اكتب|ترجم|لخص|ارسم|صمم|\bwrite\b|\btranslate\b|\bdraw\b|\bsummar/.test(q));
 }
@@ -435,15 +459,23 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
   let sources: SearchResult[] = [];
   let found: { results: SearchResult[]; answer?: string } = { results: [] };
   const lastQuestion = rawTurns[rawTurns.length - 1]!.text;
-  if (body.search === true || (body.search !== false && task === 'chat' && wantsLiveInfo(lastQuestion))) {
+  const liveClock = task === 'chat' && asksCurrentDateTime(lastQuestion);
+  if (liveClock || body.search === true || (body.search !== false && task === 'chat' && wantsLiveInfo(lastQuestion))) {
     onEvent?.({ type: 'stage', stage: 'searching' });
     const searchTurns = askTurns({ ...body, context: [] }, false);
     const latest = searchTurns[searchTurns.length - 1]!.text;
     const focus = conversationFocus(latest, searchTurns.slice(0, -1));
     const asked = (focus ? `${focus.question} — ${latest}` : latest).slice(0, 300);
-    // Never search a contextless 'show me pictures' or a JSON context wrapper.
+    const searchQuery = liveClock ? dateTimeSearchQuery(asked, language) : asked;
+    // Never search a contextless 'show me pictures' or a JSON context wrapper. Clock/date questions are Google-only.
     found = isContextFollowUp(latest) && !focus ? { results: [] as SearchResult[], answer: undefined }
-      : await webSearch(asked, language, { env, fetch: request }).catch(() => ({ results: [] as SearchResult[], answer: undefined }));
+      : await webSearch(searchQuery, language, { env, fetch: request, googleOnly: liveClock }).catch(() => ({ results: [] as SearchResult[], answer: undefined }));
+    if (liveClock && !found.answer?.trim()) {
+      const reply = language === 'ar'
+        ? 'مش قادر أوصل لبحث Google دلوقتي علشان أتحقق من الوقت والتاريخ، فمش هخمّنهم. جرّب تاني بعد شوية.'
+        : 'I can’t reach Google Search right now to verify the current time and date, so I won’t guess. Please try again shortly.';
+      return { reply, sources: [] };
+    }
     sources = found.results;
     if (sources.length) {
       const list = sources.map((s, i) => `[${i + 1}] ${s.title} — ${s.url}${s.snippet ? `\n${s.snippet}` : ''}`).join('\n');
@@ -452,9 +484,10 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
     }
   }
   if (sources.length) onEvent?.({ type: 'sources', sources });
+  if (liveClock && found.answer?.trim()) return { reply: found.answer.trim().slice(0, 6000), sources, via: 'search' };
   // What a live search already answered is never thrown away because the writing platforms are down.
   const fromSearch = (): { reply: string; sources: SearchResult[]; via: 'search' } | undefined => {
-    if (found.answer?.trim() && sources.length) return { reply: found.answer.trim().slice(0, 6000), sources, via: 'search' };
+    if (found.answer?.trim() && (sources.length || liveClock)) return { reply: found.answer.trim().slice(0, 6000), sources, via: 'search' };
     // No written summary, but real pages were found: show them as they are rather than an error.
     if (sources.length) return { reply: sources.slice(0, 5).map((r, i) => `**[${i + 1}] ${r.title}**\n${r.snippet}`.trim()).join('\n\n'), sources, via: 'search' };
     return undefined;

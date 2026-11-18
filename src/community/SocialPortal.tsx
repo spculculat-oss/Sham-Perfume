@@ -39,12 +39,13 @@ import {
   ExternalLink,
   Radio,
 } from 'lucide-react';
-import { cx, resizeImage, type Comment, type Notification, type Post, type PublicUser, type Recipe, type Thread } from './api';
-import { pulseNow, type SessionState } from './session';
+import { CommunityApiError, cx, resizeImage, type Comment, type Notification, type Post, type PublicUser, type Recipe, type Thread } from './api';
+import { pulseNow, signOut, type SessionState } from './session';
 import { Avatar, Btn, Card, Empty, Sheet, Spinner, errorText, inputClass, timeAgo, tx, useLoad, type Lang } from './ui';
 import { StoriesBar } from './StoriesBar';
 import { feedCursor, mergeFeed, type FeedScope } from './feed';
 import { categoryLabel } from './DiscussionsPage';
+import { CommunityText } from './CommunityText';
 import { openFormulaInLab } from './sync';
 import { GeneralNewsPeriodic } from './GeneralNewsPeriodic';
 
@@ -535,7 +536,14 @@ function Composer({
       setFeeling(null);
       toast(t('تم نشر المنشور في مجتمع شام 🎉', 'Post published! 🎉'));
     } catch (e) {
-      toast(errorText(e, lang));
+      if (e instanceof CommunityApiError && e.code === 'POST_REMOVED_POSTING_SUSPENDED') {
+        setBody(''); setImage(null); setRecipe(null); setFeeling(null);
+        toast(t('حذف النظام المنشور لمخالفته قواعد المجتمع، وتم إيقاف النشر 14 يومًا. يمكن للإدارة مراجعة القرار.', 'The post was removed for violating community rules. Posting is suspended for 14 days; you may request an admin review.'));
+      } else if (e instanceof CommunityApiError && e.code === 'POST_REMOVED_ACCOUNT_BANNED') {
+        setBody(''); setImage(null); setRecipe(null); setFeeling(null);
+        await signOut();
+        toast(t('حُذف المنشور بسبب تكرار المخالفة، وحُظر الحساب من الموقع. تواصل مع الإدارة لمراجعة القرار.', 'The post was removed after a repeat violation and the account was banned from the site. Contact an administrator to request a review.'));
+      } else toast(errorText(e, lang));
     } finally {
       setBusy(false);
     }
@@ -675,6 +683,7 @@ function Composer({
           {t('نشر المنشور', 'Post')}
         </Btn>
       </div>
+      <p className="mt-2 text-[10px] leading-relaxed text-stone-500">{t('النصوص تُفحص آليًا بحثًا عن الألفاظ الجنسية الصريحة والنابية؛ أول مخالفة توقف النشر 14 يومًا، والثانية تحظر الحساب مع حق مراجعة الإدارة. فحص الصور غير متاح آليًا حاليًا.', 'Post text is automatically checked for explicit sexual and obscene language. First violation: 14-day posting suspension; second: account ban, with admin review available. Images are not automatically analyzed yet.')}</p>
 
       {pickRecipe && (
         <RecipePicker
@@ -789,7 +798,14 @@ export function PostCard({
       );
       setEditing(false);
     } catch (e) {
-      toast(errorText(e, lang));
+      if (e instanceof CommunityApiError && (e.code === 'POST_REMOVED_POSTING_SUSPENDED' || e.code === 'POST_REMOVED_ACCOUNT_BANNED')) {
+        setEditing(false);
+        onRemove(post.id);
+        if (e.code === 'POST_REMOVED_ACCOUNT_BANNED') {
+          await signOut();
+          toast(t('حُذف المنشور بسبب تكرار المخالفة، وحُظر الحساب من الموقع. تواصل مع الإدارة للمراجعة.', 'The post was removed after a repeat violation and the account was banned from the site. Contact an administrator to request a review.'));
+        } else toast(t('حذف النظام المنشور لمخالفته قواعد المجتمع، وتم إيقاف النشر 14 يومًا. يمكن للإدارة مراجعة القرار.', 'The post was removed for violating community rules. Posting is suspended for 14 days; you may request an admin review.'));
+      } else toast(errorText(e, lang));
     }
   };
 
@@ -1000,15 +1016,7 @@ export function PostCard({
         ) : (
           cleanBody && (
             <p className="whitespace-pre-wrap break-words text-[14px] leading-relaxed text-stone-800">
-              {cleanBody.split(/(#[^\s#]+)/g).map((part, i) =>
-                part.startsWith('#') ? (
-                  <span key={i} className="font-bold text-amber-800 hover:underline cursor-pointer">
-                    {part}
-                  </span>
-                ) : (
-                  part
-                )
-              )}
+              <CommunityText text={cleanBody} hashtags />
             </p>
           )
         )}
@@ -1278,7 +1286,7 @@ function Comments({
                   {c.author.name}
                 </button>
                 <p className="whitespace-pre-wrap break-words text-xs leading-relaxed text-stone-800 mt-0.5">
-                  {c.body}
+                  <CommunityText text={c.body} />
                 </p>
               </div>
               <div className="mt-1 flex items-center gap-3 px-2 text-[10px] text-stone-400">

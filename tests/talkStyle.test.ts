@@ -13,6 +13,12 @@ import { voiceInstruction, isSimpleQuestion } from '../server/shaheen';
 
 const say = (text: string, dialect?: Parameters<typeof talkify>[1]['dialect']) => spokenReply(text, { language: 'ar', dialect, words: Infinity }).say;
 
+test('spoken answers drop an English language-announcement preamble and start with the answer', () => {
+  const said = spokenReply('I will now speak in Arabic. العطر ثابت وريحته خشبية.', { language: 'ar', words: Infinity }).say;
+  assert.match(said, /^العطر ثابت/);
+  assert.doesNotMatch(said, /I will now speak|Arabic/);
+});
+
 test('a list is said as choices, not read as a list', () => {
   const said = say('بالتأكيد! إليك أفضل 3 عطور شتوية:\n\n1. **بديع العود** — عطر دافئ يتميز بثبات عالي.\n2. **عود مود** — يناسب السهرات ويدوم طويلاً.\n3. **هوس آيس**: منعش وخفيف.\n\nهل تريد أن أرشح لك المزيد؟');
   assert.match(said, /^عندي لك أفضل تلات عطور شتوية، أولهم بديع العود/);
@@ -81,6 +87,12 @@ test('the platforms are told voice rules win over page rules, with a written →
   assert.match(egyptian, /تتقدم على أي تعليمات تنسيق/);
   assert.match(egyptian, /بص، للشتا أنا شايف العود الملكي/);
   assert.match(egyptian, /ممنوع افتتاحيات الكتابة/);
+  assert.match(egyptian, /ممنوع تقول قبل الإجابة إنك هتتكلم بلغة معينة/);
+  assert.match(voiceInstruction({}, undefined, 'en'), /Never announce the language or add a spoken preamble/);
+  assert.match(egyptian, /راجع كلامك بإنصاف/);
+  assert.match(egyptian, /ما توافقش لمجرد إرضائه/);
+  assert.match(egyptian, /مش متأكد/);
+  assert.match(voiceInstruction({}, undefined, 'en'), /re-check fairly/);
   assert.match(voiceInstruction({}, 'gulf', 'ar'), /وإذا تبي شي أدفى/);
   assert.match(voiceInstruction({}, 'levantine', 'ar'), /بنصحك بالعود الملكي/);
   assert.doesNotMatch(voiceInstruction({}, undefined, 'en'), /مثال للفرق/);

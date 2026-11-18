@@ -170,6 +170,7 @@ export const SITE_SECTIONS: SiteSection[] = [
   { id: 'perfumes', titleAr: 'قسم العطور', titleEn: 'Perfume section', consultants: ['specialist_scents', 'specialist_science', 'specialist_business'] },
   { id: 'cosmetics', titleAr: 'قسم مستحضرات التجميل', titleEn: 'Cosmetics section', consultants: ['specialist_health', 'specialist_science', 'specialist_business'] },
   { id: 'productDetail', titleAr: 'صفحة المنتج', titleEn: 'Product page', consultants: ['specialist_scents', 'specialist_business'] },
+  { id: 'studio', titleAr: 'استوديو مشاريع العطور', titleEn: 'Fragrance project studio', consultants: ['specialist_scents', 'specialist_science', 'specialist_business'] },
   { id: 'concentration', titleAr: 'حاسبة التركيز', titleEn: 'Concentration calculator', consultants: ['specialist_scents', 'specialist_science'] },
   { id: 'pyramid', titleAr: 'حاسبة الهرم العطري', titleEn: 'Scent pyramid calculator', consultants: ['specialist_scents'] },
   { id: 'costing', titleAr: 'حاسبة التكلفة', titleEn: 'Costing calculator', consultants: ['specialist_business', 'specialist_scents'] },

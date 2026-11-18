@@ -40,6 +40,10 @@ test('the engines are told the dialect, and a spoken turn is short and answers a
   // Default (no dialect): Egyptian, as before.
   assert.match(systemInstruction('ar'), /المصرية العامية/);
   assert.doesNotMatch(systemInstruction('ar'), /صوتية/);
+  const spokenPrompt = systemInstruction('ar', '', undefined, { voice: {} });
+  assert.match(spokenPrompt, /اعرض أقوى حجة لكل رأي/);
+  assert.match(spokenPrompt, /ما توافقش لمجرد إرضائه/);
+  assert.match(spokenPrompt, /مش متأكد/);
   assert.equal(voiceInstruction(undefined), '');
   assert.match(voiceInstruction({}), /صوتية/);
   const cut = voiceInstruction({ interrupted: 'العود الكمبودي «ثقيل» شوية و' });

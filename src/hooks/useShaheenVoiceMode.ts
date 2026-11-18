@@ -135,6 +135,8 @@ export interface UseShaheenVoiceModeOptions {
   onSend: (text: string, turn?: ShaheenVoiceTurn) => Promise<boolean | void>;
   /** «قصدك «عود»؟»: what he heard and the question he asked about it, shown in the chat (nothing is sent yet). */
   onAsk?: (heard: string, question: string) => void;
+  /** The destination chat's own message limit (e.g. the public service chat is 2,000 characters). */
+  maxMessageLength?: number;
 }
 
 function recognitionConstructor(): SpeechRecognitionConstructor | undefined {
@@ -157,7 +159,7 @@ export function shaheenVoiceSupported(): boolean {
     && typeof Audio !== 'undefined';
 }
 
-export function useShaheenVoiceMode({ language, messages, isLoading, disabled = false, onSend, onAsk }: UseShaheenVoiceModeOptions) {
+export function useShaheenVoiceMode({ language, messages, isLoading, disabled = false, onSend, onAsk, maxMessageLength = 4000 }: UseShaheenVoiceModeOptions) {
   const [supported, setSupported] = useState(false);
   const [active, setActive] = useState(false);
   const [listening, setListening] = useState(false);
@@ -701,7 +703,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       scheduleListening();
       return;
     }
-    if (said.length > 4000) {
+    if (said.length > maxMessageLength) {
       setError('too_long');
       scheduleListening();
       return;
@@ -787,7 +789,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     } catch {
       finishOutgoingTurn(false);
     }
-  }, [beginOutgoingTurn, cancelRecognition, clearListenTimer, clearPatience, finishOutgoingTurn, sayWhileLooking, scheduleListening, speakReply]);
+  }, [beginOutgoingTurn, cancelRecognition, clearListenTimer, clearPatience, finishOutgoingTurn, maxMessageLength, sayWhileLooking, scheduleListening, speakReply]);
 
   /** The visitor's turn is complete: all its pieces, in order, gathered into one message. */
   const sendTurn = useCallback((confidence?: number) => {
@@ -1275,7 +1277,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setInterim('');
     // «شاهين بيتكلم مش بيقرا»: the reply said the way people talk, and a long one only up to «تحب أكمّلك الباقي؟».
     // A whole answer (about 90 words) before «تحب أكمّلك الباقي؟» — a shorter cut felt like he stopped mid-answer.
-    const spoken = spokenReply(response.text, { language: languageRef.current, dialect: dialectRef.current, words: 90, opener: true, locale: localeRef.current });
+    const spoken = spokenReply(response.text, { language: languageRef.current, dialect: dialectRef.current, words: 90, locale: localeRef.current });
     restRef.current = spoken.rest;
     speakReply(spoken.say || response.text, () => scheduleListening(350));
   }, [active, clearPendingTurn, isLoading, messages, replyReady, scheduleListening, speakReply, waiting]);

@@ -345,7 +345,8 @@ export interface SpokenReply {
  * (Links, code and tables are handled by prepareShaheenSpeech.)
  */
 export function speechTidy(text: string): string {
-  return text
+  const noLanguageAnnouncement = text.replace(/^\s*(?:(?:sure|okay|certainly|of course)[,;:—-]?\s*)?(?:(?:i(?:'ll|’ll| will| am going to|’m going to)\s+)?(?:(?:now|first)\s+)?(?:be\s+)?(?:speaking|talking|responding|answering|speak|talk|respond|answer)(?:\s+to you)?\s+(?:(?:in|using)\s+)?(?:the\s+)?(?:Arabic|English|French|Spanish|German|Italian|Russian|Chinese|Turkish|Persian)(?:\s+language)?(?:\s+(?:now|today))?)[.!?؟؛:—–-]+\s*/iu, '');
+  return noLanguageAnnouncement
     .replace(/~~[^~\n]{1,200}~~[ \t]?/g, '')
     .replace(/[ \t]*\[\d{1,3}\](?!\()/g, '')
     .replace(/(?<=\p{L})(?:\u00B9|\u00B2|\u00B3|[\u2070-\u2079])+/gu, '');

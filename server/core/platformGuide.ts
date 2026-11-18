@@ -312,11 +312,25 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
       en: 'Talk to Shaheen instead of typing: your browser transcribes your speech, and Shaheen replies aloud through the same chat.',
     },
     details: {
-      ar: 'من واجهة «الخبير شاهين» أو نافذة الشات اضغط زر الميكروفون، اقرأ الإفصاح واسمح للمتصفح. بعد ما تسكت يُرسل النص المفرغ لمحادثة شاهين المعتادة ويُقرأ الرد بصوت المتصفح. قد يعالج المتصفح أو خدمات التعرف على الكلام أو النطق الصوت أو النص حسب إعداداتها؛ شام لا يسجل أو يرفع ملف الصوت. الميزة تحتاج متصفحاً يدعم التعرف على الكلام والنطق، وإذن الميكروفون واتصالاً آمناً؛ لو مش مدعومة اكتب سؤالك واستخدم زر قراءة الرد.',
-      en: 'In the Shaheen expert page or floating chat, choose the microphone, review the disclosure and allow browser access. After you pause, the transcript goes through Shaheen’s regular conversation and the reply is spoken by your browser. Your browser or its speech-recognition or speech-synthesis services may process audio or text under their own settings; Sham does not record or upload the audio file. This needs a browser with speech recognition and speech output, microphone permission and a secure connection; if unavailable, type your question and use the read-aloud button.',
+      ar: 'من صفحة «الخبير شاهين» أو نافذة شاته اضغط «صوت»، اقرأ الإفصاح واسمح للمتصفح باستخدام الميكروفون. المتصفح يفرّغ كلامك لنص ويرسله لمحادثة شاهين المعتادة؛ الرد يفضل مكتوباً ويتقال بصوت شاهين البشري من خدمة شام، مع إمكانية المقاطعة والكتم. قد يعالج المتصفح أو خدمة التعرف على الكلام الصوت أو النص حسب إعداداتها؛ شام لا يسجل أو يرفع ملف الصوت. الميزة تحتاج متصفحاً يدعم التعرف على الكلام، وإذن الميكروفون واتصالاً آمناً وخدمة الصوت البشرية متاحة؛ لو الصوت تعذّر يفضل الرد مكتوباً وتقدر تستخدم الكتابة أو زر قراءة الرد.',
+      en: 'On the Shaheen expert page or in his chat, press “Voice”, review the disclosure and allow browser microphone access. Your browser transcribes speech and sends it through Shaheen’s regular conversation; the reply remains written and is spoken in Shaheen’s human voice by Sham’s voice service, with interrupt and mute controls. Your browser or speech-recognition service may process audio or text under its own settings; Sham does not record or upload your audio file. This needs speech recognition, microphone permission, a secure connection and the human-voice service to be available; if audio fails, the written reply remains and you can type or use read-aloud.',
     },
     keywords: ['وضع التحدث مع شاهين', 'المحادثة الصوتية', 'أتكلم مع شاهين', 'كلم شاهين', 'صوت شاهين', 'voice chat', 'voice mode', 'talk to shaheen', 'speak to shaheen', 'speech with shaheen'],
     tags: ['تحدث', 'صوت', 'ميكروفون', 'voice chat', 'speech', 'Shaheen'],
+  },
+  {
+    id: 'assistant_voice', group: 'help', tab: 'home', docId: 'kb-platform-assistant-voice',
+    name: { ar: 'التحدث مع مساعد شام بالصوت', en: 'Voice chat with Sham assistant' },
+    summary: {
+      ar: 'في الشات العام تقدر تتكلم مع مساعد شام من غير كتابة، تسمع رده بصوت بشري، وتقاطعه أو تكتم الميكروفون.',
+      en: 'In the public chat, speak instead of typing, hear a human-voiced reply, interrupt it or mute the microphone.',
+    },
+    details: {
+      ar: 'افتح فقاعة «مساعد شام للخدمات» واضغط زر «صوت»، واقرأ إفصاح الميكروفون قبل الموافقة. يتعرّف المتصفح على كلامك ويرسله كنص إلى نفس محادثة مساعد شام؛ صوت الرد يُجهّز من خدمة شام البشرية، ويظهر الرد مكتوباً أيضاً. تقدر تقاطع شاهين وهو بيتكلم أو تكتم/توقف الميكروفون. شام لا يسجل ولا يرفع ملف صوتك؛ قد يعالج المتصفح أو خدمة التعرف على الكلام الصوت أو النص حسب إعداداتها. تحتاج متصفحاً يدعم التعرف على الكلام واتصالاً آمناً وخدمة الصوت البشرية متاحة؛ لو الصوت غير متاح يظل الرد مكتوباً، وتقدر تستخدم الكتابة أو قراءة الرد. إجابات الصوت تتبع نفس بيانات المتجر وسياسات السلامة، وتكون أقصر لتتقال بطبيعية.',
+      en: 'Open the “Sham services assistant” bubble and press “Voice”; review the microphone disclosure before agreeing. Your browser recognizes speech and sends its transcript into the same Sham assistant conversation. Sham’s human-voice service prepares spoken replies, which also remain visible as text. You can interrupt Shaheen while he speaks, mute or stop the microphone. Sham does not record or upload your audio file; your browser or speech-recognition service may process audio or text under its own settings. This needs speech recognition, a secure connection and an available human-voice service. If audio is unavailable, the written reply remains; you can type or use read-aloud. Voice answers follow the same store grounding and safety rules, phrased more briefly for speech.',
+    },
+    keywords: ['مساعد شام بالصوت', 'الشات العام بالصوت', 'شات الخدمات بالصوت', 'صوت مساعد شام', 'أتكلم مع مساعد شام', 'public chat voice', 'voice chat with sham assistant', 'voice chat with sham', 'services assistant voice'],
+    tags: ['صوت', 'شات عام', 'ميكروفون', 'human voice', 'public chat'],
   },
   {
     id: 'library', group: 'workspace', tab: 'library', docId: 'kb-platform-formulas',

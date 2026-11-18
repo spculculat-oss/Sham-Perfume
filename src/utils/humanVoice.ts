@@ -144,7 +144,7 @@ export function playHumanSpeech(chunks: readonly string[], options: HumanSpeechO
   const findClip = options.clipFor || (() => undefined);
   // One request for a whole reply when it fits (the free voice allows only a few requests): fewer requests, and no
   // seam between parts in the middle of what he says.
-  const plain = speechGroups(chunks, 480, 480);
+  const plain = speechGroups(chunks, 180, 480);
   // A recorded line only when it is the whole thing (one voice through a reply).
   const clipFor = plain.length === 1 && findClip(plain[0]!) ? findClip : () => undefined;
   const groups = plain;

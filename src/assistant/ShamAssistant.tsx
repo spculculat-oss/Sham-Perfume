@@ -14,6 +14,10 @@ import { currentStoreCountry, followEntryCountry, formatMoney, useChatPrices, us
 import { speechLocaleFor } from '../utils/shaheenVoice';
 import { resolveDialect, savedDialectChoice } from '../utils/arabicDialect';
 import { readAloud } from '../utils/readAloud';
+import { useShaheenVoiceMode } from '../hooks/useShaheenVoiceMode';
+import { ShaheenVoiceModeButton } from '../components/ShaheenVoiceModeButton';
+import { ShaheenVoiceStage } from '../components/ShaheenVoiceStage';
+import { askMessages } from '../utils/heardFix';
 import { BUNDLED_FX, priceIn } from '../utils/pricing';
 import { fmt, loc, makeT, type LText } from '../لغات/localize';
 import { FloatingDock } from '../components/FloatingDock';
@@ -167,6 +171,27 @@ export function ShamAssistant({ currentLang }: Props) {
   const canListen = useMemo(() => Boolean(RecognitionCtor()), []);
   // «صوت شاهين البشري»: the reply plays as audio (src/utils/readAloud.ts), so any browser that plays sound can listen.
   const canSpeak = typeof window !== 'undefined' && typeof Audio !== 'undefined';
+  // Same hands-free, interruptible human-voice conversation used in Shaheen's other chats.
+  const voiceMessages = useMemo(() => messages.map((message, index) => ({
+    id: message.id || `${message.at}-${index}`,
+    role: message.role,
+    text: message.role === 'assistant' ? prices.show(message.text) : message.text,
+    kind: message.engine,
+  })), [messages, prices.currency]);
+  const voice = useShaheenVoiceMode({
+    language: currentLang,
+    messages: voiceMessages,
+    isLoading: busy,
+    disabled: isStaticHosting || !open || status !== 'open',
+    maxMessageLength: 2000,
+    onSend: async (text) => send(text, undefined, true),
+    onAsk: (heard, question) => {
+      const at = new Date().toISOString();
+      setMessages((list) => [...list, ...askMessages(heard, question, currentLang).map((message) => ({
+        id: message.id, role: message.role, text: message.text, at, ...(message.role === 'assistant' ? { engine: 'system' } : {}),
+      }))]);
+    },
+  });
 
   // Restore the visitor's last conversation (local copy; the server is the source of truth).
   useEffect(() => {
@@ -216,10 +241,10 @@ export function ShamAssistant({ currentLang }: Props) {
   }, []);
 
   /** `replaces` = text of the latest user message being regenerated/edited (rewind and re-ask). */
-  const send = useCallback(async (text: string, replaces?: string) => {
+  const send = useCallback(async (text: string, replaces?: string, voiceMode = false): Promise<boolean> => {
     if (!replaces) trackInsight('chat', { text }); // «خزنة فهم الزوار» (with consent)
     const message = text.trim();
-    if (!message || busy) return;
+    if (!message || busy) return false;
     setError(''); setNotice('');
     if (replaces === undefined) setInput('');
     const draftId = `draft-${Date.now()}`;
@@ -242,11 +267,11 @@ export function ShamAssistant({ currentLang }: Props) {
           if (event.type === 'step') patch((x) => ({ ...x, steps: [...(x.steps || []), event.step] }));
           else if (event.type === 'delta') patch((x) => ({ ...x, text: x.text + event.text }));
           else if (event.type === 'reset') patch((x) => ({ ...x, text: '' }));
-        }, controller.signal, replaces && prices.outgoing(replaces), consulting);
+        }, controller.signal, replaces && prices.outgoing(replaces), consulting, voiceMode);
       } catch (e) {
         const terminal = streamed || controller.signal.aborted || e instanceof ApiUnavailableError || (e instanceof ApiError && e.status < 500 && e.status !== 404);
         if (terminal) throw e;
-        reply = await assistantApi.chat(prices.outgoing(message), currentLang, conversationId, controller.signal, replaces && prices.outgoing(replaces), consulting);
+        reply = await assistantApi.chat(prices.outgoing(message), currentLang, conversationId, controller.signal, replaces && prices.outgoing(replaces), consulting, voiceMode);
       }
       if (controller.signal.aborted) throw new DOMException('Stopped', 'AbortError');
       followEntryCountry(reply.country); // the server checked where he is entering from (prices follow it)
@@ -256,6 +281,7 @@ export function ShamAssistant({ currentLang }: Props) {
         ...x, id: reply.messageId || draftId, text: reply.reply, engine: reply.engine.id, actions: reply.actions, citations: reply.citations,
         steps: reply.steps?.length ? reply.steps : x.steps, suggestions: reply.suggestions, streaming: false, council: reply.council,
       }));
+      return true;
     } catch (e) {
       if (controller.signal.aborted) {
         // Stopped by the visitor: keep what was already written (the server stores the same text).
@@ -264,18 +290,27 @@ export function ShamAssistant({ currentLang }: Props) {
         setMessages((all) => all.filter((x) => x.id !== draftId));
         setError(errorText(currentLang, e));
       }
+      return false;
     } finally {
       if (abortRef.current === controller) { abortRef.current = null; setBusy(false); }
     }
-  }, [busy, conversationId, currentLang, consulting]);
+  }, [busy, conversationId, currentLang, consulting, prices]);
 
   const stop = () => abortRef.current?.abort();
   const [editing, setEditing] = useState<string | null>(null);
 
   const stopReading = useRef<() => void>(() => undefined);
   const stopSpeaking = () => { stopReading.current(); setSpeakingId(null); };
+  useEffect(() => {
+    if (!voice.active) return;
+    recognitionRef.current?.stop();
+    recognitionRef.current = null;
+    setListening(false);
+    stopSpeaking();
+  }, [voice.active]);
   const speak = (m: UiMessage, key: string) => {
     if (!canSpeak) return;
+    if (voice.active) voice.stop();
     if (speakingId === key) { stopSpeaking(); return; }
     stopReading.current();
     // Said the way Shaheen talks (prices, numbers and brand names as people say them), in the visitor's accent.
@@ -306,6 +341,7 @@ export function ShamAssistant({ currentLang }: Props) {
   useEffect(() => { if (!open) { recognitionRef.current?.stop(); stopSpeaking(); } }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const reset = () => {
+    voice.stop();
     abortRef.current?.abort();
     abortRef.current = null;
     stopSpeaking();
@@ -374,8 +410,10 @@ export function ShamAssistant({ currentLang }: Props) {
               </div>
               <button type="button" onClick={() => void send(loc(currentLang, PRIVACY_PROMPT))} disabled={busy || isStaticHosting} title={L('privacy')} aria-label={L('privacy')} className="p-2 rounded-lg hover:bg-white/10 disabled:opacity-40"><ShieldCheck className="w-4 h-4" /></button>
               <button type="button" onClick={reset} title={L('reset')} aria-label={L('reset')} className="p-2 rounded-lg hover:bg-white/10"><RotateCcw className="w-4 h-4" /></button>
-              <button type="button" onClick={() => setOpen(false)} title={L('close')} aria-label={L('close')} className="p-2 rounded-lg hover:bg-white/10"><X className="w-4 h-4" /></button>
+              <button type="button" onClick={() => { voice.stop(); setOpen(false); }} title={L('close')} aria-label={L('close')} className="p-2 rounded-lg hover:bg-white/10"><X className="w-4 h-4" /></button>
             </header>
+
+            {voice.active && <ShaheenVoiceStage language={currentLang} voice={voice} />}
 
             {status === 'handoff' && (
               <div className="px-4 py-2 text-[11px] bg-emerald-50 text-emerald-900 border-b border-emerald-200 flex items-center gap-2"><Headset className="w-3.5 h-3.5" />{L('handoff_on')}</div>
@@ -454,14 +492,14 @@ export function ShamAssistant({ currentLang }: Props) {
               {error && <p role="alert" className="text-xs rounded-xl border border-red-200 bg-red-50 p-2.5 text-red-800">{error}</p>}
             </div>
 
-            <form onSubmit={(e) => { e.preventDefault(); void send(input); }} className="p-3 border-t border-stone-200 bg-white shrink-0">
+            <form onSubmit={(e) => { e.preventDefault(); voice.stop(); void send(input); }} className="p-3 border-t border-stone-200 bg-white shrink-0">
               <div className="flex items-end gap-2">
                 <textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value.slice(0, 2000))}
                   onKeyDown={(e) => {
                     if (e.key === 'Escape' && busy) { e.preventDefault(); stop(); return; }
-                    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void send(input); }
+                    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); voice.stop(); void send(input); }
                   }}
                   rows={1}
                   placeholder={L('placeholder')}
@@ -475,7 +513,8 @@ export function ShamAssistant({ currentLang }: Props) {
                     <Users className="w-4 h-4" />
                   </button>
                 )}
-                {canListen && (
+                <ShaheenVoiceModeButton language={currentLang} voice={voice} disabled={isStaticHosting || status !== 'open'} />
+                {canListen && !voice.active && (
                   <button type="button" onClick={toggleMic} disabled={isStaticHosting} aria-pressed={listening} aria-label={listening ? L('mic_stop') : L('mic')} title={listening ? L('mic_stop') : L('mic')}
                     className={`h-10 w-10 shrink-0 rounded-full border flex items-center justify-center disabled:opacity-40 ${listening ? 'bg-red-600 border-red-600 text-white animate-pulse' : 'border-stone-300 text-stone-600 hover:bg-stone-100'}`}>
                     {listening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}

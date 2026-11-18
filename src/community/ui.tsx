@@ -101,6 +101,13 @@ const ERRORS: Record<string, [string, string]> = {
   WEAK_PASSWORD: ['كلمة المرور لازم تكون 8 أحرف على الأقل وفيها حروف وأرقام', 'Use at least 8 characters with letters and numbers'],
   INVALID_EMAIL: ['البريد الإلكتروني غير صحيح', 'Invalid email address'],
   ACCOUNT_SUSPENDED: ['الحساب موقوف من الإدارة. تواصل مع الدعم', 'This account is suspended by the administration'],
+  ACCOUNT_BANNED: ['الحساب محظور من مجتمع شام بعد تكرار مخالفة قواعد النشر؛ يمكن للإدارة مراجعة القرار.', 'This account is banned from the Sham Community after repeated posting violations; an administrator can review the decision.'],
+  POSTING_SUSPENDED: ['النشر متوقف مؤقتًا بسبب مخالفة سابقة. مدة الإيقاف 14 يومًا، ويمكن للإدارة مراجعة القرار.', 'Posting is temporarily suspended after a previous violation. The suspension lasts 14 days; an administrator can review the decision.'],
+  POST_REMOVED_POSTING_SUSPENDED: ['تم حذف المنشور المخالف وإيقاف النشر 14 يومًا. يمكن للإدارة مراجعة القرار.', 'The violating post was removed and posting is suspended for 14 days. An administrator can review the decision.'],
+  POST_REMOVED_ACCOUNT_BANNED: ['تم حذف المنشور المخالف وحظر الحساب بسبب تكرار المخالفة؛ يمكن للإدارة مراجعة القرار.', 'The violating post was removed and the account banned after a repeat violation; an administrator can review the decision.'],
+  MODERATION_CASE_REVIEWED: ['تمت مراجعة هذه الحالة من قبل.', 'This moderation case has already been reviewed.'],
+  MODERATION_CASE_STALE: ['تغيّر سجل المخالفات؛ حدّث القائمة قبل المراجعة.', 'The violation history changed; refresh before reviewing this case.'],
+
   RATE_LIMITED: ['محاولات كتير — استنى دقيقة وجرّب تاني', 'Too many attempts — wait a minute'],
   UNAUTHORIZED: ['انتهت الجلسة — سجّل دخولك تاني', 'Your session ended — please sign in again'],
   FORBIDDEN: ['مش مسموح بالإجراء ده', 'Not allowed'],

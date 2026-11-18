@@ -57,8 +57,8 @@ export function visitorId(): string {
 
 export const assistantApi = {
   config: () => requestApi<AssistantConfig>('/api/assistant/config', undefined, 15000),
-  chat: (message: string, language: SupportedLanguage, conversationId?: string, signal?: AbortSignal, rewind?: string, consult?: boolean) =>
-    requestApi<ChatReply>('/api/assistant/chat', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined, ...currentPage(), ...chatMoney(language) }), signal }, consult ? 70000 : 40000),
+  chat: (message: string, language: SupportedLanguage, conversationId?: string, signal?: AbortSignal, rewind?: string, consult?: boolean, voice = false) =>
+    requestApi<ChatReply>('/api/assistant/chat', { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined, voice: voice || undefined, ...currentPage(), ...chatMoney(language) }), signal }, consult ? 70000 : 40000),
   conversation: (id: string) =>
     requestApi<{ id: string; status: ChatReply['status']; messages: UiMessage[] }>(`/api/assistant/conversations/${encodeURIComponent(id)}?visitorId=${encodeURIComponent(visitorId())}`, undefined, 15000),
   submitRequest: (body: { serviceId: string; contact: { name: string; phone?: string; email?: string }; fields: Record<string, string>; items?: { productId: string; quantity: number }[]; conversationId?: string }) =>
@@ -75,9 +75,9 @@ export const assistantApi = {
  * the final reply. Throws before the first event if streaming is unavailable, so callers can
  * fall back to the plain JSON endpoint.
  */
-export async function streamChat(message: string, language: SupportedLanguage, conversationId: string | undefined, onEvent: (event: StreamEvent) => void, signal?: AbortSignal, rewind?: string, consult?: boolean): Promise<ChatReply> {
+export async function streamChat(message: string, language: SupportedLanguage, conversationId: string | undefined, onEvent: (event: StreamEvent) => void, signal?: AbortSignal, rewind?: string, consult?: boolean, voice = false): Promise<ChatReply> {
   if (isStaticHosting) throw new ApiUnavailableError();
-  const response = await fetch(apiUrl('/api/assistant/chat/stream'), { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined, ...currentPage(), ...chatMoney(language) }), signal });
+  const response = await fetch(apiUrl('/api/assistant/chat/stream'), { ...json({ message, language, conversationId, visitorId: visitorId(), rewind: rewind || undefined, consult: consult || undefined, voice: voice || undefined, ...currentPage(), ...chatMoney(language) }), signal });
   if (!response.ok) {
     let code: string | undefined;
     try { code = (await response.json())?.code; } catch { /* not JSON */ }

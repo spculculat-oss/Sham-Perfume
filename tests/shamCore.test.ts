@@ -120,6 +120,30 @@ test('built-in engine answers with zero keys, grounded with citations and cards'
   assert.match(calc.reply, /15 ml/);
 });
 
+test('current date/time comes from Google Search results, not server or device clocks', async () => {
+  let queried = '';
+  let modelCalled = false;
+  const bot = new Orchestrator(freshRepo(), {
+    env: { OPENAI_API_KEY: 'test' },
+    fetch: (async () => { modelCalled = true; return json({ choices: [{ message: { content: 'wrong clock' } }] }); }) as typeof fetch,
+    searchCurrentDateTime: async (query) => {
+      queried = query;
+      return { answer: 'الساعة ٣:١٥ مساءً، والتاريخ ١٣ نوفمبر ٢٠٢٦ في القاهرة.', sources: [{ title: 'Google time result', url: 'https://time.example/cairo' }] };
+    },
+  });
+  const out = await bot.chat({ message: 'الوقت والتاريخ دلوقتي؟', visitorId: visitor, language: 'ar' }, { debug: true });
+  assert.match(queried, /القاهرة، مصر/);
+  assert.match(out.reply, /٣:١٥ مساءً/);
+  assert.match(out.reply, /https:\/\/time\.example\/cairo/);
+  assert.equal(modelCalled, false);
+  assert.ok(out.steps.some((s) => s.label.includes('Google')));
+  assert.ok(out.trace?.some((t) => t.detail.includes('Google date/time search')));
+
+  const unavailable = new Orchestrator(freshRepo(), { env: {} });
+  const refused = await unavailable.chat({ message: 'what time is it?', visitorId: visitor, language: 'en' });
+  assert.match(refused.reply, /won’t rely on your device clock or guess/);
+});
+
 test('a store with no merchant catalog still answers from the real storefront — and invents nothing', async () => {
   // The production case: the admin catalog was never filled. The shop is not empty, so the assistant must not
   // pretend it is: it quotes the real storefront and offers a form whose products all exist.
@@ -167,6 +191,28 @@ test('self-hosted open model is used first, gets grounded context, and fails ove
   const allDown = new Orchestrator(repo, { env: { OPENAI_API_KEY: 'k' }, fetch: (async () => { throw new Error('network'); }) as typeof fetch });
   const fallback = await allDown.chat({ message: 'يعني ايه تعتيق العطر؟', visitorId: visitor, language: 'ar' });
   assert.equal(fallback.engine.id, 'sham_local');
+});
+
+test('the public voice chat gets spoken formatting without losing the public assistant reasoning and grounding rules', async () => {
+  const calls: { body: { messages?: { role: string; content: string }[]; max_tokens?: number } }[] = [];
+  const bot = new Orchestrator(freshRepo(), {
+    env: { OPENAI_API_KEY: 'test' },
+    fetch: (async (_url: string | URL, init?: RequestInit) => {
+      calls.push({ body: JSON.parse(String(init?.body)) });
+      return json({ choices: [{ message: { content: 'العود خشبي والمسك أنعم.' } }] });
+    }) as typeof fetch,
+  });
+  const input = validateChatInput({ message: 'إيه الفرق بين العود والمسك؟', visitorId: visitor, language: 'ar', voice: true });
+  assert.equal(input.voice, true);
+  await bot.chat(input);
+  const system = calls[0]?.body.messages?.find((message) => message.role === 'system')?.content || '';
+  assert.match(system, /REASONING STANDARD/);
+  assert.match(system, /اعرض أقوى حجة لكل رأي/);
+  assert.match(system, /This answer will be spoken aloud/);
+  assert.match(system, /For comparisons, say the main trade-off on each side/);
+  assert.match(system, /ONLY facts in CONTEXT/);
+  assert.match(system, /never announce which language you will use/);
+  assert.ok((calls[0]?.body.max_tokens || 0) <= 512, 'voice answers cap generation tokens for faster responses');
 });
 
 test('admin engine policy is respected (disabled engines are never called)', async () => {
@@ -272,6 +318,34 @@ test('HTTP: public assistant API and admin protection', async () => {
     const res = await fetch(`http://127.0.0.1:${(s2.address() as AddressInfo).port}/api/admin/overview`, { headers: { Authorization: 'Bearer short' } });
     assert.equal(res.status, 503);
   } finally { s2.close(); }
+});
+
+test('public assistant sends current date/time questions through the Google-only internet gate', async () => {
+  let requestBody: any;
+  const fetchMock = (async (url: string | URL, init?: RequestInit) => {
+    assert.match(String(url), /generativelanguage\.googleapis\.com/);
+    requestBody = JSON.parse(String(init?.body || '{}'));
+    return json({ candidates: [{
+      content: { parts: [{ text: 'الساعة ٣:١٥ مساءً في القاهرة.' }] },
+      groundingMetadata: { groundingChunks: [{ web: { title: 'Google clock', uri: 'https://time.example/cairo' } }] },
+    }] });
+  }) as typeof fetch;
+  const core = createShamCore({ env: { SHAM_STORE: 'memory', GEMINI_API_KEY: 'google-test-key' }, fetch: fetchMock });
+  const app = express(); app.use(express.json()); app.use('/assistant', core.assistant);
+  const server = app.listen(0, '127.0.0.1');
+  await new Promise((r) => server.once('listening', r));
+  try {
+    const response = await fetch(`http://127.0.0.1:${(server.address() as AddressInfo).port}/assistant/chat`, {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ message: 'الوقت دلوقتي كام؟', visitorId: visitor, language: 'ar' }),
+    });
+    assert.equal(response.status, 200);
+    const out = await response.json() as { reply: string };
+    assert.match(out.reply, /٣:١٥ مساءً/);
+    assert.match(out.reply, /https:\/\/time\.example\/cairo/);
+    assert.match(requestBody.contents[0].parts[0].text, /القاهرة، مصر/);
+    assert.deepEqual(requestBody.tools, [{ google_search: {} }]);
+  } finally { server.close(); }
 });
 
 test('identity questions are answered by Sham itself, without calling any model or naming a vendor', async () => {

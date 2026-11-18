@@ -16,6 +16,7 @@ import { meantText, planTypedTurn, savedTypedFixes, saveTypedFix, typedNote, typ
 import { heardNote } from './heardFix';
 import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } from './api';
 import { savedDialectChoice } from './arabicDialect';
+import { compareLegacyContext, createUnifiedConversationContext, shaheenMessageToUnifiedTurn } from './unifiedConversationContext';
 import { forgetDrawings, freshReplies } from './shaheenDrawings';
 import { defaultImageQuestion, imageTurn, imageWords, parseImageDataUrl, withImageText, type ImageReading } from './imageReading';
 import { readOnDevice } from './browserOcr';
@@ -92,11 +93,20 @@ export function chatHistory(messages: ChatMessage[]) {
     history.unshift({ role: message.role, text, ...(sources?.length ? { sources } : {}) });
     size += text.length;
   }
+  // Shadow-only: snapshot the browser's available transcript alongside the existing bounded history.
+  // It is neither persisted nor sent to the server, and comparison summaries never contain message text.
+  try {
+    const unifiedShadow = createUnifiedConversationContext({
+      surface: 'shaheen',
+      turns: messages.map((message) => shaheenMessageToUnifiedTurn(message)),
+    });
+    void compareLegacyContext(history, unifiedShadow);
+  } catch { /* Shadow-only failures must never affect the legacy answer path. */ }
   return history;
 }
 
 /**
- * «ترشيح المتجر»: a shopping question («عايز عطر هدية بـ 500») that no engine could answer still gets the store's own
+ * «ترشيح المتجر»:  a shopping question («عايز عطر هدية بـ 500») that no engine could answer still gets the store's own
  * picks — real product pages — clearly labelled as an automatic pick, never as the expert's opinion. Formula and ratio
  * questions are left to the expert (a product list is not an answer to «اعمل لي تركيبة»).
  */

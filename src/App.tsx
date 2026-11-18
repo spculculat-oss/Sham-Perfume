@@ -2,7 +2,7 @@ import { popBelongsToCheckout } from './utils/checkoutHistory';
 import { setInsightsContext, trackInsight } from './utils/insightsTracker';
 import { isVerifiedCustomer } from './utils/paymentAccess';
 import { BookLibrary } from './library/BookLibrary';
-import React, { useState, useEffect, Suspense, useCallback } from 'react';
+import React, { useState, useEffect, Suspense, useCallback, useRef } from 'react';
 import { Header } from './components/Header';
 import { ToastNotification } from './components/ToastNotification';
 import { UserProfilePage } from './components/UserProfilePage';
@@ -17,6 +17,7 @@ import { PyramidCalculator } from './components/PyramidCalculator';
 import { AlcoholDilutionCalculator } from './components/AlcoholDilutionCalculator';
 import { CostCalculator } from './components/CostCalculator';
 import { FormulaLibrary } from './components/FormulaLibrary';
+import { ProjectStudio } from './components/ProjectStudio';
 import { WorldPerfumesLibrary, worldPerfumeStudyDisclaimer, worldPerfumeStudyTitle } from './components/WorldPerfumesLibrary';
 import { MoleculeStudio } from './components/MoleculeStudio';
 import { RawMaterialsEncyclopedia } from './components/RawMaterialsEncyclopedia';
@@ -42,6 +43,7 @@ import { trackPlatformVisit } from './utils/visitTracker';
 import { useSeo } from './hooks/useSeo';
 import {
   FormulationState,
+  CostingState,
   PyramidNote,
   SavedFormula,
 } from './types/perfume';
@@ -51,6 +53,27 @@ import {
 } from './data/presets';
 import { WorldPerfumeRecipe } from './data/worldPerfumes';
 import { calculatePerfumeFormulation } from './utils/calculations';
+import { loadSavedFormulas, persistSavedFormulas, restoreSavedFormula, SAVED_FORMULAS_STORAGE_KEY, snapshotSavedFormula } from './utils/formulaPersistence';
+import type { FragranceProject, ProjectIngredient } from './types/fragranceProject';
+import {
+  ACTIVE_PROJECT_STORAGE_KEY,
+  PROJECTS_STORAGE_KEY,
+  addProjectIngredient,
+  archiveProject,
+  createFragranceProject,
+  deleteArchivedProject,
+  duplicateProject,
+  importLegacyFormulas,
+  loadProjects,
+  mergeImportedProjects,
+  persistProjects,
+  restoreArchivedProject,
+  restoreProjectVersion,
+  snapshotProject,
+  toggleProjectFavoriteMaterial,
+  updateProjectCosting,
+  updateProjectWorkbench,
+} from './utils/fragranceProjects';
 import { ExtractedAIPerfume } from './utils/aiFormulaExtractor';
 import type { ShaheenTool, ToolLink } from './utils/shaheenTools';
 import { SupportedLanguage, SUPPORTED_LANGUAGES } from './types/i18n';
@@ -90,7 +113,7 @@ const DesignersStudio = lazyWithReload(() => import('./components/DesignersStudi
 // «مساحة شاهين»: the general assistant (loaded only when opened — its document and code tools are heavy).
 const ShaheenWorkspace = lazyWithReload(() => import('./workspace/ShaheenWorkspace'));
 
-const LOCAL_STORAGE_KEY = 'miyaar_perfume_saved_formulas';
+const LOCAL_STORAGE_KEY = SAVED_FORMULAS_STORAGE_KEY;
 
 
 const S = {
@@ -501,20 +524,22 @@ export default function App() {
   );
 
   // Saved formulas in LocalStorage
-  const [savedFormulas, setSavedFormulas] = useState<SavedFormula[]>(() => {
+  const [savedFormulas, setSavedFormulas] = useState<SavedFormula[]>(() =>
+    loadSavedFormulas({ getItem: (key) => localStorage.getItem(key) }, CURATED_FORMULA_PRESETS, LOCAL_STORAGE_KEY)
+  );
+
+  // Guest-first project store: no cloud sync or client-asserted account ownership in this phase.
+  const [projects, setProjects] = useState<FragranceProject[]>(() =>
+    loadProjects({ getItem: (key) => localStorage.getItem(key) }, PROJECTS_STORAGE_KEY)
+  );
+  const [activeProjectId, setActiveProjectId] = useState<string | null>(() => {
     try {
-      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
-        }
-      }
-    } catch (e) {
-      console.error('Failed to load local storage formulas', e);
-    }
-    return CURATED_FORMULA_PRESETS;
+      const storedId = localStorage.getItem(ACTIVE_PROJECT_STORAGE_KEY);
+      const storedProjects = loadProjects({ getItem: (key) => localStorage.getItem(key) }, PROJECTS_STORAGE_KEY);
+      return storedId && storedProjects.some((project) => project.id === storedId && project.status === 'active') ? storedId : null;
+    } catch { return null; }
   });
+  const hydratedProjectId = useRef<string | null>(null);
 
   // Global Language & Internationalization State
   const [currentLang, setCurrentLang] = useState<SupportedLanguage>(() => getInitialLanguage());
@@ -715,14 +740,49 @@ export default function App() {
     showToast(L('toast_wiped'));
   };
 
-  // Save to LocalStorage whenever savedFormulas changes
+  // Keep the existing localStorage schema; failures never clear or rewrite the visitor's previous data.
   useEffect(() => {
-    try {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(savedFormulas));
-    } catch (e) {
-      console.error('Failed to save to local storage', e);
+    if (!persistSavedFormulas({
+      getItem: (key) => localStorage.getItem(key),
+      setItem: (key, value) => localStorage.setItem(key, value),
+    }, savedFormulas, LOCAL_STORAGE_KEY)) {
+      console.error('Failed to save to local storage formulas');
     }
   }, [savedFormulas]);
+
+  useEffect(() => {
+    if (!persistProjects({ getItem: (key) => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value) }, projects, PROJECTS_STORAGE_KEY)) {
+      console.error('Failed to safely save local fragrance projects');
+    }
+  }, [projects]);
+  useEffect(() => {
+    try {
+      if (activeProjectId) localStorage.setItem(ACTIVE_PROJECT_STORAGE_KEY, activeProjectId);
+      else localStorage.removeItem(ACTIVE_PROJECT_STORAGE_KEY);
+    } catch { /* Project selection remains in memory for this session. */ }
+  }, [activeProjectId]);
+  useEffect(() => {
+    if (!activeProjectId) {
+      hydratedProjectId.current = null;
+      return;
+    }
+    const project = projects.find((item) => item.id === activeProjectId);
+    if (!project || project.status !== 'active') {
+      setActiveProjectId(null);
+      return;
+    }
+    if (hydratedProjectId.current !== activeProjectId) {
+      hydratedProjectId.current = activeProjectId;
+      setFormulation({ ...project.formula.formulation });
+      setPyramidNotes(structuredClone(project.pyramid));
+      setFormulaTitle(project.name);
+      setFormulaNotes(project.description);
+      return;
+    }
+    setProjects((previous) => previous.map((item) => item.id === activeProjectId
+      ? updateProjectWorkbench(item, { formulation, pyramid: pyramidNotes, name: formulaTitle, description: formulaNotes })
+      : item));
+  }, [activeProjectId, formulation, pyramidNotes, formulaTitle, formulaNotes]);
 
   // Perform core formulation calculation
   const calculationResult = calculatePerfumeFormulation(formulation);
@@ -851,15 +911,25 @@ export default function App() {
   // ===================== LIBRARY & WORLD RECIPES HANDLERS =====================
 
   const handleLoadFormula = (formula: SavedFormula) => {
-    setFormulation(formula.formulation);
-    setFormulaTitle(formula.title);
-    setFormulaAuthor(formula.author || '');
-    setBatchCode(formula.batchCode || '');
-    setFormulaNotes(formula.notes || '');
-    setMacerationDays(formula.macerationDays || 30);
-    setPyramidNotes(formula.pyramidNotes || []);
+    if (activeProjectId) {
+      const currentProject = projects.find((project) => project.id === activeProjectId);
+      if (currentProject) {
+        const currentWorkbench = updateProjectWorkbench(currentProject, { formulation, pyramid: pyramidNotes, name: formulaTitle, description: formulaNotes });
+        setProjects((previous) => previous.map((project) => project.id === activeProjectId
+          ? snapshotProject(currentWorkbench, `Before loading legacy formula: ${formula.title}`)
+          : project));
+      }
+    }
+    const restored = restoreSavedFormula(formula);
+    setFormulation(restored.formulation);
+    setFormulaTitle(restored.title);
+    setFormulaAuthor(restored.author);
+    setBatchCode(restored.batchCode);
+    setFormulaNotes(restored.notes);
+    setMacerationDays(restored.macerationDays);
+    setPyramidNotes(restored.pyramidNotes);
     navigateToTab('concentration');
-    showToast(fmt(L('toast_loaded_lab_tpl'), { title: formula.title }));
+    showToast(fmt(L('toast_loaded_lab_tpl'), { title: restored.title }));
   };
 
   // «استخدم التركيبة دي» from «مجتمع شام» (a recipe card in a post or a profile): sanitised in community/sync.ts.
@@ -917,7 +987,7 @@ export default function App() {
 
   const handleSaveActiveFormula = (e: React.FormEvent) => {
     e.preventDefault();
-    const newFormula: SavedFormula = {
+    const newFormula = snapshotSavedFormula({
       id: 'formula-' + Date.now(),
       title: formulaTitle.trim() || L('default_title'),
       author: formulaAuthor.trim() || L('default_author'),
@@ -927,9 +997,18 @@ export default function App() {
       macerationDays: macerationDays || 30,
       formulation: { ...formulation },
       pyramidNotes: [...pyramidNotes],
-    };
+    });
 
     setSavedFormulas((prev) => [newFormula, ...prev]);
+    if (activeProjectId) {
+      const currentProject = projects.find((project) => project.id === activeProjectId);
+      if (currentProject) {
+        const currentWorkbench = updateProjectWorkbench(currentProject, { formulation, pyramid: pyramidNotes, name: formulaTitle, description: formulaNotes });
+        setProjects((previous) => previous.map((project) => project.id === activeProjectId
+          ? snapshotProject(currentWorkbench, `Saved formula: ${newFormula.title}`)
+          : project));
+      }
+    }
     syncRecipeToAccount(newFormula);
     handleCloseSaveModal();
     showToast(fmt(L('toast_formula_saved_tpl'), { title: newFormula.title }));
@@ -941,6 +1020,16 @@ export default function App() {
   };
 
   const handlePrintFormula = (formula: SavedFormula) => {
+    if (activeProjectId) {
+      const currentProject = projects.find((project) => project.id === activeProjectId);
+      if (currentProject) {
+        const currentWorkbench = updateProjectWorkbench(currentProject, { formulation, pyramid: pyramidNotes, name: formulaTitle, description: formulaNotes });
+        setProjects((previous) => previous.map((project) => project.id === activeProjectId
+          ? snapshotProject(currentWorkbench, 'Before printing a legacy formula')
+          : project));
+      }
+      setActiveProjectId(null);
+    }
     setFormulation(formula.formulation);
     setFormulaTitle(formula.title);
     setFormulaAuthor(formula.author || '');
@@ -949,6 +1038,90 @@ export default function App() {
     setMacerationDays(formula.macerationDays || 30);
     setPyramidNotes(formula.pyramidNotes);
     handleOpenSpecModal();
+  };
+
+  const handleCreateProject = (name: string) => {
+    const project = createFragranceProject({ name, formulation, pyramid: pyramidNotes, description: formulaNotes });
+    setProjects((previous) => [...previous, project]);
+    setActiveProjectId(project.id);
+    navigateToTab('studio');
+  };
+  const handleSelectProject = (project: FragranceProject) => {
+    if (project.status !== 'active') return;
+    setActiveProjectId(project.id);
+  };
+  const handleUpdateProject = (project: FragranceProject) => {
+    setProjects((previous) => previous.map((item) => item.id === project.id ? project : item));
+    if (project.id === activeProjectId) {
+      setFormulaTitle(project.name);
+      setFormulaNotes(project.description);
+    }
+  };
+  const handleDuplicateProject = (project: FragranceProject) => {
+    const duplicate = duplicateProject(project);
+    setProjects((previous) => [...previous, duplicate]);
+  };
+  const handleProjectCostingChange = useCallback((costing: CostingState) => {
+    if (!activeProjectId) return;
+    setProjects((previous) => previous.map((project) => {
+      if (project.id !== activeProjectId) return project;
+      try { return updateProjectCosting(project, costing); }
+      catch { return project; } // Do not persist an incomplete/invalid in-progress form value.
+    }));
+  }, [activeProjectId]);
+  const handleToggleProjectFavorite = (materialId: string) => {
+    if (!activeProjectId) return;
+    setProjects((previous) => previous.map((project) => project.id === activeProjectId
+      ? toggleProjectFavoriteMaterial(project, materialId)
+      : project));
+  };
+  const handleAddProjectIngredient = (ingredient: ProjectIngredient) => {
+    if (!activeProjectId) return;
+    setProjects((previous) => previous.map((project) => {
+      if (project.id !== activeProjectId) return project;
+      try { return addProjectIngredient(project, ingredient); }
+      catch { return project; }
+    }));
+    showToast(currentLang === 'ar' ? 'أُضيف اسم المادة للمكوّنات؛ أدخل نسبتها وكثافتها يدويًا عند توفر بيانات موثوقة.' : 'Material name added; enter its share and density yourself when documented data is available.');
+  };
+  const handleArchiveProject = (project: FragranceProject) => {
+    setProjects((previous) => previous.map((item) => item.id === project.id ? archiveProject(item) : item));
+    if (activeProjectId === project.id) setActiveProjectId(null);
+  };
+  const handleRestoreProject = (project: FragranceProject) => {
+    setProjects((previous) => previous.map((item) => item.id === project.id ? restoreArchivedProject(item) : item));
+  };
+  const handleDeleteProject = (project: FragranceProject) => {
+    try {
+      deleteArchivedProject(project);
+      setProjects((previous) => previous.filter((item) => item.id !== project.id));
+    } catch { /* The project service rejects deletion outside the archived state. */ }
+  };
+  const handleSaveProjectVersion = (project: FragranceProject, note: string) => {
+    const current = projects.find((item) => item.id === project.id) ?? project;
+    const workbench = activeProjectId === project.id
+      ? updateProjectWorkbench(current, { formulation, pyramid: pyramidNotes, name: formulaTitle, description: formulaNotes })
+      : current;
+    setProjects((previous) => previous.map((item) => item.id === project.id ? snapshotProject(workbench, note) : item));
+  };
+  const handleRestoreProjectVersion = (project: FragranceProject, versionId: string) => {
+    try {
+      const restored = restoreProjectVersion(project, versionId);
+      setProjects((previous) => previous.map((item) => item.id === project.id ? restored : item));
+      setActiveProjectId(project.id);
+      setFormulation({ ...restored.formula.formulation });
+      setPyramidNotes(structuredClone(restored.pyramid));
+      setFormulaTitle(restored.name);
+      setFormulaNotes(restored.description);
+    } catch { showToast('Could not restore that project version.'); }
+  };
+  const handleImportLegacyProjects = () => {
+    const result = importLegacyFormulas(projects, savedFormulas);
+    setProjects(result.projects);
+    return { importedCount: result.importedCount, skippedCount: result.skippedCount };
+  };
+  const handleImportProjects = (incoming: FragranceProject[]) => {
+    setProjects((previous) => mergeImportedProjects(previous, incoming));
   };
 
   return (
@@ -976,6 +1149,28 @@ export default function App() {
         />
 
         {activeTab === 'home' && <VisitorLocalDashboard currentLang={currentLang} />}
+        {activeTab === 'studio' && (
+          <ProjectStudio
+            lang={currentLang}
+            projects={projects}
+            activeProjectId={activeProjectId}
+            legacyFormulas={savedFormulas}
+            onCreate={handleCreateProject}
+            onSelect={handleSelectProject}
+            onUpdate={handleUpdateProject}
+            onDuplicate={handleDuplicateProject}
+            onArchive={handleArchiveProject}
+            onRestore={handleRestoreProject}
+            onDelete={handleDeleteProject}
+            onSaveVersion={handleSaveProjectVersion}
+            onRestoreVersion={handleRestoreProjectVersion}
+            onImportLegacy={handleImportLegacyProjects}
+            onImportProjects={handleImportProjects}
+            onNavigate={(tab) => navigateToTab(tab)}
+            onPrint={handleOpenSpecModal}
+            defaultCurrency={currentEnvironment.currencyCode}
+          />
+        )}
 
         {/* Store Promo Hub: promotional banner with store deals.
             Not on «مجتمع شام»: a social feed opens straight on the feed (the banner took a whole screen there,
@@ -1109,6 +1304,9 @@ export default function App() {
             currentLang={currentLang}
             initialSearch={materialSearch?.text}
             onAddMaterialToPyramid={handleAddMaterialToPyramid}
+            favoriteMaterialIds={projects.find((project) => project.id === activeProjectId)?.favoriteMaterialIds ?? []}
+            onToggleFavorite={activeProjectId ? handleToggleProjectFavorite : undefined}
+            onAddIngredientToProject={activeProjectId ? handleAddProjectIngredient : undefined}
           />
         )}
 
@@ -1134,10 +1332,14 @@ export default function App() {
 
         {activeTab === 'costing' && (
           <CostCalculator
+            key={activeProjectId ?? 'unassigned-costing'}
             currentLang={currentLang}
             formulation={formulation}
             calculationResult={calculationResult}
             currentCurrencyCode={currentEnvironment.currencyCode}
+            initialCosting={projects.find((project) => project.id === activeProjectId)?.costing}
+            onCostingChange={activeProjectId ? handleProjectCostingChange : undefined}
+            projectMode={Boolean(activeProjectId)}
           />
         )}
 
@@ -1148,6 +1350,9 @@ export default function App() {
             onLoadFormula={handleLoadFormula}
             onDeleteFormula={handleDeleteFormula}
             onPrintFormula={handlePrintFormula}
+            projects={projects}
+            onOpenProject={(project) => { handleSelectProject(project); navigateToTab('studio'); }}
+            onOpenStudio={() => navigateToTab('studio')}
           />
         )}
 

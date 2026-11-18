@@ -115,6 +115,27 @@ test('search, read and ask through the server gate — remembered, counted, limi
   assert.equal(gate.stats().total.search, 1);
 });
 
+test('Google-only clock searches use the gate quota and expire quickly instead of serving stale time', async () => {
+  let now = Date.parse('2026-11-13T10:00:00Z');
+  let googleCalls = 0;
+  const fetcher = (async (url: string | URL) => {
+    assert.match(String(url), /generativelanguage\.googleapis\.com/);
+    googleCalls++;
+    return new Response(JSON.stringify({ candidates: [{
+      content: { parts: [{ text: `clock answer ${googleCalls}` }] },
+      groundingMetadata: { groundingChunks: [] },
+    }] }), { headers: { 'content-type': 'application/json' } });
+  }) as typeof fetch;
+  const gate = createNetGate({ env: { GEMINI_API_KEY: 'google-key' }, fetch: fetcher, now: () => now });
+  const query = { kind: 'search', bot: 'sham_assistant', q: 'current time in Cairo', lang: 'en', googleOnly: true };
+  assert.equal((await gate.fetch(query)).answer, 'clock answer 1');
+  assert.equal((await gate.fetch(query)).cached, true);
+  now += 10_001;
+  assert.equal((await gate.fetch(query)).answer, 'clock answer 2');
+  assert.equal(googleCalls, 2);
+  assert.equal(gate.stats().total.search, 2);
+});
+
 test('the gate on the admin router answers in Arabic and never leaks errors', async () => {
   const web = fakeWeb();
   const app = express();

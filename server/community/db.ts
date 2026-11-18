@@ -85,7 +85,7 @@ export async function connectPglite(dataDir?: string): Promise<Sql> {
   return wrap(db);
 }
 
-export const SCHEMA_VERSION = 11;
+export const SCHEMA_VERSION = 12;
 
 export const SCHEMA: string[] = [
   `CREATE TABLE IF NOT EXISTS community_meta (key text PRIMARY KEY, value text NOT NULL)`,
@@ -257,6 +257,24 @@ export const SCHEMA: string[] = [
   )`,
   `CREATE INDEX IF NOT EXISTS posts_created ON posts (created_at DESC)`,
   `CREATE INDEX IF NOT EXISTS posts_author ON posts (author_id, created_at DESC)`,
+  /* v12 — private, audited automatic post moderation. Removed posts remain hidden as evidence; account data is not deleted. */
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS moderation_strikes integer NOT NULL DEFAULT 0`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS post_suspended_until timestamptz`,
+  `CREATE TABLE IF NOT EXISTS moderation_cases (
+    id text PRIMARY KEY,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    post_id text REFERENCES posts(id) ON DELETE SET NULL,
+    category text NOT NULL,
+    rule_code text NOT NULL,
+    strike integer NOT NULL,
+    action text NOT NULL,
+    review_status text NOT NULL DEFAULT 'open',
+    review_note text NOT NULL DEFAULT '',
+    reviewed_at timestamptz,
+    created_at timestamptz NOT NULL DEFAULT clock_timestamp()
+  )`,
+  `CREATE INDEX IF NOT EXISTS moderation_cases_user ON moderation_cases (user_id, created_at DESC)`,
+
   /* v8 — private, account-backed post bookmarks. */
   `CREATE TABLE IF NOT EXISTS saved_posts (
     user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,

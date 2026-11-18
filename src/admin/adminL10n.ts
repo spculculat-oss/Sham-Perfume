@@ -1875,6 +1875,23 @@ export const ADMIN_STRINGS: Record<string, AdminDict> = {
   'خطة تنفيذ ({n} أوامر)': { en: "Execution plan ({n} orders)" },
   'الوكيل يفهم الأمر…': { en: "Agent understanding command…" },
   'اكتب للدولة بأسلوبك العادي… (أمر واحد أو عدة أوامر معاً: وقف الأخبار وشغّل الدورية، أو اعمل مهمة: …)': { en: "Write to the State naturally… (single or multi-step orders: pause news and run patrol, or create task: …)" },
+  'محظورون نهائيًا': { en: 'Banned accounts' },
+  'محظور نهائيًا (قابل لمراجعة الإدارة)': { en: 'Banned (subject to admin review)' },
+  'مراجعة قرارات الرقابة الآلية': { en: 'Review automated moderation decisions' },
+  'المطابقة الآلية للكلمات قد تخطئ. راجع المحتوى وملف العضو قبل التأكيد أو عكس القرار.': { en: 'Keyword matching can be wrong. Review the content and member file before confirming or reversing a decision.' },
+  'لا توجد قرارات آلية بانتظار المراجعة': { en: 'No automated decisions are awaiting review' },
+  'محتوى جنسي صريح': { en: 'Explicit sexual content' },
+  'ألفاظ نابية': { en: 'Obscene language' },
+  'العضو': { en: 'Member' },
+  'المخالفة رقم': { en: 'Violation' },
+  'حظر من الموقع': { en: 'Site-wide account ban' },
+  'إيقاف النشر 14 يومًا': { en: '14-day posting suspension' },
+  'معرّف المنشور': { en: 'Post ID' },
+  'تأكيد القرار': { en: 'Confirm decision' },
+  'عكس القرار وإعادة المنشور': { en: 'Reverse decision and restore post' },
+  'سبب عكس قرار الرقابة (إجباري):': { en: 'Reason for reversing the moderation decision (required):' },
+  'ملاحظة تأكيد القرار (إجباري):': { en: 'Note confirming the decision (required):' },
+
 };
 
 let currentLang: SupportedLanguage = 'ar';

@@ -84,6 +84,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
 
   const tabConfigs: Record<string, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
     home: { label: t('nav_home', currentLang), icon: Home },
+    studio: { label: currentLang === 'ar' ? 'استوديو المشاريع' : 'Project Studio', icon: FlaskConical },
     concentration: { label: t('nav_calc', currentLang), icon: FlaskConical },
     molecule_studio: { label: uiLabel('molecule_studio', currentLang), icon: Atom },
     perfume_news: { label: t('nav_news', currentLang), icon: Newspaper },
