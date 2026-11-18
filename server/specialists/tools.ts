@@ -512,6 +512,7 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
         concentrationType: 'edp', alcoholPercentage: 96, waterPercent: num(args, 'waterPercent') ?? 0,
         fixativePercent: num(args, 'fixativePercent') ?? 0, oilDensity: 0.92, alcoholDensity: 0.8, unitMode: 'ml',
       });
+      if (result.calculationStatus !== 'valid') return undefined;
       const ar = ctx.lang !== 'en';
       const lines = ar
         ? [`زجاجة ${volume} مل بتركيز ${percent}%:`,
@@ -519,13 +520,15 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
           `- الكحول: ${r2(result.alcoholVolumeMl)} مل (${r2(result.alcoholWeightGrams)} جم)`,
           result.waterPercent ? `- الماء المقطر: ${r2(result.waterVolumeMl)} مل` : '',
           result.fixativePercent ? `- المثبت: ${r2(result.fixativeVolumeMl)} مل` : '',
-          `- الإجمالي: ${r2(result.totalWeightGrams)} جم${result.batchTotalVolumeMl > volume ? ` · التشغيلة ${r2(result.batchTotalVolumeMl)} مل` : ''}`].filter(Boolean)
+          `- الإجمالي: ${r2(result.totalWeightGrams)} جم${result.batchTotalVolumeMl > volume ? ` · التشغيلة ${r2(result.batchTotalVolumeMl)} مل` : ''}`,
+          'ملاحظة: الأوزان تقديرية من كثافات غير موثقة؛ الحجم هو المقدار المحسوب مباشرة.' ].filter(Boolean)
         : [`${volume} ml at ${percent}% concentration:`,
           `- Fragrance oil: ${r2(result.oilVolumeMl)} ml (${r2(result.oilWeightGrams)} g)`,
           `- Alcohol: ${r2(result.alcoholVolumeMl)} ml (${r2(result.alcoholWeightGrams)} g)`,
           result.waterPercent ? `- Distilled water: ${r2(result.waterVolumeMl)} ml` : '',
           result.fixativePercent ? `- Fixative: ${r2(result.fixativeVolumeMl)} ml` : '',
-          `- Total: ${r2(result.totalWeightGrams)} g`].filter(Boolean);
+          `- Total: ${r2(result.totalWeightGrams)} g`,
+          'Note: gram amounts are estimates from unverified densities; volume is the directly calculated quantity.'].filter(Boolean);
       return {
         tool: 'calc_concentration',
         observation: lines.join('\n'),
@@ -587,15 +590,17 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
         .filter(([, v]) => typeof v === 'number' && v > 0)
         .map(([category, v], i) => ({ id: `n${i}`, nameAr: category === 'top' ? 'القمة' : category === 'heart' ? 'القلب' : 'القاعدة', nameEn: category, category, percentageOfOil: v! }));
       const oilMl = num(args, 'oilMl') ?? 10;
-      const out = calculatePyramidDistribution(notes, oilMl * 0.92, oilMl);
+      // No density source was supplied, so this tool calculates exact volume shares only.
+      const out = calculatePyramidDistribution(notes, 0, oilMl);
       const ar = ctx.lang !== 'en';
       const warn = Math.abs(out.totalPercentage - 100) > 0.01
         ? (ar ? `⚠️ المجموع ${r2(out.totalPercentage)}% مش 100% — ظبط النسب.` : `⚠️ The total is ${r2(out.totalPercentage)}%, not 100% — adjust the shares.`)
         : '';
       const lines = [
         ar ? `توزيع الهرم على ${oilMl} مل زيت:` : `Pyramid split of ${oilMl} ml of oil:`,
-        ...out.notesWithQuantities.map((n) => `- ${ar ? n.nameAr : n.nameEn}: ${r2(n.percentageOfOil)}% = ${r2(n.volumeMl!)} مل (${r2(n.weightGrams!)} جم)`),
+        ...out.notesWithQuantities.map((n) => `- ${ar ? n.nameAr : n.nameEn}: ${r2(n.percentageOfOil)}% = ${r2(n.volumeMl!)} ${ar ? 'مل' : 'ml'}`),
         warn,
+        ar ? 'الكتلة بالجرام غير محسوبة لعدم توفر كثافة موثقة.' : 'Mass in grams is not calculated because no documented density was provided.',
       ].filter(Boolean);
       return {
         tool: 'calc_pyramid', observation: lines.join('\n'), strength: warn ? 0.8 : 0.92,
@@ -624,24 +629,28 @@ export const SPECIALIST_TOOLS: SpecialistTool[] = [
         concentrationType: 'edp', alcoholPercentage: 96, waterPercent: 0, fixativePercent: 0,
         oilDensity: 0.92, alcoholDensity: 0.8, unitMode: 'ml',
       });
+      if (formulation.calculationStatus !== 'valid') return undefined;
       const out = calculateCosting(formulation, {
         oilCostPerKg, alcoholCostPerLiter: num(args, 'alcoholCostPerLiter') ?? 0,
         bottleUnitCost: num(args, 'bottleUnitCost') ?? 0, packagingUnitCost: num(args, 'packagingUnitCost') ?? 0,
         laborAndOverheadPerUnit: num(args, 'laborAndOverheadPerUnit') ?? 0,
         batchSize: num(args, 'batchSize') ?? 1, targetMarginPercent: num(args, 'targetMarginPercent') ?? 50,
       });
+      if (out.calculationStatus !== 'valid') return undefined;
       const ar = ctx.lang !== 'en';
       const lines = ar
         ? [`تكلفة الزجاجة ${volume} مل (${percent}%):`,
           `- الزيت: ${r2(out.oilCostPerBottle)} · الكحول: ${r2(out.alcoholCostPerBottle)} · العبوة والتغليف: ${r2(out.packagingCostPerBottle)} · الشغل: ${r2(out.laborCostPerBottle)}`,
           `- إجمالي التكلفة: ${r2(out.totalCostPerBottle)}`,
-          `- سعر البيع المقترح (هامش ${num(args, 'targetMarginPercent') ?? 50}%): ${r2(out.suggestedRetailPrice)} · جملة: ${r2(out.suggestedWholesalePrice)}`,
-          `- ربح الزجاجة: ${r2(out.profitPerBottleRetail)} · التشغيلة: تكلفة ${r2(out.totalBatchCost)} وربح ${r2(out.totalBatchProfitRetail)}`]
+          `- سعر البيع المقترح (زيادة فوق التكلفة ${num(args, 'targetMarginPercent') ?? 50}%): ${r2(out.suggestedRetailPrice)} · جملة: ${r2(out.suggestedWholesalePrice)}`,
+          `- ربح الزجاجة: ${r2(out.profitPerBottleRetail)} · التشغيلة: تكلفة ${r2(out.totalBatchCost)} وربح ${r2(out.totalBatchProfitRetail)}`,
+          'تنبيه: تكلفة الزيت مبنية على كتلة تقديرية وكثافة غير موثقة؛ تحقق من الكثافة وسعر الشراء قبل الاعتماد.']
         : [`Cost of one ${volume} ml bottle (${percent}%):`,
           `- oil ${r2(out.oilCostPerBottle)} · alcohol ${r2(out.alcoholCostPerBottle)} · packaging ${r2(out.packagingCostPerBottle)} · labour ${r2(out.laborCostPerBottle)}`,
           `- total cost: ${r2(out.totalCostPerBottle)}`,
-          `- suggested retail (margin ${num(args, 'targetMarginPercent') ?? 50}%): ${r2(out.suggestedRetailPrice)} · wholesale: ${r2(out.suggestedWholesalePrice)}`,
-          `- profit per bottle: ${r2(out.profitPerBottleRetail)}`];
+          `- suggested retail (markup on cost ${num(args, 'targetMarginPercent') ?? 50}%): ${r2(out.suggestedRetailPrice)} · wholesale: ${r2(out.suggestedWholesalePrice)}`,
+          `- profit per bottle: ${r2(out.profitPerBottleRetail)}`,
+          'Note: oil cost uses estimated mass and unverified density; confirm density and purchase price before relying on it.'];
       return {
         tool: 'calc_cost', observation: lines.join('\n'), strength: 0.95,
         answer: `${lines.join('\n')}\n\n_${sourceNote('calculator', ctx.lang)}._`, source: 'calculator',

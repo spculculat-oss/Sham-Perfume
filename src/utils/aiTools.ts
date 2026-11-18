@@ -46,8 +46,8 @@ export const AI_TOOLS: AiToolDef[] = [
   },
   {
     id: 'sham_assistant', nameAr: 'مساعد شام للخدمات', nameEn: 'Sham services assistant',
-    descriptionAr: 'يرد على أسئلة الخدمات والطلبات والمتجر والدعم من بيانات شام فقط، ويحوّل أسئلة التركيب للخبير شاهين.',
-    sources: ['server/core/orchestrator.ts'], routes: ['/api/assistant/chat', '/api/assistant/chat/stream'], acceptsGuidance: true,
+    descriptionAr: 'يرد على أسئلة الخدمات والطلبات والمتجر والدعم من بيانات شام فقط، ويحوّل أسئلة التركيب للخبير شاهين. في الشات العام يدعم محادثة صوتية متصلة: المتصفح يفرّغ كلام الزائر، والرد يبقى مكتوباً ويُقال بالصوت البشري مع المقاطعة والكتم، وتعليمات الصوت تحافظ على نفس التحقق والصدق والسياق.',
+    sources: ['server/core/orchestrator.ts', 'src/assistant/ShamAssistant.tsx', 'src/assistant/client.ts', 'src/hooks/useShaheenVoiceMode.ts', 'src/components/ShaheenVoiceModeButton.tsx', 'src/components/ShaheenVoiceStage.tsx', 'server/voiceSpeak.ts', 'src/utils/humanVoice.ts'], routes: ['/api/assistant/chat', '/api/assistant/chat/stream', '/api/voice/speak'], acceptsGuidance: true,
   },
   {
     id: 'specialists_agent', nameAr: 'وكيل مجلس المتخصصين («استشير متخصصاً»)', nameEn: "Specialists' board agent",

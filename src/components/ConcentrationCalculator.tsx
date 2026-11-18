@@ -333,6 +333,9 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
       ...(result.waterVolumeMl > 0 ? [fmt(L('clip_water'), { w: formatNum(result.waterWeightGrams), v: formatNum(result.waterVolumeMl) })] : []),
       ...(result.fixativeVolumeMl > 0 ? [fmt(L('clip_fixative'), { w: formatNum(result.fixativeWeightGrams), v: formatNum(result.fixativeVolumeMl) })] : []),
       fmt(L('clip_total'), { w: formatNum(result.totalWeightGrams) }),
+      effectiveLang === 'ar'
+        ? 'الأوزان تقديرية من كثافات غير موثقة؛ الحجم هو المقدار المحسوب مباشرة.'
+        : 'Mass values are estimates from unverified densities; volume is calculated directly.',
     ].join('\n');
     navigator.clipboard.writeText(text);
     setCopiedSummary(true);
@@ -426,6 +429,20 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
           )}
         </div>
       </div>
+
+      {result.calculationStatus === 'invalid' ? (
+        <div role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-950">
+          {effectiveLang === 'ar'
+            ? 'تعذر إجراء الحساب: راجع أن الحجم والدفعة موجبان، وأن النسب أرقام صحيحة ولا تتجاوز حدودها.'
+            : 'Calculation unavailable: check that volume and batch count are positive and all percentages are valid.'}
+        </div>
+      ) : (
+        <div role="note" className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-xs leading-6 text-amber-950">
+          {effectiveLang === 'ar'
+            ? 'أساس الحساب هنا هو الحجم (مل). الكتل (جم) تقديرية فقط من كثافات غير موثقة؛ لا تعتبر قياسات مؤكدة. استخدم كثافات موثقة من مصدر المادة قبل اعتماد أوزان التشغيل.'
+            : 'This calculation is volume-based (ml). Mass values (g) are estimates from unverified densities, not confirmed measurements. Use documented material densities before relying on batch weights.'}
+        </div>
+      )}
 
       {/* VIEW: VISUAL SCALE SIMULATOR */}
       {activeView === 'scale_simulator' && (
@@ -1151,7 +1168,7 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                           onValue={(n) =>
                             setFormulation((prev) => ({
                               ...prev,
-                              oilDensity: n || 0.92,
+                              oilDensity: n,
                             }))
                           }
                           className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono-numbers text-stone-900"
@@ -1172,7 +1189,7 @@ export const ConcentrationCalculator: React.FC<ConcentrationCalculatorProps> = (
                           onValue={(n) =>
                             setFormulation((prev) => ({
                               ...prev,
-                              alcoholDensity: n || 0.80,
+                              alcoholDensity: n,
                             }))
                           }
                           className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono-numbers text-stone-900"

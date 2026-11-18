@@ -33,15 +33,15 @@ export function createNetGate({ env, fetch: request = fetch, lookup, now = Date.
   const useOf = (bot: string) => (bots[bot] ||= emptyUse());
   const count = (bot: string, key: keyof GateUse) => { roll(); total[key]++; useOf(bot)[key]++; };
 
-  const remember = (key: string, kind: GateKind, answer: GateAnswer) => {
+  const remember = (key: string, kind: GateKind, answer: GateAnswer, ttlMs = GATE_LIMITS.ttlMs[kind]) => {
     cache.delete(key);
-    cache.set(key, { answer, expires: now() + GATE_LIMITS.ttlMs[kind] });
+    cache.set(key, { answer, expires: now() + ttlMs });
     while (cache.size > GATE_LIMITS.cacheEntries) cache.delete(cache.keys().next().value!);
   };
 
   const search = async (r: GateRequest): Promise<GateAnswer> => {
-    // About today: the encyclopedia is never handed back as news (src/utils/liveWeb.ts).
-    const found = await webSearch(r.q!, languageOf(r.lang), { env, fetch: request, live: needsLiveWeb(r.q!) });
+    // Live questions must not fall back to stale encyclopedia results; explicit clock lookups are Google-only.
+    const found = await webSearch(r.q!, languageOf(r.lang), { env, fetch: request, live: needsLiveWeb(r.q!), googleOnly: r.googleOnly });
     return { kind: 'search', ...(found.answer ? { answer: found.answer.slice(0, 6000) } : {}), sources: found.results.slice(0, 8), via: found.kind, cached: false, at: new Date(now()).toISOString() };
   };
   const read = async (url: string) => {
@@ -91,7 +91,7 @@ export function createNetGate({ env, fetch: request = fetch, lookup, now = Date.
       }
       try {
         const answer = await work;
-        remember(key, r.kind, answer);
+        remember(key, r.kind, answer, r.googleOnly ? 10_000 : GATE_LIMITS.ttlMs[r.kind]);
         return { ...answer, ...(check.removed ? { removed: check.removed } : {}) };
       } catch (error) {
         count(r.bot, 'failed');

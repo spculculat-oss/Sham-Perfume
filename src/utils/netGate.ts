@@ -106,7 +106,7 @@ export function gateUrlRule(raw: unknown): GateUrlRule {
 }
 
 // ── A request ───────────────────────────────────────────────────────────────────────────────────────────────
-export interface GateRequest { kind: GateKind; bot: string; q?: string; url?: string; lang: string }
+export interface GateRequest { kind: GateKind; bot: string; q?: string; url?: string; lang: string; googleOnly?: boolean }
 export type GateCheck = { ok: true; req: GateRequest; removed: number } | { ok: false; code: 'NOT_CLIENT' | 'BAD_REQUEST' | 'BLOCKED'; reasonAr: string };
 
 /** Checks and cleans one request before anything goes out. */
@@ -123,11 +123,11 @@ export function checkGateRequest(body: unknown): GateCheck {
   }
   const { text, removed } = scrubQuery(typeof b.q === 'string' ? b.q : '');
   if (text.length < 2) return { ok: false, code: 'BAD_REQUEST', reasonAr: removed ? 'السؤال كان كله بيانات حساسة، فاتشال ومافضلش حاجة تتدوّر' : 'السؤال فاضي' };
-  return { ok: true, req: { kind, bot: b.bot, q: text, lang }, removed };
+  return { ok: true, req: { kind, bot: b.bot, q: text, lang, ...(kind === 'search' && b.googleOnly === true ? { googleOnly: true } : {}) }, removed };
 }
 
 /** The key answers are remembered under: the same question from any robot is one search. */
-export const gateCacheKey = (r: GateRequest) => `${r.kind}:${r.lang}:${(r.kind === 'read' ? r.url! : r.q!.toLowerCase().replace(/\s+/g, ' ')).slice(0, 400)}`;
+export const gateCacheKey = (r: GateRequest) => `${r.kind}:${r.lang}:${r.googleOnly ? 'google:' : ''}${(r.kind === 'read' ? r.url! : r.q!.toLowerCase().replace(/\s+/g, ' ')).slice(0, 400)}`;
 
 // ── What comes back ────────────────────────────────────────────────────────────────────────────────────────
 export interface GateSource { title: string; url: string; snippet: string }

@@ -90,6 +90,14 @@ test('the in-chat voice bar speaks the site\'s ten main languages and keeps the 
     assert.ok(dock > 0, path);
     assert.ok(dock < host.indexOf('overflow-y-auto', dock), 'the bar sits above the messages');
   }
+  const publicChat = readFileSync(new URL('../src/assistant/ShamAssistant.tsx', import.meta.url), 'utf8');
+  assert.match(publicChat, /useShaheenVoiceMode/);
+  assert.match(publicChat, /<ShaheenVoiceModeButton/);
+  assert.match(publicChat, /<ShaheenVoiceStage/);
+  assert.match(publicChat, /send\(text, undefined, true\)/, 'spoken turns use the public voice prompt');
+  assert.match(publicChat, /voice\.stop\(\); setOpen\(false\)/, 'closing the chat stops the microphone and speech');
+  const publicClient = readFileSync(new URL('../src/assistant/client.ts', import.meta.url), 'utf8');
+  assert.match(publicClient, /voice: voice \|\| undefined/, 'both stream and fallback send the voice mode flag');
   const main = stage.slice(stage.indexOf('export function ShaheenVoiceStage'), stage.indexOf('const PRINT_ASKED'));
   assert.doesNotMatch(main, /fixed inset-0|aria-modal|role="dialog"/, 'the conversation is not a page over the chat');
   assert.match(main, /sham-voice-dock/);

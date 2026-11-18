@@ -6,6 +6,7 @@
 import type { Row } from './db';
 import { newId } from './crypto';
 import { USER_COLUMNS, USER_FROM, areFriends, clean, fail, image, isBlocked, publicUser, type Ctx } from './service';
+import { classifyCommunityPost } from './contentModeration';
 
 export const REACTIONS = ['like', 'love', 'wow', 'haha', 'sad', 'fire'] as const;
 const iso = (v: unknown) => (v ? new Date(v as string).toISOString() : null);
@@ -68,7 +69,31 @@ export async function createPost(ctx: Ctx, authorId: string, input: { body?: unk
   if (n >= 30) fail(429, 'RATE_LIMITED');
   const id = newId('p');
   const visibility = input.visibility === 'friends' ? 'friends' : 'public';
-  await ctx.sql.query(`INSERT INTO posts (id, author_id, body, image, recipe_id, visibility) VALUES ($1,$2,$3,$4,$5,$6)`, [id, authorId, body, picture, recipeId, visibility]);
+  const violation = classifyCommunityPost(body);
+  const outcome = await ctx.sql.tx(async (tx) => {
+    const [author] = await tx.query(`SELECT status, moderation_strikes, post_suspended_until FROM users WHERE id = $1 FOR UPDATE`, [authorId]);
+    if (!author || author.status !== 'active') fail(403, author?.status === 'banned' ? 'ACCOUNT_BANNED' : 'ACCOUNT_SUSPENDED');
+    if (!violation && author.post_suspended_until && new Date(author.post_suspended_until).getTime() > (ctx.now?.() ?? new Date()).getTime()) fail(403, 'POSTING_SUSPENDED');
+    const [{ n }] = await tx.query(`SELECT count(*)::int AS n FROM posts WHERE author_id = $1 AND created_at > now() - interval '1 hour'`, [authorId]);
+    if (n >= 30) fail(429, 'RATE_LIMITED');
+    const strikes = Number(author.moderation_strikes) || 0;
+    if (violation) {
+      const strike = strikes + 1;
+      const banned = strike >= 2;
+      const suspendedUntil = banned ? null : new Date((ctx.now?.() ?? new Date()).getTime() + 14 * 86_400_000).toISOString();
+      await tx.query(`INSERT INTO posts (id, author_id, body, image, recipe_id, visibility, status) VALUES ($1,$2,$3,$4,$5,$6,'deleted')`, [id, authorId, body, picture, recipeId, visibility]);
+      await tx.query(`UPDATE users SET moderation_strikes = $1, post_suspended_until = $2, status = $3 WHERE id = $4`, [strike, suspendedUntil, banned ? 'banned' : 'active', authorId]);
+      await tx.query(`INSERT INTO moderation_cases (id, user_id, post_id, category, rule_code, strike, action) VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+        [newId('mc'), authorId, id, violation.category, violation.ruleCode, strike, banned ? 'site_ban' : 'posting_suspension']);
+      await tx.query(`INSERT INTO audit (actor, action, target, detail) VALUES ($1,'community_post_auto_moderated',$2,$3)`,
+        [authorId, id, `category=${violation.category}; strike=${strike}; action=${banned ? 'site_ban' : 'posting_suspension'}`]);
+      if (banned) await tx.query(`DELETE FROM sessions WHERE user_id = $1`, [authorId]);
+      return { moderated: true as const, strike, banned };
+    }
+    await tx.query(`INSERT INTO posts (id, author_id, body, image, recipe_id, visibility) VALUES ($1,$2,$3,$4,$5,$6)`, [id, authorId, body, picture, recipeId, visibility]);
+    return { moderated: false as const };
+  });
+  if (outcome.moderated) fail(422, outcome.banned ? 'POST_REMOVED_ACCOUNT_BANNED' : 'POST_REMOVED_POSTING_SUSPENDED');
   return getPost(ctx, authorId, id);
 }
 
@@ -91,10 +116,36 @@ export async function unsavePost(ctx: Ctx, userId: string, postId: string) {
 }
 
 export async function editPost(ctx: Ctx, userId: string, id: string, input: { body?: unknown; visibility?: unknown }) {
-  const rows = await ctx.sql.query(
-    `UPDATE posts SET body = coalesce($1, body), visibility = coalesce($2, visibility), edited_at = now() WHERE id = $3 AND author_id = $4 AND status = 'visible' RETURNING id`,
-    [input.body !== undefined ? clean(input.body, 5000) : null, input.visibility === 'friends' || input.visibility === 'public' ? input.visibility : null, id, userId]);
-  if (!rows.length) fail(404, 'NOT_FOUND');
+  const body = input.body === undefined ? undefined : clean(input.body, 5000);
+  const violation = body === undefined ? null : classifyCommunityPost(body);
+  if (body === undefined) {
+    const rows = await ctx.sql.query(
+      `UPDATE posts SET visibility = coalesce($1, visibility), edited_at = now() WHERE id = $2 AND author_id = $3 AND status = 'visible' RETURNING id`,
+      [input.visibility === 'friends' || input.visibility === 'public' ? input.visibility : null, id, userId]);
+    if (!rows.length) fail(404, 'NOT_FOUND');
+    return getPost(ctx, userId, id);
+  }
+  const outcome = await ctx.sql.tx(async (tx) => {
+    const [author] = await tx.query(`SELECT status, moderation_strikes, post_suspended_until FROM users WHERE id = $1 FOR UPDATE`, [userId]);
+    if (!author || author.status !== 'active') fail(403, author?.status === 'banned' ? 'ACCOUNT_BANNED' : 'ACCOUNT_SUSPENDED');
+    if (!violation && author.post_suspended_until && new Date(author.post_suspended_until).getTime() > (ctx.now?.() ?? new Date()).getTime()) fail(403, 'POSTING_SUSPENDED');
+    const rows = await tx.query(
+      `UPDATE posts SET body = $1, visibility = coalesce($2, visibility), edited_at = now(), status = $3 WHERE id = $4 AND author_id = $5 AND status = 'visible' RETURNING id`,
+      [body, input.visibility === 'friends' || input.visibility === 'public' ? input.visibility : null, violation ? 'deleted' : 'visible', id, userId]);
+    if (!rows.length) fail(404, 'NOT_FOUND');
+    if (!violation) return { moderated: false as const };
+    const strike = (Number(author.moderation_strikes) || 0) + 1;
+    const banned = strike >= 2;
+    const suspendedUntil = banned ? null : new Date((ctx.now?.() ?? new Date()).getTime() + 14 * 86_400_000).toISOString();
+    await tx.query(`UPDATE users SET moderation_strikes = $1, post_suspended_until = $2, status = $3 WHERE id = $4`, [strike, suspendedUntil, banned ? 'banned' : 'active', userId]);
+    await tx.query(`INSERT INTO moderation_cases (id, user_id, post_id, category, rule_code, strike, action) VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+      [newId('mc'), userId, id, violation.category, violation.ruleCode, strike, banned ? 'site_ban' : 'posting_suspension']);
+    await tx.query(`INSERT INTO audit (actor, action, target, detail) VALUES ($1,'community_post_auto_moderated',$2,$3)`,
+      [userId, id, `category=${violation.category}; strike=${strike}; action=${banned ? 'site_ban' : 'posting_suspension'}`]);
+    if (banned) await tx.query(`DELETE FROM sessions WHERE user_id = $1`, [userId]);
+    return { moderated: true as const, banned };
+  });
+  if (outcome.moderated) fail(422, outcome.banned ? 'POST_REMOVED_ACCOUNT_BANNED' : 'POST_REMOVED_POSTING_SUSPENDED');
   return getPost(ctx, userId, id);
 }
 

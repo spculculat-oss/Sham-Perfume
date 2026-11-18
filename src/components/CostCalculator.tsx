@@ -1,5 +1,5 @@
 import { LegalDisclaimer } from './LegalDisclaimer';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   DollarSign,
   TrendingUp,
@@ -40,6 +40,9 @@ interface CostCalculatorProps {
   formulation: FormulationState;
   calculationResult: CalculationResult;
   currentCurrencyCode?: string;
+  initialCosting?: CostingState;
+  onCostingChange?: (costing: CostingState) => void;
+  projectMode?: boolean;
 }
 
 const POPULAR_CURRENCIES = [
@@ -1015,21 +1018,39 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
   formulation,
   calculationResult,
   currentCurrencyCode = 'SAR',
+  initialCosting,
+  onCostingChange,
+  projectMode = false,
 }) => {
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
   // Read-only numbers speak the site language too (digits + separators), never a fixed en-US.
   const formatNum = (value: number, digits = 2): string => formatLocalizedNumber(currentLang, value, { fractionDigits: digits });
-  const [costing, setCosting] = useState<CostingState>({
-    oilCostPerKg: 650, // default SAR per kg for premium French/Oriental oil
-    alcoholCostPerLiter: 35, // default SAR per liter
-    bottleUnitCost: 18, // bottle + atomizer + cap
-    packagingUnitCost: 12, // luxury outer box + cellophane + labels
-    laborAndOverheadPerUnit: 6, // labor & blending
-    batchSize: 50, // default batch of 50 bottles
-    targetMarginPercent: 80, // 80% markup
+  const [costing, setCosting] = useState<CostingState>(() => initialCosting ? { ...initialCosting } : projectMode ? {
+    oilCostPerKg: 0, alcoholCostPerLiter: 0, bottleUnitCost: 0, packagingUnitCost: 0,
+    laborAndOverheadPerUnit: 0, batchSize: 1, targetMarginPercent: 0, currency: currentCurrencyCode || 'SAR',
+  } : {
+    oilCostPerKg: 650, // Existing calculator defaults; not material purchase evidence
+    alcoholCostPerLiter: 35,
+    bottleUnitCost: 18,
+    packagingUnitCost: 12,
+    laborAndOverheadPerUnit: 6,
+    batchSize: 50,
+    targetMarginPercent: 80,
     currency: currentCurrencyCode || 'SAR',
   });
+  const publishedCosting = useRef(false);
+  useEffect(() => {
+    if (!publishedCosting.current) { publishedCosting.current = true; return; }
+    onCostingChange?.({ ...costing });
+  }, [costing, onCostingChange]);
+  useEffect(() => {
+    if (!initialCosting) return;
+    setCosting((previous) => {
+      const keys: (keyof CostingState)[] = ['oilCostPerKg', 'alcoholCostPerLiter', 'bottleUnitCost', 'packagingUnitCost', 'laborAndOverheadPerUnit', 'batchSize', 'targetMarginPercent', 'currency'];
+      return keys.every((key) => previous[key] === initialCosting[key]) ? previous : { ...initialCosting };
+    });
+  }, [initialCosting]);
 
   // Comparison custom currency for export benchmarking
   const [comparisonCurrency, setComparisonCurrency] = useState<string>('USD');
@@ -1048,10 +1069,10 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
 
   // Sync if parent updates current currency code
   useEffect(() => {
-    if (currentCurrencyCode && currentCurrencyCode !== costing.currency) {
+    if (!projectMode && !initialCosting && currentCurrencyCode && currentCurrencyCode !== costing.currency) {
       setCosting((prev) => ({ ...prev, currency: currentCurrencyCode }));
     }
-  }, [currentCurrencyCode]);
+  }, [currentCurrencyCode, initialCosting, projectMode]);
 
   const costResult = calculatePerfumeCosting(calculationResult, costing);
   const activeCurrency = findCurrencyByCode(costing.currency);
@@ -1158,6 +1179,8 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
           {L('page_desc')}
         </p>
       </div>
+
+      {projectMode && <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-950">{currentLang === 'ar' ? 'مدخلات التكلفة الصفرية تعني «غير مدخلة» في هذا المشروع. راجع أسعار الشراء والعملة والدفعة قبل الاعتماد على أي ناتج. النسبة الحالية زيادة على التكلفة وليست هامشًا إجماليًا.' : 'Zero cost inputs mean “not entered” for this project. Verify purchase prices, currency, and batch size before relying on results. The current rate is markup-on-cost, not gross margin.'}</p>}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Column: Cost Inputs */}

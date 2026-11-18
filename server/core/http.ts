@@ -80,7 +80,14 @@ export function createShamCore(options: CoreOptions = {}) {
   const sales = new SalesService(finance, bank, env);
   // Shared with the Shaheen chat router: outcomes + capacity parts, read by the maintenance agent.
   const runtime = options.runtime || new ShaheenRuntime(runningVersion(env));
-  const orchestrator = new Orchestrator(repo, { env, fetch: options.fetch });
+  const netGate = sharedNetGate(env, options.fetch);
+  const orchestrator = new Orchestrator(repo, {
+    env, fetch: options.fetch,
+    searchCurrentDateTime: async (query, language) => {
+      const result = await netGate.fetch({ kind: 'search', bot: 'sham_assistant', q: query, lang: language, googleOnly: true });
+      return { answer: result.answer, sources: result.sources };
+    },
+  });
   // «ذاكرة شاهين»: shared with the Shaheen chat router (server/app.ts); exported to the bots below.
   // What he learns is also kept in the durable store (the database, when there is one) for the bots to collect.
   const memory = new ShaheenMemory(store, env, options.fetch, undefined, durable);
@@ -277,7 +284,7 @@ export function createShamCore(options: CoreOptions = {}) {
   // «وكيل صاحب المنصة في روبوت دولة المنصة»: understands owner commands with constitutional checks & zero storage.
   admin.use('/state-agent', createStateAgentRouter({ env, fetch: options.fetch, health: runtime.health }));
   // «بوابة الإنترنت»: the one door between the robots and the internet (search, read, ask) — counts only, no content kept.
-  admin.use('/gate', createNetGateRouter(sharedNetGate(env, options.fetch)));
+  admin.use('/gate', createNetGateRouter(netGate));
 
   // What this server learned (questions + answers, no visitor data): merged into
   // src/data/live/shaheen-memory.json by scripts/shaheen-memory every two hours.

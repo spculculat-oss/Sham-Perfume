@@ -20,6 +20,7 @@ export async function overview(ctx: Ctx) {
     (SELECT count(*) FROM users WHERE last_seen > now() - interval '5 minutes')::int AS online,
     (SELECT count(*) FROM users WHERE created_at > now() - interval '7 days')::int AS new_week,
     (SELECT count(*) FROM users WHERE status = 'suspended')::int AS suspended,
+    (SELECT count(*) FROM users WHERE status = 'banned')::int AS banned,
     (SELECT count(*) FROM merchants)::int AS merchants,
     (SELECT count(*) FROM merchants WHERE status = 'pending')::int AS merchants_pending,
     (SELECT count(*) FROM merchant_products)::int AS products,
@@ -46,7 +47,7 @@ export async function users(ctx: Ctx, options: { q?: unknown; status?: unknown; 
     const n = params.length;
     where.push(`(lower(u.name) LIKE $${n - 2} OR u.handle LIKE $${n - 2} OR u.id = $${n - 1} OR u.email_idx = $${n})`);
   }
-  if (['active', 'suspended'].includes(String(options.status))) { params.push(options.status); where.push(`u.status = $${params.length}`); }
+  if (['active', 'suspended', 'banned'].includes(String(options.status))) { params.push(options.status); where.push(`u.status = $${params.length}`); }
   if (['user', 'merchant'].includes(String(options.role))) { params.push(options.role); where.push(`u.role = $${params.length}`); }
   const offset = Math.max(0, Math.min(100_000, Number(options.offset) || 0));
   const rows = await ctx.sql.query(
@@ -94,10 +95,13 @@ export async function userFile(ctx: Ctx, userId: string) {
 }
 
 export async function setUserStatus(ctx: Ctx, userId: string, status: unknown, note = '') {
-  if (!['active', 'suspended'].includes(String(status))) fail(400, 'INVALID_FIELD', 'status');
-  const rows = await ctx.sql.query(`UPDATE users SET status = $1 WHERE id = $2 RETURNING id`, [status, userId]);
+  if (!['active', 'suspended', 'banned'].includes(String(status))) fail(400, 'INVALID_FIELD', 'status');
+  const rows = await ctx.sql.query(`UPDATE users SET status = $1,
+    moderation_strikes = CASE WHEN $1 = 'active' THEN 0 ELSE moderation_strikes END,
+    post_suspended_until = CASE WHEN $1 = 'active' THEN NULL ELSE post_suspended_until END
+    WHERE id = $2 RETURNING id`, [status, userId]);
   if (!rows.length) fail(404, 'NOT_FOUND');
-  if (status === 'suspended') await ctx.sql.query(`DELETE FROM sessions WHERE user_id = $1`, [userId]);
+  if (status !== 'active') await ctx.sql.query(`DELETE FROM sessions WHERE user_id = $1`, [userId]);
   await audit(ctx, `user_${status}`, userId, note);
 }
 
@@ -241,6 +245,41 @@ export async function reports(ctx: Ctx, status: unknown = 'open') {
   const filter = ['open', 'resolved', 'dismissed'].includes(String(status)) ? (params.push(status), `WHERE r.status = $1`) : '';
   const rows = await ctx.sql.query(`SELECT r.*, u.name AS reporter_name FROM reports r LEFT JOIN users u ON u.id = r.reporter_id ${filter} ORDER BY r.created_at DESC LIMIT 200`, params);
   return rows.map(reportView);
+}
+
+export async function moderationCases(ctx: Ctx, status: unknown = 'open') {
+  const params: unknown[] = [];
+  const filter = ['open', 'confirmed', 'reversed'].includes(String(status)) ? (params.push(status), 'WHERE c.review_status = $1') : '';
+  const rows = await ctx.sql.query(
+    `SELECT c.id, c.user_id, c.post_id, c.category, c.rule_code, c.strike, c.action, c.review_status, c.review_note, c.created_at,
+      u.name AS member_name, u.handle AS member_handle, u.status AS member_status, p.body AS post_body, p.image AS post_image
+     FROM moderation_cases c JOIN users u ON u.id = c.user_id LEFT JOIN posts p ON p.id = c.post_id
+     ${filter} ORDER BY c.created_at DESC LIMIT 100`, params);
+  return rows.map((r) => ({ id: r.id, userId: r.user_id, postId: r.post_id, category: r.category, ruleCode: r.rule_code, body: r.post_body || '', image: r.post_image || null,
+    strike: r.strike, action: r.action, status: r.review_status, note: r.review_note, createdAt: iso(r.created_at),
+    member: { id: r.user_id, name: r.member_name, handle: r.member_handle, status: r.member_status } }));
+}
+
+export async function reviewModerationCase(ctx: Ctx, id: string, input: { decision?: unknown; note?: unknown }) {
+  const decision = String(input.decision || '');
+  const note = clean(input.note, 1000);
+  if (!['confirmed', 'reversed'].includes(decision)) fail(400, 'INVALID_FIELD', 'decision');
+  if (note.length < 3) fail(400, 'REASON_REQUIRED');
+  await ctx.sql.tx(async (tx) => {
+    const [caseRow] = await tx.query(`SELECT * FROM moderation_cases WHERE id = $1 FOR UPDATE`, [id]);
+    if (!caseRow) fail(404, 'NOT_FOUND');
+    if (caseRow.review_status !== 'open') fail(409, 'MODERATION_CASE_REVIEWED');
+    const [user] = await tx.query(`SELECT status, moderation_strikes FROM users WHERE id = $1 FOR UPDATE`, [caseRow.user_id]);
+    if (!user) fail(404, 'NOT_FOUND');
+    if (decision === 'reversed') {
+      if (Number(user.moderation_strikes) !== Number(caseRow.strike)) fail(409, 'MODERATION_CASE_STALE');
+      await tx.query(`UPDATE users SET moderation_strikes = GREATEST(0, moderation_strikes - 1),
+        post_suspended_until = NULL, status = CASE WHEN status = 'banned' THEN 'active' ELSE status END WHERE id = $1`, [caseRow.user_id]);
+      if (caseRow.post_id) await tx.query(`UPDATE posts SET status = 'visible' WHERE id = $1 AND status = 'deleted'`, [caseRow.post_id]);
+    }
+    await tx.query(`UPDATE moderation_cases SET review_status = $1, review_note = $2, reviewed_at = now() WHERE id = $3`, [decision, note, id]);
+    await tx.query(`INSERT INTO audit (actor, action, target, detail) VALUES ('admin',$1,$2,$3)`, [`community_moderation_${decision}`, id, note]);
+  });
 }
 
 export async function resolveReport(ctx: Ctx, id: string, input: { status?: unknown; note?: unknown }) {

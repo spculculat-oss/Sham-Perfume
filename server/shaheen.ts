@@ -1,6 +1,7 @@
 import { REAL_PHOTO_INSTRUCTION, realPhotoReply } from '../src/utils/realPhotos';
 import { IMAGE_CRAFT_INSTRUCTION, IMAGE_HONESTY_INSTRUCTION } from '../src/utils/imageCraft';
 import { CONTINUITY_INSTRUCTION, contextualMessage, isContextFollowUp } from '../src/utils/conversationContext';
+import { compareLegacyContext, createUnifiedConversationContext } from '../src/utils/unifiedConversationContext';
 import { NATURAL_TALK_INSTRUCTION, PRECISE_ANSWER_INSTRUCTION, needInstruction, polishReply } from '../src/utils/naturalTalk';
 import { THINKING_CRAFT_INSTRUCTION } from '../src/utils/thinkingCraft';
 import { createResearchSpider } from '../src/utils/researchSpider';
@@ -296,20 +297,24 @@ export function voiceInstruction(voice: ChatRequest['voice'], dialect?: Dialect,
     + 'ممنوع افتتاحيات الكتابة («بالتأكيد!»، «سؤال رائع»، «إليك»، «فيما يلي»، «يسعدني») وممنوع تعيد سؤاله. '
     + 'كمّل على اللي اتقال في المحادثة: لو قال «ده» أو «الأرخص» أو «التاني» افهم يقصد إيه من كلامك اللي فات وجاوب عليه بالاسم. '
     + 'لو زعلان ابدأ بجملة تفهّم قصيرة وبعدين الحل؛ ولو مستعجل اختصر لجملة أو اتنين. '
+    + 'ممنوع تقول قبل الإجابة إنك هتتكلم بلغة معينة أو تشرح إنك هترد بالعربي/الإنجليزي؛ ابدأ بالمعلومة المطلوبة مباشرة ومن غير رسالة تمهيدية. '
     + 'ممكن تختم بسؤال قصير واحد بس لو بيكمّل النقاش. سياج sham-formula أو sham-tool لو لازم يفضل في آخر الرد زي ما هو (مش هيتقال).';
+  const reasoning = language === 'ar'
+    ? '\nحتى لو الرد قصير، راجع السؤال والسياق والأرقام قبل الإرسال. في الرأي أو الخلاف قول باختصار أقوى نقطة من كل ناحية، وبعدها رأيك وسببه ودرجة ثقتك. لو الزائر اعترض راجع كلامك بإنصاف: صحّح واعترف لو هو صح، أو اثبت على الدليل بهدوء لو أنت صح؛ ما توافقش لمجرد إرضائه. لو الدليل مش كفاية قول «مش متأكد»، وما تكتبش خطوات تفكيرك الداخلية.'
+    : '\nEven in a short spoken answer, check the question, context and any figures. For opinions or disputes, briefly give the strongest point on each side, then your view, reason and confidence. If the visitor objects, re-check fairly: admit and correct an error, or calmly keep a well-supported answer; never agree merely to please. Say plainly when unsure, and never reveal private chain-of-thought.';
   const group = !dialect || dialect === 'egyptian' ? 'egyptian' : dialect === 'gulf' || dialect === 'levantine' || dialect === 'msa' ? dialect : 'other';
   const ex = TALK_EXAMPLES[group];
   // Another site language: the same talk rules, in that language as its people say it (not Arabic, not a translation).
   const own = language === 'ar' ? '' : `\nالمحادثة بلغة الزائر (${SUPPORTED_LANGUAGES.find((lang) => lang.code === language)?.name || language}): طبّق القواعد دي بلغته هو مش بالعربي — `
-    + 'كلام طبيعي زي ما أهل بلده بيتكلموا مش ترجمة حرفية، والأرقام والأسعار والوحدات بالكلمات زي ما بتتقال في لغته، وأسماء الماركات بنطقها المعروف عندهم.';
+    + 'كلام طبيعي زي ما أهل بلده بيتكلموا مش ترجمة حرفية، والأرقام والأسعار والوحدات بالكلمات زي ما بتتقال في لغته، وأسماء الماركات بنطقها المعروف عندهم. Never announce the language or add a spoken preamble; start directly with the answer.';
   const pair = language !== 'ar' ? own : `\nمثال للفرق (الفكرة بس، مش المنتجات ولا الأسعار): لما زائر قال «${ex.asked}» — رد مكتوب غلط في الصوت: «${ex.written}» — `
     + `والرد الصح المتقال: «${ex.said}». ولما كمّل وقال «${ex.follow}» — الصح: «${ex.followSaid}».`;
   // «شاهين بيتعلم من المنصات»: how the platforms answered spoken questions in this dialect before (style only).
   const examples = voice.examples?.length
     ? `\nأمثلة لأسلوب ردودك الصوتية قبل كده (للأسلوب والطول بس، مش للمعلومة): ${voice.examples.map((e) => `«${e.replace(/[«»]/g, '"')}»`).join(' ')}`
     : '';
-  if (!voice.interrupted) return `\n${spoken}${pair}${examples}`;
-  return `\n${spoken}${pair}${examples}\nالزائر قاطعك وإنت بتقول: «${voice.interrupted.replace(/[«»]/g, '"')}». ما تكمّلش الكلام القديم ولا تعيده؛ رد على كلامه الجديد على طول. لو طلب منك تسكت أو تختصر أو تغيّر الموضوع، نفّذ ده.`;
+  if (!voice.interrupted) return `\n${spoken}${reasoning}${pair}${examples}`;
+  return `\n${spoken}${reasoning}${pair}${examples}\nالزائر قاطعك وإنت بتقول: «${voice.interrupted.replace(/[«»]/g, '"')}». ما تكمّلش الكلام القديم ولا تعيده؛ رد على كلامه الجديد على طول. لو طلب منك تسكت أو تختصر أو تغيّر الموضوع، نفّذ ده.`;
 }
 
 export function systemInstruction(language: SupportedLanguage, extra = '', style?: 'fast' | 'deep', talk?: Pick<ChatRequest, 'dialect' | 'voice'> & Partial<Pick<ChatRequest, 'region'>>): string {
@@ -326,7 +331,7 @@ export function systemInstruction(language: SupportedLanguage, extra = '', style
 أجب باللغة المطلوبة: ${languageName} (${language}).${regionLine} اتبع سياق الحوار وأجب عن السؤال مباشرة. إذا طلب المستخدم تصميم عطر وذكر اتجاهه أو مكوناته الرئيسية (مثل عود وورد) أو الحجم أو التركيز، فقدّم فوراً مقترحاً تجريبياً كاملاً بنسب واضحة مع سياج sham-formula، ثم اختم بسؤال أو سؤالين اختياريين لتحسينه؛ لا تؤجل التركيبة بأسئلة توضيحية. اسأل قبل التركيبة فقط إذا لم يذكر أي اتجاه عطري أو مكون، وإذا نقص الحجم أو التركيز فاستخدم قيمة شائعة (50 مل، EDP 20%) واذكر أنها قابلة للتعديل.
 لا تستخدم LaTeX أبداً: لا علامات $ ولا أوامر مثل \\frac أو \\times أو \\text. اكتب المعادلات نصاً عادياً بالرموز × و÷ و= و≈، مثل: كمية الكحول = 70 × 1000 ÷ 96 ≈ 729 مل.
 كن واضحاً وودوداً، واتعامل كخبير طبيعي في حوار متصل: افهم المقصود من الكلام والسياق، ${dialectInstruction(talk?.dialect || 'egyptian').replace(/\.$/, '')}، وادخل في الإجابة من غير مقدمات آلية أو تكرار السؤال. اسأل سؤال توضيح واحداً بس لما يلزم. حلل داخلياً، ولا تعرض سلسلة تفكيرك.
-${talk?.voice ? '' : `${NATURAL_TALK_INSTRUCTION}\n${THINKING_CRAFT_INSTRUCTION}\n`}قبل الرد افحص صلة الإجابة بالسؤال ومدى دعمها بمراجع شاهين الموثقة أو بمصادر البحث المتاحة؛ قارن المعلومات، واستبعد الخارج عن الموضوع أو المتعارض أو غير المدعوم. لو الدليل مش كفاية، قول إنك مش متأكد بدل ما تعرضه كحقيقة مدققة.
+${talk?.voice ? `${THINKING_CRAFT_INSTRUCTION}\n` : `${NATURAL_TALK_INSTRUCTION}\n${THINKING_CRAFT_INSTRUCTION}\n`}قبل الرد افحص صلة الإجابة بالسؤال ومدى دعمها بمراجع شاهين الموثقة أو بمصادر البحث المتاحة؛ قارن المعلومات، واستبعد الخارج عن الموضوع أو المتعارض أو غير المدعوم. لو الدليل مش كفاية، قول إنك مش متأكد بدل ما تعرضه كحقيقة مدققة.
 ما تعرضش أسماء المصادر أو روابطها تلقائياً؛ أظهرها فقط لما المستخدم يطلبها صراحة، ولا تخترع مرجعاً أو رابطاً. عند طلب المصادر، اعرض الروابط التي وصلت فعلاً فقط ووضّح إن الرابط لا يعني اعتماداً من متخصص.
 كن واضحاً وودوداً. استخدم Markdown بسيطاً عند الحاجة: عناوين قصيرة بـ ###، نقاط، **عريض**، وجداول صغيرة للنِّسب. لا تدّع أنك إنسان أو طبيب أو أنك أجريت تجربة مخبرية أو استشرت محركات أخرى.
 لا تختلق مصادر أو شهادات IFRA أو نسب أمان عامة لكل المواد. السلامة تعتمد على المادة والتركيز النهائي وفئة المنتج وشهادة المورد؛ لا تضمن الأمان أو الثبات بالساعات.
@@ -427,12 +432,13 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   // When the admin does not let visitors pick, a specific request quietly becomes "auto".
   const requested = settings.allowVisitorChoice ? input.model : 'auto';
   if (requested === 'council') return executeCouncil(input, options, env, settings);
-  const style = requested === 'fast' || requested === 'deep' ? requested : undefined;
+  const style = requested === 'fast' || requested === 'deep' ? requested : input.voice ? 'fast' : undefined;
   const shopping = isShoppingTurn(input.message, input.conversationHistory);
   const shouldSearch = (requested === 'auto' || requested === 'fast' || requested === 'deep')
     && !shopping && Boolean(researchQueries(input.message, input.language));
-  let wanted = requested === 'auto' ? available
-    : style ? SHAHEEN_MODE_ORDER[style].filter((id) => available.includes(id))
+  let wanted = requested === 'auto' && input.voice ? SHAHEEN_MODE_ORDER.fast.filter((id) => available.includes(id))
+    : requested === 'auto' ? available
+      : style ? SHAHEEN_MODE_ORDER[style].filter((id) => available.includes(id))
       : available.filter((id) => id === requested);
   // A suitable knowledge question gets the live-search engine first; every configured model (including self-hosted)
   // remains in the chain as failover. Explicit provider choices are never reordered.
@@ -472,9 +478,18 @@ export async function executeChat(input: ChatRequest, options: ExecuteOptions = 
   const instructionFor = (provider: Provider) => baseInstruction + (pictureWeb ? IMAGE_WEB_INSTRUCTION : liveWeb ? LIVE_WEB_ASK_INSTRUCTION
     : generalAsk && provider !== 'gemini' ? GENERAL_WEB_ASK_INSTRUCTION : '');
   // A deep analysis plus its formula block used to be cut before the closing fence: give it room.
-  const maxTokens = style === 'fast' ? Math.min(settings.maxTokens, 1024)
-    : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
+  const maxTokens = input.voice ? Math.min(settings.maxTokens, 512)
+    : style === 'fast' ? Math.min(settings.maxTokens, 1024)
+      : style === 'deep' ? Math.min(8192, Math.max(settings.maxTokens, 6144)) : settings.maxTokens;
   const turns: ChatTurn[] = [...input.conversationHistory, { role: 'user', text: contextualMessage(input.message, input.conversationHistory) }];
+  // Shadow-only server snapshot of the exact validated legacy request turns. No response path reads this object.
+  try {
+    const unifiedShadow = createUnifiedConversationContext({
+      surface: 'shaheen',
+      turns: turns.map((turn) => ({ role: turn.role, text: turn.text, ...(turn.sources ? { sources: turn.sources } : {}) })),
+    });
+    void compareLegacyContext(turns, unifiedShadow);
+  } catch { /* Shadow-only failures must never affect the legacy answer path. */ }
   const lite = requested === 'auto' && env.SHAM_LITE_ROUTING?.trim().toLowerCase() !== 'off' && isSimpleQuestion(input);
   let timedOut = false;
   const attempt = async (provider: Provider): Promise<{ outcome: 'ok'; value: ChatAnswer } | { outcome: 'next' | 'limited'; retryMs?: number }> => {

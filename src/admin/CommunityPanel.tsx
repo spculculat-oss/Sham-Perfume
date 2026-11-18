@@ -180,6 +180,7 @@ function OverviewView({ data, go }: { data?: Any; go: (s: Sub) => void }) {
       <Stat label={T('متصلين الآن')} value={data.online} tone="text-emerald-700" />
       <Stat label={T('جدد هذا الأسبوع')} value={data.new_week} />
       <Stat label={T('موقوفين')} value={data.suspended} tone="text-rose-700" />
+      <Stat label={T('محظورون نهائيًا')} value={data.banned} tone="text-rose-900" onClick={() => go('moderation')} />
       <Stat label={T('التجار')} value={data.merchants} note={`${data.merchants_pending} ${T('للمراجعة')}`} onClick={() => go('merchants')} />
       <Stat label={T('منتجات التجار')} value={data.products} note={`${data.products_pending} ${T('للمراجعة')}`} onClick={() => go('products')} />
       <Stat label={T('طلبات مدفوعة')} value={data.orders} note={`${data.orders_to_ship} ${T('للشحن')}`} onClick={() => go('orders')} />
@@ -195,8 +196,8 @@ function OverviewView({ data, go }: { data?: Any; go: (s: Sub) => void }) {
 
 const Loading = () => <div className="flex justify-center py-10"><Loader2 className="h-6 w-6 animate-spin text-amber-600" /></div>;
 const Pill = ({ children, tone = 'bg-stone-100 text-stone-700' }: { children: React.ReactNode; tone?: string }) => <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${tone}`}>{children}</span>;
-const TONE: Record<string, string> = { active: 'bg-emerald-100 text-emerald-800', approved: 'bg-emerald-100 text-emerald-800', pending: 'bg-amber-100 text-amber-900', suspended: 'bg-rose-100 text-rose-700', rejected: 'bg-rose-100 text-rose-700', paused: 'bg-stone-100 text-stone-700', paid: 'bg-sky-100 text-sky-800', processing: 'bg-violet-100 text-violet-800', shipped: 'bg-amber-100 text-amber-900', delivered: 'bg-emerald-100 text-emerald-800', cancelled: 'bg-rose-100 text-rose-700', refunded: 'bg-rose-100 text-rose-700', open: 'bg-rose-100 text-rose-700', resolved: 'bg-emerald-100 text-emerald-800', dismissed: 'bg-stone-100 text-stone-600' };
-const STATUS_AR: Record<string, string> = { active: 'نشط', approved: 'معتمد', pending: 'للمراجعة', suspended: 'موقوف', rejected: 'مرفوض', paused: 'موقوف مؤقتاً', paid: 'مدفوع', processing: 'جاهز للشحن', shipped: 'تم الشحن', delivered: 'تم التسليم', cancelled: 'ملغي', refunded: 'مسترد', open: 'مفتوح', resolved: 'تم الحل', dismissed: 'مرفوض', awaiting_payment: 'بانتظار الدفع', user: 'عضو', merchant: 'تاجر' };
+const TONE: Record<string, string> = { active: 'bg-emerald-100 text-emerald-800', approved: 'bg-emerald-100 text-emerald-800', pending: 'bg-amber-100 text-amber-900', suspended: 'bg-rose-100 text-rose-700', banned: 'bg-rose-900 text-white', rejected: 'bg-rose-100 text-rose-700', paused: 'bg-stone-100 text-stone-700', paid: 'bg-sky-100 text-sky-800', processing: 'bg-violet-100 text-violet-800', shipped: 'bg-amber-100 text-amber-900', delivered: 'bg-emerald-100 text-emerald-800', cancelled: 'bg-rose-100 text-rose-700', refunded: 'bg-rose-100 text-rose-700', open: 'bg-rose-100 text-rose-700', resolved: 'bg-emerald-100 text-emerald-800', dismissed: 'bg-stone-100 text-stone-600' };
+const STATUS_AR: Record<string, string> = { active: 'نشط', approved: 'معتمد', pending: 'للمراجعة', suspended: 'موقوف', banned: 'محظور نهائيًا (قابل لمراجعة الإدارة)', rejected: 'مرفوض', paused: 'موقوف مؤقتاً', paid: 'مدفوع', processing: 'جاهز للشحن', shipped: 'تم الشحن', delivered: 'تم التسليم', cancelled: 'ملغي', refunded: 'مسترد', open: 'مفتوح', resolved: 'تم الحل', dismissed: 'مرفوض', awaiting_payment: 'بانتظار الدفع', user: 'عضو', merchant: 'تاجر' };
 const St = ({ s }: { s: string }) => <Pill tone={TONE[s]}>{T(STATUS_AR[s] || s)}</Pill>;
 
 function UsersView({ open }: { open: (id: string) => void }) {
@@ -345,10 +346,16 @@ function OrdersView({ onChange }: { onChange: () => void }) {
 
 function ModerationView({ open, onChange }: { open: (id: string) => void; onChange: () => void }) {
   const reports = useAdmin<Any[]>('/community/reports?status=open');
+  const cases = useAdmin<Any[]>('/community/moderation/cases?status=open');
   const [q, setQ] = useState('');
   const [query, setQuery] = useState('');
   const posts = useAdmin<Any[]>(`/community/posts?q=${encodeURIComponent(query)}`, [query]);
   const resolve = async (r: Any, status: string) => { if (await act(`/community/reports/${r.id}`, 'POST', { status })) { void reports.reload(); onChange(); } };
+  const reviewCase = async (item: Any, decision: 'confirmed' | 'reversed') => {
+    const note = prompt(T(decision === 'reversed' ? 'سبب عكس قرار الرقابة (إجباري):' : 'ملاحظة تأكيد القرار (إجباري):'));
+    if (!note || note.trim().length < 3) return;
+    if (await act(`/community/moderation/cases/${item.id}/review`, 'POST', { decision, note })) { void cases.reload(); void posts.reload(); onChange(); }
+  };
   const moderate = async (kind: 'posts' | 'comments', id: string, status: string) => { if (await act(`/community/${kind}/${id}/moderate`, 'POST', { status })) { void posts.reload(); } };
   return (
     <div className="grid gap-4 lg:grid-cols-2">
@@ -369,6 +376,20 @@ function ModerationView({ open, onChange }: { open: (id: string) => void; onChan
             </div>
           </div>
         ))}
+        <section className="space-y-2 pt-3" aria-label={T('مراجعة قرارات الرقابة الآلية')}>
+          <h3 className="font-bold">{T('مراجعة قرارات الرقابة الآلية')}</h3>
+          <p className="text-xs text-stone-500">{T('المطابقة الآلية للكلمات قد تخطئ. راجع المحتوى وملف العضو قبل التأكيد أو عكس القرار.')}</p>
+          {cases.loading ? <Loading /> : !cases.data?.length ? <p className={`${card} text-sm text-stone-500`}>{T('لا توجد قرارات آلية بانتظار المراجعة')}</p> : cases.data.map((item) => (
+            <article key={item.id} className={`${card} space-y-2 text-sm`}>
+              <div className="flex flex-wrap items-center gap-2"><Pill tone="bg-amber-100 text-amber-900">{T(item.category === 'explicit_sexual' ? 'محتوى جنسي صريح' : 'ألفاظ نابية')}</Pill><St s={item.member.status} /><span className="text-xs text-stone-500">{date(item.createdAt)}</span></div>
+              <p className="text-xs">{T('العضو')}: <button type="button" onClick={() => open(item.userId)} className="font-bold underline">{item.member.name} (@{item.member.handle})</button> · {T('المخالفة رقم')} {item.strike} · {item.action === 'site_ban' ? T('حظر من الموقع') : T('إيقاف النشر 14 يومًا')}</p>
+              <p className="font-mono text-[10px] text-stone-400">{T('معرّف المنشور')}: {item.postId || '—'} · {item.ruleCode}</p>
+              {item.body && <p className="max-h-32 overflow-auto whitespace-pre-wrap break-words rounded-lg bg-stone-50 p-2 text-xs">{item.body}</p>}
+              {item.image && <img loading="lazy" decoding="async" src={item.image} alt="" className="max-h-36 rounded-lg" />}
+              <div className="flex flex-wrap gap-2"><button type="button" onClick={() => void reviewCase(item, 'confirmed')} className={`${btn} bg-stone-100 py-1.5 text-xs`}>{T('تأكيد القرار')}</button><button type="button" onClick={() => void reviewCase(item, 'reversed')} className={`${btn} bg-emerald-700 py-1.5 text-xs text-white`}>{T('عكس القرار وإعادة المنشور')}</button></div>
+            </article>
+          ))}
+        </section>
       </div>
       <div className="space-y-2">
         <h3 className="font-bold">{T('المنشورات')}</h3>

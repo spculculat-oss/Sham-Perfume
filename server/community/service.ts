@@ -218,6 +218,7 @@ export async function login(ctx: Ctx, input: { email?: unknown; password?: unkno
     }
     fail(401, 'INVALID_LOGIN');
   }
+  if (row.status === 'banned') fail(403, 'ACCOUNT_BANNED');
   if (row.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
   if (row.status === 'deleted') fail(401, 'INVALID_LOGIN');
   await ctx.sql.query(`UPDATE users SET failed_logins = 0, locked_until = NULL WHERE id = $1`, [row.id]);
@@ -244,7 +245,8 @@ export async function loginTwoFactor(ctx: Ctx, input: { pendingToken?: unknown; 
     `SELECT pl.user_id, pl.agent, pl.ip, u.totp_secret_enc, u.totp_last, u.status FROM pending_logins pl
      JOIN users u ON u.id = pl.user_id WHERE pl.token_hash = $1 AND pl.expires_at > now()`, [tokenHash(pendingToken)]);
   if (!row) fail(401, 'INVALID_LOGIN');
-  if (row.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
+  if (row.status === 'banned') fail(403, 'ACCOUNT_BANNED');
+  if (row.status !== 'active') fail(403, 'ACCOUNT_SUSPENDED');
   const check = verifyTotp(ctx.vault.open(row.totp_secret_enc), String(input.code || ''), row.totp_last);
   if (!check.ok) { auditEvent(ctx, row.user_id, 'login_2fa_fail'); fail(401, 'INVALID_LOGIN'); }
   await ctx.sql.query(`DELETE FROM pending_logins WHERE token_hash = $1`, [tokenHash(pendingToken)]);
@@ -594,7 +596,8 @@ export async function passkeyLoginFinish(ctx: Ctx, input: { challengeId?: unknow
   await ctx.sql.query(`UPDATE webauthn_challenges SET used_at = now() WHERE id = $1`, [String(input.challengeId)]);
   await ctx.sql.query(`UPDATE passkeys SET sign_count = $1, last_used_at = now() WHERE id = $2`, [verified.signCount, pk.id]);
   const [u] = await ctx.sql.query(`SELECT status FROM users WHERE id = $1`, [ch.user_id]);
-  if (u?.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
+  if (u?.status === 'banned') fail(403, 'ACCOUNT_BANNED');
+  if (u?.status !== 'active') fail(403, 'ACCOUNT_SUSPENDED');
   auditEvent(ctx, ch.user_id, 'login_ok', '', 'passkey');
   return { ...(await startSession(ctx, ch.user_id, agent || 'passkey', ip)), me: await me(ctx, ch.user_id) };
 }
@@ -667,6 +670,7 @@ async function oauthFindOrCreate(ctx: Ctx, email: string, name: string, provider
     [row] = await ctx.sql.query(`SELECT id, status FROM users WHERE email_idx = $1`, [ctx.vault.index(email)]);
   }
   if (row) {
+    if (row.status === 'banned') fail(403, 'ACCOUNT_BANNED');
     if (row.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
     if (row.status === 'deleted') fail(401, 'INVALID_LOGIN');
     await ctx.sql.query(`UPDATE users SET ${col} = $1 WHERE id = $2`, [linked, row.id]);
@@ -692,7 +696,8 @@ export async function loginWithGoogle(ctx: Ctx, input: { idToken?: unknown; acce
   if (!info) fail(401, 'OAUTH_INVALID', 'google');
   const userId = await oauthFindOrCreate(ctx, info!.email, info!.name, 'google', info!.subject, info!.picture);
   const [u] = await ctx.sql.query(`SELECT totp_enabled, phone_2fa_enabled, phone_2fa_method, status FROM users WHERE id = $1`, [userId]);
-  if (u?.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
+  if (u?.status === 'banned') fail(403, 'ACCOUNT_BANNED');
+  if (u?.status !== 'active') fail(403, 'ACCOUNT_SUSPENDED');
   if (u?.totp_enabled || u?.phone_2fa_enabled) {
     const { token: pending, hash } = newToken();
     await ctx.sql.query(`INSERT INTO pending_logins (token_hash, user_id, agent, ip, expires_at) VALUES ($1,$2,$3,$4,$5)`, [hash, userId, clean(agent, 200), clean(ip, 64), new Date(Date.now() + PENDING_LOGIN_MS).toISOString()]);
@@ -714,7 +719,8 @@ export async function loginWithFacebook(ctx: Ctx, input: { accessToken?: unknown
   if (!info) fail(401, 'OAUTH_INVALID', 'facebook');
   const userId = await oauthFindOrCreate(ctx, info!.email, info!.name, 'facebook', info!.subject, info!.picture);
   const [u] = await ctx.sql.query(`SELECT totp_enabled, phone_2fa_enabled, phone_2fa_method, status FROM users WHERE id = $1`, [userId]);
-  if (u?.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
+  if (u?.status === 'banned') fail(403, 'ACCOUNT_BANNED');
+  if (u?.status !== 'active') fail(403, 'ACCOUNT_SUSPENDED');
   if (u?.totp_enabled || u?.phone_2fa_enabled) {
     const { token: pending, hash } = newToken();
     await ctx.sql.query(`INSERT INTO pending_logins (token_hash, user_id, agent, ip, expires_at) VALUES ($1,$2,$3,$4,$5)`, [hash, userId, clean(agent, 200), clean(ip, 64), new Date(Date.now() + PENDING_LOGIN_MS).toISOString()]);
@@ -887,7 +893,8 @@ export async function verifyPhoneLoginCode(ctx: Ctx, input: { pendingToken?: unk
     `SELECT pl.user_id, pl.agent, pl.ip, u.status FROM pending_logins pl JOIN users u ON u.id = pl.user_id WHERE pl.token_hash = $1 AND pl.expires_at > now()`,
     [tokenHash(pendingToken)]);
   if (!row) fail(401, 'INVALID_LOGIN');
-  if (row.status === 'suspended') fail(403, 'ACCOUNT_SUSPENDED');
+  if (row.status === 'banned') fail(403, 'ACCOUNT_BANNED');
+  if (row.status !== 'active') fail(403, 'ACCOUNT_SUSPENDED');
   if (!(await checkCode(ctx, row.user_id, 'phone_2fa', String(input.code || '')))) { auditEvent(ctx, row.user_id, 'login_2fa_fail'); fail(401, 'CODE_INVALID'); }
   await ctx.sql.query(`DELETE FROM pending_logins WHERE token_hash = $1`, [tokenHash(pendingToken)]);
   await ctx.sql.query(`UPDATE users SET phone_2fa_last = $1 WHERE id = $2`, [Date.now().toString(36), row.user_id]);

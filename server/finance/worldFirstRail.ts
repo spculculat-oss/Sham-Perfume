@@ -15,7 +15,7 @@ import {
 import { linkView } from './worldFirstLink';
 
 function isSettlement(value: SaleSettlement | undefined): value is SaleSettlement {
-  return Boolean(value && value.id && (value.status === 'queued' || value.status === 'approved') 
+  return Boolean(value && value.id && (value.status === 'queued' || value.status === 'approved')
     && Number.isSafeInteger(value.customerPaidMinor) && Number.isSafeInteger(value.profitMinor)
     && value.legs.every((leg) => Number.isSafeInteger(leg.amountMinor)));
 }

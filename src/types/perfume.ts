@@ -35,6 +35,11 @@ export interface CostingState {
 }
 
 export interface CalculationResult {
+  /** v1 math status and assumptions; old saved formulas remain valid without this metadata. */
+  calculationStatus?: 'valid' | 'invalid';
+  calculationErrors?: string[];
+  calculationWarnings?: string[];
+  massEstimateStatus?: 'estimated' | 'unavailable';
   oilVolumeMl: number;
   oilWeightGrams: number;
   oilPercent: number;

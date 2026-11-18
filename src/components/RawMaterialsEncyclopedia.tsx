@@ -13,9 +13,12 @@ import {
   Scale,
   Sparkles,
   Layers,
+  Bookmark,
+  GitCompareArrows,
 } from 'lucide-react';
 import { RAW_MATERIALS_DATABASE, RawMaterialItem } from '../data/rawMaterials';
 import { PyramidNote } from '../types/perfume';
+import type { ProjectIngredient } from '../types/fragranceProject';
 import { SupportedLanguage } from '../types/i18n';
 import { getLocalizedRawMaterial, getCommonLabel, isRTL } from '../لغات/localizedContent';
 import { LText, makeT, fmt } from '../لغات/localize';
@@ -461,6 +464,9 @@ Seviye: {level}
 interface RawMaterialsEncyclopediaProps {
   currentLang?: SupportedLanguage;
   onAddMaterialToPyramid: (note: PyramidNote) => void;
+  favoriteMaterialIds?: string[];
+  onToggleFavorite?: (materialId: string) => void;
+  onAddIngredientToProject?: (ingredient: ProjectIngredient) => void;
   /** A material Shaheen was asked about: the encyclopedia opens filtered on it. */
   initialSearch?: string;
 }
@@ -468,10 +474,15 @@ interface RawMaterialsEncyclopediaProps {
 export const RawMaterialsEncyclopedia: React.FC<RawMaterialsEncyclopediaProps> = ({
   currentLang = 'ar',
   onAddMaterialToPyramid,
+  favoriteMaterialIds = [],
+  onToggleFavorite,
+  onAddIngredientToProject,
   initialSearch = '',
 }) => {
   const [search, setSearch] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const [comparisonIds, setComparisonIds] = useState<string[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
 
@@ -498,9 +509,15 @@ export const RawMaterialsEncyclopedia: React.FC<RawMaterialsEncyclopediaProps> =
 
     const matchesCategory =
       selectedCategory === 'all' || item.category === selectedCategory;
+    const matchesFavorite = !favoritesOnly || favoriteMaterialIds.includes(item.id);
 
-    return matchesSearch && matchesCategory;
+    return matchesSearch && matchesCategory && matchesFavorite;
   });
+
+  const comparedMaterials = RAW_MATERIALS_DATABASE.filter((item) => comparisonIds.includes(item.id));
+  const toggleComparison = (id: string) => setComparisonIds((current) => current.includes(id)
+    ? current.filter((itemId) => itemId !== id)
+    : current.length < 3 ? [...current, id] : current);
 
   const handleCopySpecs = (item: RawMaterialItem) => {
     const localized = getLocalizedRawMaterial(item, currentLang);
@@ -594,7 +611,26 @@ export const RawMaterialsEncyclopedia: React.FC<RawMaterialsEncyclopediaProps> =
             </button>
           ))}
         </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button type="button" disabled={!onToggleFavorite} onClick={() => setFavoritesOnly((value) => !value)} className={`rounded-xl border px-3 py-2 text-xs font-bold ${favoritesOnly ? 'border-amber-700 bg-amber-50 text-amber-900' : 'border-stone-200 bg-white text-stone-700'} disabled:cursor-not-allowed disabled:opacity-50`}>
+            <Bookmark className="me-1 inline h-3.5 w-3.5" />{currentLang === 'ar' ? 'المفضلة في المشروع' : 'Project favorites'} ({favoriteMaterialIds.length})
+          </button>
+          {!onToggleFavorite && <span className="text-xs text-stone-500">{currentLang === 'ar' ? 'اختر مشروعًا لحفظ المفضلة.' : 'Select a project to save favorites.'}</span>}
+        </div>
       </div>
+
+      {comparedMaterials.length > 0 && <section className="rounded-2xl border border-amber-200 bg-amber-50/60 p-4" aria-label={currentLang === 'ar' ? 'مقارنة المواد' : 'Material comparison'}>
+        <h3 className="mb-3 font-bold">{currentLang === 'ar' ? 'مقارنة وصفية (حتى 3 مواد)' : 'Descriptive comparison (up to 3 materials)'}</h3>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{comparedMaterials.map((item) => {
+          const localized = getLocalizedRawMaterial(item, currentLang);
+          return <article key={item.id} className="rounded-xl bg-white p-3 text-xs">
+            <div className="flex items-start justify-between gap-2"><strong>{localized.nameAr} <span className="font-normal text-stone-500">/ {localized.nameEn}</span></strong><button type="button" onClick={() => toggleComparison(item.id)} className="text-stone-500" aria-label={currentLang === 'ar' ? 'إزالة من المقارنة' : 'Remove from comparison'}>×</button></div>
+            <p className="mt-2"><b>{currentLang === 'ar' ? 'العائلة' : 'Family'}:</b> {localized.olfactoryFamily}</p>
+            <p className="mt-1"><b>{currentLang === 'ar' ? 'الملف الوصفي' : 'Profile'}:</b> {localized.scentProfile}</p>
+          </article>;
+        })}</div>
+        <p className="mt-2 text-[11px] text-stone-600">{currentLang === 'ar' ? 'مقارنة وصفية لبيانات الدليل الحالي فقط؛ ليست توصية سلامة أو أداء.' : 'Descriptive comparison of the current catalog only; not a safety or performance recommendation.'}</p>
+      </section>}
 
       {/* Materials Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -626,6 +662,23 @@ export const RawMaterialsEncyclopedia: React.FC<RawMaterialsEncyclopediaProps> =
                       CAS: {item.casNumber}
                     </span>
                   )}
+                </div>
+                <div className="flex gap-2">
+                  <button type="button" disabled={!onToggleFavorite} aria-pressed={favoriteMaterialIds.includes(item.id)} onClick={() => onToggleFavorite?.(item.id)} className="rounded-lg border px-2 py-1 text-[10px] disabled:opacity-40" title={currentLang === 'ar' ? 'حفظ كمفضلة في المشروع المحدد' : 'Save as favorite in selected project'}>
+                    <Bookmark className="me-1 inline h-3 w-3" />{favoriteMaterialIds.includes(item.id) ? (currentLang === 'ar' ? 'محفوظ' : 'Saved') : (currentLang === 'ar' ? 'مفضلة' : 'Favorite')}
+                  </button>
+                  <button type="button" aria-pressed={comparisonIds.includes(item.id)} onClick={() => toggleComparison(item.id)} className="rounded-lg border px-2 py-1 text-[10px]">
+                    <GitCompareArrows className="me-1 inline h-3 w-3" />{comparisonIds.includes(item.id) ? (currentLang === 'ar' ? 'محدد للمقارنة' : 'Comparing') : (currentLang === 'ar' ? 'قارن' : 'Compare')}
+                  </button>
+                  {onAddIngredientToProject && <button type="button" onClick={() => onAddIngredientToProject({
+                    id: globalThis.crypto?.randomUUID?.() ?? `project-material-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+                    materialId: item.id,
+                    name: currentLang === 'ar' ? localized.nameAr : localized.nameEn,
+                    role: 'other',
+                    percentage: 0,
+                  })} className="rounded-lg border border-amber-300 px-2 py-1 text-[10px] font-bold text-amber-900" title={currentLang === 'ar' ? 'يضيف الاسم فقط؛ أدخل النسبة والكثافة بنفسك' : 'Adds the name only; enter percentage and density yourself'}>
+                    {currentLang === 'ar' ? 'أضف للمكوّنات' : 'Add to formula'}
+                  </button>}
                 </div>
 
                 {/* Chemical & Olfactory Specs */}

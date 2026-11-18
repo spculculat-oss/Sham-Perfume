@@ -20,6 +20,7 @@ export function SectionsGateway({ currentLang, onNavigate }: Props) {
   const Arrow = SUPPORTED_LANGUAGES.find((l) => l.code === currentLang)?.dir === 'rtl' ? ArrowLeft : ArrowRight;
   const perfumeTools = [
     { tab: 'concentration', label: ui('nav_calc', currentLang), icon: Calculator },
+    { tab: 'studio', label: currentLang === 'ar' ? 'استوديو المشاريع' : 'Project Studio', icon: FlaskConical },
     { tab: 'raw_materials', label: ui('nav_raw_materials', currentLang), icon: Database },
     { tab: 'perfume_designers', label: designersText(currentLang, 'hubButton'), icon: PenLine },
     { tab: 'store?section=perfumes', label: ct('sectionPerfumes'), icon: Store },

@@ -119,6 +119,15 @@ test('simple questions use the light Gemini model; formulas and conversations ke
   assert.match(urls[2], /gemini-2\.5-flash-lite:/);
   await executeChat({ message: 'ما هو العنبر؟', model: 'auto', language: 'ar', conversationHistory: [] }, { env: { ...env, SHAM_LITE_ROUTING: 'off' }, fetch, settings });
   assert.doesNotMatch(urls[3], /lite/);
+
+  const voiceSettings = { ...SHAHEEN_SITE_SETTINGS, engines: ['claude' as const, 'gemini' as const], maxTokens: 4096 };
+  await executeChat({ message: 'ما هو العنبر؟', model: 'auto', language: 'ar', conversationHistory: [], voice: {} }, {
+    env: { GEMINI_API_KEY: 'g-test', ANTHROPIC_API_KEY: 'a-test' }, fetch, settings: voiceSettings,
+  });
+  assert.match(urls[4], /generativelanguage\.googleapis\.com/, 'spoken auto turns use the quick model order');
+  assert.ok(bodies[4].generationConfig.maxOutputTokens <= 1536, 'spoken answers have a capped generation budget');
+  const voiceSystem = bodies[4].systemInstruction?.parts?.[0]?.text || bodies[4].contents[0].parts[0].text;
+  assert.match(voiceSystem, /ممنوع تقول قبل الإجابة إنك هتتكلم بلغة معينة/);
 });
 
 test('Gemma is the last Gemini-key fallback, with the instruction folded into the first turn', () => {

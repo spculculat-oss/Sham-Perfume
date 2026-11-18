@@ -359,6 +359,8 @@ export function createCommunityRouter(community: Community, options: { env?: Env
   router.get(`${A}/orders`, boss((ctx, req) => admin.orders(ctx, req.query.status)));
   router.post(`${A}/orders/:id/status`, boss(async (ctx, req) => { await admin.setOrderStatus(ctx, p(req, 'id'), req.body?.status, String(req.body?.note || '')); }));
   router.get(`${A}/posts`, boss((ctx, req) => admin.posts(ctx, req.query)));
+  router.get(`${A}/moderation/cases`, boss((ctx, req) => admin.moderationCases(ctx, req.query.status)));
+  router.post(`${A}/moderation/cases/:id/review`, boss(async (ctx, req) => { await admin.reviewModerationCase(ctx, p(req, 'id'), req.body || {}); }));
   router.post(`${A}/posts/:id/moderate`, boss(async (ctx, req) => { await admin.moderate(ctx, 'post', p(req, 'id'), req.body?.status, String(req.body?.note || '')); }));
   router.post(`${A}/comments/:id/moderate`, boss(async (ctx, req) => { await admin.moderate(ctx, 'comment', p(req, 'id'), req.body?.status, String(req.body?.note || '')); }));
   router.post(`${A}/content/:kind/:id/moderate`, boss(async (ctx, req) => {

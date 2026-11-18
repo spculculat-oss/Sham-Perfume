@@ -3,7 +3,7 @@ import test from 'node:test';
 import express from 'express';
 import type { AddressInfo } from 'node:net';
 import { strFromU8, unzipSync } from 'fflate';
-import { askTurns, createWorkspaceRouter, htmlToText, isPrivateAddress, readPage, ReadError, workspaceInstruction } from '../server/workspace';
+import { askTurns, asksCurrentDateTime, createWorkspaceRouter, dateTimeSearchQuery, htmlToText, isPrivateAddress, readPage, ReadError, workspaceInstruction } from '../server/workspace';
 import { codeBlocks, fileNameFor, imageRequest, previewDocument, segments, stripImageRequest } from '../src/workspace/codeBlocks';
 import { cellNumber, parseMarkdown, slidesOf, tablesOf } from '../src/workspace/markdownDoc';
 import { printHtml, safeFileName, xlsxBytes } from '../src/workspace/officeWriters';
@@ -73,6 +73,13 @@ test('workspace: the conversation keeps context, attaches files to the last ques
   assert.doesNotMatch(turns[2]!.text, /bad/);
   assert.throws(() => askTurns({ messages: [{ role: 'user', text: 'q' }, { role: 'assistant', text: 'a' }] }), (e: unknown) => e instanceof ReadError && e.status === 400);
   assert.throws(() => askTurns({ messages: 'nope' }), ReadError);
+});
+
+test('workspace: current date/time queries are live and use Cairo only when no place was specified', () => {
+  for (const q of ['الوقت دلوقتي كام؟', 'إيه تاريخ النهارده؟', 'what time is it?', "what's today's date?"]) assert.equal(asksCurrentDateTime(q), true, q);
+  assert.equal(asksCurrentDateTime('What is the best time to wear perfume?'), false);
+  assert.match(dateTimeSearchQuery('الوقت دلوقتي كام؟'), /القاهرة، مصر/);
+  assert.equal(dateTimeSearchQuery('what time is it in London?', 'en'), 'what time is it in London?');
 });
 
 test('workspace: Shaheen is a general assistant and never names an AI vendor', () => {
@@ -145,6 +152,42 @@ test('workspace routes: the ask route answers with the engine and adds numbered 
     assert.ok(limited.some((r) => r.status === 429), 'the ask route is rate limited');
   });
   assert.ok(calls.some((u) => u.includes('openai')));
+});
+
+test('workspace route: current date/time is answered from Google Search only, even when regular search is off', async () => {
+  let googleQuery = '';
+  const fetcher = (async (url: string, init?: RequestInit) => {
+    if (String(url).includes('generativelanguage.googleapis.com')) {
+      const body = JSON.parse(String(init?.body || '{}')) as { contents?: Array<{ parts?: Array<{ text?: string }> }>; tools?: unknown[] };
+      googleQuery = body.contents?.[0]?.parts?.[0]?.text || '';
+      assert.deepEqual(body.tools, [{ google_search: {} }]);
+      return new Response(JSON.stringify({ candidates: [{
+        content: { parts: [{ text: 'It is 3:15 PM on November 13, 2026 in Cairo.' }] },
+        groundingMetadata: { groundingChunks: [{ web: { title: 'Google time result', uri: 'https://time.example/cairo' } }] },
+      }] }), { headers: { 'content-type': 'application/json' } });
+    }
+    throw new Error(`Unexpected fallback request: ${url}`);
+  }) as unknown as typeof fetch;
+  await withServer({ GEMINI_API_KEY: 'google-test-key' }, fetcher, async (base) => {
+    const response = await post(`${base}/ask`, { messages: [{ role: 'user', text: 'What time is it?' }], language: 'en', search: false });
+    assert.equal(response.status, 200);
+    const result = await response.json() as { reply: string; via?: string; sources: Array<{ url: string }> };
+    assert.match(result.reply, /3:15 PM/);
+    assert.equal(result.via, 'search');
+    assert.equal(result.sources[0]?.url, 'https://time.example/cairo');
+    assert.match(googleQuery, /Cairo, Egypt/);
+  });
+});
+
+test('workspace route: if Google cannot verify the clock, it refuses to guess or use a different source', async () => {
+  const fetcher = (async () => { throw new Error('offline'); }) as typeof fetch;
+  await withServer({ GEMINI_API_KEY: 'google-test-key' }, fetcher, async (base) => {
+    const response = await post(`${base}/ask`, { messages: [{ role: 'user', text: 'الوقت دلوقتي كام؟' }], language: 'ar' });
+    assert.equal(response.status, 200);
+    const result = await response.json() as { reply: string; sources: unknown[] };
+    assert.match(result.reply, /مش قادر أوصل لبحث Google/);
+    assert.deepEqual(result.sources, []);
+  });
 });
 
 test('workspace code: blocks, runnable kinds, preview pages and the image request', () => {

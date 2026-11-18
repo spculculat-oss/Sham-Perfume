@@ -47,6 +47,8 @@ test('the seed ships a document for each platform feature, including the ones ad
   assert.match(docs.get('kb-platform-suggestions')!.content, /لا.*مشاعر|مشاعر.*لا/);
   assert.match(docs.get('kb-platform-shaheen-voice')!.content, /المتصفح|التعرف على الكلام/);
   assert.match(docs.get('kb-platform-shaheen-voice')!.content, /لا يسجل أو يرفع/);
+  assert.match(docs.get('kb-platform-assistant-voice')!.content, /المساعد العام|الشات العام/);
+  assert.match(docs.get('kb-platform-assistant-voice')!.content, /بصوت بشري|صوت بشري/);
   // The model prompt gets the live map and the real shipping table, never a copied list.
   assert.match(platformCatalog('en'), /Molecule Studio/);
   assert.match(platformCatalog('ar'), /حاسبة التركيز/);
@@ -96,6 +98,18 @@ test('a v4 store receives only the new voice guide without overwriting merchant 
   assert.equal((await store.get('settings', 'core'))!.knowledgeSeedVersion, KNOWLEDGE_SEED_VERSION);
 });
 
+test('a v13 store receives the new public-chat voice guide without replacing existing docs', async () => {
+  const store = new MemoryStore();
+  await store.put('settings', 'core', { ...defaultSettings(), id: 'core', knowledgeSeedVersion: 13 });
+  const oldVoice = { ...defaultKnowledge().find((doc) => doc.id === 'kb-platform-shaheen-voice')!, content: 'merchant-edited voice guide' };
+  await store.put('knowledge', oldVoice.id, oldVoice);
+  const repo = new Repository(store, {});
+  await repo.ready();
+  const docs = await repo.knowledge();
+  assert.ok(docs.some((doc) => doc.id === 'kb-platform-assistant-voice'));
+  assert.equal(docs.find((doc) => doc.id === oldVoice.id)?.content, oldVoice.content);
+});
+
 test('knowledgeSeedAdditions only lists what a given version introduced', () => {
   const fresh = knowledgeSeedAdditions(1);
   assert.ok(fresh.length >= 12);
@@ -104,8 +118,8 @@ test('knowledgeSeedAdditions only lists what a given version introduced', () => 
   assert.deepEqual(knowledgeSeedAdditions(KNOWLEDGE_SEED_VERSION), []);
   // Existing v2 stores get the v3 store guide; v3 stores get the v4 suggestions and v5 voice guides.
   assert.ok(knowledgeSeedAdditions(2).some((d) => d.id.startsWith('kb-store-')), 'v3 adds the store guide');
-  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions', 'kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools']);
-  assert.deepEqual(knowledgeSeedAdditions(4).map((d) => d.id), ['kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools'], 'v5 adds the Shaheen voice-chat guide');
+  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions', 'kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice']);
+  assert.deepEqual(knowledgeSeedAdditions(4).map((d) => d.id), ['kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice'], 'later guides include the public voice-chat guide');
 });
 
 test('the router recognises platform questions and never reads an English word as an order reference', () => {
@@ -126,6 +140,8 @@ test('the router recognises platform questions and never reads an English word a
     ['how do I send feedback?', 'visitor_suggestions'],
     ['إزاي أتكلم مع شاهين بصوت؟', 'shaheen_voice'],
     ['how do I use Shaheen voice chat?', 'shaheen_voice'],
+    ['ازاي أتكلم مع مساعد شام بالصوت؟', 'assistant_voice'],
+    ['voice chat with sham assistant', 'assistant_voice'],
     ['دليل المنصة', undefined],
     ['إيه الجديد في المنصة؟', undefined],
   ];
