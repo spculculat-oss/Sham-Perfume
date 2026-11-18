@@ -8,9 +8,10 @@ import { anchorPair, learnedLine, teachingPair } from '../utils/sayWords';
 import { tunedVoice, type VoiceMood } from '../utils/voiceMood';
 import { resolveDialect, saveDialectChoice, savedDialectChoice, type Dialect, type DialectChoice } from '../utils/arabicDialect';
 import { currentStoreCountry } from '../utils/storeCheckout';
+import { initialTalkLanguage, languageAfterSentence, saveTalkLanguage, savedTalkLanguage, sayAgainLine, writtenLanguage } from '../utils/talkLanguage';
 import { learnablePair, planVoiceTurn, readingsFrom, type PendingConfirm } from '../utils/heardFix';
 import { spokenReply, wantsMore } from '../utils/spokenReply';
-import { addressee, askDoneLine, finishedAnswer, joinTurn, learnBarge, patienceLine, restOfReply, saveBargeMemory, savedBargeMemory, settleUnsure, turnState, type BargeMemory } from '../utils/turnTaking';
+import { addressee, askDoneLine, finishedAnswer, joinTurn, learnBarge, restOfReply, saveBargeMemory, savedBargeMemory, settleUnsure, turnState, type BargeMemory } from '../utils/turnTaking';
 import { baseLexicon, buildLexicon, type Lexicon } from '../utils/shaheenSpelling';
 import { isStaticHosting, requestApi } from '../utils/api';
 import { activeVoicePrint, bargeDecision, deleteVoicePrint, earSupported, openEar, otherVoice, savedVoicePrint, saveVoicePrint,
@@ -184,6 +185,14 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const [bargeEnabled, setBargeEnabledState] = useState(true);
   const [dialectChoice, setDialectChoiceState] = useState<DialectChoice>('auto');
   const [bargedIn, setBargedIn] = useState(0);
+  // «يسمع ويرد بلغته»: the language of THIS conversation — the one he speaks, not necessarily the page's.
+  const [talkChoice, setTalkChoice] = useState<SupportedLanguage | null>(null);
+  const talkLanguage: SupportedLanguage = talkChoice ?? language;
+  const siteLanguageRef = useRef(language);
+  /** His sentences understood in this conversation (the first ones may still move it to the other language). */
+  const understoodRef = useRef(0);
+  /** He was already asked once «قول تاني» after a switch: no more back and forth in this conversation. */
+  const askedAgainRef = useRef(false);
 
   const activeRef = useRef(false);
   const listeningRef = useRef(false);
@@ -191,7 +200,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   const waitingRef = useRef(false);
   const disabledRef = useRef(disabled);
   const loadingRef = useRef(isLoading);
-  const languageRef = useRef(language);
+  const languageRef = useRef<SupportedLanguage>(language);
   const messagesRef = useRef(messages);
   const onSendRef = useRef(onSend);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -278,19 +287,41 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
   }, []);
   // The dialect this conversation is in: his pick → his own words → his Arab country → Egyptian.
   const dialect: Dialect | undefined = useMemo(() => {
-    if (language !== 'ar') return undefined;
+    if (talkLanguage !== 'ar') return undefined;
     const said = messages.filter((message) => message.role === 'user').slice(-4).reverse().map((message) => message.text);
     return resolveDialect({ choice: dialectChoice, texts: said, country: currentStoreCountry() });
-  }, [dialectChoice, language, messages]);
+  }, [dialectChoice, talkLanguage, messages]);
   useEffect(() => { dialectRef.current = dialect; }, [dialect]);
   useEffect(() => {
     // «بلغة بلده ولهجتها»: Arabic in his dialect's accent, any other language in his country's accent (fr-CA, es-MX …).
-    localeRef.current = speechLocaleFor(language, currentStoreCountry(), dialect);
-  }, [dialect, language]);
-  useEffect(() => { setNoVoice(false); }, [language]);
+    localeRef.current = speechLocaleFor(talkLanguage, currentStoreCountry(), dialect);
+  }, [dialect, talkLanguage]);
+  useEffect(() => { setNoVoice(false); }, [talkLanguage]);
+  // Another page language chosen: the conversation starts again from it (his own words still move it).
+  useEffect(() => { if (siteLanguageRef.current !== language) { siteLanguageRef.current = language; setTalkChoice(null); } }, [language]);
   useEffect(() => { disabledRef.current = disabled; }, [disabled]);
   useEffect(() => { loadingRef.current = isLoading; }, [isLoading]);
-  useEffect(() => { languageRef.current = language; }, [language]);
+  useEffect(() => { languageRef.current = talkLanguage; }, [talkLanguage]);
+  /**
+   * The conversation moves to `next` NOW (the refs at once, so the very next sentence is heard in it): the microphone,
+   * Shaheen's short lines and his voice. `remember` keeps it for his next conversation on this device.
+   */
+  const switchTalk = useCallback((next: SupportedLanguage, remember: boolean) => {
+    languageRef.current = next;
+    const country = currentStoreCountry();
+    if (next === 'ar' && !dialectRef.current) dialectRef.current = resolveDialect({ choice: savedDialectChoice(), country });
+    if (next !== 'ar') dialectRef.current = undefined;
+    localeRef.current = speechLocaleFor(next, country, next === 'ar' ? dialectRef.current : undefined);
+    setTalkChoice(next);
+    if (remember) saveTalkLanguage(next);
+  }, []);
+  /** The language a text is SAID in: its own when plainly Arabic or English (never Arabic words in an English voice). */
+  const voiceFor = useCallback((text: string): { language: SupportedLanguage; dialect?: Dialect } => {
+    const written = writtenLanguage(text);
+    const said: SupportedLanguage = written ?? languageRef.current;
+    if (said !== 'ar') return { language: said };
+    return { language: 'ar', dialect: dialectRef.current || resolveDialect({ choice: savedDialectChoice(), country: currentStoreCountry() }) };
+  }, []);
   useEffect(() => { messagesRef.current = messages; }, [messages]);
   useEffect(() => { onSendRef.current = onSend; }, [onSend]);
   useEffect(() => { onAskRef.current = onAsk; }, [onAsk]);
@@ -481,6 +512,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     const candidate = candidateRef.current;
     if (!candidate || !speakingRef.current || !activeRef.current) { dropCandidate(); return; }
     candidate.timer = null;
+    // A second went by and no words came (a sound, his own echo, a cough): he never stops or holds for that — he goes
+    // on from the very word he is on, at his normal volume. Only words are judged.
+    if (!candidate.said.trim()) { dropCandidate(); return; }
     const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
     const memory = bargeMemoryRef.current;
     const verdict = addressee(candidate.said, memory);
@@ -549,7 +583,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     watch.continuous = true;
     watch.interimResults = true;
     watch.maxAlternatives = 1;
-    watch.onspeechstart = () => { if (bargeRecognitionRef.current === watch) considerBargeRef.current(''); };
+    // A sound alone proves nothing here (on a phone it is often his own voice coming back from the speaker): only the
+    // visitor's WORDS (below, his own reply's echo taken out) are judged. The computer's ear decides sounds by itself.
+    watch.onspeechstart = null;
     watch.onresult = (event) => {
       if (bargeRecognitionRef.current !== watch || sequence !== speechSequenceRef.current) return;
       let heard = '';
@@ -618,8 +654,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       if (failed) setNoVoice(true);
       onComplete();
     };
+    const said = voiceFor(text);
     const handle = playHumanSpeech(talk, {
-      language: languageRef.current, ...(dialectRef.current ? { dialect: dialectRef.current } : {}), gender,
+      language: said.language, ...(said.dialect ? { dialect: said.dialect } : {}), gender,
       mood: tune.mood === 'upset' || tune.mood === 'low' ? 'calm' : tune.mood === 'hurried' ? 'quick' : 'warm',
       rate: choice.rate / 0.96, clipFor: clipFinder(gender),
       onChunk: (chunk, index, groups) => {
@@ -632,7 +669,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       onEnd: () => end(false), onError: () => end(true),
     });
     if (!over) { localStopRef.current = handle; replyHandleRef.current = handle; }
-  }, [cancelSpeech, stopBargeWatch]);
+  }, [cancelSpeech, stopBargeWatch, voiceFor]);
 
   const scheduleListening = useCallback((delay = 250) => {
     clearListenTimer();
@@ -676,24 +713,6 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     }
     setReplyReady(true);
   }, [clearPendingTurn, scheduleListening]);
-
-  /**
-   * «استنى شوية هدخل أشوف البيانات»: one short line said while he really looks something up (the store, prices,
-   * stock, delivery…). Not a reply: the reply cuts it off as soon as it is ready.
-   */
-  const sayWhileLooking = useCallback((line: string) => {
-    // «ثواني أدخل أشوفلك البيانات»: in his human voice (a recorded clip when there is one); the reply's cancelSpeech()
-    // cuts it off like any other speech. Silence is fine when it cannot play: the chat shows the same line.
-    if (speakingRef.current) return;
-    const gender = clipGender(voiceChoiceRef.current.gender);
-    localStopRef.current?.();
-    const clear = () => { setSpokenText((now) => (now === line ? '' : now)); };
-    localStopRef.current = playHumanSpeech([sayItRight(line)], {
-      language: languageRef.current, ...(dialectRef.current ? { dialect: dialectRef.current } : {}), gender,
-      rate: voiceChoiceRef.current.rate / 0.96, clipFor: clipFinder(gender),
-      onChunk: () => setSpokenText(line), onEnd: clear, onError: clear,
-    });
-  }, []);
 
   const sendRecognizedText = useCallback(async (rawText: string, confidence?: number) => {
     const said = rawText.replace(/\s+/g, ' ').trim();
@@ -766,18 +785,16 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     }
     const started = beginOutgoingTurn();
     if (!started) return;
+    // Understood and sent: this conversation's language is settled (and kept for his next one on this device).
+    understoodRef.current += 1;
+    saveTalkLanguage(languageRef.current);
     for (const fix of plan.heard) if (fix.confirmed) saveHeardFix(fix.from, fix.to);
     const text = plan.text;
     setLastHeard(text);
-    if (plan.filler) sayWhileLooking(plan.filler);
-    // «اصبر عليا هراجع البيانات»: the answer is taking a while — he says so (once), and the answer cuts it off.
+    // «شيل جملة الانتظار خالص» (the owner, 2026-11-17): no «One moment, let me check the details» / «اصبر عليا شوية»
+    // before the reply any more — it came out in the wrong language and, fetched late, sometimes over the next reply.
+    // He waits quietly; the reply itself is the first thing he says.
     clearPatience();
-    if (!plan.filler) {
-      patienceTimerRef.current = setTimeout(() => {
-        patienceTimerRef.current = null;
-        if (waitingRef.current && activeRef.current && !speakingRef.current) sayWhileLooking(patienceLine(languageRef.current, dialectRef.current));
-      }, 2600);
-    }
     const turn: ShaheenVoiceTurn = {
       ...(interruptedRef.current ? { interrupted: interruptedRef.current } : {}),
       ...(plan.heard.length ? { heard: plan.heard } : {}),
@@ -789,7 +806,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     } catch {
       finishOutgoingTurn(false);
     }
-  }, [beginOutgoingTurn, cancelRecognition, clearListenTimer, clearPatience, finishOutgoingTurn, maxMessageLength, sayWhileLooking, scheduleListening, speakReply]);
+  }, [beginOutgoingTurn, cancelRecognition, clearListenTimer, clearPatience, finishOutgoingTurn, maxMessageLength, scheduleListening, speakReply]);
 
   /** The visitor's turn is complete: all its pieces, in order, gathered into one message. */
   const sendTurn = useCallback((confidence?: number) => {
@@ -881,6 +898,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     let finalText = '';
     let interimText = '';
     let confidence: number | undefined;
+    let spoke = false;
     let recognition: SpeechRecognitionLike;
     try {
       recognition = new Recognition();
@@ -897,7 +915,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       listeningRef.current = true;
       setListening(true);
     };
-    recognition.onspeechstart = () => { speechHeardRef.current = true; setHearing(true); };
+    recognition.onspeechstart = () => { spoke = true; speechHeardRef.current = true; setHearing(true); };
     recognition.onspeechend = () => setHearing(false);
     recognition.onresult = (event) => {
       speechHeardRef.current = true;
@@ -983,6 +1001,29 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
           saveVoicePrint(better);
         }
       }
+      // «يسمع بلغته»: words that came back in another language move the conversation to it; a sentence heard badly in
+      // his first words, when the other language is likely for him, moves it too — and he is asked to say it again
+      // (in the new language) instead of answering words he never said.
+      if (!confirmRef.current && (heard || spoke)) {
+        const move = languageAfterSentence({
+          heard, confidence: heard ? confidence : 0.1, current: languageRef.current, site: siteLanguageRef.current,
+          country: currentStoreCountry(), deviceLanguages: typeof navigator !== 'undefined' ? navigator.languages || [] : [],
+          understood: understoodRef.current,
+        });
+        if (move.switchTo && !(move.askAgain && askedAgainRef.current)) {
+          switchTalk(move.switchTo, !move.askAgain);
+          if (move.askAgain) {
+            askedAgainRef.current = true;
+            turnPartsRef.current = [];
+            askedDoneRef.current = false;
+            waitingMoreRef.current = false;
+            clearSilenceTimer();
+            setInterim('');
+            speakReply(sayAgainLine(move.switchTo), () => scheduleListening(250));
+            return;
+          }
+        }
+      }
       setInterim(heard);
       // The engine's own sureness only counts when the visitor's words were all heard by it (not merged with the
       // interruption listener's).
@@ -1009,7 +1050,7 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       setListening(false);
       fail('microphone');
     }
-  }, [askIfDone, clearSilenceTimer, fail, handleTurnPiece, learnCut, scheduleListening, sendTurn, speakReply]);
+  }, [askIfDone, clearSilenceTimer, fail, handleTurnPiece, learnCut, scheduleListening, sendTurn, speakReply, switchTalk]);
 
   useEffect(() => { startListeningRef.current = startListening; }, [startListening]);
 
@@ -1033,13 +1074,22 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setInterim('');
     setLastHeard('');
     confirmRef.current = null;
+    // «يسمع بلغته من أول جملة»: what he wrote in this chat → his choice last time → the page (or Arabic for a visitor
+    // plainly from an Arab country on an Arabic device).
+    understoodRef.current = 0;
+    askedAgainRef.current = false;
+    const typed = [...messagesRef.current].reverse().filter((message) => message.role === 'user').map((message) => message.text);
+    switchTalk(initialTalkLanguage({
+      site: siteLanguageRef.current, saved: savedTalkLanguage(), typed, country: currentStoreCountry(),
+      deviceLanguages: typeof navigator !== 'undefined' ? navigator.languages || [] : [],
+    }), false);
     printRef.current = activeVoicePrint();
     openVoiceEar();
     void loadVoiceWords().then(({ lexicon, shared }) => { lexiconRef.current = lexicon; sharedFixesRef.current = shared; }).catch(() => undefined);
     // This runs from the user's confirmation click, which is required by browser microphone permission.
     startListeningRef.current();
     return true;
-  }, [cancelSpeech, clearListenTimer, clearPendingTurn, openVoiceEar]);
+  }, [cancelSpeech, clearListenTimer, clearPendingTurn, openVoiceEar, switchTalk]);
 
   /** Mute or unmute the microphone without ending the conversation (a reply being read keeps playing). */
   const toggleMute = useCallback(() => {
@@ -1277,10 +1327,11 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setInterim('');
     // «شاهين بيتكلم مش بيقرا»: the reply said the way people talk, and a long one only up to «تحب أكمّلك الباقي؟».
     // A whole answer (about 90 words) before «تحب أكمّلك الباقي؟» — a shorter cut felt like he stopped mid-answer.
-    const spoken = spokenReply(response.text, { language: languageRef.current, dialect: dialectRef.current, words: 90, locale: localeRef.current });
+    const replyVoice = voiceFor(response.text);
+    const spoken = spokenReply(response.text, { language: replyVoice.language, dialect: replyVoice.dialect, words: 90, opener: true, locale: speechLocaleFor(replyVoice.language, currentStoreCountry(), replyVoice.dialect) });
     restRef.current = spoken.rest;
     speakReply(spoken.say || response.text, () => scheduleListening(350));
-  }, [active, clearPendingTurn, isLoading, messages, replyReady, scheduleListening, speakReply, waiting]);
+  }, [active, clearPendingTurn, isLoading, messages, replyReady, scheduleListening, speakReply, voiceFor, waiting]);
 
   useEffect(() => () => {
     activeRef.current = false;
@@ -1348,6 +1399,13 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setPrintOn,
     deletePrint,
     language,
+    /** «بيسمع بلغة إيه»: the conversation's language now, and one tap to change it (kept on this device). */
+    talkLanguage,
+    setTalkLanguage: (next: SupportedLanguage) => {
+      switchTalk(next, true);
+      // Listening now: start again in the new language at once.
+      if (activeRef.current && recognitionRef.current) { cancelRecognition(); scheduleListening(120); }
+    },
     voices,
     voiceChoice,
     setVoiceChoice,

@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-16T07:38:00.596Z",
+ "updatedAt": "2026-11-18T14:52:48.779Z",
  "programs": [
   {
    "id": "school-day",
@@ -8,7 +8,7 @@
    "goal": "امتحان وتسميع وحفظ في الذاكرة كل 6 ساعات",
    "schedule": "every 6 hours",
    "runner": "school",
-   "createdAt": "2026-11-13T03:32:55.883Z",
+   "createdAt": "2026-11-18T14:54:53.788Z",
    "blocks": [
     {
      "kind": "action",
@@ -68,7 +68,7 @@
    "goal": "فحص وصيانة الموقع يومياً قبل الذروة",
    "schedule": "daily 08:00",
    "runner": "patrol",
-   "createdAt": "2026-11-13T03:32:55.883Z",
+   "createdAt": "2026-11-18T14:54:53.788Z",
    "blocks": [
     {
      "kind": "note",
@@ -162,7 +162,7 @@
    "goal": "كل أداة تتطور في مجالها بالتناوب",
    "schedule": "weekly mon 09:00",
    "runner": "school",
-   "createdAt": "2026-11-13T03:32:55.883Z",
+   "createdAt": "2026-11-18T14:54:53.788Z",
    "blocks": [
     {
      "kind": "loop",
@@ -198,7 +198,7 @@
    "goal": "شاهين يدير نفسه بنفسه بدون أي تطبيق ذكاء آخر",
    "schedule": "every 12 hours",
    "runner": "patrol",
-   "createdAt": "2026-11-13T03:32:55.883Z",
+   "createdAt": "2026-11-18T14:54:53.788Z",
    "blocks": [
     {
      "kind": "note",
@@ -263,6 +263,48 @@
   }
  ],
  "runs": [
+  {
+   "program": "tool-dev",
+   "at": "2026-11-18T14:42:35.838Z",
+   "ok": true,
+   "steps": 8,
+   "failed": 0
+  },
+  {
+   "program": "school-day",
+   "at": "2026-11-18T14:42:35.838Z",
+   "ok": true,
+   "steps": 5,
+   "failed": 0
+  },
+  {
+   "program": "ai-self",
+   "at": "2026-11-18T14:39:58.112Z",
+   "ok": true,
+   "steps": 8,
+   "failed": 0
+  },
+  {
+   "program": "site-care",
+   "at": "2026-11-18T14:39:58.112Z",
+   "ok": true,
+   "steps": 12,
+   "failed": 0
+  },
+  {
+   "program": "ai-self",
+   "at": "2026-11-16T20:45:46.871Z",
+   "ok": true,
+   "steps": 8,
+   "failed": 0
+  },
+  {
+   "program": "site-care",
+   "at": "2026-11-16T20:45:46.871Z",
+   "ok": true,
+   "steps": 12,
+   "failed": 0
+  },
   {
    "program": "ai-self",
    "at": "2026-11-16T07:38:00.596Z",
@@ -497,48 +539,6 @@
   {
    "program": "ai-self",
    "at": "2026-11-01T16:20:18.525Z",
-   "ok": true,
-   "steps": 8,
-   "failed": 0
-  },
-  {
-   "program": "school-day",
-   "at": "2026-11-01T12:59:26.095Z",
-   "ok": true,
-   "steps": 5,
-   "failed": 0
-  },
-  {
-   "program": "site-care",
-   "at": "2026-11-01T08:30:27.386Z",
-   "ok": true,
-   "steps": 12,
-   "failed": 0
-  },
-  {
-   "program": "ai-self",
-   "at": "2026-11-01T03:32:16.932Z",
-   "ok": true,
-   "steps": 8,
-   "failed": 0
-  },
-  {
-   "program": "school-day",
-   "at": "2026-11-01T01:20:56.093Z",
-   "ok": true,
-   "steps": 5,
-   "failed": 0
-  },
-  {
-   "program": "school-day",
-   "at": "2026-10-31T18:54:19.556Z",
-   "ok": true,
-   "steps": 5,
-   "failed": 0
-  },
-  {
-   "program": "ai-self",
-   "at": "2026-10-31T15:18:01.883Z",
    "ok": true,
    "steps": 8,
    "failed": 0

@@ -4,12 +4,12 @@ import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
 import { ShaheenMedia } from '../components/ShaheenMedia';
 import { MotionCard } from './MotionCard';
 import { wantsMotion } from './motion';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Brain, Copy, Globe, Loader2, Paperclip, Plus, Save, Send, Square, Volume2, X } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { ShaheenMarkdown } from '../components/ShaheenMarkdown';
 import { readAloud } from '../utils/readAloud';
-import { askStream, errorKey, imageErrorKey, makeImage, isGeneratedImageData, type WsContextFile, type WsSource } from './workspaceApi';
+import { askStream, errorKey, serverReachable, imageErrorKey, makeImage, isGeneratedImageData, type WsContextFile, type WsSource } from './workspaceApi';
 import { imageRequest, segments, stripImageRequest, type CodeBlock } from './codeBlocks';
 import { parseImageRequest } from '../utils/imageCraft';
 import { drawOrPaint } from './paint';
@@ -17,12 +17,25 @@ import { fitForUpload } from './motion';
 import { CodeCard } from './CodeCard';
 import { ExportMenu } from './ExportMenu';
 import { MAX_FILE_BYTES, saveFile } from './fileStore';
+import { isPictureFile, pickAttachment, readPictureText, readScannedPages } from '../utils/attachmentPick';
 import { fileText } from './fileText';
 import { safeFileName } from './officeWriters';
 import { parseMarkdown } from './markdownDoc';
 import { wsText, type WsKey } from './strings';
 import { pickArEn } from '../لغات/localize';
 import { useSmoothText } from '../hooks/useSmoothText';
+import { useShaheenVoiceMode, type ShaheenVoiceMessage } from '../hooks/useShaheenVoiceMode';
+import { ShaheenVoiceModeButton } from '../components/ShaheenVoiceModeButton';
+import { ShaheenVoiceStage } from '../components/ShaheenVoiceStage';
+import { askMessages } from '../utils/heardFix';
+
+/**
+ * «صوت شاهين في المساحة»: the same voice conversation as the site chat sees the workspace chat as finished turns
+ * (a reply still being written is not spoken yet; it is read once it is whole). Items without an id get their place.
+ */
+export function voiceTurns(items: readonly ChatItem[]): ShaheenVoiceMessage[] {
+  return items.flatMap((item, index) => (item.streaming ? [] : [{ id: item.id || `ws-${item.role}-${index}`, role: item.role, text: stripImageRequest(item.text) }]));
+}
 
 export interface ChatItem { role: 'user' | 'assistant'; text: string; sources?: WsSource[]; image?: string; files?: string[]; error?: boolean; regenerateImage?: boolean; painted?: 'whole' | 'partial'; imageNote?: ReturnType<typeof imageErrorKey>;
   /** The reply is still being written (never saved in this state). */
@@ -54,10 +67,10 @@ function LiveReply({ text, streaming, lang, onOpenEditor, onAskFix, onGrow }: {
   );
 }
 
-export function ChatPanel({ lang, items, setItems, attachments, setAttachments, onOpenEditor, onOpenBlocks, offline }: {
+export function ChatPanel({ lang, items, setItems, attachments, setAttachments, onOpenEditor, onOpenBlocks, offline, onReached }: {
   lang: SupportedLanguage; items: ChatItem[]; setItems: React.Dispatch<React.SetStateAction<ChatItem[]>>;
   attachments: WsContextFile[]; setAttachments: React.Dispatch<React.SetStateAction<WsContextFile[]>>;
-  onOpenEditor: (block: CodeBlock) => void; onOpenBlocks?: (tool: ToolSpec) => void; offline: boolean;
+  onOpenEditor: (block: CodeBlock) => void; onOpenBlocks?: (tool: ToolSpec) => void; offline: boolean; onReached?: () => void;
 }) {
   const w = (k: WsKey) => wsText(lang, k);
   const [input, setInput] = useState('');
@@ -88,9 +101,31 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
 
   const say = (i: number, text: string) => { setFlash({ i, text }); setTimeout(() => setFlash(null), 1800); };
 
-  const send = async (raw = input) => {
+  // The voice conversation (src/hooks/useShaheenVoiceMode.ts): what he says goes through `send` like typed text.
+  const voiceSendRef = useRef<(text: string) => Promise<boolean>>(async () => false);
+  const voiceMessages = useMemo(() => voiceTurns(items), [items]);
+  const voice = useShaheenVoiceMode({
+    language: lang,
+    messages: voiceMessages,
+    isLoading: busy,
+    disabled: !serverReachable(),
+    onSend: (text) => voiceSendRef.current(text),
+    onAsk: (heard, question) => setItems((list) => [...list, ...askMessages(heard, question, lang).map((m) => ({ id: m.id, role: m.role, text: m.text }))]),
+  });
+  useEffect(() => { if (voice.active) { stopSpeech.current?.(); setSpeaking(null); } }, [voice.active]);
+
+  const send = async (raw = input, fromVoice = false): Promise<boolean> => {
     const text = raw.trim();
-    if (!text || busy) return;
+    if (!text || busy) return false;
+    // Typed while the voice conversation is on: the reply is spoken too.
+    const voiceTurn = !fromVoice && voice.beginOutgoingTurn();
+    try { await ask(text); } catch { if (voiceTurn) voice.finishOutgoingTurn(false); return false; }
+    if (voiceTurn) voice.finishOutgoingTurn(true);
+    return true;
+  };
+  voiceSendRef.current = (text) => send(text, true);
+
+  const ask = async (text: string) => {
     const files = attachments;
     const next: ChatItem[] = [...items, { role: 'user', text, ...(files.length ? { files: files.map((f) => f.name) } : {}) }];
     setItems(next);
@@ -137,6 +172,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
         throw error;
       }
       if (controller.signal.aborted) { dropDraft(); return; }
+      onReached?.();
       // Only generate when the assistant supplies an explicit image request; do not override refusals.
       const wanted = imageRequest(out.reply);
       // The finished reply takes the draft's place (same bubble, so the words already on screen do not jump).
@@ -168,7 +204,16 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
     for (const file of Array.from(list).slice(0, 6)) {
       if (file.size > MAX_FILE_BYTES) { setItems((p) => [...p, { role: 'assistant', text: `${file.name}: ${w('too_big')}`, error: true }]); continue; }
       void saveFile(file.name, file, file.type).catch(() => undefined);
-      const text = await fileText(file, file.name);
+      let text = await fileText(file, file.name).catch(() => '');
+      // «استقبال الملفات»: a photo or a scanned PDF has no text inside — its words are read like Shaheen's chat reads pictures.
+      if (text.replace(/\s+/g, '').length < 20 && (isPictureFile(file) || /\.pdf$/i.test(file.name))) {
+        const read = await pickAttachment(file).then(async (picked) => {
+          if (picked.kind === 'image') { const r = await readPictureText(picked.dataUrl, lang); return r ? [r.text, r.description].filter(Boolean).join('\n\n') : ''; }
+          if (picked.text) return picked.text;
+          return picked.scans?.length ? (await readScannedPages(picked.scans, lang))?.text || '' : '';
+        }).catch(() => '');
+        if (read.trim()) text = read;
+      }
       if (!text.trim()) { setItems((p) => [...p, { role: 'assistant', text: `${file.name}: ${w('no_text')}`, error: true }]); continue; }
       setAttachments((prev) => [...prev.filter((f) => f.name !== file.name), { name: file.name, text }]);
     }
@@ -188,6 +233,8 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
 
   return (
     <div className="flex flex-col gap-3" data-testid="ws-chat">
+      {/* The voice conversation stays in view at the top while the replies are written below it. */}
+      {voice.active && <div className="sticky top-0 z-30 overflow-hidden rounded-2xl shadow-lg" data-testid="ws-voice-stage"><ShaheenVoiceStage language={lang} voice={voice} /></div>}
       <div className="space-y-3 min-h-[260px]">
         {!items.length && (
           <div className="rounded-2xl border border-amber-100 bg-amber-50/60 p-4 text-sm leading-relaxed text-stone-700">{w('welcome')}</div>
@@ -237,7 +284,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
         <div ref={endRef} />
       </div>
 
-      {offline && <p className="rounded-xl bg-amber-50 p-3 text-[12px] text-amber-900">{w('no_server')}</p>}
+      {offline && <p className="rounded-xl bg-amber-50 p-3 text-[12px] text-amber-900" data-testid="workspace-offline">{w(serverReachable() ? 'reconnecting' : 'no_server')}</p>}
       {attachments.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {attachments.map((f) => (
@@ -259,6 +306,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
           <button type="button" onClick={() => setDeep((v) => !v)} aria-pressed={deep} title={w('deep_hint')} data-testid="ws-deep" className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-[12px] font-bold cursor-pointer ${deep ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-stone-200 text-stone-700'}`}><Brain className="h-3.5 w-3.5" />{w('deep_toggle')}</button>
           <button type="button" onClick={() => { abort.current?.abort(); setItems([]); setAttachments([]); }} className="inline-flex items-center gap-1 rounded-xl border border-stone-200 px-2.5 py-1.5 text-[12px] font-bold text-stone-700 cursor-pointer"><Plus className="h-3.5 w-3.5" />{w('new_chat')}</button>
           <span className="flex-1" />
+          <div className="relative" data-testid="ws-voice"><ShaheenVoiceModeButton language={lang} voice={voice} disabled={!serverReachable()} /></div>
           {busy
             ? <button type="button" onClick={() => abort.current?.abort()} className="inline-flex items-center gap-1 rounded-xl bg-rose-700 px-3.5 py-1.5 text-[12px] font-black text-white cursor-pointer"><Square className="h-3.5 w-3.5" />{w('stop')}</button>
             : <button type="button" onClick={() => { void send(); }} disabled={!input.trim()} data-testid="ws-send" className="inline-flex items-center gap-1 rounded-xl bg-amber-800 px-3.5 py-1.5 text-[12px] font-black text-white hover:bg-amber-900 disabled:opacity-50 cursor-pointer"><Send className="h-3.5 w-3.5" />{w('send')}</button>}

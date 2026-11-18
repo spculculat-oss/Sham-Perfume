@@ -134,7 +134,40 @@ export const NEED_HINT: Record<VisitorNeed, string> = {
   undecided: 'الشخص محتار بين اختيارات: رشّح اختيار واحد واضح بسببه الحقيقي، واذكر بديل واحد وإمتى يبقى أنسب. ما ترصّش كل الاحتمالات وتسيبه محتار، وما تضغطش عليه.',
 };
 /** The line added to the instructions for this turn ('' when his words ask for nothing special). */
-export function needInstruction(message: string): string {
+export function needInstruction(message: string, { answered = true }: { answered?: boolean } = {}): string {
+  // A correction is the most important thing to understand in this turn (before his mood) — after an answer only.
+  const focus = answered ? correctionFocus(message) : undefined;
+  if (focus) return correctionInstruction(focus);
   const need = readNeed(message);
   return need ? `\n${NEED_HINT[need]}` : '';
 }
+
+/* ───────────────────── «التدقيق في المطلوب»: answer what was asked, exactly ───────────────────── */
+
+/**
+ * «لا أنا ما بتكلمش عن كده، أنا بقولك…» (the owner, 2026-11-16): the visitor corrects what Shaheen understood. The
+ * last answer missed; the question meant is the one after «بقولك / قصدي / I mean» (or the whole message).
+ */
+export function correctionFocus(message: string): string | undefined {
+  const text = flat(message).replace(/\s+/g, ' ').trim();
+  if (text.length > 1500) return undefined;
+  const correcting = /(?:^|\s)(?:مش|ما|م)\s*(?:ب|بت)?(?:تكلم|اتكلم|كلمتك|اقصد|قصدي|سالت|سالتك|بسال|بسالك)(?:ش)?\s*(?:عن|علي|في)?\s*(?:كده|كدا|ده|دا|دي|ذلك|هذا|الموضوع ده)?|مش (?:ده|دا|دي|كده|كدا) (?:قصدي|اللي (?:انا )?(?:بسال|سالت|عايزه|قصدته|بقوله))|مش ده سؤالي|فهمتني غلط|فهمت غلط|مفهمتنيش|ما فهمتنيش|انت مش فاهمني|(?:^|\s)(?:انا|انت)?\s*بقول ?لك(?!\s*(?:ايه|اي|حاجه))|(?:^|\s)قصدي|(?:^|\s)سؤالي (?:هو|كان)|\bi(?:'m| am) not (?:talking|asking) about\b|\bthat'?s not what i (?:meant|asked|mean)\b|\bnot what i (?:meant|asked)\b|\byou misunderstood\b|\bi mean\b|\bwhat i(?:'m| am) asking is\b/.test(text);
+  if (!correcting) return undefined;
+  // The question meant: what follows the last «بقولك / قصدي / سؤالي / I mean …» — or the whole message.
+  const marker = /(?:بقول ?لك(?!\s*(?:ايه|اي|حاجه))|قصدي|سؤالي (?:هو|كان)|اللي (?:انا )?بساله|\bi mean\b|\bwhat i(?:'m| am) asking is\b|\bmy question (?:is|was)\b)\s*(?:ان|إن|هو|is|that)?\s*/gi;
+  let last = -1; let end = 0;
+  for (const m of message.matchAll(new RegExp(marker.source.replace(/ا/g, '[اأإآ]'), 'giu'))) { last = m.index!; end = m.index! + m[0].length; }
+  const after = last >= 0 ? message.slice(end).trim() : '';
+  return (after.length >= 8 ? after : message.trim()).slice(0, 600);
+}
+
+/** The line for a correcting turn: drop what was misunderstood, answer the question meant — and only it. */
+export function correctionInstruction(focus: string): string {
+  return `\nالشخص بيصحح فهمك لسؤاله: ردك اللي فات ماكانش على المقصود. ماتكررش اللي قلته وماتطوّلش في الاعتذار (كلمة زي «تمام، فهمتك» كفاية). السؤال المقصود بالظبط: «${focus.replace(/[«»]/g, '"')}». حدّد إيه الفرق بينه وبين اللي فهمته غلط، وجاوب عليه هو بس: لو سؤال «هل…؟» ابدأ بالإجابة الصريحة (أيوه / لأ / جزئياً) في أول سطر وبعدها السبب، واهتم بكل قيد فيه (زي «بالشكل اللي موجود حالياً»، «بالظبط»، فترة زمنية أو مكان).`;
+}
+
+/**
+ * «زوّد التدقيق في الإجابة»: every answer starts from what was really asked — the kind of question and every limit
+ * in it — and never drifts to a nearby, more general subject.
+ */
+export const PRECISE_ANSWER_INSTRUCTION = `\nقبل ما ترد: حدّد السؤال بالظبط — نوعه (هل؟ / إمتى؟ / ليه؟ / إزاي؟ / مقارنة / رأي) وكل قيد فيه (زمن، مكان، «زي اللي موجود حالياً»، «بالظبط»، كمية) — وجاوب عليه هو مش على موضوع قريب منه أو أعم. سؤال «هل…؟» يبدأ بالإجابة الصريحة في أول سطر. فرّق بين المفاهيم القريبة (مثلاً «العطور عند الفراعنة» مش هي «صناعة العطور الحديثة بالكحول والتقطير»). لو السؤال له معنيين حقيقيين ومش واضح أنهي، اسأل سؤال توضيح واحد قصير بدل ما تخمّن.`;

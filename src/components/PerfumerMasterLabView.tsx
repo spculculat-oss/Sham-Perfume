@@ -38,7 +38,7 @@ import { isStaticHosting } from '../utils/api';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { ShaheenModesPanel, ShaheenServiceStatus, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
 import { ShaheenMarkdown, stripFormulaBlock } from './ShaheenMarkdown';
-import { ChatImageCard, ImageAttachButton, ImagePickPreview, useImagePick } from './ShaheenImagePicker';
+import { ChatFileCard, ChatImageCard, ImageAttachButton, ImagePickPreview, attachmentForSend, useImagePick } from './ShaheenImagePicker';
 import { ShaheenMedia } from './ShaheenMedia';
 import { ShaheenDrawing } from './ShaheenDrawing';
 import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
@@ -52,7 +52,7 @@ import { ShaheenVoiceModeButton } from './ShaheenVoiceModeButton';
 import { ShaheenVoiceStage } from './ShaheenVoiceStage';
 import { copyChatText } from '../utils/clipboard';
 import { useReadAloud } from '../hooks/useReadAloud';
-import { askMessages, lookingUpLine } from '../utils/heardFix';
+import { askMessages } from '../utils/heardFix';
 
 interface PerfumerMasterLabViewProps {
   currentLang?: SupportedLanguage;
@@ -313,7 +313,6 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
   });
   useEffect(() => { if (voice.active) stopReading(); }, [voice.active, stopReading]);
   // «ثواني أشوفلك البيانات»: while he really looks the question up (store, prices, stock…), he says so.
-  const lookingUp = isLoading ? lookingUpLine(messages, currentLang, voice.dialect) : undefined;
 
   // Multi-AI Model Orchestrator State
   const [comparingMsgId, setComparingMsgId] = useState<string | null>(null);
@@ -382,7 +381,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     try {
       const sent = await sendMessage({ text, model: overrideModel || selectedModel, language: currentLang,
         errorText: (error) => chatErrorText(currentLang, error), ...(fromVoice ? { voice: voiceTurnInfo || {} } : {}),
-        ...(picture ? { image: { dataUrl: picture.dataUrl, thumb: picture.thumb, name: picture.name } } : {}) });
+        ...attachmentForSend(picture) });
       if (voiceTurn) voice.finishOutgoingTurn(sent !== false);
       return sent !== false;
     } catch {
@@ -702,6 +701,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                   ) : (
                     <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-line font-sans break-words space-y-2" dir="auto">
                       {m.image && <ChatImageCard image={m.image} lang={currentLang} />}
+{m.file && <ChatFileCard file={m.file} lang={currentLang} />}
                       {activeDisplayContent}
                     </div>
                   )}
@@ -925,7 +925,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
                   <span>{L('loading_status')}</span>
                 </div>
                 <p className="text-xs text-amber-800 leading-relaxed" aria-live="polite">
-                  {lookingUp || compoundingPhrases[compoundingStep]}
+                  {compoundingPhrases[compoundingStep]}
                 </p>
                 {busy && (
                   <p role="status" className="rounded-lg bg-amber-100/80 px-2 py-1.5 text-[11px] font-semibold leading-relaxed text-amber-900">{busyNoteText(currentLang)}</p>

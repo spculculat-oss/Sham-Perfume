@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-13T03:28:49.274Z",
+ "updatedAt": "2026-11-18T14:52:12.800Z",
  "sources": [
   {
    "id": "arabianoud-com",
@@ -153,30 +153,30 @@
    "host": "afnan.com",
    "name": "Afnan Perfumes Global",
    "base": "https://afnan.com",
-   "status": "paused",
+   "status": "active",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T12:47:21.705Z",
-   "attempts": 2,
-   "vettedAt": "2026-10-18T15:10:56.723Z",
-   "sampleOk": 6,
+   "attempts": 3,
+   "vettedAt": "2026-11-18T14:41:57.700Z",
+   "sampleOk": 7,
    "sampleTotal": 7,
    "currency": "AED",
-   "rateToEgp": 14.5568,
+   "rateToEgp": 14.6275,
    "productPattern": "^https?://(?:[a-z0-9-]+\\.)*afnan\\.com/products/[^?#]+$",
    "sitemaps": [
     "https://afnan.com/sitemap_agentic_discovery.xml",
-    "https://afnan.com/sitemap_products_1.xml?from=7742169841757&to=8245054046301",
+    "https://afnan.com/sitemap_products_1.xml?from=7742169841757&to=15495047807069",
     "https://afnan.com/sitemap_pages_1.xml?from=102178160733&to=123977498717",
-    "https://afnan.com/sitemap_collections_1.xml?from=292429889629&to=312174248029",
+    "https://afnan.com/sitemap_collections_1.xml?from=292429889629&to=513044873309",
     "https://afnan.com/sitemap_blogs_1.xml",
     "https://afnan.com/sitemap_articles_1.xml"
    ],
    "via": "generic",
-   "productsEstimate": 102,
+   "productsEstimate": 120,
    "trust": {
     "score": 57,
     "verdict": "weak",
-    "at": "2026-10-18T15:10:56.723Z",
+    "at": "2026-11-18T14:41:57.700Z",
     "checks": [
      {
       "id": "age",
@@ -207,7 +207,7 @@
       "ok": true,
       "points": 15,
       "max": 15,
-      "detail": "الموقع الرسمي لماركة Afnan + عنوان"
+      "detail": "الموقع الرسمي لماركة Afnan Perfumes + عنوان"
      },
      {
       "id": "returns",
@@ -269,10 +269,10 @@
      }
     ],
     "flags": [],
-    "registeredAt": "1999-09-17T01:54:15.000Z"
+    "registeredAt": "1999-09-17T01:54:15.000Z",
+    "vouched": true
    },
-   "region": "arab",
-   "reason": "ملف الثقة ضعيف (57/100): ينقصه بيانات التواصل، سياسة الإرجاع والاسترداد، وسائل دفع معروفة"
+   "region": "arab"
   },
   {
    "id": "nabeel-com",
@@ -1042,8 +1042,8 @@
    "status": "rejected",
    "foundBy": "known-store",
    "foundAt": "2026-10-18T13:24:54.550Z",
-   "attempts": 1,
-   "vettedAt": "2026-10-18T15:10:56.723Z",
+   "attempts": 2,
+   "vettedAt": "2026-11-18T14:41:57.700Z",
    "reason": "ملف robots.txt يمنع القراءة الآلية"
   },
   {
@@ -7484,6 +7484,35 @@
  ],
  "runs": [
   {
+   "at": "2026-11-18T14:52:12.800Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 0,
+   "activated": 0,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "0 new stores found this run (own methods, no AI)"
+   ]
+  },
+  {
+   "at": "2026-11-18T14:41:57.700Z",
+   "mode": "self",
+   "found": 0,
+   "vetted": 2,
+   "activated": 1,
+   "rejected": 0,
+   "notes": [
+    "Web search: AI quota used up — the scout continues by himself",
+    "0 new stores found this run (own methods, no AI)",
+    "  ↳ afnan.com: CV 57/100 [age,https,identity,platform,social,authentic] on Shopify (pages: /→200 /policies/contact-information→404 /policies/refund-policy→404 /policies/legal-notice→404 /policies/shipping-policy→404 /pages/about-us→200)",
+    "  ↳ afnan.com: weak CV, but the merchant vouches for it (DISCOVER_TRUSTED)",
+    "  ↳ afnan.com: CV 57/100 [age,https,identity,platform,social,authentic] on Shopify",
+    "✓ afnan.com (CV 57/100): 120 perfumes, 7/7 pages read without AI, AED (1 = 14.6275 EGP) — added to the importer",
+    "✗ goldenscent.com: ملف robots.txt يمنع القراءة الآلية"
+   ]
+  },
+  {
    "at": "2026-11-13T03:28:49.274Z",
    "mode": "self",
    "found": 0,
@@ -7841,28 +7870,6 @@
   },
   {
    "at": "2026-11-01T12:58:55.753Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-11-01T07:10:29.188Z",
-   "mode": "self",
-   "found": 0,
-   "vetted": 0,
-   "activated": 0,
-   "rejected": 0,
-   "notes": [
-    "0 new stores found this run (own methods, no AI)"
-   ]
-  },
-  {
-   "at": "2026-11-01T01:19:15.469Z",
    "mode": "self",
    "found": 0,
    "vetted": 0,

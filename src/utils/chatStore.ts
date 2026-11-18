@@ -18,8 +18,9 @@ import { ApiError, isStaticHosting, requestApi, visitorId, type ChatResponse } f
 import { savedDialectChoice } from './arabicDialect';
 import { compareLegacyContext, createUnifiedConversationContext, shaheenMessageToUnifiedTurn } from './unifiedConversationContext';
 import { forgetDrawings, freshReplies } from './shaheenDrawings';
-import { defaultImageQuestion, imageTurn, imageWords, parseImageDataUrl, withImageText, type ImageReading } from './imageReading';
+import { IMAGE_READ, defaultFileQuestion, defaultImageQuestion, fileTurn, imageTurn, imageWords, parseImageDataUrl, withImageText, type FileReading, type ImageReading } from './imageReading';
 import { readOnDevice } from './browserOcr';
+import { readPictureText, readScannedPages } from './attachmentPick';
 import { CHAT_STORAGE_KEY, clearChatSession, DEFAULT_WELCOME_MESSAGE, isChatMessage,
   loadStoredChatSession, saveChatSession, type ChatMessage, type ShaheenProvider } from './chatStorage';
 
@@ -60,6 +61,8 @@ interface SendOptions {
   agent?: boolean; documents?: AgentDocument[]; webSearch?: boolean;
   /** «شاهين يقرا الصور»: a picture with the question — `dataUrl` to read now, or `reading` already read (a retry). */
   image?: { dataUrl?: string; thumb: string; name?: string; reading?: ImageReading };
+  /** «استقبال الملفات»: a document with the question — its text, or its scanned pages to read, or `reading` (a retry). */
+  file?: { name: string; text?: string; pages?: number; scans?: string[]; reading?: FileReading };
   /** «التحدث مع شاهين»: a spoken turn (the reply is read aloud); `interrupted` = what he had said when cut off. */
   voice?: { interrupted?: string;
     /** «شاهين يصحح اللي اتسمع غلط»: words heard as others and read as the word meant (shown under his message). */
@@ -85,7 +88,7 @@ export function chatHistory(messages: ChatMessage[]) {
       message.id.startsWith('err-') || message.id.startsWith('expired-notice-')) continue;
     // The «🎧 سمعت … وفهمتها …» line under a spoken message is for the visitor, not part of what he said; under a typed
     // one, «✍️ فهمت سؤالك كده: «…»» holds what he meant (that is what the conversation carries).
-    const said = message.role === 'user' ? withImageText(meantText(message.text), message.image?.text, TURN_LIMIT) : message.text;
+    const said = message.role === 'user' ? withImageText(meantText(message.text), message.image?.text ?? message.file?.text, TURN_LIMIT) : message.text;
     const text = compactTurn(said.trim());
     if (!text || size + text.length > 16000 || history.length === 24) break;
     const sources = message.role === 'assistant' && !latestAssistantSeen ? message.sources : undefined;
@@ -169,8 +172,6 @@ const designWithStore = async (text: string, lang: SupportedLanguage, previous?:
 /** One synchronous owner for both chat surfaces: no effect-driven rebroadcast loops. */
 /** «عيون شاهين»: reads the words of a picture on the visitor's own device when the platform can't. */
 export type DeviceReader = (dataUrl: string, lang: SupportedLanguage, signal?: AbortSignal) => Promise<ImageReading | undefined>;
-/** Why the server's reader said no: only these send the picture to the device reader (a refused picture does not). */
-const deviceCanTry = (error: unknown) => !(error instanceof ApiError) || error.status >= 500 || error.status === 429 || error.status === 408;
 export function createChatStore(request: typeof requestApi = requestApi, pause: typeof wait = wait, memory: OfflineMemory = browserMemory,
   catalog: CatalogFallback = storeCatalogFallback, deviceReader: DeviceReader = readOnDevice) {
   let snapshot: Snapshot | undefined;
@@ -251,13 +252,17 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       publish({ ...current, messages: current.messages.slice(0, userIndex) });
       const image = question.image ? { thumb: question.image.thumb, ...(question.image.name ? { name: question.image.name } : {}),
         ...(question.image.text !== undefined || question.image.description ? { reading: { text: question.image.text || '', ...(question.image.description ? { description: question.image.description } : {}), source: question.image.source || 'ai' } as ImageReading } : {}) } : undefined;
-      return store.send({ ...options, text: meantText(question.text), ...(image ? { image } : {}) });
+      const file = question.file ? { name: question.file.name, ...(question.file.text !== undefined
+        ? { reading: { name: question.file.name, text: question.file.text, ...(question.file.pages ? { pages: question.file.pages } : {}), source: question.file.source || 'text' } as FileReading } : {}) } : undefined;
+      return store.send({ ...options, text: meantText(question.text), ...(image ? { image } : {}), ...(file ? { file } : {}) });
     },
     async send(options: SendOptions) {
       expire();
       const current = getSnapshot();
       const picture = options.image && (options.image.reading || parseImageDataUrl(options.image.dataUrl)) ? options.image : undefined;
-      const typedText = options.text.trim() || (picture ? defaultImageQuestion(options.language) : '');
+      const doc = !picture && options.file && (options.file.reading || options.file.text?.trim() || options.file.scans?.length) ? options.file : undefined;
+      const attached = Boolean(picture || doc);
+      const typedText = options.text.trim() || (picture ? defaultImageQuestion(options.language) : doc ? defaultFileQuestion(options.language) : '');
       if (!typedText || typedText.length > 4000 || current.isLoading) return false;
       const timestamp = () => new Date().toLocaleTimeString(options.language, { hour: '2-digit', minute: '2-digit' });
       const id = (role: string) => `${role}-${Date.now()}-${++sequence}`;
@@ -266,7 +271,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       // under his message. Not sure about a perfume word: «قصدك «عنبر»؟» first, and nothing is sent until he answers.
       // (A spoken turn was already read by the voice mode.)
       let text = typedText; let typedRead = '';
-      if (!options.voice && !picture) {
+      if (!options.voice && !attached) {
         const choice = options.language === 'ar' ? savedDialectChoice() : 'auto';
         const plan = planTypedTurn(typedText, { pending: typedPending, language: options.language, learned: savedTypedFixes(), ...(choice !== 'auto' ? { dialect: choice } : {}) });
         typedPending = null;
@@ -286,7 +291,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       const heard = options.voice?.heard || [];
       const shown = heard.length ? `${text}\n\n${heardNote(options.language, heard)}` : typedRead ? `${typedText}\n\n${typedRead}` : text;
       // A bare greeting is answered here: instant, identical on every site, and no AI quota spent on «هاي».
-      const greeting = picture ? undefined : greetingKind(text);
+      const greeting = attached ? undefined : greetingKind(text);
       if (greeting) {
         publish({ ...current, messages: [...current.messages,
           { id: id('user'), role: 'user', text: shown, timestamp: timestamp() },
@@ -294,7 +299,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
             aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } }] });
         return true;
       }
-      if (!picture && isSourcesFollowUp(text)) {
+      if (!attached && isSourcesFollowUp(text)) {
         const previousAnswer = [...current.messages].reverse().find((message) => message.role === 'assistant');
         const sources = previousAnswer?.sources || [];
         if (sources.length || isStaticHosting) {
@@ -307,7 +312,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       }
       // «تطبيقات شاهين السريعة»: a simple, complete task (alcohol dilution, oil amounts, oz↔ml, thanks…) is
       // calculated right here — instant, no queue, no AI quota — so the engines stay free for real questions.
-      const quick = options.agent || picture ? undefined : quickAnswer(text, options.language);
+      const quick = options.agent || attached ? undefined : quickAnswer(text, options.language);
       if (quick) {
         publish({ ...current, messages: [...current.messages,
           // A card/ID number is not even kept in this browser's chat history (it would travel with the next turn).
@@ -322,23 +327,34 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       const userId = id('user');
       publish({ ...current, isLoading: true,
         messages: [...current.messages, { id: userId, role: 'user', text: shown, timestamp: timestamp(),
-          ...(picture ? { image: { thumb: picture.thumb, ...(picture.name ? { name: picture.name } : {}) } } : {}) }] });
+          ...(picture ? { image: { thumb: picture.thumb, ...(picture.name ? { name: picture.name } : {}) } } : {}),
+          ...(doc ? { file: { name: doc.name.slice(0, 120), ...(doc.pages ? { pages: doc.pages } : {}) } } : {}) }] });
       const signal = controller.signal;
       const history = chatHistory(current.messages);
       // «شاهين يقرا الصور»: the picture is read first (the platform's eyes, then his own on this device), and what was
       // read is kept under his message — the picture itself is not kept anywhere.
       let reading: ImageReading | undefined = picture?.reading;
       if (picture && !reading && picture.dataUrl) {
-        try {
-          reading = await request<ImageReading>('/api/workspace/read-image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
-            body: JSON.stringify({ image: picture.dataUrl, language: options.language }) }, 40_000);
-          if (!reading || typeof reading.text !== 'string') reading = undefined;
-          else reading = { text: reading.text, ...(typeof reading.description === 'string' && reading.description ? { description: reading.description } : {}), source: 'ai' };
-        } catch (error) {
-          if (generation !== token) return false;
-          reading = deviceCanTry(error) ? await deviceReader(picture.dataUrl, options.language, signal).catch(() => undefined) : undefined;
-        }
+        reading = await readPictureText(picture.dataUrl, options.language, { request, device: deviceReader, signal });
         if (generation !== token) return false;
+      }
+      // «استقبال الملفات»: a document's text was read in the browser; a scanned one's pages are read now, like pictures.
+      let fileReading: FileReading | undefined = doc?.reading || (doc?.text?.trim() ? { name: doc.name, text: doc.text.trim(), ...(doc.pages ? { pages: doc.pages } : {}), source: 'text' } : undefined);
+      if (doc && !fileReading && doc.scans?.length) {
+        const scanned = await readScannedPages(doc.scans, options.language, { request, device: deviceReader, signal });
+        if (generation !== token) return false;
+        if (scanned) fileReading = { name: doc.name, text: scanned.text, ...(doc.pages ? { pages: doc.pages } : {}), source: scanned.source };
+      }
+      if (doc) {
+        const words = imageWords(options.language);
+        if (!fileReading || !fileReading.text.trim()) {
+          publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, { id: id('bot'), role: 'assistant', text: fileReading ? `${words.noText}.` : words.fileFailed, timestamp: timestamp(),
+            aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' } }] });
+          return true;
+        }
+        const kept = fileReading;
+        publish({ ...getSnapshot(), messages: getSnapshot().messages.map((m) => (m.id === userId && m.file ? { ...m, file: { ...m.file,
+          text: kept.text.slice(0, IMAGE_READ.keptChars), source: kept.source } } : m)) });
       }
       if (picture) {
         const words = imageWords(options.language);
@@ -355,7 +371,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
       // «شاهين بعملة بلدك»: the visitor's own money («moins de 30 €») reaches the brain in the store's pounds.
       const ownWords = budgetsToHome(text, currentDisplayCurrency(options.language), options.language);
       // (only his own words are converted — the numbers written in his picture stay as they are)
-      const brainText = reading ? imageTurn(ownWords, reading) : ownWords;
+      const brainText = reading ? imageTurn(ownWords, reading) : fileReading ? fileTurn(ownWords, fileReading) : ownWords;
       trackInsight('chat', { text }); // «خزنة فهم الزوار» (with consent; secrets, e-mails and numbers never kept)
       // «دولة الدخول قبل الرد»: the page's country and currency travel too; the server checks where he is entering
       // from and writes the reply's prices in that country's currency (and tells us which country it was).
@@ -394,7 +410,7 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
         freshReplies.add(message.id); // a picture it asks for is drawn once, now — not again on every reload
         publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false, busy: false });
         // «ذاكرة شاهين»: this browser keeps its opening questions for the day the server cannot be reached.
-        if (!options.agent && !reading && !history.length && options.model !== 'council') memory.learn({ question: text, lang: options.language, mode: options.model, answer: message.text });
+        if (!options.agent && !reading && !fileReading && !history.length && options.model !== 'council') memory.learn({ question: text, lang: options.language, mode: options.model, answer: message.text });
       } catch (firstError) {
         let error: unknown = firstError;
         if (generation !== token) return false;
@@ -421,11 +437,21 @@ export function createChatStore(request: typeof requestApi = requestApi, pause: 
             if (message.text?.trim() && isChatMessage(message)) {
               freshReplies.add(message.id);
               publish({ ...getSnapshot(), messages: [...getSnapshot().messages, message], isLoading: false, busy: false });
-              if (!history.length && !reading) memory.learn({ question: text, lang: options.language, mode: 'fast', answer: message.text });
+              if (!history.length && !reading && !fileReading) memory.learn({ question: text, lang: options.language, mode: 'fast', answer: message.text });
               return true;
             }
           } catch (fastError) { error = fastError instanceof ApiError ? error : fastError; }
           if (generation !== token) return false;
+        }
+        // The document was read but no one could answer about it: at least what is in it, honestly labelled.
+        if (fileReading && canAnswerFromMemory(error)) {
+          const words = imageWords(options.language);
+          const shown = fileReading.text.length > 3000 ? `${fileReading.text.slice(0, 3000)}…` : fileReading.text;
+          publish({ ...getSnapshot(), isLoading: false, busy: false, messages: [...getSnapshot().messages, {
+            id: id('bot'), role: 'assistant', text: `**${words.fileText} «${fileReading.name}»:**\n\n${shown}`, timestamp: timestamp(),
+            aiEngine: { id: 'auto', name: 'الخبير شاهين', badge: 'شاهين', provider: 'shaheen' },
+          }] });
+          return true;
         }
         // The picture was read but no one could answer about it: at least what is written in it, honestly labelled.
         if (reading && canAnswerFromMemory(error)) {

@@ -33,6 +33,17 @@ export interface ChatMessage {
   activePerspectiveTab?: string;
   /** «شاهين يقرا الصور»: a picture he attached — only a tiny thumbnail and what was read from it are kept. */
   image?: ChatImage;
+  /** «استقبال الملفات»: a document he attached — its name and the text read from it (the file itself is not kept). */
+  file?: ChatFile;
+}
+export interface ChatFile { name: string; text?: string; pages?: number; source?: 'text' | 'ai' | 'device' }
+export function validChatFile(value: unknown): value is ChatFile {
+  if (!value || typeof value !== 'object') return false;
+  const f = value as ChatFile;
+  return typeof f.name === 'string' && f.name.length > 0 && f.name.length <= 120 &&
+    (f.text === undefined || (typeof f.text === 'string' && f.text.length <= 8000)) &&
+    (f.pages === undefined || (Number.isInteger(f.pages) && f.pages > 0 && f.pages < 100_000)) &&
+    (f.source === undefined || f.source === 'text' || f.source === 'ai' || f.source === 'device');
 }
 export interface ChatImage { thumb: string; name?: string; text?: string; description?: string; source?: 'ai' | 'device' }
 const THUMB = /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/;
@@ -89,6 +100,7 @@ export function isChatMessage(value: unknown): value is ChatMessage {
     (message.activePerspectiveTab === undefined || typeof message.activePerspectiveTab === 'string') &&
     (message.sources === undefined || safeChatSources(message.sources) !== undefined) &&
     (message.image === undefined || (message.role === 'user' && validChatImage(message.image))) &&
+    (message.file === undefined || (message.role === 'user' && validChatFile(message.file))) &&
     (message.perspectives === undefined || (Array.isArray(message.perspectives) && message.perspectives.every((p) =>
       p && PROVIDERS.includes(p.provider) && PROVIDERS.includes(p.modelId) &&
       typeof p.name === 'string' && typeof p.badge === 'string' && typeof p.color === 'string' &&

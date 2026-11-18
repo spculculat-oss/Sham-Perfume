@@ -1,8 +1,1266 @@
 {
  "version": 1,
  "agent": "immune",
- "updatedAt": "2026-11-05T09:43:41.706Z",
+ "updatedAt": "2026-11-18T15:10:30.672Z",
  "findings": [
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "EG",
+   "whatAr": "مصر: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1653.85 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1697.77 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "SA",
+   "whatAr": "السعودية: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1469.79 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1509.13 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "AE",
+   "whatAr": "الإمارات: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1469.79 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1509.13 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "KW",
+   "whatAr": "الكويت: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1378.03 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1414.81 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "QA",
+   "whatAr": "قطر: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1378.03 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1414.81 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "BH",
+   "whatAr": "البحرين: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1378.03 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1414.81 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "OM",
+   "whatAr": "عمان: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2756.06 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2829.62 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "JO",
+   "whatAr": "الأردن: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1378.03 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1414.81 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "LB",
+   "whatAr": "لبنان: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2940.11 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3018.26 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "IQ",
+   "whatAr": "العراق: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "SY",
+   "whatAr": "سوريا: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2848.35 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2923.94 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "PS",
+   "whatAr": "فلسطين: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "YE",
+   "whatAr": "اليمن: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2885.16 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2961.66 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "LY",
+   "whatAr": "ليبيا: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "TN",
+   "whatAr": "تونس: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "DZ",
+   "whatAr": "الجزائر: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "MA",
+   "whatAr": "المغرب: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "SD",
+   "whatAr": "السودان: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "MR",
+   "whatAr": "موريتانيا: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "SO",
+   "whatAr": "الصومال: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "DJ",
+   "whatAr": "جيبوتي: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "KM",
+   "whatAr": "جزر القمر: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "MY",
+   "whatAr": "ماليزيا: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "144.58 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "148.22 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "SG",
+   "whatAr": "سنغافورة: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "735.16 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "754.56 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "BN",
+   "whatAr": "BN: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "790.11 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "811.16 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "ID",
+   "whatAr": "إندونيسيا: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "826.92 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "848.88 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "TH",
+   "whatAr": "تايلاند: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "826.92 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "848.88 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "PH",
+   "whatAr": "الفلبين: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1010.45 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1037.53 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "VN",
+   "whatAr": "فيتنام: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "918.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "943.21 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "KH",
+   "whatAr": "KH: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "955.5 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "980.93 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "LA",
+   "whatAr": "LA: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "955.5 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "980.93 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "MM",
+   "whatAr": "ميانمار: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1469.79 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1509.13 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "GB",
+   "whatAr": "بريطانيا: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "IE",
+   "whatAr": "IE: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "FR",
+   "whatAr": "FR: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "DE",
+   "whatAr": "DE: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "IT",
+   "whatAr": "IT: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "ES",
+   "whatAr": "ES: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2113.19 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2169.37 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "PT",
+   "whatAr": "PT: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "NL",
+   "whatAr": "NL: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2021.43 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2075.05 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "BE",
+   "whatAr": "BE: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "LU",
+   "whatAr": "LU: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2646.16 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2716.43 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "AT",
+   "whatAr": "AT: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "CH",
+   "whatAr": "سويسرا: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2389.01 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2452.33 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "SE",
+   "whatAr": "SE: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2389.01 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2452.33 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "NO",
+   "whatAr": "النرويج: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2204.95 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2263.69 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "DK",
+   "whatAr": "DK: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "FI",
+   "whatAr": "FI: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "IS",
+   "whatAr": "IS: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2259.9 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2320.29 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "PL",
+   "whatAr": "PL: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2940.11 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3018.26 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "CZ",
+   "whatAr": "CZ: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2885.16 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2961.66 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "SK",
+   "whatAr": "SK: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2885.16 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2961.66 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "HU",
+   "whatAr": "HU: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2940.11 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3018.26 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "RO",
+   "whatAr": "RO: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "BG",
+   "whatAr": "BG: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2885.16 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2961.66 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "GR",
+   "whatAr": "GR: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "HR",
+   "whatAr": "HR: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "SI",
+   "whatAr": "SI: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "RS",
+   "whatAr": "RS: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "BA",
+   "whatAr": "BA: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "ME",
+   "whatAr": "ME: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "MK",
+   "whatAr": "MK: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "AL",
+   "whatAr": "AL: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "EE",
+   "whatAr": "EE: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2885.16 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2961.66 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "LV",
+   "whatAr": "LV: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "LT",
+   "whatAr": "LT: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "CY",
+   "whatAr": "CY: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2885.16 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2961.66 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "MT",
+   "whatAr": "MT: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "UA",
+   "whatAr": "أوكرانيا: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2848.35 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2923.94 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "MD",
+   "whatAr": "MD: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "3307.69 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "3395.54 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "TR",
+   "whatAr": "تركيا: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1286.27 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1320.49 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "US",
+   "whatAr": "أمريكا: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "1837.37 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "1886.41 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "CA",
+   "whatAr": "كندا: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2021.43 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2075.05 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
+  {
+   "kind": "contradiction",
+   "severity": "medium",
+   "subject": "MX",
+   "whatAr": "المكسيك: تكلفة الشحن في جدول الموقع غير تكلفة تقرير الشحن",
+   "sides": [
+    {
+     "valueAr": "2517.58 ج.م",
+     "source": "src/data/shipping-costs.json (تعريفة كل شركة في src/data/shipping-lanes.json (رابط المصدر وتاريخ الفحص مع كل شركة) + وقود إن وُجد, 2026-11-05)"
+    },
+    {
+     "valueAr": "2584.38 ج.م",
+     "source": "src/data/live/trade-lanes.json"
+    }
+   ],
+   "fixAr": "شغّل روبوت الشحن ليعيد توليد جدول التكلفة من نفس التقرير (مصدر واحد للرقم)"
+  },
   {
    "kind": "promise",
    "severity": "low",
@@ -12,11 +1270,11 @@
   }
  ],
  "counts": {
-  "contradiction": 0,
+  "contradiction": 74,
   "promise": 1,
   "untraceable": 0,
   "stale": 0
  },
- "health": 99,
- "summaryAr": "مناعة شاهين: 1 مشكلة (0 تعارض رقم · 1 وعد مش مدعوم · 0 رقم بلا مصدر · 0 قديم) — الصحة 99/100"
+ "health": 0,
+ "summaryAr": "مناعة شاهين: 75 مشكلة (74 تعارض رقم · 1 وعد مش مدعوم · 0 رقم بلا مصدر · 0 قديم) — الصحة 0/100"
 }
