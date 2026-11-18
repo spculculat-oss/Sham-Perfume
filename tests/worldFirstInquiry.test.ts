@@ -3,6 +3,7 @@ import { generateKeyPairSync } from 'node:crypto';
 import { test } from 'node:test';
 import {
   INQUIRY_PATH,
+  QUERY_BALANCE_PATH,
   inquireWorldFirst,
   signatureContent,
   signRequest,
@@ -60,4 +61,35 @@ test('a WorldFirst reply is usable only after its signature checks, and the acco
   assert.equal(tampered.inquiry, 'unverified');
   assert.equal(tampered.balancesLive, false);
   assert.equal(tampered.wallets.find((row) => row.currency === 'USD')?.available, '0.00');
+});
+
+test('an API key reads the Enhanced balance and does not send or keep an account number', async () => {
+  const body = JSON.stringify({
+    result: { resultStatus: 'S', resultCode: 'SUCCESS' },
+    balances: [{ currency: 'USD', accountNo: 'SECRET-ACCOUNT-99887766', availableAmount: { currency: 'USD', value: 250 }, frozenAmount: { currency: 'USD', value: 0 } }],
+  });
+  assert.equal(JSON.stringify(walletsFromInquiry(JSON.parse(body))).includes('SECRET-ACCOUNT'), false);
+  let headers: HeadersInit | undefined;
+  const read = await inquireWorldFirst({
+    WORLDFIRST_API_KEY: 'irak_testkey1',
+    WORLDFIRST_API_HOST: 'open-sea.worldfirst.com',
+    WORLDFIRST_PRIVATE_KEY: 'must-not-be-sent',
+  }, async (url, init) => {
+    headers = init?.headers;
+    assert.equal(url, `https://open-sea.worldfirst.com${QUERY_BALANCE_PATH}`);
+    assert.equal(String(url).includes('payout'), false);
+    return new Response(body, { status: 200 });
+  });
+  const sent = JSON.stringify(headers);
+  assert.equal(sent.includes('Bearer irak_testkey1'), true);
+  assert.equal(/signature/i.test(sent), false);
+  assert.equal(read.inquiry, 'verified');
+  assert.equal(read.balancesLive, true);
+  assert.equal(read.sendsExternal, false);
+  assert.equal(read.wallets.find((row) => row.currency === 'USD')?.available, '2.50');
+  assert.equal(JSON.stringify(read).includes('SECRET-ACCOUNT'), false);
+  assert.equal(JSON.stringify(read).includes('irak_'), false);
+  const blocked = await inquireWorldFirst({ WORLDFIRST_API_KEY: 'irak_testkey1', WORLDFIRST_API_HOST: 'evil.example' }, async () => { throw new Error('should not call'); });
+  assert.equal(blocked.inquiry, 'not_ready');
+  assert.equal(blocked.balancesLive, false);
 });
