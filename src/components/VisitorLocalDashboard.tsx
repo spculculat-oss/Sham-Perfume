@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   CalendarDays,
+  Calculator as CalculatorIcon,
   Clock3,
   Cloud,
   CloudFog,
@@ -35,6 +36,7 @@ import {
   type WeatherKind,
 } from '../utils/visitorLocal';
 import { apiUrl, isStaticHosting } from '../utils/api';
+import { EngineeringCalculator } from './EngineeringCalculator';
 
 const TEXT = {
   local_info: { ar: 'معلوماتك المحلية', en: 'Your local details' },
@@ -68,6 +70,7 @@ const TEXT = {
   location_failed: { ar: 'ماقدرناش نحدد موقعك دلوقتي', en: 'Could not determine your location right now' },
   permission_note: { ar: 'موقع الجهاز مش هيتحدد إلا بموافقتك؛ الطقس يستخدم إحداثيات تقريبية', en: 'Device location is used only with permission; weather uses rounded coordinates' },
   powered_by: { ar: 'بيانات الطقس من', en: 'Weather data by' },
+  engineering_calculator: { ar: 'حاسبة هندسية', en: 'Engineering calculator' },
 } satisfies Record<string, LText>;
 
 const WEATHER_ICONS: Record<WeatherKind, LucideIcon> = {
@@ -117,6 +120,8 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
   const [weatherLoading, setWeatherLoading] = useState(true);
   const [weatherError, setWeatherError] = useState(false);
   const [locationRequest, setLocationRequest] = useState<LocationRequestState>('idle');
+  const [calculatorOpen, setCalculatorOpen] = useState(false);
+  const closeCalculator = useCallback(() => setCalculatorOpen(false), []);
   const deviceLocation = useRef<VisitorEntryLocation | undefined>(undefined);
   const label = makeT(currentLang, TEXT);
 
@@ -323,7 +328,7 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
       aria-label={label('local_info')}
       className="mx-auto w-full max-w-7xl px-4 pt-3 sm:px-8"
     >
-      <div className="overflow-hidden rounded-[28px] border border-neutral-800 bg-[#080b0f] text-white shadow-[0_18px_45px_rgba(15,23,42,0.2)]">
+      <div className="overflow-hidden rounded-[28px] border border-white/20 bg-gradient-to-br from-slate-600/30 via-slate-950/80 to-amber-950/30 text-white shadow-[0_18px_45px_rgba(15,23,42,0.3)] backdrop-blur-2xl">
         <div className="grid grid-cols-[34px_minmax(0,1fr)_auto] items-center gap-3 p-4 sm:grid-cols-[48px_minmax(0,1fr)_112px] sm:gap-5 sm:p-5" dir="ltr">
           <div aria-label={currentLang === 'ar' ? 'أيام الأسبوع' : 'Days of the week'} className="flex flex-col items-start gap-1 border-r border-white/10 pe-2 text-[9px] font-semibold uppercase tracking-wide sm:gap-1.5 sm:text-[11px]">
             {weekdayRows.map((day) => <span key={day.key} className={day.active ? 'text-amber-400' : 'text-slate-400'}>{day.dayText}</span>)}
@@ -373,6 +378,16 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
           {locationStatus && <span role="status" aria-live="polite" className="basis-full text-[11px] text-rose-300">{locationStatus}</span>}
           <button
             type="button"
+            onClick={() => setCalculatorOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={calculatorOpen}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-amber-200/25 bg-amber-100/10 px-3 py-1.5 text-[10px] font-semibold text-amber-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.16)] backdrop-blur-xl transition hover:border-amber-100/40 hover:bg-amber-100/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 sm:text-xs"
+          >
+            <CalculatorIcon className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>{label('engineering_calculator')}</span>
+          </button>
+          <button
+            type="button"
             onClick={() => { void requestDeviceLocation(); }}
             disabled={locationRequest === 'loading'}
             title={label('permission_note')}
@@ -383,6 +398,7 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
           </button>
         </div>
       </div>
+      {calculatorOpen && <EngineeringCalculator currentLang={currentLang} onClose={closeCalculator} />}
     </section>
   );
 }
