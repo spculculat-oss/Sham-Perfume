@@ -1148,7 +1148,8 @@ export default function App() {
           onOpenProfilePage={() => currentUser && (getSessionToken() ? navigateToTab('community/me') : handleOpenProfilePage(currentUser))}
         />
 
-        {activeTab === 'home' && <VisitorLocalDashboard currentLang={currentLang} />}
+        {/* The visitor clock is part of the shared site shell and stays visible on every app page. */}
+        <VisitorLocalDashboard currentLang={currentLang} />
         {activeTab === 'studio' && (
           <ProjectStudio
             lang={currentLang}
