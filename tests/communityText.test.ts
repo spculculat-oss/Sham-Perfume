@@ -15,6 +15,18 @@ test('member post text links HTTP(S) and www URLs alongside prose with safe link
   assert.match(html, /كانت جميلة/);
 });
 
+test('bare domains in posts and comments become visible clickable HTTPS links without linking e-mail domains', () => {
+  const html = renderToStaticMarkup(React.createElement(CommunityText, {
+    text: 'تفاصيل المنتج على sham-perfume.example/path?q=1. تواصل user@example.com أو زور www.sham.example',
+  }));
+  assert.equal((html.match(/<a\b/g) || []).length, 2);
+  assert.match(html, /href="https:\/\/sham-perfume\.example\/path\?q=1"/);
+  assert.match(html, /style="color:#0369a1"/);
+  assert.match(html, /<\/a>\./, 'sentence punctuation stays outside the clickable address');
+  assert.match(html, /user@example\.com/);
+  assert.doesNotMatch(html, /href="https:\/\/example\.com/);
+});
+
 test('only http and https are linkified and unsafe markup stays escaped text', () => {
   const html = renderToStaticMarkup(React.createElement(CommunityText, {
     text: 'javascript:alert(1) data:text/html,<b>no</b> https://example.com <script>alert(1)</script>',
