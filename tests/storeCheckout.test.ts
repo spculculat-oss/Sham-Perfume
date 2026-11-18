@@ -128,6 +128,22 @@ async function serve(env: Record<string, string>, kashier: (url: string, init?: 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 const order = { items: [{ sku: 'LAT-001', qty: 2 }], country: 'SA', lang: 'ar', contact: { name: 'Ali', email: 'ali@example.com', phone: '+966500000000' }, address: { city: 'Riyadh', line: 'King Fahd Rd 10' }, returnUrl: 'https://spculculat-oss.github.io/Sham-Perfume/' };
 
+test('online clock returns a fresh server epoch and only the visitor network timezone', async () => {
+  const s = await serve({}, () => json({}));
+  try {
+    const before = Date.now();
+    const response = await fetch(`${s.base}/clock`, { headers: { 'x-vercel-ip-timezone': 'Asia/Tokyo' } });
+    const after = Date.now();
+    assert.equal(response.headers.get('cache-control'), 'private, no-store, max-age=0');
+    const clock = await response.json() as { unixMs: number; timezone: string; source: string };
+    assert.ok(clock.unixMs >= before && clock.unixMs <= after);
+    assert.equal(clock.timezone, 'Asia/Tokyo');
+    assert.equal(clock.source, 'server');
+    const noTimezone = await fetch(`${s.base}/clock`).then((r) => r.json()) as { timezone: string | null };
+    assert.equal(noTimezone.timezone, null, 'the endpoint does not infer timezone from the server or client');
+  } finally { s.close(); }
+});
+
 test('visitor geo returns a city and the weather endpoint uses rounded coordinates', async () => {
   const s = await serve({}, (url) => (url.startsWith('https://api.open-meteo.com/v1/forecast?')
     ? json({ current: { temperature_2m: 26.5, weather_code: 2, time: '2026-10-24T14:00' } })

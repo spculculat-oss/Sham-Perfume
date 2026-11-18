@@ -21,12 +21,16 @@ import {
   browserVisitorCountry,
   fetchVisitorWeather,
   locateVisitorDevice,
+  readHttpDateClock,
+  readNetworkClock,
+  networkClockAt,
   readVisitorGeo,
   temperatureForVisitor,
   visitorLocale,
   weatherDescription,
   weatherKind,
   type CurrentWeather,
+  type NetworkClockAnchor,
   type VisitorEntryLocation,
   type WeatherKind,
 } from '../utils/visitorLocal';
@@ -41,7 +45,18 @@ const TEXT = {
   weather_unavailable: { ar: 'الطقس غير متاح حاليًا', en: 'Weather is temporarily unavailable' },
   location_unavailable: { ar: 'الطقس غير متاح من غير مدينة مؤكدة', en: 'Weather needs a confirmed city' },
   city_not_identified: { ar: 'المدينة غير محددة من شبكة الدخول', en: 'Entry network did not identify a city' },
-  timezone_only: { ar: 'الساعة حسب توقيت جهازك؛ المدينة مش مؤكدة', en: 'Clock follows your device zone; city is unconfirmed' },
+  timezone_only: { ar: 'منطقة التوقيت متاحة؛ المدينة غير مؤكدة', en: 'Visitor timezone is available; city is unconfirmed' },
+  clock_syncing: { ar: 'جارٍ مزامنة ساعة الإنترنت…', en: 'Syncing the online clock…' },
+  clock_synced: { ar: 'متزامنة عبر الإنترنت', en: 'Internet synced' },
+  clock_stale: { ar: 'آخر مزامنة محفوظة', en: 'Showing last sync' },
+  clock_unavailable: { ar: 'ساعة الإنترنت غير متاحة', en: 'Online time unavailable' },
+  monday: { ar: 'الإثنين', en: 'Monday' },
+  tuesday: { ar: 'الثلاثاء', en: 'Tuesday' },
+  wednesday: { ar: 'الأربعاء', en: 'Wednesday' },
+  thursday: { ar: 'الخميس', en: 'Thursday' },
+  friday: { ar: 'الجمعة', en: 'Friday' },
+  saturday: { ar: 'السبت', en: 'Saturday' },
+  sunday: { ar: 'الأحد', en: 'Sunday' },
   entry_location: { ar: 'حسب مدينة شبكة الدخول', en: 'Based on the entry network city' },
   device_location: { ar: 'حسب موقع الجهاز بعد موافقتك', en: 'Based on your device location' },
   precise_location: { ar: 'حدّد موقعي بدقة', en: 'Use precise location' },
@@ -86,8 +101,15 @@ function hasCityPrecision(location: VisitorEntryLocation | undefined): location 
   return Boolean(location && ['edge-city', 'edge-coords', 'device-gps'].includes(location.precision));
 }
 
+type ClockSyncState = 'syncing' | 'synced' | 'stale' | 'unavailable';
+
+const WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
+
 export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedLanguage }) {
-  const [now, setNow] = useState(() => new Date());
+  const [now, setNow] = useState<Date | undefined>();
+  const [clockAnchor, setClockAnchor] = useState<NetworkClockAnchor | undefined>();
+  const [clockSync, setClockSync] = useState<ClockSyncState>('syncing');
+  const hasServerClock = useRef(false);
   const [place, setPlace] = useState<VisitorEntryLocation | undefined>();
   const [entryCountry, setEntryCountry] = useState<string | undefined>(() => browserVisitorCountry());
   const [timeZone, setTimeZone] = useState<string | undefined>(() => browserTimeZone());
@@ -99,9 +121,52 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
   const label = makeT(currentLang, TEXT);
 
   useEffect(() => {
-    const timer = window.setInterval(() => setNow(new Date()), 1000);
-    return () => window.clearInterval(timer);
+    let live = true;
+    let running = false;
+    const syncClock = async () => {
+      if (running) return;
+      running = true;
+      if (live && !hasServerClock.current) setClockSync('syncing');
+      const started = performance.now();
+      try {
+        let reading: ReturnType<typeof readNetworkClock>;
+        if (isStaticHosting) {
+          // GitHub Pages has no API: synchronize from the HTTP Date header supplied by its origin/CDN.
+          const response = await fetch(window.location.href, { method: 'HEAD', cache: 'no-store', signal: AbortSignal.timeout(4500) });
+          reading = readHttpDateClock(response.headers.get('date'));
+        } else {
+          const response = await fetch(apiUrl('/api/clock'), { cache: 'no-store', signal: AbortSignal.timeout(4500) });
+          if (!response.ok) throw new Error(`Clock API returned ${response.status}`);
+          reading = readNetworkClock(await response.json());
+        }
+        const received = performance.now();
+        if (!reading || !Number.isFinite(received)) throw new Error('Internet clock response was invalid');
+        if (!live) return;
+        setClockAnchor({ unixMs: reading.unixMs + Math.max(0, received - started) / 2, performanceMs: received });
+        setTimeZone(reading.timezone || browserTimeZone() || 'UTC');
+        hasServerClock.current = true;
+        setClockSync('synced');
+      } catch {
+        if (live) setClockSync(hasServerClock.current ? 'stale' : 'unavailable');
+      } finally {
+        running = false;
+      }
+    };
+    void syncClock();
+    const timer = window.setInterval(() => { void syncClock(); }, 60_000);
+    return () => { live = false; window.clearInterval(timer); };
   }, []);
+
+  useEffect(() => {
+    if (!clockAnchor) { setNow(undefined); return; }
+    const update = () => {
+      const epoch = networkClockAt(clockAnchor, performance.now());
+      setNow(epoch === undefined ? undefined : new Date(epoch));
+    };
+    update();
+    const timer = window.setInterval(update, 1000);
+    return () => window.clearInterval(timer);
+  }, [clockAnchor]);
 
   useEffect(() => {
     let live = true;
@@ -112,8 +177,8 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
       running = true;
       if (live) setWeatherLoading(true);
       try {
-        let nextTimeZone = browserTimeZone();
-        let nextCountry = browserVisitorCountry(nextTimeZone);
+        let nextTimeZone: string | undefined;
+        let nextCountry: string | undefined;
         let nextPlace = deviceLocation.current;
 
         if (!isStaticHosting) {
@@ -122,11 +187,11 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
             if (response.ok) {
               const geo = readVisitorGeo(await response.json());
               if (geo.country) nextCountry = geo.country;
-              if (!nextTimeZone && geo.timezone) nextTimeZone = geo.timezone;
+              if (geo.timezone) nextTimeZone = geo.timezone;
               if (!deviceLocation.current && hasCityPrecision(geo.location)) nextPlace = geo.location;
             }
           } catch {
-            // Keep the device's local time and country; do not guess a city from its timezone.
+            // The network clock/timezone is synchronized separately; never infer it from the device clock.
           }
         }
 
@@ -141,7 +206,6 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
                 deviceLocation.current = precise;
                 nextPlace = precise;
                 if (precise.country !== 'UN') nextCountry = precise.country;
-                nextTimeZone = precise.timezone || nextTimeZone;
                 if (live) setLocationRequest('ready');
               }
             }
@@ -153,8 +217,8 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
         if (deviceLocation.current) nextPlace = deviceLocation.current;
         if (!live) return;
         setPlace(nextPlace);
-        setEntryCountry(nextCountry);
-        setTimeZone(nextTimeZone);
+        if (nextCountry) setEntryCountry(nextCountry);
+        if (nextTimeZone) setTimeZone(nextTimeZone);
         setWeatherError(false);
 
         if (!hasCityPrecision(nextPlace)) {
@@ -191,7 +255,6 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
       deviceLocation.current = precise;
       setPlace(precise);
       if (precise.country !== 'UN') setEntryCountry(precise.country);
-      setTimeZone(precise.timezone || browserTimeZone());
       setWeatherLoading(true);
       setWeather(undefined);
       setWeatherError(false);
@@ -211,19 +274,30 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
   };
 
   const locale = visitorLocale(currentLang, place?.country || entryCountry);
-  const localTimeZone = place?.timezone || timeZone;
-  const dateOptions: Intl.DateTimeFormatOptions = { dateStyle: 'full', ...(localTimeZone ? { timeZone: localTimeZone } : {}) };
-  const timeOptions: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', ...(localTimeZone ? { timeZone: localTimeZone } : {}) };
-  let dateText = '';
-  let timeText = '';
-  try {
-    dateText = new Intl.DateTimeFormat(locale, dateOptions).format(now);
-    timeText = new Intl.DateTimeFormat(locale, timeOptions).format(now);
-  } catch {
-    const fallbackLocale = LOCALE_MAP[currentLang] || 'en-GB';
-    dateText = new Intl.DateTimeFormat(fallbackLocale, { dateStyle: 'full' }).format(now);
-    timeText = new Intl.DateTimeFormat(fallbackLocale, { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(now);
+  // The entry network supplies the IANA zone. UTC is explicit when edge metadata is missing; never use device timezone.
+  const localTimeZone = timeZone || 'UTC';
+  let dateText = label(clockSync === 'syncing' ? 'clock_syncing' : 'clock_unavailable');
+  let digitalTime = '--:--';
+  if (now) {
+    try {
+      dateText = new Intl.DateTimeFormat(locale, { dateStyle: 'full', timeZone: localTimeZone }).format(now);
+      digitalTime = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', numberingSystem: 'latn', timeZone: localTimeZone }).format(now);
+    } catch {
+      const fallbackLocale = LOCALE_MAP[currentLang] || 'en-GB';
+      dateText = new Intl.DateTimeFormat(fallbackLocale, { dateStyle: 'full', timeZone: 'UTC' }).format(now);
+      digitalTime = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'UTC' }).format(now);
+    }
   }
+  const dayToday = now ? new Intl.DateTimeFormat('en', { weekday: 'short', timeZone: localTimeZone }).format(now) : '';
+  const weekdayRows = WEEKDAYS.map((key, index) => {
+    const sample = new Date(Date.UTC(2024, 0, 1 + index, 12));
+    const enDay = new Intl.DateTimeFormat('en', { weekday: 'short', timeZone: localTimeZone }).format(sample);
+    const dayText = new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: localTimeZone }).format(sample);
+    return { key, dayText, active: Boolean(now && enDay === dayToday) };
+  });
+  const clockStatusText = clockSync === 'synced' ? label('clock_synced')
+    : clockSync === 'stale' ? label('clock_stale')
+      : clockSync === 'syncing' ? label('clock_syncing') : label('clock_unavailable');
 
   const placeCountry = place?.country && place.country !== 'UN' ? place.country : entryCountry;
   const localizedCountry = countryName(placeCountry, locale);
@@ -238,7 +312,7 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
     : locationRequest === 'timeout' ? label('location_timeout')
       : locationRequest === 'unsupported' ? label('location_unsupported')
         : locationRequest === 'failed' ? label('location_failed') : '';
-  const timezoneLabel = timezoneName(localTimeZone, locale, now);
+  const timezoneLabel = now ? timezoneName(localTimeZone, locale, now) : undefined;
   const temperature = weather ? temperatureForVisitor(weather.temperatureC, placeCountry || entryCountry) : undefined;
   const condition = weather ? weatherKind(weather.weatherCode) : undefined;
   const ConditionIcon = condition ? WEATHER_ICONS[condition] : Thermometer;
@@ -249,67 +323,60 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
       aria-label={label('local_info')}
       className="mx-auto w-full max-w-7xl px-4 pt-3 sm:px-8"
     >
-      <div className="overflow-hidden rounded-3xl border border-amber-200/80 bg-gradient-to-r from-white via-amber-50/60 to-white shadow-sm">
-        <div className="grid gap-4 p-4 sm:p-5 md:grid-cols-3 md:gap-5">
-          <div className="min-w-0">
-            <div className="flex items-center gap-2 text-xs font-semibold text-stone-500">
-              <CalendarDays className="h-4 w-4 text-amber-700" aria-hidden="true" />
-              <span>{label('local_date')}</span>
-            </div>
-            <time dateTime={now.toISOString()} className="mt-2 block text-sm font-semibold leading-relaxed text-stone-800">
-              {dateText}
-            </time>
-          </div>
-
-          <div className="min-w-0 border-stone-200 md:border-x md:px-5">
-            <div className="flex items-center gap-2 text-xs font-semibold text-stone-500">
-              <Clock3 className="h-4 w-4 text-amber-700" aria-hidden="true" />
-              <span>{label('local_time')}</span>
-              {timezoneLabel && <span className="rounded-full bg-stone-100 px-2 py-0.5 text-[10px] text-stone-600">{timezoneLabel}</span>}
-            </div>
-            <time dateTime={now.toISOString()} aria-live="off" dir="auto" className="mt-1 block font-mono text-2xl font-bold tabular-nums tracking-tight text-stone-950 sm:text-3xl">
-              {timeText}
-            </time>
+      <div className="overflow-hidden rounded-[28px] border border-neutral-800 bg-[#080b0f] text-white shadow-[0_18px_45px_rgba(15,23,42,0.2)]">
+        <div className="grid grid-cols-[34px_minmax(0,1fr)_auto] items-center gap-3 p-4 sm:grid-cols-[48px_minmax(0,1fr)_112px] sm:gap-5 sm:p-5" dir="ltr">
+          <div aria-label={currentLang === 'ar' ? 'أيام الأسبوع' : 'Days of the week'} className="flex flex-col items-start gap-1 border-r border-white/10 pe-2 text-[9px] font-semibold uppercase tracking-wide sm:gap-1.5 sm:text-[11px]">
+            {weekdayRows.map((day) => <span key={day.key} className={day.active ? 'text-amber-400' : 'text-slate-400'}>{day.dayText}</span>)}
           </div>
 
           <div className="min-w-0">
-            <div className="flex items-center gap-2 text-xs font-semibold text-stone-500">
-              <ConditionIcon className="h-4 w-4 text-amber-700" aria-hidden="true" />
-              <span>{label('current_weather')}</span>
-            </div>
-            {temperature ? (
-              <div className="mt-1 flex items-center gap-2">
-                <span className="text-2xl font-bold tabular-nums text-stone-950 sm:text-3xl">
-                  {new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(temperature.value)}{temperature.unit}
-                </span>
-                <span className="text-xs text-stone-600">{weather ? weatherDescription(weather.weatherCode, currentLang) : ''}</span>
+            <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+              <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-300 sm:text-xs">
+                <Clock3 className="h-3.5 w-3.5 text-amber-500" aria-hidden="true" />
+                <span>{label('local_time')}</span>
               </div>
-            ) : (
-              <p className="mt-2 text-sm font-semibold text-stone-700" aria-live="polite">
-                {!hasCityPrecision(place) ? label('location_unavailable') : weatherLoading ? label('loading_weather') : weatherError ? label('weather_unavailable') : label('loading_weather')}
-              </p>
-            )}
-            <div className="mt-1 flex flex-wrap items-center gap-x-1 text-[10px] text-stone-500">
-              <span>{label('powered_by')}</span>
-              <a href="https://open-meteo.com/" target="_blank" rel="noreferrer" className="font-medium underline decoration-stone-300 underline-offset-2 hover:text-stone-800">Open-Meteo</a>
+              <span className="inline-flex items-center gap-1.5 text-[9px] font-semibold text-emerald-300 sm:text-[10px]">
+                <span className={`h-1.5 w-1.5 rounded-full ${clockSync === 'synced' ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]' : clockSync === 'stale' ? 'bg-amber-400' : 'bg-slate-500'}`} />
+                {clockStatusText}
+              </span>
             </div>
+            <time dateTime={now?.toISOString()} aria-live="off" className="mt-1 block whitespace-nowrap font-mono text-[clamp(2.8rem,11vw,5.5rem)] font-black leading-none tabular-nums tracking-[-0.075em] text-[#ff8a12] drop-shadow-[0_0_16px_rgba(255,138,18,0.4)] sm:text-7xl">
+              {digitalTime}
+            </time>
+            <div className="mt-2 flex min-w-0 items-center gap-1.5 text-[11px] font-medium text-slate-300 sm:text-sm">
+              <CalendarDays className="h-3.5 w-3.5 shrink-0 text-slate-400" aria-hidden="true" />
+              <time dateTime={now?.toISOString()} className="truncate" dir="auto">{dateText}</time>
+              {timezoneLabel && <span className="shrink-0 rounded bg-white/10 px-1.5 py-0.5 text-[9px] text-slate-300">{timezoneLabel}</span>}
+            </div>
+          </div>
+
+          <div className="flex min-w-[58px] flex-col items-center justify-center gap-1 border-l border-white/10 ps-3 text-center sm:min-w-[92px] sm:gap-2 sm:ps-5">
+            <ConditionIcon className="h-7 w-7 text-sky-100 sm:h-9 sm:w-9" aria-hidden="true" />
+            <span className="whitespace-nowrap font-mono text-2xl font-bold tabular-nums text-white sm:text-3xl">
+              {temperature ? `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(temperature.value)}${temperature.unit}` : '—°'}
+            </span>
+            <span className="max-w-20 text-[9px] leading-tight text-slate-400 sm:text-[10px]">
+              {weather ? weatherDescription(weather.weatherCode, currentLang) : !hasCityPrecision(place) ? label('location_unavailable') : weatherLoading ? label('loading_weather') : weatherError ? label('weather_unavailable') : label('loading_weather')}
+            </span>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-amber-100 bg-white/60 px-4 py-2 text-xs text-stone-600 sm:px-5">
-          <MapPin className="h-3.5 w-3.5 shrink-0 text-amber-700" aria-hidden="true" />
-          <span className="font-semibold text-stone-800">{placeText}</span>
-          <span aria-hidden="true">·</span>
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 border-t border-white/10 bg-white/[0.04] px-4 py-3 text-[10px] text-slate-300 sm:px-5 sm:text-xs">
+          <MapPin className="h-3.5 w-3.5 shrink-0 text-amber-400" aria-hidden="true" />
+          <span className="font-semibold text-white">{placeText}</span>
+          <span aria-hidden="true" className="text-slate-500">·</span>
           <span>{locationHint}</span>
-          {localTimeZone && <span className="hidden sm:inline">· {localTimeZone}</span>}
-          <span className="basis-full text-[10px] text-stone-500 sm:basis-auto sm:ms-auto">{label('permission_note')}</span>
-          {locationStatus && <span role="status" aria-live="polite" className="basis-full text-[11px] text-rose-700 sm:basis-auto">{locationStatus}</span>}
+          <span aria-hidden="true" className="text-slate-500">·</span>
+          <span dir="ltr" className="font-mono text-slate-400">{localTimeZone}</span>
+          <span className="basis-full text-[9px] text-slate-400 sm:basis-auto sm:ms-auto">{label('permission_note')}</span>
+          <span className="text-[9px] text-slate-400">{label('powered_by')} <a href="https://open-meteo.com/" target="_blank" rel="noreferrer" className="underline decoration-slate-500 underline-offset-2 hover:text-white">Open-Meteo</a></span>
+          {locationStatus && <span role="status" aria-live="polite" className="basis-full text-[11px] text-rose-300">{locationStatus}</span>}
           <button
             type="button"
             onClick={() => { void requestDeviceLocation(); }}
             disabled={locationRequest === 'loading'}
             title={label('permission_note')}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-950 transition hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:cursor-wait disabled:opacity-60"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-[10px] font-semibold text-white transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 disabled:cursor-wait disabled:opacity-60 sm:text-xs"
           >
             <Locate className="h-3.5 w-3.5" aria-hidden="true" />
             <span>{locationRequest === 'loading' ? label('locating') : place?.precision === 'device-gps' ? label('refresh_location') : label('precise_location')}</span>
