@@ -4,7 +4,7 @@ import { extractMediaRequest, stripMediaBlock } from '../utils/shaheenMedia';
 import { ShaheenMedia } from '../components/ShaheenMedia';
 import { MotionCard } from './MotionCard';
 import { wantsMotion } from './motion';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Brain, Copy, Globe, Loader2, Paperclip, Plus, Save, Send, Square, Volume2, X } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
 import { ShaheenMarkdown } from '../components/ShaheenMarkdown';
@@ -24,6 +24,18 @@ import { parseMarkdown } from './markdownDoc';
 import { wsText, type WsKey } from './strings';
 import { pickArEn } from '../لغات/localize';
 import { useSmoothText } from '../hooks/useSmoothText';
+import { useShaheenVoiceMode, type ShaheenVoiceMessage } from '../hooks/useShaheenVoiceMode';
+import { ShaheenVoiceModeButton } from '../components/ShaheenVoiceModeButton';
+import { ShaheenVoiceStage } from '../components/ShaheenVoiceStage';
+import { askMessages } from '../utils/heardFix';
+
+/**
+ * «صوت شاهين في المساحة»: the same voice conversation as the site chat sees the workspace chat as finished turns
+ * (a reply still being written is not spoken yet; it is read once it is whole). Items without an id get their place.
+ */
+export function voiceTurns(items: readonly ChatItem[]): ShaheenVoiceMessage[] {
+  return items.flatMap((item, index) => (item.streaming ? [] : [{ id: item.id || `ws-${item.role}-${index}`, role: item.role, text: stripImageRequest(item.text) }]));
+}
 
 export interface ChatItem { role: 'user' | 'assistant'; text: string; sources?: WsSource[]; image?: string; files?: string[]; error?: boolean; regenerateImage?: boolean; painted?: 'whole' | 'partial'; imageNote?: ReturnType<typeof imageErrorKey>;
   /** The reply is still being written (never saved in this state). */
@@ -89,9 +101,31 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
 
   const say = (i: number, text: string) => { setFlash({ i, text }); setTimeout(() => setFlash(null), 1800); };
 
-  const send = async (raw = input) => {
+  // The voice conversation (src/hooks/useShaheenVoiceMode.ts): what he says goes through `send` like typed text.
+  const voiceSendRef = useRef<(text: string) => Promise<boolean>>(async () => false);
+  const voiceMessages = useMemo(() => voiceTurns(items), [items]);
+  const voice = useShaheenVoiceMode({
+    language: lang,
+    messages: voiceMessages,
+    isLoading: busy,
+    disabled: !serverReachable(),
+    onSend: (text) => voiceSendRef.current(text),
+    onAsk: (heard, question) => setItems((list) => [...list, ...askMessages(heard, question, lang).map((m) => ({ id: m.id, role: m.role, text: m.text }))]),
+  });
+  useEffect(() => { if (voice.active) { stopSpeech.current?.(); setSpeaking(null); } }, [voice.active]);
+
+  const send = async (raw = input, fromVoice = false): Promise<boolean> => {
     const text = raw.trim();
-    if (!text || busy) return;
+    if (!text || busy) return false;
+    // Typed while the voice conversation is on: the reply is spoken too.
+    const voiceTurn = !fromVoice && voice.beginOutgoingTurn();
+    try { await ask(text); } catch { if (voiceTurn) voice.finishOutgoingTurn(false); return false; }
+    if (voiceTurn) voice.finishOutgoingTurn(true);
+    return true;
+  };
+  voiceSendRef.current = (text) => send(text, true);
+
+  const ask = async (text: string) => {
     const files = attachments;
     const next: ChatItem[] = [...items, { role: 'user', text, ...(files.length ? { files: files.map((f) => f.name) } : {}) }];
     setItems(next);
@@ -199,6 +233,8 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
 
   return (
     <div className="flex flex-col gap-3" data-testid="ws-chat">
+      {/* The voice conversation stays in view at the top while the replies are written below it. */}
+      {voice.active && <div className="sticky top-0 z-30 overflow-hidden rounded-2xl shadow-lg" data-testid="ws-voice-stage"><ShaheenVoiceStage language={lang} voice={voice} /></div>}
       <div className="space-y-3 min-h-[260px]">
         {!items.length && (
           <div className="rounded-2xl border border-amber-100 bg-amber-50/60 p-4 text-sm leading-relaxed text-stone-700">{w('welcome')}</div>
@@ -270,6 +306,7 @@ export function ChatPanel({ lang, items, setItems, attachments, setAttachments, 
           <button type="button" onClick={() => setDeep((v) => !v)} aria-pressed={deep} title={w('deep_hint')} data-testid="ws-deep" className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-[12px] font-bold cursor-pointer ${deep ? 'border-violet-500 bg-violet-50 text-violet-800' : 'border-stone-200 text-stone-700'}`}><Brain className="h-3.5 w-3.5" />{w('deep_toggle')}</button>
           <button type="button" onClick={() => { abort.current?.abort(); setItems([]); setAttachments([]); }} className="inline-flex items-center gap-1 rounded-xl border border-stone-200 px-2.5 py-1.5 text-[12px] font-bold text-stone-700 cursor-pointer"><Plus className="h-3.5 w-3.5" />{w('new_chat')}</button>
           <span className="flex-1" />
+          <div className="relative" data-testid="ws-voice"><ShaheenVoiceModeButton language={lang} voice={voice} disabled={!serverReachable()} /></div>
           {busy
             ? <button type="button" onClick={() => abort.current?.abort()} className="inline-flex items-center gap-1 rounded-xl bg-rose-700 px-3.5 py-1.5 text-[12px] font-black text-white cursor-pointer"><Square className="h-3.5 w-3.5" />{w('stop')}</button>
             : <button type="button" onClick={() => { void send(); }} disabled={!input.trim()} data-testid="ws-send" className="inline-flex items-center gap-1 rounded-xl bg-amber-800 px-3.5 py-1.5 text-[12px] font-black text-white hover:bg-amber-900 disabled:opacity-50 cursor-pointer"><Send className="h-3.5 w-3.5" />{w('send')}</button>}
