@@ -1,6 +1,6 @@
 import React, { type ReactNode } from 'react';
 
-const URL_TOKEN = /(?:https?:\/\/|www\.)[^\s<>{}"']+/giu;
+const URL_TOKEN = /(?:https?:\/\/|www\.)[^\s<>{}"']+|(?<![\p{L}\p{N}_@])(?:[\p{L}\p{N}](?:[\p{L}\p{N}-]{0,61}[\p{L}\p{N}])?\.)+[\p{L}]{2,}(?::\d{2,5})?(?:[/?#][^\s<>{}"']*)?/giu;
 const TRAILING_PUNCTUATION = /[.,!?،؛:…]+$/u;
 
 /** Safe plain-text rendering for member-authored content; only HTTP(S) links become anchors. */
@@ -17,11 +17,11 @@ export function CommunityText({ text, hashtags = false }: { text: string; hashta
       candidate = candidate.slice(0, -1);
     }
     if (index > cursor) parts.push(...plainParts(text.slice(cursor, index), cursor, hashtags));
-    const href = candidate.toLowerCase().startsWith('www.') ? `https://${candidate}` : candidate;
+    const href = /^https?:\/\//i.test(candidate) ? candidate : `https://${candidate}`;
     try {
       const parsed = new URL(href);
       if ((parsed.protocol === 'https:' || parsed.protocol === 'http:') && parsed.hostname.includes('.')) {
-        parts.push(<a key={`url-${index}`} href={parsed.href} target="_blank" rel="noopener noreferrer nofollow" className="break-all font-medium text-sky-700 underline decoration-sky-400 underline-offset-2 hover:text-sky-900">{candidate}</a>);
+        parts.push(<a key={`url-${index}`} href={parsed.href} target="_blank" rel="noopener noreferrer nofollow" className="break-all font-medium text-sky-700 underline decoration-sky-400 underline-offset-2 hover:text-sky-900 cursor-pointer" style={{ color: '#0369a1' }} onClick={(event) => event.stopPropagation()}>{candidate}</a>);
       } else parts.push(candidate);
     } catch { parts.push(candidate); }
     if (suffix) parts.push(suffix);
