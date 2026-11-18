@@ -13,7 +13,9 @@ import {
 } from '../../src/bank/worldFirstRail';
 
 export const INQUIRY_PATH = '/amsin/api/v1/business/account/inquiryBalance';
+export const QUERY_BALANCE_PATH = '/api/open/v1/balances/query';
 const HOSTS = new Set(['open-sea.worldfirst.com', 'open-eu.worldfirst.com', 'open-na.worldfirst.com']);
+const API_KEY = /^irak_[A-Za-z0-9_-]{8,180}$/;
 
 export type InquiryState = 'not_ready' | 'verified' | 'unverified' | 'failed';
 
@@ -76,25 +78,39 @@ function moneyValue(row: unknown, currency: string): number | null {
   return typeof value === 'number' && Number.isSafeInteger(value) ? value : null;
 }
 
-/** Drops account numbers. Returns null unless WorldFirst reported success. */
+function amountOf(row: object, names: string[], currency: string): number | null {
+  for (const name of names) {
+    const value = moneyValue((row as Record<string, unknown>)[name], currency);
+    if (value !== null) return value;
+  }
+  return null;
+}
+
+/** Drops account numbers. Returns null unless WorldFirst reported success. Accepts the old and Enhanced balance shapes. */
 export function walletsFromInquiry(payload: unknown): InquiryWallet[] | null {
   if (!payload || typeof payload !== 'object') return null;
   const result = (payload as { result?: { resultStatus?: unknown } }).result;
   if (result?.resultStatus !== 'S') return null;
-  const rows = (payload as { accountBalances?: unknown }).accountBalances;
-  if (!Array.isArray(rows)) return null;
+  const body = payload as { accountBalances?: unknown; balances?: unknown };
+  const rows = Array.isArray(body.balances) ? body.balances : Array.isArray(body.accountBalances) ? body.accountBalances : null;
+  if (!rows) return null;
   const found = new Map<WorldFirstCurrency, InquiryWallet>();
   for (const row of rows) {
     if (!row || typeof row !== 'object') continue;
     const currency = String((row as { currency?: unknown }).currency || '');
     if (!isWorldFirstCurrency(currency) || found.has(currency)) continue;
-    const available = moneyValue((row as { availableBalance?: unknown }).availableBalance, currency);
-    const frozen = moneyValue((row as { frozenBalance?: unknown }).frozenBalance, currency);
+    const available = amountOf(row, ['availableAmount', 'availableBalance'], currency);
+    const frozen = amountOf(row, ['frozenAmount', 'frozenBalance'], currency);
     if (available === null) continue;
     const screen = WORLDFIRST_WALLETS.find((item) => item.currency === currency)!;
     found.set(currency, { currency, available: formatMinor(available, currency), pending: frozen === null ? screen.pending : formatMinor(frozen, currency) });
   }
   return WORLDFIRST_WALLETS.map((row) => found.get(row.currency) || { currency: row.currency, available: row.available, pending: row.pending });
+}
+
+export function apiKeyReady(env: Record<string, string | undefined>): boolean {
+  const host = env.WORLDFIRST_API_HOST?.trim().toLowerCase() || '';
+  return Boolean(API_KEY.test(env.WORLDFIRST_API_KEY?.trim() || '') && HOSTS.has(host));
 }
 
 export function inquiryReady(env: Record<string, string | undefined>): boolean {
@@ -107,9 +123,35 @@ export interface InquiryResult extends WorldFirstSnapshot {
   wallets: InquiryWallet[];
 }
 
+async function readJson(url: string, headers: Record<string, string>, body: string, fetchImpl: typeof fetch): Promise<{ ok: boolean; text: string; responseTime: string; signature: string } | null> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15_000);
+  try {
+    const response = await fetchImpl(url, { method: 'POST', headers, body, signal: controller.signal, redirect: 'error' });
+    return { ok: response.ok, text: await response.text(), responseTime: response.headers.get('response-time') || '', signature: response.headers.get('signature') || '' };
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export async function inquireWorldFirst(env: Record<string, string | undefined>, fetchImpl: typeof fetch = fetch, now = new Date()): Promise<InquiryResult> {
-  const base = worldFirstSnapshot(Boolean(env.WORLDFIRST_CLIENT_ID?.trim() && env.WORLDFIRST_PRIVATE_KEY?.trim()), 0);
+  const base = worldFirstSnapshot(Boolean(env.WORLDFIRST_CLIENT_ID?.trim() && env.WORLDFIRST_PRIVATE_KEY?.trim()) || apiKeyReady(env), 0);
   const screen = { ...base, inquiry: 'not_ready' as const, wallets: WORLDFIRST_WALLETS.map((row) => ({ ...row })) };
+  if (apiKeyReady(env)) {
+    const host = env.WORLDFIRST_API_HOST!.trim().toLowerCase();
+    const body = JSON.stringify({ balanceTypes: ['NORMAL_BALANCE'], currencies: WORLDFIRST_WALLETS.map((row) => row.currency) });
+    const read = await readJson(`https://${host}${QUERY_BALANCE_PATH}`, {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${env.WORLDFIRST_API_KEY!.trim()}`,
+    }, body, fetchImpl);
+    if (!read?.ok) return { ...screen, inquiry: 'failed' };
+    let wallets: InquiryWallet[] | null = null;
+    try { wallets = walletsFromInquiry(JSON.parse(read.text)); } catch { return { ...screen, inquiry: 'failed' }; }
+    if (!wallets) return { ...screen, inquiry: 'failed' };
+    return { ...screen, inquiry: 'verified', balancesLive: true, wallets };
+  }
   if (!inquiryReady(env)) return screen;
   const clientId = env.WORLDFIRST_CLIENT_ID!.trim();
   const host = env.WORLDFIRST_API_HOST!.trim().toLowerCase();
@@ -118,33 +160,19 @@ export async function inquireWorldFirst(env: Record<string, string | undefined>,
   const content = signatureContent('POST', INQUIRY_PATH, clientId, time, body);
   let signature: string;
   try { signature = signRequest(content, env.WORLDFIRST_PRIVATE_KEY!); } catch { return { ...screen, inquiry: 'failed' }; }
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 15_000);
-  try {
-    const response = await fetchImpl(`https://${host}${INQUIRY_PATH}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Client-Id': clientId,
-        'Request-Time': time,
-        Signature: `algorithm=RSA256, keyVersion=2, signature=${signature}`,
-      },
-      body,
-      signal: controller.signal,
-    });
-    const text = await response.text();
-    const responseTime = response.headers.get('response-time') || time;
-    const responseSignature = response.headers.get('signature') || '';
-    const responseContent = signatureContent('POST', INQUIRY_PATH, clientId, responseTime, text);
-    if (!verifyResponse(responseContent, responseSignature, env.WORLDFIRST_PUBLIC_KEY!)) return { ...screen, inquiry: 'unverified' };
-    const wallets = walletsFromInquiry(JSON.parse(text));
-    if (!wallets) return { ...screen, inquiry: 'failed' };
-    return { ...screen, inquiry: 'verified', balancesLive: true, wallets };
-  } catch {
-    return { ...screen, inquiry: 'failed' };
-  } finally {
-    clearTimeout(timer);
-  }
+  const read = await readJson(`https://${host}${INQUIRY_PATH}`, {
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Client-Id': clientId,
+    'Request-Time': time,
+    Signature: `algorithm=RSA256, keyVersion=2, signature=${signature}`,
+  }, body, fetchImpl);
+  if (!read) return { ...screen, inquiry: 'failed' };
+  const responseContent = signatureContent('POST', INQUIRY_PATH, clientId, read.responseTime || time, read.text);
+  if (!verifyResponse(responseContent, read.signature, env.WORLDFIRST_PUBLIC_KEY!)) return { ...screen, inquiry: 'unverified' };
+  let wallets: InquiryWallet[] | null = null;
+  try { wallets = walletsFromInquiry(JSON.parse(read.text)); } catch { return { ...screen, inquiry: 'failed' }; }
+  if (!wallets) return { ...screen, inquiry: 'failed' };
+  return { ...screen, inquiry: 'verified', balancesLive: true, wallets };
 }
 
 

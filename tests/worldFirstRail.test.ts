@@ -59,6 +59,8 @@ test('WorldFirst acceptance does not issue receiving details or open sending', (
   assert.equal(keyed.blockReason, 'RECEIVING_NOT_ISSUED');
   assert.equal(worldFirstApiConfigured({ WORLDFIRST_CLIENT_ID: 'id' }), false);
   assert.equal(worldFirstApiConfigured({ WORLDFIRST_CLIENT_ID: 'id', WORLDFIRST_PRIVATE_KEY: 'key' }), true);
+  assert.equal(worldFirstApiConfigured({ WORLDFIRST_API_KEY: 'irak_testkey1' }), true);
+  assert.equal(worldFirstApiConfigured({ WORLDFIRST_API_KEY: 'not-a-key' }), false);
 });
 
 test('the queue refuses an account number and replays the same sale without sending', async () => {

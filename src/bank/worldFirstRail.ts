@@ -117,8 +117,10 @@ export interface WorldFirstSnapshot {
 
 const SALE_ID = /^[A-Za-z0-9_-]{8,40}$/;
 
-/** Presence only. The values are never returned or logged. */
-export function worldFirstApiConfigured(env: { WORLDFIRST_CLIENT_ID?: string; WORLDFIRST_PRIVATE_KEY?: string } | undefined): boolean {
+/** Presence only. The values are never returned or logged. An API key is the suggested new credential. */
+export function worldFirstApiConfigured(env: { WORLDFIRST_CLIENT_ID?: string; WORLDFIRST_PRIVATE_KEY?: string; WORLDFIRST_API_KEY?: string } | undefined): boolean {
+  const apiKey = env?.WORLDFIRST_API_KEY?.trim() || '';
+  if (/^irak_[A-Za-z0-9_-]{8,180}$/.test(apiKey)) return true;
   return Boolean(env?.WORLDFIRST_CLIENT_ID?.trim() && env?.WORLDFIRST_PRIVATE_KEY?.trim());
 }
 

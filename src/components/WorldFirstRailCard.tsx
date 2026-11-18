@@ -138,7 +138,7 @@ export function WorldFirstRailCard({ ar }: { ar: boolean }) {
       setNotice(verified
         ? t('اتقرأت الأرصدة من وورلد فيرست. الإرسال لسه مقفول، ومفيش رقم حساب ظاهر.', 'Balances were read from WorldFirst. Sending stays closed, and no account number is shown.')
         : data.inquiry === 'not_ready'
-          ? t('مفيش مفتاح شريك. الرقم المعروض هو صفر الشاشة، مش قراءة حية.', 'No partner key. The figure shown is the screen zero, not a live read.')
+          ? t('مفيش مفتاح API. الرقم المعروض هو صفر الشاشة، مش قراءة حية.', 'No API key. The figure shown is the screen zero, not a live read.')
           : t('الرد ما اتأكدش. الرصيد فضل صفر الشاشة، ومفيش حاجة اتبعتت.', 'The reply was not verified. The balance stays the screen zero, and nothing was sent.'));
     } catch {
       setLive(false);
