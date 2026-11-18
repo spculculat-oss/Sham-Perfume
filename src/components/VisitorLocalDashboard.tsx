@@ -277,15 +277,15 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
   // The entry network supplies the IANA zone. UTC is explicit when edge metadata is missing; never use device timezone.
   const localTimeZone = timeZone || 'UTC';
   let dateText = label(clockSync === 'syncing' ? 'clock_syncing' : 'clock_unavailable');
-  let digitalTime = '--:--';
+  let digitalTime = '--:--:--';
   if (now) {
     try {
       dateText = new Intl.DateTimeFormat(locale, { dateStyle: 'full', timeZone: localTimeZone }).format(now);
-      digitalTime = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', numberingSystem: 'latn', timeZone: localTimeZone }).format(now);
+      digitalTime = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23', numberingSystem: 'latn', timeZone: localTimeZone }).format(now);
     } catch {
       const fallbackLocale = LOCALE_MAP[currentLang] || 'en-GB';
       dateText = new Intl.DateTimeFormat(fallbackLocale, { dateStyle: 'full', timeZone: 'UTC' }).format(now);
-      digitalTime = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'UTC' }).format(now);
+      digitalTime = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23', timeZone: 'UTC' }).format(now);
     }
   }
   const dayToday = now ? new Intl.DateTimeFormat('en', { weekday: 'short', timeZone: localTimeZone }).format(now) : '';
@@ -340,7 +340,7 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
                 {clockStatusText}
               </span>
             </div>
-            <time dateTime={now?.toISOString()} aria-live="off" className="mt-1 block whitespace-nowrap font-mono text-[clamp(2.8rem,11vw,5.5rem)] font-black leading-none tabular-nums tracking-[-0.075em] text-[#ff8a12] drop-shadow-[0_0_16px_rgba(255,138,18,0.4)] sm:text-7xl">
+            <time dateTime={now?.toISOString()} aria-live="off" className="mt-1 block whitespace-nowrap font-mono text-[clamp(1.75rem,9vw,5rem)] font-black leading-none tabular-nums tracking-[-0.075em] text-[#ff8a12] drop-shadow-[0_0_16px_rgba(255,138,18,0.4)] sm:text-7xl">
               {digitalTime}
             </time>
             <div className="mt-2 flex min-w-0 items-center gap-1.5 text-[11px] font-medium text-slate-300 sm:text-sm">
