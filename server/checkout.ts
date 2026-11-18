@@ -2,6 +2,7 @@
  * «الدفع في متجر شام» — real online payment through Kashier (server/core/kashier.ts).
  *
  *   GET  /api/geo                       the visitor's country, city, approximate coordinates, and timezone
+ *   GET  /api/clock                     fresh server-synchronized epoch time and the visitor's network timezone
  *   GET  /api/weather                   current temperature/weather for the visitor's coarse city coordinates
  *   GET  /api/store/payments            {enabled, mode, currencies} — no secret, ever
  *   POST /api/store/checkout            cart → amount recomputed HERE from the catalog → Kashier session
@@ -221,6 +222,19 @@ export function createCheckoutRouter(options: CheckoutRouterOptions = {}) {
     await options.onCheckout({ ref, req, input, catalogLines, shippingUsd: quote(lines, input.country, { fx: rates, shipping: options.shipping, currency: 'USD' }).shipping, total, currency })
       .catch(async () => { await finance.issue('ORDER_SYNC_FAILED', 'تعذّر إرسال الطلب للمجتمع', 'السجل المالي محفوظ؛ طابق الطلب مع بوابة التجار قبل التسليم.', 'critical', ref); });
   };
+
+  router.get('/clock', (req, res) => {
+    res.setHeader('Cache-Control', 'private, no-store, max-age=0');
+    const rawTimezone = geoDetailsFromHeaders(req.headers).timezone;
+    let timezone: string | null = null;
+    if (rawTimezone) {
+      try {
+        new Intl.DateTimeFormat('en', { timeZone: rawTimezone }).format(0);
+        timezone = rawTimezone;
+      } catch { /* Ignore malformed edge metadata; the client uses UTC rather than its device zone. */ }
+    }
+    res.json({ unixMs: Date.now(), timezone, source: 'server' });
+  });
 
   router.get('/geo', (req, res) => {
     res.setHeader('Cache-Control', 'private, no-store');

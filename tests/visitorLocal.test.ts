@@ -4,6 +4,9 @@ import {
   browserVisitorCountry,
   fetchVisitorWeather,
   isValidTimeZone,
+  networkClockAt,
+  readHttpDateClock,
+  readNetworkClock,
   readCurrentWeather,
   readVisitorGeo,
   temperatureForVisitor,
@@ -58,6 +61,23 @@ test('visitor geo replies are validated before use, and local formatting follows
   assert.deepEqual(readVisitorGeo({ country: 'ZZ', location: { cityEn: 'Unknown' } }), {});
   assert.equal(visitorLocale('en', 'US'), 'en-US');
   assert.equal(visitorLocale('ar', 'EG'), 'ar-EG');
+});
+
+test('static-hosted clock sync parses the origin HTTP Date header and rejects invalid values', () => {
+  assert.deepEqual(readHttpDateClock('Fri, 13 Nov 2026 12:34:56 GMT'), { unixMs: Date.parse('2026-11-13T12:34:56Z') });
+  assert.equal(readHttpDateClock('not a date'), undefined);
+  assert.equal(readHttpDateClock(''), undefined);
+  assert.equal(readHttpDateClock('Wed, 01 Jan 1970 00:00:00 GMT'), undefined);
+});
+
+test('site clock accepts only a plausible server epoch and advances from monotonic elapsed time', () => {
+  const base = Date.parse('2026-11-13T12:00:00Z');
+  assert.deepEqual(readNetworkClock({ source: 'server', unixMs: base, timezone: 'Africa/Cairo' }), { unixMs: base, timezone: 'Africa/Cairo' });
+  assert.deepEqual(readNetworkClock({ source: 'server', unixMs: base, timezone: 'bad/zone' }), { unixMs: base });
+  assert.equal(readNetworkClock({ source: 'device', unixMs: base, timezone: 'Africa/Cairo' }), undefined);
+  assert.equal(readNetworkClock({ source: 'server', unixMs: Number.NaN }), undefined);
+  assert.equal(networkClockAt({ unixMs: base, performanceMs: 500 }, 1_500), base + 1000);
+  assert.equal(networkClockAt({ unixMs: base, performanceMs: 500 }, 400), undefined);
 });
 
 test('current weather values and conditions are parsed and formatted locally', () => {

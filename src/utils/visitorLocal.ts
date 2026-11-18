@@ -14,6 +14,42 @@ export interface CurrentWeather {
   observedAt?: string;
 }
 
+export interface NetworkClockReading {
+  unixMs: number;
+  timezone?: string;
+}
+
+export interface NetworkClockAnchor {
+  unixMs: number;
+  performanceMs: number;
+}
+
+/** Parse an HTTP Date header from the site's server/CDN; never substitute the visitor device's wall clock. */
+export function readHttpDateClock(value: unknown): NetworkClockReading | undefined {
+  if (typeof value !== 'string' || value.length > 64) return undefined;
+  const unixMs = Date.parse(value);
+  if (!Number.isSafeInteger(unixMs) || unixMs < Date.parse('2020-01-01T00:00:00Z') || unixMs > Date.parse('2100-01-01T00:00:00Z')) return undefined;
+  return { unixMs };
+}
+
+/** Accept only a plausible server-provided epoch; never substitute the visitor device's wall clock. */
+export function readNetworkClock(value: unknown): NetworkClockReading | undefined {
+  if (!value || typeof value !== 'object') return undefined;
+  const raw = value as Record<string, unknown>;
+  const unixMs = raw.unixMs;
+  if (raw.source !== 'server' || typeof unixMs !== 'number' || !Number.isSafeInteger(unixMs)
+    || unixMs < Date.parse('2020-01-01T00:00:00Z') || unixMs > Date.parse('2100-01-01T00:00:00Z')) return undefined;
+  const timezone = isValidTimeZone(raw.timezone) ? raw.timezone : undefined;
+  return { unixMs, ...(timezone ? { timezone } : {}) };
+}
+
+/** Continue a fresh server epoch using monotonic elapsed time, not the device's adjustable wall clock. */
+export function networkClockAt(anchor: NetworkClockAnchor, performanceMs: number): number | undefined {
+  if (!Number.isFinite(anchor.unixMs) || !Number.isFinite(anchor.performanceMs) || !Number.isFinite(performanceMs)
+    || performanceMs < anchor.performanceMs) return undefined;
+  return anchor.unixMs + performanceMs - anchor.performanceMs;
+}
+
 const PRECISIONS = new Set<GeoPrecision>(['edge-coords', 'edge-city', 'device-gps', 'timezone', 'country']);
 
 export function isValidTimeZone(value: unknown): value is string {
