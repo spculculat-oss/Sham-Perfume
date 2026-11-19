@@ -242,6 +242,9 @@ function Formulator({ lang, onNavigate }: { lang: SupportedLanguage; onNavigate:
             <h3 className="text-lg sm:text-xl font-black text-stone-900">{cosmeticTitle(formula, lang)}</h3>
           </div>
           <div className="flex gap-2 print:hidden">
+            <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-stone-200 text-xs font-bold hover:bg-stone-50 cursor-pointer" aria-label="Print">
+              <Printer className="w-3.5 h-3.5" />
+            </button>
             <button type="button" onClick={copy} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-stone-200 text-xs font-bold hover:bg-stone-50 cursor-pointer">
               {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />} {ct(copied ? 'copied' : 'copy')}
             </button>
