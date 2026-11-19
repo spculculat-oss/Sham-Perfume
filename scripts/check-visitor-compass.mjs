@@ -145,6 +145,14 @@ try {
   assert.equal(await arArrow.evaluate((el) => Math.round(new DOMMatrix(getComputedStyle(el).transform).b * 100)), 71, 'RTL does not reverse dial rotation');
   await ar.compass.getByRole('button', { name: 'إيقاف البوصلة', exact: true }).tap();
   assert.equal(await readers(ar.page), 0);
+
+  console.log('Checking the shared clock and usable Workspace height on a narrow phone…');
+  await ar.page.evaluate(() => { location.hash = 'workspace'; });
+  await ar.page.locator('[data-clock-layout="compact"]').waitFor();
+  const workspace = ar.page.locator('.sham-ws');
+  await workspace.waitFor();
+  const bounds = await workspace.boundingBox();
+  assert.ok(bounds && bounds.height > 200 && bounds.width <= 320, JSON.stringify(bounds));
   console.log('Compass desktop and Arabic mobile checks passed.');
 } finally {
   await browser.close();

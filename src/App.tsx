@@ -1143,7 +1143,9 @@ export default function App() {
   return (
     <LanguageProvider initialLang={currentLang} onLanguageChange={handleSelectLanguage}>
       <ClockToolsProvider lang={currentLang}>
-      <div className={`${activeTab === 'workspace' ? 'h-dvh overflow-hidden' : 'min-h-screen'} flex flex-col bg-stone-50 text-stone-900 selection:bg-amber-200`}>
+      <div className="min-h-screen flex flex-col bg-stone-50 text-stone-900 selection:bg-amber-200">
+        {/* Bound the workspace and the shared clock together, not the global footer. */}
+        <div className={activeTab === 'workspace' ? 'flex h-dvh shrink-0 flex-col overflow-y-auto' : 'contents'}>
         
         {/* Non-blocking, screen-reader-announced status below the sticky header. */}
         <ToastNotification message={toastMessage} />
@@ -1210,7 +1212,7 @@ export default function App() {
         )}
 
         {/* Main Container */}
-        <main className={activeTab === 'workspace' ? 'flex-1 min-h-0 flex flex-col max-w-[96rem] w-full mx-auto px-2 sm:px-4 py-2 sm:py-3' : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-10'}>
+        <main className={activeTab === 'workspace' ? 'flex-1 min-h-72 flex flex-col max-w-[96rem] w-full mx-auto px-2 sm:px-4 py-2 sm:py-3' : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-10'}>
           {/* Universal Navigation Breadcrumbs Bar with Back to Home & Back to Previous */}
           {activeTab !== 'workspace' && (
             <NavigationBreadcrumbs
@@ -1453,6 +1455,7 @@ export default function App() {
           />
         )}
       </main>
+        </div>
 
       {/* Floating Interactive Master Perfumer AI Chatbot with Transfer Bridge */}
       <PerfumerAIChatbot
