@@ -47,3 +47,15 @@ test('engineering unit converter covers common mechanical, electrical and therma
   assert.equal(convert(60, 'frequency', 'Hz', 'kHz'), 0.06);
   assert.throws(() => convertEngineeringUnit(Number.NaN, 'length', 'm', 'cm'));
 });
+
+test('the scientific keypad accepts localized input and uses textbook implied multiplication', () => {
+  assert.equal(evaluateEngineeringExpression('١٢٫٥ ÷ ۲٫۵'), 5);
+  assert.equal(evaluateEngineeringExpression('٦÷٢(١+٢)'), 1);
+  assert.equal(evaluateEngineeringExpression('٣²+٢³'), 17);
+  assert.equal(evaluateEngineeringExpression('dms(-0,30,0)'), -0.5);
+  assert.equal(evaluateEngineeringExpression('sin(100)', { angleMode: 'GRAD' }), 1);
+  assert.equal(evaluateEngineeringExpression('cos(pi/2)', { angleMode: 'RAD' }), 0);
+  assert.ok(evaluateEngineeringExpression('sin(1e-15)') > 0, 'tiny angles are not rounded to zero');
+  for (const wrong of ['2..3', 'log(3,0)', 'tan(90)', '1/0', '3 4']) assert.throws(() => evaluateEngineeringExpression(wrong), Error);
+  assert.throws(() => convertEngineeringUnit(1, 'temperature', 'm', 'K'));
+});

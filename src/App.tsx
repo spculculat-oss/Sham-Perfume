@@ -9,6 +9,7 @@ import { UserProfilePage } from './components/UserProfilePage';
 import { Hero } from './components/Hero';
 import { HomeHub } from './components/HomeHub';
 import { VisitorLocalDashboard } from './components/VisitorLocalDashboard';
+import { ClockToolsProvider } from './components/clock/ClockTools';
 import { SectionsGateway } from './components/SectionsGateway';
 import { Storefront } from './components/Storefront';
 import { ProductDetail } from './components/ProductDetail';
@@ -105,6 +106,7 @@ import { getSessionToken } from './community/api';
 import { profileFromMember, saveCurrentUserProfile } from './utils/authStorage';
 import { useSessionPick } from './community/session';
 import { ErrorBoundary, lazyWithReload } from './utils/lazyRetry';
+import { ClockCalculatorLoading, ENGINEERING_WINDOW_ID, type ClockCalculatorState } from './components/clock/ClockCalculatorLauncher';
 
 // «مجتمع شام» (social, messenger, member and merchant portals): its own bundle, loaded on the first #community visit.
 const CommunityApp = lazyWithReload(() => import('./community/CommunityApp'));
@@ -112,6 +114,7 @@ const CosmeticsHub = lazyWithReload(() => import('./components/CosmeticsHub'));
 const DesignersStudio = lazyWithReload(() => import('./components/DesignersStudio'));
 // «مساحة شاهين»: the general assistant (loaded only when opened — its document and code tools are heavy).
 const ShaheenWorkspace = lazyWithReload(() => import('./workspace/ShaheenWorkspace'));
+const EngineeringCalculator = lazyWithReload(() => import('./components/EngineeringCalculator'));
 
 const LOCAL_STORAGE_KEY = SAVED_FORMULAS_STORAGE_KEY;
 
@@ -201,6 +204,18 @@ export default function App() {
     }
   });
   useSeo(activeTab);
+  // The clock launches a non-modal tool; owning it here keeps calculations open across visitor tabs.
+  const [calculator, setCalculator] = useState<ClockCalculatorState>('closed');
+  const calculatorLauncher = useRef<HTMLButtonElement | null>(null);
+  const openCalculator = useCallback((launcher: HTMLButtonElement) => {
+    calculatorLauncher.current = launcher;
+    setCalculator('open');
+    document.getElementById(ENGINEERING_WINDOW_ID)?.focus({ preventScroll: true });
+  }, []);
+  const closeCalculator = useCallback(() => {
+    setCalculator('closed');
+    if (calculatorLauncher.current?.isConnected) calculatorLauncher.current.focus({ preventScroll: true });
+  }, []);
   const [historyStack, setHistoryStack] = useState<string[]>(() => {
     try {
       const hash = window.location.hash.replace('#', '');
@@ -1126,6 +1141,7 @@ export default function App() {
 
   return (
     <LanguageProvider initialLang={currentLang} onLanguageChange={handleSelectLanguage}>
+      <ClockToolsProvider lang={currentLang}>
       <div className="min-h-screen flex flex-col bg-stone-50 text-stone-900 selection:bg-amber-200">
         
         {/* Non-blocking, screen-reader-announced status below the sticky header. */}
@@ -1148,7 +1164,7 @@ export default function App() {
           onOpenProfilePage={() => currentUser && (getSessionToken() ? navigateToTab('community/me') : handleOpenProfilePage(currentUser))}
         />
 
-        {activeTab === 'home' && <VisitorLocalDashboard currentLang={currentLang} />}
+        {activeTab === 'home' && <VisitorLocalDashboard currentLang={currentLang} calculatorState={calculator} onOpenCalculator={openCalculator} />}
         {activeTab === 'studio' && (
           <ProjectStudio
             lang={currentLang}
@@ -1455,6 +1471,15 @@ export default function App() {
 
       {/* «الأيقونات العائمة»: شريط جانبي يظهر بس لما أيقونة تتخفي أو تتحرك — يرجّعها أو يرجّع أماكنها */}
       <FloatingDockManager lang={currentLang} />
+      {calculator !== 'closed' && (
+        <ErrorBoundary compact area="Calculator" ar={currentLang === 'ar'} onReset={closeCalculator}>
+          <Suspense fallback={<ClockCalculatorLoading lang={currentLang} />}>
+            <EngineeringCalculator currentLang={currentLang} minimized={calculator === 'minimized'}
+              behindModal={isAuthModalOpen || isSpecModalOpen || isSaveModalOpen || isEnvironmentModalOpen || isPrivacyModalOpen || isLegalCenterOpen}
+              onMinimize={() => setCalculator('minimized')} onRestore={() => setCalculator('open')} onClose={closeCalculator} />
+          </Suspense>
+        </ErrorBoundary>
+      )}
 
       {/* Footer */}
       <Footer
@@ -1656,6 +1681,7 @@ export default function App() {
       <CookieConsent currentLang={currentLang} onOpenPolicy={() => { setLegalInitialTab('cookies'); setIsLegalCenterOpen(true); activeModalsRef.current.legal = true; }} />
 
       </div>
+      </ClockToolsProvider>
     </LanguageProvider>
   );
 }

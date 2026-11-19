@@ -20,6 +20,8 @@ import { createCommunity, createCommunityRouter } from './community/router';
 import { createContractsRouter } from './contracts/router';
 import { productsForCheckout, recordCheckout, markPaid } from './community/service';
 import { liveFxRates } from './core/liveFx';
+import { createHomeHeadlines } from './homeHeadlines';
+import { emptyHeadlines } from '../src/utils/homeHeadlines';
 
 dotenv.config();
 
@@ -60,6 +62,15 @@ app.get('/api/fx', async (_req, res) => {
   const table = await liveFxRates();
   res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=3600');
   res.json({ base: table.base, source: table.source, updatedAt: table.updatedAt, rates: table.rates });
+});
+
+// The home clock's general-news briefing. It is separate from Shaheen's perfume newsletter.
+const homeHeadlines = createHomeHeadlines();
+app.get('/api/home-headlines', async (_req, res) => {
+  const headlines = process.env.SHAM_HOME_NEWS?.trim().toLowerCase() === 'off' || process.env.SHAM_LIVE_DATA?.trim().toLowerCase() === 'off'
+    ? { egypt: emptyHeadlines(), world: emptyHeadlines() } : await homeHeadlines();
+  res.setHeader('Cache-Control', headlines.egypt.items.length || headlines.world.items.length ? 'public, max-age=30, s-maxage=120' : 'no-store');
+  res.json(headlines);
 });
 
 // «الخبير شاهين»: GET /api/models + POST /api/chat. Settings come from server/config/shaheen.ts and the

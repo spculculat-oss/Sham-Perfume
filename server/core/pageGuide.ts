@@ -56,10 +56,14 @@ export const PAGES: PageGuide[] = [
   },
   {
     id: 'home', label: { ar: 'الرئيسية', en: 'Home' },
-    what: { ar: 'الزائر في الصفحة الرئيسية: بيشوف أقسام الموقع (المعمل، المتجر، المكتبة، المجتمع) وبيدور على نقطة بداية.', en: 'The visitor is on the home page: the site sections (lab, store, library, community) and a place to start.' },
-    offer: { ar: 'اسأله هو عايز يعمل إيه: يشتري عطر جاهز، يركّب تركيبة، يتعلم، أو يسأل عن طلب.', en: 'Ask what they want to do: buy a ready perfume, build a formula, learn, or check an order.' },
+    what: { ar: 'الزائر في الصفحة الرئيسية: بيشوف أقسام الموقع وبطاقة الساعة فيها البوصلة بالدرجات والحاسبة الهندسية والمنبّهات والعداد التنازلي وساعة الإيقاف، وموجز أخبار مصر والعالم جنب الساعة.', en: 'The visitor is on Home: site sections and a clock card with a numbered compass, the engineering calculator, alarms, a timer, a stopwatch, and an Egypt and world news briefing beside the clock.' },
+    offer: { ar: 'وجّهه لأدوات الساعة تحت الأرقام، أو للخبر عند مصدره من الموجز. لباقي الأسئلة وجّهه للمتجر أو المعمل أو المكتبة أو متابعة الطلب.', en: 'Point to the tools under the clock digits or the publisher link in the briefing. For other questions guide them to the store, lab, library, or order tracking.' },
     questions: [
       { ar: 'أبدأ منين؟', en: 'Where do I start?', expect: 'any' },
+      { ar: 'إزاي أستخدم البوصلة؟', en: 'How do I use the compass?', expect: 'any' },
+      { ar: 'فين الحاسبة الهندسية اللي في الساعة؟', en: 'Where is the engineering calculator in the clock?', expect: 'any' },
+      { ar: 'إزاي أضبط منبه من الساعة؟', en: 'How do I set a clock alarm?', expect: 'any' },
+      { ar: 'فين موجز الأخبار اللي جنب الساعة؟', en: 'Where is the news briefing beside the clock?', expect: 'any' },
       { ar: 'إيه أسعار المنتجات؟', en: 'What are the product prices?', expect: 'prices' },
     ],
   },

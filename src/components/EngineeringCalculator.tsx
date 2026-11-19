@@ -1,178 +1,408 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Calculator, Check, ChevronDown, Copy, RotateCcw, X } from 'lucide-react';
-import type { SupportedLanguage } from '../types/i18n';
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import {
-  convertEngineeringUnit,
-  ENGINEERING_UNITS,
-  evaluateEngineeringExpression,
-  type AngleMode,
-  type EngineeringUnitCategory,
-} from '../utils/engineeringCalculator';
+  ArrowDownLeft, ArrowDownToLine, ArrowLeft, ArrowUpRight, BookOpen, Calculator, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronsDown, ChevronsUp, ChevronUp, Copy,
+  Ellipsis, FunctionSquare, GripVertical, House, Minus, Settings2, Undo2, Variable, X,
+} from 'lucide-react';
+import type { SupportedLanguage } from '../types/i18n';
+import { usesNativeDigits } from '../لغات/numerals';
+import { copyChatText } from '../utils/clipboard';
+import { EngineeringError, ENGINEERING_EXPRESSION_LIMIT, ENGINEERING_VARIABLES, evaluateEngineeringValue, type AngleMode, type EngineeringValue, type EngineeringVariable, type EvaluateOptions } from '../utils/engineeringCalculator';
+import { CalculatorModes, CalcInput, CalcSelect, MODES, type CalcMode, type ToolMode } from './engineering/CalculatorModes';
+import { CATALOG, FUNCTION_KEYS, NUMBER_KEYS, type CalcKey } from './engineering/calculatorCatalog';
+import { copyableNumber, displayDigits, displayNumber, FORMAT_LABEL, FORMAT_TAG, FORMATS, formatReadout, loadCalculatorPreferences, persistCalculatorPreferences, type CalcFormat, type Readout } from './engineering/calculatorDisplay';
+import { useFloatingCalculator } from './engineering/useFloatingCalculator';
+import { ENGINEERING_WINDOW_ID } from './clock/ClockCalculatorLauncher';
+import './engineering/calculator.css';
 
-const CATEGORIES = Object.keys(ENGINEERING_UNITS) as EngineeringUnitCategory[];
-const CATEGORY_NAMES: Record<EngineeringUnitCategory, [string, string]> = {
-  length: ['طول', 'Length'], area: ['مساحة', 'Area'], volume: ['حجم', 'Volume'], mass: ['كتلة', 'Mass'],
-  temperature: ['حرارة', 'Temperature'], pressure: ['ضغط', 'Pressure'], speed: ['سرعة', 'Speed'],
-  energy: ['طاقة', 'Energy'], power: ['قدرة', 'Power'], voltage: ['جهد كهربائي', 'Voltage'],
-  current: ['تيار كهربائي', 'Current'], resistance: ['مقاومة', 'Resistance'], frequency: ['تردد', 'Frequency'],
-};
+type Layer = 'home' | 'settings' | 'catalog' | 'format' | 'variables' | 'functions' | 'tools' | 'history';
+type BasicMode = 'calculate' | 'complex';
+interface LogEntry { text: string; result: EngineeringValue }
+interface Worksheet { text: string; result?: EngineeringValue; answer?: EngineeringValue; error?: Error; history: LogEntry[]; replay?: number; draft?: string }
+const isBasic = (mode: CalcMode): mode is BasicMode => mode === 'calculate' || mode === 'complex';
+const binaryStart = /^(?:[+−\-×*/÷^²³!%]|\s+mod\s+)/;
+const zero = { re: 0, im: 0 };
 
-function formatResult(value: number): string {
-  return new Intl.NumberFormat('en-US', { maximumSignificantDigits: 12, useGrouping: false }).format(value);
+function Key({ children, label, click, className = '', cap, pressed, disabled }: { children: ReactNode; label: string; click: () => void; className?: string; cap?: string; pressed?: boolean; disabled?: boolean }) {
+  return <button type="button" className={`cw-key ${className}`} title={label} aria-label={label} aria-pressed={pressed} disabled={disabled} onClick={click}>
+    {children}{cap && <span className="cw-cap" aria-hidden="true">{cap}</span>}
+  </button>;
 }
 
-function GlassSelect({ value, onChange, values, label, renderItem }: { value: string; onChange: (value: string) => void; values: readonly string[]; label: string; renderItem?: (value: string) => string }) {
-  return (
-    <label className="relative block min-w-0">
-      <span className="sr-only">{label}</span>
-      <select value={value} onChange={(event) => onChange(event.target.value)} aria-label={label} className="w-full appearance-none rounded-xl border border-white/15 bg-slate-900/70 px-3 py-2.5 pe-9 text-sm text-white outline-none transition focus:border-amber-300/70 focus:ring-2 focus:ring-amber-300/20">
-        {values.map((item) => <option key={item} value={item} className="bg-slate-900 text-white">{renderItem ? renderItem(item) : item}</option>)}
-      </select>
-      <ChevronDown className="pointer-events-none absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" aria-hidden="true" />
-    </label>
-  );
+function LCDValue({ value }: { value: Readout }) {
+  if ('text' in value) {
+    const [mantissa, exp] = value.text.split('×10^');
+    // Only split plain scientific notation, not a complex expression with two terms.
+    if (exp && !exp.includes(' ') && !exp.includes('i') && value.text.indexOf('×10^') === value.text.lastIndexOf('×10^')) return <>{mantissa}×10<sup>{exp}</sup></>;
+    return <>{value.text}</>;
+  }
+  return <span className="cw-fraction-layout" aria-label={`${value.sign || ''}${value.whole ? `${value.whole} ` : ''}${value.top}/${value.bottom}`}>
+    {value.sign}{value.whole}<span className="cw-fraction" aria-hidden="true"><span>{value.top}</span><span>{value.bottom}</span></span>
+  </span>;
 }
 
-export function EngineeringCalculator({ currentLang, onClose }: { currentLang: SupportedLanguage; onClose: () => void }) {
-  const isArabic = currentLang === 'ar';
-  const say = (ar: string, en: string) => isArabic ? ar : en;
-  const [panel, setPanel] = useState<'scientific' | 'convert'>('scientific');
-  const [expression, setExpression] = useState('');
-  const [angleMode, setAngleMode] = useState<AngleMode>('DEG');
-  const [answer, setAnswer] = useState<number | undefined>();
-  const [memory, setMemory] = useState(0);
-  const [copied, setCopied] = useState(false);
-  const [category, setCategory] = useState<EngineeringUnitCategory>('length');
-  const [fromUnit, setFromUnit] = useState(ENGINEERING_UNITS.length[0]);
-  const [toUnit, setToUnit] = useState(ENGINEERING_UNITS.length[1]);
-  const [convertValue, setConvertValue] = useState('1');
+export function EngineeringCalculator({ currentLang, minimized, behindModal, onMinimize, onRestore, onClose }: { currentLang: SupportedLanguage; minimized: boolean; behindModal: boolean; onMinimize: () => void; onRestore: () => void; onClose: () => void }) {
+  const ar = currentLang === 'ar';
+  const nativeDigits = usesNativeDigits(currentLang);
+  const t = (arabic: string, english: string) => ar ? arabic : english;
+  const d = (value: string) => displayDigits(value, currentLang);
+  const titleId = useId();
+  const expressionId = useId();
+  const floating = useFloatingCalculator(minimized);
+  const [prefs, setPrefs] = useState(loadCalculatorPreferences);
+  const [mode, setMode] = useState<CalcMode>('calculate');
+  const [visited, setVisited] = useState<ToolMode[]>([]);
+  const [layer, setLayer] = useState<Layer | null>(null);
+  const [shift, setShift] = useState(false);
+  const [catalog, setCatalog] = useState<(typeof CATALOG)[number]['id']>('numeric');
+  const [notice, setNotice] = useState('');
+  const [sheets, setSheets] = useState<Record<BasicMode, Worksheet>>({ calculate: { text: '', history: [] }, complex: { text: '', history: [] } });
+  const basicMode = isBasic(mode) ? mode : 'calculate';
+  const sheet = sheets[basicMode];
+  const expressionRef = useRef<HTMLInputElement>(null);
+  const cursor = useRef({ start: 0, end: 0 });
+  const pendingSelection = useRef<number | null>(null);
+  const undoStack = useRef<Record<BasicMode, string[]>>({ calculate: [], complex: [] });
+  const noticeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const homeCursor = useRef(0);
+  const requestMenuFocus = useRef(false);
+  const { angle, format, precision, functions, variables } = prefs;
+  const effectiveFormat = format === 'polar' && mode !== 'complex' ? 'math' : format;
+  const evalOptions = useMemo<EvaluateOptions>(() => ({ angleMode: angle, variables, functions, answer: sheet.answer }), [angle, variables, functions, sheet.answer]);
 
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  useEffect(() => { persistCalculatorPreferences(prefs); }, [prefs]);
+  useEffect(() => () => { window.clearTimeout(noticeTimer.current); }, []);
+  useLayoutEffect(() => {
+    const pos = pendingSelection.current;
+    if (pos !== null && expressionRef.current && !layer && !minimized && isBasic(mode)) {
+      expressionRef.current.setSelectionRange(pos, pos);
+      cursor.current = { start: pos, end: pos };
+      pendingSelection.current = null;
+    }
+    if (requestMenuFocus.current && menuRef.current && !minimized) {
+      (menuRef.current.querySelector('button.cw-app-tile[aria-current="true"]') as HTMLButtonElement | null ?? menuRef.current.querySelector('button'))?.focus({ preventScroll: true });
+      requestMenuFocus.current = false;
+    }
+  });
 
-  const calculation = useMemo(() => {
-    if (!expression.trim()) return { value: undefined as number | undefined, error: '' };
-    try { return { value: evaluateEngineeringExpression(expression, { angleMode, answer }), error: '' }; }
-    catch (error) { return { value: undefined, error: error instanceof Error ? error.message : say('تعبير غير صالح', 'Invalid expression') }; }
-  }, [expression, angleMode, answer]);
-
-  const conversion = useMemo(() => {
-    if (!convertValue.trim()) return { value: undefined as number | undefined, error: '' };
-    const numeric = Number(convertValue);
-    if (!Number.isFinite(numeric)) return { value: undefined, error: say('أدخل رقمًا صالحًا', 'Enter a valid number') };
-    try { return { value: convertEngineeringUnit(numeric, category, fromUnit, toUnit), error: '' }; }
-    catch { return { value: undefined, error: say('تعذر التحويل بين الوحدتين', 'These units cannot be converted') }; }
-  }, [convertValue, category, fromUnit, toUnit, isArabic]);
-
-  const updateCategory = (next: EngineeringUnitCategory) => {
-    const units = ENGINEERING_UNITS[next];
-    setCategory(next);
-    setFromUnit(units[0]);
-    setToUnit(units[1] || units[0]);
+  const notify = (message: string) => {
+    setNotice(message);
+    window.clearTimeout(noticeTimer.current);
+    noticeTimer.current = setTimeout(() => setNotice(''), 2000);
   };
-  const insert = (text: string) => setExpression((current) => current + text);
-  const currentValue = calculation.value;
-  const equals = () => {
-    if (currentValue === undefined) return;
-    setAnswer(currentValue);
-    setExpression(formatResult(currentValue));
+  const updateSheet = (updater: (prev: Worksheet) => Worksheet) => setSheets((prev) => ({ ...prev, [basicMode]: updater(prev[basicMode]) }));
+  const rememberEdit = () => { undoStack.current[basicMode] = [...undoStack.current[basicMode].slice(-39), sheet.text]; };
+  const edit = (text: string, caret?: number, remember = true) => {
+    if (text.length > ENGINEERING_EXPRESSION_LIMIT) { notify(t('التعبير طويل', 'Expression is too long')); return; }
+    if (remember && text !== sheet.text) rememberEdit();
+    if (caret !== undefined) {
+      const position = Math.max(0, Math.min(caret, text.length));
+      cursor.current = { start: position, end: position };
+      pendingSelection.current = position;
+    }
+    updateSheet((current) => ({ ...current, text, result: undefined, error: undefined, replay: undefined, draft: undefined }));
   };
-  const copyResult = async () => {
-    if (currentValue === undefined) return;
+  const showLayer = (next: Layer) => {
+    setShift(false);
+    setNotice('');
+    if (layer === next) { setLayer(null); return; }
+    if (next === 'home') homeCursor.current = MODES.findIndex((item) => item.id === mode);
+    requestMenuFocus.current = true;
+    setLayer(next);
+  };
+  const closeLayer = () => {
+    setLayer(null);
+    floating.windowRef.current?.focus({ preventScroll: true });
+  };
+  const selectMode = (next: CalcMode) => {
+    setMode(next);
+    closeLayer();
+    setShift(false);
+    setNotice('');
+    if (isBasic(next)) pendingSelection.current = sheets[next].text.length;
+    else setVisited((prev) => prev.includes(next) ? prev : [...prev, next]);
+  };
+  const openTool = (next: ToolMode) => selectMode(next);
+  const rememberCursor = () => {
+    const input = expressionRef.current;
+    if (input) cursor.current = { start: input.selectionStart ?? sheet.text.length, end: input.selectionEnd ?? sheet.text.length };
+  };
+  const insert = (value: string) => {
+    if (!isBasic(mode) || !value) return;
+    const fromResult = Boolean(sheet.result && sheet.replay === undefined && cursor.current.start === sheet.text.length && cursor.current.end === sheet.text.length);
+    const text = fromResult ? (binaryStart.test(value) ? 'Ans' : '') : sheet.text;
+    const start = fromResult ? text.length : Math.min(cursor.current.start, text.length);
+    const end = fromResult ? text.length : Math.min(cursor.current.end, text.length);
+    if (value === ')' && start === end && text[start] === ')') { edit(text, start + 1, false); return; }
+    const paired = value.endsWith('(');
+    const selected = text.slice(start, end);
+    const insertion = paired ? `${value}${selected})` : value;
+    // Store exactly one numeric token when pressing a localized digit key; keyboard numbers remain editable as typed.
+    const shown = nativeDigits ? d(insertion).replace(/\./g, '٫') : insertion;
+    edit(text.slice(0, start) + shown + text.slice(end), start + (paired && !selected ? value.length : shown.length));
+  };
+  const erase = () => {
+    if (!isBasic(mode)) return;
+    const text = sheet.text;
+    let { start, end } = cursor.current;
+    if (start === end && start > 0) {
+      const token = text.slice(0, start).match(/(?:[a-zA-Z]+|√)\($/);
+      if (token && text[start] === ')') { start -= token[0].length; end++; }
+      else if (text[start - 1] === '(' && text[start] === ')') { start--; end++; }
+      else start--;
+    }
+    edit(text.slice(0, start) + text.slice(end), start);
+  };
+  const undo = () => {
+    if (!isBasic(mode)) return;
+    const text = undoStack.current[basicMode].pop();
+    if (text !== undefined) edit(text, text.length, false);
+  };
+  const exe = () => {
+    if (!isBasic(mode) || !sheet.text.trim()) return;
     try {
-      await navigator.clipboard.writeText(formatResult(currentValue));
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1400);
-    } catch { setCopied(false); }
+      const result = evaluateEngineeringValue(sheet.text, { ...evalOptions, complex: mode === 'complex' });
+      pendingSelection.current = sheet.text.length;
+      const entry = { text: sheet.text, result };
+      const last = sheet.history[0];
+      const history = last?.text === entry.text && last.result.re === result.re && last.result.im === result.im
+        ? sheet.history : [entry, ...sheet.history].slice(0, 40);
+      updateSheet((current) => ({ ...current, result, answer: result, history, error: undefined, replay: undefined, draft: undefined }));
+    } catch (error) {
+      updateSheet((current) => ({ ...current, result: undefined, error: error instanceof Error ? error : new Error('Invalid expression.') }));
+    }
+  };
+  const selectHistory = (index: number) => {
+    const entry = sheet.history[index];
+    if (!entry) return;
+    closeLayer();
+    pendingSelection.current = entry.text.length;
+    updateSheet((current) => ({ ...current, text: entry.text, result: entry.result, error: undefined, replay: index, draft: current.draft ?? (current.result ? '' : current.text) }));
+  };
+  const replay = (delta: number) => {
+    if (!isBasic(mode) || !sheet.history.length) return;
+    const index = (sheet.replay ?? -1) + delta;
+    if (index < 0) {
+      if (sheet.replay !== undefined) edit(sheet.draft ?? '', (sheet.draft ?? '').length, false);
+      return;
+    }
+    selectHistory(Math.min(index, sheet.history.length - 1));
+  };
+  const moveCursor = (delta: number) => {
+    if (!isBasic(mode) || layer || !expressionRef.current) return;
+    const input = expressionRef.current;
+    const next = Math.max(0, Math.min(sheet.text.length, (delta < 0 ? cursor.current.start : cursor.current.end) + delta));
+    cursor.current = { start: next, end: next };
+    input.setSelectionRange(next, next);
+    // Do not summon the on-screen keyboard just to move the calculator cursor.
+    if (!window.matchMedia('(pointer: coarse)').matches) input.focus({ preventScroll: true });
+    if (sheet.result) updateSheet((current) => ({ ...current, result: undefined }));
+  };
+  const variableSet = (key: EngineeringVariable, value: EngineeringValue) => setPrefs((current) => ({ ...current, variables: { ...current.variables, [key]: value } }));
+  const updateFunction = (key: 'f' | 'g', text: string) => setPrefs((current) => ({ ...current, functions: { ...current.functions, [key]: text } }));
+  const pickAngle = (next: AngleMode) => {
+    if (angle === next) return;
+    setPrefs((current) => ({ ...current, angle: next }));
+    setSheets((prev) => ({ calculate: { ...prev.calculate, result: undefined, error: undefined }, complex: { ...prev.complex, result: undefined, error: undefined } }));
+  };
+  const pickFormat = (next: CalcFormat) => { setPrefs((current) => ({ ...current, format: next })); closeLayer(); };
+  const copy = async () => {
+    if (!sheet.result) return;
+    const ok = await copyChatText(copyableNumber(sheet.result, effectiveFormat === 'math' || effectiveFormat === 'mixed'));
+    notify(ok ? t('اتنسخ الناتج', 'Result copied') : t('النسخ غير متاح', 'Clipboard unavailable'));
+  };
+  const primeFactors = () => {
+    const value = sheet.result;
+    if (!value || value.im || !Number.isInteger(value.re) || value.re < 2 || value.re > 1e12) return;
+    const factors: number[] = [];
+    let n = value.re;
+    for (let factor = 2; factor * factor <= n; factor += factor === 2 ? 1 : 2) {
+      while (n % factor === 0) { factors.push(factor); n /= factor; }
+    }
+    if (n > 1) factors.push(n);
+    notify(factors.map((v) => displayNumber(v, currentLang)).join(' × '));
+  };
+  const back = () => { if (layer) closeLayer(); else if (mode !== 'calculate') showLayer('home'); else undo(); };
+  const useKey = (key: CalcKey) => {
+    if (key.action === 'format') { showLayer('format'); return; }
+    if (key.action === 'clear') edit('', 0);
+    else if (key.action === 'del') erase();
+    else if (key.action === 'execute') exe();
+    else insert(shift && key.shift !== undefined ? key.shift : key.insert ?? '');
+    setShift(false);
+  };
+  const shortcut = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'Escape') {
+      event.stopPropagation();
+      if (layer) closeLayer(); else onClose();
+      return;
+    }
+    if (event.ctrlKey || event.metaKey || event.altKey || !isBasic(mode) || layer) return;
+    const inInput = event.target === expressionRef.current;
+    const key = event.key;
+    if (key === 'Enter' && (inInput || event.target === floating.windowRef.current) || key === '=') { event.preventDefault(); exe(); }
+    else if (key === 'ArrowUp' || key === 'ArrowDown') { event.preventDefault(); replay(key === 'ArrowUp' ? 1 : -1); }
+    else if (!inInput && (key === 'ArrowLeft' || key === 'ArrowRight')) { event.preventDefault(); moveCursor(key === 'ArrowLeft' ? -1 : 1); }
+    else if (!inInput && key === 'Backspace') { event.preventDefault(); erase(); }
+    else if (!inInput && key.length === 1 && /[\da-z()+\-*/.^,%!π×÷√−]/i.test(key)) { event.preventDefault(); insert(key); }
   };
 
-  const keys: { label: string; value?: string; action?: () => void; tone?: 'accent' | 'operator' | 'equals' }[] = [
-    { label: 'MC', action: () => setMemory(0), tone: 'operator' },
-    { label: 'MR', action: () => insert(formatResult(memory)), tone: 'operator' },
-    { label: 'M+', action: () => { if (currentValue !== undefined) setMemory((old) => old + currentValue); }, tone: 'operator' },
-    { label: 'M−', action: () => { if (currentValue !== undefined) setMemory((old) => old - currentValue); }, tone: 'operator' },
-    { label: 'AC', action: () => setExpression(''), tone: 'accent' },
-    { label: '(', value: '(' }, { label: ')', value: ')' }, { label: 'mod', value: ' mod ', tone: 'operator' },
-    { label: '÷', value: '÷', tone: 'operator' }, { label: '⌫', action: () => setExpression((old) => old.slice(0, -1)), tone: 'operator' },
-    { label: 'sin', value: 'sin(', tone: 'operator' }, { label: 'cos', value: 'cos(', tone: 'operator' },
-    { label: 'tan', value: 'tan(', tone: 'operator' }, { label: '√', value: 'sqrt(', tone: 'operator' }, { label: 'x²', value: '^2', tone: 'operator' },
-    { label: '7', value: '7' }, { label: '8', value: '8' }, { label: '9', value: '9' }, { label: '×', value: '×', tone: 'operator' }, { label: 'xʸ', value: '^', tone: 'operator' },
-    { label: '4', value: '4' }, { label: '5', value: '5' }, { label: '6', value: '6' }, { label: '−', value: '−', tone: 'operator' }, { label: 'π', value: 'pi', tone: 'operator' },
-    { label: '1', value: '1' }, { label: '2', value: '2' }, { label: '3', value: '3' }, { label: '+', value: '+', tone: 'operator' }, { label: 'e', value: 'e', tone: 'operator' },
-    { label: '±', action: () => setExpression((old) => old ? `-(${old})` : '-'), tone: 'operator' }, { label: '0', value: '0' },
-    { label: '.', value: '.' }, { label: '!', value: '!', tone: 'operator' }, { label: '=', action: equals, tone: 'equals' },
-    { label: 'ln', value: 'ln(', tone: 'operator' }, { label: 'log', value: 'log(', tone: 'operator' },
-    { label: 'Ans', value: answer === undefined ? 'ans' : formatResult(answer), tone: 'operator' },
-    { label: '%', value: '%', tone: 'operator' }, { label: angleMode, action: () => setAngleMode((old) => old === 'DEG' ? 'RAD' : 'DEG'), tone: 'accent' },
-    { label: 'asin', value: 'asin(', tone: 'operator' }, { label: 'acos', value: 'acos(', tone: 'operator' }, { label: 'atan', value: 'atan(', tone: 'operator' }, { label: 'sinh', value: 'sinh(', tone: 'operator' }, { label: 'cosh', value: 'cosh(', tone: 'operator' },
-    { label: 'tanh', value: 'tanh(', tone: 'operator' }, { label: 'abs', value: 'abs(', tone: 'operator' }, { label: 'exp', value: 'exp(', tone: 'operator' }, { label: 'cbrt', value: 'cbrt(', tone: 'operator' }, { label: ',', value: ',', tone: 'operator' },
-    { label: 'root', value: 'root(', tone: 'operator' }, { label: 'nCr', value: 'nCr(', tone: 'operator' }, { label: 'nPr', value: 'nPr(', tone: 'operator' }, { label: 'hypot', value: 'hypot(', tone: 'operator' }, { label: 'g', value: 'g', tone: 'operator' },
-  ];
-
-  return (
-    <div className="fixed inset-0 z-[100] grid place-items-center bg-slate-950/75 p-3 backdrop-blur-md sm:p-6" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-      <section role="dialog" aria-modal="true" aria-labelledby="engineering-calculator-title" className="relative max-h-[94dvh] w-full max-w-2xl overflow-y-auto rounded-[30px] border border-white/20 bg-[linear-gradient(145deg,rgba(148,163,184,0.22),rgba(15,23,42,0.92)_32%,rgba(30,41,59,0.86)_72%,rgba(245,158,11,0.12))] p-4 text-white shadow-[0_30px_100px_rgba(0,0,0,0.6)] backdrop-blur-2xl sm:p-6">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[30px] bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.18),transparent_38%)]" />
-        <div className="relative z-10">
-          <header className="flex items-start justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="grid h-11 w-11 place-items-center rounded-2xl border border-amber-200/25 bg-amber-200/10 text-amber-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]"><Calculator className="h-5 w-5" aria-hidden="true" /></span>
-              <div>
-                <h2 id="engineering-calculator-title" className="text-lg font-bold sm:text-xl">{say('الحاسبة الهندسية', 'Engineering calculator')}</h2>
-                <p className="mt-0.5 text-xs text-slate-300">{say('علمية، ذاكرة، وتحويل وحدات هندسية', 'Scientific math, memory, and engineering unit conversion')}</p>
-              </div>
-            </div>
-            <button type="button" onClick={onClose} aria-label={say('إغلاق الحاسبة', 'Close calculator')} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/15 bg-white/5 text-white/80 transition hover:bg-white/15"><X className="h-5 w-5" /></button>
-          </header>
-
-          <div className="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-white/10 bg-black/20 p-1.5">
-            <button type="button" onClick={() => setPanel('scientific')} aria-pressed={panel === 'scientific'} className={`rounded-xl px-3 py-2 text-sm font-semibold transition ${panel === 'scientific' ? 'bg-white/15 text-white shadow-inner' : 'text-slate-400 hover:text-white'}`}>{say('حاسبة علمية', 'Scientific')}</button>
-            <button type="button" onClick={() => setPanel('convert')} aria-pressed={panel === 'convert'} className={`rounded-xl px-3 py-2 text-sm font-semibold transition ${panel === 'convert' ? 'bg-white/15 text-white shadow-inner' : 'text-slate-400 hover:text-white'}`}>{say('تحويل هندسي', 'Unit converter')}</button>
-          </div>
-
-          {panel === 'scientific' ? (
-            <div className="mt-4">
-              <div className="rounded-2xl border border-white/15 bg-slate-950/55 p-3 shadow-[inset_0_1px_12px_rgba(255,255,255,0.04)] sm:p-4">
-                <label htmlFor="engineering-expression" className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-slate-400">{say('التعبير الرياضي', 'Expression')}</label>
-                <input id="engineering-expression" value={expression} onChange={(event) => setExpression(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); equals(); } }} dir="ltr" autoComplete="off" spellCheck={false} placeholder="sin(30) + sqrt(16)" className="w-full bg-transparent text-right font-mono text-lg text-white outline-none placeholder:text-slate-600 sm:text-2xl" />
-                <div className="mt-3 flex min-h-12 items-end justify-between gap-2 border-t border-white/10 pt-2">
-                  <p aria-live="polite" className="min-w-0 break-all font-mono text-2xl font-bold tabular-nums text-amber-200 sm:text-3xl">{currentValue === undefined ? '—' : formatResult(currentValue)}</p>
-                  <button type="button" onClick={() => { void copyResult(); }} disabled={currentValue === undefined} aria-label={say('نسخ الناتج', 'Copy result')} className="mb-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 disabled:opacity-40">{copied ? <Check className="h-4 w-4 text-emerald-300" /> : <Copy className="h-4 w-4" />}</button>
-                </div>
-                {calculation.error && expression.trim() && <p role="status" className="mt-1 text-[11px] text-rose-300">{calculation.error}</p>}
-                <div className="mt-2 flex items-center justify-between text-[10px] text-slate-400"><span>{say('الذاكرة', 'Memory')}: <b className="font-mono text-slate-200">{formatResult(memory)}</b></span><span>{say('الزوايا', 'Angles')}: {angleMode}</span></div>
-              </div>
-
-              <div className="mt-3 grid grid-cols-5 gap-1.5 sm:gap-2">
-                {keys.map((key, index) => <button key={`${key.label}-${index}`} type="button" onClick={key.action || (() => insert(key.value || ''))} className={`min-h-10 rounded-xl border px-1 text-sm font-semibold transition active:scale-[0.97] sm:min-h-12 sm:text-base ${key.tone === 'equals' ? 'border-amber-200/40 bg-amber-300 text-slate-950 hover:bg-amber-200' : key.tone === 'accent' ? 'border-amber-200/20 bg-amber-200/10 text-amber-100 hover:bg-amber-200/20' : key.tone === 'operator' ? 'border-white/10 bg-white/[0.08] text-sky-100 hover:bg-white/[0.15]' : 'border-white/[0.08] bg-slate-950/35 text-white hover:bg-white/[0.12]'}`}>{key.label}</button>)}
-              </div>
-              <p className="mt-3 text-[10px] leading-relaxed text-slate-400">{say('الدوال: sin cos tan، الدوال العكسية والزائدية، ln/log، الجذور، nCr/nPr، min/max، والثوابت π وe وc وg وR وNA وh. استخدم الأقواس للدوال.', 'Functions: trig, inverse and hyperbolic trig, ln/log, roots, nCr/nPr, min/max, and constants π, e, c, g, R, NA and h. Put function inputs in parentheses.')}</p>
-            </div>
-          ) : (
-            <div className="mt-4 rounded-2xl border border-white/15 bg-slate-950/45 p-4 sm:p-5">
-              <label className="mb-2 block text-xs font-semibold text-slate-300">{say('نوع القياس', 'Measurement')}</label>
-              <GlassSelect value={category} onChange={(value) => updateCategory(value as EngineeringUnitCategory)} values={CATEGORIES} label={say('نوع القياس', 'Measurement')} renderItem={(value) => CATEGORY_NAMES[value as EngineeringUnitCategory][isArabic ? 0 : 1]} />
-              <label htmlFor="engineering-convert-value" className="mb-2 mt-4 block text-xs font-semibold text-slate-300">{say('القيمة', 'Value')}</label>
-              <input id="engineering-convert-value" inputMode="decimal" value={convertValue} onChange={(event) => setConvertValue(event.target.value)} dir="ltr" className="w-full rounded-xl border border-white/15 bg-slate-900/60 px-3 py-3 font-mono text-lg text-white outline-none focus:border-amber-300/70" />
-              <div className="mt-4 grid grid-cols-[1fr_auto_1fr] items-end gap-2">
-                <div><label className="mb-2 block text-xs font-semibold text-slate-300">{say('من', 'From')}</label><GlassSelect value={fromUnit} onChange={setFromUnit} values={ENGINEERING_UNITS[category]} label={say('الوحدة الأصلية', 'Source unit')} /></div>
-                <RotateCcw className="mb-3 h-4 w-4 text-amber-200/70" aria-hidden="true" />
-                <div><label className="mb-2 block text-xs font-semibold text-slate-300">{say('إلى', 'To')}</label><GlassSelect value={toUnit} onChange={setToUnit} values={ENGINEERING_UNITS[category]} label={say('الوحدة المطلوبة', 'Target unit')} /></div>
-              </div>
-              <div className="mt-4 rounded-xl border border-amber-200/20 bg-amber-100/[0.08] p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-amber-100/70">{say('الناتج', 'Result')}</p>
-                <p aria-live="polite" className="mt-1 break-all font-mono text-2xl font-bold tabular-nums text-amber-100">{conversion.value === undefined ? '—' : formatResult(conversion.value)} <span className="text-sm">{toUnit}</span></p>
-                {conversion.error && <p role="status" className="mt-1 text-xs text-rose-300">{conversion.error}</p>}
-              </div>
-              <p className="mt-3 text-[10px] leading-relaxed text-slate-400">{say('تحويلات قياسية للأطوال والمساحات والحجوم والكتلة والحرارة والضغط والسرعة والطاقة والقدرة والكهرباء والتردد.', 'Standard conversions for length, area, volume, mass, temperature, pressure, speed, energy, power, electricity and frequency.')}</p>
-            </div>
-          )}
-          <p className="mt-4 flex items-center justify-center gap-1.5 text-[10px] text-slate-500"><Calculator className="h-3 w-3" aria-hidden="true" />{say('للحسابات العلمية والهندسية العامة؛ تحقّق من الوحدات والنتائج الحرجة.', 'For general scientific and engineering calculations; verify units and safety-critical results.')}</p>
+  const active = MODES.find((item) => item.id === mode)!;
+  const KeyIcon = active.icon;
+  const modeLabel = t(active.label[0], active.label[1]);
+  const layerTitle: Record<Layer, [string, string]> = {
+    home: ['أوضاع الحاسبة', 'Calculator apps'], settings: ['الإعدادات', 'Settings'], catalog: ['دليل الدوال', 'Function catalog'],
+    format: ['صيغة الناتج', 'Result format'], variables: ['ذاكرة المتغيرات', 'Variable memory'], functions: ['ذاكرة الدوال', 'Function memory'],
+    tools: ['أدوات الحساب', 'Calculation tools'], history: ['سجل الحسابات', 'Calculation history'],
+  };
+  const availableFormats = FORMATS.filter((choice) => choice !== 'polar' || mode === 'complex');
+  const errorText = sheet.error && t(sheet.error instanceof EngineeringError
+    ? ({ math: 'خطأ حسابي: راجع مجال الدالة والقيم.', syntax: 'خطأ في الصيغة: راجع الرموز والأقواس.', limit: 'الحساب أكبر من الحد المدعوم.' }[sheet.error.kind]) : 'تعذّر الحساب.', sheet.error.message);
+  const catalogTabs = CATALOG.filter((entry) => entry.id !== 'complex' || mode === 'complex');
+  const entries = (catalogTabs.find((entry) => entry.id === catalog) ?? catalogTabs[0]).entries;
+  const renderKeys = (keys: CalcKey[], kind: 'functions' | 'numbers') => <div className={`cw-keys cw-${kind}`} dir="ltr">
+    {keys.map((key) => {
+      const face = key.face === '.' && nativeDigits ? '٫' : d(key.face);
+      const label = shift && key.shift !== undefined ? key.alt! : key.label ? t(...key.label) : key.face === '.' && ar ? 'فاصلة عشرية' : face;
+      return <button type="button" key={key.face} className={`cw-key ${key.tone ? `cw-key-${key.tone}` : ''} ${key.face.length > 2 ? 'cw-key-caption' : ''}`} title={label} aria-label={label} onClick={() => useKey(key)}>
+        {key.alt && <span className="cw-alt" aria-hidden="true">{d(key.alt)}</span>}
+        <span className={shift && key.shift !== undefined ? 'cw-key-muted' : undefined}>{face}</span>
+      </button>;
+    })}
+  </div>;
+  const moveHome = (offset: number) => {
+    const next = Math.max(0, Math.min(MODES.length - 1, homeCursor.current + offset));
+    menuRef.current?.querySelector<HTMLButtonElement>(`[data-mode-index="${next}"]`)?.focus();
+  };
+  const menuGridKey = (event: KeyboardEvent<HTMLDivElement>) => {
+    const target = (event.target as Element).closest<HTMLButtonElement>('[data-mode-index]');
+    const horizontal = ar ? -1 : 1;
+    const offsets: Record<string, number> = { ArrowUp: -3, ArrowDown: 3, ArrowRight: horizontal, ArrowLeft: -horizontal };
+    if (!target || !offsets[event.key]) return;
+    event.preventDefault();
+    moveHome(offsets[event.key]);
+  };
+  const panel = () => {
+    switch (layer) {
+      case 'home': return <><div className="cw-app-grid" onKeyDown={menuGridKey}>{MODES.map(({ id, icon: Icon, label }, index) => <button type="button" key={id} data-mode-index={index} aria-current={id === mode} className="cw-app-tile" onFocus={() => { homeCursor.current = index; }} onClick={() => selectMode(id)}>
+        <Icon size={19} aria-hidden="true" /> <span>{t(label[0], label[1])}</span>
+      </button>)}</div><p className="cw-help cw-menu-foot">{t('اختار وضع عشان تبدأ. حساباتك تفضل موجودة وإنت بتتنقل.', 'Choose an app to begin. Drafts stay in place while you switch apps.')}</p></>;
+      case 'settings': return <div className="cw-mode-form">
+        <div className="cw-form-grid"><CalcSelect label={t('وحدة الزوايا', 'Angle unit')} value={angle} set={pickAngle} items={[[ 'DEG', t('درجات · DEG', 'Degrees · DEG')], ['RAD', t('راديان · RAD', 'Radians · RAD')], ['GRAD', t('غراد · GRAD', 'Gradians · GRAD')]]} />
+          <CalcSelect label={t('عرض الناتج', 'Output format')} value={effectiveFormat} set={(v) => setPrefs((current) => ({ ...current, format: v }))} items={availableFormats.map((v) => [v, t(...FORMAT_LABEL[v])])} /></div>
+        <CalcSelect label={t('عدد المنازل لـ FIX / SCI / ENG', 'Digits for FIX / SCI / ENG')} value={String(precision)} set={(v) => setPrefs((current) => ({ ...current, precision: Number(v) }))} items={Array.from({ length: 13 }, (_, i) => [String(i), d(String(i))])} />
+        <button type="button" className="cw-action" onClick={floating.reset}>{t('إرجاع النافذة لمكانها', 'Reset window position')}</button>
+        <p className="cw-help">{t('الإعدادات والذاكرة محفوظة على الجهاز ده بس.', 'Settings and memories are stored on this device only.')}</p>
+      </div>;
+      case 'format': return <div className="cw-format-list">{availableFormats.map((choice) => <button className="cw-list-option" type="button" key={choice} aria-pressed={effectiveFormat === choice} onClick={() => pickFormat(choice)}><b dir="ltr">{FORMAT_TAG[choice]}</b><span>{t(...FORMAT_LABEL[choice])}</span>{effectiveFormat === choice && <Check size={15} />}</button>)}</div>;
+      case 'catalog': return <><div className="cw-chip-list">{catalogTabs.map(({ id, label }) => <button type="button" key={id} aria-pressed={id === (catalogTabs.find((entry) => entry.id === catalog) ?? catalogTabs[0]).id} onClick={() => setCatalog(id)}>{t(label[0], label[1])}</button>)}</div>
+        <div className="cw-catalog-list">{entries.map(({ label, expression, detail }) => <button type="button" key={expression} className="cw-list-option" onClick={() => { insert(expression); closeLayer(); }}><b dir="ltr">{label}</b><span>{detail ? t(...detail) : expression}</span><ArrowDownLeft size={14} aria-hidden="true" /></button>)}</div>
+        <p className="cw-help cw-menu-foot">{t('الدوال بتفصل مدخلاتها بفاصلة. التفاضل والتكامل هنا عدديان.', 'Use commas between arguments. Integration and differentiation are numerical.')}</p></>;
+      case 'variables': return <div className="cw-mode-form">
+        <p className="cw-help">{t('خزّن آخر ناتج في متغير أو استدعِه للحساب.', 'Store the answer in a variable, or recall one into the expression.')}</p>
+        <div className="cw-memory-grid" dir="ltr">{ENGINEERING_VARIABLES.map((key) => <div key={key} className="cw-memory-cell">
+          <span className="cw-memory-name">{key}</span><span className="cw-mono cw-memory-value" title={copyableNumber(variables[key] ?? zero, false)}>{variables[key]?.im ? copyableNumber(variables[key]!, false) : displayNumber(variables[key]?.re ?? 0, currentLang)}</span>
+          <button type="button" title={t(`استدعِ ${key}`, `Recall ${key}`)} aria-label={t(`استدعِ ${key}`, `Recall ${key}`)} onClick={() => { insert(key); closeLayer(); }}><ArrowDownLeft size={14} /></button>
+          <button type="button" title={t(`خزّن في ${key}`, `Store in ${key}`)} aria-label={t(`خزّن في ${key}`, `Store in ${key}`)} disabled={!sheet.answer} onClick={() => variableSet(key, sheet.answer!)}><ArrowDownToLine size={14} /></button>
+        </div>)}</div>
+        <div className="cw-chip-list cw-inline-chips" dir="ltr">
+          <button type="button" onClick={() => variableSet('A', zero)} title={t('امسح ذاكرة A', 'Clear memory A')}>MC</button>
+          <button type="button" disabled={!sheet.answer} onClick={() => { const re = (variables.A?.re ?? 0) + (sheet.answer?.re ?? 0); const im = (variables.A?.im ?? 0) + (sheet.answer?.im ?? 0); if (Number.isFinite(re) && Number.isFinite(im)) variableSet('A', { re, im }); }} title={t('أضف الناتج لذاكرة A', 'Add answer to memory A')}>M+</button>
+          <button type="button" disabled={!sheet.answer} onClick={() => { const re = (variables.A?.re ?? 0) - (sheet.answer?.re ?? 0); const im = (variables.A?.im ?? 0) - (sheet.answer?.im ?? 0); if (Number.isFinite(re) && Number.isFinite(im)) variableSet('A', { re, im }); }} title={t('اطرح الناتج من ذاكرة A', 'Subtract answer from memory A')}>M−</button>
         </div>
-      </section>
-    </div>
-  );
+      </div>;
+      case 'functions': return <div className="cw-mode-form">
+        <p className="cw-help">{t('اكتب الدالتين باستخدام x؛ نفس الدوال متاحة في جدول الدوال.', 'Define functions of x; they are shared with the Table app.')}</p>
+        {(['f', 'g'] as const).map((key) => <div className="cw-function-line" key={key}><CalcInput label={`${key}(x)`} value={functions[key] ?? ''} set={(value) => updateFunction(key, value)} placeholder={key === 'f' ? 'x^2' : '2*x+1'} /><button type="button" className="cw-tiny-button" disabled={!functions[key]?.trim()} onClick={() => { insert(`${key}(`); closeLayer(); }} aria-label={t(`أدخل ${key}(x)`, `Insert ${key}(x)`)}><ArrowDownLeft size={16} /></button></div>)}
+        <button type="button" className="cw-action" onClick={() => openTool('table')}>{t('افتح جدول الدوال', 'Open Table')}<ArrowUpRight size={15} /></button>
+      </div>;
+      case 'tools': return <div className="cw-format-list">
+        <button type="button" className="cw-list-option" onClick={() => showLayer('history')}><BookOpen size={15} />{t('سجل الحسابات', 'Calculation history')}</button>
+        <button type="button" className="cw-list-option" disabled={!sheet.result} onClick={() => { void copy(); }}><Copy size={15} />{t('نسخ الناتج', 'Copy result')}</button>
+        <button type="button" className="cw-list-option" disabled={!sheet.result || Boolean(sheet.result.im) || !Number.isInteger(sheet.result.re) || sheet.result.re < 2 || sheet.result.re > 1e12} onClick={primeFactors}><Variable size={15} />{t('التحليل لعوامل أولية', 'Prime factorization')}</button>
+        <button type="button" className="cw-list-option" onClick={() => openTool('units')}><ArrowUpRight size={15} />{t('تحويل الوحدات', 'Unit conversion')}</button>
+      </div>;
+      case 'history': return <div className="cw-format-list">{sheet.history.length ? sheet.history.map((row, i) => <button key={i} className="cw-list-option cw-history-row" type="button" onClick={() => selectHistory(i)}>
+        <span dir="ltr" className="cw-mono">{row.text}</span><b dir="ltr" className="cw-mono">{row.result.im ? copyableNumber(row.result, false) : displayNumber(row.result.re, currentLang)}</b>
+      </button>) : <p className="cw-help cw-menu-foot">{t('السجل لسه فاضي. اضغط EXE بعد كتابة أول حساب.', 'No history yet. Press EXE to run your first calculation.')}</p>}</div>;
+      default: return null;
+    }
+  };
+
+  if (typeof document === 'undefined') return null;
+  return createPortal(<>
+    {minimized && <div className="cw-dock" data-behind-modal={behindModal} dir={ar ? 'rtl' : 'ltr'} id={ENGINEERING_WINDOW_ID}>
+      <button type="button" ref={floating.restoreRef} onClick={onRestore} onKeyDown={(e) => { if (e.key === 'Escape') { e.stopPropagation(); onClose(); } }}><Calculator size={17} aria-hidden="true" />{t('استعادة الحاسبة', 'Restore calculator')}</button>
+      <button type="button" onClick={onClose} aria-label={t('إغلاق الحاسبة', 'Close calculator')}><X size={16} /></button>
+    </div>}
+    <section id={minimized ? undefined : ENGINEERING_WINDOW_ID} hidden={minimized} role="dialog" aria-labelledby={titleId} className="cw-window" data-behind-modal={behindModal} data-positioned={Boolean(floating.position)} data-dragging={floating.dragging}
+      ref={floating.windowRef} style={floating.position} tabIndex={-1} dir={ar ? 'rtl' : 'ltr'} onKeyDown={shortcut}>
+      <header className="cw-titlebar" onPointerDown={floating.pointerDown} onPointerMove={floating.pointerMove} onPointerUp={floating.pointerEnd} onPointerCancel={floating.pointerEnd} onLostPointerCapture={floating.pointerEnd}>
+        <button type="button" data-cw-grip aria-label={t('تحريك النافذة بمفاتيح الأسهم', 'Move window with arrow keys')} title={t('اسحب للتحريك · الأسهم من لوحة المفاتيح', 'Drag to move · arrow keys when focused')} onKeyDown={floating.gripKey}><GripVertical size={17} /></button>
+        <h2 id={titleId}>{t('الحاسبة الهندسية', 'Engineering calculator')}</h2>
+        <button type="button" className="cw-title-control" onClick={onMinimize} aria-label={t('تصغير الحاسبة', 'Minimize calculator')} title={t('تصغير', 'Minimize')}><Minus size={16} /></button>
+        <button type="button" className="cw-title-control cw-close" onClick={onClose} aria-label={t('إغلاق الحاسبة', 'Close calculator')} title={t('إغلاق', 'Close')}><X size={16} /></button>
+      </header>
+      <div className="cw-body">
+        <div className="cw-brand" dir="ltr"><div><b>SHAM</b><span>SCIENTIFIC SERIES</span></div><span className="cw-edition">CW <span> / </span>{d('02')}</span></div>
+        <div className="cw-bezel">
+          <div className="cw-lcd">
+            <div className="cw-indicators"><span><KeyIcon size={13} aria-hidden="true" />{layer ? t(...layerTitle[layer]) : modeLabel}</span><div dir="ltr"><b data-on={shift}>SHIFT</b><b>{angle}</b><b>{FORMAT_TAG[effectiveFormat]}</b></div></div>
+            {!layer && isBasic(mode) ? <>
+              <label htmlFor={expressionId} className="cw-sr-only">{t('التعبير الرياضي', 'Math expression')}</label>
+              <input id={expressionId} className="cw-expression cw-mono" dir="ltr" value={sheet.text} ref={expressionRef} onSelect={rememberCursor} onClick={rememberCursor} onKeyUp={rememberCursor}
+                onChange={(event) => edit(event.target.value, event.target.selectionStart ?? event.target.value.length)} maxLength={ENGINEERING_EXPRESSION_LIMIT} autoComplete="off" spellCheck={false} placeholder={mode === 'complex' ? d('(2+3i) × (1−i)') : d('sin(30) + √(16)')} />
+              <div className="cw-lcd-bottom">
+                <output aria-live="polite" data-testid="engineering-calculator-result" className="cw-result cw-mono" dir="ltr">{errorText ? <span dir="auto" className="cw-lcd-error">{errorText}</span> : sheet.result ? <LCDValue value={formatReadout(sheet.result, effectiveFormat, precision, angle, currentLang)} /> : !sheet.text ? d('0') : '—'}</output>
+                {sheet.result && <button className="cw-lcd-copy" type="button" onClick={() => { void copy(); }} aria-label={t('نسخ الناتج', 'Copy result')} title={t('نسخ الناتج', 'Copy result')}><Copy size={15} /></button>}
+              </div>
+            </> : <div className="cw-lcd-message">
+              <span>{layer ? t(...layerTitle[layer]) : modeLabel}</span>
+              <small>{layer === 'home' ? t('اختار التطبيق اللي محتاجه', 'Select a calculator app') : layer ? t('حساب محلي على جهازك', 'Runs locally on your device') : t(active.note[0], active.note[1])}</small>
+            </div>}
+          </div>
+        </div>
+        <div className="cw-console" dir="ltr">
+          <div className="cw-system">
+            <Key label={t('أوضاع الحاسبة', 'Calculator apps')} cap="HOME" click={() => showLayer('home')} pressed={layer === 'home'}><House size={16} /></Key>
+            <Key label={t('الإعدادات', 'Settings')} cap="SET UP" click={() => showLayer('settings')} pressed={layer === 'settings'}><Settings2 size={16} /></Key>
+            <Key label={t('رجوع', 'Back')} cap="BACK" click={back}><ArrowLeft size={16} /></Key>
+            <Key label={t('تراجع عن الكتابة', 'Undo entry')} cap="UNDO" disabled={!isBasic(mode) || Boolean(layer) || !undoStack.current[basicMode].length} click={undo}><Undo2 size={16} /></Key>
+          </div>
+          <div className="cw-dpad" aria-label={t('مفاتيح الاتجاهات', 'Directional keys')}>
+            <Key label={t('لأعلى', 'Up')} className="cw-up" disabled={layer !== 'home' && (!isBasic(mode) || Boolean(layer) || !sheet.history.length)} click={() => layer === 'home' ? moveHome(-3) : replay(1)}><ChevronUp size={17} /></Key>
+            <Key label={t('المؤشر لليسار', 'Cursor left')} className="cw-left" disabled={layer !== 'home' && (!isBasic(mode) || Boolean(layer))} click={() => layer === 'home' ? moveHome(ar ? 1 : -1) : moveCursor(-1)}><ChevronLeft size={17} /></Key>
+            <Key label={t('موافق', 'OK')} className="cw-ok" click={() => {
+              if (layer === 'home') selectMode(MODES[homeCursor.current].id);
+              else if (layer) closeLayer();
+              else if (isBasic(mode)) exe();
+              else if (mode === 'spreadsheet') floating.windowRef.current?.querySelector<HTMLInputElement>('.cw-app:not([hidden]) input')?.focus();
+              else floating.windowRef.current?.querySelector<HTMLButtonElement>('.cw-app:not([hidden]) button[type="submit"]')?.click();
+            }}>OK</Key>
+            <Key label={t('المؤشر لليمين', 'Cursor right')} className="cw-right" disabled={layer !== 'home' && (!isBasic(mode) || Boolean(layer))} click={() => layer === 'home' ? moveHome(ar ? -1 : 1) : moveCursor(1)}><ChevronRight size={17} /></Key>
+            <Key label={t('لأسفل', 'Down')} className="cw-down" disabled={layer !== 'home' && (!isBasic(mode) || Boolean(layer) || !sheet.history.length)} click={() => layer === 'home' ? moveHome(3) : replay(-1)}><ChevronDown size={17} /></Key>
+          </div>
+          <div className="cw-replay">
+            <Key label={t('الحساب السابق', 'Previous calculation')} disabled={!isBasic(mode) || Boolean(layer) || !sheet.history.length} click={() => replay(1)}><ChevronsUp size={16} /></Key>
+            <span>REPLAY</span>
+            <Key label={t('الحساب التالي', 'Next calculation')} disabled={!isBasic(mode) || Boolean(layer) || sheet.replay === undefined} click={() => replay(-1)}><ChevronsDown size={16} /></Key>
+          </div>
+        </div>
+        {isBasic(mode) && <div className="cw-quick" dir="ltr">
+          <Key label="Shift" className="cw-shift" click={() => { if (layer) closeLayer(); setShift(!shift); }} pressed={shift}>SHIFT</Key>
+          <Key label={t('ذاكرة المتغيرات', 'Variable memory')} click={() => showLayer('variables')} pressed={layer === 'variables'}>VAR</Key>
+          <Key label={t('ذاكرة الدوال', 'Function memory')} click={() => showLayer('functions')} pressed={layer === 'functions'}><FunctionSquare size={16} /></Key>
+          <Key label={t('دليل الدوال', 'Function catalog')} click={() => showLayer('catalog')} pressed={layer === 'catalog'}>CATALOG</Key>
+          <Key label={t('أدوات الحساب', 'Calculation tools')} click={() => showLayer('tools')} pressed={layer === 'tools'}><Ellipsis size={19} /></Key>
+        </div>}
+        {layer && <div className="cw-panel" ref={menuRef}>{panel()}</div>}
+        {!layer && isBasic(mode) && <div className="cw-deck">{renderKeys(FUNCTION_KEYS, 'functions')}{renderKeys(NUMBER_KEYS, 'numbers')}</div>}
+        <CalculatorModes lang={currentLang} t={t} current={layer ? null : mode} visited={visited} options={evalOptions} functions={functions} updateFunction={updateFunction} />
+        <footer className="cw-footer"><span>{t('حساب محلي', 'LOCAL COMPUTE')}</span><span role="status" dir="auto">{notice || (layer === 'home' ? `${d(String(MODES.length))} ${t('وضع', 'APPS')}` : t('HOME للأوضاع', 'HOME FOR APPS'))}</span></footer>
+      </div>
+    </section>
+  </>, document.body);
 }
+
+export default EngineeringCalculator;
