@@ -4,6 +4,7 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { BOTS } from '../../src/utils/shaheenOrg';
+import { OFF_GITHUB } from '../../src/utils/opsLive';
 import type { RunInfo } from './precheck';
 
 const live = (name: string) => new URL(`../../src/data/live/${name}`, import.meta.url);
@@ -24,9 +25,12 @@ export const hasSchedule = (yaml: string) => /^\s+schedule:\s*(?:#.*)?$/m.test(y
  */
 export function onDemandWorkflows(dir = new URL('../../.github/workflows/', import.meta.url)): Set<string> {
   const out = new Set<string>();
+  // On the robots' server their timetables run again (src/utils/opsLive.ts → SCHEDULES): a late report is late.
+  const onServer = process.env.SHAM_ROBOT_SERVER === '1';
   try {
     for (const name of readdirSync(dir)) {
       if (!/\.ya?ml$/.test(name)) continue;
+      if (onServer && OFF_GITHUB.has(name)) continue;
       try { if (!hasSchedule(readFileSync(new URL(name, dir), 'utf8'))) out.add(name); } catch { /* unreadable: treat as scheduled */ }
     }
   } catch { /* no workflows folder (a copy without .github): nothing is on demand */ }
@@ -70,7 +74,8 @@ export async function failureDetail(repo: string, runId: number, token: string):
 /** The last run on main of every workflow in the structure (needs a token with actions:read), with the cause when it failed. */
 export async function fetchRuns(repo: string, token: string | undefined): Promise<Record<string, RunInfo | undefined>> {
   const out: Record<string, RunInfo | undefined> = {};
-  if (!token) return out;
+  const server = serverRuns();
+  if (!token) return server;
   const files = [...new Set(BOTS.map((b) => b.workflow).filter(Boolean) as string[])];
   await Promise.all(files.map(async (file) => {
     try {
@@ -87,5 +92,19 @@ export async function fetchRuns(repo: string, token: string | undefined): Promis
       }
     } catch { /* unknown → judged on its report alone */ }
   }));
+  // The robots' server ran it more recently than GitHub (the usual case since 2026-11): its run is the one judged.
+  for (const [file, run] of Object.entries(server)) if (run && !(Date.parse(out[file]?.at || '') >= Date.parse(run.at))) out[file] = run;
   return out;
+}
+
+/**
+ * The last finished run of each robot on the robots' server (scripts/robots/server.mts writes this file next to
+ * itself and points SHAM_ROBOTS_RUNS at it). Empty anywhere else.
+ */
+export function serverRuns(file = process.env.SHAM_ROBOTS_RUNS): Record<string, RunInfo> {
+  if (!file) return {};
+  try {
+    const data = JSON.parse(readFileSync(file, 'utf8')) as Record<string, RunInfo>;
+    return data && typeof data === 'object' ? data : {};
+  } catch { return {}; }
 }

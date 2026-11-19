@@ -144,7 +144,7 @@ export default function ShaheenOpsMapPanel() {
   const scoreOf = (id: BotId) => scores.find((s) => s.id === id)!;
   const fallback = useMemo(() => Object.fromEntries((precheck?.bots || []).filter((b) => b.lastRun).map((b) => [b.id, b.lastRun as FallbackRun])) as Partial<Record<BotId, FallbackRun>>, [precheck]);
   const linkOn = agentLinkOn(stateOrders, controls);
-  const live = useMemo(() => allLive({ runs: gh.runs, workflows: gh.workflows, fallback, now: gh.at || now, controls, stateOrders }), [gh.runs, gh.workflows, gh.at, fallback, now, controls, stateOrders]);
+  const live = useMemo(() => allLive({ runs: gh.runs, workflows: gh.workflows, fallback, now: gh.at || now, controls, stateOrders, onRobotServer: Boolean(gh.robotServer) }), [gh.runs, gh.workflows, gh.at, fallback, now, controls, stateOrders, gh.robotServer]);
   const liveOf = (id: BotId) => live.find((l) => l.id === id)!;
   const scenarios = useMemo(() => liveScenarios(live), [live]);
   const stepOf = (l: BotLive) => (l.run ? currentStep(gh.jobs[l.run.id] || []) : undefined);

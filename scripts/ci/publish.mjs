@@ -14,6 +14,9 @@ import { tmpdir } from 'node:os';
 
 const [message, ...paths] = process.argv.slice(2);
 if (!message || !paths.length) { console.error('usage: publish.mjs "<message>" <path>...'); process.exit(2); }
+// On the robots' server (scripts/robots) nothing is committed per robot: the results stay in its copy of the site
+// and go to main in ONE daily snapshot (the GitHub commitment «few, batched commits», docs/ROBOT_DISTRIBUTION.md).
+if (process.env.SHAM_PUBLISH_MODE === 'batch') { console.log(`Kept for the daily snapshot: ${message}`); process.exit(0); }
 // core.quotePath=false: git otherwise prints non-ASCII paths quoted and octal-escaped ("src/\331\204…"), and
 // copying that name fails — every publish of the translator's packs in src/لغات/ai died this way.
 const git = (...args) => execFileSync('git', ['-c', 'core.quotePath=false', ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();

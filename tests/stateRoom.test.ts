@@ -122,6 +122,7 @@ test('every robot\'s first job obeys the State\'s pauses (and only on the live s
   mkdirSync(join(dir, 'scripts/owner'), { recursive: true });
   mkdirSync(join(dir, 'src/data/owner'), { recursive: true });
   cpSync(new URL('../scripts/owner/gate.mjs', import.meta.url), join(dir, 'scripts/owner/gate.mjs'));
+  cpSync(new URL('../scripts/owner/gateRule.mjs', import.meta.url), join(dir, 'scripts/owner/gateRule.mjs'));
   writeFileSync(join(dir, 'src/data/owner/controls.json'), JSON.stringify(defaultControls()));
   writeFileSync(join(dir, STATE_ORDERS_FILE), JSON.stringify({ paused: ['news'], laws: [], log: [] }));
   const gate = (bot: string, ref = 'refs/heads/main') => {
