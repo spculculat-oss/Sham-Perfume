@@ -50,7 +50,7 @@ export interface PageGuide {
 export const PAGES: PageGuide[] = [
   {
     id: 'workspace', label: { ar: 'مساحة شاهين', en: 'Shaheen Workspace' },
-    what: { ar: 'الزائر في مساحة شاهين: محادثة وبرمجة وملفات وصور، وتبويب بلوكات لبناء أدوات محلية محدودة من تعريف JSON.', en: 'The visitor is in Shaheen Workspace: chat, code, files, images and a Blocks tab for bounded local JSON tools.' },
+    what: { ar: 'الزائر في مساحة شاهين: محادثة نصية وصوتية مع عرض حي للمعلومات والمصادر والجداول والمعاينة، سجل محادثات محلي على الجهاز، وضع فاتح وداكن وملء شاشة، وبرمجة وملفات وصور واستوديو، وتبويب بلوكات لبناء أدوات محلية محدودة من تعريف JSON.', en: 'The visitor is in Shaheen Workspace: text and voice chat with live display of key points, figures, tables, sources and Canvas previews, device-local chat history, light/dark modes and full screen, plus code, files, images, Studio and a Blocks tab for bounded local JSON tools.' },
     offer: { ar: 'وجّهه لتبويب بلوكات لاختيار مثال أو تعديل التعريف وفحصه ثم تشغيله. الحفظ على الجهاز فقط، ولا نشر أو وصول للشبكة أو الأسرار.', en: 'Offer the Blocks tab: choose an example or edit a definition, validate, then run. Saving is device-only, with no deployment, network or secret access.' },
     questions: [{ ar: 'ازاي أستخدم مصنع أدوات شاهين؟', en: 'How do I use the block tool workshop?', expect: 'any' }, { ar: 'مصنع أدوات شاهين بيحفظ الأداة فين؟', en: 'Where does the block tool workshop save my tool?', expect: 'any' }],
   },

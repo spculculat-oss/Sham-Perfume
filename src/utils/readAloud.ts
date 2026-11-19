@@ -17,10 +17,12 @@ import { clipFinder, clipGender } from './humanVoiceClips';
 import { loadSharedSayWords, playHumanSpeech, sayItRight, unlockHumanVoice } from './humanVoice';
 
 /** Reads the reply aloud; returns a function that stops it. `onEnd` runs once (finished, failed or stopped). */
-export function readAloud(text: string, { language, dialect, onEnd, onNoVoice }: {
+export function readAloud(text: string, { language, dialect, onEnd, onNoVoice, onChunk }: {
   language: SupportedLanguage; dialect?: Dialect; onEnd?: () => void;
   /** The human voice could not play (server busy or unreachable, audio blocked). The written reply remains. */
   onNoVoice?: () => void;
+  /** Fires on each sentence spoken aloud so the workspace can highlight what is being said right now. */
+  onChunk?: (chunk: string, index: number, total: number) => void;
 }): () => void {
   let done = false;
   const end = (failed = false) => {
@@ -43,6 +45,7 @@ export function readAloud(text: string, { language, dialect, onEnd, onNoVoice }:
   const gender = clipGender(choice.gender);
   const stop = playHumanSpeech(chunks, {
     language, ...(spokenDialect ? { dialect: spokenDialect } : {}), gender, rate: choice.rate / 0.96, clipFor: clipFinder(gender),
+    ...(onChunk ? { onChunk: (chunk, idx, groups) => onChunk(chunk, idx, groups.length) } : {}),
     onEnd: () => end(), onError: () => end(true),
   });
   return () => { stop(); end(); };
