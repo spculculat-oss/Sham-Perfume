@@ -72,6 +72,7 @@ import { isRTL } from '../لغات/localizedContent';
 import { LText, makeT, loc, fmt, LOCALE_MAP, pickArEn } from '../لغات/localize';
 import { uiLabel } from '../لغات/uiTextL10n';
 import { designersText } from '../لغات/designersL10n';
+import { lazy, Suspense } from 'react';
 import { loadLiveNews, relativeTime, type NewsFile } from '../utils/liveNews';
 import { PORTAL_L10N as PORTAL_L10N_BASE, NEWS_L10N_A, NewsL10N } from '../لغات/hubL10n';
 import { NEWS_L10N_B } from '../لغات/hubL10n2';
