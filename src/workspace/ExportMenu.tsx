@@ -33,14 +33,14 @@ export function ExportMenu({ markdown, lang, compact = false, alsoSave = false }
   ];
   return (
     <div className="flex flex-wrap items-center gap-1.5" data-testid="ws-export">
-      {!compact && <span className="text-[11px] font-bold text-stone-500">{w('export_as')}</span>}
+      {!compact && <span className="text-[11px] font-semibold text-[var(--ws-muted,#78716c)]">{w('export_as')}</span>}
       {items.map(({ kind, label, icon: Icon }) => (
         <button key={kind} type="button" onClick={() => make(kind)} disabled={busy !== null}
-          className="inline-flex items-center gap-1 rounded-lg border border-stone-200 bg-white px-2 py-1 text-[11px] font-bold text-stone-700 hover:border-amber-400 disabled:opacity-50 cursor-pointer">
+          className="inline-flex items-center gap-1 rounded-lg border border-[var(--ws-border,#e7e5e4)] bg-[var(--ws-surface,#ffffff)] px-2.5 py-1 text-[11.5px] font-medium text-[var(--ws-ink,#292524)] hover:border-[var(--ws-border-strong,#d6d3d1)] hover:bg-[var(--ws-hover,#f5f5f4)] disabled:opacity-50 transition cursor-pointer">
           {busy === kind ? <Loader2 className="h-3 w-3 animate-spin" /> : <Icon className="h-3 w-3" />} {label}
         </button>
       ))}
-      {note && <span className="text-[11px] text-stone-500">{note}</span>}
+      {note && <span className="text-[11px] text-[var(--ws-muted,#78716c)]">{note}</span>}
     </div>
   );
 }
