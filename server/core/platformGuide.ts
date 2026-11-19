@@ -179,6 +179,50 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     tags: ['تكلفة', 'تسعير', 'cost', 'pricing'],
   },
   {
+    id: 'engineering_calculator', group: 'lab', tab: 'home', docId: 'kb-platform-engineering-calculator',
+    name: { ar: 'الحاسبة الهندسية العائمة', en: 'Floating engineering calculator' },
+    summary: { ar: 'حاسبة علمية من بطاقة الساعة في الرئيسية، تقدر تحرّكها وتصغّرها وتكمّل تصفّح الموقع.', en: 'A movable, minimizable scientific calculator launched from the clock card on the home page.' },
+    details: {
+      ar: 'من بطاقة الساعة في الرئيسية اضغط «حاسبة هندسية» جنب قرص البوصلة. هتفتح حاسبة داكنة بشاشة LCD فاتحة ومفتاح اتجاهات دائري. اسحب شريطها العلوي للتحريك. اكتب التعبير واضغط EXE، أو افتح HOME لأوضاع المصفوفات والمتجهات والمعادلات والمتباينات والإحصاء والتوزيعات والأعداد المركّبة وأنظمة العدّ والتناسب وجداول الدوال والبيانات ومحاكاة النرد والعملات وتحويل الوحدات. زر FORMAT يغيّر عرض الناتج وزر CATALOG يفتح الدوال والثوابت، ومنها التفاضل والتكامل العددي. العمليات على جهازك؛ الحلول العددية تقريبية، ودي حاسبة ويب مش نسخة من برنامج كاسيو.',
+      en: 'In the home clock card, select Engineering calculator beside the compass dial. It opens a dark calculator with a pale LCD and round direction pad. Drag its title bar to move it. Enter an expression and press EXE, or use HOME for matrices, vectors, equations, inequalities, statistics, distributions, complex numbers, number bases, ratios, function tables, spreadsheets, dice and coins, and unit conversion. FORMAT changes the readout; CATALOG lists functions and constants, including numerical calculus. Calculations run on your device; numerical solutions are approximate. This is a web calculator, not Casio firmware.',
+    },
+    keywords: ['حاسبة هندسية', 'الحاسبة الهندسية', 'حاسبة الساعة', 'الة حاسبة كاسيو', 'engineering calculator', 'scientific calculator', 'clock calculator', 'classwiz'],
+    tags: ['حاسبة هندسية', 'الساعة', 'engineering calculator', 'scientific calculator'],
+  },
+  {
+    id: 'clock_tools', group: 'help', tab: 'home', docId: 'kb-platform-clock-tools',
+    name: { ar: 'المنبّهات وأدوات الساعة', en: 'Alarms and clock tools' },
+    summary: { ar: 'بطاقة الساعة في الرئيسية فيها منبّهات بتكرار وغفوة، عداد تنازلي وساعة إيقاف.', en: 'The home clock has alarms with repeat and snooze, a countdown timer, and a stopwatch.' },
+    details: {
+      ar: 'تحت أرقام الساعة اضغط «المنبّهات» ثم «إضافة منبّه»، واختار الوقت وأيام التكرار. العداد التنازلي فيه مدد سريعة ومدة حسب اختيارك وإيقاف واستكمال، وساعة الإيقاف بتسجّل اللفات. من «الصوت والإشعارات» اختار النغمة وجربها وحدّد مدة الغفوة. الأدوات بتفضل شغالة وإنت بتتنقّل بين صفحات الموقع وبتتحفظ في نفس المتصفح. خلي الموقع مفتوح؛ الرنّة مش مضمونة لو قفلته أو المتصفح وقّف التبويب.',
+      en: 'Below the home clock, choose Alarms → Add alarm, enter a time, and choose repeat days. Timer supports presets or a custom duration, pause and resume; Stopwatch records laps. Sound & notifications lets you test a tone and set the snooze length. The tools keep running across site sections and save in this browser. Keep the site open; a closed or suspended tab cannot reliably ring.',
+    },
+    keywords: ['المنبهات', 'منبه', 'تنبيه الساعة', 'غفوة', 'تايمر', 'العداد التنازلي', 'ساعة الايقاف', 'clock tools', 'alarm', 'snooze', 'countdown timer', 'stopwatch'],
+    tags: ['الساعة', 'تايمر', 'منبّه', 'alarms', 'timer', 'stopwatch'],
+  },
+  {
+    id: 'home_headlines', group: 'reference', tab: 'home', docId: 'kb-platform-home-headlines',
+    name: { ar: 'موجز أخبار مصر والعالم', en: 'Egypt and world news briefing' },
+    summary: { ar: 'جنب الساعة في الرئيسية فيه موجز لأخبار مصر والعالم بصور المعاينة لو متاحة وروابط للمصدر.', en: 'The home clock’s briefing shows Egypt and world headlines, publisher photos when available, and links to the source.' },
+    details: {
+      ar: 'من الرئيسية افتح أي عنوان في «موجز الأخبار» جنب الساعة عشان تقراه عند المصدر. السهمين يبدّلوا بين الأخبار، وزر التحديث بجانب عنوان الموجز. الموجز بيتحدث تلقائيًا وإنت فاتح الرئيسية، وبيوضح لو الأخبار تعذر تحديثها. الموجز منفصل عن تبويب «أخبار العطور».',
+      en: 'From Home, open a story in News briefing beside the clock to read it at the publisher. Use the arrows to browse stories or the refresh button beside the briefing heading. The feed checks for news while Home is visible and labels unavailable updates. This is separate from the perfume news tab.',
+    },
+    keywords: ['موجز الاخبار', 'اخبار مصر', 'اخبار العالم', 'الاخبار المحلية', 'الاخبار العالمية', 'news briefing', 'egypt headlines', 'world headlines', 'home news'],
+    tags: ['الأخبار', 'مصر', 'العالم', 'headlines', 'news briefing'],
+  },
+  {
+    id: 'visitor_compass', group: 'help', tab: 'home', docId: 'kb-platform-visitor-compass',
+    name: { ar: 'بوصلة الساعة', en: 'Home compass' },
+    summary: { ar: 'تحت الساعة في الرئيسية فيه قرص بوصلة مرقّم بالدرجات وسهم بيبيّن اتجاه أعلى شاشة الجهاز.', en: 'Below the home clock is a numbered compass dial with an arrow showing where the top of the screen points.' },
+    details: {
+      ar: 'اضغط «فعّل البوصلة» واسمح للحساس لو المتصفح طلب إذن. امسك الموبايل أفقي ولفّه؛ السهم بيشاور على الاتجاه والقراءة بتظهر بالدرجات. في الصفحات التانية هتلاقي البوصلة في «أدوات الساعة». لو القراءة مش متاحة جرّب متصفح وموبايل بيدعموا الحساس وافتح الصفحة في تبويب مستقل. قراءة الاتجاه على جهازك بس، ومش بتحتاج إذن الموقع.',
+      en: 'Select Enable compass and grant sensor access if asked. Hold the phone flat and turn it; the arrow points to the heading and the readout shows degrees. On other pages, look under Clock tools. If a reading is unavailable, use a phone and browser with compass support and open the page in its own tab. Heading stays on the device and does not require location permission.',
+    },
+    keywords: ['البوصلة', 'بوصلة', 'بوصله', 'بوصلة الساعة', 'compass', 'compass dial', 'home compass'],
+    tags: ['البوصلة', 'الاتجاه', 'الساعة', 'compass', 'heading'],
+  },
+  {
     id: 'molecule_studio', group: 'lab', tab: 'molecule_studio', docId: 'kb-platform-molecule-studio',
     name: { ar: 'معمل الجزيئات (Molecule Studio)', en: 'Molecule Studio' },
     summary: {

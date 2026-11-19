@@ -1,0 +1,115 @@
+.visitor-instrument-row {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.6rem;
+  padding: 0.65rem 1rem; border-block-start: 1px solid #ffe5c426;
+  background: linear-gradient(120deg, #251c16a8, #3b291dcc);
+}
+.clock-compass, .clock-calculator-launcher {
+  min-width: 0; border: 1px solid #f1c99839; border-radius: 1.05rem; color: #fff4e6;
+  background: radial-gradient(ellipse at 15% 14%, #ece2cd12, transparent 75%), #201917a6;
+  box-shadow: inset 0 1px #ffecd511, 0 3px 10px #14100e26;
+}
+.clock-compass {
+  display: grid; grid-template-columns: minmax(0, min(54%, 176px)) minmax(0, 1fr);
+  align-items: center; gap: clamp(0.45rem, 2.5vw, 1.25rem); padding: 0.5rem 0.6rem;
+  min-height: 0;
+}
+.clock-compass-dial { display: block; width: 100%; height: auto; aspect-ratio: 1; direction: ltr; filter: drop-shadow(0 2px 5px #130e0b80); }
+.clock-compass-outer { fill: #513b2d; stroke: #b99363; stroke-width: 1; }
+.clock-compass-rim { fill: #211c1b; stroke: #edc58a65; stroke-width: 1; }
+.clock-compass-inner { fill: #302723; stroke: #a87d5155; stroke-width: 1; }
+.clock-compass-rose { fill: #d2ab821d; stroke: #cca97630; stroke-width: 0.8; }
+.clock-compass-tick { stroke: #bdac98; stroke-width: 0.9; stroke-linecap: round; }
+.clock-compass-tick[data-major='true'] { stroke: #ffe1ac; stroke-width: 1.65; }
+.clock-compass-tick[data-north='true'] { stroke: #ffac8b; stroke-width: 2.55; }
+.clock-compass-mark, .clock-compass-cardinal { text-anchor: middle; dominant-baseline: central; font-variant-numeric: tabular-nums; }
+.clock-compass-mark { fill: #f1dbc3; font-size: 13px; font-weight: 680; }
+.clock-compass-cardinal { fill: #e2bc89; font-size: 13px; font-weight: 750; }
+.clock-compass-cardinal[data-north='true'], .clock-compass-mark[data-degree='0'] { fill: #ffb199; }
+.clock-compass-arrow { transform-box: view-box; transform-origin: center; transition: transform 130ms ease-out; }
+.clock-compass-tip { fill: #ff936e; stroke: #ffd4b8; stroke-width: 0.75; stroke-linejoin: round; }
+.clock-compass-highlight { fill: #ffbe95; }
+.clock-compass-tail { fill: #c6ccb9; stroke: #e9e8de80; stroke-width: 0.8; }
+.clock-compass-pin { fill: #3a3028; stroke: #f3d3a4; stroke-width: 1.65; }
+.clock-compass:not([data-state='ready']) .clock-compass-arrow { opacity: 0.56; transition: none; }
+.clock-compass:not([data-state='ready']) .clock-compass-tip { fill: #9c9287; stroke: #d2c3b1; }
+.clock-compass:not([data-state='ready']) .clock-compass-highlight { fill: #bbb0a3; }
+.clock-compass:not([data-state='ready']) .clock-compass-tail { fill: #666568; }
+.clock-compass-info { display: grid; align-content: center; min-width: 0; gap: 0.22rem; }
+.clock-compass-info h2 { display: flex; align-items: center; gap: 0.38rem; font-size: 0.91rem; font-weight: 760; }
+.clock-compass-info h2 svg { color: #edc795; flex: none; }
+.clock-compass-info p { margin: 0; color: #ead9c8; font-size: 0.69rem; line-height: 1.45; overflow-wrap: anywhere; }
+.clock-compass-reading { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 0.38rem; line-height: 1.2; }
+.clock-compass-reading bdi { color: #fbd1a1; font: 780 clamp(1.27rem, 2.3vw, 1.82rem)/1.05 system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+.clock-compass-reading span { font-size: 0.76rem; font-weight: 720; }
+.clock-compass-info button {
+  justify-self: start; display: inline-flex; align-items: center; justify-content: center; gap: 0.32rem;
+  min-height: 36px; max-width: 100%; padding: 0.2rem 0.48rem; border: 1px solid #eac89c64; border-radius: 0.55rem;
+  background: #ffdb9f1a; color: #ffe8c4; font-size: 0.7rem; font-weight: 740; line-height: 1.25;
+}
+.clock-compass-info button:hover:not(:disabled) { background: #ffdfa335; }
+.clock-compass-info button:disabled { cursor: wait; opacity: 0.7; }
+.clock-compass-info button svg { flex: none; }
+.clock-calculator-launcher {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center;
+  gap: clamp(0.55rem, 2.2vw, 1.2rem); padding: 0.6rem 0.7rem; text-align: start;
+  background: radial-gradient(ellipse at 0 50%, #a0baa825, transparent 72%), linear-gradient(138deg, #302a26, #29201d);
+}
+.clock-calculator-launcher:hover { border-color: #eec28b9e; box-shadow: inset 0 0 0 1px #eac28c45, 0 3px 10px #14100e26; }
+.clock-calculator-badge { display: block; width: clamp(2.22rem, 6vw, 3.5rem); height: auto; filter: drop-shadow(0 3px 4px #0d0b0b88); }
+.clock-calculator-text { display: grid; gap: 0.17rem; line-height: 1.36; }
+.clock-calculator-text strong { font-size: clamp(0.94rem, 1.7vw, 1.26rem); font-weight: 790; }
+.clock-calculator-text > span { font-size: 0.74rem; color: #e7d9c7; }
+.clock-calculator-text small { color: #efc58e; margin-block-start: 0.17rem; font-weight: 700; font-size: 0.7rem; }
+.clock-calculator-popout { color: #f6d3ab; width: 1.1rem; height: 1.1rem; }
+.clock-calculator-launcher:focus-visible, .clock-compass-info button:focus-visible { outline: 2px solid #ffd497; outline-offset: 2px; }
+.clock-calculator-loading {
+  position: fixed; z-index: 95; inset-inline-end: 1rem; bottom: max(88px, calc(env(safe-area-inset-bottom) + 74px));
+  max-width: calc(100vw - 2rem); border: 1px solid #967b57; border-radius: 0.75rem; padding: 0.65rem 0.85rem;
+  background: #292b2e; color: #f9ead6; font-size: 0.82rem; box-shadow: 0 5px 18px #0006;
+}
+@media (min-width: 640px) {
+  .visitor-instrument-row { grid-template-columns: minmax(0, 1.13fr) minmax(0, 1fr); padding-inline: 1.25rem; }
+  .clock-compass, .clock-calculator-launcher { padding-inline: 0.9rem; }
+}
+@media (max-width: 450px) {
+  .clock-compass-info button { min-height: 44px; }
+  .clock-calculator-text > span { font-size: 0.68rem; }
+}
+@media (prefers-reduced-motion: reduce) { .clock-compass-arrow { transition: none; } }
+
+/* Other pages retain the shared clock without pushing the store or workspace
+   down by the height of the Home briefing. Opening details mounts the dial. */
+.visitor-clock-compact-shell {
+  color: #fff4e6; border: 1px solid #85674e; border-radius: 0.95rem;
+  background: linear-gradient(125deg, #69503e, #433025 66%, #392b23);
+  box-shadow: 0 4px 18px #402c241c;
+}
+.visitor-clock-compact-top { display: flex; align-items: center; flex-wrap: wrap; gap: 0.35rem 0.6rem; padding: 0.35rem 0.6rem; }
+.visitor-clock-compact-time, .visitor-clock-compact-weather { display: flex; gap: 0.4rem; align-items: center; min-width: 0; }
+.visitor-clock-compact-time { flex: 1; }
+.visitor-clock-compact-time svg, .visitor-clock-compact-weather svg { flex: none; color: #f2cc9e; }
+.visitor-clock-compact-time time { color: #ffe0b4; font: 800 clamp(1rem, 2.1vw, 1.5rem)/1 ui-monospace, monospace; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.visitor-clock-compact-time > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #f1dfce; font-size: 0.75rem; }
+.visitor-clock-compact-weather { color: #fff1de; font: 700 0.8rem/1 system-ui, sans-serif; white-space: nowrap; }
+.visitor-clock-compact-toggle, .clock-calculator-launcher[data-compact='true'] {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.32rem; min-height: 40px;
+  padding: 0.2rem 0.55rem; border: 1px solid #edc48e55; border-radius: 0.55rem;
+  color: #fff0d5; background: #fff0d213; font-size: 0.74rem; font-weight: 720;
+}
+.visitor-clock-compact-toggle svg { color: #f4cf9e; flex: none; }
+.visitor-clock-compact-toggle[aria-expanded='true'] svg { transform: rotate(180deg); }
+.visitor-clock-compact-toggle:hover, .clock-calculator-launcher[data-compact='true']:hover { background: #fff0d228; }
+.visitor-clock-compact-toggle:focus-visible { outline: 2px solid #ffd497; outline-offset: 2px; }
+.clock-calculator-launcher[data-compact='true'] .clock-calculator-badge { width: 19px; flex: none; }
+.clock-calculator-launcher[data-compact='true'] .clock-calculator-text strong { font-size: 0.74rem; }
+.clock-calculator-launcher[data-compact='true'] :is(small, .clock-calculator-text > span, .clock-calculator-popout) { display: none; }
+.visitor-clock-compact-details { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 0.55rem; padding: 0.6rem; border-block-start: 1px solid #ffe5c426; }
+.visitor-clock-compact-details .clock-launchers { padding: 0; }
+@media (min-width: 740px) { .visitor-clock-compact-details { grid-template-columns: minmax(0, 1fr) minmax(0, 360px); } }
+@media (max-width: 480px) {
+  .visitor-clock-compact-top { gap: 0.4rem; padding-inline: 0.45rem; }
+  .visitor-clock-compact-time > span, .clock-calculator-launcher[data-compact='true'] .clock-calculator-text { display: none; }
+  .visitor-clock-compact-toggle, .clock-calculator-launcher[data-compact='true'] { min-height: 44px; }
+  .clock-calculator-launcher[data-compact='true'] { min-width: 44px; }
+}
+@media (max-width: 355px) { .visitor-clock-compact-time svg, .visitor-clock-compact-weather svg { display: none; } }

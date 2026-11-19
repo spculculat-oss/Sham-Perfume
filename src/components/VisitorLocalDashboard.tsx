@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import {
   CalendarDays,
-  Calculator as CalculatorIcon,
-  Compass as CompassIcon,
+  ChevronDown,
   Clock3,
   Cloud,
   CloudFog,
@@ -37,12 +36,17 @@ import {
   type WeatherKind,
 } from '../utils/visitorLocal';
 import { apiUrl, isStaticHosting } from '../utils/api';
-import { EngineeringCalculator } from './EngineeringCalculator';
+import { ClockToolsLaunchers } from './clock/ClockTools';
+import { HomeHeadlineBriefing } from './clock/HomeHeadlineBriefing';
+import { clockLocale } from './clock/clockText';
+import { ClockCalculatorLauncher, type ClockCalculatorState } from './clock/ClockCalculatorLauncher';
+import { VisitorCompass } from './clock/VisitorCompass';
 
 const TEXT = {
   local_info: { ar: 'معلوماتك المحلية', en: 'Your local details' },
   local_date: { ar: 'التاريخ المحلي', en: 'Local date' },
   local_time: { ar: 'الوقت المحلي', en: 'Local time' },
+  clock_tools: { ar: 'أدوات الساعة', en: 'Clock tools' },
   current_weather: { ar: 'الطقس الحالي', en: 'Current weather' },
   loading_weather: { ar: 'جاري جلب الطقس…', en: 'Loading current weather…' },
   weather_unavailable: { ar: 'الطقس غير متاح حاليًا', en: 'Weather is temporarily unavailable' },
@@ -71,21 +75,6 @@ const TEXT = {
   location_failed: { ar: 'ماقدرناش نحدد موقعك دلوقتي', en: 'Could not determine your location right now' },
   permission_note: { ar: 'موقع الجهاز مش هيتحدد إلا بموافقتك؛ الطقس يستخدم إحداثيات تقريبية', en: 'Device location is used only with permission; weather uses rounded coordinates' },
   powered_by: { ar: 'بيانات الطقس من', en: 'Weather data by' },
-  engineering_calculator: { ar: 'حاسبة هندسية', en: 'Engineering calculator' },
-  compass: { ar: 'البوصلة', en: 'Compass' },
-  enable_compass: { ar: 'فعّل البوصلة', en: 'Enable compass' },
-  disable_compass: { ar: 'إيقاف البوصلة', en: 'Stop compass' },
-  compass_denied: { ar: 'لم تسمح بتشغيل البوصلة', en: 'Compass permission was denied' },
-  compass_unsupported: { ar: 'البوصلة غير مدعومة على هذا الجهاز', en: 'Compass is not supported on this device' },
-  compass_waiting: { ar: 'حرّك الجهاز لتحديد الاتجاه', en: 'Move your device to get a heading' },
-  north: { ar: 'شمال', en: 'N' },
-  northeast: { ar: 'شمال شرق', en: 'NE' },
-  east: { ar: 'شرق', en: 'E' },
-  southeast: { ar: 'جنوب شرق', en: 'SE' },
-  south: { ar: 'جنوب', en: 'S' },
-  southwest: { ar: 'جنوب غرب', en: 'SW' },
-  west: { ar: 'غرب', en: 'W' },
-  northwest: { ar: 'شمال غرب', en: 'NW' },
 } satisfies Record<string, LText>;
 
 const WEATHER_ICONS: Record<WeatherKind, LucideIcon> = {
@@ -120,12 +109,17 @@ function hasCityPrecision(location: VisitorEntryLocation | undefined): location 
 }
 
 type ClockSyncState = 'syncing' | 'synced' | 'stale' | 'unavailable';
-type CompassState = 'idle' | 'active' | 'denied' | 'unsupported';
 
 const WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
-const COMPASS_POINTS = ['north', 'northeast', 'east', 'southeast', 'south', 'southwest', 'west', 'northwest'] as const;
 
-export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedLanguage }) {
+export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculatorState, onOpenCalculator }: {
+  currentLang: SupportedLanguage;
+  showHomeDetails: boolean;
+  calculatorState: ClockCalculatorState;
+  onOpenCalculator: (launcher: HTMLButtonElement) => void;
+}) {
+  const [compactTools, setCompactTools] = useState(false);
+  const detailsId = useId();
   const [now, setNow] = useState<Date | undefined>();
   const [clockAnchor, setClockAnchor] = useState<NetworkClockAnchor | undefined>();
   const [clockSync, setClockSync] = useState<ClockSyncState>('syncing');
@@ -137,52 +131,9 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
   const [weatherLoading, setWeatherLoading] = useState(true);
   const [weatherError, setWeatherError] = useState(false);
   const [locationRequest, setLocationRequest] = useState<LocationRequestState>('idle');
-  const [calculatorOpen, setCalculatorOpen] = useState(false);
-  const closeCalculator = useCallback(() => setCalculatorOpen(false), []);
-  const [compassState, setCompassState] = useState<CompassState>('idle');
-  const [compassHeading, setCompassHeading] = useState<number | undefined>();
-  const compassCleanup = useRef<(() => void) | undefined>(undefined);
   const deviceLocation = useRef<VisitorEntryLocation | undefined>(undefined);
   const label = makeT(currentLang, TEXT);
-
-  const toggleCompass = async () => {
-    if (compassState === 'active') {
-      compassCleanup.current?.();
-      compassCleanup.current = undefined;
-      setCompassHeading(undefined);
-      setCompassState('idle');
-      return;
-    }
-    if (typeof window === 'undefined' || typeof DeviceOrientationEvent === 'undefined' || !window.isSecureContext) {
-      setCompassState('unsupported');
-      return;
-    }
-    try {
-      const orientationApi = DeviceOrientationEvent as typeof DeviceOrientationEvent & { requestPermission?: () => Promise<string> };
-      if (orientationApi.requestPermission && await orientationApi.requestPermission() !== 'granted') {
-        setCompassState('denied');
-        return;
-      }
-      const onOrientation: EventListener = (rawEvent) => {
-        const event = rawEvent as DeviceOrientationEvent & { webkitCompassHeading?: number };
-        const value = typeof event.webkitCompassHeading === 'number'
-          ? event.webkitCompassHeading
-          : event.alpha === null ? undefined : (360 - event.alpha) % 360;
-        if (value !== undefined && Number.isFinite(value)) setCompassHeading((value + 360) % 360);
-      };
-      window.addEventListener('deviceorientation', onOrientation, { passive: true });
-      window.addEventListener('deviceorientationabsolute', onOrientation, { passive: true });
-      compassCleanup.current = () => {
-        window.removeEventListener('deviceorientation', onOrientation);
-        window.removeEventListener('deviceorientationabsolute', onOrientation);
-      };
-      setCompassState('active');
-    } catch {
-      setCompassState('denied');
-    }
-  };
-
-  useEffect(() => () => compassCleanup.current?.(), []);
+  useEffect(() => { if (showHomeDetails) setCompactTools(false); }, [showHomeDetails]);
 
   useEffect(() => {
     let live = true;
@@ -342,10 +293,11 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
   const localTimeZone = timeZone || 'UTC';
   let dateText = label(clockSync === 'syncing' ? 'clock_syncing' : 'clock_unavailable');
   let digitalTime = '--:--:--';
+  const { locale: digitLocale, numberingSystem } = clockLocale(currentLang);
   if (now) {
     try {
       dateText = new Intl.DateTimeFormat(locale, { dateStyle: 'full', timeZone: localTimeZone }).format(now);
-      digitalTime = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23', numberingSystem: 'latn', timeZone: localTimeZone }).format(now);
+      digitalTime = new Intl.DateTimeFormat(digitLocale, { hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23', numberingSystem, timeZone: localTimeZone }).format(now);
     } catch {
       const fallbackLocale = LOCALE_MAP[currentLang] || 'en-GB';
       dateText = new Intl.DateTimeFormat(fallbackLocale, { dateStyle: 'full', timeZone: 'UTC' }).format(now);
@@ -380,104 +332,122 @@ export function VisitorLocalDashboard({ currentLang }: { currentLang: SupportedL
   const temperature = weather ? temperatureForVisitor(weather.temperatureC, placeCountry || entryCountry) : undefined;
   const condition = weather ? weatherKind(weather.weatherCode) : undefined;
   const ConditionIcon = condition ? WEATHER_ICONS[condition] : Thermometer;
-  const compassDirection = compassHeading === undefined ? '' : label(COMPASS_POINTS[Math.round(compassHeading / 45) % 8]);
-  const compassButtonText = compassState === 'active'
-    ? compassHeading === undefined ? label('compass_waiting') : `${Math.round(compassHeading)}° · ${compassDirection}`
-    : label('compass');
-  const compassTitle = compassState === 'active' ? label('disable_compass')
-    : compassState === 'denied' ? label('compass_denied')
-      : compassState === 'unsupported' ? label('compass_unsupported') : label('enable_compass');
+
+  const temperatureText = temperature ? `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(temperature.value)}${temperature.unit}` : '—°';
+  const weatherText = weather ? weatherDescription(weather.weatherCode, currentLang)
+    : !hasCityPrecision(place) ? label('location_unavailable') : weatherLoading || !weatherError ? label('loading_weather') : label('weather_unavailable');
+  const locationStrip = (
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-2 border-t border-white/10 bg-white/[0.04] px-4 py-3 text-[10px] text-slate-300 sm:px-5 sm:text-xs">
+      <MapPin className="h-3.5 w-3.5 shrink-0 text-amber-400" aria-hidden="true" />
+      <span className="font-semibold text-white">{placeText}</span>
+      <span aria-hidden="true" className="text-slate-500">·</span>
+      <span>{locationHint}</span>
+      <span aria-hidden="true" className="text-slate-500">·</span>
+      <span dir="ltr" className="font-mono text-slate-400">{localTimeZone}</span>
+      <span className="basis-full text-[9px] text-slate-400 sm:basis-auto sm:ms-auto">{label('permission_note')}</span>
+      <span className="text-[9px] text-slate-400">{label('powered_by')} <a href="https://open-meteo.com/" target="_blank" rel="noreferrer" className="underline decoration-slate-500 underline-offset-2 hover:text-white">Open-Meteo</a></span>
+      {locationStatus && <span role="status" aria-live="polite" className="basis-full text-[11px] text-rose-300">{locationStatus}</span>}
+      <button
+        type="button"
+        onClick={() => { void requestDeviceLocation(); }}
+        disabled={locationRequest === 'loading'}
+        title={label('permission_note')}
+        className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-[10px] font-semibold text-white transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 disabled:cursor-wait disabled:opacity-60 sm:text-xs"
+      >
+        <Locate className="h-3.5 w-3.5" aria-hidden="true" />
+        <span>{locationRequest === 'loading' ? label('locating') : place?.precision === 'device-gps' ? label('refresh_location') : label('precise_location')}</span>
+      </button>
+    </div>
+  );
+
+  if (!showHomeDetails) return (
+    <section data-testid="visitor-local-dashboard" data-clock-layout="compact" aria-label={label('local_info')} className="visitor-clock-compact mx-auto w-full max-w-7xl shrink-0 px-4 pt-2 sm:px-8">
+      <div className="visitor-clock-compact-shell">
+        <div className="visitor-clock-compact-top">
+          <div className="visitor-clock-compact-time" title={`${label('local_time')} · ${clockStatusText} · ${dateText}`}>
+            <Clock3 size={16} aria-hidden="true" />
+            <time dateTime={now?.toISOString()} dir="ltr" aria-live="off">{digitalTime}</time>
+            {now && <span>{dateText}</span>}
+          </div>
+          <span className="visitor-clock-compact-weather" title={weatherText}>
+            <ConditionIcon size={14} aria-hidden="true" /><bdi dir="ltr">{temperatureText}</bdi>
+          </span>
+          <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} compact />
+          <button className="visitor-clock-compact-toggle" type="button" aria-expanded={compactTools} aria-controls={detailsId} onClick={() => setCompactTools((open) => !open)}>
+            {label('clock_tools')}<ChevronDown size={13} aria-hidden="true" />
+          </button>
+        </div>
+        <div id={detailsId} hidden={!compactTools}>
+          {compactTools && <>
+            <div className="visitor-clock-compact-details">
+              <ClockToolsLaunchers lang={currentLang} timeZone={localTimeZone} />
+              <VisitorCompass lang={currentLang} />
+            </div>
+            {locationStrip}
+          </>}
+        </div>
+      </div>
+    </section>
+  );
 
   return (
     <section
       data-testid="visitor-local-dashboard"
+      data-clock-layout="home"
       aria-label={label('local_info')}
       className="mx-auto w-full max-w-7xl px-4 pt-3 sm:px-8"
     >
-      <div className="overflow-hidden rounded-[28px] border border-amber-100/25 bg-gradient-to-br from-[#8a6344]/75 via-[#38271c]/90 to-[#68452e]/80 text-white shadow-[0_18px_45px_rgba(73,45,25,0.38)] backdrop-blur-2xl">
-        <div className="grid grid-cols-[34px_minmax(0,1fr)_auto] items-center gap-3 p-4 sm:grid-cols-[48px_minmax(0,1fr)_112px] sm:gap-5 sm:p-5" dir="ltr">
-          <div aria-label={currentLang === 'ar' ? 'أيام الأسبوع' : 'Days of the week'} className="flex flex-col items-start gap-1 border-r border-white/10 pe-2 text-[9px] font-semibold uppercase tracking-wide sm:gap-1.5 sm:text-[11px]">
-            {weekdayRows.map((day) => <span key={day.key} className={day.active ? 'text-amber-400' : 'text-slate-400'}>{day.dayText}</span>)}
-          </div>
-
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
-              <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-300 sm:text-xs">
-                <Clock3 className="h-3.5 w-3.5 text-amber-500" aria-hidden="true" />
-                <span>{label('local_time')}</span>
+      <div className="overflow-hidden rounded-[28px] border border-amber-100/25 bg-gradient-to-br from-[#735844] via-[#3e2f25] to-[#4f3627] text-white shadow-[0_18px_45px_rgba(73,45,25,0.3)]">
+        <div className="visitor-clock-board" dir="ltr">
+          <div className="visitor-clock-face">
+            <div className="grid grid-cols-[32px_minmax(0,1fr)_64px] items-center gap-2 p-4 sm:grid-cols-[48px_minmax(0,1fr)_112px] sm:gap-5 sm:p-5" dir="ltr">
+              <div aria-label={currentLang === 'ar' ? 'أيام الأسبوع' : 'Days of the week'} className="flex flex-col items-start gap-1 border-r border-white/10 pe-2 text-[9px] font-semibold uppercase tracking-wide sm:gap-1.5 sm:text-[11px]">
+                {weekdayRows.map((day) => <span key={day.key} className={day.active ? 'text-amber-400' : 'text-slate-400'}>{day.dayText}</span>)}
               </div>
-              <span className="inline-flex items-center gap-1.5 text-[9px] font-semibold text-emerald-300 sm:text-[10px]">
-                <span className={`h-1.5 w-1.5 rounded-full ${clockSync === 'synced' ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]' : clockSync === 'stale' ? 'bg-amber-400' : 'bg-slate-500'}`} />
-                {clockStatusText}
-              </span>
-            </div>
-            <time dateTime={now?.toISOString()} aria-live="off" className="mt-1 block whitespace-nowrap font-mono text-[clamp(1.75rem,9vw,5rem)] font-black leading-none tabular-nums tracking-[-0.075em] text-[#e7bd8a] drop-shadow-[0_0_18px_rgba(205,149,94,0.45)] sm:text-7xl">
-              {digitalTime}
-            </time>
-            <div className="mt-2 flex min-w-0 items-center gap-1.5 text-[11px] font-medium text-slate-300 sm:text-sm">
-              <CalendarDays className="h-3.5 w-3.5 shrink-0 text-slate-400" aria-hidden="true" />
-              <time dateTime={now?.toISOString()} className="truncate" dir="auto">{dateText}</time>
-              {timezoneLabel && <span className="shrink-0 rounded bg-white/10 px-1.5 py-0.5 text-[9px] text-slate-300">{timezoneLabel}</span>}
-            </div>
-          </div>
 
-          <div className="flex min-w-[58px] flex-col items-center justify-center gap-1 border-l border-white/10 ps-3 text-center sm:min-w-[92px] sm:gap-2 sm:ps-5">
-            <ConditionIcon className="h-7 w-7 text-sky-100 sm:h-9 sm:w-9" aria-hidden="true" />
-            <span className="whitespace-nowrap font-mono text-2xl font-bold tabular-nums text-white sm:text-3xl">
-              {temperature ? `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(temperature.value)}${temperature.unit}` : '—°'}
-            </span>
-            <span className="max-w-20 text-[9px] leading-tight text-slate-400 sm:text-[10px]">
-              {weather ? weatherDescription(weather.weatherCode, currentLang) : !hasCityPrecision(place) ? label('location_unavailable') : weatherLoading ? label('loading_weather') : weatherError ? label('weather_unavailable') : label('loading_weather')}
-            </span>
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+                  <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-300 sm:text-xs">
+                    <Clock3 className="h-3.5 w-3.5 text-amber-500" aria-hidden="true" />
+                    <span>{label('local_time')}</span>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 text-[9px] font-semibold text-emerald-300 sm:text-[10px]">
+                    <span className={`h-1.5 w-1.5 rounded-full ${clockSync === 'synced' ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]' : clockSync === 'stale' ? 'bg-amber-400' : 'bg-slate-500'}`} />
+                    {clockStatusText}
+                  </span>
+                </div>
+                <time dateTime={now?.toISOString()} aria-live="off" className="mt-1 block whitespace-nowrap font-mono visitor-clock-digits font-black leading-none tabular-nums tracking-[-0.075em] text-[#e7bd8a] drop-shadow-[0_0_18px_rgba(205,149,94,0.45)]">
+                  {digitalTime}
+                </time>
+                <div className="mt-2 flex min-w-0 items-center gap-1.5 text-[11px] font-medium text-slate-300 sm:text-sm">
+                  <CalendarDays className="h-3.5 w-3.5 shrink-0 text-slate-400" aria-hidden="true" />
+                  <time dateTime={now?.toISOString()} className="truncate" dir="auto">{dateText}</time>
+                  {timezoneLabel && <span className="shrink-0 rounded bg-white/10 px-1.5 py-0.5 text-[9px] text-slate-300">{timezoneLabel}</span>}
+                </div>
+              </div>
+
+              <div className="flex min-w-0 flex-col items-center justify-center gap-1 border-l border-white/10 ps-2 text-center sm:gap-2 sm:ps-5">
+                <ConditionIcon className="h-7 w-7 text-sky-100 sm:h-9 sm:w-9" aria-hidden="true" />
+                <span className="visitor-clock-temp whitespace-nowrap font-mono font-bold tabular-nums text-white">
+                  {temperatureText}
+                </span>
+                <span className="max-w-20 text-[9px] leading-tight text-slate-400 sm:text-[10px]">
+                  {weatherText}
+                </span>
+              </div>
+            </div>
+            <ClockToolsLaunchers lang={currentLang} timeZone={localTimeZone} />
           </div>
+          <HomeHeadlineBriefing lang={currentLang} timeZone={localTimeZone} />
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 border-t border-white/10 bg-white/[0.04] px-4 py-3 text-[10px] text-slate-300 sm:px-5 sm:text-xs">
-          <MapPin className="h-3.5 w-3.5 shrink-0 text-amber-400" aria-hidden="true" />
-          <span className="font-semibold text-white">{placeText}</span>
-          <span aria-hidden="true" className="text-slate-500">·</span>
-          <span>{locationHint}</span>
-          <span aria-hidden="true" className="text-slate-500">·</span>
-          <span dir="ltr" className="font-mono text-slate-400">{localTimeZone}</span>
-          <span className="basis-full text-[9px] text-slate-400 sm:basis-auto sm:ms-auto">{label('permission_note')}</span>
-          <span className="text-[9px] text-slate-400">{label('powered_by')} <a href="https://open-meteo.com/" target="_blank" rel="noreferrer" className="underline decoration-slate-500 underline-offset-2 hover:text-white">Open-Meteo</a></span>
-          {locationStatus && <span role="status" aria-live="polite" className="basis-full text-[11px] text-rose-300">{locationStatus}</span>}
-          <button
-            type="button"
-            onClick={() => { void toggleCompass(); }}
-            aria-label={compassTitle}
-            title={compassTitle}
-            aria-pressed={compassState === 'active'}
-            className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[10px] font-semibold shadow-[inset_0_1px_0_rgba(255,255,255,0.16)] backdrop-blur-xl transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 sm:text-xs ${compassState === 'active' ? 'border-amber-200/45 bg-amber-100/20 text-amber-50' : 'border-white/15 bg-white/5 text-white/90 hover:bg-white/10'}`}
-          >
-            <CompassIcon className="h-3.5 w-3.5 text-amber-200" aria-hidden="true" style={{ transform: compassHeading === undefined ? undefined : `rotate(${-compassHeading}deg)` }} />
-            <span>{compassButtonText}</span>
-          </button>
-          {compassState === 'denied' && <span role="status" className="text-[10px] text-amber-100/80">{label('compass_denied')}</span>}
-          {compassState === 'unsupported' && <span role="status" className="text-[10px] text-amber-100/80">{label('compass_unsupported')}</span>}
-          <button
-            type="button"
-            onClick={() => setCalculatorOpen(true)}
-            aria-haspopup="dialog"
-            aria-expanded={calculatorOpen}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-amber-200/25 bg-amber-100/10 px-3 py-1.5 text-[10px] font-semibold text-amber-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.16)] backdrop-blur-xl transition hover:border-amber-100/40 hover:bg-amber-100/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 sm:text-xs"
-          >
-            <CalculatorIcon className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>{label('engineering_calculator')}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => { void requestDeviceLocation(); }}
-            disabled={locationRequest === 'loading'}
-            title={label('permission_note')}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-[10px] font-semibold text-white transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 disabled:cursor-wait disabled:opacity-60 sm:text-xs"
-          >
-            <Locate className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>{locationRequest === 'loading' ? label('locating') : place?.precision === 'device-gps' ? label('refresh_location') : label('precise_location')}</span>
-          </button>
+        <div className="visitor-instrument-row">
+          <VisitorCompass lang={currentLang} />
+          <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} />
         </div>
+
+        {locationStrip}
       </div>
-      {calculatorOpen && <EngineeringCalculator currentLang={currentLang} onClose={closeCalculator} />}
     </section>
   );
 }
