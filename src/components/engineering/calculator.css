@@ -86,7 +86,9 @@
 .cw-lcd-bottom { display: flex; align-items: flex-end; justify-content: flex-end; gap: 5px; min-height: 34px; }
 .cw-result { min-width: 0; flex: 1; overflow-wrap: anywhere; text-align: right; font-size: clamp(19px, 5.8vw, 25px); font-weight: 780; line-height: 1.15; }
 .cw-result sup { font-size: .62em; }
-.cw-lcd-error { unicode-bidi: isolate; display: block; color: #5f2214; font: 750 12px/1.35 system-ui, sans-serif; }
+.cw-lcd-live { align-self: center; flex: 0 0 auto; border: 1px solid #34533b35; border-radius: 5px; padding: 2px 5px; color: #274332; background: #34533b15; font-size: 9px; font-weight: 800; }
+.cw-lcd-hint, .cw-lcd-error { unicode-bidi: isolate; display: block; color: #274332; font: 750 12px/1.35 system-ui, sans-serif; }
+.cw-lcd-error { color: #5f2214; }
 .cw-lcd-copy { flex: 0 0 auto; display: grid; place-items: center; width: 28px; height: 28px; background: #34533b24; border: 1px solid #34533b35; border-radius: 6px; }
 .cw-lcd-copy:hover { background: #34533b45; }
 .cw-fraction-layout { display: inline-flex; align-items: center; gap: .22em; max-width: 100%; }

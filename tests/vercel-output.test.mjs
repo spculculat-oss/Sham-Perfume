@@ -20,6 +20,19 @@ before(async () => {
   await cp(path.join(output, 'functions/api.func/index.cjs'), path.join(isolatedDirectory, 'index.cjs'));
   await writeFile(path.join(isolatedDirectory, 'serve.cjs'), `
     const http = require('node:http');
+    // Only the known publisher feeds are fixtures; geo routing, parsing and filtering run from the built artifact.
+    const networkFetch = globalThis.fetch;
+    globalThis.fetch = (input, init) => {
+      const url = String(input);
+      let item;
+      if (url === 'https://www.youm7.com/rss/SectionRss?SectionID=97') item = ['Egypt fixture', 'https://www.youm7.com/101'];
+      else if (url === 'https://www.youm7.com/rss/SectionRss?SectionID=286') item = ['World fixture', 'https://www.youm7.com/102'];
+      else if (url === 'https://www.service-public.gouv.fr/abonnements/rss/actu-actualites-particuliers.rss') item = ['France fixture', 'https://www.service-public.gouv.fr/particuliers/actualites/A103'];
+      else if (url === 'https://www.service-public.gouv.fr/abonnements/rss/actu-actu-pro.rss' || url === 'https://www.info.gouv.fr/rss/actualites.xml') item = [];
+      else return networkFetch(input, init);
+      const story = item.length ? '<item><title>' + item[0] + '</title><link>' + item[1] + '</link><pubDate>' + new Date().toISOString() + '</pubDate></item>' : '';
+      return Promise.resolve(new Response('<rss><channel>' + story + '</channel></rss>'));
+    };
     const app = require('./index.cjs');
     const server = http.createServer(app);
     server.listen(0, '127.0.0.1', () => console.log('PORT:' + server.address().port));
@@ -144,6 +157,28 @@ test('malformed JSON and oversized POSTs remain JSON errors in the deployed arti
     assert.equal(response.status, status);
     assert.equal((await response.json()).code, 'INVALID_REQUEST');
   }
+});
+
+test('the bundled Home briefing resolves each entry country privately and keeps world news separate', async () => {
+  async function brief(country) {
+    const origin = 'https://spculculat-oss.github.io';
+    const response = await fetch(`${baseUrl}/api/home-headlines?country=EG`, {
+      headers: { origin, 'accept-language': 'ar-EG', ...(country ? { 'x-vercel-ip-country': country } : {}) },
+    });
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('cache-control'), 'private, no-store');
+    assert.equal(response.headers.get('access-control-allow-origin'), origin);
+    return response.json();
+  }
+  const [france, egypt, unknown] = await Promise.all([brief('FR'), brief('EG'), brief(null)]);
+  assert.equal(france.country, 'FR');
+  assert.deepEqual(france.local.items.map((item) => item.title), ['France fixture']);
+  assert.equal(egypt.country, 'EG');
+  assert.deepEqual(egypt.local.items.map((item) => item.title), ['Egypt fixture']);
+  assert.equal(unknown.country, null);
+  assert.equal(unknown.local.status, 'unsupported');
+  assert.deepEqual(unknown.local.items, []);
+  for (const edition of [france, egypt, unknown]) assert.deepEqual(edition.world.items.map((item) => item.title), ['World fixture']);
 });
 
 test('news without a key: GET shows the collected headlines (not AI-written), refresh POST fails', async () => {

@@ -16,7 +16,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { LOCALE_MAP, makeT, type LText } from '../لغات/localize';
-import type { SupportedLanguage } from '../types/i18n';
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../types/i18n';
 import {
   browserTimeZone,
   browserVisitorCountry,
@@ -438,15 +438,13 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
             </div>
             <ClockToolsLaunchers lang={currentLang} timeZone={localTimeZone} />
           </div>
-          <HomeHeadlineBriefing lang={currentLang} timeZone={localTimeZone} />
+          <div className="visitor-instrument-row" dir={SUPPORTED_LANGUAGES.find((language) => language.code === currentLang)?.dir}>
+            <VisitorCompass lang={currentLang} />
+            <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} />
+          </div>
         </div>
-
-        <div className="visitor-instrument-row">
-          <VisitorCompass lang={currentLang} />
-          <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} />
-        </div>
-
         {locationStrip}
+        <HomeHeadlineBriefing lang={currentLang} />
       </div>
     </section>
   );
