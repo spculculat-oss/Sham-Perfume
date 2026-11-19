@@ -76,3 +76,40 @@
   .clock-calculator-text > span { font-size: 0.68rem; }
 }
 @media (prefers-reduced-motion: reduce) { .clock-compass-arrow { transition: none; } }
+
+/* Other pages retain the shared clock without pushing the store or workspace
+   down by the height of the Home briefing. Opening details mounts the dial. */
+.visitor-clock-compact-shell {
+  color: #fff4e6; border: 1px solid #85674e; border-radius: 0.95rem;
+  background: linear-gradient(125deg, #69503e, #433025 66%, #392b23);
+  box-shadow: 0 4px 18px #402c241c;
+}
+.visitor-clock-compact-top { display: flex; align-items: center; flex-wrap: wrap; gap: 0.35rem 0.6rem; padding: 0.35rem 0.6rem; }
+.visitor-clock-compact-time, .visitor-clock-compact-weather { display: flex; gap: 0.4rem; align-items: center; min-width: 0; }
+.visitor-clock-compact-time { flex: 1; }
+.visitor-clock-compact-time svg, .visitor-clock-compact-weather svg { flex: none; color: #f2cc9e; }
+.visitor-clock-compact-time time { color: #ffe0b4; font: 800 clamp(1rem, 2.1vw, 1.5rem)/1 ui-monospace, monospace; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.visitor-clock-compact-time > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #f1dfce; font-size: 0.75rem; }
+.visitor-clock-compact-weather { color: #fff1de; font: 700 0.8rem/1 system-ui, sans-serif; white-space: nowrap; }
+.visitor-clock-compact-toggle, .clock-calculator-launcher[data-compact='true'] {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.32rem; min-height: 40px;
+  padding: 0.2rem 0.55rem; border: 1px solid #edc48e55; border-radius: 0.55rem;
+  color: #fff0d5; background: #fff0d213; font-size: 0.74rem; font-weight: 720;
+}
+.visitor-clock-compact-toggle svg { color: #f4cf9e; flex: none; }
+.visitor-clock-compact-toggle[aria-expanded='true'] svg { transform: rotate(180deg); }
+.visitor-clock-compact-toggle:hover, .clock-calculator-launcher[data-compact='true']:hover { background: #fff0d228; }
+.visitor-clock-compact-toggle:focus-visible { outline: 2px solid #ffd497; outline-offset: 2px; }
+.clock-calculator-launcher[data-compact='true'] .clock-calculator-badge { width: 19px; flex: none; }
+.clock-calculator-launcher[data-compact='true'] .clock-calculator-text strong { font-size: 0.74rem; }
+.clock-calculator-launcher[data-compact='true'] :is(small, .clock-calculator-text > span, .clock-calculator-popout) { display: none; }
+.visitor-clock-compact-details { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 0.55rem; padding: 0.6rem; border-block-start: 1px solid #ffe5c426; }
+.visitor-clock-compact-details .clock-launchers { padding: 0; }
+@media (min-width: 740px) { .visitor-clock-compact-details { grid-template-columns: minmax(0, 1fr) minmax(0, 360px); } }
+@media (max-width: 480px) {
+  .visitor-clock-compact-top { gap: 0.4rem; padding-inline: 0.45rem; }
+  .visitor-clock-compact-time > span, .clock-calculator-launcher[data-compact='true'] .clock-calculator-text { display: none; }
+  .visitor-clock-compact-toggle, .clock-calculator-launcher[data-compact='true'] { min-height: 44px; }
+  .clock-calculator-launcher[data-compact='true'] { min-width: 44px; }
+}
+@media (max-width: 355px) { .visitor-clock-compact-time svg, .visitor-clock-compact-weather svg { display: none; } }

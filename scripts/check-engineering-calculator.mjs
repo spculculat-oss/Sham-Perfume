@@ -74,7 +74,12 @@ try {
   await calc.waitFor();
   await expectResult('0.33333333333');
   await page.evaluate(() => { location.hash = 'guide'; });
-  await launcher.waitFor({ state: 'hidden' });
+  await page.locator('[data-clock-layout="compact"]').getByRole('button', { name: 'Engineering calculator', exact: true }).waitFor();
+  await expectResult('0.33333333333');
+  await press('Minimize calculator');
+  await calc.waitFor({ state: 'hidden' });
+  await launcher.click();
+  await calc.waitFor();
   await expectResult('0.33333333333');
 
   console.log('Checking advanced calculator apps…');

@@ -165,6 +165,7 @@ export interface FallbackRun { conclusion: string | null; status: string; at: st
 const ON_DEMAND_AR: Partial<Record<BotId, string>> = {
   chat: 'بيشتغل لما زائر يسأل شاهين', store_advisor: 'بيشتغل لما زائر يطلب ترشيح', legal: 'قراراته سارية طول الوقت',
   contracts: 'بيشتغل لما حد من الفريق يجهز رسالة تعاون', admin_agent: 'بيشتغل لما الإدارة تطلب', design_expert: 'بيشتغل مع مراجعات التصميم',
+  workspace_dev: 'بيطوّر واجهة مساحة شاهين والعرض الحي للمعلومات',
 };
 const hours = (iso: string, now: number) => (now - Date.parse(iso)) / 3_600_000;
 

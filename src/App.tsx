@@ -214,7 +214,8 @@ export default function App() {
   }, []);
   const closeCalculator = useCallback(() => {
     setCalculator('closed');
-    if (calculatorLauncher.current?.isConnected) calculatorLauncher.current.focus({ preventScroll: true });
+    const launcher = calculatorLauncher.current?.isConnected ? calculatorLauncher.current : document.querySelector<HTMLButtonElement>('.clock-calculator-launcher');
+    launcher?.focus({ preventScroll: true });
   }, []);
   const [historyStack, setHistoryStack] = useState<string[]>(() => {
     try {
@@ -1142,7 +1143,7 @@ export default function App() {
   return (
     <LanguageProvider initialLang={currentLang} onLanguageChange={handleSelectLanguage}>
       <ClockToolsProvider lang={currentLang}>
-      <div className="min-h-screen flex flex-col bg-stone-50 text-stone-900 selection:bg-amber-200">
+      <div className={`${activeTab === 'workspace' ? 'h-dvh overflow-hidden' : 'min-h-screen'} flex flex-col bg-stone-50 text-stone-900 selection:bg-amber-200`}>
         
         {/* Non-blocking, screen-reader-announced status below the sticky header. */}
         <ToastNotification message={toastMessage} />
@@ -1164,7 +1165,8 @@ export default function App() {
           onOpenProfilePage={() => currentUser && (getSessionToken() ? navigateToTab('community/me') : handleOpenProfilePage(currentUser))}
         />
 
-        {activeTab === 'home' && <VisitorLocalDashboard currentLang={currentLang} calculatorState={calculator} onOpenCalculator={openCalculator} />}
+        {/* Keep the clock in the shared shell; the full dial and briefing open on Home. */}
+        <VisitorLocalDashboard currentLang={currentLang} showHomeDetails={activeTab === 'home'} calculatorState={calculator} onOpenCalculator={openCalculator} />
         {activeTab === 'studio' && (
           <ProjectStudio
             lang={currentLang}
@@ -1189,9 +1191,8 @@ export default function App() {
         )}
 
         {/* Store Promo Hub: promotional banner with store deals.
-            Not on «مجتمع شام»: a social feed opens straight on the feed (the banner took a whole screen there,
-            two on phones, and fetched the catalogue + dozens of product photos nobody was looking at). */}
-        {!(activeTab === 'community' || activeTab.startsWith('community/')) && (
+            Not on «مجتمع شام» or «مساحة شاهين»: both open straight on their own workspace above the fold. */}
+        {!(activeTab === 'community' || activeTab.startsWith('community/') || activeTab === 'workspace') && (
           <TopPromoHub
             currentLang={currentLang}
             onViewStore={() => navigateToTab('store')}
@@ -1209,21 +1210,23 @@ export default function App() {
         )}
 
         {/* Main Container */}
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-10">
+        <main className={activeTab === 'workspace' ? 'flex-1 min-h-0 flex flex-col max-w-[96rem] w-full mx-auto px-2 sm:px-4 py-2 sm:py-3' : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-10'}>
           {/* Universal Navigation Breadcrumbs Bar with Back to Home & Back to Previous */}
-          <NavigationBreadcrumbs
-            activeTab={activeTab}
-            onNavigate={(tab) => navigateToTab(tab)}
-            onGoBack={handleGoBack}
-            canGoBack={historyStack.length > 1}
-            previousTabLabel={
-              historyStack.length > 1
-                ? historyStack[historyStack.length - 2]
-                : undefined
-            }
-            currentLang={currentLang}
-            onOpenPrintModal={handleOpenSpecModal}
-          />
+          {activeTab !== 'workspace' && (
+            <NavigationBreadcrumbs
+              activeTab={activeTab}
+              onNavigate={(tab) => navigateToTab(tab)}
+              onGoBack={handleGoBack}
+              canGoBack={historyStack.length > 1}
+              previousTabLabel={
+                historyStack.length > 1
+                  ? historyStack[historyStack.length - 2]
+                  : undefined
+              }
+              currentLang={currentLang}
+              onOpenPrintModal={handleOpenSpecModal}
+            />
+          )}
 
           {/* The home page mixes the two sections; «العطور» opens the perfume hub on its own. */}
           {activeTab === 'home' && <SectionsGateway currentLang={currentLang} onNavigate={(tabId) => navigateToTab(tabId)} />}

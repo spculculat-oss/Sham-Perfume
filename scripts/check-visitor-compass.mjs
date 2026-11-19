@@ -110,6 +110,12 @@ try {
   await page.evaluate(() => { location.hash = 'guide'; });
   await compass.waitFor({ state: 'detached' });
   await page.waitForFunction(() => window.compassTest.readers.size === 0);
+  const compact = page.locator('[data-clock-layout="compact"]');
+  const extra = compact.getByRole('button', { name: 'Clock tools', exact: true });
+  await extra.click();
+  await compass.waitFor();
+  await extra.click();
+  await compass.waitFor({ state: 'detached' });
   await page.evaluate(() => { window.compassTest.permission = 'deferred'; location.hash = 'home'; });
   await enable.click();
   await compass.getByRole('status').getByText('Allow access to the compass sensor.', { exact: true }).waitFor();

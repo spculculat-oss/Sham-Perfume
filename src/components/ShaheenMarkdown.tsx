@@ -1,17 +1,24 @@
 import React from 'react';
 import { removeMediaBlocks } from '../utils/mediaBlock';
 import { stripImageRequest } from '../workspace/codeBlocks';
+import { isBlockSpoken, domainOf } from '../workspace/liveInfo';
 import { removeFormulaBlocks } from '../utils/aiFormulaExtractor';
 import { removeToolBlocks } from '../utils/shaheenTools';
 import { MATH_CLOSE, MATH_OPEN, plainMath } from '../utils/shaheenText';
 
+export interface MarkdownSourceRef {
+  title?: string;
+  url: string;
+}
+
 /**
  * Small, safe Markdown renderer for Shaheen's answers (React elements only — never innerHTML).
- * Supports headings, bold/italic, inline code, bullet & numbered lists, tables, quotes, code blocks
- * and https links. The machine-readable ```sham-formula block is hidden: the formula card under the
- * message already presents it with its actions. The ```sham-media block (topics for real images and
- * videos) is hidden too: ShaheenMedia renders it. LaTeX math ($…$, $$…$$) is turned into readable
- * equations (V₁ = 70 × 1000 ÷ 96) shown left-to-right, and nested bullets under a numbered step stay nested.
+ * Supports headings, bold/italic, inline code, bullet & numbered lists, tables, quotes, code blocks,
+ * https links and optional live citation chips (`[1]`) + spoken-sentence highlighting in the workspace.
+ * The machine-readable ```sham-formula block is hidden: the formula card under the message already presents
+ * it with its actions. The ```sham-media block (topics for real images and videos) is hidden too:
+ * ShaheenMedia renders it. LaTeX math ($…$, $$…$$) is turned into readable equations (V₁ = 70 × 1000 ÷ 96)
+ * shown left-to-right, and nested bullets under a numbered step stay nested.
  */
 export function stripFormulaBlock(text: string): string {
   // Any formula-looking block (```json label, cut fence, bare JSON…), not only the canonical one.
@@ -24,9 +31,9 @@ export function stripFormulaBlock(text: string): string {
     .replace(/\n{3,}/g, '\n\n').trim();
 }
 
-const INLINE = /(\u2045[^\u2046\n]*\u2046|\*\*[^*\n]+\*\*|__[^_\n]+__|`[^`\n]+`|\[[^\]\n]+\]\(https:\/\/[^)\s]+\)|\*[^*\s][^*\n]*\*)/g;
+const INLINE = /(\u2045[^\u2046\n]*\u2046|\*\*[^*\n]+\*\*|__[^_\n]+__|`[^`\n]+`|\[[^\]\n]+\]\(https:\/\/[^)\s]+\)|\[\d{1,2}\]|\*[^*\s][^*\n]*\*)/g;
 
-function inline(text: string, keyBase: string): React.ReactNode[] {
+function inline(text: string, keyBase: string, ws = false, sources?: readonly MarkdownSourceRef[]): React.ReactNode[] {
   const out: React.ReactNode[] = [];
   let last = 0;
   let i = 0;
@@ -35,13 +42,44 @@ function inline(text: string, keyBase: string): React.ReactNode[] {
     const at = match.index ?? 0;
     if (at > last) out.push(text.slice(last, at));
     const key = `${keyBase}-${i++}`;
-    if (token.startsWith(MATH_OPEN)) out.push(<span key={key} dir="ltr" className="mx-0.5 inline-block rounded-md bg-amber-50 px-1.5 py-0.5 font-semibold tabular-nums text-stone-800 ring-1 ring-amber-100">{token.slice(1, -1)}</span>);
-    else if (token.startsWith('**') || token.startsWith('__')) out.push(<strong key={key} className="font-bold">{inline(token.slice(2, -2), key)}</strong>);
-    else if (token.startsWith('`')) out.push(<code key={key} className="rounded bg-stone-100 px-1 py-0.5 font-mono text-[0.85em] text-stone-800" dir="ltr">{token.slice(1, -1)}</code>);
-    else if (token.startsWith('[')) {
+    if (token.startsWith(MATH_OPEN)) {
+      out.push(
+        <span key={key} dir="ltr" className={ws ? 'sham-ws-math mx-0.5 inline-block rounded-md px-1.5 py-0.5 font-semibold tabular-nums' : 'mx-0.5 inline-block rounded-md bg-amber-50 px-1.5 py-0.5 font-semibold tabular-nums text-stone-800 ring-1 ring-amber-100'}>
+          {token.slice(1, -1)}
+        </span>,
+      );
+    } else if (token.startsWith('**') || token.startsWith('__')) {
+      out.push(<strong key={key} className="font-bold">{inline(token.slice(2, -2), key, ws, sources)}</strong>);
+    } else if (token.startsWith('`')) {
+      out.push(
+        <code key={key} className={ws ? 'sham-ws-code-inline font-mono' : 'rounded bg-stone-100 px-1 py-0.5 font-mono text-[0.85em] text-stone-800'} dir="ltr">
+          {token.slice(1, -1)}
+        </code>,
+      );
+    } else if (/^\[\d{1,2}\]$/.test(token)) {
+      const idx = Number(token.slice(1, -1)) - 1;
+      const src = sources && idx >= 0 && idx < sources.length ? sources[idx] : undefined;
+      if (src && /^https?:\/\//i.test(src.url)) {
+        const host = domainOf(src.url);
+        out.push(
+          <a key={key} href={src.url} target="_blank" rel="noopener noreferrer nofollow" title={src.title || src.url} dir="ltr"
+            className={ws ? 'sham-ws-cite' : 'mx-0.5 inline-block rounded-full bg-amber-100 px-1.5 py-0.5 text-[10.5px] font-bold text-amber-900 no-underline hover:bg-amber-200'}>
+            {ws ? host.split('.').slice(-2, -1)[0] || String(idx + 1) : idx + 1}
+          </a>,
+        );
+      } else {
+        out.push(token);
+      }
+    } else if (token.startsWith('[')) {
       const [, label, href] = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/) || [];
-      out.push(<a key={key} href={href} target="_blank" rel="noopener noreferrer nofollow" className="text-amber-800 underline">{label}</a>);
-    } else out.push(<em key={key}>{inline(token.slice(1, -1), key)}</em>);
+      out.push(
+        <a key={key} href={href} target="_blank" rel="noopener noreferrer nofollow" className={ws ? 'font-medium underline decoration-[var(--ws-muted)] underline-offset-4 hover:decoration-[var(--ws-ink)]' : 'text-amber-800 underline'}>
+          {label}
+        </a>,
+      );
+    } else {
+      out.push(<em key={key}>{inline(token.slice(1, -1), key, ws, sources)}</em>);
+    }
     last = at + token.length;
   }
   if (last < text.length) out.push(text.slice(last));
@@ -49,12 +87,20 @@ function inline(text: string, keyBase: string): React.ReactNode[] {
 }
 
 /** A list item whose wrapped lines (e.g. an equation under a step) keep their own line. */
-const lineBreaks = (text: string, keyBase: string): React.ReactNode[] =>
-  text.split('\n').flatMap((part, j) => (j ? [<br key={`${keyBase}br${j}`} />, ...inline(part, `${keyBase}l${j}`)] : inline(part, `${keyBase}l${j}`)));
+const lineBreaks = (text: string, keyBase: string, ws = false, sources?: readonly MarkdownSourceRef[]): React.ReactNode[] =>
+  text.split('\n').flatMap((part, j) => (j ? [<br key={`${keyBase}br${j}`} />, ...inline(part, `${keyBase}l${j}`, ws, sources)] : inline(part, `${keyBase}l${j}`, ws, sources)));
 
 const cells = (line: string) => line.trim().replace(/^\||\|$/g, '').split('|').map((c) => c.trim());
 
-export function ShaheenMarkdown({ text, className = '' }: { text: string; className?: string }) {
+export function ShaheenMarkdown({ text, className = '', variant = 'default', sources, spokenText }: {
+  text: string;
+  className?: string;
+  variant?: 'default' | 'workspace';
+  sources?: readonly MarkdownSourceRef[];
+  /** When Shaheen is speaking aloud, highlights the sentence or point he is saying right now. */
+  spokenText?: string;
+}) {
+  const ws = variant === 'workspace';
   const lines = plainMath(stripFormulaBlock(text)).split('\n');
   const blocks: React.ReactNode[] = [];
   let i = 0;
@@ -76,8 +122,8 @@ export function ShaheenMarkdown({ text, className = '' }: { text: string; classN
       // calculation or a note, so it reads as text in a soft box — not as a black «code» panel.
       if (!content || /^[[{]/.test(content)) continue;
       blocks.push(
-        <div key={key} dir="auto" className="whitespace-pre-wrap rounded-xl border border-amber-100 bg-amber-50/60 px-3 py-2 text-stone-800 tabular-nums">
-          {lineBreaks(content, key)}
+        <div key={key} dir="auto" className={ws ? 'whitespace-pre-wrap rounded-xl border border-[var(--ws-border)] bg-[var(--ws-surface)] px-3.5 py-2.5 tabular-nums' : 'whitespace-pre-wrap rounded-xl border border-amber-100 bg-amber-50/60 px-3 py-2 text-stone-800 tabular-nums'}>
+          {lineBreaks(content, key, ws, sources)}
         </div>,
       );
       continue;
@@ -85,8 +131,15 @@ export function ShaheenMarkdown({ text, className = '' }: { text: string; classN
 
     const heading = trimmed.match(/^(#{1,6})\s+(.*)$/);
     if (heading) {
-      const size = heading[1].length <= 2 ? 'text-[15px]' : 'text-[14px]';
-      blocks.push(<p key={key} className={`${size} font-bold text-amber-950 pt-1`}>{inline(heading[2].replace(/#+$/, '').trim(), key)}</p>);
+      const titleText = heading[2].replace(/#+$/, '').trim();
+      const speaking = isBlockSpoken(titleText, spokenText);
+      if (ws) {
+        const cls = heading[1].length <= 2 ? 'sham-ws-h2' : 'sham-ws-h3';
+        blocks.push(<p key={key} data-speaking={speaking || undefined} className={`${cls}${speaking ? ' sham-ws-speaking' : ''}`}>{inline(titleText, key, ws, sources)}</p>);
+      } else {
+        const size = heading[1].length <= 2 ? 'text-[15px]' : 'text-[14px]';
+        blocks.push(<p key={key} className={`${size} font-bold text-amber-950 pt-1`}>{inline(titleText, key, ws, sources)}</p>);
+      }
       i++;
       continue;
     }
@@ -97,12 +150,30 @@ export function ShaheenMarkdown({ text, className = '' }: { text: string; classN
       i += 2;
       while (i < lines.length && /^\|.*\|$/.test(lines[i].trim())) rows.push(cells(lines[i++]));
       blocks.push(
-        <div key={key} className="overflow-x-auto">
-          <table className="min-w-full border-collapse text-[12px]">
-            <thead><tr>{head.map((c, j) => <th key={j} className="border border-stone-200 bg-amber-50 px-2 py-1 text-start font-bold">{inline(c, `${key}h${j}`)}</th>)}</tr></thead>
-            <tbody>{rows.map((r, ri) => <tr key={ri}>{r.map((c, j) => <td key={j} className="border border-stone-200 px-2 py-1 align-top">{inline(c, `${key}r${ri}c${j}`)}</td>)}</tr>)}</tbody>
-          </table>
-        </div>,
+        ws ? (
+          <div key={key} className="sham-ws-table-wrap my-2">
+            <table className="sham-ws-table min-w-full border-collapse">
+              <thead><tr>{head.map((c, j) => <th key={j} className="text-start">{inline(c, `${key}h${j}`, ws, sources)}</th>)}</tr></thead>
+              <tbody>
+                {rows.map((r, ri) => {
+                  const rowSpoken = isBlockSpoken(r.join(' '), spokenText);
+                  return (
+                    <tr key={ri} data-speaking={rowSpoken || undefined} className={rowSpoken ? 'bg-[var(--ws-speak-bg)]' : undefined}>
+                      {r.map((c, j) => <td key={j} className="align-top">{inline(c, `${key}r${ri}c${j}`, ws, sources)}</td>)}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div key={key} className="overflow-x-auto">
+            <table className="min-w-full border-collapse text-[12px]">
+              <thead><tr>{head.map((c, j) => <th key={j} className="border border-stone-200 bg-amber-50 px-2 py-1 text-start font-bold">{inline(c, `${key}h${j}`)}</th>)}</tr></thead>
+              <tbody>{rows.map((r, ri) => <tr key={ri}>{r.map((c, j) => <td key={j} className="border border-stone-200 px-2 py-1 align-top">{inline(c, `${key}r${ri}c${j}`)}</td>)}</tr>)}</tbody>
+            </table>
+          </div>
+        ),
       );
       continue;
     }
@@ -140,13 +211,16 @@ export function ShaheenMarkdown({ text, className = '' }: { text: string; classN
       }
       const List = ordered ? 'ol' : 'ul';
       blocks.push(
-        <List key={key} start={ordered && start !== 1 ? start : undefined} className={`${ordered ? 'list-decimal' : 'list-disc'} space-y-1 ps-5`}>
-          {items.map((it, j) => (
-            <li key={j}>
-              {lineBreaks(it.text, `${key}-${j}`)}
-              {it.sub.length > 0 && <ul className="mt-1 list-[circle] space-y-0.5 ps-5">{it.sub.map((s, n) => <li key={n}>{lineBreaks(s, `${key}-${j}-${n}`)}</li>)}</ul>}
-            </li>
-          ))}
+        <List key={key} start={ordered && start !== 1 ? start : undefined} className={`${ordered ? 'list-decimal' : 'list-disc'} ${ws ? 'space-y-1.5 ps-6' : 'space-y-1 ps-5'}`}>
+          {items.map((it, j) => {
+            const itemSpoken = isBlockSpoken([it.text, ...it.sub].join(' '), spokenText);
+            return (
+              <li key={j} data-speaking={itemSpoken || undefined} className={itemSpoken ? 'sham-ws-speaking' : undefined}>
+                {lineBreaks(it.text, `${key}-${j}`, ws, sources)}
+                {it.sub.length > 0 && <ul className="mt-1 list-[circle] space-y-0.5 ps-5">{it.sub.map((s, n) => <li key={n}>{lineBreaks(s, `${key}-${j}-${n}`, ws, sources)}</li>)}</ul>}
+              </li>
+            );
+          })}
         </List>,
       );
       continue;
@@ -155,16 +229,27 @@ export function ShaheenMarkdown({ text, className = '' }: { text: string; classN
     if (trimmed.startsWith('>')) {
       const quote: string[] = [];
       while (i < lines.length && lines[i].trim().startsWith('>')) quote.push(lines[i++].trim().replace(/^>\s?/, ''));
-      blocks.push(<blockquote key={key} className="border-s-4 border-amber-300 bg-amber-50/60 px-3 py-1.5 text-stone-700">{inline(quote.join(' '), key)}</blockquote>);
+      const quoteText = quote.join(' ');
+      const speaking = isBlockSpoken(quoteText, spokenText);
+      blocks.push(
+        <blockquote key={key} data-speaking={speaking || undefined} className={ws ? `sham-ws-quote${speaking ? ' sham-ws-speaking' : ''}` : 'border-s-4 border-amber-300 bg-amber-50/60 px-3 py-1.5 text-stone-700'}>
+          {inline(quoteText, key, ws, sources)}
+        </blockquote>,
+      );
       continue;
     }
 
-    if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) { blocks.push(<hr key={key} className="border-stone-200" />); i++; continue; }
+    if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) { blocks.push(<hr key={key} className={ws ? 'border-[var(--ws-border)] my-3' : 'border-stone-200'} />); i++; continue; }
 
     const para: string[] = [];
     while (i < lines.length && lines[i].trim() && !/^(#{1,6}\s|```|[-*•]\s|\d+[.)]\s|>|\|.*\|$)/.test(lines[i].trim())) para.push(lines[i++].trim());
     if (!para.length) { para.push(trimmed); i++; }
-    blocks.push(<p key={key}>{para.flatMap((p, j) => (j ? [<br key={`${key}br${j}`} />, ...inline(p, `${key}-${j}`)] : inline(p, `${key}-${j}`)))}</p>);
+    const paraSpoken = isBlockSpoken(para.join(' '), spokenText);
+    blocks.push(
+      <p key={key} data-speaking={paraSpoken || undefined} className={paraSpoken ? 'sham-ws-speaking' : undefined}>
+        {para.flatMap((p, j) => (j ? [<br key={`${key}br${j}`} />, ...inline(p, `${key}-${j}`, ws, sources)] : inline(p, `${key}-${j}`, ws, sources)))}
+      </p>,
+    );
   }
-  return <div dir="auto" className={`space-y-2 break-words ${className}`}>{blocks}</div>;
+  return <div dir="auto" className={`${ws ? 'sham-ws-prose space-y-3' : 'space-y-2'} break-words ${className}`}>{blocks}</div>;
 }

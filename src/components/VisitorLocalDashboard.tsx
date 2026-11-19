@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import {
   CalendarDays,
+  ChevronDown,
   Clock3,
   Cloud,
   CloudFog,
@@ -45,6 +46,7 @@ const TEXT = {
   local_info: { ar: 'معلوماتك المحلية', en: 'Your local details' },
   local_date: { ar: 'التاريخ المحلي', en: 'Local date' },
   local_time: { ar: 'الوقت المحلي', en: 'Local time' },
+  clock_tools: { ar: 'أدوات الساعة', en: 'Clock tools' },
   current_weather: { ar: 'الطقس الحالي', en: 'Current weather' },
   loading_weather: { ar: 'جاري جلب الطقس…', en: 'Loading current weather…' },
   weather_unavailable: { ar: 'الطقس غير متاح حاليًا', en: 'Weather is temporarily unavailable' },
@@ -110,11 +112,14 @@ type ClockSyncState = 'syncing' | 'synced' | 'stale' | 'unavailable';
 
 const WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
 
-export function VisitorLocalDashboard({ currentLang, calculatorState, onOpenCalculator }: {
+export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculatorState, onOpenCalculator }: {
   currentLang: SupportedLanguage;
+  showHomeDetails: boolean;
   calculatorState: ClockCalculatorState;
   onOpenCalculator: (launcher: HTMLButtonElement) => void;
 }) {
+  const [compactTools, setCompactTools] = useState(false);
+  const detailsId = useId();
   const [now, setNow] = useState<Date | undefined>();
   const [clockAnchor, setClockAnchor] = useState<NetworkClockAnchor | undefined>();
   const [clockSync, setClockSync] = useState<ClockSyncState>('syncing');
@@ -128,6 +133,7 @@ export function VisitorLocalDashboard({ currentLang, calculatorState, onOpenCalc
   const [locationRequest, setLocationRequest] = useState<LocationRequestState>('idle');
   const deviceLocation = useRef<VisitorEntryLocation | undefined>(undefined);
   const label = makeT(currentLang, TEXT);
+  useEffect(() => { if (showHomeDetails) setCompactTools(false); }, [showHomeDetails]);
 
   useEffect(() => {
     let live = true;
@@ -327,9 +333,67 @@ export function VisitorLocalDashboard({ currentLang, calculatorState, onOpenCalc
   const condition = weather ? weatherKind(weather.weatherCode) : undefined;
   const ConditionIcon = condition ? WEATHER_ICONS[condition] : Thermometer;
 
+  const temperatureText = temperature ? `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(temperature.value)}${temperature.unit}` : '—°';
+  const weatherText = weather ? weatherDescription(weather.weatherCode, currentLang)
+    : !hasCityPrecision(place) ? label('location_unavailable') : weatherLoading || !weatherError ? label('loading_weather') : label('weather_unavailable');
+  const locationStrip = (
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-2 border-t border-white/10 bg-white/[0.04] px-4 py-3 text-[10px] text-slate-300 sm:px-5 sm:text-xs">
+      <MapPin className="h-3.5 w-3.5 shrink-0 text-amber-400" aria-hidden="true" />
+      <span className="font-semibold text-white">{placeText}</span>
+      <span aria-hidden="true" className="text-slate-500">·</span>
+      <span>{locationHint}</span>
+      <span aria-hidden="true" className="text-slate-500">·</span>
+      <span dir="ltr" className="font-mono text-slate-400">{localTimeZone}</span>
+      <span className="basis-full text-[9px] text-slate-400 sm:basis-auto sm:ms-auto">{label('permission_note')}</span>
+      <span className="text-[9px] text-slate-400">{label('powered_by')} <a href="https://open-meteo.com/" target="_blank" rel="noreferrer" className="underline decoration-slate-500 underline-offset-2 hover:text-white">Open-Meteo</a></span>
+      {locationStatus && <span role="status" aria-live="polite" className="basis-full text-[11px] text-rose-300">{locationStatus}</span>}
+      <button
+        type="button"
+        onClick={() => { void requestDeviceLocation(); }}
+        disabled={locationRequest === 'loading'}
+        title={label('permission_note')}
+        className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-[10px] font-semibold text-white transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 disabled:cursor-wait disabled:opacity-60 sm:text-xs"
+      >
+        <Locate className="h-3.5 w-3.5" aria-hidden="true" />
+        <span>{locationRequest === 'loading' ? label('locating') : place?.precision === 'device-gps' ? label('refresh_location') : label('precise_location')}</span>
+      </button>
+    </div>
+  );
+
+  if (!showHomeDetails) return (
+    <section data-testid="visitor-local-dashboard" data-clock-layout="compact" aria-label={label('local_info')} className="visitor-clock-compact mx-auto w-full max-w-7xl shrink-0 px-4 pt-2 sm:px-8">
+      <div className="visitor-clock-compact-shell">
+        <div className="visitor-clock-compact-top">
+          <div className="visitor-clock-compact-time" title={`${label('local_time')} · ${clockStatusText} · ${dateText}`}>
+            <Clock3 size={16} aria-hidden="true" />
+            <time dateTime={now?.toISOString()} dir="ltr" aria-live="off">{digitalTime}</time>
+            {now && <span>{dateText}</span>}
+          </div>
+          <span className="visitor-clock-compact-weather" title={weatherText}>
+            <ConditionIcon size={14} aria-hidden="true" /><bdi dir="ltr">{temperatureText}</bdi>
+          </span>
+          <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} compact />
+          <button className="visitor-clock-compact-toggle" type="button" aria-expanded={compactTools} aria-controls={detailsId} onClick={() => setCompactTools((open) => !open)}>
+            {label('clock_tools')}<ChevronDown size={13} aria-hidden="true" />
+          </button>
+        </div>
+        <div id={detailsId} hidden={!compactTools}>
+          {compactTools && <>
+            <div className="visitor-clock-compact-details">
+              <ClockToolsLaunchers lang={currentLang} timeZone={localTimeZone} />
+              <VisitorCompass lang={currentLang} />
+            </div>
+            {locationStrip}
+          </>}
+        </div>
+      </div>
+    </section>
+  );
+
   return (
     <section
       data-testid="visitor-local-dashboard"
+      data-clock-layout="home"
       aria-label={label('local_info')}
       className="mx-auto w-full max-w-7xl px-4 pt-3 sm:px-8"
     >
@@ -365,10 +429,10 @@ export function VisitorLocalDashboard({ currentLang, calculatorState, onOpenCalc
               <div className="flex min-w-0 flex-col items-center justify-center gap-1 border-l border-white/10 ps-2 text-center sm:gap-2 sm:ps-5">
                 <ConditionIcon className="h-7 w-7 text-sky-100 sm:h-9 sm:w-9" aria-hidden="true" />
                 <span className="visitor-clock-temp whitespace-nowrap font-mono font-bold tabular-nums text-white">
-                  {temperature ? `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(temperature.value)}${temperature.unit}` : '—°'}
+                  {temperatureText}
                 </span>
                 <span className="max-w-20 text-[9px] leading-tight text-slate-400 sm:text-[10px]">
-                  {weather ? weatherDescription(weather.weatherCode, currentLang) : !hasCityPrecision(place) ? label('location_unavailable') : weatherLoading ? label('loading_weather') : weatherError ? label('weather_unavailable') : label('loading_weather')}
+                  {weatherText}
                 </span>
               </div>
             </div>
@@ -382,27 +446,7 @@ export function VisitorLocalDashboard({ currentLang, calculatorState, onOpenCalc
           <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} />
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 border-t border-white/10 bg-white/[0.04] px-4 py-3 text-[10px] text-slate-300 sm:px-5 sm:text-xs">
-          <MapPin className="h-3.5 w-3.5 shrink-0 text-amber-400" aria-hidden="true" />
-          <span className="font-semibold text-white">{placeText}</span>
-          <span aria-hidden="true" className="text-slate-500">·</span>
-          <span>{locationHint}</span>
-          <span aria-hidden="true" className="text-slate-500">·</span>
-          <span dir="ltr" className="font-mono text-slate-400">{localTimeZone}</span>
-          <span className="basis-full text-[9px] text-slate-400 sm:basis-auto sm:ms-auto">{label('permission_note')}</span>
-          <span className="text-[9px] text-slate-400">{label('powered_by')} <a href="https://open-meteo.com/" target="_blank" rel="noreferrer" className="underline decoration-slate-500 underline-offset-2 hover:text-white">Open-Meteo</a></span>
-          {locationStatus && <span role="status" aria-live="polite" className="basis-full text-[11px] text-rose-300">{locationStatus}</span>}
-          <button
-            type="button"
-            onClick={() => { void requestDeviceLocation(); }}
-            disabled={locationRequest === 'loading'}
-            title={label('permission_note')}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-[10px] font-semibold text-white transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 disabled:cursor-wait disabled:opacity-60 sm:text-xs"
-          >
-            <Locate className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>{locationRequest === 'loading' ? label('locating') : place?.precision === 'device-gps' ? label('refresh_location') : label('precise_location')}</span>
-          </button>
-        </div>
+        {locationStrip}
       </div>
     </section>
   );

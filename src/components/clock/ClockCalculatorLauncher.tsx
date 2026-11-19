@@ -30,12 +30,12 @@ function CalculatorBadge() {
   </svg>;
 }
 
-export function ClockCalculatorLauncher({ lang, state, onOpen }: {
-  lang: SupportedLanguage; state: ClockCalculatorState; onOpen: (launcher: HTMLButtonElement) => void;
+export function ClockCalculatorLauncher({ lang, state, onOpen, compact = false }: {
+  lang: SupportedLanguage; state: ClockCalculatorState; onOpen: (launcher: HTMLButtonElement) => void; compact?: boolean;
 }) {
   const label = makeT(lang, TEXT);
   const subtitle = useId();
-  return <button type="button" className="clock-calculator-launcher" aria-label={label('calculator')} aria-describedby={subtitle}
+  return <button type="button" className="clock-calculator-launcher" data-compact={compact} title={compact ? label('calculator') : undefined} aria-label={label('calculator')} aria-describedby={subtitle}
     aria-haspopup="dialog" aria-expanded={state === 'open'} aria-controls={state === 'closed' ? undefined : ENGINEERING_WINDOW_ID}
     onClick={(event) => onOpen(event.currentTarget)}>
     <CalculatorBadge />

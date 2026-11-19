@@ -152,7 +152,8 @@ try {
   await tool('Pause').waitFor();
   await close();
   await page.evaluate(() => { location.hash = 'guide'; });
-  await board.waitFor({ state: 'hidden' });
+  await page.locator('[data-clock-layout="compact"]').waitFor();
+  assert.equal(await board.getByRole('complementary', { name: 'News briefing' }).count(), 0, 'the full briefing is only on Home');
   await page.clock.fastForward(11_000);
   await notice().getByText('Time is up', { exact: true }).waitFor();
   await dismiss();
