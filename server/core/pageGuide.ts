@@ -56,8 +56,8 @@ export const PAGES: PageGuide[] = [
   },
   {
     id: 'home', label: { ar: 'الرئيسية', en: 'Home' },
-    what: { ar: 'الزائر في الصفحة الرئيسية: بيشوف أقسام الموقع وبطاقة الساعة فيها البوصلة بالدرجات والحاسبة الهندسية والمنبّهات والعداد التنازلي وساعة الإيقاف، وموجز أخبار مصر والعالم جنب الساعة.', en: 'The visitor is on Home: site sections and a clock card with a numbered compass, the engineering calculator, alarms, a timer, a stopwatch, and an Egypt and world news briefing beside the clock.' },
-    offer: { ar: 'وجّهه لأدوات الساعة تحت الأرقام، أو للخبر عند مصدره من الموجز. لباقي الأسئلة وجّهه للمتجر أو المعمل أو المكتبة أو متابعة الطلب.', en: 'Point to the tools under the clock digits or the publisher link in the briefing. For other questions guide them to the store, lab, library, or order tracking.' },
+    what: { ar: 'الزائر في الرئيسية بيشوف أقسام الموقع والساعة والبوصلة المرقمة والحاسبة الهندسية والمنبّهات والعداد التنازلي وساعة الإيقاف. تحتها موجز أخبار اليوم: محلي لبلد الدخول عند توافر مصادر، وعالمي منفصل.', en: 'On Home the visitor sees the site sections, clock, numbered compass, engineering calculator, alarms, timer and stopwatch. Below is today’s news briefing: local to the entry country when sources are available, plus a separate world edition.' },
+    offer: { ar: 'وجّهه لأدوات الساعة تحت الأرقام أو لزر «كل عناوين اليوم» في الموجز لفتح القائمة وروابط المصادر. لباقي الأسئلة وجّهه للمتجر أو المعمل أو المكتبة أو متابعة الطلب.', en: 'Point to the tools under the clock digits or All today’s headlines for the expanded list and publisher links. For other questions guide them to the store, lab, library, or order tracking.' },
     questions: [
       { ar: 'أبدأ منين؟', en: 'Where do I start?', expect: 'any' },
       { ar: 'إزاي أستخدم البوصلة؟', en: 'How do I use the compass?', expect: 'any' },

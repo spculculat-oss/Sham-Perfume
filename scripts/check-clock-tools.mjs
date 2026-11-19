@@ -11,19 +11,16 @@ const browser = await chromium.launch({ executablePath: process.env.BROWSER_EXEC
 const origin = new URL(base).origin;
 const fixtureTime = new Date('2026-11-18T10:00:01Z');
 const checkedAt = fixtureTime.toISOString();
-const story = (title, id, imageUrl = 'https://img.youm7.com/xlarge/clock-smoke.jpg') => ({
-  title, url: `https://www.youm7.com/story/2026/11/18/news/${id}`, imageUrl, publishedAt: checkedAt,
-});
 const feeds = {
-  egypt: { status: 'fresh', checkedAt, items: [story('عنوان مصري للاختبار', 1), story('عنوان مصري آخر للاختبار', 2, null)] },
-  world: { status: 'fresh', checkedAt, items: [story('عنوان عالمي للاختبار', 3)] },
+  country: 'EG', timeZone: 'Africa/Cairo', day: '2026-11-18', asOf: fixtureTime.getTime(),
+  local: { status: 'empty', checkedAt, items: [] },
+  world: { status: 'fresh', checkedAt, items: [{ title: 'عنوان عالمي للاختبار',
+    url: 'https://www.youm7.com/story/2026/11/18/news/3', datedAt: checkedAt, dateKind: 'published', publisher: 'youm7',
+  }] },
 };
-const testImage = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120"><rect width="320" height="120" fill="#866844"/><circle cx="215" cy="50" r="41" fill="#ccaf76"/></svg>';
 
 async function openHome(lang, viewport, mobile = false) {
   const context = await browser.newContext({ viewport, hasTouch: mobile, isMobile: mobile, timezoneId: 'Africa/Cairo' });
-  let newsCalls = 0;
-  let newsAvailable = true;
   await context.addInitScript((language) => {
     if (!sessionStorage.getItem('clock_smoke_initialized')) {
       localStorage.removeItem('sham_clock_tools_v1');
@@ -35,12 +32,8 @@ async function openHome(lang, viewport, mobile = false) {
   }, lang);
   await context.route('**/*', async (route) => {
     const url = new URL(route.request().url());
-    if (url.hostname === 'img.youm7.com' && url.pathname.endsWith('clock-smoke.jpg')) {
-      await route.fulfill({ contentType: 'image/svg+xml', body: testImage });
-    } else if (url.pathname === '/api/home-headlines') {
-      newsCalls++;
-      if (newsAvailable) await route.fulfill({ json: feeds });
-      else await route.fulfill({ status: 503, json: { error: 'fixture unavailable' } });
+    if (url.pathname === '/api/home-headlines') {
+      await route.fulfill({ json: feeds });
     } else if (url.pathname === '/api/clock') {
       await route.fulfill({ json: { source: 'server', unixMs: fixtureTime.getTime(), timezone: 'Africa/Cairo' } });
     } else if (url.origin === origin) {
@@ -57,11 +50,11 @@ async function openHome(lang, viewport, mobile = false) {
   if (await consent.isVisible()) await consent.click();
   const board = page.getByTestId('visitor-local-dashboard');
   await board.waitFor();
-  return { page, board, count: () => newsCalls, failNews: () => { newsAvailable = false; } };
+  return { page, board };
 }
 
 try {
-  const { page, board, count, failNews } = await openHome('en', { width: 1280, height: 800 });
+  const { page, board } = await openHome('en', { width: 1280, height: 800 });
   const dialog = page.getByRole('dialog', { name: 'Clock tools' });
   const launcher = (name) => board.getByRole('button', { name, exact: true });
   const tool = (name) => dialog.getByRole('button', { name, exact: true });
@@ -69,31 +62,6 @@ try {
   const dismiss = () => notice().getByRole('button', { name: 'Dismiss' }).click();
   const close = () => tool('Close clock tools').click();
   const state = () => page.evaluate(() => JSON.parse(localStorage.getItem('sham_clock_tools_v1') || '{}'));
-
-  console.log('Checking source photos, pagination, automatic refresh and stale headlines…');
-  const egypt = board.getByRole('region', { name: 'Egypt', exact: true });
-  const world = board.getByRole('region', { name: 'World', exact: true });
-  await egypt.getByText('عنوان مصري للاختبار', { exact: true }).waitFor();
-  await world.getByText('عنوان عالمي للاختبار', { exact: true }).waitFor();
-  await page.waitForFunction(() => [...document.querySelectorAll('.clock-headlines-photo img')].filter((img) => img.naturalWidth > 0).length === 2);
-  const face = await board.locator('.visitor-clock-face').boundingBox();
-  const briefing = await board.getByRole('complementary', { name: 'News briefing' }).boundingBox();
-  assert.ok(briefing.x >= face.x + face.width - 1);
-  assert.equal(await egypt.getByRole('link').getAttribute('href'), feeds.egypt.items[0].url);
-  await egypt.getByRole('button', { name: 'Next story' }).click();
-  await egypt.getByText('عنوان مصري آخر للاختبار', { exact: true }).waitFor();
-  assert.equal(await egypt.locator('img').count(), 0, 'missing photos use a neutral state');
-  await egypt.getByRole('button', { name: 'Previous story' }).click();
-  const refresh = board.getByRole('button', { name: 'Refresh headlines' });
-  const beforeAuto = count();
-  await page.clock.fastForward(5 * 60_000 + 1000);
-  await refresh.waitFor();
-  await board.getByText('Last checked', { exact: false }).waitFor();
-  assert.ok(count() > beforeAuto, 'visible news checks automatically');
-  failNews();
-  await refresh.click();
-  await world.getByText('Last available headlines', { exact: false }).waitFor();
-  assert.equal(await world.getByRole('link').getAttribute('href'), feeds.world.items[0].url);
 
   console.log('Checking repeating alarms, snooze, and focus return…');
   await launcher('Alarms').click();

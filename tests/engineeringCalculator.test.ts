@@ -3,6 +3,8 @@ import test from 'node:test';
 import {
   convertEngineeringUnit,
   evaluateEngineeringExpression,
+  evaluateEngineeringValue,
+  previewEngineeringValue,
   type EngineeringUnitCategory,
 } from '../src/utils/engineeringCalculator';
 
@@ -58,4 +60,32 @@ test('the scientific keypad accepts localized input and uses textbook implied mu
   assert.ok(evaluateEngineeringExpression('sin(1e-15)') > 0, 'tiny angles are not rounded to zero');
   for (const wrong of ['2..3', 'log(3,0)', 'tan(90)', '1/0', '3 4']) assert.throws(() => evaluateEngineeringExpression(wrong), Error);
   assert.throws(() => convertEngineeringUnit(1, 'temperature', 'm', 'K'));
+});
+
+test('live expressions match explicit execution, including localized digits, exact results and current options', () => {
+  for (const [source, options] of [
+    ['١٢٫٥ ÷ ٢٫٥', {}],
+    ['sin(30)', {}],
+    ['sin(pi/6)', { angleMode: 'RAD' }],
+    ['sqrt(-9)+2i', { complex: true }],
+    ['f(A)+Ans', { functions: { f: 'x^2' }, variables: { A: 4 }, answer: 7 }],
+  ] as const) {
+    assert.deepEqual(previewEngineeringValue(source, options), { status: 'value', value: evaluateEngineeringValue(source, options) });
+  }
+  for (const draft of ['', '  ', '1+', 'sin()', '(2+3', '1/0', 'sqrt(-1)']) {
+    assert.deepEqual(previewEngineeringValue(draft), { status: 'pending' }, draft);
+  }
+});
+
+test('live expressions never draw random values and defer work over the preview budget', (t) => {
+  const random = t.mock.method(Math, 'random', () => 0.25);
+  assert.deepEqual(previewEngineeringValue('rand()'), { status: 'manual' });
+  assert.deepEqual(previewEngineeringValue('randInt(1,6)'), { status: 'manual' });
+  assert.deepEqual(previewEngineeringValue('f(2)', { functions: { f: 'rand()+x' } }), { status: 'manual' });
+  assert.equal(random.mock.callCount(), 0);
+  assert.equal(evaluateEngineeringExpression('rand()'), 0.25);
+  assert.equal(random.mock.callCount(), 1);
+  const series = 'sumx(x+1+2+3,1,1000)';
+  assert.deepEqual(previewEngineeringValue(series), { status: 'manual' });
+  assert.equal(evaluateEngineeringExpression(series), 506500);
 });

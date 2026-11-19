@@ -116,13 +116,14 @@ test('knowledgeSeedAdditions only lists what a given version introduced', () => 
   assert.ok(fresh.every((d) => d.id.startsWith('kb-platform-') || d.id.startsWith('kb-store-')), 'only the guides added after v1');
   assert.ok(fresh.some((d) => d.id.startsWith('kb-platform-')), 'the platform guide is in the upgrade');
   assert.deepEqual(knowledgeSeedAdditions(KNOWLEDGE_SEED_VERSION), []);
-  assert.deepEqual(knowledgeSeedAdditions(14).map((d) => d.id), ['kb-platform-engineering-calculator', 'kb-platform-clock-tools', 'kb-platform-home-headlines', 'kb-platform-visitor-compass']);
-  assert.deepEqual(knowledgeSeedAdditions(15).map((d) => d.id), ['kb-platform-clock-tools', 'kb-platform-home-headlines', 'kb-platform-visitor-compass']);
-  assert.deepEqual(knowledgeSeedAdditions(16).map((d) => d.id), ['kb-platform-visitor-compass']);
+  assert.deepEqual(knowledgeSeedAdditions(14).map((d) => d.id), ['kb-platform-clock-tools', 'kb-platform-visitor-compass', 'kb-platform-calculator-live', 'kb-platform-daily-news-editions']);
+  assert.deepEqual(knowledgeSeedAdditions(15).map((d) => d.id), ['kb-platform-clock-tools', 'kb-platform-visitor-compass', 'kb-platform-calculator-live', 'kb-platform-daily-news-editions']);
+  assert.deepEqual(knowledgeSeedAdditions(16).map((d) => d.id), ['kb-platform-visitor-compass', 'kb-platform-calculator-live', 'kb-platform-daily-news-editions']);
+  assert.deepEqual(knowledgeSeedAdditions(17).map((d) => d.id), ['kb-platform-calculator-live', 'kb-platform-daily-news-editions']);
   // Existing v2 stores get the v3 store guide; v3 stores get the v4 suggestions and v5 voice guides.
   assert.ok(knowledgeSeedAdditions(2).some((d) => d.id.startsWith('kb-store-')), 'v3 adds the store guide');
-  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions', 'kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice', 'kb-platform-engineering-calculator', 'kb-platform-clock-tools', 'kb-platform-home-headlines', 'kb-platform-visitor-compass']);
-  assert.deepEqual(knowledgeSeedAdditions(4).map((d) => d.id), ['kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice', 'kb-platform-engineering-calculator', 'kb-platform-clock-tools', 'kb-platform-home-headlines', 'kb-platform-visitor-compass'], 'later guides include the public voice-chat guide');
+  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions', 'kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice', 'kb-platform-clock-tools', 'kb-platform-visitor-compass', 'kb-platform-calculator-live', 'kb-platform-daily-news-editions']);
+  assert.deepEqual(knowledgeSeedAdditions(4).map((d) => d.id), ['kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice', 'kb-platform-clock-tools', 'kb-platform-visitor-compass', 'kb-platform-calculator-live', 'kb-platform-daily-news-editions'], 'later guides include the public voice-chat guide');
 });
 
 test('the router recognises platform questions and never reads an English word as an order reference', () => {
@@ -137,6 +138,7 @@ test('the router recognises platform questions and never reads an English word a
     ['Can I set a countdown timer?', 'clock_tools'],
     ['فين موجز الأخبار اللي جنب الساعة؟', 'home_headlines'],
     ['Where is the home news briefing?', 'home_headlines'],
+    ['إزاي أوقّف تدوير الأخبار؟', 'home_headlines'],
     ['عايز أعرف عن معمل الجزيئات', 'molecule_studio'],
     ['فين مكتبة الكتب؟', 'books'],
     ['إزاي أستخدم بريد شام', 'community'],

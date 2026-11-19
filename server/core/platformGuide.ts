@@ -179,12 +179,12 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     tags: ['تكلفة', 'تسعير', 'cost', 'pricing'],
   },
   {
-    id: 'engineering_calculator', group: 'lab', tab: 'home', docId: 'kb-platform-engineering-calculator',
+    id: 'engineering_calculator', group: 'lab', tab: 'home', docId: 'kb-platform-calculator-live',
     name: { ar: 'الحاسبة الهندسية العائمة', en: 'Floating engineering calculator' },
     summary: { ar: 'حاسبة علمية من بطاقة الساعة في الرئيسية، تقدر تحرّكها وتصغّرها وتكمّل تصفّح الموقع.', en: 'A movable, minimizable scientific calculator launched from the clock card on the home page.' },
     details: {
-      ar: 'من بطاقة الساعة في الرئيسية اضغط «حاسبة هندسية» جنب قرص البوصلة. هتفتح حاسبة داكنة بشاشة LCD فاتحة ومفتاح اتجاهات دائري. اسحب شريطها العلوي للتحريك. اكتب التعبير واضغط EXE، أو افتح HOME لأوضاع المصفوفات والمتجهات والمعادلات والمتباينات والإحصاء والتوزيعات والأعداد المركّبة وأنظمة العدّ والتناسب وجداول الدوال والبيانات ومحاكاة النرد والعملات وتحويل الوحدات. زر FORMAT يغيّر عرض الناتج وزر CATALOG يفتح الدوال والثوابت، ومنها التفاضل والتكامل العددي. العمليات على جهازك؛ الحلول العددية تقريبية، ودي حاسبة ويب مش نسخة من برنامج كاسيو.',
-      en: 'In the home clock card, select Engineering calculator beside the compass dial. It opens a dark calculator with a pale LCD and round direction pad. Drag its title bar to move it. Enter an expression and press EXE, or use HOME for matrices, vectors, equations, inequalities, statistics, distributions, complex numbers, number bases, ratios, function tables, spreadsheets, dice and coins, and unit conversion. FORMAT changes the readout; CATALOG lists functions and constants, including numerical calculus. Calculations run on your device; numerical solutions are approximate. This is a web calculator, not Casio firmware.',
+      ar: 'من بطاقة الساعة في الرئيسية اضغط «حاسبة هندسية» جنب البوصلة. اسحب شريط النافذة العلوي للتحريك. في الحساب العلمي والأعداد المركّبة النتيجة بتظهر تلقائي أول ما التعبير يكون صالح؛ EXE أو Enter بيثبّتها في Ans والسجل. العمليات العشوائية والحسابات التقيلة بتستنى EXE. افتح HOME للمصفوفات والمتجهات والمعادلات والإحصاء والمتباينات والتوزيعات وأنظمة العدّ والتناسب والجداول والمحاكاة وتحويل الوحدات. زر FORMAT يغيّر عرض الناتج وCATALOG يفتح الدوال والثوابت. الحساب على جهازك؛ الحلول العددية تقريبية، ودي حاسبة ويب مش برنامج كاسيو.',
+      en: 'In the home clock card, open Engineering calculator beside the compass and drag its title bar to move it. Calculate and Complex show live results for valid expressions. EXE or Enter commits the answer to Ans and history; random and expensive calculations wait for EXE. Use HOME for matrices, vectors, equations, statistics, inequalities, distributions, number bases, ratios, tables, spreadsheets, simulations and unit conversion. FORMAT changes the readout and CATALOG lists functions and constants. Calculations run on your device; numerical solutions are approximate. This is a web calculator, not Casio firmware.',
     },
     keywords: ['حاسبة هندسية', 'الحاسبة الهندسية', 'حاسبة الساعة', 'الة حاسبة كاسيو', 'engineering calculator', 'scientific calculator', 'clock calculator', 'classwiz'],
     tags: ['حاسبة هندسية', 'الساعة', 'engineering calculator', 'scientific calculator'],
@@ -201,15 +201,15 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     tags: ['الساعة', 'تايمر', 'منبّه', 'alarms', 'timer', 'stopwatch'],
   },
   {
-    id: 'home_headlines', group: 'reference', tab: 'home', docId: 'kb-platform-home-headlines',
-    name: { ar: 'موجز أخبار مصر والعالم', en: 'Egypt and world news briefing' },
-    summary: { ar: 'جنب الساعة في الرئيسية فيه موجز لأخبار مصر والعالم بصور المعاينة لو متاحة وروابط للمصدر.', en: 'The home clock’s briefing shows Egypt and world headlines, publisher photos when available, and links to the source.' },
+    id: 'home_headlines', group: 'reference', tab: 'home', docId: 'kb-platform-daily-news-editions',
+    name: { ar: 'موجز الأخبار المحلية والعالمية', en: 'Local and world news briefing' },
+    summary: { ar: 'تحت أدوات الساعة في الرئيسية فيه أخبار محلية حسب بلد الدخول لو لها مصادر، وأخبار العالم في قسم منفصل.', en: 'Below the clock tools on Home, the briefing shows local news for the visitor’s entry country when sources are configured, plus a separate world edition.' },
     details: {
-      ar: 'من الرئيسية افتح أي عنوان في «موجز الأخبار» جنب الساعة عشان تقراه عند المصدر. السهمين يبدّلوا بين الأخبار، وزر التحديث بجانب عنوان الموجز. الموجز بيتحدث تلقائيًا وإنت فاتح الرئيسية، وبيوضح لو الأخبار تعذر تحديثها. الموجز منفصل عن تبويب «أخبار العطور».',
-      en: 'From Home, open a story in News briefing beside the clock to read it at the publisher. Use the arrows to browse stories or the refresh button beside the briefing heading. The feed checks for news while Home is visible and labels unavailable updates. This is separate from the perfume news tab.',
+      ar: 'الموجز بيعرض عدد عناوين اليوم اللي وصلتنا من المصادر المتاحة، مش كل أخبار الصحف. اختار «كل عناوين اليوم» لتوسيع القائمة، أو استخدم السهمين وزر إيقاف وتشغيل التدوير. افتح أي عنوان عند مصدره. البلد حسب شبكة الدخول مش لغة الموقع أو إذن تحديد الموقع. لو البلد مش معروفة أو مفيش مصدر محلي، بنوضح ده من غير ما نستبدلها بأخبار بلد تاني. موجز الرئيسية منفصل عن تبويب أخبار العطور.',
+      en: 'The briefing counts today’s distinct headlines from configured sources, not the entire press. Select All today’s headlines to expand the list, or use the arrows and pause/play. Each title opens the publisher’s page. The edition follows the entry network, not site language or device location permission. Missing country or local sources are labelled without substituting another country. Perfume news is separate.',
     },
-    keywords: ['موجز الاخبار', 'اخبار مصر', 'اخبار العالم', 'الاخبار المحلية', 'الاخبار العالمية', 'news briefing', 'egypt headlines', 'world headlines', 'home news'],
-    tags: ['الأخبار', 'مصر', 'العالم', 'headlines', 'news briefing'],
+    keywords: ['موجز الاخبار', 'اخبار مصر', 'اخبار العالم', 'الاخبار المحلية', 'الاخبار العالمية', 'كل عناوين اليوم', 'تدوير الاخبار', 'news briefing', 'local news', 'egypt headlines', 'world headlines', 'home news', 'headline rotation'],
+    tags: ['الأخبار', 'بلد الدخول', 'العالم', 'headlines', 'news briefing'],
   },
   {
     id: 'visitor_compass', group: 'help', tab: 'home', docId: 'kb-platform-visitor-compass',

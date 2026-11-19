@@ -246,11 +246,13 @@ function adaptiveIntegral(fn: (x: number) => number, a: number, b: number): numb
   return total;
 }
 
-function evaluate(node: Expression, options: EvaluateOptions): EngineeringValue {
+class PreviewNeedsExecution extends Error {}
+
+function evaluate(node: Expression, options: EvaluateOptions, preview = false): EngineeringValue {
   const mode = options.angleMode ?? 'DEG';
   const radians = radiansPerUnit(mode);
   const functionCache = new Map<'f' | 'g', Expression>();
-  let budget = 100_000;
+  let budget = preview ? 5_000 : 100_000;
   // Exact arithmetic is useful for interactive results, but not inside thousands of numeric samples.
   const real = (z: ComplexValue) => z.im === 0 ? finite(z.re) : domain('This operation needs real numbers.');
   const numeric = (n: number, withExact = true): EngineeringValue => ({ re: finite(n), im: 0, exact: withExact && Number.isSafeInteger(n) ? exact(BigInt(n)) : undefined });
@@ -263,7 +265,8 @@ function evaluate(node: Expression, options: EvaluateOptions): EngineeringValue 
   };
 
   function visit(tree: Expression, x?: number, depth = 0, withExact = true): EngineeringValue {
-    if (--budget < 0 || depth > 8) return limit('Calculation exceeded its work limit.');
+    if (--budget < 0 && preview) throw new PreviewNeedsExecution();
+    if (budget < 0 || depth > 8) return limit('Calculation exceeded its work limit.');
     const child = (sub: Expression) => visit(sub, x, depth, withExact);
     if (tree.kind === 'number') return { ...complex(finite(Number(tree.value))), exact: withExact ? exactLiteral(tree.value) : undefined };
     if (tree.kind === 'identifier') {
@@ -307,6 +310,8 @@ function evaluate(node: Expression, options: EvaluateOptions): EngineeringValue 
     }
     if (tree.kind !== 'call') return syntax('Invalid expression.');
     const { name, args } = tree;
+    // This also covers rand() inside a user-defined f/g: rendering a preview never rolls a random value.
+    if (preview && (name === 'rand' || name === 'randint')) throw new PreviewNeedsExecution();
     const arity = (expected: number) => { if (args.length !== expected) syntax(`${name} expects ${expected} argument(s).`); };
     if (name === 'integral' || name === 'deriv' || name === 'sumx' || name === 'prodx') {
       arity(name === 'deriv' ? 2 : 3);
@@ -423,6 +428,15 @@ export function compileEngineeringExpression(source: string): (options?: Evaluat
 
 export function evaluateEngineeringValue(source: string, options: EvaluateOptions = {}): EngineeringValue {
   return compileEngineeringExpression(source)(options);
+}
+
+export type EngineeringPreview = { status: 'value'; value: EngineeringValue } | { status: 'pending' | 'manual' };
+
+/** Same parser and precision as EXE, but no random draws or unbounded work while someone types. */
+export function previewEngineeringValue(source: string, options: EvaluateOptions = {}): EngineeringPreview {
+  if (!source.trim()) return { status: 'pending' };
+  try { return { status: 'value', value: evaluate(parseExpression(source), options, true) }; }
+  catch (error) { return { status: error instanceof PreviewNeedsExecution ? 'manual' : 'pending' }; }
 }
 
 export function evaluateEngineeringExpression(source: string, options: Omit<EvaluateOptions, 'complex'> = {}): number {

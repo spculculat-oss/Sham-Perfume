@@ -7,7 +7,7 @@ import {
 import type { SupportedLanguage } from '../types/i18n';
 import { usesNativeDigits } from '../لغات/numerals';
 import { copyChatText } from '../utils/clipboard';
-import { EngineeringError, ENGINEERING_EXPRESSION_LIMIT, ENGINEERING_VARIABLES, evaluateEngineeringValue, type AngleMode, type EngineeringValue, type EngineeringVariable, type EvaluateOptions } from '../utils/engineeringCalculator';
+import { EngineeringError, ENGINEERING_EXPRESSION_LIMIT, ENGINEERING_VARIABLES, evaluateEngineeringValue, previewEngineeringValue, type AngleMode, type EngineeringValue, type EngineeringVariable, type EvaluateOptions } from '../utils/engineeringCalculator';
 import { CalculatorModes, CalcInput, CalcSelect, MODES, type CalcMode, type ToolMode } from './engineering/CalculatorModes';
 import { CATALOG, FUNCTION_KEYS, NUMBER_KEYS, type CalcKey } from './engineering/calculatorCatalog';
 import { copyableNumber, displayDigits, displayNumber, FORMAT_LABEL, FORMAT_TAG, FORMATS, formatReadout, loadCalculatorPreferences, persistCalculatorPreferences, type CalcFormat, type Readout } from './engineering/calculatorDisplay';
@@ -70,6 +70,11 @@ export function EngineeringCalculator({ currentLang, minimized, behindModal, onM
   const { angle, format, precision, functions, variables } = prefs;
   const effectiveFormat = format === 'polar' && mode !== 'complex' ? 'math' : format;
   const evalOptions = useMemo<EvaluateOptions>(() => ({ angleMode: angle, variables, functions, answer: sheet.answer }), [angle, variables, functions, sheet.answer]);
+  // Keep the live readout separate. Only EXE advances Ans/history or starts a new expression after a result.
+  const preview = useMemo(() => !minimized && isBasic(mode) && !sheet.result && !sheet.error
+    ? previewEngineeringValue(sheet.text, { ...evalOptions, complex: mode === 'complex' }) : undefined,
+  [minimized, mode, sheet.text, sheet.result, sheet.error, evalOptions]);
+  const visibleResult = sheet.result ?? (preview?.status === 'value' ? preview.value : undefined);
 
   useEffect(() => { persistCalculatorPreferences(prefs); }, [prefs]);
   useEffect(() => () => { window.clearTimeout(noticeTimer.current); }, []);
@@ -208,12 +213,12 @@ export function EngineeringCalculator({ currentLang, minimized, behindModal, onM
   };
   const pickFormat = (next: CalcFormat) => { setPrefs((current) => ({ ...current, format: next })); closeLayer(); };
   const copy = async () => {
-    if (!sheet.result) return;
-    const ok = await copyChatText(copyableNumber(sheet.result, effectiveFormat === 'math' || effectiveFormat === 'mixed'));
+    if (!visibleResult) return;
+    const ok = await copyChatText(copyableNumber(visibleResult, effectiveFormat === 'math' || effectiveFormat === 'mixed'));
     notify(ok ? t('اتنسخ الناتج', 'Result copied') : t('النسخ غير متاح', 'Clipboard unavailable'));
   };
   const primeFactors = () => {
-    const value = sheet.result;
+    const value = visibleResult;
     if (!value || value.im || !Number.isInteger(value.re) || value.re < 2 || value.re > 1e12) return;
     const factors: number[] = [];
     let n = value.re;
@@ -319,13 +324,13 @@ export function EngineeringCalculator({ currentLang, minimized, behindModal, onM
       </div>;
       case 'tools': return <div className="cw-format-list">
         <button type="button" className="cw-list-option" onClick={() => showLayer('history')}><BookOpen size={15} />{t('سجل الحسابات', 'Calculation history')}</button>
-        <button type="button" className="cw-list-option" disabled={!sheet.result} onClick={() => { void copy(); }}><Copy size={15} />{t('نسخ الناتج', 'Copy result')}</button>
-        <button type="button" className="cw-list-option" disabled={!sheet.result || Boolean(sheet.result.im) || !Number.isInteger(sheet.result.re) || sheet.result.re < 2 || sheet.result.re > 1e12} onClick={primeFactors}><Variable size={15} />{t('التحليل لعوامل أولية', 'Prime factorization')}</button>
+        <button type="button" className="cw-list-option" disabled={!visibleResult} onClick={() => { void copy(); }}><Copy size={15} />{t('نسخ الناتج', 'Copy result')}</button>
+        <button type="button" className="cw-list-option" disabled={!visibleResult || Boolean(visibleResult.im) || !Number.isInteger(visibleResult.re) || visibleResult.re < 2 || visibleResult.re > 1e12} onClick={primeFactors}><Variable size={15} />{t('التحليل لعوامل أولية', 'Prime factorization')}</button>
         <button type="button" className="cw-list-option" onClick={() => openTool('units')}><ArrowUpRight size={15} />{t('تحويل الوحدات', 'Unit conversion')}</button>
       </div>;
       case 'history': return <div className="cw-format-list">{sheet.history.length ? sheet.history.map((row, i) => <button key={i} className="cw-list-option cw-history-row" type="button" onClick={() => selectHistory(i)}>
         <span dir="ltr" className="cw-mono">{row.text}</span><b dir="ltr" className="cw-mono">{row.result.im ? copyableNumber(row.result, false) : displayNumber(row.result.re, currentLang)}</b>
-      </button>) : <p className="cw-help cw-menu-foot">{t('السجل لسه فاضي. اضغط EXE بعد كتابة أول حساب.', 'No history yet. Press EXE to run your first calculation.')}</p>}</div>;
+      </button>) : <p className="cw-help cw-menu-foot">{t('السجل لسه فاضي. اضغط EXE عشان تحفظ الحساب.', 'No history yet. Press EXE to save your calculation.')}</p>}</div>;
       default: return null;
     }
   };
@@ -354,8 +359,14 @@ export function EngineeringCalculator({ currentLang, minimized, behindModal, onM
               <input id={expressionId} className="cw-expression cw-mono" dir="ltr" value={sheet.text} ref={expressionRef} onSelect={rememberCursor} onClick={rememberCursor} onKeyUp={rememberCursor}
                 onChange={(event) => edit(event.target.value, event.target.selectionStart ?? event.target.value.length)} maxLength={ENGINEERING_EXPRESSION_LIMIT} autoComplete="off" spellCheck={false} placeholder={mode === 'complex' ? d('(2+3i) × (1−i)') : d('sin(30) + √(16)')} />
               <div className="cw-lcd-bottom">
-                <output aria-live="polite" data-testid="engineering-calculator-result" className="cw-result cw-mono" dir="ltr">{errorText ? <span dir="auto" className="cw-lcd-error">{errorText}</span> : sheet.result ? <LCDValue value={formatReadout(sheet.result, effectiveFormat, precision, angle, currentLang)} /> : !sheet.text ? d('0') : '—'}</output>
-                {sheet.result && <button className="cw-lcd-copy" type="button" onClick={() => { void copy(); }} aria-label={t('نسخ الناتج', 'Copy result')} title={t('نسخ الناتج', 'Copy result')}><Copy size={15} /></button>}
+                {preview?.status === 'value' && <span className="cw-lcd-live">{t('ناتج فوري', 'LIVE')}</span>}
+                <output aria-live="polite" data-testid="engineering-calculator-result" className="cw-result cw-mono" dir="ltr">
+                  {errorText ? <span dir="auto" className="cw-lcd-error">{errorText}</span>
+                    : visibleResult ? <LCDValue value={formatReadout(visibleResult, effectiveFormat, precision, angle, currentLang)} />
+                      : preview?.status === 'manual' ? <span dir="auto" className="cw-lcd-hint">{t('اضغط EXE للتنفيذ', 'Press EXE to run')}</span>
+                        : !sheet.text.trim() ? d('0') : '—'}
+                </output>
+                {visibleResult && <button className="cw-lcd-copy" type="button" onClick={() => { void copy(); }} aria-label={t('نسخ الناتج', 'Copy result')} title={t('نسخ الناتج', 'Copy result')}><Copy size={15} /></button>}
               </div>
             </> : <div className="cw-lcd-message">
               <span>{layer ? t(...layerTitle[layer]) : modeLabel}</span>

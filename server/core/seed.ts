@@ -14,10 +14,11 @@ import type { CoreSettings, KnowledgeDoc, Product, ServiceDef } from './types';
  * platform already runs: `Repository.ready()` then adds the missing ones to existing stores without
  * touching a single document the merchant edited or deleted.
  */
-export const KNOWLEDGE_SEED_VERSION = 17;
+export const KNOWLEDGE_SEED_VERSION = 18;
 
-/** Which seed version introduced a document: 1 = original, 2 = platform guide, 3 = store guide, 4 = visitor suggestions, 5 = Shaheen voice chat, 6 = opt-in tool mode, 7 = signed local image animation and conversation continuity / real-photo search, 8 = Shaheen's imaginative images (styles, shapes, edits by words), 9 = Shaheen's own painter (local illustration when the image service is unavailable), 10 = the painter's imagination and graphics (wonders, light, new subjects), 11 = the painter studio (guessing, real textures, tools, depth clip); 14 = voice mode in the public services chat; 15 = floating engineering calculator; 16 = alarm/timer/stopwatch and home headlines; 17 = numbered compass dial. */
+/** Which seed version introduced a document: 1 = original, 2 = platform guide, 3 = store guide, 4 = visitor suggestions, 5 = Shaheen voice chat, 6 = opt-in tool mode, 7 = signed local image animation and conversation continuity / real-photo search, 8 = Shaheen's imaginative images (styles, shapes, edits by words), 9 = Shaheen's own painter (local illustration when the image service is unavailable), 10 = the painter's imagination and graphics (wonders, light, new subjects), 11 = the painter studio (guessing, real textures, tools, depth clip); 14 = voice mode in the public services chat; 15 = floating engineering calculator; 16 = alarm/timer/stopwatch and home headlines; 17 = numbered compass dial; 18 = entry-country daily news and live calculator results. */
 export function knowledgeDocVersion(id: string): number {
+  if (id === 'kb-platform-daily-news-editions' || id === 'kb-platform-calculator-live') return 18;
   if (id === 'kb-platform-visitor-compass') return 17;
   if (id === 'kb-platform-clock-tools' || id === 'kb-platform-home-headlines') return 16;
   if (id === 'kb-platform-engineering-calculator') return 15;
