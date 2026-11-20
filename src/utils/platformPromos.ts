@@ -176,10 +176,6 @@ const HOME_PROMO = makeTabPromo('home', 'home', {
 const ADDITIONAL_PAGE_PROMOS: PlatformPromo[] = [
   // «جديد من جوجل استوديو»: the designer lab and the 3D flacon studio get their own promotion like every page.
   makeTabPromo('designer', 'designer', PAGE_COPY.designer),
-  makeTabPromo('perfumer_analytics', 'perfumer_analytics', PAGE_COPY.perfumer_analytics),
-  makeTabPromo('perfume_atlas', 'perfume_atlas', PAGE_COPY.perfume_atlas),
-  makeTabPromo('perfumer_game', 'perfumer_game', PAGE_COPY.perfumer_game),
-  makeTabPromo('studio_voice', 'studio_voice', PAGE_COPY.studio_voice),
   makeTabPromo('studio_3d', 'studio_3d', PAGE_COPY.studio_3d),
   makeTabPromo('workspace', 'workspace', {
     tag: { ar: 'مساحة شاهين · مساعد عام', en: "Shaheen's workspace · general assistant" },
