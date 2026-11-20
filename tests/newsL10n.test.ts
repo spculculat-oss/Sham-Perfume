@@ -11,6 +11,8 @@ import { getLocalizedNewsArticle } from '../src/لغات/localizedContent';
 import { storeLocalized } from '../src/لغات/storeL10n';
 import { WorldPerfumeNews } from '../src/components/WorldPerfumeNews';
 import { ShaheenLiveNews } from '../src/components/ShaheenLiveNews';
+import { NEWS_DESK_TEXT } from '../src/لغات/newsDeskL10n';
+import { makeT } from '../src/لغات/localize';
 
 const ARABIC = /[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]/;
 // Languages whose own script is Arabic-based: Arabic-range characters are their text, not a leak.
@@ -54,7 +56,7 @@ const hasGluedLatin = (s: string) => {
 
 const TOKENS = (s: string) => (s.match(/\{[a-z]\}/g) || []).sort().join(' ');
 
-test('every platform language carries the full news page, translated, with no Arabic or script mixing', () => {
+test('every platform language keeps the full existing news pack, with no Arabic or script mixing', () => {
   assert.equal(NEWS_KEYS.length, 83, 'the four photo_ keys label news pictures honestly');
   assert.deepEqual(newsLanguages(), SUPPORTED_LANGUAGES.map((l) => l.code));
   const english = NEWS_PACKS.en as NewsRow;
@@ -106,23 +108,17 @@ test('newsText keeps the Arabic and English originals and resolves the visitor l
   }
 });
 
-test('every page string is wired into the two news components (no orphan pack keys)', () => {
-  const page = readFileSync(new URL('../src/components/WorldPerfumeNews.tsx', import.meta.url), 'utf8');
-  const live = readFileSync(new URL('../src/components/ShaheenLiveNews.tsx', import.meta.url), 'utf8');
-  assert.ok(page.includes("makeNewsT(currentLang)"), 'WorldPerfumeNews resolves with the shared pack');
-  assert.ok(live.includes("makeNewsT(currentLang)"), 'ShaheenLiveNews resolves with the shared pack');
-  for (const [name, src] of [['WorldPerfumeNews', page], ['ShaheenLiveNews', live]] as const) {
-    assert.ok(!src.includes('makeT(currentLang, S)'), `${name} still carries the old local dictionary clamp`);
-    assert.ok(!/satisfies Record<string, LText>/.test(src), `${name} still carries a local translation dictionary`);
+test('journal controls have Arabic and English copy and resolve through site-language fallbacks', () => {
+  const translations = Object.entries(NEWS_DESK_TEXT) as [keyof typeof NEWS_DESK_TEXT, { ar: string; en: string }][];
+  for (const [key, text] of translations) {
+    assert.ok(ARABIC.test(text.ar), `${key} is missing its Arabic label`);
+    assert.ok(text.en.trim().length > 0 && !ARABIC.test(text.en), `${key} is missing its English label`);
+    for (const { code } of SUPPORTED_LANGUAGES) {
+      const value = makeT(code, NEWS_DESK_TEXT)(key);
+      assert.ok(value.trim().length > 0 && value !== key, `${code} sees a missing label for ${key}`);
+      if (!ARABIC_SCRIPT_HOME.has(code)) assert.doesNotMatch(value, ARABIC);
+    }
   }
-  const used = new Set([...(page + live).matchAll(/L\('([A-Za-z_0-9]+)'\)/g)].map((m) => m[1] as string));
-  for (const c of ['launch', 'industry', 'ingredients', 'market', 'events', 'regulation', 'culture']) used.add(`live_cat_${c}`);
-  // today_tpl / refresh_local_ok arrived with the original dictionary; the page kept them translated for reuse.
-  const dormant = new Set(['today_tpl', 'refresh_local_ok']);
-  const orphans = NEWS_KEYS.filter((k) => !used.has(k) && !dormant.has(k));
-  assert.deepEqual(orphans, [], 'pack keys nobody renders: ' + orphans.join(', '));
-  const unknown = [...used].filter((k) => !(NEWS_KEYS as readonly string[]).includes(k));
-  assert.deepEqual(unknown, [], 'components ask for keys the pack does not define: ' + unknown.join(', '));
 });
 
 test('seed articles reach every non-Arabic visitor in English, never in Arabic', () => {
@@ -199,9 +195,12 @@ test('the news page itself renders in the visitor language without Arabic for no
     if (code !== 'ar' && !ARABIC_SCRIPT_HOME.has(code)) {
       assert.ok(!ARABIC.test(html), `<${code} news page> leaked Arabic into the page`);
     }
-    for (const key of ['briefing_title', 'observatory_title', 'live_title', 'live_loading', 'urgent_today'] as const) {
-      assert.ok(html.includes(esc(newsText(code, key))), `the ${code} news page lost its ${key} copy`);
+    const T = makeT(code, NEWS_DESK_TEXT);
+    for (const key of ['brand', 'title', 'headlines', 'reports', 'reportsIntro', 'saved', 'cover', 'searchReports'] as const) {
+      assert.ok(html.includes(esc(T(key))), `the ${code} news page lost its ${key} copy`);
     }
+    assert.ok(html.includes(esc(newsText(code, 'live_loading'))));
+    assert.match(html, code === 'ar' ? /data-testid="news-portal" dir="rtl"/ : /data-testid="news-portal" dir="ltr"/);
   }
   const live = renderToString(React.createElement(ShaheenLiveNews, { currentLang: 'de' }));
   assert.ok(live.includes(esc(newsText('de', 'live_title'))), 'the live strip lost its title');

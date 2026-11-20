@@ -844,6 +844,7 @@ interface PerfumerAIChatbotProps {
   onOpenTool?: (link: ToolLink) => void;
   /** On the Shaheen lab page the same chat is already on screen: hide the floating copy (state is kept). */
   hidden?: boolean;
+  compactLauncher?: boolean;
 }
 
 
@@ -856,6 +857,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
   onPrintSpecSheet,
   onOpenTool,
   hidden = false,
+  compactLauncher = false,
 }) => {
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
@@ -1064,7 +1066,7 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
       {/* Floating Trigger Button */}
       <FloatingDock id="shaheen" lang={currentLang} className={`fixed bottom-6 ${rtl ? 'right-6' : 'left-6'} z-40 no-print sham-floating flex items-center gap-3`}>
         <AnimatePresence>
-          {!isOpen && (
+          {!isOpen && !compactLauncher && (
             <motion.div
               initial={{ opacity: 0, x: rtl ? 20 : -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -1081,10 +1083,11 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
           onClick={() => setIsOpen(!isOpen)}
           className="relative group p-1 rounded-full bg-gradient-to-tr from-amber-900 via-stone-900 to-amber-700 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer border border-amber-400/40"
           title={L('trigger_title')}
+          aria-label={L('trigger_title')}
         >
           <span className="absolute -inset-1 rounded-full bg-amber-500/20 blur-md group-hover:bg-amber-500/40 transition-all animate-pulse" />
           
-          <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-amber-300/80">
+          <div className={`relative ${compactLauncher ? 'size-9' : 'size-14'} rounded-full overflow-hidden border-2 border-amber-300/80`}>
             <img loading="lazy" decoding="async"
               src={perfumerImg}
               alt={L('header_alt')}

@@ -133,7 +133,7 @@ const SERVICE_ICON: Record<string, React.ReactNode> = {
   store: <ShoppingBag className="w-3.5 h-3.5" />, support: <Headset className="w-3.5 h-3.5" />,
 };
 
-interface Props { currentLang: SupportedLanguage }
+interface Props { currentLang: SupportedLanguage; compactLauncher?: boolean }
 
 const lastUserIndex = (list: UiMessage[]) => list.map((m) => m.role).lastIndexOf('user');
 
@@ -144,7 +144,7 @@ function errorText(lang: SupportedLanguage, error: unknown) {
   return loc(lang, S.error);
 }
 
-export function ShamAssistant({ currentLang }: Props) {
+export function ShamAssistant({ currentLang, compactLauncher = false }: Props) {
   const L = makeT(currentLang, S);
   const rtl = SUPPORTED_LANGUAGES.find((l) => l.code === currentLang)?.dir === 'rtl';
   // «شاهين بعملة بلدك»: prices in the replies shown in the currency of the visitor's country.
@@ -378,12 +378,12 @@ export function ShamAssistant({ currentLang }: Props) {
           onClick={() => setOpen((v) => !v)}
           aria-label={L('open')}
           title={L('open')}
-          className="relative w-14 h-14 rounded-full bg-gradient-to-br from-emerald-700 via-stone-900 to-amber-700 text-amber-100 shadow-xl border border-amber-300/50 flex items-center justify-center hover:scale-105 active:scale-95 transition"
+          className={`relative ${compactLauncher ? 'size-11' : 'size-14'} rounded-full bg-gradient-to-br from-emerald-700 via-stone-900 to-amber-700 text-amber-100 shadow-xl border border-amber-300/50 flex items-center justify-center hover:scale-105 active:scale-95 transition`}
         >
           {open ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
           {status === 'handoff' && !open && <span className="absolute -top-0.5 -end-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-white animate-pulse" />}
         </button>
-        {!open && (
+        {!open && !compactLauncher && (
           <span className="hidden md:inline-flex text-[11px] font-semibold bg-white/95 text-stone-800 border border-stone-200 rounded-full px-3 py-1.5 shadow">
             {L('teaser')}
           </span>

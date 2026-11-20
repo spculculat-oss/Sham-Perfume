@@ -133,7 +133,8 @@ export const Header: React.FC<HeaderProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const readingHall = activeTab === 'islamic_library';
+  const newsDesk = activeTab === 'perfume_news';
+  const focusedSection = activeTab === 'islamic_library' || newsDesk;
 
   // Smart navigation groups keep tool and reference destinations in compact sections.
   const navGroups = [
@@ -266,7 +267,7 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* Quick Return to Home Button when inside any sub-section */}
-          {activeTab !== 'home' && !readingHall && (
+          {activeTab !== 'home' && !focusedSection && (
             <button
               onClick={() => setActiveTab('home')}
               className="hidden sm:flex shrink-0 items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold shadow-xs transition-all cursor-pointer me-1 animate-in fade-in"
@@ -279,7 +280,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Zone 2: Navigation links - Compact icon-only bar with dropdowns */}
-        <nav aria-label={L('primary_navigation')} className={readingHall ? 'hidden 2xl:block relative py-1' : 'hidden xl:block relative flex items-center justify-center py-1'}>
+        <nav aria-label={L('primary_navigation')} className={newsDesk ? 'hidden' : focusedSection ? 'hidden 2xl:block relative py-1' : 'hidden xl:block relative flex items-center justify-center py-1'}>
           {/* Logical edge fades frame the compact navigation in both reading directions. */}
           <div aria-hidden="true" className="absolute start-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white/95 to-transparent pointer-events-none z-10 rtl:bg-gradient-to-l"></div>
           <div aria-hidden="true" className="absolute end-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/95 to-transparent pointer-events-none z-10 rtl:bg-gradient-to-r"></div>
@@ -564,8 +565,8 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {/* 6. Print Spec Sheet — not used in the reading hall. */}
-          {!readingHall && <button
+          {/* 6. Print Spec Sheet — not used in focused reading sections. */}
+          {!focusedSection && <button
             onClick={onOpenPrintModal}
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-700 bg-stone-100 hover:bg-stone-200/80 rounded-xl transition-all cursor-pointer border border-stone-200 shrink-0"
             title={L('print_tooltip')}
@@ -591,8 +592,8 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Mobile & Tablet Navigation — keep every destination reachable without shrinking labels. */}
-      <nav aria-label={L('primary_navigation')} className={readingHall ? '2xl:hidden relative' : 'xl:hidden relative'} data-nav-group="true">
+      {/* Scrollable navigation — also used on the news desk to keep long translated names inside the screen. */}
+      <nav aria-label={L('primary_navigation')} className={newsDesk ? 'relative max-w-7xl mx-auto' : focusedSection ? '2xl:hidden relative' : 'xl:hidden relative'} data-nav-group="true">
         <div className="relative -mx-3 sm:mx-0 mt-2 border-t border-stone-100">
           <div
             role="region"

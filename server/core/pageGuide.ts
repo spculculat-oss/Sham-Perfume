@@ -213,7 +213,7 @@ export const PAGES: PageGuide[] = [
   },
   {
     id: 'perfume_news', label: { ar: 'أخبار العطور', en: 'Perfume news' },
-    what: { ar: 'الزائر في تبويب أخبار العطور: بيقرأ آخر الأخبار والصيحات بمصادرها.', en: 'The visitor is on Perfume news: the latest news and trends with their sources.' },
+    what: { ar: 'الزائر في مجلة شام لأخبار العطور: يشوف العناوين عند مصادرها، ويبحث في تقارير شام التحريرية ويحفظها على جهازه.', en: 'The visitor is in the Sham Journal: publisher headlines, searchable editorial reports and device-local saved reports.' },
     offer: { ar: 'حوّل أسئلة الأخبار للخبير شاهين وزر التبويب، وما تخترعش خبر.', en: 'Send news questions to Shaheen and the tab; never invent a news item.' },
     questions: [
       { ar: 'إيه آخر أخبار العطور؟', en: 'What is the latest perfume news?', expect: 'shaheen' },

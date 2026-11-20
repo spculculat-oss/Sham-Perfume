@@ -1,8 +1,15 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { NewsFront } from '../src/components/news/NewsFront';
+import { NewsReportCard } from '../src/components/news/NewsReports';
+import { ShaheenLiveNews } from '../src/components/ShaheenLiveNews';
+import { PERFUME_NEWS_DATA } from '../src/data/perfumeNews';
+import { newsText } from '../src/لغات/newsL10n';
 import { FEEDS, parseFeed, pictureOf } from '../scripts/shaheen-news/feeds';
-import { itemsFromEditor, itemsFromFeeds } from '../scripts/shaheen-news/curate';
+import { itemsFromEditor, itemsFromFeeds, type NewsFile } from '../scripts/shaheen-news/curate';
 import { newsPictureKind, resolveNewsImage } from '../src/utils/newsCache';
 import { newsItemPicture } from '../src/utils/liveNews';
 
@@ -60,18 +67,42 @@ test('each card knows whether its picture is the publisher’s or an editorial o
   assert.equal(newsItemPicture(undefined), undefined);
 });
 
-test('every news view prefers the publisher photo and labels an editorial one', () => {
-  const live = readFileSync(new URL('../src/components/ShaheenLiveNews.tsx', import.meta.url), 'utf8');
-  const page = readFileSync(new URL('../src/components/WorldPerfumeNews.tsx', import.meta.url), 'utf8');
+test('front page and headline list show publisher photos only when the feed carries them', () => {
+  const url = 'https://publisher.example/oud';
+  const image = 'https://cdn.publisher.example/oud.jpg';
+  const title = { ar: 'خلاصة عن العود', en: 'A story about oud' };
+  const [lead] = itemsFromFeeds(parseFeed(rss(item('')), feed));
+  // Two actual publisher links, with an image on only the first one.
+  const edition: NewsFile = {
+    version: 1, updatedAt: '2026-10-14T10:30:00Z', nextUpdateAt: '2026-10-14T22:30:00Z', intervalHours: 12,
+    editor: 'feeds', sources: [], items: [
+      { ...lead, id: 'lead', source: 'Publisher', url, image, title, summary: title },
+      { ...lead, id: 'plain', source: 'Publisher', url: `${url}-followup`, image: undefined, title, summary: title },
+    ],
+  };
+  const front = () => renderToStaticMarkup(React.createElement(NewsFront, { edition, lang: 'en', onHeadlines: () => {}, onReports: () => {} }));
+  const sourceLabel = `<figcaption>${newsText('en', 'photo_source')}</figcaption>`;
+  assert.ok(front().includes(sourceLabel));
+  assert.ok(front().includes(`src="${image}"`));
+  assert.ok(front().includes(`href="${url}"`));
+  const list = renderToStaticMarkup(React.createElement(ShaheenLiveNews, { currentLang: 'en', edition }));
+  assert.equal((list.match(/<img /g) ?? []).length, 1, 'no substitute image for the second story');
+  assert.ok(list.includes(sourceLabel));
+  assert.ok(list.includes(newsText('en', 'photo_none')));
+  assert.ok(!list.includes(newsText('en', 'photo_stock')));
+
+  edition.items[0] = { ...edition.items[0], image: undefined };
+  assert.ok(front().includes('Editorial cover · not a story photo'));
+  assert.ok(!front().includes(sourceLabel));
+});
+
+test('an illustrated report credits a supplied photo and the community keeps its separate disclosure', () => {
+  const imageUrl = 'https://cdn.publisher.example/report.jpg';
+  const html = renderToStaticMarkup(React.createElement(NewsReportCard, {
+    item: { ...PERFUME_NEWS_DATA[0], imageUrl }, index: 0, lang: 'en', saved: false, onSave: () => {}, onOpen: () => {},
+  }));
+  assert.match(html, /data-picture-kind="source"/);
+  assert.ok(html.includes(`<figcaption>${newsText('en', 'photo_source')}</figcaption>`));
   const community = readFileSync(new URL('../src/community/GeneralNewsPeriodic.tsx', import.meta.url), 'utf8');
-  // A live story shows its own publisher photo or says plainly that there is none — never a stock picture.
-  assert.match(live, /const photo = newsItemPicture\(item\);/);
-  assert.match(live, /\{photo \? \(/);
-  assert.match(live, /L\('photo_source'\)/);
-  assert.match(live, /L\('photo_none'\)/);
-  assert.doesNotMatch(live, /getEditorialImageForCategory/, 'the live strip no longer substitutes an editorial picture');
-  assert.doesNotMatch(live, /NEWS_IMAGE_LIST/, 'nor a build photo');
-  assert.match(page, /newsPictureKind\(item\.imageUrl, resolveArticleImage\(item, index\)\)/);
-  assert.match(page, /kind === 'source' \? L\('photo_source'\) : kind === 'editorial' \? L\('photo_stock'\) : L\('photo_none'\)/);
   assert.match(community, /Editorial image, not from the story/);
 });

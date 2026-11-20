@@ -35,10 +35,10 @@ const PerfumeAtlasMap = lazy(() => import('./components/PerfumeAtlasMap').then((
 const PerfumerAtelierGame = lazy(() => import('./components/PerfumerAtelierGame').then((m) => ({ default: m.PerfumerAtelierGame })));
 const StudioVoiceHub = lazy(() => import('./components/StudioVoiceHub').then((m) => ({ default: m.StudioVoiceHub })));
 const ThreePerfumeStudio = lazy(() => import('./components/ThreePerfumeStudio').then((m) => ({ default: m.ThreePerfumeStudio })));
+const WorldPerfumeNews = lazy(() => import('./components/WorldPerfumeNews').then((m) => ({ default: m.WorldPerfumeNews })));
 import { ShamAssistant } from './assistant/ShamAssistant';
 import SpecialistsHub from './components/SpecialistsHub';
 import { FloatingDockManager } from './components/FloatingDock';
-import { WorldPerfumeNews } from './components/WorldPerfumeNews';
 import { Footer } from './components/Footer';
 import { LocalizedNumberInput } from './components/LocalizedNumberInput';
 import { TopPromoHub } from './components/TopPromoHub';
@@ -483,8 +483,8 @@ export default function App() {
         }
       }
 
-      // The library owns its in-tab book history. Closing a volume must not jump away from its shelf.
-      if (targetTab === 'islamic_library' && activeTab === targetTab) return;
+      // Readers own their in-tab history. Closing a book or report must not jump back to the masthead.
+      if ((targetTab === 'islamic_library' || targetTab === 'perfume_news') && activeTab === targetTab) return;
 
       // 4. Update tab & synchronize historyStack
       setActiveTab(targetTab);
@@ -1166,6 +1166,9 @@ export default function App() {
     setProjects((previous) => mergeImportedProjects(previous, incoming));
   };
 
+  const inNews = activeTab === 'perfume_news';
+  const clockDashboard = <VisitorLocalDashboard currentLang={currentLang} showHomeDetails={activeTab === 'home'} calculatorState={calculator} onOpenCalculator={openCalculator} onNavigate={navigateToTab} />;
+
   return (
     <LanguageProvider initialLang={currentLang} onLanguageChange={handleSelectLanguage}>
       <ClockToolsProvider lang={currentLang}>
@@ -1193,8 +1196,8 @@ export default function App() {
           onOpenProfilePage={() => currentUser && (getSessionToken() ? navigateToTab('community/me') : handleOpenProfilePage(currentUser))}
         />
 
-        {/* Keep the clock in the shared shell; the full dial and briefing open on Home. */}
-        <VisitorLocalDashboard currentLang={currentLang} showHomeDetails={activeTab === 'home'} calculatorState={calculator} onOpenCalculator={openCalculator} onNavigate={navigateToTab} />
+        {/* On the news route, put the shared clock below the desk so the first story is easy to reach. */}
+        {!inNews && clockDashboard}
         {activeTab === 'studio' && (
           <ProjectStudio
             lang={currentLang}
@@ -1218,8 +1221,8 @@ export default function App() {
           />
         )}
 
-        {/* Keep the community, workspace and reading hall free of storefront promotions. */}
-        {!(activeTab === 'community' || activeTab.startsWith('community/') || activeTab === 'workspace' || activeTab === 'islamic_library') && (
+        {/* Give the community, workspace, reading hall and news desk their own first screen. */}
+        {!(activeTab === 'community' || activeTab.startsWith('community/') || activeTab === 'workspace' || activeTab === 'islamic_library' || inNews) && (
           <TopPromoHub
             currentLang={currentLang}
             onViewStore={() => navigateToTab('store')}
@@ -1240,7 +1243,7 @@ export default function App() {
         )}
 
         {/* Main Container */}
-        <main className={activeTab === 'workspace' ? 'flex-1 min-h-72 flex flex-col max-w-[96rem] w-full mx-auto px-2 sm:px-4 py-2 sm:py-3' : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-10'}>
+        <main className={activeTab === 'workspace' ? 'flex-1 min-h-72 flex flex-col max-w-[96rem] w-full mx-auto px-2 sm:px-4 py-2 sm:py-3' : inNews ? 'flex-1 max-w-7xl min-w-0 w-full mx-auto px-3 sm:px-7 pb-3 sm:pb-5' : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-10'}>
           {/* Universal Navigation Breadcrumbs Bar with Back to Home & Back to Previous */}
           {activeTab !== 'workspace' && (
             <NavigationBreadcrumbs
@@ -1254,13 +1257,13 @@ export default function App() {
                   : undefined
               }
               currentLang={currentLang}
-              compact={activeTab === 'islamic_library'}
+              compact={activeTab === 'islamic_library' || inNews}
               onOpenPrintModal={handleOpenSpecModal}
             />
           )}
 
           {/* «شارك في المجتمع»: what the visitor made or asks in this section → a post, a discussion or a story. */}
-          {SHARE_SECTIONS[activeTab] && (
+          {SHARE_SECTIONS[activeTab] && !inNews && (
             <CommunityShareBar
               tab={activeTab}
               lang={currentLang}
@@ -1325,12 +1328,15 @@ export default function App() {
             />
           )}
 
-        {activeTab === 'perfume_news' && (
-          <WorldPerfumeNews
-            currentLang={currentLang}
-            onApplyNewsNotesToCalculator={handleApplyToConcentrationCalculator}
-            onAddNoteToPyramid={handleAddMaterialToPyramid}
-          />
+        {inNews && (
+          <>
+            <ErrorBoundary compact area="Perfume news" ar={currentLang === 'ar'}>
+              <Suspense fallback={<p className="py-12 text-center text-stone-600" role="status">{pickArEn(currentLang, 'بنفتح مجلة شام…', 'Opening the Sham Journal…')}</p>}>
+                <WorldPerfumeNews currentLang={currentLang} onApplyNewsNotesToCalculator={handleApplyToConcentrationCalculator} onAddNoteToPyramid={handleAddMaterialToPyramid} />
+              </Suspense>
+            </ErrorBoundary>
+            <div className="mt-6"><CommunityShareBar tab={activeTab} lang={currentLang} navigate={(tab) => navigateToTab(tab)} /></div>
+          </>
         )}
 
         {activeTab === 'islamic_library' && (
@@ -1578,6 +1584,7 @@ export default function App() {
           />
         )}
       </main>
+        {inNews && clockDashboard}
         </div>
 
       {/* Floating Interactive Master Perfumer AI Chatbot with Transfer Bridge */}
@@ -1589,11 +1596,12 @@ export default function App() {
         onCalculateCosting={handleCalculateCosting}
         onPrintSpecSheet={handlePrintSpecSheetForFormula}
         onOpenTool={handleOpenShaheenTool}
+        compactLauncher={inNews}
         hidden={activeTab === 'master_ai' || activeTab === 'workspace' || activeTab === 'islamic_library'}
       />
 
       {/* Sham Core services assistant: orders, store, bespoke, B2B, support (opposite corner to Shaheen) */}
-      <ShamAssistant currentLang={currentLang} />
+      <ShamAssistant currentLang={currentLang} compactLauncher={inNews} />
 
       {/* «مجلس المتخصصين»: استشارة علوم شاهين في أي قسم وفي أي وقت (وسط الشاشة السفلي) */}
       {activeTab !== 'islamic_library' && <SpecialistsHub section={activeTab} lang={currentLang} />}

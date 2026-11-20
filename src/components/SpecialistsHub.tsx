@@ -252,23 +252,28 @@ export default function SpecialistsHub({ section, lang }: SpecialistsHubProps) {
   const localSourceLabel = (c: Consultation) => (c.source === 'refuge' ? t.sourceRefuge : c.source === 'memory' ? t.sourceMemory : c.source === 'library' ? t.sourceLibrary : t.sourceGap);
   const sourceLabel = (source: string) => `${isEn ? 'Source' : 'المصدر'}: ${isEn ? (SOURCE_EN[source] || source) : (SOURCE_AR[source] || source)}`;
 
+  const launcher = (
+    <button
+      type="button"
+      onClick={() => setOpen((v) => !v)}
+      className="flex items-center gap-1.5 sm:gap-2 whitespace-nowrap rounded-full bg-emerald-700 hover:bg-emerald-800 text-white shadow-xl px-3.5 py-2 sm:px-5 sm:py-3 text-xs sm:text-sm font-bold"
+      aria-label={t.open}
+    >
+      <Users className="w-4 h-4 sm:w-5 sm:h-5" />
+      <span>{t.open}</span>
+      <span className="hidden sm:flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold">
+        <Sparkles className="w-3 h-3" />{t.agentLabel}
+      </span>
+    </button>
+  );
+
   return (
     <>
-      {/* #381: on a phone the pill is one short line (no wrapping, no badge) so it covers less of the store and the cart. */}
-      <FloatingDock id="specialists" lang={(lang || 'ar') as SupportedLanguage} className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 no-print sham-floating">
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          className="flex items-center gap-1.5 sm:gap-2 whitespace-nowrap rounded-full bg-emerald-700 hover:bg-emerald-800 text-white shadow-xl px-3.5 py-2 sm:px-5 sm:py-3 text-xs sm:text-sm font-bold"
-          aria-label={t.open}
-        >
-          <Users className="w-4 h-4 sm:w-5 sm:h-5" />
-          <span>{t.open}</span>
-          <span className="hidden sm:flex items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold">
-            <Sparkles className="w-3 h-3" />{t.agentLabel}
-          </span>
-        </button>
-      </FloatingDock>
+      {section === 'perfume_news' ? <div className="mx-auto mb-4">{launcher}</div> : (
+        <FloatingDock id="specialists" lang={(lang || 'ar') as SupportedLanguage} className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 no-print sham-floating">
+          {launcher}
+        </FloatingDock>
+      )}
 
       {open && (
         <div

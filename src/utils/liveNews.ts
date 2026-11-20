@@ -20,10 +20,15 @@ export function isNewsFile(data: unknown): data is NewsFile {
     d.items.every((i) => i && typeof i.url === 'string' && /^https?:\/\//.test(i.url) && typeof i.title?.ar === 'string' && typeof i.title?.en === 'string'));
 }
 
+let bundledEdition: Promise<NewsFile> | undefined;
+export function loadBundledNews(): Promise<NewsFile> {
+  return bundledEdition ??= import('../data/live/shaheen-news.json').then((module) => module.default as unknown as NewsFile);
+}
+
 let pending: Promise<NewsFile> | undefined;
 export function loadLiveNews(request: typeof fetch = fetch): Promise<NewsFile> {
   return pending ??= (async () => {
-    const bundled = (await import('../data/live/shaheen-news.json')).default as unknown as NewsFile;
+    const bundled = await loadBundledNews();
     try {
       const response = await request(LIVE_NEWS_URL, { cache: 'no-cache', signal: AbortSignal.timeout(8000) });
       const data: unknown = response.ok ? await response.json() : undefined;
