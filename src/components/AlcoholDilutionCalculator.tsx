@@ -15,7 +15,8 @@ import {
 import { calculateAlcoholDilution, formatNum } from '../utils/calculations';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
-import { LText, makeT, fmt } from '../لغات/localize';
+import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
+import { useShareable } from './CommunityShareBar';
 
 interface AlcoholDilutionCalculatorProps {
   currentLang?: SupportedLanguage;
@@ -209,6 +210,18 @@ export const AlcoholDilutionCalculator: React.FC<AlcoholDilutionCalculatorProps>
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
   const dilution = calculateAlcoholDilution(initialPurity, targetPurity, desiredFinalVolume);
+
+  // «شارك في المجتمع»: the dilution as it is now.
+  const sa = (ar: string, en: string) => pickArEn(currentLang, ar, en);
+  useShareable('alcohol', dilution.isValid ? {
+    source: 'alcohol', kind: 'creation',
+    title: sa(`تخفيف كحول من ${initialPurity}% إلى ${targetPurity}%`, `Diluting alcohol from ${initialPurity}% to ${targetPurity}%`),
+    body: [
+      `${sa('الحجم النهائي', 'Final volume')}: ${formatNum(desiredFinalVolume)} ${sa('مل', 'ml')}`,
+      `${sa('كحول', 'Alcohol')} ${initialPurity}%: ${formatNum(dilution.requiredInitialVolumeMl)} ${sa('مل', 'ml')}`,
+      `${sa('ماء مقطر', 'Distilled water')}: ${formatNum(dilution.requiredWaterVolumeMl)} ${sa('مل', 'ml')}`,
+    ].join('\n'),
+  } : null);
 
   const handleInitialChange = (val: number) => {
     setInitialPurity(val);

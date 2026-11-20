@@ -11,13 +11,15 @@ import {
   Clock,
   Layers,
   Check,
+  Share2,
 } from 'lucide-react';
 import { SavedFormula } from '../types/perfume';
+import { formulaDraft, startShare } from '../community/share';
 import type { FragranceProject } from '../types/fragranceProject';
 import { CURATED_FORMULA_PRESETS } from '../data/presets';
 import { SupportedLanguage } from '../types/i18n';
 import { getCommonLabel, isRTL } from '../لغات/localizedContent';
-import { LText, makeT, fmt, localeDate } from '../لغات/localize';
+import { LText, makeT, fmt, localeDate, pickArEn } from '../لغات/localize';
 
 interface FormulaLibraryProps {
   currentLang?: SupportedLanguage;
@@ -344,6 +346,20 @@ export const FormulaLibrary: React.FC<FormulaLibraryProps> = ({
                     title={getCommonLabel('print', currentLang)}
                   >
                     <Printer className="w-4 h-4 text-amber-800" />
+                  </button>
+
+                  <button
+                    type="button"
+                    data-testid="library-share"
+                    onClick={() => startShare(formulaDraft('library', {
+                      title: currentLang === 'ar' ? formula.title : formula.titleEn || formula.title,
+                      formulation: formula.formulation, pyramidNotes: formula.pyramidNotes || [], macerationDays: formula.macerationDays, notes: formula.notes,
+                    }, currentLang))}
+                    className="p-2 bg-white hover:bg-amber-50 text-stone-700 border border-stone-200 rounded-lg text-xs transition-colors cursor-pointer"
+                    title={pickArEn(currentLang, 'شارك في المجتمع', 'Share to the community')}
+                    aria-label={pickArEn(currentLang, 'شارك في المجتمع', 'Share to the community')}
+                  >
+                    <Share2 className="w-4 h-4 text-amber-800" />
                   </button>
 
                   {!isPreset && (

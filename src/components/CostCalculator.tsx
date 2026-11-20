@@ -33,6 +33,7 @@ import { isRTL } from '../لغات/localizedContent';
 import { LText, makeT, fmt, pickArEn } from '../لغات/localize';
 import { uiLabel } from '../لغات/uiTextL10n';
 import { LocalizedNumberInput } from './LocalizedNumberInput';
+import { useShareable } from './CommunityShareBar';
 import { formatLocalizedNumber } from '../لغات/numerals';
 
 interface CostCalculatorProps {
@@ -1076,6 +1077,18 @@ export const CostCalculator: React.FC<CostCalculatorProps> = ({
 
   const costResult = calculatePerfumeCosting(calculationResult, costing);
   const activeCurrency = findCurrencyByCode(costing.currency);
+  // «شارك في المجتمع»: the cost of one bottle as it is now (the member sees and edits it before anything is posted).
+  const sc = (ar: string, en: string) => pickArEn(currentLang, ar, en);
+  useShareable('costing', costResult.calculationStatus === 'valid' ? {
+    source: 'costing', kind: 'creation',
+    title: sc(`حساب تكلفة زجاجة ${formatNum(formulation.bottleVolumeMl, 0)} مل`, `Cost of a ${formatNum(formulation.bottleVolumeMl, 0)} ml bottle`),
+    body: [
+      `${sc('تكلفة الزجاجة', 'Cost per bottle')}: ${formatNum(costResult.totalCostPerBottle)} ${costing.currency}`,
+      `${sc('الزيت', 'Oil')} ${formatNum(costResult.oilCostPerBottle)} · ${sc('الكحول', 'Alcohol')} ${formatNum(costResult.alcoholCostPerBottle)} · ${sc('التغليف', 'Packaging')} ${formatNum(costResult.packagingCostPerBottle)} · ${sc('العمالة', 'Labour')} ${formatNum(costResult.laborCostPerBottle)}`,
+      `${sc('سعر القطاعي المقترح', 'Suggested retail')}: ${formatNum(costResult.suggestedRetailPrice)} ${costing.currency} · ${sc('الجملة', 'Wholesale')}: ${formatNum(costResult.suggestedWholesalePrice)} ${costing.currency}`,
+      `${sc('التشغيلة', 'Batch')}: ${formatNum(costing.batchSize, 0)} ${sc('زجاجة', 'bottles')}`,
+    ].join('\n'),
+  } : null);
 
   // Multi-Volume Financial Economics Dataset
   const standardVolumes = [15, 30, 50, 75, 100, 200];

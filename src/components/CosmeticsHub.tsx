@@ -7,6 +7,8 @@ import { designersText } from '../لغات/designersL10n';
 import type { SupportedLanguage } from '../types/i18n';
 import { LocalizedNumberInput } from './LocalizedNumberInput';
 import { loc } from '../لغات/localize';
+import { ShareToCommunityButton, useShareable } from './CommunityShareBar';
+import type { ShareDraft } from '../community/share';
 import {
   COSMETIC_CONCERN_TEXT, COSMETIC_INGREDIENT_TEXT, COSMETIC_LESSONS, COSMETIC_PHASE_TEXT, COSMETIC_PRODUCT_TEXT, COSMETIC_ROLE_TEXT,
   COSMETIC_SKIN_TEXT, COSMETIC_STEPS, COSMETIC_WARNINGS, cosmeticsText, type CosmeticsUiKey,
@@ -157,6 +159,9 @@ function Formulator({ lang, onNavigate }: { lang: SupportedLanguage; onNavigate:
   const reopen = (x: SavedCosmetic) => { setProduct(x.product); setSkin(x.skin); setConcerns(x.concerns); setBatch(x.batch); setScent(x.scent); setNutFree(x.nutFree); setVegan(x.vegan); };
   const formula = useMemo(() => formulateCosmetic({ product, skin, concerns, batch, scent, nutFree, vegan }), [product, skin, concerns, batch, scent, nutFree, vegan]);
   const problems = useMemo(() => checkCosmeticFormula(formula), [formula]);
+  // «شارك في المجتمع»: the formula sheet as it is now (the share bar of the section and the button on the sheet).
+  const shareDraft: ShareDraft = { source: 'cosmetics', kind: 'creation', title: cosmeticTitle(formula, lang), body: cosmeticReply(formula, lang) };
+  useShareable('cosmetics', shareDraft);
   const toggle = (c: Concern) => setConcerns((list) => (list.includes(c) ? list.filter((x) => x !== c) : [...list, c].slice(-3)));
   const copy = async () => {
     try { await navigator.clipboard.writeText(cosmeticReply(formula, lang)); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { /* clipboard blocked */ }
@@ -251,6 +256,7 @@ function Formulator({ lang, onNavigate }: { lang: SupportedLanguage; onNavigate:
             <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-stone-200 text-xs font-bold hover:bg-stone-50 cursor-pointer">
               <Printer className="w-3.5 h-3.5" /> {ct('print')}
             </button>
+            <ShareToCommunityButton lang={lang} navigate={onNavigate} getDraft={() => shareDraft} />
             <button type="button" onClick={save} data-testid="cos-save" className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-800 text-xs font-bold hover:bg-rose-100 cursor-pointer">
               {justSaved ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Bookmark className="w-3.5 h-3.5" />} {ct(justSaved ? 'savedOk' : 'save')}
             </button>

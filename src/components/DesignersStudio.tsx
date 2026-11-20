@@ -30,6 +30,7 @@ import { loadStoreCatalog, productPageUrl } from '../utils/liveStore';
 import { LAB_SIGNAL_NOTE } from '../utils/labSignals';
 import { shareLabSignal } from '../utils/labSignalSend';
 import { openFormulaInLab } from '../community/sync';
+import { useShareable } from './CommunityShareBar';
 import {
   compareLines, deleteEntry, journalExport, journalImport, rateVersion, readJournal, saveVersion, type DesignerKind, type JournalEntry,
 } from '../utils/designers/journal';
@@ -285,11 +286,18 @@ function PerfumeStudio({ lang, dt, num, onNavigate }: Inner) {
   const consult = useMemo(() => consultPerfume(d, sim), [d, sim]);
   const formulaLine = () => `${loc(lang, TYPE_LABEL[d.type])} ${num(d.concentration)}% — ${d.lines.map((l) => `${nameOf(l)} ${num(l.pct)}%`).join(dt('listSep')) || '—'}`;
   const ask = () => window.dispatchEvent(new CustomEvent('open-sham-assistant', { detail: fmt(dt('askPerfume'), { formula: d.lines.map((l) => `${nameOf(l)} ${num(l.pct)}%`).join(dt('listSep')), verdict: verdictText }) }));
-  const sendToLab = () => openFormulaInLab(d.title || loc(lang, TYPE_LABEL[d.type]), {
+  const labData = () => ({
     notes: loc(lang, sim.character), macerationDays: sim.macerationDays,
     formulation: { concentrationPercent: d.concentration, concentrationType: d.type === 'oil' ? 'oil_pure' : d.type, bottleVolumeMl: d.bottleMl, batchCount: d.bottles, waterPercent: d.water, fixativePercent: d.fixative, alcoholPercentage: d.type === 'oil' ? 0 : Math.max(0, 100 - d.concentration - d.water - d.fixative) },
     pyramidNotes: sim.active.map((a) => ({ nameAr: a.material?.name.ar || a.line.label, nameEn: a.material?.name.en || a.line.label, category: a.material?.layer || 'heart', percentageOfOil: Math.round(a.oilPct * 100) / 100 })),
   });
+  const sendToLab = () => openFormulaInLab(d.title || loc(lang, TYPE_LABEL[d.type]), labData());
+  // «شارك في المجتمع»: the designer's formula with its verdict, and the card the community opens in the calculator.
+  useShareable('perfume_designers', d.lines.length ? {
+    source: 'perfume_designers', kind: 'creation', title: d.title || loc(lang, TYPE_LABEL[d.type]),
+    body: `${formulaText()}\n\n${verdictText} — ${loc(lang, sim.character)}`,
+    recipe: { title: d.title || loc(lang, TYPE_LABEL[d.type]), data: labData() },
+  } : null);
 
   return (
     <div className="grid lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] gap-6 items-start">
@@ -516,6 +524,9 @@ function CosmeticStudio({ lang, dt, num, onNavigate }: Inner) {
   const formulaLine = () => `${loc(lang, KIND_LABEL[sim.kind])} — ${d.lines.map((l) => `${nameOf(l)} ${num(l.pct)}%`).join(dt('listSep')) || '—'}`;
   const ask = () => window.dispatchEvent(new CustomEvent('open-sham-assistant', { detail: fmt(dt('askCosmetic'), { formula: d.lines.map((l) => `${nameOf(l)} ${num(l.pct)}%`).join(dt('listSep')), verdict: verdictText }) }));
   const formulaText = () => `${d.title || '—'} · ${loc(lang, KIND_LABEL[sim.kind])} · ${num(d.batch, 0)} ${dt('grams')}\n${sim.lines.map((x) => `${loc(lang, COSMETIC_PHASE_TEXT[x.phase]).split(':')[0]} · ${nameOf(x.line)}: ${num(x.pct)}% = ${num(x.grams)} ${dt('grams')}`).join('\n')}`;
+  useShareable('cosmetic_designers', d.lines.length ? {
+    source: 'cosmetic_designers', kind: 'creation', title: d.title || loc(lang, KIND_LABEL[sim.kind]), body: `${formulaText()}\n\n${verdictText}`,
+  } : null);
 
   return (
     <div className="grid lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] gap-6 items-start">

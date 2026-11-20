@@ -106,10 +106,14 @@ import { getSessionToken } from './community/api';
 import { profileFromMember, saveCurrentUserProfile } from './utils/authStorage';
 import { useSessionPick } from './community/session';
 import { ErrorBoundary, lazyWithReload } from './utils/lazyRetry';
+import { CommunityShareBar } from './components/CommunityShareBar';
+import { formulaDraft, SHARE_SECTIONS } from './community/share';
 import { ClockCalculatorLoading, ENGINEERING_WINDOW_ID, type ClockCalculatorState } from './components/clock/ClockCalculatorLauncher';
 
 // «مجتمع شام» (social, messenger, member and merchant portals): its own bundle, loaded on the first #community visit.
 const CommunityApp = lazyWithReload(() => import('./community/CommunityApp'));
+/** Sections whose result is the site's current perfume formula (the share bar offers it as a recipe card). */
+const FORMULA_SHARE_TABS = new Set(['concentration', 'pyramid', 'molecule_studio', 'maceration_simulator']);
 const CosmeticsHub = lazyWithReload(() => import('./components/CosmeticsHub'));
 const DesignersStudio = lazyWithReload(() => import('./components/DesignersStudio'));
 // «مساحة شاهين»: the general assistant (loaded only when opened — its document and code tools are heavy).
@@ -802,6 +806,8 @@ export default function App() {
 
   // Perform core formulation calculation
   const calculationResult = calculatePerfumeFormulation(formulation);
+  /** The project open in «استوديو المشاريع» (its formula is what the studio shares to the community). */
+  const activeProject = projects.find((project) => project.id === activeProjectId);
 
   // ===================== INTERACTIVE CHATBOT BRIDGE HANDLERS =====================
 
@@ -1227,6 +1233,22 @@ export default function App() {
               }
               currentLang={currentLang}
               onOpenPrintModal={handleOpenSpecModal}
+            />
+          )}
+
+          {/* «شارك في المجتمع»: what the visitor made or asks in this section → a post, a discussion or a story. */}
+          {SHARE_SECTIONS[activeTab] && (
+            <CommunityShareBar
+              tab={activeTab}
+              lang={currentLang}
+              navigate={(tab) => navigateToTab(tab)}
+              fallback={FORMULA_SHARE_TABS.has(activeTab) ? () => formulaDraft(activeTab, {
+                title: formulaTitle === 'خلطة شام الفاخرة' && currentLang !== 'ar' ? '' : formulaTitle,
+                formulation, pyramidNotes, result: calculationResult,
+                macerationDays: activeTab === 'maceration_simulator' || activeTab === 'concentration' ? macerationDays : undefined,
+              }, currentLang) : activeTab === 'studio' && activeProject ? () => formulaDraft('studio', {
+                title: activeProject.name, formulation: activeProject.formula.formulation, pyramidNotes: activeProject.pyramid, notes: activeProject.description,
+              }, currentLang) : undefined}
             />
           )}
 

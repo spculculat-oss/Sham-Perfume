@@ -14,6 +14,8 @@ import Messenger from './Messenger';
 import { FriendsPage, NotificationsPage, PostPage, SocialFeed } from './SocialPortal';
 import { ProfilePage } from './ProfilePage';
 import { DiscussionsPage } from './DiscussionsPage';
+import { SharePage } from './SharePage';
+import { readShareDraft } from './share';
 import { FloatingMessengerDock } from './FloatingMessengerDock';
 import { GeneralNewsPeriodic } from './GeneralNewsPeriodic';
 import { StoreDirectory, StorePage } from './Stores';
@@ -65,7 +67,7 @@ export default function CommunityApp({ lang: siteLang, route, navigate, onSigned
     { id: 'me', label: t('بوابتي', 'My portal'), icon: <User className="h-5 w-5" /> },
     { id: 'merchant', label: t('بوابة التجار', 'Merchants'), icon: <Wrench className="h-5 w-5" /> },
   ];
-  const active = !page ? 'social' : page === 'u' || page === 'post' ? 'social' : page === 'store' ? 'stores' : page;
+  const active = !page ? 'social' : page === 'u' || page === 'post' || page === 'share' ? 'social' : page === 'store' ? 'stores' : page;
   const isPublic = page === 'stores' || page === 'store' || page === 'news';
 
   let body: React.ReactNode;
@@ -74,7 +76,17 @@ export default function CommunityApp({ lang: siteLang, route, navigate, onSigned
   else if (page === 'stores') body = <StoreDirectory lang={lang} go={go} />;
   else if (page === 'store' && a) body = <StorePage lang={lang} go={go} slug={a} />;
   else if (page === 'news') body = <GeneralNewsPeriodic lang={lang} go={go} toast={setToast} />;
-  else if (!member) body = <HubAuth lang={lang} initial={page === 'join' ? 'register' : 'login'} onDone={(merchant) => go(merchant ? 'merchant' : 'social')} />;
+  else if (!member) body = (
+    <>
+      {page === 'share' && readShareDraft() && (
+        <div className="mx-auto mb-3 max-w-md rounded-2xl border border-amber-200 bg-amber-50 p-3 text-center text-xs font-bold text-amber-900" data-testid="share-login-note">
+          {t('سجّل دخولك أو اعمل حساب، واللي عايز تشاركه هيفضل مستنيك.', 'Sign in or join — what you want to share stays waiting for you.')}
+        </div>
+      )}
+      <HubAuth lang={lang} initial={page === 'join' ? 'register' : 'login'} onDone={(merchant) => go(readShareDraft() ? 'share' : merchant ? 'merchant' : 'social')} />
+    </>
+  );
+  else if (page === 'share') body = <SharePage lang={lang} go={go} toast={setToast} />;
   else if (page === 'menu') body = <CommunityDirectory lang={lang} go={go} search={<PeopleSearch lang={lang} go={go} expanded />} />;
   else if (page === 'messenger') body = <Messenger lang={lang} session={session} chatId={a} go={go} toast={setToast} />;
   else if (page === 'mail') body = <Mailbox lang={lang} session={session} route={parts.slice(1).join('/')} go={go} toast={setToast} />;
