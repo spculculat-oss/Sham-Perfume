@@ -41,6 +41,8 @@ import { HomeHeadlineBriefing } from './clock/HomeHeadlineBriefing';
 import { clockLocale } from './clock/clockText';
 import { ClockCalculatorLauncher, type ClockCalculatorState } from './clock/ClockCalculatorLauncher';
 import { VisitorCompass } from './clock/VisitorCompass';
+import { ClockSkyLegend, skySurfaceProps } from './clock/ClockSkyLegend';
+import { skyStyle, useClockSky } from './clock/useClockSky';
 
 const TEXT = {
   local_info: { ar: 'معلوماتك المحلية', en: 'Your local details' },
@@ -75,6 +77,7 @@ const TEXT = {
   location_failed: { ar: 'ماقدرناش نحدد موقعك دلوقتي', en: 'Could not determine your location right now' },
   permission_note: { ar: 'موقع الجهاز مش هيتحدد إلا بموافقتك؛ الطقس يستخدم إحداثيات تقريبية', en: 'Device location is used only with permission; weather uses rounded coordinates' },
   powered_by: { ar: 'بيانات الطقس من', en: 'Weather data by' },
+  sky_hint: { ar: 'المس الزجاج أو اسحبه يغيّر ضوء البار', en: 'Tap the glass or drag it to change the light' },
 } satisfies Record<string, LText>;
 
 const WEATHER_ICONS: Record<WeatherKind, LucideIcon> = {
@@ -132,6 +135,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
   const [weatherError, setWeatherError] = useState(false);
   const [locationRequest, setLocationRequest] = useState<LocationRequestState>('idle');
   const deviceLocation = useRef<VisitorEntryLocation | undefined>(undefined);
+  const sky = useClockSky(now, timeZone || 'UTC');
   const label = makeT(currentLang, TEXT);
   useEffect(() => { if (showHomeDetails) setCompactTools(false); }, [showHomeDetails]);
 
@@ -362,7 +366,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
 
   if (!showHomeDetails) return (
     <section data-testid="visitor-local-dashboard" data-clock-layout="compact" aria-label={label('local_info')} className="visitor-clock-compact mx-auto w-full max-w-7xl shrink-0 px-4 pt-2 sm:px-8">
-      <div className="visitor-clock-compact-shell">
+      <div className="visitor-clock-compact-shell clock-glass" style={skyStyle(sky)} {...skySurfaceProps(sky)}>
         <div className="visitor-clock-compact-top">
           <div className="visitor-clock-compact-time" title={`${label('local_time')} · ${clockStatusText} · ${dateText}`}>
             <Clock3 size={16} aria-hidden="true" />
@@ -373,6 +377,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
             <ConditionIcon size={14} aria-hidden="true" /><bdi dir="ltr">{temperatureText}</bdi>
           </span>
           <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} compact />
+          <ClockSkyLegend sky={sky} lang={currentLang} compact />
           <button className="visitor-clock-compact-toggle" type="button" aria-expanded={compactTools} aria-controls={detailsId} onClick={() => setCompactTools((open) => !open)}>
             {label('clock_tools')}<ChevronDown size={13} aria-hidden="true" />
           </button>
@@ -380,6 +385,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
         <div id={detailsId} hidden={!compactTools}>
           {compactTools && <>
             <div className="visitor-clock-compact-details">
+              <ClockSkyLegend sky={sky} lang={currentLang} />
               <ClockToolsLaunchers lang={currentLang} timeZone={localTimeZone} />
               <VisitorCompass lang={currentLang} />
             </div>
@@ -397,7 +403,17 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
       aria-label={label('local_info')}
       className="mx-auto w-full max-w-7xl px-4 pt-3 sm:px-8"
     >
-      <div className="overflow-hidden rounded-[28px] border border-amber-100/25 bg-gradient-to-br from-[#735844] via-[#3e2f25] to-[#4f3627] text-white shadow-[0_18px_45px_rgba(73,45,25,0.3)]">
+      <div
+        className="clock-glass overflow-hidden rounded-[28px] border border-amber-100/25 bg-gradient-to-br from-[#735844] via-[#3e2f25] to-[#4f3627] text-white shadow-[0_18px_45px_rgba(73,45,25,0.3)]"
+        style={skyStyle(sky)}
+        {...skySurfaceProps(sky)}
+        data-sky-phase={sky.phase}
+      >
+        <span className="clock-glass-sheen" aria-hidden="true" />
+        <div className="clock-sky-toolbar">
+          <span className="clock-sky-caption">{label('sky_hint')}</span>
+          <ClockSkyLegend sky={sky} lang={currentLang} />
+        </div>
         <div className="visitor-clock-board" dir="ltr">
           <div className="visitor-clock-face">
             <div className="grid grid-cols-[32px_minmax(0,1fr)_64px] items-center gap-2 p-4 sm:grid-cols-[48px_minmax(0,1fr)_112px] sm:gap-5 sm:p-5" dir="ltr">
