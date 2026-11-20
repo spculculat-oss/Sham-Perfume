@@ -16,3 +16,13 @@ test('the visitor clock stays in the shared shell, with the news desk above it o
   assert.ok(news >= 0 && clockBelow > news, 'the same shared clock remains available underneath the news desk');
   assert.match(app.slice(clockBelow), /<Footer\b/, 'the clock remains above the shared footer');
 });
+
+test('Home has one top headline strip directly above its clock, not other routes’ compact tools', () => {
+  const dashboard = readFileSync(new URL('../src/components/VisitorLocalDashboard.tsx', import.meta.url), 'utf8');
+  const compact = dashboard.indexOf('data-clock-layout="compact"');
+  const home = dashboard.indexOf('data-clock-layout="home"');
+  const strip = dashboard.indexOf('<HomeHeadlineBriefing');
+  const clock = dashboard.indexOf('className="clock-glass', home);
+  assert.ok(compact >= 0 && home > compact && strip > home && clock > strip);
+  assert.equal(dashboard.match(/<HomeHeadlineBriefing\b/g)?.length, 1);
+});

@@ -34,7 +34,7 @@ const PAGE_SIZE = 4;
 const number = (lang: SupportedLanguage, n: number) => formatLocalizedNumber(lang, n, { grouping: false });
 
 /** Locally bundled artwork; never a newspaper's masthead, front page, or a photo of a news event. */
-export function PressIllustration({ variant, className }: { variant: number; className?: string }) {
+function PressIllustration({ variant, className }: { variant: number; className?: string }) {
   return <img className={className} src={`${import.meta.env.BASE_URL}images/press/${ART[variant % ART.length]}.webp`}
     alt="" loading="lazy" decoding="async" width={480} height={320} />;
 }
@@ -53,12 +53,12 @@ function PressCards({ cards, region, lang, rtl }: { cards: readonly PressCard[];
 
   return <>
     {pages > 1 && <div className="clock-press-actions">
-      {!expanded && <div className="clock-headline-nav" role="group" aria-label={label(region)}>
+      {!expanded && <div className="clock-press-navigation" role="group" aria-label={label(region)}>
         <button type="button" aria-label={label('previous')} aria-controls={cardsId} onClick={() => step(-1)}><Prev size={17} aria-hidden="true" /></button>
         <span className="clock-press-position" role="status">{label('page').replace('{current}', number(lang, page + 1)).replace('{total}', number(lang, pages))}</span>
         <button type="button" aria-label={label('next')} aria-controls={cardsId} onClick={() => step(1)}><Next size={17} aria-hidden="true" /></button>
       </div>}
-      <button className="clock-headline-expand" type="button" aria-expanded={expanded} aria-controls={cardsId} onClick={() => setExpanded((current) => !current)}>
+      <button className="clock-press-toggle" type="button" aria-expanded={expanded} aria-controls={cardsId} onClick={() => setExpanded((current) => !current)}>
         {label(expanded ? 'collapse' : 'all')}<ChevronDown size={14} aria-hidden="true" />
       </button>
     </div>}
@@ -90,14 +90,14 @@ function PressShelf({ region, entryCountry, options, lang, rtl }: {
   const indexLink = directory?.more || WORLD_PRESS_INDEX;
 
   return <section className="clock-headline clock-press-shelf" data-press-region={region} aria-labelledby={headingId}>
-    <header className="clock-headline-header">
-      <div className="clock-headline-edition">
-        <span className="clock-headline-icon" aria-hidden="true"><Icon size={17} /></span>
+    <header className="clock-press-header">
+      <div className="clock-press-shelf-title">
+        <span className="clock-press-icon" aria-hidden="true"><Icon size={17} /></span>
         <h3 id={headingId}>{label(region)}{countryName ? ` · ${countryName}` : ''}</h3>
       </div>
-      {cards.length > 0 && <span className="clock-headline-count">{label('count').replace('{n}', number(lang, cards.length))}</span>}
+      {cards.length > 0 && <span className="clock-press-count">{label('count').replace('{n}', number(lang, cards.length))}</span>}
     </header>
-    <label className="clock-headline-filter clock-press-select">
+    <label className="clock-press-selector">
       <span>{label('country')}</span>
       <select aria-label={label(world ? 'worldCountry' : 'localCountry')} value={chosen} onChange={(event) => setChosen(event.currentTarget.value)}>
         <option value="">{world ? label('international') : entryName ? `${label('entry')} · ${entryName}` : label('choose')}</option>
@@ -105,7 +105,7 @@ function PressShelf({ region, entryCountry, options, lang, rtl }: {
       </select>
     </label>
     {cards.length ? <PressCards key={country || region} {...{ cards, region, lang, rtl }} />
-      : <p className="clock-headline-empty">{label(country ? 'empty' : 'chooseHelp')}</p>}
+      : <p className="clock-press-empty">{label(country ? 'empty' : 'chooseHelp')}</p>}
     <a className="clock-press-index" href={indexLink} target="_blank" rel="noopener noreferrer">
       {cards.length ? <Newspaper size={15} aria-hidden="true" /> : <PressIllustration className="clock-press-index-cover" variant={2} />}
       <span>{label(directory?.more ? 'index' : 'worldIndex')}</span>

@@ -409,6 +409,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
       aria-label={label('local_info')}
       className="mx-auto w-full max-w-7xl px-4 pt-3 sm:px-8"
     >
+      <HomeHeadlineBriefing lang={currentLang} />
       <div
         className="clock-glass overflow-hidden rounded-[28px] border border-amber-100/25 bg-gradient-to-br from-[#735844] via-[#3e2f25] to-[#4f3627] text-white shadow-[0_18px_45px_rgba(73,45,25,0.3)]"
         style={skyStyle(sky)}
@@ -469,7 +470,6 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
           </div>
         </div>
         {locationStrip}
-        <HomeHeadlineBriefing lang={currentLang} />
       </div>
     </section>}
   </PrayerToolsProvider>;
