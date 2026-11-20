@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-11-19T19:01:47.197Z",
- "nextUpdateAt": "2026-11-20T07:01:47.197Z",
+ "updatedAt": "2026-11-20T19:17:57.374Z",
+ "nextUpdateAt": "2026-11-21T07:17:57.374Z",
  "editor": "shaheen",
  "entries": {
   "LAT-052": {
@@ -48604,16 +48604,16 @@
   "IMP-1115": {
    "sourceHash": "18rcta3",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "ميرسال أوف تراست",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "مرسال أوف تراست",
    "nameEn": "MIRSAAL OF TRUST",
-   "descriptionAr": "عطر يجسد القوة والثقة بتركيبة فاخرة تبدأ بنفحات غنية وتستقر على قاعدة دافئة من خشب العنبر والمسك. يمنحك حضوراً جذاباً يعكس الرقي والتميز في كل أوقاتك.",
-   "descriptionEn": "Discover Mirsaal of Trust Pour Homme, a fragrance that embodies strength and confidence. With intoxicating top notes of saffron, jasmine, and caramel, it opens with luxury and allure.",
+   "descriptionAr": "عطر رجالي يفتتح برائحة الزعفران والياسمين والكراميل، ويضم قلباً من العود والعنبر الرمادي مع قاعدة من خشب الأرز والمسك.",
+   "descriptionEn": "A fragrance that opens with top notes of saffron, jasmine, and caramel, a heart of wood, oud, and ambergris, and a base of amberwood, cedar, and musk.",
    "gender": "men",
    "families": [
     "oriental",
     "woody",
-    "amber"
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -48639,25 +48639,27 @@
     "special"
    ],
    "tags": [
-    "ميرسال أوف تراست",
+    "مرسال",
+    "أفنان",
     "عطر رجالي",
-    "عطور شرقية",
-    "عطر العود"
-   ]
+    "زعفران",
+    "عود"
+   ],
+   "style": 2
   },
   "IMP-1116": {
    "sourceHash": "18g7o1l",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "أورنامنت فور فيم",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "أورنامنت بور فام",
    "nameEn": "ORNAMENT POUR FEMME",
-   "descriptionAr": "عطر نسائي فاخر يأخذك في رحلة إلى عالم ساحر بفضل توليبته المنعشة من الفواكه والزهور مع قاعدة دافئة. يضفي لمسة من الأنوثة والجاذبية المطلقة على إطلالتك.",
-   "descriptionEn": "Embrace femininity with Ornament Pour Femme by Afnan Perfumes, a luxurious fragrance for women. Opening with passionfruit, coconut, peach, and bergamot, it transports you to a tropical paradise.",
+   "descriptionAr": "عطر نسائي يبدأ بنفحات الفواكه الاستوائية كالبرغموت والخوخ وجوز الهند، مع قلب من زهر البرتقال ونجيل الهند، وقاعدة من العنبر والفانيليا والمسك.",
+   "descriptionEn": "A women's fragrance opening with passionfruit, coconut, peach, and bergamot, a heart of orange flower and vetiver, and a finish of amber, vanilla, and musk.",
    "gender": "women",
    "families": [
-    "floral",
     "fruity",
-    "amber"
+    "floral",
+    "musk"
    ],
    "notes": {
     "top": [
@@ -48683,24 +48685,26 @@
     "evening"
    ],
    "tags": [
-    "أورنامنت نسائي",
+    "أورنامنت",
+    "أفنان",
     "عطر نسائي",
-    "عطور فواكه",
-    "عطر أنيق"
-   ]
+    "فواكه",
+    "فانيليا"
+   ],
+   "style": 2
   },
   "IMP-1117": {
    "sourceHash": "14ik4x9",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "ميرسال ويذ لوف",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "مرسال ويز لوف",
    "nameEn": "MIRSAAL WITH LOVE",
-   "descriptionAr": "عطر نسائي ساحر يجمع بين عبير الزهور والتوابل مع قاعدة خشبية دافئة تترك انطباعاً لا يُنسى. الخيار المناسب لكل المناسبات ليمنحك حضوراً مليئاً بالرقي والغموض الشرقي.",
-   "descriptionEn": "Experience Mirsaal With Love, an inviting feminine fragrance that captures the heart with its exquisite aroma. This versatile scent blends spicy floral notes of jasmine and saffron with a warm woody base.",
+   "descriptionAr": "عطر نسائي يمزج بين نوتات الياسمين والزعفران مع قاعدة خشبية دافئة ونفحات شرقية.",
+   "descriptionEn": "A feminine fragrance blending spicy floral notes of jasmine and saffron with a warm woody base, creating an oriental twist.",
    "gender": "women",
    "families": [
+    "oriental",
     "floral",
-    "spicy",
     "woody"
    ],
    "notes": {
@@ -48709,30 +48713,30 @@
     "base": []
    },
    "seasons": [
-    "all",
-    "autumn",
-    "winter"
+    "winter",
+    "autumn"
    ],
    "occasions": [
-    "daily",
     "evening",
     "special"
    ],
    "tags": [
-    "ميرسال ويذ لوف",
+    "مرسال",
+    "أفنان",
     "عطر نسائي",
-    "عطور شرقية",
-    "هدية راقية"
-   ]
+    "ياسمين",
+    "زعفران"
+   ],
+   "style": 2
   },
   "IMP-1118": {
    "sourceHash": "18rcg32",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "رير كاربون",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "ريير كاربون",
    "nameEn": "RARE CARBON",
-   "descriptionAr": "عطر رجالي جريء يجمع بين نوتات الجلود والتوابل الحارة مع لمسات عميقة من الأخشاب والزهور. يعكس هذا العطر القوة والرجولة بأسلوب عصري وأنيق.",
-   "descriptionEn": "Experience Rare Carbon Pour Homme, a fragrance that defines sophistication and strength. This bold scent opens with a captivating blend of leather, violet leaf, cinnamon bark, and nutmeg.",
+   "descriptionAr": "عطر RARE CARBON من Afnan Perfumes رجالي بطابع عود وزهري وعنبري.",
+   "descriptionEn": "A fragrance that opens with leather, violet leaf, cinnamon bark, and nutmeg, a heart of rose, violet, cedarwood, and oud, and a base of vetiver, sandalwood, and amber.",
    "gender": "men",
    "families": [
     "leather",
@@ -48767,20 +48771,22 @@
     "work"
    ],
    "tags": [
-    "رير كاربون",
-    "عطر رجالي بالجلد",
-    "عطور فخمة",
-    "عطر رسمي"
-   ]
+    "ريير كاربون",
+    "أفنان",
+    "عطر رجالي",
+    "جلود",
+    "عود"
+   ],
+   "style": 2
   },
   "IMP-1119": {
    "sourceHash": "1dmxf61",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "أورنامنت فور هوم",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "أورنامنت بور هوم",
    "nameEn": "ORNAMENT POUR HOMME",
-   "descriptionAr": "عطر رجالي راقٍ يفتح بنفحات منعشة من التفاح والأعشاب، لينطوي على قلب دافئ من خشب الصندل والباتشولي. يترك انطباعاً قوياً وجذاباً للرجل العصري.",
-   "descriptionEn": "Discover sophistication with Ornament Pour Homme by Afnan Perfumes. This men’s fragrance opens with fresh notes of apple, lavandin, and geranium, leading to a warm heart of sandalwood, patchouli, and amber.",
+   "descriptionAr": "عطر رجالي يفتتح بنفحات التفاح وإبرة الراعي، يليه قلب من خشب الصندل والباتشولي والعنبر، مع قاعدة من خشب الأرز والمسك وطحلب السنديان.",
+   "descriptionEn": "A men’s fragrance opening with fresh notes of apple and geranium, leading to a heart of sandalwood, patchouli, and amber, finishing with a base of cedarwood, musk, and oakmoss.",
    "gender": "men",
    "families": [
     "woody",
@@ -48812,20 +48818,22 @@
     "work"
    ],
    "tags": [
-    "أورنامنت رجالي",
-    "عطر رجالي منعش",
-    "عطور الأخشاب",
-    "عطر يومي"
-   ]
+    "أورنامنت",
+    "أفنان",
+    "عطر رجالي",
+    "صندل",
+    "باتشولي"
+   ],
+   "style": 2
   },
   "IMP-1120": {
    "sourceHash": "3utvwn",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "سوفينير ديزرت روز",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "سوفومير ديسيرت روز",
    "nameEn": "SOUVENIR DESERT ROSE",
-   "descriptionAr": "عطر للجنسين يجمع بين حلاوة الخوخ والتوت ونفحات الزهور الساحرة مع قاعدة دافئة من خشب الصندل والعنبر. يعبر هذا العطر عن سحر الطبيعة وجمال الصحراء الخالد.",
-   "descriptionEn": "Experience Souvenir Desert Rose, a captivating unisex fragrance that blends the essence of juicy peach, raspberry, and cassis with floral notes of heliotrope and lily of the valley.",
+   "descriptionAr": "عطر للجنسين يجمع بين رائحة الخوخ والتوت وحرقة الكشمير مع زهور الهليوتروب وزنابق الوادي، مستقراً على قاعدة من خشب الصندل والعنبر.",
+   "descriptionEn": "A unisex fragrance blending peach, raspberry, and cassis with floral notes of heliotrope and lily of the valley, settling into warm sandalwood and amber.",
    "gender": "unisex",
    "families": [
     "fruity",
@@ -48843,23 +48851,25 @@
    ],
    "occasions": [
     "daily",
-    "gift"
+    "evening"
    ],
    "tags": [
-    "سوفينير ديزرت روز",
+    "سوفومير",
+    "أفنان",
     "عطر للجنسين",
-    "عطور الفواكه",
-    "عطر صيفي"
-   ]
+    "خوخ",
+    "توت"
+   ],
+   "style": 2
   },
   "IMP-1121": {
    "sourceHash": "1me79h5",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "سوفينير فلورال بوكيه",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "سوفومير فلورال بوكيه",
    "nameEn": "SOUVENIR FLORAL BOUQUET",
-   "descriptionAr": "عطر نسائي مبهج يعكس سحر الحدائق المزهرة بنفحات منعشة من الليتشي والبرغموت وقلب زهري ساحر. يستقر على قاعدة دافئة من المسك وخشب الكشمير ليمنحك إطلالة أنثوية أنيقة.",
-   "descriptionEn": "Discover Souvenir Floral Bouquet Pour Femme, a delightful fragrance that captures the essence of a blooming garden. With refreshing notes of lychee, rhubarb, and bergamot, it unfolds into a floral heart.",
+   "descriptionAr": "عطر نسائي يضم افتتاحية من الليتشي والراوند والبرغموت، مع قلب زهري من الورد والفاوانيا، وقاعدة من المسك وخشب الكشمير والعنبر.",
+   "descriptionEn": "A fragrance with notes of lychee, rhubarb, and bergamot, unfolding into a floral heart of rose and peony, resting on a base of musk, cashmere wood, and amber.",
    "gender": "women",
    "families": [
     "floral",
@@ -48887,29 +48897,30 @@
    ],
    "occasions": [
     "daily",
-    "work",
-    "gift"
+    "work"
    ],
    "tags": [
-    "سوفينير فلورال بوكيه",
-    "عطر نسائي زهري",
-    "عطور الربيع",
-    "عطر ناعم"
-   ]
+    "سوفومير",
+    "أفنان",
+    "عطر نسائي",
+    "ورد",
+    "ليتشي"
+   ],
+   "style": 2
   },
   "IMP-1122": {
    "sourceHash": "1xfd7uw",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "سوبريماسي جولد",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "سيبريماسي جولد",
    "nameEn": "SUPREMACY GOLD",
-   "descriptionAr": "عطر شرقي كلاسيكي من أفنان يترك أثراً أنيقاً ومميزاً يعزز من حضورك ورقي إطلالتك. يُعد الإضافة المناسبة لكل مجموعة عطور تبحث عن الفخامة والجاذبية.",
-   "descriptionEn": "Experience Supremacy Gold, a classic oriental fragrance by Afnan that leaves an elegant and lasting trail. This special scent enhances your sophistication and panache, reminding you of the inner power within you.",
+   "descriptionAr": "عطر شرقي كلاسيكي يترك أثراً أنيقاً ودائماً، مصمم ليعكس الفخامة والأناقة النسائية.",
+   "descriptionEn": "A classic oriental fragrance that leaves an elegant and lasting trail, ideal for an essential addition to a perfume collection.",
    "gender": "women",
    "families": [
     "oriental",
     "amber",
-    "spicy"
+    "woody"
    ],
    "notes": {
     "top": [],
@@ -48925,25 +48936,27 @@
     "special"
    ],
    "tags": [
-    "سوبريماسي جولد",
-    "عطر شرقي",
-    "عطور فخمة",
-    "عطر نسائي مميز"
-   ]
+    "سيبريماسي",
+    "أفنان",
+    "عطر نسائي",
+    "شرقي",
+    "فخم"
+   ],
+   "style": 2
   },
   "IMP-1123": {
    "sourceHash": "1ib0dm2",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "سوبريماسي إن هافن",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "سيبريماسي إن هيفين",
    "nameEn": "SUPREMACY IN HEAVEN",
-   "descriptionAr": "عطر رجالي منعش يجمع بين الحمضيات وحيوية الشاي الأخضر ليغمرك بدفء يشبه الغابات المشمسة. الخيار الأمثل للرجل الباحث عن تجربة عطرية مميزة ومتوازنة.",
-   "descriptionEn": "Discover Supremacy in Heaven, a captivating citrus-woody fragrance by Afnan. This invigorating scent opens with zesty freshness and the soothing aroma of freshly brewed green tea.",
+   "descriptionAr": "عطر رجالي يجمع بين الحمضيات ونوتات الشاي الأخضر المنعشة برائحة تحاكي أجواء الغابات.",
+   "descriptionEn": "A citrus-woody fragrance for men that opens with zesty freshness and green tea, balancing earthiness with elegance.",
    "gender": "men",
    "families": [
     "citrus",
-    "woody",
-    "fresh"
+    "fresh",
+    "woody"
    ],
    "notes": {
     "top": [],
@@ -48951,33 +48964,71 @@
     "base": []
    },
    "seasons": [
-    "summer",
-    "spring"
+    "spring",
+    "summer"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "سوبريماسي إن هافن",
-    "عطر رجالي منعش",
-    "عطور الحمضيات",
-    "عطر صيفي"
-   ]
+    "سيبريماسي",
+    "أفنان",
+    "عطر رجالي",
+    "حمضيات",
+    "شاي اخضر"
+   ],
+   "style": 2
   },
   "IMP-1124": {
    "sourceHash": "16oug5z",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "سوبريماسي إنسينس",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "سيبريماسي إنكينس",
    "nameEn": "SUPREMACY INCENSE",
-   "descriptionAr": "عطر للجنسين يأخذك في رحلة حسية تعكس جمال الطبيعة بامتزاج منعش بين الحمضيات والتوابل والأخشاب. يمنحك شعوراً بالمغامرة والتميز في كل لحظة.",
-   "descriptionEn": "Embark on a sensory journey with Supremacy Incense by Afnan, a unisex fragrance that evokes the refreshing essence of a woodland hike. Experience the interplay of citrus and spice.",
+   "descriptionAr": "عطر للجنسين يمزج بين الحمضيات والتوابل مع لمحات جلدية ترابية تحاكي الطبيعة والمغامرة.",
+   "descriptionEn": "A unisex fragrance evoking the essence of a woodland hike, featuring citrus, spice, and a leathery earthiness.",
    "gender": "unisex",
    "families": [
-    "woody",
     "spicy",
-    "leather"
+    "leather",
+    "woody"
+   ],
+   "notes": {
+    "top": [],
+    "heart": [],
+    "base": []
+   },
+   "seasons": [
+    "autumn",
+    "winter"
+   ],
+   "occasions": [
+    "daily",
+    "evening"
+   ],
+   "tags": [
+    "سيبريماسي",
+    "أفنان",
+    "عطر للجنسين",
+    "بخور",
+    "توابل"
+   ],
+   "style": 2
+  },
+  "IMP-1125": {
+   "sourceHash": "6e1bdz",
+   "editor": "shaheen",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "سيبريماسي نوار",
+   "nameEn": "SUPREMACY NOIR",
+   "descriptionAr": "عطر رجالي يبرز بنوتات عطرية توابلية مع لمحات زهرية خفيفة وقاعدة ترابية توحي بالأناقة.",
+   "descriptionEn": "A men's fragrance with bold aromatic notes, light florals, and earthy undertones embodying sophistication.",
+   "gender": "men",
+   "families": [
+    "spicy",
+    "woody",
+    "floral"
    ],
    "notes": {
     "top": [],
@@ -48993,58 +49044,27 @@
     "special"
    ],
    "tags": [
-    "سوبريماسي إنسينس",
-    "عطر للجنسين",
-    "عطور الأخشاب",
-    "عطر دخاني"
-   ]
-  },
-  "IMP-1125": {
-   "sourceHash": "6e1bdz",
-   "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "سوبريماسي نوار",
-   "nameEn": "SUPREMACY NOIR",
-   "descriptionAr": "عطر رجالي جذاب يجمع بين التوابل الحيوية ونفحات الصنوبر والأخشاب العميقة ليعبر عن الشجاعة والأناقة. الخيار المناسب للرجل العصري الساعي للجاذبية والتميز.",
-   "descriptionEn": "Experience the invigorating spice of Supremacy Noir by Afnan, a captivating men's fragrance that transports you to towering pine woods. With bold aromatic notes, light florals, and earthy undertones.",
-   "gender": "men",
-   "families": [
-    "spicy",
-    "woody",
-    "fresh"
-   ],
-   "notes": {
-    "top": [],
-    "heart": [],
-    "base": []
-   },
-   "seasons": [
-    "autumn",
-    "winter"
-   ],
-   "occasions": [
-    "evening",
-    "work"
-   ],
-   "tags": [
-    "سوبريماسي نوار",
+    "سيبريماسي",
+    "أفنان",
     "عطر رجالي",
-    "عطور توابل",
-    "عطر مسائي"
-   ]
+    "توابل",
+    "أخشاب"
+   ],
+   "style": 2
   },
   "IMP-1126": {
    "sourceHash": "5qcsp1",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "سوبريماسي بينك",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "سيبريماسي بينك",
    "nameEn": "SUPREMACY PINK",
-   "descriptionAr": "عطر نسائي ساحر يعبق بنفحات الزهور المتفتحة ليأسر الحواس ويترك انطباعاً لا يُنسى. يمثل هذا العطر احتفالاً بالأنوثة والأناقة في كل مناسبة.",
-   "descriptionEn": "Experience the enchanting aroma of Supremacy Pink, a captivating floral fragrance designed for women. Opening with a delicate flower bloom, this rejuvenating scent captivates the senses.",
+   "descriptionAr": "عطر نسائي زهري يفتتح بعبير الزهور الناعمة ليمنح إحساساً بالأنجذاب والأناقة.",
+   "descriptionEn": "A floral fragrance designed for women, opening with a delicate flower bloom and celebrating femininity.",
    "gender": "women",
    "families": [
     "floral",
-    "fresh"
+    "fresh",
+    "musk"
    ],
    "notes": {
     "top": [],
@@ -49057,23 +49077,25 @@
    ],
    "occasions": [
     "daily",
-    "gift"
+    "evening"
    ],
    "tags": [
-    "سوبريماسي بينك",
-    "عطر نسائي وردي",
-    "عطور الزهور",
-    "عطر ناعم"
-   ]
+    "سيبريماسي",
+    "أفنان",
+    "عطر نسائي",
+    "زهري",
+    "ورود"
+   ],
+   "style": 2
   },
   "IMP-1127": {
    "sourceHash": "12go486",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "سوبريماسي بيربل",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "سيبريماسي بيربل",
    "nameEn": "SUPREMACY PURPLE",
-   "descriptionAr": "عطر نسائي فريد يشع جاذبية وأناقة ليترك بصمة لا تُنسى في الذاكرة. يجسد هذا العطر قوة حضور المرأة العصرية ويضفي على إطلالتك سحراً خاصاً.",
-   "descriptionEn": "Discover Supremacy Purple, an enchanting feminine fragrance that radiates inviting charm. With its luminous appeal and captivating aroma, this unique scent is designed to leave a lasting impression.",
+   "descriptionAr": "عطر نسائي يتميز برائحة جذابة تعبر عن الأنوثة وتترك انطباعاً دافئاً ومميزاً.",
+   "descriptionEn": "A feminine fragrance designed to leave a lasting impression, embodying elegance and allure.",
    "gender": "women",
    "families": [
     "floral",
@@ -49095,25 +49117,27 @@
     "special"
    ],
    "tags": [
-    "سوبريماسي بيربل",
+    "سيبريماسي",
+    "أفنان",
     "عطر نسائي",
-    "عطور فخمة",
-    "عطر سهرة"
-   ]
+    "شرقي",
+    "أنيق"
+   ],
+   "style": 2
   },
   "IMP-1128": {
    "sourceHash": "nzk11c",
    "editor": "shaheen",
-   "updatedAt": "2026-10-18T14:28:45.891Z",
-   "nameAr": "سوبريماسي سيلفر",
+   "updatedAt": "2026-11-20T19:17:57.374Z",
+   "nameAr": "سيبريماسي سيلفر",
    "nameEn": "SUPREMACY SILVER",
-   "descriptionAr": "عطر رجالي آسر يعكس الأناقة والجاذبية بتصميم يبرز حضورك في المناسبات الخاصة والأمسيات. يمنحك تجربة حسية فريدة ومميزة تلفت الأنظار.",
-   "descriptionEn": "Unleash your charm with Supremacy Silver, a captivating fragrance designed for the modern man. This enchanting scent exudes radiance and sophistication, making it suited for special occasions and evening outings.",
+   "descriptionAr": "عطر رجالي يعكس الأناقة والجاذبية، مصمم للمناسبات الخاصة والسهرات المسائية.",
+   "descriptionEn": "A fragrance designed for the modern man that exudes radiance and sophistication, ideal for special occasions.",
    "gender": "men",
    "families": [
-    "fruity",
+    "citrus",
     "woody",
-    "musk"
+    "fruity"
    ],
    "notes": {
     "top": [],
@@ -49121,21 +49145,22 @@
     "base": []
    },
    "seasons": [
-    "all",
     "spring",
-    "summer"
+    "summer",
+    "autumn"
    ],
    "occasions": [
     "evening",
-    "special",
-    "work"
+    "special"
    ],
    "tags": [
-    "سوبريماسي سيلفر",
-    "عطر رجالي مشهور",
-    "عطور فخمة",
-    "عطر رجالي فواح"
-   ]
+    "سيبريماسي",
+    "أفنان",
+    "عطر رجالي",
+    "سيلفر",
+    "مناسبات"
+   ],
+   "style": 2
   },
   "IMP-1129": {
    "sourceHash": "dec2bk",

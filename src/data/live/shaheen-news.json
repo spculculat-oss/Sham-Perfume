@@ -1,12 +1,12 @@
 {
  "version": 1,
- "updatedAt": "2026-11-19T19:01:13.292Z",
- "nextUpdateAt": "2026-11-20T07:01:13.292Z",
+ "updatedAt": "2026-11-20T19:17:35.456Z",
+ "nextUpdateAt": "2026-11-21T07:17:35.456Z",
  "intervalHours": 12,
- "editor": "feeds",
+ "editor": "shaheen",
  "digest": {
-  "ar": "تشهد صناعة العطور تحولات استراتيجية مع نمو مبيعات الشركات الكبرى وتوسع العلامات التجارية في أسواق جديدة. كما تبرز توجهات قوية نحو العطور الصلبة والاستدامة الحيوية، مع استمرار الاحتفاء بالتراث العطري في المعارض الدولية.",
-  "en": "The fragrance industry is witnessing strategic shifts with major companies reporting growth and brands expanding into new markets. Strong trends toward solid perfumes and bio-based sustainability are emerging, alongside continued celebration of olfactory heritage in international exhibitions."
+  "ar": "تشهد سوق العطور العالمية تحولات كبرى مع توقعات بارتفاع النمو المالي لشركات كبرى مثل Interparfums لعامي 2026 و2027، واهتمام متزايد من دور العطور الفاخرة مثل Dior بإحياء الكلاسيكيات وتوسيع مختبرات الأبحاث مثل مبادرة IFF البيئية في البرازيل، إلى جانب حضور بارز للثقافة العربية ودور العود والبخور في المشهد الثقافي والفني العالمي.",
+  "en": "The global fragrance market is witnessing major shifts with projected growth for industry leaders like Interparfums for 2026 and 2027, a growing focus from luxury houses like Dior on reviving classics, expanded research labs like IFF's environmental initiative in Brazil, alongside a prominent global presence of Arab culture and traditional oud in the artistic and perfumery landscape."
  },
  "sources": [
   {
@@ -16,6 +16,38 @@
   {
    "name": "Cosmetics Business",
    "count": 6
+  },
+  {
+   "name": "Premium Beauty News",
+   "count": 1
+  },
+  {
+   "name": "FASHION Magazine",
+   "count": 1
+  },
+  {
+   "name": "Personal Care Insights",
+   "count": 1
+  },
+  {
+   "name": "NEWS.am STYLE",
+   "count": 1
+  },
+  {
+   "name": "Women's Health",
+   "count": 1
+  },
+  {
+   "name": "صحيفة المرصد",
+   "count": 1
+  },
+  {
+   "name": "الأيام البحرينية",
+   "count": 1
+  },
+  {
+   "name": "BeautyMatter",
+   "count": 1
   },
   {
    "name": "Grazia",
@@ -56,41 +88,273 @@
   {
    "name": "هذا اليوم",
    "count": 1
-  },
-  {
-   "name": "Masrawy",
-   "count": 1
-  },
-  {
-   "name": "MAP SPORT",
-   "count": 1
-  },
-  {
-   "name": "Detroit Free Press",
-   "count": 1
-  },
-  {
-   "name": "Glossy",
-   "count": 1
-  },
-  {
-   "name": "ihata",
-   "count": 1
-  },
-  {
-   "name": "GQ South Africa",
-   "count": 1
-  },
-  {
-   "name": "صحيفة الوطن",
-   "count": 1
-  },
-  {
-   "name": "الشرق الأوسط",
-   "count": 1
   }
  ],
  "items": [
+  {
+   "id": "n1mi87mf",
+   "url": "https://www.premiumbeautynews.com:8443/fr/interparfums-releve-ses-previsions,28569",
+   "source": "Premium Beauty News",
+   "publishedAt": "2026-11-20T18:14:20.000Z",
+   "original": "Interparfums relève ses prévisions 2026 et anticipe une accélération en 2027",
+   "lang": "en",
+   "category": "industry",
+   "importance": 5,
+   "title": {
+    "ar": "Interparfums ترفع توقعات عام 2026 وتتوقع تسارع النمو في 2027",
+    "en": "Interparfums raises its 2026 forecasts and anticipates acceleration in 2027"
+   },
+   "summary": {
+    "ar": "أعلنت مجموعة Interparfums المالكة لتراخيص علامات عالمية مثل Jimmy Choo وMontblanc عن تعديل طفيف وزيادة في توقعاتها المالية لعام 2026 مع ترقب نمو قوي وقائمة إطلاقات جديدة في 2027.",
+    "en": "Interparfums SA, managing global licenses for brands like Jimmy Choo, Montblanc, and Lacoste, announced an upward revision of its 2026 financial outlook with anticipated acceleration in 2027."
+   },
+   "note": {
+    "ar": "تحليل الخبير شاهين: تؤكد هذه التوقعات المالية الإيجابية متانة قطاع العطور الفاخرة وقدرته على الاستمرار رغم التحديات الاقتصادية العالمية، مما يمنح المستثمرين وصناع العطور مؤشرات قوية على استقرار السوق.",
+    "en": "Shaheen's Expert Note: These positive financial projections underscore the resilience of the luxury fragrance sector and its steady momentum, signaling strong market stability for investors and creators."
+   }
+  },
+  {
+   "id": "n18856xu",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1nNDh0aUc0TEVUQ0s5SmswdHlpUU5uNUhqWEtCdHVUeGFpMHVteXg5NUpqVmNKSExlWHRTd0NucHk3V3pzdms5ei1pRnZndnd5WW5GYVBncS1Pa0tsN3AwTVdvQnZvbEhCTVFCWVlCMVVxZkE?oc=5",
+   "source": "FASHION Magazine",
+   "publishedAt": "2026-11-19T19:19:26.000Z",
+   "original": "Inside Dioriginals, Dior’s Mission to Restore Its Most Beloved Perfumes",
+   "lang": "en",
+   "category": "launch",
+   "importance": 5,
+   "title": {
+    "ar": "دار Dior تعيد إحياء 13 عطراً كلاسيكياً عبر مجموعة Dioriginals",
+    "en": "Dior revives 13 classic perfumes with its Dioriginals collection"
+   },
+   "summary": {
+    "ar": "أطلقت دار Dior مجموعة Dioriginals بهدف إعادة إحياء وتقديم عدد من أشهر عطورها التاريخية والارتباط بتراثها العطري العريق.",
+    "en": "Dior launched its Dioriginals mission and collection to restore and celebrate some of its most beloved and historic heritage perfumes."
+   },
+   "note": {
+    "ar": "تحليل الخبير شاهين: التوجه نحو إحياء العطور الكلاسيكية يثبت أن أصالة المكونات والوصفات التاريخية تمتلك قيمة خالدة لا تفنى مع مرور الزمن.",
+    "en": "Shaheen's Expert Note: The shift toward reviving classic formulas proves that heritage ingredients and historical recipes hold timeless value that never fades."
+   }
+  },
+  {
+   "id": "n1pfvlql",
+   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOX1IyaVhFUDBsYWtxVTIxWkFneHFTOVRZTW1fUWN5OUh5d0lpeVVvQWRYazRvUk5SUEpYbm1TSXF4Zjl4Q3FHb3FsSE9PZ3lfeTRLT3QyM2F6UVNJSzQ5bkZGMVlXM0V3bTZiTDlELVh4TGl1Sy1ZQWY4WC00eDhuMTBuM20?oc=5",
+   "source": "Personal Care Insights",
+   "publishedAt": "2026-11-20T15:29:48.000Z",
+   "original": "IFF opens Forest Lab to bridge biodiversity conservation and fragrance discovery.",
+   "lang": "en",
+   "category": "ingredients",
+   "importance": 4,
+   "title": {
+    "ar": "شركة IFF تفتتح مختبر الغابات Forest Lab للربط بين التنوع البيولوجي وابتكار العطور",
+    "en": "IFF opens Forest Lab to bridge biodiversity conservation and fragrance discovery"
+   },
+   "summary": {
+    "ar": "افتتحت شركة International Flavors & Fragrances (IFF) مختبر Forest Lab في محمية غابات الأطلسي بالبرازيل لدراسة المكونات النباتية الطبيعية وتطوير قطاعي التجميل والعطور.",
+    "en": "IFF opened the Forest Lab in Brazil's Atlantic Forest reserve to house scientists and study natural ingredient opportunities for fragrance and beauty."
+   },
+   "note": {
+    "ar": "تحليل الخبير شاهين: الاستدامة وحماية التنوع البيولوجي هما مستقبل صناعة العطور المستدامة، والبحث عن مصادر طبيعية جديدة يفتح آفاقاً غير مسبوقة للمصممين.",
+    "en": "Shaheen's Expert Note: Sustainability and biodiversity are the future of fine perfumery; sourcing novel natural ingredients opens unprecedented horizons for creators."
+   }
+  },
+  {
+   "id": "ntt0h9k",
+   "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE5JWUFBeG4xNlNRQTRiNVBCTWlHSHQ3dDZESlQ5N3ZuVVZJbkRoeTRZN2h3ZFgwcVpndTlWd2Y2eHp5bTAza3IxU2VpVURpUQ?oc=5",
+   "source": "NEWS.am STYLE",
+   "publishedAt": "2026-11-20T16:56:42.000Z",
+   "original": "Louis Vuitton’s Master Perfumer Reveals How Arab Culture Is Transforming the Global Fragrance Industry",
+   "lang": "en",
+   "category": "culture",
+   "importance": 4,
+   "title": {
+    "ar": "خبير العطور الرئيسي في Louis Vuitton يوضح كيف تحول الثقافة العربية صناعة العطور العالمية",
+    "en": "Louis Vuitton’s Master Perfumer reveals how Arab culture is transforming the global fragrance industry"
+   },
+   "summary": {
+    "ar": "ألقى خبير العطور لدى Louis Vuitton الضوء على الدور المحوري الذي تلعبه الثقافة العربية وتقديرها للروائح الغنية في إعادة تشكيل معايير صناعة العطور الفاخرة حول العالم.",
+    "en": "Louis Vuitton's master perfumer highlighted the pivotal role Arab culture and its appreciation for rich scent profiles play in reshaping global luxury fragrance standards."
+   },
+   "note": {
+    "ar": "تحليل الخبير شاهين: العمق العطري العربي والاهتمام بالمواد الخام الثقيلة كالعود والعنبر أصبح بوصلة أساسية لكبرى الدور العالمية لتطوير عطور استثنائية.",
+    "en": "Shaheen's Expert Note: Arab olfactory depth and passion for heavy raw materials like oud and amber have become a primary compass for major global houses."
+   }
+  },
+  {
+   "id": "n1e2a3kl",
+   "url": "https://nstperfume.com/2026/11/19/alongside-christine-nagel/",
+   "source": "Now Smell This",
+   "publishedAt": "2026-11-19T15:08:16.000Z",
+   "original": "Alongside Christine Nagel",
+   "lang": "en",
+   "category": "industry",
+   "importance": 4,
+   "title": {
+    "ar": "صانع العطور الشهير Yann Vasnier ينضم إلى دار Hermès",
+    "en": "Renowned perfumer Yann Vasnier joins Hermès"
+   },
+   "summary": {
+    "ar": "بعد مسيرة امتدت 30 عاماً مع عملاق النكهات والعطور Givaudan، انضم صانع العطور البارز Yann Vasnier إلى فريق العطور في دار Hermès.",
+    "en": "Following a 30-year career at Swiss giant Givaudan, prominent perfumer Yann Vasnier is joining Hermès as part of its creative fragrance team."
+   },
+   "note": {
+    "ar": "تحليل الخبير شاهين: انتقال العقول الكبرى بين دور العطور الكبرى يعكس رغبة هذه الدور في ضخ دماء جديدة وتطوير بصمات عطرية فريدة تميز إصداراتها القادمة.",
+    "en": "Shaheen's Expert Note: The movement of top talent between major houses reflects their constant drive to infuse fresh perspectives and distinct olfactory signatures."
+   }
+  },
+  {
+   "id": "n1rsorom",
+   "url": "https://cosmeticsbusiness.com/is-puig-set-to-acquire-parfums-de-marly",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-11-19T11:54:00.000Z",
+   "original": "Is Puig set to acquire Parfums de Marly?",
+   "lang": "en",
+   "category": "market",
+   "importance": 4,
+   "title": {
+    "ar": "أنباء عن قرب استحواذ مجموعة Puig على علامة Parfums de Marly",
+    "en": "Rumors swirl regarding Puig's potential acquisition of Parfums de Marly"
+   },
+   "summary": {
+    "ar": "تتزايد التكهنات في قطاع الأعمال حول محادثات تجريها مجموعة Puig للاستحواذ على علامة العطور الفاخرة Parfums de Marly الشهيرة بعطور مثل Delina.",
+    "en": "Industry rumors suggest that Puig is moving closer to acquiring high-end fragrance brand Parfums de Marly, renowned for scents like Delina."
+   },
+   "note": {
+    "ar": "تحليل الخبير شاهين: صفقات الاستحواذ على العلامات المستقلة والنيش تعكس السب محموم نحو السيطرة على قطاع العطور الفاخرة ذات النمو السريع.",
+    "en": "Shaheen's Expert Note: Acquisitions of independent and niche houses highlight the fierce race to dominate the fast-growing luxury fragrance segment."
+   }
+  },
+  {
+   "id": "n1uysngk",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxPT1JPc2hidU5TMGl1TlFMVV9LRjJ4dmZBakN4ZkMzZl8xWERfem1tRjZiNFVHcEVzR1d6SlR3d0R3eUZRYXotMHNkWmxocl94RllDbkJVS3UxeFVLN2NEcFBHX09hX28yNVh4Q3VVVjM0M0M4NERjcVRYRUJNSy1ZOWwxLVlSekg1SVJN?oc=5",
+   "source": "Women's Health",
+   "publishedAt": "2026-11-20T13:00:00.000Z",
+   "original": "The Latest Trend in High-End Fragrances: Scents That Double As Skincare",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "أحدث اتجاهات العطور الفاخرة: عطور تدمج خصائص العناية بالبشرة",
+    "en": "The latest trend in high-end fragrances: Scents that double as skincare"
+   },
+   "summary": {
+    "ar": "تشهد سوق العطور الفاخرة توجهاً تصاعدياً نحو ابتكار عطور تمتلك خصائص ترطيب وعناية بالبشرة، لتجمع بين الرائحة الفاخرة والمنفعة الجمالية.",
+    "en": "High-end fragrance markets are seeing a rising trend of scents formulated with skincare and moisturizing benefits, merging fine scent with cosmetic utility."
+   },
+   "note": {
+    "ar": "تحليل الخبير شاهين: دمج العناية الشخصية بتركيبات العطور يمثل ابتكاراً تقنياً يهم عشاق العطور الذين يبحثون عن تجربة متعددة الفوائد على الجلد.",
+    "en": "Shaheen's Expert Note: Combining personal care with fragrance formulations is an exciting technical innovation for enthusiasts seeking multifunctional skin benefits."
+   }
+  },
+  {
+   "id": "n1dpyye0",
+   "url": "https://news.google.com/rss/articles/CBMi6wVBVV95cUxOVVVNQXNWVWRTNVgzbDc0alhhQkVQMG90M0paRHJ3V0VScndObEFWekljN09JdkRUd3B3T2tDRDFOMTVDd2NfRndsNUR5aWUwT2p6WUhGa015dG1OYzZKdGlKdG1Md0Q3aWQyel9CSkJUdmhaZTJnemtnU2c0WGdGWVNqLVlVVkw3RDFZSmQ4QWFRdlladWtHZlotQy1SOUlZSnMwU2J5SkhxcTFWUmFTS1hnNVRhZWN0NGNjZFNocWl1SGl3STR1ZXJRazl6RHNQdmRUT3NkclZmS3RPNlpaMTByUkRuMVdPNE5XZ3l3TDFveWJyeXFtZFpEYUtXcFpIMjN6YWxxUHVYeFQ0QzdaWHR6SENZaWVCWEcwdHpIc2w4WUhzdVJNWlh2cW9CRXpnX0lDU1AwT05sT2xYTTlhMVJqU1BIakd4YjVOM2UwbDBYRW41Z200UEtwYTY4aVNZQjN4Y25wYkRsbkpHd1dQandteW96b2ZMcXFYa2VVd0NBZmtNQmdmRU9hYmc2UHEwdTBkbWl5X1ppNF9MYXplTl82V3dRNTNJek9DS3I1dklqcElkUVpEQmptQUNXRkp2c3BsY0JGQmVNM3FDZzlfVmU5YUo4QkJDOVhhM190bkJYOWhzUkxTb3hBdkdNOGZJOWR6LWhKRkRsa2ZWSm5ZeFFvNnJlT3pPZC1ObWh0bmpUdHljLTgyTGZ5cXMwUnNIWUJ5c1FCZXZPUmJTM1pWVjc3NV9tVmtudC0tbXh2cTdTZ2k4V1RQTU5JLXp6TkZhZWdxMTZfTFh5T1F2ZlZHWVNDS2Z6M0lBclZFb21iRGluMndxczZ4VzlTc0U2VExuV0E3Q1FhLWZNUjgxTmxhSk1EVTN1WUNNVndLV2s3SUFFNkQzbFluZ0RGZWFQNmp0djczbVU4N1VqbkpLN1dUbDlURDJYdGhzcmxacjBpSmc4Qmx1blF4djk2LVZ1ZHE3MUJZb2JlaHFzLTQ?oc=5",
+   "source": "صحيفة المرصد",
+   "publishedAt": "2026-11-20T06:00:14.000Z",
+   "original": "أغلى من الذهب … بالفيديو: مختص يكشف عن أنواع من العود النادر تتجاوز أسعارها مليون ريال",
+   "lang": "ar",
+   "category": "culture",
+   "importance": 3,
+   "title": {
+    "ar": "مختص يكشف عن أنواع عود نادر تتجاوز أسعارها مليون ريال",
+    "en": "Specialist reveals rare types of oud exceeding one million Riyals"
+   },
+   "summary": {
+    "ar": "سلط خبراء الضوء على أنواع نادرة للغاية من أخشاب العود الطبيعي المعتق التي تُعد أغلى من الذهب وتصل قيمتها لمستويات استثنائية.",
+    "en": "Experts highlighted extremely rare types of aged natural oud wood that surpass gold in value and reach exceptional price points."
+   },
+   "note": {
+    "ar": "تحليل الخبير شاهين: قطاع العود النوادر يثبت يوماً بعد يوم أنه استثمار مالي وعطري حقيقي يعكس القيمة التاريخية والثقافية لهذه المادة العريقة.",
+    "en": "Shaheen's Expert Note: The rare oud sector proves daily to be a true financial and olfactory investment reflecting the deep heritage of this material."
+   }
+  },
+  {
+   "id": "nbcmxvd",
+   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFB3ZFVfeUdKamFJZWpGaWhDbGtSUjRHYTUwZkhDRFNDX1U2U3dNNktvU1NWLTNRRkJxNDNhLVZLbTkzTmFWQkZJdm1jV19Dck5QbHJHTHExQnNZSUZCRl9XMW05cHNPN0k?oc=5",
+   "source": "الأيام البحرينية",
+   "publishedAt": "2026-11-19T22:49:29.000Z",
+   "original": "مستحضرات التجميل تدخل «العطور العربية» لأول مرة بمشاركة 70 علامة",
+   "lang": "ar",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "مستحضرات التجميل تدخل «العطور العربية» لأول مرة بمشاركة 70 علامة",
+    "en": "Cosmetics sector introduces 'Arabian Fragrances' for the first time with 70 brands"
+   },
+   "summary": {
+    "ar": "شهد قطاع المعارض والتجميل انطلاقة واسعة تدمج العطور العربية بمشاركة واسعة من 70 علامة تجارية متخصصة تعرض أحدث ابتكاراتها.",
+    "en": "The cosmetics and exhibition sector witnessed a wide launch integrating Arabian fragrances with the participation of 70 specialized brands showcasing innovations."
+   },
+   "note": {
+    "ar": "تحليل الخبير شاهين: هذا الحضور المكثف للعلامات العربية يعكس توسع نطاق انتشارها وقدرتها على منافسة الدور العالمية بجدارة واستحقاق.",
+    "en": "Shaheen's Expert Note: This dense presence of Arab brands reflects their expanding global reach and undeniable ability to compete with international houses."
+   }
+  },
+  {
+   "id": "nwk57ai",
+   "url": "https://cosmeticsbusiness.com/kayali-commits-250-000-to-make-a-wish-international",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-11-20T12:00:00.000Z",
+   "original": "Mona Kattan's Kayali commits $250,000 to Make-A-Wish International",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "علامة Kayali تخصص 250 ألف دولار لأعمال الخير عبر ذراعها التنموي",
+    "en": "Mona Kattan's Kayali commits $250,000 to Make-A-Wish International"
+   },
+   "summary": {
+    "ar": "أعلنت علامة العطور العالمية Kayali بقيادة مؤسستها منى قطان عن التبرع بمبلغ 250 ألف دولار لصالح منظمة Make-A-Wish الدولية من خلال ذراعها الخيري Kayali Cares.",
+    "en": "Kayali fragrance brand, founded by Mona Kattan, committed $250,000 to Make-A-Wish International through its philanthropic arm, Kayali Cares."
+   },
+   "note": {
+    "ar": "تحليل الخبير شاهين: المسؤولية المجتمعية لعلامات العطور الكبرى تعزز من ارتباط المستهلكين العاطفي بها وتؤكد دورها الإيجابي في المجتمع.",
+    "en": "Shaheen's Expert Note: Corporate social responsibility strengthens consumer emotional connection to fragrance brands and highlights their positive community footprint."
+   }
+  },
+  {
+   "id": "ntr3gd1",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPU29OSjhiVV9rODFzZF93OGd1YmRNczlnSmtHb0p2ZThtWFZRRHZBZFZXWGlEQ3ZHckk0V3ZDSGFxVG1pWjNaUDZ0M29wLTZTNmhray1HRzROQ25ELVB1aVdPVnNCOFBmWkVKbVhOOGhCNFRyaXM3V3dsNGhNeTE1NA?oc=5",
+   "source": "BeautyMatter",
+   "publishedAt": "2026-11-20T01:27:07.000Z",
+   "original": "How Chinese Fragrance Brands Are Moving Beyond MBTI Marketing",
+   "lang": "en",
+   "category": "market",
+   "importance": 3,
+   "title": {
+    "ar": "العلامات العطرية الصينية تتجاوز التسويق بنمط الشخصيات MBTI",
+    "en": "How Chinese fragrance brands are moving beyond MBTI marketing"
+   },
+   "summary": {
+    "ar": "تتجه صانعات العطور في الصين نحو ابتكار استراتيجيات تسويقية جديدة أكثر عمقاً وأصالة بعد الاعتماد السابق على أنماط الشخصيات النفسية MBTI.",
+    "en": "Chinese fragrance brands are shifting towards deeper, more authentic marketing strategies after previously relying heavily on MBTI personality type promotions."
+   },
+   "note": {
+    "ar": "تحليل الخبير شاهين: النضج التسويقي في الأسواق الآسيوية يعتمد اليوم على تجربة العطر الفردية والقصة وراء النوتات بدلاً من القوالب النفسية الجاهزة.",
+    "en": "Shaheen's Expert Note: Marketing maturity in Asian markets now relies on individual scent experiences and storytelling rather than rigid psychological templates."
+   }
+  },
+  {
+   "id": "ncryui2",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNVVk3Q1EzRk1ocWtNZkplVVpsaTU5MEVvVHRlbk5LRHdBakgzZmZPNjM4NlY0R1EzNDA2ZFNtZ2NRbDdDNWxpZmdJbi1MOHRJckpxZHZRMjZ5c2UxZkoyVFJLckhmcGdjbndsd18ybXpDdWRiWmg2UGVwdHNBQklPNjJHaVE1WGhSY3VJa1N3?oc=5",
+   "source": "Cosmetics Business",
+   "publishedAt": "2026-11-19T12:16:24.000Z",
+   "original": "How AI and digital technology is transforming fragrance creation and olfactory understanding",
+   "lang": "en",
+   "category": "industry",
+   "importance": 3,
+   "title": {
+    "ar": "دور الذكاء الاصطناعي والتكنولوجيا الرقمية في ابتكار العطور",
+    "en": "How AI and digital technology are transforming fragrance creation"
+   },
+   "summary": {
+    "ar": "تستعرض تقارير حديثة كيف تُسهم أدوات الذكاء الاصطناعي والتكنولوجيا الحديثة في تسريع فهم النفحات العطرية وابتكار تركيبات جديدة بالتعاون مع الخبراء.",
+    "en": "Recent reports explore how artificial intelligence and digital tech are transforming olfactory understanding and accelerating the creation of new fragrance formulas."
+   },
+   "note": {
+    "ar": "تحليل الخبير شاهين: التكنولوجيا الحديثة والذكاء الاصطناعي أدوات مساعدة قوية، لكن النفحة الإنسانية والذوق الرفيع يبقيان هما أساس النجاح العطري.",
+    "en": "Shaheen's Expert Note: Modern tech and AI are powerful auxiliary tools, but the human touch and refined taste remain the bedrock of true olfactory success."
+   }
+  },
   {
    "id": "n76kx43",
    "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxOYXJPR0RjNnpYNnlRQVBMcGVWOV82dUY4anFWbWt4dWNkX2ZhSDRTak1jR1dqOWdsbGhQdlBSYXpMd0dDeTJDVlRQRWt1S2Z2UmNiZXZxcXp4OW1PVGRRQ2Q2M2NXYk1IS3lEQzhNN1BWcUxPZEt6aTZYNTNFR2I3NWlwSGNYZEl0UlE3d0syendBaXI5bXFPMl9PaDJ5SU5Zdk9UelVOcXBPcFNxWnBERjZOX192cklZYjRncnBSRlZ4azdSWmtqNmFVTnF4aHVJMlpNV1B5RzhtQ05n?oc=5",
@@ -272,24 +536,6 @@
    }
   },
   {
-   "id": "n1e2a3kl",
-   "url": "https://nstperfume.com/2026/11/19/alongside-christine-nagel/",
-   "source": "Now Smell This",
-   "publishedAt": "2026-11-19T15:08:16.000Z",
-   "original": "Alongside Christine Nagel",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Alongside Christine Nagel",
-    "en": "Alongside Christine Nagel"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Now Smell This»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "During his 30 years at Givaudan, the Swiss giant in the creation of perfumes and flavours, Yann Vasnier has created numerous fragrances for both the luxury and niche perfume sectors. [...] This November, he is joining Hermès, as first announced by the specialist publication Nez, alongside Christine Nagel, creative director and head of olfactory heritage […]"
-   }
-  },
-  {
    "id": "n1lyyy4h",
    "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOMUEyZXFZa2s3MnN6OU54QnBzTWp4UHF2X2dEMzIzQ2tnbVNjT1NFaWN6RkkxSENyLTJxSS02anVsUEFnZ0RJNU5LdlJtRDg5Y1puT2k4ZFZSN3UyWHo3Q3l0S0thYTdNcFl2Qm05Q29hQUNBZkVmalNhWXM2b1pVSlVncGN1clYyQnJnT3BBRWQ?oc=5",
    "source": "Mixte Magazine",
@@ -341,42 +587,6 @@
    "summary": {
     "ar": "خبر عن إطلاق عطر جديد من «Cosmetics Business»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
     "en": "IFF opens Brazil Forest Lab to find new fragrance and beauty ingredients"
-   }
-  },
-  {
-   "id": "ncryui2",
-   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNVVk3Q1EzRk1ocWtNZkplVVpsaTU5MEVvVHRlbk5LRHdBakgzZmZPNjM4NlY0R1EzNDA2ZFNtZ2NRbDdDNWxpZmdJbi1MOHRJckpxZHZRMjZ5c2UxZkoyVFJLckhmcGdjbndsd18ybXpDdWRiWmg2UGVwdHNBQklPNjJHaVE1WGhSY3VJa1N3?oc=5",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-11-19T12:16:24.000Z",
-   "original": "How AI and digital technology is transforming fragrance creation and olfactory understanding",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "How AI and digital technology is transforming fragrance creation and olfactory understanding",
-    "en": "How AI and digital technology is transforming fragrance creation and olfactory understanding"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Cosmetics Business»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "How AI and digital technology is transforming fragrance creation and olfactory understanding"
-   }
-  },
-  {
-   "id": "nlb3di7",
-   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9wTlIySDZobUd3a3ZVVVZiZmtDRlJHWnpCb1ZncmxFTjh0amZJbE5tVVFVUHV4WVVmcV9VdDhNbEpBY0JERXBFRklTdERVQzZmdGFkeUcwc19VMjRtQXNZX0pNWUw1WmlVdzgzellkZXZxdWlkV1hMbA?oc=5",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-11-19T12:01:24.000Z",
-   "original": "Is Puig set to acquire Parfums de Marly?",
-   "lang": "en",
-   "category": "market",
-   "importance": 2,
-   "title": {
-    "ar": "Is Puig set to acquire Parfums de Marly?",
-    "en": "Is Puig set to acquire Parfums de Marly?"
-   },
-   "summary": {
-    "ar": "خبر عن سوق العطور من «Cosmetics Business»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "Is Puig set to acquire Parfums de Marly?"
    }
   },
   {
@@ -467,168 +677,6 @@
    "summary": {
     "ar": "فيديو | عالم البخور.. أصالة المكونات وفنون صناعة الخلطات العطرية",
     "en": "فيديو | عالم البخور.. أصالة المكونات وفنون صناعة الخلطات العطرية"
-   }
-  },
-  {
-   "id": "nhwzfz0",
-   "url": "https://news.google.com/rss/articles/CBMipgNBVV95cUxPWDZka3Z1RWRKMFdEMV9Pa0RuUy0yRFpXeTF1cENqMl84MUZsWDVFdXpNVi1vWG1lZUtLUDlxcDRHTDZlQ1pQaVdUOTRseWRBNDlMaHhaWDZzb29rUDAwOExHQWF0OVV6bFEzRUhkTmVldzVzTzRvX2UyNl8xWi0yeEJVQVM1aFlVTEViRUJ6eTlIa2pnanNxamQxVjU0MjhoMUNkb1pkQXExWUxZdHI0X0tNZWlkdTR5U1V0Vk0zbW5kbXB1UVpLcTcyZ0g4RVJ1WFBfeU9RZkFsRmREMXBnNDAyVzY4NllPbWJ5b0ZiaGVkZTI0RlJwWkpLd1dtUU81QTd2Q2JncUNwUG41R0Z0WXUzOTZuSS1GSDVURWpocV9qcmhJendJN3lLbzFmN0N3MmFCZ29JQXZuWTd0NkNHMFFCTzM4Sl82VkEyWmJ2TElDYXRBN2c0Sk0xcWRMclNGUGRyVGlpNTlxOGZmTndLZk5XeTZpeC1YSURVMWVPMVg1ODRHYkZzWkdHbnZZWFZCWVJyMjM0RUV6UlAtNmR1YUNjcHI4d9IBqwNBVV95cUxPOEJPamdKaElKX0h6Y2FwRUVwblRLRzc1WDMzbEp6YURYRmJkOUx2dGRlWkpNNkVMWGdYZjFOT19XYk8xRXl2NXo3V25kTHo0aVJhMkpMOXhNSjEyNXFHUVlMSURFMEQzMnREeXFVZWlMcDNkNjU5ellUbE1LSGk3bjNGX0dCbnRkMUNpV3pwWU1QeENzSXNOWWZmZmhNTUh5RVdVM1VFY1lland0dDlOMEpwYzdFYmtTQTA0all0b3oyb2pYYzZ5N2cwbmNLQjlaajdDYnZQVlZRY1o3aXZkOFBUZmdjQkVyX0p6elplZEFkczF1b1g1QWtIRWlQNGs0OFVOc1ZYeXM3VlJiYUZaTVcxVHpxVG82ZlkyeEg3UkhGNDNDUElYOERIeE1XaXQ4NnBGR1ktUHlkTzU2aDMwOEZKY2tBTmpUVVNSOU5sNHROQU5ZUmJXVE5GSGRFcEEyNnZ1SVJSZ2QydXpFNUNzT0ZrZm9OSHQwVzRmLXFVcWpLTXZ2cGNSaU1kclJRMmF0bHFGQmhFTW9vdC1BczAtMlUwbTAyUUdFbGdF?oc=5",
-   "source": "Masrawy",
-   "publishedAt": "2026-11-18T13:00:00.000Z",
-   "original": "من شانيل إلى باكو رابان.. أغلى 5 عطور في العالم",
-   "lang": "ar",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "من شانيل إلى باكو رابان.. أغلى 5 عطور في العالم",
-    "en": "من شانيل إلى باكو رابان.. أغلى 5 عطور في العالم"
-   },
-   "summary": {
-    "ar": "من شانيل إلى باكو رابان.. أغلى 5 عطور في العالم",
-    "en": "من شانيل إلى باكو رابان.. أغلى 5 عطور في العالم"
-   }
-  },
-  {
-   "id": "n63mchg",
-   "url": "https://news.google.com/rss/articles/CBMimwNBVV95cUxOYnRwNHczWnVwZms3UmpMRFo4VDVGUDJZOXZpd0lSTlhoX2Z0TjV6bG5PMFhfVmM0c2plcldsaTFiTG9NUlBOR3NUSEs4OGFhamZVN0R6dnN2VUJvM1lWb2xMMElxcEI2NldMazgxVVRNcDk0XzBBTVM5VjIxRGdkUHN2cG90ZTdlenVabFZ6S3dOUUZtUFpXS1FIR2FPYzhxcW1VNUpzbE9uOVZMZWNoSHRZOS1LLTcyVlhVU3Q5Si1LYUZpVjFDTlQ1X2FWUjRnd1hTTHRBcnE0ZjBiRDZ2TGgxdENnMlVKMHM2ODlJNnJ6VzhnN0RxVlB2cElJczUwUTlKMGJUemcwTkdPRWtWVHR0UDI3Y2JGdS1XOTJ0Umh2RklpNVVMSFMxTnJxdHNpbjM2c3VNY2FabWF5QjZHWDVCTGFQVmVrMzM3RzVnRXB0MUZ3RzRpRmlSdmE1Y0FFMktjaDR4YW5vRWw1aHNKeHhPbHR0b1d4QWo2QURtc3Rjc2VzTWFZM2pJeXdQc0NHN1dkT2RMcVVITVU?oc=5",
-   "source": "MAP SPORT",
-   "publishedAt": "2026-11-18T12:48:57.000Z",
-   "original": "كأس العالم لأقل من 17 سنة (قطر 2026).. باها ، الرباج والعود، الأوراق الرابحة في هجوم \"أشبال الأطلس\"",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "كأس العالم لأقل من 17 سنة (قطر 2026).. باها ، الرباج والعود، الأوراق الرابحة في هجوم \"أشبال الأطلس\"",
-    "en": "كأس العالم لأقل من 17 سنة (قطر 2026).. باها ، الرباج والعود، الأوراق الرابحة في هجوم \"أشبال الأطلس\""
-   },
-   "summary": {
-    "ar": "كأس العالم لأقل من 17 سنة (قطر 2026).. باها ، الرباج والعود، الأوراق الرابحة في هجوم \"أشبال الأطلس\"",
-    "en": "كأس العالم لأقل من 17 سنة (قطر 2026).. باها ، الرباج والعود، الأوراق الرابحة في هجوم \"أشبال الأطلس\""
-   }
-  },
-  {
-   "id": "n1flswpo",
-   "url": "https://cosmeticsbusiness.com/david-beckham-s-company-db-ventures-sues",
-   "source": "Cosmetics Business",
-   "publishedAt": "2026-11-18T12:40:00.000Z",
-   "original": "David Beckham’s company DB Ventures sues after fragrances allegedly found for sale in Poundland",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "David Beckham’s company DB Ventures sues after fragrances allegedly found for sale in Poundland",
-    "en": "David Beckham’s company DB Ventures sues after fragrances allegedly found for sale in Poundland"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Cosmetics Business»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "Coty has produced Beckham’s fragrances since 2005, under a licence with the ex-footballer’s company DB Ventures and Authentic Brands"
-   }
-  },
-  {
-   "id": "nm6syn0",
-   "url": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxOdmRTTzBXRTdsNVl2TUs4SzU0ZE1NY09NNWRwaHBsTTFacW1YcTA3cUZBdXM5TXQwQVZROUpHTnFZeUExTWxnWXBnLWYwOWJrMnpKVm9IcEszeUtyOFVwU2R2ZFRCT0JESk1LS2FGcGN6bFRGRU0zd3FleGVicDRGQlRQaUNWYTY5RGFRMGNZdWs1Z3Z2SzhfWDB5ekUwWENUazN2WFRQSS00MmMzMGZhRXBiWjBVUUJ4bURfQWRHLVFXN0sxZ25vZzBSc3lIMFVCdFhBRmdCaFJucVdNT0FzNE5FVEZjczRxcl9McU5nbEo4UUVaM1pBbjZXMA?oc=5",
-   "source": "Detroit Free Press",
-   "publishedAt": "2026-11-18T12:38:08.000Z",
-   "original": "The Pretty Smells Lab Launches AI Christmas Lifeline for Husbands Who Haven't a Clue What Fragrance to Buy Their Wives",
-   "lang": "en",
-   "category": "launch",
-   "importance": 2,
-   "title": {
-    "ar": "The Pretty Smells Lab Launches AI Christmas Lifeline for Husbands Who Haven't a Clue What Fragrance to Buy Their Wives",
-    "en": "The Pretty Smells Lab Launches AI Christmas Lifeline for Husbands Who Haven't a Clue What Fragrance to Buy Their Wives"
-   },
-   "summary": {
-    "ar": "خبر عن إطلاق عطر جديد من «Detroit Free Press»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "The Pretty Smells Lab Launches AI Christmas Lifeline for Husbands Who Haven't a Clue What Fragrance to Buy Their Wives"
-   }
-  },
-  {
-   "id": "nh49z9m",
-   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNQmJ2T3NhMXVsSmtPRTNTLVIyaDJlRTlpZXBtZVlRN1gwbHJHVHQ4U19ZazFMRk1Mb1RsdGRXT21aWUthUWtiQ1ZZV19mdUVfOUJycE5uQkdBN2JfQW5FSTBQM2dSLVhiOXdsUVZ4dDlXNngySUt5bjYyNnVjZFEyM0RnSTVUbmM?oc=5",
-   "source": "Glossy",
-   "publishedAt": "2026-11-18T11:03:45.000Z",
-   "original": "Why Express is betting on Y2K fragrance nostalgia",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "Why Express is betting on Y2K fragrance nostalgia",
-    "en": "Why Express is betting on Y2K fragrance nostalgia"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «Glossy»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "Why Express is betting on Y2K fragrance nostalgia"
-   }
-  },
-  {
-   "id": "nnsntxd",
-   "url": "https://news.google.com/rss/articles/CBMiwgJBVV95cUxQb0xKZnl6UmJpTFdwN1lqR3l4Mmt6SE5XRkpmNzJkRGpsSUJkYUhfcDEwUzJGUGczQU4zSjhDZndUNDZHNkl5ZndmZDI3b3hlbE9WUUF0ZEw2WEl2ZmRZd3E4bEMyU1Z1WF94amxGQ1FSeVZxc01BV2lVYU93RXNZa0RJMWkzQm1jeHlWVjRNZjJ0OTZYeU02OUNKbFhUVlBiUXFiY1lhdGJxT2o5U2lYdV9QVGpuOEhoUkRIX1ZSU0kteHVHcEYwZzV4NUZfcEYzTUZrZmV3UmhQQVYtdGxFVFVKcGQ0dlpvdURhQ3BnSllMWnVwbDk0dGVWUnlDT2lqbTZ6TjFBd2Y5U1pkeDB3Q2hRMlM4ZGIxVG1oUi1aWEVBTkoyWlJGdUxFemtzRDM5SUg2djVEMGxBSXl4Z0ZnYTdR?oc=5",
-   "source": "ihata",
-   "publishedAt": "2026-11-18T10:32:11.000Z",
-   "original": "بقيادة أحمد القنطاري.. باها والرباج والعود يقودون هجوم أشبال الأطلس في مونديال قطر 2026",
-   "lang": "ar",
-   "category": "culture",
-   "importance": 2,
-   "title": {
-    "ar": "بقيادة أحمد القنطاري.. باها والرباج والعود يقودون هجوم أشبال الأطلس في مونديال قطر 2026",
-    "en": "بقيادة أحمد القنطاري.. باها والرباج والعود يقودون هجوم أشبال الأطلس في مونديال قطر 2026"
-   },
-   "summary": {
-    "ar": "بقيادة أحمد القنطاري.. باها والرباج والعود يقودون هجوم أشبال الأطلس في مونديال قطر 2026",
-    "en": "بقيادة أحمد القنطاري.. باها والرباج والعود يقودون هجوم أشبال الأطلس في مونديال قطر 2026"
-   }
-  },
-  {
-   "id": "n1d7bgo4",
-   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOUzZqckFjM3RPcHlFUjlVeEpQS05HQ1NsdC0tc3UycVF4WFlXMThaa0dKbV9QX01TQUNRSU84OVVaY3BQRDNjYXlsUjVjZ2diOUJmR09zTmk2cGozaUNKVm9ndzdJZEJSSGZTcEdOWEpPeUxpLWRLN3pwYmNzWWNJRlpaQ1dvZUhlZHdYYlZEN0dMcGxxSEFQMHdaOGxNcmRFYklFTjJlNkk4dw?oc=5",
-   "source": "GQ South Africa",
-   "publishedAt": "2026-11-18T10:27:53.000Z",
-   "original": "The biggest fragrance trends of 2026 you should know about",
-   "lang": "en",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "The biggest fragrance trends of 2026 you should know about",
-    "en": "The biggest fragrance trends of 2026 you should know about"
-   },
-   "summary": {
-    "ar": "خبر عن صناعة العطور من «GQ South Africa»، منشور بالإنجليزي. شاهين يقدر يشرحه لك بالعربي.",
-    "en": "The biggest fragrance trends of 2026 you should know about"
-   }
-  },
-  {
-   "id": "n1d1fjcv",
-   "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFByR0huekxrMnBNd3NVUXFFQzB5TFl6b1J0Q0tUQUE0MjFzZzFHeFdBbnV1VERNcmFYbmkweFFFUWhXVHQtMEEweG5iWEV4WkI0Z1cwWdIBVEFVX3lxTFByR0huekxrMnBNd3NVUXFFQzB5TFl6b1J0Q0tUQUE0MjFzZzFHeFdBbnV1VERNcmFYbmkweFFFUWhXVHQtMEEweG5iWEV4WkI0Z1cwWQ?oc=5",
-   "source": "صحيفة الوطن",
-   "publishedAt": "2026-11-18T10:24:26.000Z",
-   "original": "معرض الجواهر العربية والعطور العربية يقدمان تجربة ذكية وسلسة للزوار بمركز البحرين العالمي للمعارض",
-   "lang": "ar",
-   "category": "events",
-   "importance": 2,
-   "title": {
-    "ar": "معرض الجواهر العربية والعطور العربية يقدمان تجربة ذكية وسلسة للزوار بمركز البحرين العالمي للمعارض",
-    "en": "معرض الجواهر العربية والعطور العربية يقدمان تجربة ذكية وسلسة للزوار بمركز البحرين العالمي للمعارض"
-   },
-   "summary": {
-    "ar": "معرض الجواهر العربية والعطور العربية يقدمان تجربة ذكية وسلسة للزوار بمركز البحرين العالمي للمعارض",
-    "en": "معرض الجواهر العربية والعطور العربية يقدمان تجربة ذكية وسلسة للزوار بمركز البحرين العالمي للمعارض"
-   }
-  },
-  {
-   "id": "n1hfcsxk",
-   "url": "https://news.google.com/rss/articles/CBMingRBVV95cUxQSjNPWDQ1a21TekpweVpLbW4yTVg0VTBhT2ROV1pqbGk0RkNjdmJLSzJodXAzNW11X3hodUFwLXlwWWFYeTB1X09MaDk1NkFYRlBQUVpOSHZzMmZFbkI4NHE0RW5aNV9MVl9Za0RIUGhFbFNlaFpqVzh5cVN6Q1Z4Vjd0aEhEUjkyM3d2Rlp1Qnd3TTNCUkUtZjdvZHJCSGwxOHVfcUxicEdKSS04eUMteWtYUlZRTWpvdWJ3Yi04cVBWZGI5STM1THBTalVLV0lNQjlkdXdVaXNXR3A2S1h0ZmN0MmlPTlp5YlJqWGdfUVFNR214THZxT3ZhQjE3QTJsc2NCVVFKakZJUmFzYll3NjRBSGg2dmdibXEyaHhlZGlVZzlDSmFYZzY0YkdyYk5UcWVEM1kwRmpKWmFBVGRPc3h5R2FOTjhwMjZyMUx2aERGaHFFeFZUbTZ1NVhQRkJLcUVkQTRXVU1sN1VYYmJMUjlVMDFHRlZLdUp1OFAyT1lrMms5LU9DZWxhZ3BQVjZ6RDRwZks4WVNZR0gybFZRc2t2QzRDSGo1N1FPSldEd0ZXN05jU0M4eXVFdmVtdGdRNk9faDNUdnJZTHhpRklWMkkxX0tkQTNGWVFiMFFNVHctR0NWQTdYNnZpSFpPTjM2M0pXd285SWQ4bnpic0MzejU4OHpkSm1xWExsYWdXUUllb0FtR2NwQlF2OU56QQ?oc=5",
-   "source": "الشرق الأوسط",
-   "publishedAt": "2026-11-18T08:54:11.000Z",
-   "original": "هل يطوي الذكاء الاصطناعي الخبرة البشرية في عالم العطور؟",
-   "lang": "ar",
-   "category": "industry",
-   "importance": 2,
-   "title": {
-    "ar": "هل يطوي الذكاء الاصطناعي الخبرة البشرية في عالم العطور؟",
-    "en": "هل يطوي الذكاء الاصطناعي الخبرة البشرية في عالم العطور؟"
-   },
-   "summary": {
-    "ar": "هل يطوي الذكاء الاصطناعي الخبرة البشرية في عالم العطور؟",
-    "en": "هل يطوي الذكاء الاصطناعي الخبرة البشرية في عالم العطور؟"
    }
   }
  ]
