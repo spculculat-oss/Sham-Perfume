@@ -67,7 +67,7 @@ The merchant also edits this site from Google AI Studio, synced with this reposi
 ### The AI Studio bridge (recommended setup)
 
 AI Studio should sync with **its own repository** (variable `AISTUDIO_REPO`, default
-`spculculat-oss/Sham-Perfume-Studio`), not with this one: nothing else writes there, so «Sync to GitHub» never
+`spculculat-oss/Sham-new`), not with this one: nothing else writes there, so «Sync to GitHub» never
 hangs. `.github/workflows/aistudio-bridge.yml` (every 30 min, logic in `scripts/aistudio/bridge.ts`) filters
 what changed there, merges it three-way with `main`, runs lint/tests/Pages build, then publishes site files
 (`src/`, `public/`) straight to `main` + Pages, or parks the rest (server, scripts, tests, build settings,

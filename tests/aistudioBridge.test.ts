@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, mkdirSync, rmSync, unlinkSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { after, test } from 'node:test';
-import { classifyPath, commitFromDir, emptyBridge, gitBytes, issueFor, mergeText, planImport, recordRun, runOf } from '../scripts/aistudio/bridge';
+import { DEFAULT_STUDIO_REPO, MAX_DROPPED_SHARE, classifyPath, commitFromDir, droppedShare, emptyBridge, gitBytes, issueFor, mergeText, planImport, recordRun, runOf } from '../scripts/aistudio/bridge';
 import { luhn } from '../scripts/aistudio/review';
 
 const dirs: string[] = [];
@@ -70,7 +70,11 @@ test('first import: stale copies are skipped, real studio changes wait for appro
   assert.deepEqual(Object.keys(f).sort(), ['src/b.ts', 'src/c.ts']);
   assert.equal(f['src/b.ts'].how, 'new');
   assert.equal(f['src/c.ts'].how, 'studio');
-  assert.ok(p.files.every((x) => x.cls === 'review' && x.action === 'write'));
+  // The studio's brand-new file is an addition to the site, so it can go in; a file the site already
+  // has keeps waiting for approval (the studio adapts some files to its own runtime).
+  assert.equal(f['src/b.ts'].cls, 'auto');
+  assert.equal(f['src/c.ts'].cls, 'review');
+  assert.ok(p.files.every((x) => x.action === 'write'));
   assert.deepEqual(skippedPaths(p), ['.github/workflows/w.yml', 'metadata.json', 'src/a.ts', 'src/data/live/r.json']);
   assert.equal(f['src/c.ts'].content!.toString(), 'studio c\n');
 });
@@ -197,4 +201,47 @@ test('a downloaded project (ZIP folder) goes through the same filter, ignoring n
   assert.deepEqual(p.files.map((f) => f.path).sort(), ['.gitignore', 'src/new.tsx'], 'dist/ (ignored) and node_modules never come');
   assert.deepEqual(skippedPaths(p), ['src/a.ts', 'src/data/live/r.json']);
   assert.ok(!p.files.some((f) => f.action === 'delete'), 'src/keep.ts is missing from the download but is not deleted');
+});
+
+test('a studio copy missing whole sections of a site file is never written over it', () => {
+  const r = repo();
+  const full = Array.from({ length: 200 }, (_, i) => `<section id="s${i}">x</section>`).join('\n') + '\n';
+  r.commit('main', { 'src/page.tsx': full, 'src/fresh.tsx': 'short site file\n' });
+  // Sham-new holds only part of the site: this copy is the same file minus many sections (and one small edit).
+  const shorter = full.split('\n').slice(0, 120).join('\n') + '\n<section id="new">studio</section>\n';
+  const s1 = r.commit('studio', { 'src/page.tsx': full });
+  const s2 = r.commit('studio', { 'src/page.tsx': shorter });
+  const p = r.plan(s2, s1);
+  assert.deepEqual(p.files, [], 'the shorter copy is not written');
+  const why = p.skipped.find((x) => x.path === 'src/page.tsx')!;
+  assert.match(why.reason, /ناقصة|أقسام/);
+
+  // A real small edit to a long file still goes through.
+  const edited = full.replace('<section id="s5">x</section>', '<section id="s5">studio</section>');
+  const s3 = r.commit('studio', { 'src/page.tsx': edited });
+  const small = byPath(r.plan(s3, s2))['src/page.tsx'];
+  assert.ok(small.how === 'studio' || small.how === 'merged', `a small edit still gets through (${small.how})`);
+  assert.match(small.content!.toString(), /studio/, 'and it carries the studio change');
+  assert.ok(droppedShare(full, shorter).share > MAX_DROPPED_SHARE);
+  assert.equal(droppedShare(full, edited).share, 0);
+});
+
+test('a name the site already uses that Sham-new did not have is set aside, not swapped', () => {
+  const r = repo();
+  r.commit('main', { 'src/home.tsx': lines(60, ' site') });
+  const s1 = r.commit('studio', { 'src/other.tsx': 'x\n' });
+  const s2 = r.commit('studio', { 'src/home.tsx': lines(10, ' studio') });
+  const p = r.plan(s2, s1);
+  assert.deepEqual(p.files, []);
+  assert.match(p.skipped[0].reason, /أقسام|دمج يدوي/);
+});
+
+test('the studio repository is Sham-new, in code, workflow, robots and the report', () => {
+  const read = (p: string) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
+  assert.equal(DEFAULT_STUDIO_REPO, 'spculculat-oss/Sham-new');
+  for (const file of ['.github/workflows/aistudio-bridge.yml', 'scripts/robots/registry.ts', 'README.md', 'AGENTS.md', 'src/data/live/aistudio-bridge.json']) {
+    const text = read(file);
+    assert.match(text, /Sham-new/, `${file} names the studio repository`);
+    assert.doesNotMatch(text, /Sham-Perfume-Studio/, `${file} no longer points at the old name`);
+  }
 });

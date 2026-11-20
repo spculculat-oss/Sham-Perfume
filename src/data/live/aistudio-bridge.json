@@ -1,9 +1,9 @@
 {
  "version": 1,
  "updatedAt": "2026-10-23T23:57:18.960Z",
- "repo": "spculculat-oss/Sham-Perfume-Studio",
+ "repo": "spculculat-oss/Sham-new",
  "status": "waiting_repo",
- "note": "مستودع جوجل استوديو (spculculat-oss/Sham-Perfume-Studio) لسه مش موجود أو مش عام — اعمله من جوجل استوديو أو اكتب اسمه في AISTUDIO_REPO",
+ "note": "مستودع جوجل استوديو (spculculat-oss/Sham-new) مش متاح من هنا — البوابة على GitHub بتقرأه لما يكون متاح (عام أو برمز AISTUDIO_REPO_TOKEN)",
  "lastStudioSha": "d4e3590eef830eb0ee8da5d225a40c4ca5e94a4e",
  "runs": [
   {
