@@ -214,6 +214,7 @@ export function EngineeringCalculator({ currentLang, minimized, behindModal, onM
     }
     selectHistory(Math.min(index, sheet.history.length - 1));
   };
+  // Cursor movement is not an edit: keep the committed result even if Ans has advanced.
   const moveCursor = (delta: number) => {
     if (!isWorksheet(mode) || layer || !expressionRef.current) return;
     const input = expressionRef.current;
@@ -222,7 +223,6 @@ export function EngineeringCalculator({ currentLang, minimized, behindModal, onM
     input.setSelectionRange(next, next);
     // Do not summon the on-screen keyboard just to move the calculator cursor.
     if (!window.matchMedia('(pointer: coarse)').matches) input.focus({ preventScroll: true });
-    if (sheet.result) updateSheet((current) => ({ ...current, result: undefined }));
   };
   const variableSet = (key: EngineeringVariable, value: EngineeringValue) => setPrefs((current) => ({ ...current, variables: { ...current.variables, [key]: value } }));
   const changeMemory = (op: '+' | '-') => {
@@ -364,7 +364,9 @@ export function EngineeringCalculator({ currentLang, minimized, behindModal, onM
         <button type="button" className="cw-list-option" onClick={() => openTool('units')}><ArrowUpRight size={15} />{t('تحويل الوحدات', 'Unit conversion')}</button>
       </div>;
       case 'history': return <div className="cw-format-list">{sheet.history.length ? sheet.history.map((row, i) => <button key={i} className="cw-list-option cw-history-row" type="button" onClick={() => selectHistory(i)}>
-        <span dir="ltr" className="cw-mono">{row.text}</span><b dir="ltr" className="cw-mono">{row.result.im ? copyableNumber(row.result, false) : displayNumber(row.result.re, currentLang)}</b>
+        <span dir="ltr" className="cw-mono">{row.text}</span><b dir="ltr" className="cw-mono">
+          {exactDecimalText(row.result, currentLang) ?? <LCDValue value={formatReadout(row.result, 'math', precision, angle, currentLang)} />}
+        </b>
       </button>) : <p className="cw-help cw-menu-foot">{standard ? t('السجل لسه فاضي. اضغط = عشان تحفظ الحساب.', 'No history yet. Press = to save your calculation.') : t('السجل لسه فاضي. اضغط EXE عشان تحفظ الحساب.', 'No history yet. Press EXE to save your calculation.')}</p>}</div>;
       default: return null;
     }

@@ -480,8 +480,21 @@ function evaluate(node: Expression, options: EvaluateOptions, policy: Evaluation
     const two = (fn: (a: number, b: number) => number) => { arity(2); return numeric(fn(real(values[0]), real(values[1]))); };
     switch (name) {
       case 'sin': case 'cos': case 'tan': arity(1); return checked(trig(name, real(values[0]), mode, values[0].exact));
-      case 'asin': return one((x) => Math.asin(x) / radians);
-      case 'acos': return one((x) => Math.acos(x) / radians);
+      case 'asin': case 'acos': {
+        arity(1);
+        const v = values[0], x = real(v), e = v.exact;
+        const outside = () => domain('Inverse sine and cosine require a number from −1 to 1.');
+        if (e && !e.symbol) {
+          const absNumerator = e.numerator < 0n ? -e.numerator : e.numerator;
+          if (absNumerator > e.denominator) return outside();
+          // Compute sqrt(1 - x²) from the exact gap to ±1, before x can round to an endpoint.
+          const gap = decimalRatio(e.denominator - absNumerator, e.denominator);
+          const perpendicular = Math.sqrt(gap * (1 + Math.abs(x)));
+          return numeric((name === 'asin' ? Math.atan2(x, perpendicular) : Math.atan2(perpendicular, x)) / radians);
+        }
+        if (Math.abs(x) > 1) return outside();
+        return numeric((name === 'asin' ? Math.asin(x) : Math.acos(x)) / radians);
+      }
       case 'atan': return one((x) => Math.atan(x) / radians);
       case 'atan2': return two((y, x) => Math.atan2(y, x) / radians);
       case 'sinh': return one(Math.sinh);

@@ -98,6 +98,22 @@ test('trig matches the correct quadrant and keeps near-poles separate from undef
   assert.deepEqual(value('1e308/(0.5+0.5i)', { complex: true }), { re: 1e308, im: -1e308 });
 });
 
+test('inverse trig preserves exact inputs at either side of its real endpoints', () => {
+  for (const fn of ['asin', 'acos']) {
+    for (const input of ['1+1e-20', '-1-1e-20', '1.01', '-1.01']) {
+      assert.throws(() => calc(`${fn}(${input})`), /from −1 to 1/);
+    }
+  }
+  // acos(1 − 10⁻²⁰) = sqrt(2 × 10⁻²⁰) to better than double precision.
+  const gap = 1.414213562373095e-10;
+  close(calc('acos(1-1e-20)', { angleMode: 'RAD' }), gap, 1e-14);
+  close(calc('acos(1-1e-20)', { angleMode: 'DEG' }), gap * 180 / Math.PI, 1e-14);
+  close(calc('asin(-1+1e-20)', { angleMode: 'RAD' }), -Math.PI / 2 + gap, 2e-16);
+  assert.equal(calc('acos(1)'), 0);
+  close(calc('acos(-1)', { angleMode: 'GRAD' }), 200, 2e-16);
+  close(calc('asin(-1)'), -90, 2e-16);
+});
+
 test('calculus does not accept an aliased integral, a pole, or a tiny corner as a correct result', () => {
   close(calc('integral(cos(360*32*x),0,1)'), 0, 0, 1e-11);
   close(calc('integral(exp(-x^2),0,1)'), 0.746824132812427, 1e-10);
