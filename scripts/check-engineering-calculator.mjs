@@ -55,6 +55,11 @@ try {
   await compute('77−15÷100='); await expectResult('0.62');
   await compute('2*(3+4)'); assert.match(await result.innerText(), /Use Scientific/);
   await compute('4/0'); assert.match(await result.innerText(), /divide by zero/);
+  await compute('2+3'); await press('×'); await press('2'); await press('Equals');
+  assert.equal(await expression.inputValue(), 'Ans×2'); await expectResult('10');
+  await press('Cursor left'); await expectResult('10');
+  assert.equal(await calc.locator('.cw-lcd-live').count(), 0, 'moving the caret must not recompute using the new Ans');
+  await press('Cursor right'); await press('+'); await press('1'); await press('Equals'); await expectResult('11');
   await press('Scientific');
 
   console.log('Checking live typing, scientific keypad and result formats…');
@@ -88,6 +93,7 @@ try {
   await press('9'); await press('Execute'); await expectResult('9123');
   await compute('tan(90)'); assert.match(await result.innerText(), /undefined/i);
   await press('Previous calculation'); await expectResult('9123');
+  await compute('asin(1+1e-20)'); assert.match(await result.innerText(), /from −1 to 1/);
   // The same operator must continue from Ans on the physical keyboard and on the on-screen keys.
   await compute('1+2');
   await expression.pressSequentially('*4');
@@ -102,10 +108,16 @@ try {
   await calc.getByLabel('Digits for FIX / SCI / ENG').selectOption('0'); await press('Back');
   await compute('3.49'); await expectResult('3');
   await press('Result format'); await press('MATH Exact / textbook');
+  await compute('1/3');
   await compute('9007199254740993'); await expectResult('9007199254740993');
   await page.context().grantPermissions(['clipboard-read', 'clipboard-write'], { origin: new URL(base).origin });
   await press('Copy result'); await calc.getByText('Result copied', { exact: true }).waitFor();
   assert.equal(await page.evaluate(() => navigator.clipboard.readText()), '9007199254740993');
+  await press('Calculation tools'); await press('Calculation history');
+  const history = calc.locator('.cw-history-row');
+  assert.equal((await history.first().locator('b').innerText()).trim(), '9007199254740993');
+  assert.equal(await history.nth(1).locator('[aria-label="1/3"]').count(), 1, 'history keeps exact fractions');
+  await history.first().click(); await expectResult('9007199254740993');
   await press('Variable memory'); await press('Store in C'); await press('Back');
   await compute('7'); await press('Variable memory'); await press('Store in E'); await press('Back');
   await compute('C-9007199254740992+E'); await expectResult('8');
@@ -343,6 +355,8 @@ try {
   assert.equal((await mobileResult.innerText()).trim(), '٧٦٫٨٥');
   await mobilePress('حساب عادي');
   assert.equal((await mobileResult.innerText()).trim(), '٠٫٦٢', 'scientific evaluation never replaces the desk result');
+  for (const key of ['مسح الكل', '٢', '+', '٣', 'يساوي', '×', '٢', 'يساوي', 'المؤشر لليسار']) await mobilePress(key);
+  assert.equal((await mobileResult.innerText()).trim(), '١٠', 'moving the caret on touch keeps the committed answer');
   await mobilePress('أوضاع الحاسبة');
   assert.equal(await mobileCalc.locator('.cw-app-tile').count(), 22);
   await mobilePress('شاهين للمذاكرة'); await mobilePress('نسبة مئوية'); await mobilePress('ابدأ الحل محليًا EXE');
