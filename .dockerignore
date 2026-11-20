@@ -1,0 +1,3 @@
+# The robots' server image (Dockerfile) needs only its start script — never the site, its data or any secret.
+*
+!scripts/robots/boot.sh

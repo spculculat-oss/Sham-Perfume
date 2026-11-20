@@ -27,7 +27,7 @@ one at a time:
 
 - **Code:** `scripts/robots/` — `registry.ts` (each robot's steps, settings and allowed keys, copied from its
   workflow), `runner.ts` (the rules, tested in `tests/robotsServer.test.ts`), `server.mts` (the loop, the daily
-  snapshot and a read-only status page), `boot.sh` + `Dockerfile` (Node 22, the pinned Bun, git, gh, Python).
+  snapshot and a read-only status page), `boot.sh` + the root `Dockerfile` (Node 22, the pinned Bun, git, gh, Python; `.dockerignore` sends only `boot.sh`).
 - **The owner's switches** (`controls.json`) and **the State's pauses** (`state-orders.json`) are read fresh from
   `main` before every run, with the same rule as every workflow's gate (`scripts/owner/gateRule.mjs`).
 - **One commit a day** (commitment 2): results stay on the server and go to `main` in one snapshot commit at

@@ -16,7 +16,16 @@
    - **Actions**: `Read-only` (قراءة بس) — عشان الفحص الشامل يشوف الشغل.
 6. اضغط **Generate token** (اعمل المفتاح) وانسخه. ماتبعتهوش لحد، هتحطه في Render بنفسك بس.
 
-## ٢) إنشاء السيرفر على Render
+## ٢) إنشاء السيرفر على Render — الطريقة السهلة (من غير فيزا)
+
+1. افتح: https://dashboard.render.com/web/new — أو **New** (جديد) ← **Web Service** (خدمة ويب).
+2. اختار المستودع `Sham-Perfume` واضغط **Connect** (توصيل).
+3. **Name** (الاسم): `sham-robots` — **Language**: هيختار `Docker` لوحده — **Instance Type** (نوع السيرفر): **Free**.
+4. **Environment Variables** (الإعدادات السرية): `ROBOTS_GITHUB_TOKEN` و`GEMINI_API_KEY` و`SHAM_ADMIN_TOKEN`.
+5. **Deploy Web Service** (شغّل الخدمة). مفيش أي مسار محتاج يتكتب.
+6. بعد ما يشتغل (اختياري): **Settings** (الإعدادات) ← **Auto-Deploy** (التحديث التلقائي) ← `Off`.
+
+## ٢-ب) أو بالمخطط (Blueprint) — ممكن يطلب فيزا للتأكيد
 
 1. افتح: https://dashboard.render.com/blueprints
 2. اضغط **New Blueprint Instance** (نسخة جديدة من المخطط).

@@ -28,7 +28,7 @@ export const isReadablePath = (path: string) => validPath(path) && TEXT_FILE.tes
 /** Out of Shaheen's reach even with the owner's click — each with the reason shown on the card. */
 const BLOCKED: [RegExp, string][] = [
   [/^\.git\//, 'ملفات git نفسها'],
-  [/^\.github\/|^scripts\/robots\/|^render\.yaml$/, 'ملفات تشغيل الروبوتات (workflows وسيرفر الروبوتات) — بتتعدل من شات وكيل البرمجة بس'],
+  [/^\.github\/|^scripts\/robots\/|^render\.yaml$|^Dockerfile$|^\.dockerignore$/, 'ملفات تشغيل الروبوتات (workflows وسيرفر الروبوتات) — بتتعدل من شات وكيل البرمجة بس'],
   [/^src\/data\/owner\/|^scripts\/owner\/|(^|\/)owner(Authority|Files|Desk)\.ts$/, 'مفاتيح صاحب الموقع وقواعد صلاحيات شاهين نفسها — مايقدرش يغيّرها لنفسه'],
   [/^docs\/|^src\/legal\/|^server\/legal\/|^scripts\/shaheen-import\/guard\.ts$/, 'قرارات المدير القانوني والمستندات — بتتغير بعد مراجعة قانونية بس'],
   [/^src\/data\/live\/|^src\/لغات\/ai\/|^public\/(store-images|p)\//, 'بيانات وتقارير الروبوتات — الروبوتات بس اللي بتكتبها'],
