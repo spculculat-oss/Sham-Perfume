@@ -40,6 +40,7 @@ import { PaymentEnvironmentModal } from './PaymentEnvironmentModal';
 import { ShamAccountDesk } from './ShamAccountDesk';
 import { StoreSalesCategoryChart } from './StoreSalesCategoryChart';
 import { saveMerchant } from '../utils/merchantDataStore';
+import type { SavedPaymentMethod } from '../utils/customerPaymentVault';
 import { FAMILIES, searchText, type Family, type Gender, type StoreProduct } from '../utils/storeCatalog';
 import { productSection, sectionFromHash, STORE_SECTIONS, type StoreSection } from '../utils/storeSections';
 import { cosmeticsText } from '../لغات/cosmeticsL10n';
@@ -697,6 +698,8 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
   const [showReg, setShowReg] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  // The saved card/wallet a visitor picked in the vault window (shown as chosen; the payment itself runs in the checkout).
+  const [chosenSavedMethod, setChosenSavedMethod] = useState<SavedPaymentMethod | undefined>(undefined);
   const [showBank, setShowBank] = useState(false);
   const [form, setForm] = useState({ nameAr: '', email: '', phone: '', pass: '' });
   const register = (e: React.FormEvent) => {
@@ -1182,7 +1185,15 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
             title={pickArEn(currentLang, 'تسجيل البطاقات والمحافظ', 'Register cards and wallets')}
           >
             <CreditCard className="h-4 w-4 text-emerald-600" />
-            <span className="hidden sm:inline">{pickArEn(currentLang, 'بطاقاتي', 'My cards')}</span>
+            {chosenSavedMethod ? (
+              <span className="hidden items-center gap-1.5 sm:inline-flex" data-testid="store-chosen-method">
+                <span className="rounded-lg bg-emerald-50 px-1.5 py-0.5 font-bold text-emerald-800 ring-1 ring-emerald-200">
+                  {pickArEn(currentLang, chosenSavedMethod.title || 'بطاقة محفوظة', chosenSavedMethod.titleEn || 'Saved card')}
+                </span>
+              </span>
+            ) : (
+              <span className="hidden sm:inline">{pickArEn(currentLang, 'بطاقاتي', 'My cards')}</span>
+            )}
           </button>
 
           {/* Become Merchant Button */}
@@ -1997,7 +2008,22 @@ export const Storefront: React.FC<Props> = ({ currentLang, shaheenQuery, retaile
       )}
 
       {/* Customer Payment Vault & Professional Environment Modal */}
-      {showPaymentModal && <PaymentEnvironmentModal currentLang={currentLang} customerId={signedIn ? retailerId : undefined} onRequireAuth={onRequireAuth} onClose={() => setShowPaymentModal(false)} />}
+      {showPaymentModal && (
+        <PaymentEnvironmentModal
+          currentLang={currentLang}
+          customerId={signedIn ? retailerId : undefined}
+          customerName={signedIn ? retailerId : undefined}
+          onRequireAuth={onRequireAuth}
+          onClose={() => setShowPaymentModal(false)}
+          selectableMode
+          onSelectMethod={(method) => {
+            // Picking a saved method here only closes the vault window; the checkout itself still
+            // asks «بنك شام» before any money moves (nothing is marked paid from this window).
+            setShowPaymentModal(false);
+            setChosenSavedMethod(method);
+          }}
+        />
+      )}
 
       {/* Merchant Registration Modal */}
       {showReg && (
