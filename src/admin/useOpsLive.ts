@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { GhJob, GhRun, GhWorkflow } from '../utils/opsLive';
+import { mergeRuns, ROBOTS_SERVER_URLS, serverRunsAsGh, type GhJob, type GhRun, type GhWorkflow, type RobotServerStatus } from '../utils/opsLive';
 
 /**
  * Live GitHub Actions state of the public repository, read in the admin's browser without any key.
@@ -31,6 +31,30 @@ export interface OpsLiveState {
   everyMs: number;
   error?: boolean;
   loading: boolean;
+  /** The robots' server (Render) answered on the last refresh: its runs are in `runs` too. */
+  robotServer?: RobotServerStatus;
+}
+
+/**
+ * The robots' server's own page (no key, no limit). A sleeping free server wakes up on this call and answers on a
+ * later refresh; until then the map says it is waiting for the server.
+ */
+/** The step a server run is on, in the shape of GitHub's jobs (the map shows it the same way). */
+const serverJobs = (server?: RobotServerStatus): Record<number, GhJob[]> => Object.fromEntries((server?.runs || [])
+  .filter((r) => r.status === 'in_progress' && r.step)
+  .map((r) => [r.id, [{ name: r.workflow, status: 'in_progress', conclusion: null, steps: [{ name: r.step!, status: 'in_progress', conclusion: null, number: 1 }] }]]));
+
+/** The address that answered last (asked first next time). */
+let serverUrl = ROBOTS_SERVER_URLS[0];
+async function robotServer(): Promise<RobotServerStatus | undefined> {
+  for (const url of [serverUrl, ...ROBOTS_SERVER_URLS.filter((u) => u !== serverUrl)]) {
+    try {
+      const r = await fetch(`${url}/status`, { cache: 'no-store', signal: AbortSignal.timeout(8_000) });
+      const s = r.ok ? await r.json() as RobotServerStatus : undefined;
+      if (s && Array.isArray(s.runs)) { serverUrl = url; return s; }
+    } catch { /* asleep or not there: the next address */ }
+  }
+  return undefined;
 }
 
 class Limited extends Error { constructor(public until: number) { super('rate limited'); } }
@@ -62,21 +86,24 @@ export function useOpsLive(enabled = true): OpsLiveState & { refresh: () => void
     busy.current = true; tick.current++; lastAt.current = Date.now();
     setState((s) => ({ ...s, loading: true }));
     try {
-      const runs = (await gh<{ workflow_runs?: GhRun[] }>('/runs?per_page=100&branch=main&exclude_pull_requests=true')).workflow_runs || [];
+      const [ghRuns, server] = await Promise.all([gh<{ workflow_runs?: GhRun[] }>('/runs?per_page=100&branch=main&exclude_pull_requests=true'), robotServer()]);
+      const githubRuns = ghRuns.workflow_runs || [];
+      const runs = mergeRuns(githubRuns, serverRunsAsGh(server, serverUrl));
       let workflows: GhWorkflow[] | undefined;
       if (Date.now() - workflowsAt.current > WORKFLOWS_EVERY_MS) {
         workflows = (await gh<{ workflows?: GhWorkflow[] }>('/workflows?per_page=100')).workflows;
         workflowsAt.current = Date.now();
       }
-      const running = runs.filter((r) => r.status === 'in_progress').slice(0, MAX_JOB_READS);
+      // Steps are read for GitHub's runs only (the server's run already says its step).
+      const running = githubRuns.filter((r) => r.status === 'in_progress').slice(0, MAX_JOB_READS);
       const jobs: Record<number, GhJob[]> = {};
       if (tick.current % 2 === 1 || running.some((r) => !seenJobs.current.has(r.id))) {
         for (const r of running) { jobs[r.id] = (await gh<{ jobs?: GhJob[] }>(`/runs/${r.id}/jobs?per_page=20`)).jobs || []; seenJobs.current.add(r.id); }
       }
       setState((s) => ({
-        runs, workflows: workflows || s.workflows, at: Date.now(), loading: false, error: false, limitedUntil: undefined, everyMs: paceMs(remaining),
+        runs, robotServer: server, workflows: workflows || s.workflows, at: Date.now(), loading: false, error: false, limitedUntil: undefined, everyMs: paceMs(remaining),
         // Keep the steps of runs still running when they were not re-read this time.
-        jobs: { ...Object.fromEntries(Object.entries(s.jobs).filter(([id]) => running.some((r) => String(r.id) === id))), ...jobs },
+        jobs: { ...Object.fromEntries(Object.entries(s.jobs).filter(([id]) => running.some((r) => String(r.id) === id))), ...jobs, ...serverJobs(server) },
       }));
     } catch (e) {
       if (e instanceof Limited) limitedUntil.current = e.until;

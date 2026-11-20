@@ -21,16 +21,51 @@ hand in an emergency. Do not run the data-collecting ones from GitHub.
 
 ## Where the robots go
 
+**Since 2026-11-19 the robots run on the robots' server on Render** (the owner's choice: a Render account signed
+in with GitHub). One small web service, defined in `render.yaml`, runs every robot of `SCHEDULES` on its timetable,
+one at a time:
+
+- **Code:** `scripts/robots/` — `registry.ts` (each robot's steps, settings and allowed keys, copied from its
+  workflow), `runner.ts` (the rules, tested in `tests/robotsServer.test.ts`), `server.mts` (the loop, the daily
+  snapshot and a read-only status page), `boot.sh` + the root `Dockerfile` (Node 22, the pinned Bun, git, gh, Python; `.dockerignore` sends only `boot.sh`).
+- **The owner's switches** (`controls.json`) and **the State's pauses** (`state-orders.json`) are read fresh from
+  `main` before every run, with the same rule as every workflow's gate (`scripts/owner/gateRule.mjs`).
+- **One commit a day** (commitment 2): results stay on the server and go to `main` in one snapshot commit at
+  `ROBOTS_SNAPSHOT_HOUR`:30 UTC (default 02:30), with the robots' data files only — never code, never the owner's
+  switches. `scripts/ci/publish.mjs` does nothing per robot there (`SHAM_PUBLISH_MODE=batch`). The push starts
+  `pages.yml`, which runs the full test suite before deploying.
+- **Collecting data** (importer, discover, carriers, trade, news, senses) happens on Render, not on GitHub
+  (commitment 3). The importer still obeys L-03: `SHAM_ALLOW_SCRAPE` is the owner's setting only.
+- **Keys:** entered by the owner on Render (the Blueprint asks for them). Each robot sees only the keys its
+  workflow gave it. `ROBOTS_GITHUB_TOKEN` (the owner's fine-grained token for this repository) pushes the daily
+  snapshot and lets the patrol, the meeting and the State open issues and review pull requests.
+- **Free plan limits:** 512 MB and a small CPU share. Steps that need more are skipped and say so on the status page
+  until `ROBOTS_HEAVY=1` on a bigger plan: the local AI teacher (llama.cpp), the photo cleaner, phone-browser checks
+  (`product-pages-check`, the maneuver's browser pass) and the AI Studio bridge (it builds the whole site). A free
+  service sleeps after 15 minutes without visits; the server visits its own `/health` every 10 minutes and the
+  admin's live map wakes it too. A free instance can restart: the server publishes the day's results when Render
+  stops it.
+- **Where it runs (no card):** the owner's free Hugging Face Space `sham3331/sham-robots` (Docker, CPU basic 2 vCPU /
+  16 GB) — `scripts/robots/huggingface/Dockerfile` runs `scripts/robots/space-setup.sh` (the same tools as the root
+  Dockerfile) and the same `boot.sh`; the keys are the Space's secrets. A free Space sleeps after 48 hours without
+  visits; `SPACE_HOST` gives the server its own address to visit. Steps: `docs/HUGGINGFACE_ROBOTS.md`. Render stays
+  the other home (`render.yaml`).
+- **The ops map** reads `https://sham3331-sham-robots.hf.space/status`, then `https://sham-robots.onrender.com/status`
+  (`ROBOTS_SERVER_URLS` in `src/utils/opsLive.ts`)
+  next to GitHub's runs. The pre-meeting check and the patrol judge the robots by their runs on the server.
+
 | Group | Robots | Main place | Fallback |
 |---|---|---|---|
-| A. Browser & checks | patrol, Manus tours, expert checker, inspection rotation | Robots' server (Oracle Cloud Always Free) | GitLab CI, once a day |
-| B. Import & prices | importer + images, trade (FX, shipping), carriers, news, discover | Robots' server (respecting L-03 and contracts) | PythonAnywhere (FX only) |
-| C. Learning | academy, brain/mind lab, council, languages, localization | Robots' server + Hugging Face (storage) | waits for the server |
-| D. Heavy experiments | model training | Kaggle / Colab, by hand | — |
-| E. Governance | Platform State, ops map, escalation | Vercel backend, woken by Cloudflare Workers cron | robots' server |
-| F. Watchdog | is the site/backend/server up | Cloudflare Workers cron (every 15–30 min) | GitLab, once a day |
-| G. Backups | code mirror, encrypted DB dump, restore test | robots' server | GitLab + Google Drive + Supabase |
+| A. Browser & checks | patrol, Manus tours, expert checker, inspection rotation | Render robots' server (browser passes need `ROBOTS_HEAVY`) | manual run on GitHub |
+| B. Import & prices | importer + images, trade (FX, shipping), carriers, news, discover | Render robots' server (respecting L-03 and contracts) | PythonAnywhere (FX only) |
+| C. Learning | academy, brain/mind lab, council, languages, localization | Render robots' server (+ Hugging Face for storage) | — |
+| D. Heavy experiments | model training, local teacher | Kaggle / Colab, by hand, or Render with `ROBOTS_HEAVY=1` | — |
+| E. Governance | Platform State, ops map, escalation | Render robots' server (own copy of the site) + GitHub on the owner's issues | — |
+| F. Watchdog | is the site/backend/server up | daily `live-smoke.yml` + the doctor every 10 min on Render | GitLab, once a day |
+| G. Backups | code mirror, encrypted DB dump, restore test | GitLab mirror (`pages.yml`) | Google Drive |
 | H. Build & deploy | tests, build, deploy | GitHub Actions (on push / PR only) | GitLab |
+
+The Arabic setup steps for the owner are in `docs/RENDER_ROBOTS.md`.
 
 **Essential work that runs now, within the commitments:**
 
@@ -47,6 +82,6 @@ hand in an emergency. Do not run the data-collecting ones from GitHub.
 `GITLAB_MIRROR_TOKEN` (a GitLab token with `write_repository` only) and never force-pushes.
 
 The timetables are kept in `SCHEDULES` (`src/utils/opsLive.ts`) for the robots' server. `GITHUB_SCHEDULES` lists
-what still runs on GitHub. Until a robot runs on its server, the ops map shows it as
-«متوقف مؤقتاً على GitHub: بيتنقل لسيرفر الروبوتات».
+what still runs on GitHub. When the robots' server does not answer (asleep or not set up yet), the ops map says so
+instead of showing a next turn.
 The full plan, in Arabic, is in the owner's Google Drive («خطة التوزيع الذكية»).

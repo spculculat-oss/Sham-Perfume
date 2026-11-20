@@ -5,17 +5,9 @@ import { loc } from '../../لغات/localize';
 import { METHODS, PRAYER_NAMES, type AsrRule, type PrayerMethod, type PrayerPlace, type PrayerPreferences } from '../../utils/prayerConfig';
 import { prayerSearchKey, type ResolvedPrayerPlace } from '../../utils/prayerPlaces';
 import { prayerDayKey, type PrayerDay, type PrayerEvent } from '../../utils/prayerTimes';
-import { METHOD_NAMES, PRAYER_LABELS, prayerCountryName, prayerFormatters, prayerT } from './prayerText';
+import { METHOD_NAMES, PRAYER_LABELS, prayerCityName, prayerCountryName, prayerFormatters, prayerPlaceLabel, prayerT } from './prayerText';
 
 export type GpsState = 'idle' | 'locating' | 'denied' | 'failed';
-const placeCity = (lang: SupportedLanguage, place: PrayerPlace) => lang === 'ar' ? place.cityAr : place.cityEn;
-export function prayerPlaceLabel(lang: SupportedLanguage, resolved?: ResolvedPrayerPlace): string {
-  if (!resolved) return '';
-  const { place, source } = resolved;
-  const city = placeCity(lang, place);
-  // GPS country can be inferred from a neighboring zone; the useful visible datum is the timezone.
-  return source === 'gps' || place.country === 'UN' ? city : `${city} · ${prayerCountryName(lang, place.country)}`;
-}
 
 export function PrayerSchedulePane({ lang, cities, resolved, prefs, onUpdate, onCity, onGps, onAutomatic, gpsState, method, asr, now, today, upcoming,
   settingsOpen, onSettings, hasGps, suggestedCountry }: {
@@ -91,7 +83,7 @@ export function PrayerSchedulePane({ lang, cities, resolved, prefs, onUpdate, on
           <label>{label('citySearch')}<input type="search" dir="auto" value={search} placeholder={label('cityPlaceholder')} maxLength={80} disabled={!selectedCountry} onChange={(event) => setSearch(event.target.value)} /></label>
         </div>
         <label>{label('city')}<select aria-label={label('city')} value={selectedCity} disabled={!cityRows.length} onChange={(event) => { if (event.target.value) onSelectCity(event.target.value); }}>
-          <option value="">{label('cityChoose')}</option>{cityRows.map((city) => <option key={city.key} value={city.key}>{placeCity(lang, city)} · {city.timeZone}</option>)}
+          <option value="">{label('cityChoose')}</option>{cityRows.map((city) => <option key={city.key} value={city.key}>{prayerCityName(lang, city)} · {city.timeZone}</option>)}
         </select></label>
         {selectedCountry && !cityRows.length && <p className="prayer-help" role="status">{label('cityNoMatch')}</p>}
         <div className="prayer-field-grid">

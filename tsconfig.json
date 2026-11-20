@@ -61,6 +61,8 @@
     "scripts/shaheen-sales/**/*.mts",
     "scripts/shaheen-inventory/**/*.ts",
     "scripts/shaheen-inventory/**/*.mts",
-    "scripts/seo-build.mts"
+    "scripts/seo-build.mts",
+    "scripts/robots/**/*.ts",
+    "scripts/robots/**/*.mts"
   ]
 }

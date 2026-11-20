@@ -108,6 +108,9 @@ async function checkDesktop() {
   assert.equal((await probe(page)).created, 0, 'no AudioContext on entry');
   assert.deepEqual(audioURLs(desktop), []);
   assert.ok(!desktop.requests.some(({ url }) => url.includes('PrayerToolsRuntime')), 'prayer runtime stays lazy');
+  const board = page.locator('[data-testid=prayer-times][data-state=ready]');
+  await board.locator('.prayer-arc').waitFor();
+  assert.equal(await board.locator('[data-key=fajr] time').textContent(), '04:52');
   let dialog = await open(page);
   await dialog.getByTestId('prayer-place').getByText(/Cairo/).waitFor();
   assert.equal(await dialog.getByTestId('prayer-fajr').locator('time').textContent(), '04:52');
@@ -125,6 +128,8 @@ async function checkDesktop() {
   await dialog.getByLabel('City', { exact: true }).selectOption({ label: 'Los Angeles · America/Los_Angeles' });
   await dialog.getByTestId('prayer-place').getByText(/Los Angeles/).waitFor();
   assert.equal(await dialog.locator('.prayer-local-date time').getAttribute('datetime'), '2026-11-17');
+  assert.match(await board.locator('.prayer-place').textContent(), /Los Angeles/);
+  assert.equal(await board.locator('[data-key=fajr] time').getAttribute('datetime'), new Date(await timeOf(dialog, 'fajr')).toISOString());
   assert.match(await dialog.locator('.prayer-method-note').textContent(), /North America · ISNA/);
   await dialog.getByRole('button', { name: 'Use automatic location', exact: true }).click();
   await dialog.getByTestId('prayer-place').getByText(/Cairo/).waitFor();
@@ -160,6 +165,7 @@ async function checkDesktop() {
   await page.evaluate(() => { location.hash = 'guide'; });
   const compact = page.locator('[data-clock-layout="compact"]');
   await compact.waitFor();
+  await compact.getByTestId('prayer-chip').waitFor();
   await cross(page, fajr);
   const notice = page.getByTestId('prayer-notice');
   await notice.getByText(/time for prayer.*Fajr/).waitFor();
@@ -193,6 +199,7 @@ async function checkDesktop() {
   await page.locator('[data-clock-layout="home"]').waitFor();
   await page.reload({ waitUntil: 'domcontentloaded' });
   await page.getByRole('button', { name: 'Show prayer times', exact: true }).waitFor();
+  await page.getByTestId('prayer-times').waitFor({ state: 'detached' });
   dialog = await open(page);
   await dialog.getByRole('button', { name: 'Adhan & reminders', exact: true }).click();
   await state(page, 'off');

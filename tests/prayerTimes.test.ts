@@ -6,7 +6,7 @@ import { ADHAN_RECORDINGS, validAdhanFile, MAX_ADHAN_FILE_BYTES } from '../src/d
 import { ADHKAR, ADHKAR_CATEGORIES, HISN_AL_MUSLIM_URL } from '../src/data/prayerAdhkar';
 import { decodePrayerPreferences, defaultPrayerPreferences, PRAYER_NAMES, REMINDER_PRAYERS, type PrayerPlace } from '../src/utils/prayerConfig';
 import { automaticPrayerPlace, gpsPrayerPlace, parsePrayerCities, placeIsConfirmed, prayerSearchKey } from '../src/utils/prayerPlaces';
-import { asrForCountry, calculatePrayerCalendar, calculatePrayerDay, duePrayer, methodForCountry, prayerDayKey, shiftPrayerDay } from '../src/utils/prayerTimes';
+import { asrForCountry, calculatePrayerCalendar, calculatePrayerDay, duePrayer, methodForCountry, prayerDayKey, prayerSunArc, shiftPrayerDay, splitPrayerRemaining } from '../src/utils/prayerTimes';
 
 const cities = parsePrayerCities(readFileSync(new URL('../src/data/prayerCities.tsv', import.meta.url), 'utf8'));
 function city(name: string, country: string): PrayerPlace {
@@ -213,4 +213,32 @@ test('the local adhkar collection has auditable sources, categories and verbatim
   }
   for (const category of Object.keys(ADHKAR_CATEGORIES)) assert.ok(ADHKAR.some((item) => item.categories.some((c) => c === category)));
   assert.match(HISN_AL_MUSLIM_URL, /^https:\/\/islamhouse\.com\//);
+});
+
+
+test('the clock sun arc and countdown use the selected city’s civil timetable', () => {
+  const day = timings(cairo, '2026-11-18');
+  const rise = day.times.sunrise!;
+  const set = day.times.maghrib!;
+  assert.deepEqual(prayerSunArc(day.times, rise - 60_000), { progress: 0, daylight: false });
+  assert.deepEqual(prayerSunArc(day.times, rise), { progress: 0, daylight: true });
+  assert.deepEqual(prayerSunArc(day.times, (rise + set) / 2), { progress: 0.5, daylight: true });
+  assert.deepEqual(prayerSunArc(day.times, set), { progress: 1, daylight: false });
+  assert.equal(prayerSunArc({ ...day.times, sunrise: undefined }, rise), undefined);
+  assert.deepEqual(splitPrayerRemaining(90 * 60_000), { hours: 1, minutes: 30 });
+  assert.deepEqual(splitPrayerRemaining(-1000), { hours: 0, minutes: 0 });
+  const calendar = calculatePrayerCalendar(cairo, day.key, 'Egyptian', 'standard');
+  assert.equal(calendar.events.find((event) => event.at > day.times.fajr!)?.prayer, 'dhuhr');
+  assert.deepEqual(calendar.events.find((event) => event.at > day.times.isha!), timings(cairo, '2026-11-19').events[0]);
+});
+
+test('the Home board and compact chip share the reminder location and calendar without a prayer API', () => {
+  const clock = readFileSync(new URL('../src/components/VisitorLocalDashboard.tsx', import.meta.url), 'utf8');
+  const board = readFileSync(new URL('../src/components/clock/PrayerTimesBoard.tsx', import.meta.url), 'utf8');
+  const runtime = readFileSync(new URL('../src/components/clock/PrayerToolsRuntime.tsx', import.meta.url), 'utf8');
+  assert.match(clock, /<PrayerClockSummary lang=\{currentLang\} now=\{now\} \/>/);
+  assert.match(clock, /<PrayerClockSummary lang=\{currentLang\} now=\{now\} compact \/>/);
+  for (const text of [board, runtime]) assert.match(text, /usePrayerCalendar\(/);
+  for (const fragment of ['data-testid="prayer-times"', 'data-testid="prayer-chip"', 'prayer-arc', 'prayer-strip']) assert.ok(board.includes(fragment), fragment);
+  assert.doesNotMatch(board, /fetch\(/);
 });

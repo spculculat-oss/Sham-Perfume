@@ -16,13 +16,12 @@
 .prayer-launcher-arrow { color: #e9edb5; }
 [dir='rtl'] .prayer-launcher-arrow { transform: rotate(180deg); }
 .prayer-launcher[data-hidden='true'] { display: block; min-height: 44px; align-self: center; justify-self: start; background: transparent; color: #e8dbcc; font-size: 0.73rem; border-color: transparent; text-decoration: underline; text-underline-offset: 0.22em; box-shadow: none; }
-@media (min-width: 640px) and (max-width: 1023px) { .visitor-instrument-row > .prayer-launcher { grid-column: 1 / -1; } }
-@media (min-width: 1024px) {
-  .visitor-instrument-row { grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr); grid-template-areas: 'compass calculator' 'compass prayer'; }
-  .visitor-instrument-row > .clock-compass { grid-area: compass; }
-  .visitor-instrument-row > .clock-calculator-launcher { grid-area: calculator; }
-  .visitor-instrument-row > .prayer-launcher { grid-area: prayer; }
+.prayer-clock-panel { display: grid; min-width: 0; }
+.prayer-launcher-summary:not([data-hidden='true']) {
+  display: inline-flex; justify-self: end; min-height: 44px; gap: 0.38rem; margin: 0 0.7rem 0.45rem;
+  padding: 0.25rem 0.58rem; border-radius: 0.6rem; font-size: 0.76rem; font-weight: 720;
 }
+.prayer-launcher-summary svg { flex: none; }
 @media (min-width: 740px) { .visitor-clock-compact-details > .prayer-launcher { grid-column: 1 / -1; } }
 @media (min-width: 1000px) {
   .visitor-clock-compact-details { grid-template-columns: minmax(0, 1fr) minmax(0, 21rem) minmax(0, 16rem); }

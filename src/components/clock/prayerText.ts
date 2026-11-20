@@ -1,12 +1,15 @@
 import type { SupportedLanguage } from '../../types/i18n';
 import { makeT, type LText } from '../../لغات/localize';
-import type { PrayerMethod, PrayerName } from '../../utils/prayerConfig';
+import type { PrayerMethod, PrayerName, PrayerPlace } from '../../utils/prayerConfig';
+import type { ResolvedPrayerPlace } from '../../utils/prayerPlaces';
 import { clockLocale } from './clockText';
 
 const PRAYER_TEXT = {
   title: { ar: 'أوقات الصلاة', en: 'Prayer times' },
   launcherHelp: { ar: 'جدول مدينتك، الأذان والأذكار', en: 'Local times, adhan & adhkar' },
   launcherQuiet: { ar: 'اختياري · من غير صوت تلقائي', en: 'Optional · silent by default' },
+  summaryOpen: { ar: 'الأذان والأذكار والإعدادات', en: 'Adhan, adhkar & settings' },
+  summaryEstimate: { ar: 'مواعيد تقديرية · راجع تقويم المسجد', en: 'Estimated times · check your mosque’s timetable' },
   show: { ar: 'إظهار أوقات الصلاة', en: 'Show prayer times' },
   hide: { ar: 'إخفاء الأداة وإيقاف التنبيهات', en: 'Hide tool and turn reminders off' },
   loading: { ar: 'جاري فتح أوقات الصلاة…', en: 'Opening prayer times…' },
@@ -120,4 +123,14 @@ export function prayerFormatters(lang: SupportedLanguage, timeZone: string) {
 export function prayerCountryName(lang: SupportedLanguage, country: string): string {
   try { return new Intl.DisplayNames([clockLocale(lang).locale], { type: 'region' }).of(country) || country; }
   catch { return country; }
+}
+
+export const prayerCityName = (lang: SupportedLanguage, place: PrayerPlace) => lang === 'ar' ? place.cityAr : place.cityEn;
+
+export function prayerPlaceLabel(lang: SupportedLanguage, resolved?: ResolvedPrayerPlace): string {
+  if (!resolved) return '';
+  const { place, source } = resolved;
+  const city = prayerCityName(lang, place);
+  // GPS country can be inferred from a neighboring zone; the useful datum is the timezone.
+  return source === 'gps' || place.country === 'UN' ? city : `${city} · ${prayerCountryName(lang, place.country)}`;
 }

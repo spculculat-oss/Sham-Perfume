@@ -1,0 +1,39 @@
+# «سيرفر الروبوتات» — Render Blueprint (dashboard.render.com → New → Blueprint → this repository).
+# One small web service runs every robot on its timetable (scripts/robots, docs/ROBOT_DISTRIBUTION.md).
+# The keys are entered by the owner on Render when the Blueprint asks for them (sync: false) — never in this file.
+services:
+  - type: web
+    name: sham-robots
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    # The server refreshes the site's code from main by itself after each daily snapshot (no restart on every push).
+    autoDeploy: false
+    envVars:
+      - key: ROBOTS_SNAPSHOT_HOUR
+        value: "2"
+      - key: ROBOTS_HEAVY
+        value: "0"
+      - key: ROBOTS_GITHUB_TOKEN
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: SHAM_ADMIN_TOKEN
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: PERPLEXITY_API_KEY
+        sync: false
+      - key: GSC_SERVICE_ACCOUNT_JSON
+        sync: false
+      - key: BING_WEBMASTER_API_KEY
+        sync: false

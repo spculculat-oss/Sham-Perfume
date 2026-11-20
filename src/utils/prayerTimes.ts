@@ -100,6 +100,19 @@ export function calculatePrayerCalendar(place: PrayerPlace, key: string, method:
   return { today: today && rejected.has(today.key) ? { ...today, events: [], reliable: false } : today, events };
 }
 
+/** Decorative progress between the same sunrise and sunset shown on the clock. */
+export function prayerSunArc(times: PrayerDay['times'], at: number) {
+  const start = times.sunrise;
+  const end = times.maghrib;
+  if (start === undefined || end === undefined || end <= start || !Number.isFinite(at)) return undefined;
+  return { progress: Math.max(0, Math.min(1, (at - start) / (end - start))), daylight: start <= at && at < end };
+}
+
+export function splitPrayerRemaining(ms: number) {
+  const total = Math.max(0, Math.round(ms / 60_000));
+  return { hours: Math.floor(total / 60), minutes: total % 60 };
+}
+
 export const PRAYER_REMINDER_GRACE_MS = 60_000;
 export function duePrayer(events: readonly PrayerEvent[], selected: readonly ReminderPrayer[], after: number, now: number): PrayerEvent | undefined {
   if (!Number.isFinite(after) || !Number.isFinite(now) || after >= now) return undefined;

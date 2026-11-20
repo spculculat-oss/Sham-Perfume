@@ -1,24 +1,20 @@
-import { lazy, Suspense, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Bell, BellRing, BookOpen, CalendarDays, EyeOff } from 'lucide-react';
-import cityData from '../../data/prayerCities.tsv?raw';
 import { ADHAN_RECORDINGS, adhanFileUrl, type AdhanVariant } from '../../data/adhanVoices';
 import type { SupportedLanguage } from '../../types/i18n';
 import { loc } from '../../لغات/localize';
 import type { PrayerPreferences, ReminderMode, ReminderPrayer } from '../../utils/prayerConfig';
-import { asrForCountry, calculatePrayerCalendar, methodForCountry, prayerDayKey, type PrayerEvent } from '../../utils/prayerTimes';
-import { automaticPrayerPlace, gpsPrayerPlace, parsePrayerCities, placeIsConfirmed, type PrayerGeo, type ResolvedPrayerPlace } from '../../utils/prayerPlaces';
+import { gpsPrayerPlace, placeIsConfirmed, type ResolvedPrayerPlace } from '../../utils/prayerPlaces';
+import { PRAYER_CITIES, isPrayerCity, usePrayerCalendar, type PrayerCalendarSettings } from './usePrayerCalendar';
 import { useDisplayTime } from './useClockTools';
 import { PrayerDialog } from './PrayerDialog';
 import { PrayerAdhanPane, type LocalRecordings } from './PrayerAdhanPane';
-import { PrayerSchedulePane, prayerPlaceLabel, type GpsState } from './PrayerSchedulePane';
-import { PRAYER_LABELS, prayerT } from './prayerText';
+import { PrayerSchedulePane, type GpsState } from './PrayerSchedulePane';
+import { PRAYER_LABELS, prayerPlaceLabel, prayerT } from './prayerText';
 import { usePrayerReminders, type PrayerNotice } from './usePrayerReminders';
 import type { AdhanTrack } from './useAdhanAudio';
 
 const AdhkarLibrary = lazy(() => import('./AdhkarLibrary').catch(() => ({ default: ({ lang }: { lang: SupportedLanguage }) => <p className="prayer-warn" role="alert">{prayerT(lang)('loadFailed')}</p> })));
-const CITIES = parsePrayerCities(cityData);
-const CITIES_BY_ID = new Map(CITIES.map((city) => [city.key, city]));
-const EMPTY_EVENTS: readonly PrayerEvent[] = [];
 const TABS = [{ label: 'today', Icon: CalendarDays }, { label: 'adhan', Icon: Bell }, { label: 'adhkar', Icon: BookOpen }] as const;
 type Tab = typeof TABS[number]['label'];
 
@@ -36,35 +32,24 @@ function PrayerReminderNotice({ notice, lang, dismiss, floating, audioError }: {
   </div>;
 }
 
-export default function PrayerToolsRuntime({ lang, geo, browserZone, open, prefs, update, onClose, onHide }: {
-  lang: SupportedLanguage; geo?: PrayerGeo; browserZone?: string; open: boolean; prefs: PrayerPreferences;
+export default function PrayerToolsRuntime({ lang, geo, browserZone, gps, setGps, open, prefs, update, onClose, onHide }: PrayerCalendarSettings & {
+  lang: SupportedLanguage; open: boolean; setGps: (place?: ResolvedPrayerPlace) => void;
   update: (delta: Partial<PrayerPreferences>) => void; onClose: () => void; onHide: () => void;
 }) {
   const label = prayerT(lang);
   const [mode, setMode] = useState<ReminderMode>('off');
   const [tab, setTab] = useState<Tab>('today');
   const [locationSettingsOpen, setLocationSettingsOpen] = useState(false);
-  const [gps, setGps] = useState<ResolvedPrayerPlace>();
   const [gpsState, setGpsState] = useState<GpsState>('idle');
   const gpsToken = useRef(0);
   const [custom, setCustom] = useState<LocalRecordings>({});
   const fileRevision = useRef(0);
   const tabBody = useRef<HTMLDivElement>(null);
   const sectionId = useId();
-  const manual = prefs.cityKey ? CITIES_BY_ID.get(prefs.cityKey) : undefined;
-  const resolved: ResolvedPrayerPlace | undefined = useMemo(() => manual ? { place: manual, source: 'manual' }
-    : gps ?? automaticPrayerPlace(CITIES, geo, browserZone), [manual, gps, geo, browserZone]);
-  const place = resolved?.place;
-  const confirmed = placeIsConfirmed(resolved);
-  const country = place?.country || geo?.country || '';
-  const method = prefs.method === 'auto' ? methodForCountry(country) : prefs.method;
-  const asr = prefs.asr === 'auto' ? asrForCountry(country) : prefs.asr;
   const active = open || mode !== 'off';
   const now = useDisplayTime(active, 1000);
-  const day = active && place ? prayerDayKey(place.timeZone, now) : undefined;
-  const { today, events } = useMemo(() => place && day ? calculatePrayerCalendar(place, day, method, asr)
-    : { today: undefined, events: EMPTY_EVENTS }, [place, day, method, asr]);
-  const upcoming = today?.reliable ? events.find((event) => event.at > now) : undefined;
+  const { resolved, place, method, asr, today, events, upcoming } = usePrayerCalendar({ prefs, geo, browserZone, gps }, active ? now : undefined);
+  const confirmed = placeIsConfirmed(resolved);
   const trackForVariant = useCallback((variant: AdhanVariant): AdhanTrack | undefined => {
     const file = custom[variant];
     if (file) return { file, name: file.name.slice(0, 80) };
@@ -80,7 +65,7 @@ export default function PrayerToolsRuntime({ lang, geo, browserZone, open, prefs
   const cancelGps = () => { gpsToken.current += 1; if (gpsState !== 'idle') setGpsState('idle'); };
   const close = () => { cancelGps(); audio.stop('preview'); onClose(); };
   const selectCity = (key: string) => {
-    if (!CITIES_BY_ID.has(key)) return;
+    if (!isPrayerCity(key)) return;
     cancelGps(); setGps(undefined); update({ cityKey: key });
   };
   const selectAutomatic = () => { cancelGps(); setGps(undefined); update({ cityKey: null }); };
@@ -91,7 +76,7 @@ export default function PrayerToolsRuntime({ lang, geo, browserZone, open, prefs
     try {
       navigator.geolocation.getCurrentPosition(({ coords }) => {
         if (token !== gpsToken.current) return;
-        const location = gpsPrayerPlace(CITIES, coords);
+        const location = gpsPrayerPlace(PRAYER_CITIES, coords);
         if (!location) { setGpsState('failed'); return; }
         setGps(location); update({ cityKey: null }); setGpsState('idle');
       }, (error) => {
@@ -122,7 +107,7 @@ export default function PrayerToolsRuntime({ lang, geo, browserZone, open, prefs
     </nav>
     {notice}
     <div ref={tabBody} id={sectionId} className="prayer-scroll">
-      {tab === 'today' && <PrayerSchedulePane lang={lang} cities={CITIES} resolved={resolved} prefs={prefs} onUpdate={update} onCity={selectCity} onGps={requestGps} onAutomatic={selectAutomatic}
+      {tab === 'today' && <PrayerSchedulePane lang={lang} cities={PRAYER_CITIES} resolved={resolved} prefs={prefs} onUpdate={update} onCity={selectCity} onGps={requestGps} onAutomatic={selectAutomatic}
         gpsState={gpsState} method={method} asr={asr} now={now} today={today} upcoming={upcoming} settingsOpen={locationSettingsOpen} onSettings={setLocationSettingsOpen} hasGps={!!gps} suggestedCountry={geo?.country} />}
       {tab === 'adhan' && <PrayerAdhanPane lang={lang} prefs={prefs} update={update} canArm={canArm} hasPlace={confirmed} hasSchedule={Boolean(today?.reliable)} audio={audio}
         files={custom} onFile={pickFile} onPreview={preview} onChoosePlace={() => { setLocationSettingsOpen(true); jumpTo('today'); }} />}

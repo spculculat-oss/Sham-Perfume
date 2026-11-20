@@ -36,12 +36,15 @@ import {
   type WeatherKind,
 } from '../utils/visitorLocal';
 import { apiUrl, isStaticHosting } from '../utils/api';
+import { resolveVisitorEntryLocation } from '../data/worldEntryGazetteer';
 import { ClockToolsLaunchers } from './clock/ClockTools';
 import { HomeHeadlineBriefing } from './clock/HomeHeadlineBriefing';
 import { clockLocale } from './clock/clockText';
 import { ClockCalculatorLauncher, type ClockCalculatorState } from './clock/ClockCalculatorLauncher';
 import { VisitorCompass } from './clock/VisitorCompass';
-import { PrayerToolsLauncher, PrayerToolsProvider } from './clock/PrayerTools';
+import { ClockSkyLegend, skySurfaceProps } from './clock/ClockSkyLegend';
+import { skyStyle, useClockSky } from './clock/useClockSky';
+import { PrayerClockSummary, PrayerToolsLauncher, PrayerToolsProvider } from './clock/PrayerTools';
 import type { PrayerGeo } from '../utils/prayerPlaces';
 
 const TEXT = {
@@ -77,6 +80,7 @@ const TEXT = {
   location_failed: { ar: 'ماقدرناش نحدد موقعك دلوقتي', en: 'Could not determine your location right now' },
   permission_note: { ar: 'موقع الجهاز مش هيتحدد إلا بموافقتك؛ الطقس يستخدم إحداثيات تقريبية', en: 'Device location is used only with permission; weather uses rounded coordinates' },
   powered_by: { ar: 'بيانات الطقس من', en: 'Weather data by' },
+  sky_hint: { ar: 'المس الزجاج أو اسحبه يغيّر ضوء البار', en: 'Tap the glass or drag it to change the light' },
 } satisfies Record<string, LText>;
 
 const WEATHER_ICONS: Record<WeatherKind, LucideIcon> = {
@@ -136,6 +140,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
   const [weatherError, setWeatherError] = useState(false);
   const [locationRequest, setLocationRequest] = useState<LocationRequestState>('idle');
   const deviceLocation = useRef<VisitorEntryLocation | undefined>(undefined);
+  const sky = useClockSky(now, timeZone || 'UTC');
   const label = makeT(currentLang, TEXT);
   useEffect(() => { if (showHomeDetails) setCompactTools(false); }, [showHomeDetails]);
 
@@ -197,7 +202,11 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
       try {
         let nextTimeZone: string | undefined;
         let nextCountry: string | undefined;
-        let nextPlace = deviceLocation.current;
+        // Keep a timezone hub for the clock's location strip until the network
+        // returns a city. Prayer tools resolve their own place without using weather GPS.
+        let nextPlace = deviceLocation.current
+          || resolveVisitorEntryLocation({ country: entryCountry, timezone: timeZone })
+          || resolveVisitorEntryLocation({ timezone: timeZone });
 
         if (!isStaticHosting) {
           try {
@@ -249,6 +258,17 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
       window.clearInterval(timer);
     };
   }, [currentLang]);
+
+  // The timezone can arrive after the first geo/weather pass (server clock or CDN
+  // headers). Keep the clock's approximate location strip in step without GPS.
+  useEffect(() => {
+    setPlace((current) => {
+      if (hasCityPrecision(current)) return current;
+      return resolveVisitorEntryLocation({ country: entryCountry, timezone: timeZone })
+        || resolveVisitorEntryLocation({ timezone: timeZone })
+        || current;
+    });
+  }, [entryCountry, timeZone]);
 
   const requestDeviceLocation = async () => {
     setLocationRequest('loading');
@@ -349,7 +369,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
 
   const compactDashboard = !showHomeDetails ? (
     <section data-testid="visitor-local-dashboard" data-clock-layout="compact" aria-label={label('local_info')} className="visitor-clock-compact mx-auto w-full max-w-7xl shrink-0 px-4 pt-2 sm:px-8">
-      <div className="visitor-clock-compact-shell">
+      <div className="visitor-clock-compact-shell clock-glass" style={skyStyle(sky)} {...skySurfaceProps(sky)}>
         <div className="visitor-clock-compact-top">
           <div className="visitor-clock-compact-time" title={`${label('local_time')} · ${clockStatusText} · ${dateText}`}>
             <Clock3 size={16} aria-hidden="true" />
@@ -359,7 +379,9 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
           <span className="visitor-clock-compact-weather" title={weatherText}>
             <ConditionIcon size={14} aria-hidden="true" /><bdi dir="ltr">{temperatureText}</bdi>
           </span>
+          <PrayerClockSummary lang={currentLang} now={now} compact />
           <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} compact />
+          <ClockSkyLegend sky={sky} lang={currentLang} compact />
           <button className="visitor-clock-compact-toggle" type="button" aria-expanded={compactTools} aria-controls={detailsId} onClick={() => setCompactTools((open) => !open)}>
             {label('clock_tools')}<ChevronDown size={13} aria-hidden="true" />
           </button>
@@ -367,6 +389,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
         <div id={detailsId} hidden={!compactTools}>
           {compactTools && <>
             <div className="visitor-clock-compact-details">
+              <ClockSkyLegend sky={sky} lang={currentLang} />
               <ClockToolsLaunchers lang={currentLang} timeZone={localTimeZone} />
               <VisitorCompass lang={currentLang} />
               <PrayerToolsLauncher lang={currentLang} />
@@ -385,7 +408,17 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
       aria-label={label('local_info')}
       className="mx-auto w-full max-w-7xl px-4 pt-3 sm:px-8"
     >
-      <div className="overflow-hidden rounded-[28px] border border-amber-100/25 bg-gradient-to-br from-[#735844] via-[#3e2f25] to-[#4f3627] text-white shadow-[0_18px_45px_rgba(73,45,25,0.3)]">
+      <div
+        className="clock-glass overflow-hidden rounded-[28px] border border-amber-100/25 bg-gradient-to-br from-[#735844] via-[#3e2f25] to-[#4f3627] text-white shadow-[0_18px_45px_rgba(73,45,25,0.3)]"
+        style={skyStyle(sky)}
+        {...skySurfaceProps(sky)}
+        data-sky-phase={sky.phase}
+      >
+        <span className="clock-glass-sheen" aria-hidden="true" />
+        <div className="clock-sky-toolbar">
+          <span className="clock-sky-caption">{label('sky_hint')}</span>
+          <ClockSkyLegend sky={sky} lang={currentLang} />
+        </div>
         <div className="visitor-clock-board" dir="ltr">
           <div className="visitor-clock-face">
             <div className="grid grid-cols-[32px_minmax(0,1fr)_64px] items-center gap-2 p-4 sm:grid-cols-[48px_minmax(0,1fr)_112px] sm:gap-5 sm:p-5" dir="ltr">
@@ -426,10 +459,12 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
             </div>
             <ClockToolsLaunchers lang={currentLang} timeZone={localTimeZone} />
           </div>
-          <div className="visitor-instrument-row" dir={SUPPORTED_LANGUAGES.find((language) => language.code === currentLang)?.dir}>
-            <VisitorCompass lang={currentLang} />
-            <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} />
-            <PrayerToolsLauncher lang={currentLang} />
+          <div className="visitor-clock-side">
+            <PrayerClockSummary lang={currentLang} now={now} />
+            <div className="visitor-instrument-row" dir={SUPPORTED_LANGUAGES.find((language) => language.code === currentLang)?.dir}>
+              <VisitorCompass lang={currentLang} />
+              <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} />
+            </div>
           </div>
         </div>
         {locationStrip}

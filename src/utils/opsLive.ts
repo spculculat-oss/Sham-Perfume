@@ -14,9 +14,9 @@ import type { StateOrders } from './platformState';
 
 // ── Schedules (UTC cron) and the other triggers ──────────────────────────────────────────────────────────────
 /**
- * The robots' timetables (UTC cron). Since 2026-11 they are kept for the robots' own server
- * (docs/ROBOT_DISTRIBUTION.md): GitHub Actions only builds, tests and deploys the site, so a timetable listed
- * here but not in GITHUB_SCHEDULES does not run on GitHub (see OFF_GITHUB).
+ * The robots' timetables (UTC cron). Since 2026-11 they run on the robots' own server (a free Hugging Face Space, or Render)
+ * (scripts/robots, docs/ROBOT_DISTRIBUTION.md): GitHub Actions only builds, tests and deploys the site, so a
+ * timetable listed here but not in GITHUB_SCHEDULES does not run on GitHub (see OFF_GITHUB).
  */
 export const SCHEDULES: Record<string, string[]> = {
   'aistudio-bridge.yml': ['7,37 * * * *'],
@@ -57,8 +57,42 @@ export const SCHEDULES: Record<string, string[]> = {
 export const GITHUB_SCHEDULES: Record<string, string[]> = {
   'live-smoke.yml': ['0 6 * * *'],
 };
-/** Robots whose timetable no longer runs on GitHub: paused there until they move to the robots' server. */
+/** Robots whose timetable no longer runs on GitHub: they run on the robots' server instead. */
 export const OFF_GITHUB: ReadonlySet<string> = new Set(Object.keys(SCHEDULES).filter((f) => !GITHUB_SCHEDULES[f]));
+
+// ── The robots' server (a free Hugging Face Space; Render as the other home) ──────────────────────────────────
+/**
+ * Where the robots' server may answer, in order: the owner's free Space «sham3331/sham-robots» (no card —
+ * docs/HUGGINGFACE_ROBOTS.md), then the Render web service (render.yaml). Read-only, no key, no personal data.
+ */
+export const ROBOTS_SERVER_URLS: readonly string[] = ['https://sham3331-sham-robots.hf.space', 'https://sham-robots.onrender.com'];
+export const ROBOTS_SERVER_URL = ROBOTS_SERVER_URLS[0];
+/** One robot run on the server, as its /status page lists it. */
+export interface RobotServerRun {
+  id: number; workflow: string; status: 'queued' | 'in_progress' | 'completed';
+  conclusion: 'success' | 'failure' | 'skipped' | 'timed_out' | 'cancelled' | null;
+  trigger: 'schedule' | 'rerun' | 'boot'; createdAt: string; startedAt?: string; updatedAt: string;
+  /** The step running now (or the step that failed). */
+  step?: string; failedStep?: string; errors?: string[];
+  /** Steps left out because the server is too small for them (heavy), or why the whole run was skipped. */
+  skipped?: string[]; noteAr?: string;
+}
+export interface RobotServerStatus {
+  ok: boolean; startedAt: string; at: string; heavy: boolean;
+  runs: RobotServerRun[]; queue: string[];
+  snapshot: { lastAt?: string; lastSha?: string; pending: number; nextAt?: string; error?: string };
+}
+/** The server's runs in the shape of GitHub's runs, newest first — so the live map reads both the same way. */
+export function serverRunsAsGh(status: Pick<RobotServerStatus, 'runs'> | undefined, url = ROBOTS_SERVER_URL): GhRun[] {
+  return (status?.runs || []).map((r) => ({
+    id: r.id, name: r.workflow, path: `.github/workflows/${r.workflow}`, event: r.trigger === 'rerun' ? 'repository_dispatch' : 'schedule',
+    status: r.status, conclusion: r.conclusion, created_at: r.createdAt, updated_at: r.updatedAt, run_started_at: r.startedAt,
+    html_url: `${url}/status`, head_branch: 'main', display_title: r.noteAr || r.step || r.workflow,
+  })).sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
+}
+/** GitHub's runs and the server's together, newest first (the map keeps the newest run of each robot). */
+export const mergeRuns = (github: GhRun[], server: GhRun[]): GhRun[] =>
+  [...github, ...server].sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
 
 /** What starts a workflow that has no timetable (or also starts it besides the timetable). */
 export const TRIGGERS_AR: Record<string, string> = {
@@ -191,7 +225,7 @@ export function botLive(bot: Bot, input: { latest: Record<string, GhRun>; finish
   if (input.pausedBy) {
     return { id: bot.id, state: 'paused', pausedBy: input.pausedBy, noteAr: PAUSED_AR[input.pausedBy] };
   }
-  // Its timetable left GitHub (2026-11): no next turn here until it runs on the robots' server.
+  // Its timetable left GitHub (2026-11): when the robots' server does not answer, no fake next turn is shown.
   if (OFF_GITHUB.has(wf) && !input.onRobotServer) {
     return { id: bot.id, state: 'paused', pausedBy: 'moving', noteAr: PAUSED_AR.moving };
   }
@@ -212,7 +246,7 @@ export function botLive(bot: Bot, input: { latest: Record<string, GhRun>; finish
 
 export const PAUSED_AR: Record<PausedBy, string> = {
   owner: 'موقوف بأمر صاحب الموقع', state: 'موقوف بأمر دولة المنصة', frozen: 'موقوف: فرامل الطوارئ شغالة (كل الروبوتات واقفة)',
-  moving: 'متوقف مؤقتاً على GitHub: بيتنقل لسيرفر الروبوتات (تشغيل يدوي بس لحد كده)',
+  moving: 'سيرفر الروبوتات مش بيرد دلوقتي — بيصحى أو لسه بيتجهز، والروبوت مستنيه (تشغيل يدوي من GitHub في الطوارئ بس)',
 };
 /** Who stopped a bot on purpose: its workflow's gate stops it when any robot sharing that workflow is paused. */
 export function pausedByOf(bot: Bot, controls?: OwnerControls, stateOrders?: StateOrders): PausedBy | undefined {

@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updatedAt": "2026-11-18T14:08:15.187Z",
- "nextUpdateAt": "2026-11-19T02:08:15.187Z",
+ "updatedAt": "2026-11-19T19:01:47.197Z",
+ "nextUpdateAt": "2026-11-20T07:01:47.197Z",
  "editor": "shaheen",
  "entries": {
   "LAT-052": {
@@ -46770,11 +46770,11 @@
   "GRA-1073": {
    "sourceHash": "10p8i87",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "كوديس بروفومو مان من غراندور إليت 100 مل",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "جودر إيليت كوديس برفومو للرجال",
    "nameEn": "Codice Profumo Man by Grandeur Elite – 100 ml for Men",
-   "descriptionAr": "عطر رجالي فاخر ينبض بالدفء والتوابل الشرقية الغنية. يفتتح بنفحات الهيل والتفاح واليوسفي ليمهّد لقلب عطري من العنبر واللافندر وحبوب التونكا.",
-   "descriptionEn": "Codice Profumo Man by Grandeur Elite – 100 ml Eau de Parfum for Men\nFragrance Family: Amber • Woody • Spicy\nTop Notes: Cardamom, Mandarin, Apple\nMiddle Notes: Amber, Lavender, Tonka Bean\nBase Notes: Leather, Patchouli, Vetiver",
+   "descriptionAr": "عطر رجالي يجمع بين نفحات الهيل والماندارين والتفاح، مع قلب غني بالعنبر والخزامى وفول التونكا ونهاية من الجلد والباتشولي ونجيل الهند.",
+   "descriptionEn": "Codice Profumo Man by Grandeur Elite is an amber, woody and spicy fragrance featuring top notes of cardamom, mandarin and apple, a heart of amber, lavender and tonka bean, and a base of leather, patchouli and vetiver.",
    "gender": "men",
    "families": [
     "amber",
@@ -46799,29 +46799,29 @@
     ]
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "غراندور إليت",
-    "كوديس بروفومو",
-    "عطر رجالي شرقي",
-    "عطر توابل",
-    "عطور رجالية فاخرة"
-   ]
+    "جودر",
+    "عطر رجالي",
+    "عنبر خشبي",
+    "برفومو"
+   ],
+   "style": 2
   },
   "VEL-1074": {
    "sourceHash": "jcrwo1",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "فيليكسير أثينا 100 مل أودو بارفان",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "فيليكسير أثينا",
    "nameEn": "Velixir Athena 100ml EDP",
-   "descriptionAr": "عطر زهري خشبي متوازن يمنحك شعوراً بالأناقة والنعومة النابضة بالحياة. يبدأ بنفحات فواكه وحمضيات مشرقة ليستقر على قاعدة دافئة من الأخشاب والمسك الخفيف.",
-   "descriptionEn": "Velixir Athena 100ml EDP is a floral woody fragrance designed for those who prefer a refined balance of freshness and soft elegance. It opens with bright fruity and citrus nuances that deliver a clean and uplifting introduction. The heart develops into a smooth floral blend, adding a delicate and so",
+   "descriptionAr": "عطر بتركيبة زهرية خشبية يمنح توازناً بين الانتعاش والأناقة الناعمة، مع قاعدة خشبية دافئة ونفحات مسكية لطيفة.",
+   "descriptionEn": "Velixir Athena is a floral woody fragrance offering a refined balance of freshness and soft elegance, settling into warm woody notes with a soft musky base.",
    "gender": "unisex",
    "families": [
     "floral",
@@ -46833,34 +46833,33 @@
     "base": []
    },
    "seasons": [
-    "summer",
     "spring",
-    "all"
+    "summer"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "work"
    ],
    "tags": [
-    "فيليكسير أثينا",
-    "عطر زهري خشبي",
-    "عطر نسائي ورجالي",
-    "عطر يومي",
-    "فيليكسير"
-   ]
+    "فيليكسير",
+    "أثينا",
+    "عطر زهري خشبى",
+    "يومي"
+   ],
+   "style": 2
   },
   "VEL-1075": {
    "sourceHash": "1g2fcuu",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "فيليكسير بوسيدون 100 مل أودو بارفان",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "فيليكسير بوسيدون",
    "nameEn": "Velixir Poseidon 100ml EDP",
-   "descriptionAr": "عطر حمضيات مائي منعش يعكس طاقة المحيطات وحيويتها. يبدأ بنفحات ساطعة من البرغاموت واليوسفي والزنجبيل ويستقر على قاعدة من العنبر الرمادي والمسك.",
-   "descriptionEn": "Velixir Poseidon 100ml EDP is a citrus aromatic fragrance designed for those who prefer a fresh, aquatic and energetic scent profile. It opens with a bright blend of bergamot and mandarin orange, delivering a clean, juicy and vibrant introduction. The heart develops into ginger, adding a crisp spicy",
+   "descriptionAr": "عطر منعش ذو طابع مائي وحمضي، يفتتح بنفحات البرغموت والماندارين ويتوسطه الزنجبيل مع قاعدة من العنبر الرمادي.",
+   "descriptionEn": "Velixir Poseidon is a citrus aromatic and aquatic fragrance featuring top notes of bergamot and mandarin orange, a heart of ginger, and a base of ambergris.",
    "gender": "unisex",
    "families": [
-    "aquatic",
     "citrus",
-    "fresh"
+    "aquatic"
    ],
    "notes": {
     "top": [
@@ -46875,28 +46874,28 @@
     ]
    },
    "seasons": [
-    "summer",
-    "spring"
+    "summer"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "work"
    ],
    "tags": [
-    "فيليكسير بوسيدون",
+    "بوسيدون",
+    "فيليكسير",
     "عطر مائي",
-    "عطر حمضيات",
-    "عطر صيفي منعش",
-    "فيليكسير"
-   ]
+    "منعش"
+   ],
+   "style": 2
   },
   "ASD-1076": {
    "sourceHash": "1y9qbd7",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "سعود من أصداف 100 مل أودو بارفان للجنسين",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "سعود من أصداف",
    "nameEn": "Sa'ud by Asdaaf 100ml EDP Unisex",
-   "descriptionAr": "عطر زهري خشبي مسكي للجنسين يفتتح بنفحات منعشة من البرتقال واليوسفي والبيرغاموت. يضم قلباً أنيقاً من الياسمين والورد ليرتكز على قاعدة دافئة من المسك والأخشاب والعود.",
-   "descriptionEn": "Sa'ud by Asdaaf – 100ml Eau de Parfum Unisex\nSa'ud by Asdaaf is a floral woody musk fragrance for women and men. It opens with fresh and juicy orange, mandarin and bergamot. The heart combines elegant jasmine and rose, before settling into a warm base of musk, jasmine, woods and oud. The overall sce",
+   "descriptionAr": "عطر مختلط يجمع بين نفحات البرتقال والماندارين والبرغموت، يليه قلب من الياسمين والورد، وقاعدة من المسك والأخشاب والعود.",
+   "descriptionEn": "Sa'ud by Asdaaf is a floral woody musk fragrance featuring top notes of orange, mandarin and bergamot, a heart of jasmine and rose, and a base of musk, jasmine, woods and oud.",
    "gender": "unisex",
    "families": [
     "floral",
@@ -46925,25 +46924,24 @@
    ],
    "occasions": [
     "daily",
-    "work",
-    "special"
+    "work"
    ],
    "tags": [
-    "أصداف سعود",
-    "عطر سعود للجنسين",
-    "عطر مسكي خشبي",
-    "عطور عربية",
-    "عطر بالعود"
-   ]
+    "سعود",
+    "أصداف",
+    "عطر مختلط",
+    "مسك وأخشاب"
+   ],
+   "style": 2
   },
   "PEN-1077": {
    "sourceHash": "19oce7q",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "وان بندورا سنتس للرجال 100 مل",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "ون بندورا سنتس للرجال",
    "nameEn": "One Pendora Scents For Him – 100 ml for Men",
-   "descriptionAr": "عطر رجالي منعش وفواكهي يجمع بين الحيوية والدفء في تركيبة متكاملة. يبرز بقلب غني بالبنفسج والياسمين والقاعدة الخشبية الدافئة من خشب الصندل والعنبر.",
-   "descriptionEn": "One Pendora Scents For Him – 100 ml Eau de Parfum for Men\nFragrance Family: Fresh • Fruity • Woody Top Notes: Pineapple, Tangerine, Papaya Middle Notes: Violet, Jasmine, Iris, Rose Base Notes: Sandalwood, Amber, Cedarwood, Oak Moss",
+   "descriptionAr": "عطر رجالي يبدأ برائحة الأناناس واليوسفي والبابايا، مع قلب من البنفسج والياسمين والسوسن والورد، وقاعدة من خشب الصندل والعنبر وخشب الأرز والطحلب.",
+   "descriptionEn": "One Pendora Scents For Him is a fresh, fruity and woody fragrance featuring top notes of pineapple, tangerine and papaya, a heart of violet, jasmine, iris and rose, and a base of sandalwood, amber, cedarwood and oak moss.",
    "gender": "men",
    "families": [
     "fresh",
@@ -46970,34 +46968,33 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
-    "all"
+    "summer"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "work"
    ],
    "tags": [
-    "بندورا سنتس",
-    "وان بندورا",
-    "عطر رجالي منعش",
-    "عطر فواكهي",
-    "عطور باريس كورنر"
-   ]
+    "بندورا",
+    "عطر رجالي",
+    "فواكه",
+    "أخشاب"
+   ],
+   "style": 2
   },
   "PEN-1078": {
    "sourceHash": "cxwv0p",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "كلوب إنتنس للرجال 100 مل من بندورا",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "كلوب إنتنس للرجال من باريس كورنر",
    "nameEn": "Club Intense 100ml EDP Men Paris Corner Pendora",
-   "descriptionAr": "عطر رجالي خشبي أروماتك بتوابل حارة يعكس الشخصية القوية الواثقة. يبدأ بالبيرغاموت والليمون وينتهي بقاعدة عميقة من العنبر والمسك وخشب الأرز.",
-   "descriptionEn": "Club Intense by Paris Corner – 100 ml Eau de Parfum for Men\nFragrance Family: Woody • Aromatic • Spicy Top Notes: Bergamot, Lemon Middle Notes: Cardamom, Pepper, Lavender Base Notes: Amber, Cedarwood, Musk",
+   "descriptionAr": "عطر رجالي خشبي وتوابلي يفتتح بالبرغموت والليمون، مع قلب من الهيل والفلفل والخزامى، وقاعدة من العنبر وخشب الأرز والمسك.",
+   "descriptionEn": "Club Intense by Paris Corner is a woody, aromatic and spicy fragrance featuring top notes of bergamot and lemon, a heart of cardamom, pepper and lavender, and a base of amber, cedarwood and musk.",
    "gender": "men",
    "families": [
     "woody",
-    "spicy",
-    "fresh"
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -47017,34 +47014,32 @@
    },
    "seasons": [
     "autumn",
-    "winter",
-    "all"
+    "winter"
    ],
    "occasions": [
     "evening",
-    "daily"
+    "special"
    ],
    "tags": [
     "كلوب إنتنس",
-    "بندورا سنتس",
-    "عطر رجالي خشبي",
-    "عطور باريس كورنر",
-    "عطر توابل"
-   ]
+    "باريس كورنر",
+    "عطر رجالي",
+    "توابل وخشب"
+   ],
+   "style": 2
   },
   "VEL-1079": {
    "sourceHash": "vyed52",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "فيليكسير أدونيس 100 مل أودو بارفان",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "فيليكسير أدونيس",
    "nameEn": "Velixir Adonis 100ml EDP",
-   "descriptionAr": "عطر شرقي فانيلا دافئ ومغرٍ يجمع بين النفحات العطرية المنعشة والحلاوة العميقة. يفتتح باللافندر والنعناع ليقود إلى قلب كريمي من الفانيلا والريزين، مستقراً على قاعدة من العنبر والتونكا والعسل والتبغ.",
-   "descriptionEn": "Velixir Adonis 100ml EDP is a warm oriental vanilla fragrance designed for those who prefer a balance between fresh aromatics and deep sweet richness. It opens with lavender, mint and citrus notes that provide a clean and slightly invigorating start. The heart develops into creamy Madagascar vanilla",
+   "descriptionAr": "عطر مختلط بتركيبة شرقية فانيلا تجمع بين انتعاش الخزامى والنعناع ودفء فانيلا مدغشقر مع لمحات العسل والتبغ.",
+   "descriptionEn": "Velixir Adonis is an oriental vanilla fragrance featuring top notes of lavender and mint, a heart of vanilla and benzoin, and a base of amber, tonka bean, honey and tobacco.",
    "gender": "unisex",
    "families": [
     "oriental",
-    "gourmand",
-    "amber"
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -47063,33 +47058,33 @@
     ]
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "فيليكسير أدونيس",
-    "عطر فانيلا شرقي",
-    "عطر دافئ",
-    "عطر مسائي",
-    "فيليكسير"
-   ]
+    "أدونيس",
+    "فيليكسير",
+    "فانيلا شرقي",
+    "مساء"
+   ],
+   "style": 2
   },
   "PEN-1080": {
    "sourceHash": "l3cwtc",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "نوار إن ليذر من بندورا سنتس 100 مل",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "نوار إن ليذر من بندورا سنتس للرجال",
    "nameEn": "Noir En Leather by Pendora Scents 100 ml",
-   "descriptionAr": "عطر رجالي شرقي بجلود فاخرة يمنح إحساساً بالجاذبية والغموض. يفتتح بنفحة هيل دافئة ويتوسطه عبق الجلود وياسمين السامباك ليختتم بقاعدة من العنبر والباتشولي.",
-   "descriptionEn": "Noir En Leather by Pendora Scents (Paris Corner) – 100 ml Eau de Parfum for Men\nFragrance Family: Oriental • Leather • Woody Top Note: Cardamom Middle Notes: Leather, Jasmine Sambac Base Notes: Amber, Moss, Patchouli",
+   "descriptionAr": "عطر رجالي بتركيبة شرقية جلدية يفتتح بنفحة الهيل، مع قلب من الجلد وياسمين سامباك، وقاعدة من العنبر والطحلب والباتشولي.",
+   "descriptionEn": "Noir En Leather by Pendora Scents is an oriental leather and woody fragrance featuring top notes of cardamom, a heart of leather and jasmine sambac, and a base of amber, moss and patchouli.",
    "gender": "men",
    "families": [
-    "leather",
     "oriental",
+    "leather",
     "woody"
    ],
    "notes": {
@@ -47107,34 +47102,33 @@
     ]
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "نوار إن ليذر",
-    "بندورا سنتس",
-    "عطر جلود رجالي",
-    "عطر شرقي فاخر",
-    "عطور باريس كورنر"
-   ]
+    "نوار ليذر",
+    "بندورا",
+    "عطر جلدي",
+    "شرقي"
+   ],
+   "style": 2
   },
   "ASD-1081": {
    "sourceHash": "3rlwaz",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "عطر مرج من لطافة أصداف النسائي 100 مل",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "مرج من لطافة أصداف للنساء",
    "nameEn": "Marj Perfume 100ml Lattafa Asdaaf Arabic For Women",
-   "descriptionAr": "عطر نسائي شرقي ساحر ينبض بالحيوية والجاذبية بتوقيع أصداف لطافة. يفتتح بنفحات منشطة ويستقر على قاعدة غنية بالياسمين والأخشاب والمسك والعود.",
-   "descriptionEn": "Marj Perfume 100ml Lattafa Asdaaf\nMarj Perfume 100ml Lattafa Asdaaf by Lattafa Eau De Parfum carry strong fragrance that opens up with energizing notes while having the base of jasmine, wood, musk and oud. Asdaaf perfumes are perfect combination of spices, resins, exotic woods an essential oils. The",
+   "descriptionAr": "عطر نسائي شرقي يفتح بنفحات حيوية، مع قاعدة غنية بالياسمين والأخشاب والمسك والعود.",
+   "descriptionEn": "Marj Perfume by Asdaaf is an Arabic floral fragrance for women featuring energizing opening notes and a base of jasmine, wood, musk and oud.",
    "gender": "women",
    "families": [
-    "oriental",
     "floral",
-    "oud"
+    "oriental"
    ],
    "notes": {
     "top": [],
@@ -47142,29 +47136,28 @@
     "base": []
    },
    "seasons": [
-    "winter",
     "autumn",
-    "all"
+    "winter"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "عطر مرج",
-    "أصداف لطافة",
-    "عطر نسائي شرقي",
-    "عطور عربية",
-    "عطر بالعود"
-   ]
+    "مرج",
+    "أصداف",
+    "عطر نسائي",
+    "عود شرقي"
+   ],
+   "style": 2
   },
   "RAV-1082": {
    "sourceHash": "1u05vjz",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "نوي بارفيت من ريف 100 مل أودو بارفان",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "نوي بارفيت من ريف",
    "nameEn": "Nuit Parfaite by Rave 100ml EDP",
-   "descriptionAr": "نوي بارفيت من ريف 100 مل أودو بارفان — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionAr": "نوي بارفيت من ريف — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
    "descriptionEn": "Nuit Parfaite by Rave 100ml EDP — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [
@@ -47185,26 +47178,25 @@
     "special"
    ],
    "tags": [
-    "ريف نوي بارفيت",
-    "عطر ريف",
-    "عطر مائي زهري",
-    "عطر للجنسين",
-    "عطورات شام"
-   ]
+    "ريف",
+    "نوي بارفيت",
+    "عطر مختلط",
+    "يومي"
+   ],
+   "style": 2
   },
   "RAV-1083": {
    "sourceHash": "2x5hgv",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "بيور ديسير جولد من ريف",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "بيور دزاير جولد من ريف",
    "nameEn": "Pure Desire Gold by Rave 100ml EDP",
-   "descriptionAr": "عطر دافئ بلمسات حلوة وعنبرية يمنحك شعوراً بالجاذبية والتميز. يجمع بين نفحات الفواكه المشرقة والأخشاب الكريمية ليلائم الأوقات كافة.",
-   "descriptionEn": "Pure Desire Gold by Rave – 100 ml Eau de Parfum. A warm sweet-amber fragrance with creamy woods, soft spices and musky depth.",
+   "descriptionAr": "عطر مختلط ذو طابع دافئ وحلو يجمع بين الفواكه والعنبر والأخشاب الناعمة والفانيلا والمسك.",
+   "descriptionEn": "Pure Desire Gold by Rave is an oriental vanilla fragrance featuring top notes of sweet fruity notes, a heart of amber, soft spices and woods, and a base of vanilla, musk and creamy woods.",
    "gender": "unisex",
    "families": [
     "oriental",
-    "amber",
-    "fruity"
+    "gourmand"
    ],
    "notes": {
     "top": [
@@ -47222,28 +47214,29 @@
     ]
    },
    "seasons": [
-    "all"
+    "autumn",
+    "winter"
    ],
    "occasions": [
-    "daily",
-    "evening"
+    "evening",
+    "daily"
    ],
    "tags": [
+    "بيور دزاير",
     "ريف",
-    "عطر بيور ديسير جولد",
-    "عطر للجنسين",
-    "عطر عنبري",
-    "رایف"
-   ]
+    "فانيلا وعنبر",
+    "عطر ذهبي"
+   ],
+   "style": 2
   },
   "ASD-1084": {
    "sourceHash": "1tqk57x",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
    "nameAr": "أميرة العرب بريف روز من لطافة",
    "nameEn": "Ameerat Al Arab Prive Rose by Lattafa 100ml",
-   "descriptionAr": "عطر نسائي أنيق يعبر عن الأنوثة الطاغية بتركيبة زهرية ساحرة. يمنحك إحساساً بالانتعاش والجاذبية بفضل مزيجه الرائع.",
-   "descriptionEn": "Ameerat Al Arab Prive Rose by Asdaaf Lattafa – 100 ml Eau de Parfum for Women.",
+   "descriptionAr": "عطر نسائي يجمع بين نفحات الورد والياسمين في المقدمة والقلب، مع قاعدة من المسك الأبيض وخشب الصندل.",
+   "descriptionEn": "Ameerat Al Arab Prive Rose by Asdaaf Lattafa is a fragrance featuring top and heart notes of rose and jasmine, with a base of white musk and sandalwood.",
    "gender": "women",
    "families": [
     "floral",
@@ -47263,24 +47256,24 @@
    ],
    "occasions": [
     "daily",
-    "evening"
+    "work"
    ],
    "tags": [
-    "أميرة العرب روز",
-    "عطر نسائي",
+    "أميرة العرب",
+    "بريف روز",
     "لطافة",
-    "عطر زهري",
-    "عراقي"
-   ]
+    "عطر نسائي"
+   ],
+   "style": 2
   },
   "RAV-1085": {
    "sourceHash": "xo0vza",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "ناو من ريف للعطور من لطافة",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "ناو من ريف بيرفيوم للرجال",
    "nameEn": "Now by Rave Perfume Lattafa 100ml For Man",
-   "descriptionAr": "عطر رجالي منعش يجمع بين النفحات الخشبية والعطرية الحيوية. يمنحك حضوراً واثقاً وطاقة متجددة.",
-   "descriptionEn": "Now by Rave Perfume (Lattafa) – 100 ml for Men. Fragrance Family: Fresh • Woody • Aromatic.",
+   "descriptionAr": "عطر رجالي منعش يفتتح بالبرغموت والليمون والنعناع، مع قلب من الخزامى والهيل والعنبر، وقاعدة من خشب الأرز والمسك والباتشولي.",
+   "descriptionEn": "Now by Rave Perfume is a fresh, woody and aromatic fragrance for men featuring top notes of bergamot, lemon and mint, a heart of lavender, cardamom and amber, and a base of cedarwood, musk and patchouli.",
    "gender": "men",
    "families": [
     "fresh",
@@ -47304,33 +47297,34 @@
     ]
    },
    "seasons": [
-    "summer",
-    "spring"
+    "spring",
+    "summer"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "ناو ريف",
+    "ناو",
+    "ريف",
     "عطر رجالي",
-    "لطافة",
-    "عطر منعش",
-    "عطر خشبي"
-   ]
+    "منعش خشبي"
+   ],
+   "style": 2
   },
   "ASD-1086": {
    "sourceHash": "b9umcv",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "أمير العرب من أصداف",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "أمير العرب من أصداف للرجال",
    "nameEn": "Ameer Al Arab by Asdaaf 100ml EDP Men",
-   "descriptionAr": "عطر رجالي فاخر يجمع بين الأصالة الشرقية والانتعاش العصري. يتميز بحضور قوي ومميز يلفت الانتباه في كل المناسبات.",
-   "descriptionEn": "Ameer Al Arab by Asdaaf Lattafa – 100 ml Eau de Parfum for Men.",
+   "descriptionAr": "عطر رجالي يحتوي على مزيج من نفحات العنبر والعود والحمضيات، مع قلب توابلي وزهري وقاعدة من المسك وخشب الصندل والفانيلا.",
+   "descriptionEn": "Ameer Al Arab by Asdaaf Lattafa for men features top notes of amber, oud and citrus, heart notes of floral and spicy notes, and a base of musk, sandalwood and vanilla.",
    "gender": "men",
    "families": [
     "oriental",
-    "amber"
+    "woody",
+    "spicy"
    ],
    "notes": {
     "top": [],
@@ -47342,8 +47336,8 @@
     ]
    },
    "seasons": [
-    "winter",
-    "autumn"
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "evening",
@@ -47353,18 +47347,18 @@
     "أمير العرب",
     "أصداف",
     "عطر رجالي",
-    "عطر شرقي",
-    "عطور لطافة"
-   ]
+    "عود وتوابل"
+   ],
+   "style": 2
   },
   "ASD-1087": {
    "sourceHash": "106rmko",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "جولدن عود من لطافة أصداف",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "غولدن عود من لطافة أصداف",
    "nameEn": "Golden Oud by Lattafa Asdaaf 100 ml Unisex",
-   "descriptionAr": "عطر شرقي خشبي فريد يجمع بين فخامة العود ودفء التوابل. يمنحك بصمة عطرية ساحرة وتناسب الجنسين.",
-   "descriptionEn": "Golden Oud by Lattafa Asdaaf – 100 ml Eau de Parfum Unisex. Fragrance Family: Oriental • Woody • Oud.",
+   "descriptionAr": "عطر شرقي خشبي يضم مزيجاً من العود والزعفران في المقدمة، وقلباً من العنبر والورد والباتشولي، وقاعدة من الفانيليا والمسك وخشب الصندل.",
+   "descriptionEn": "Golden Oud by Lattafa Asdaaf – 100 ml Eau de Parfum Unisex. Fragrance Family: Oriental, Woody, Oud. Top Notes: Oud, Saffron. Middle Notes: Amber, Rose, Patchouli. Base Notes: Vanilla, Musk, Sandalwood.",
    "gender": "unisex",
    "families": [
     "oud",
@@ -47389,28 +47383,30 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
-    "evening",
-    "special"
+    "daily",
+    "evening"
    ],
    "tags": [
-    "جولدن عود",
-    "عطر عود",
+    "غولدن عود",
     "أصداف",
-    "عطر للجنسين",
-    "عطر شرقي"
-   ]
+    "عطور شرقية",
+    "عود",
+    "لطافة"
+   ],
+   "style": 2
   },
   "VEL-1088": {
    "sourceHash": "sgcmvg",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "فيليكسير أستيريا",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "فيليكسير أستريا",
    "nameEn": "Velixir Asteria 100ml EDP",
-   "descriptionAr": "عطر منعش يجمع بين الحمضيات المشرقة واللمسات الزهرية الناعمة. يمنحك شعوراً بالنظافة والأناقة اليومية بكل خفة.",
-   "descriptionEn": "Velixir Asteria 100ml EDP is a citrus floral woody fragrance designed for those who prefer a bright, clean and elegant scent profile.",
+   "descriptionAr": "عطر حمضي زهري خشبي يبدأ بنفحات البرتقال المداري والبرغموت والليمون، يليه قلب من زهرة تياري، وقاعدة من خشب الصندل والمسك.",
+   "descriptionEn": "Velixir Asteria 100ml EDP is a citrus floral woody fragrance. It opens with blood orange, mandarin, bergamot and lemon, with a heart of tiare flower and a base of sandalwood and musk.",
    "gender": "unisex",
    "families": [
     "citrus",
@@ -47432,7 +47428,8 @@
    },
    "seasons": [
     "summer",
-    "spring"
+    "spring",
+    "all"
    ],
    "occasions": [
     "daily",
@@ -47440,20 +47437,20 @@
    ],
    "tags": [
     "فيليكسير",
-    "أستيريا",
-    "عطر منعش",
-    "عطر صيفي",
-    "عطر للجنسين"
-   ]
+    "أستريا",
+    "عطور حمضية",
+    "عطور زهرية"
+   ],
+   "style": 2
   },
   "ASD-1089": {
    "sourceHash": "55ss6",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "أمير العرب إمبيريوم من أصداف",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "أمير العرب إمبريوم من لطافة أصداف",
    "nameEn": "Ameer Al Arab Imperium by Asdaaf 100ml EDP Men",
-   "descriptionAr": "عطر رجالي فخم يمزج بين التوابل الحارة والأخشاب الدافئة. يقدم لك شخصية جذابة وعصرية تعكس حضورك القوي.",
-   "descriptionEn": "Ameer Al Arab Imperium by Asdaaf – 100 ml Eau de Parfum for Men.",
+   "descriptionAr": "عطر رجالي يضم افتتاحية من البرغموت والزعفران والهيل، وقلباً من خشب العنبر والباتشولي والورد، وقاعدة من المسك وخشب الصندل والفانيليا.",
+   "descriptionEn": "Ameer Al Arab Imperium by Asdaaf – 100 ml Eau de Parfum for Men. Top Notes: Bergamot, Saffron, Cardamom. Heart Notes: Amberwood, Patchouli, Rose. Base Notes: Musk, Sandalwood, Vanilla.",
    "gender": "men",
    "families": [
     "oriental",
@@ -47471,28 +47468,30 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
+    "daily",
     "evening",
-    "special"
+    "work"
    ],
    "tags": [
-    "أمير العرب إمبيريوم",
-    "عطر رجالي",
+    "أمير العرب",
     "أصداف",
-    "عطر فخم",
-    "عطر شرقي"
-   ]
+    "عطور رجالية",
+    "إمبريوم"
+   ],
+   "style": 2
   },
   "VEL-1090": {
    "sourceHash": "1uapx6u",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
    "nameAr": "فيليكسير هيميروس",
    "nameEn": "Velixir Himeros 100ml EDP",
-   "descriptionAr": "عطر خشبي عطري متوازن يجمع بين النوتات الخضراء المنعشة والدفء الخشبي. خيار مناسب للاستخدام اليومي وأجواء العمل.",
-   "descriptionEn": "Velixir Himeros 100ml EDP is a woody aromatic fragrance designed for those who prefer a balance between fresh green notes and warm woody depth.",
+   "descriptionAr": "عطر خشبي أروماتك يبدأ بنفحات خضراء وبرغموت، يليه قلب من النوتات الشمسية والزنجبيل، وقاعدة من خشب الصندل وخشب الأرز.",
+   "descriptionEn": "Velixir Himeros 100ml EDP is a woody aromatic fragrance. It opens with green notes, bergamot and woody accords, with a heart of solar notes and ginger, and a base of sandalwood and cedarwood.",
    "gender": "unisex",
    "families": [
     "woody",
@@ -47513,7 +47512,8 @@
    },
    "seasons": [
     "spring",
-    "summer"
+    "summer",
+    "all"
    ],
    "occasions": [
     "daily",
@@ -47522,24 +47522,23 @@
    "tags": [
     "فيليكسير",
     "هيميروس",
-    "عطر خشبي",
-    "عطر للعمل",
-    "عطر يومي"
-   ]
+    "عطور خشبية",
+    "عطور أروماتك"
+   ],
+   "style": 2
   },
   "VEL-1091": {
    "sourceHash": "dd5v7h",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
    "nameAr": "فيليكسير غالاتيا",
    "nameEn": "Velixir Galatea 100ml EDP",
-   "descriptionAr": "عطر شرقي حلو وغني يأسب الحواس بتركيبته المتميزة من الكراميل والفانيليا. يمنحك شعوراً بالفخامة والدفء في الأمسيات.",
-   "descriptionEn": "Velixir Galatea 100ml EDP is a gourmand oriental fragrance designed for those who enjoy rich, sweet and indulgent scent profiles.",
+   "descriptionAr": "عطر شرقي غورماند يفتتح بنفحات البسكويت والكراميل، يليه قلب من الحليب والعسل والسكر والتونكا، وقاعدة من الفانيليا والبرالين والعنبر والمسك الأبيض.",
+   "descriptionEn": "Velixir Galatea 100ml EDP is a gourmand oriental fragrance. It opens with biscuit and caramel, with a heart of milk, honey, sugar and tonka bean, and a base of vanilla, praline, amber and white musk.",
    "gender": "unisex",
    "families": [
     "gourmand",
-    "oriental",
-    "amber"
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -47569,19 +47568,19 @@
    "tags": [
     "فيليكسير",
     "غالاتيا",
-    "عطر حلو",
-    "عطر شتوي",
-    "عطور شرقية"
-   ]
+    "عطور غورماند",
+    "عطور حلوة"
+   ],
+   "style": 2
   },
   "VEL-1092": {
    "sourceHash": "1uuqog6",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
    "nameAr": "فيليكسير أبولو",
    "nameEn": "Velixir Apollo 100ml EDP",
-   "descriptionAr": "عطر خشبي عطري ينبض بالطاقة والحيوية مع نفحات التفاح الأخضر والزنجبيل. يناسب الأوقات اليومية والأنشطة الحيوية.",
-   "descriptionEn": "Velixir Apollo 100ml EDP is a woody aromatic fragrance designed for those who prefer a balance of fresh energy and smooth depth.",
+   "descriptionAr": "عطر خشبي أروماتك يبدأ بالتفاح الأخضر والزنجبيل والبرغموت، يليه قلب من المريمية والتوت البري، وقاعدة من خشب الأرز والتونكا ونجيل الهند.",
+   "descriptionEn": "Velixir Apollo 100ml EDP is a woody aromatic fragrance. It opens with green apple, ginger and bergamot, with a heart of clary sage and juniper berries, and a base of cedar, tonka bean and vetiver.",
    "gender": "unisex",
    "families": [
     "woody",
@@ -47605,31 +47604,33 @@
    },
    "seasons": [
     "summer",
-    "spring"
+    "spring",
+    "all"
    ],
    "occasions": [
-    "daily"
+    "daily",
+    "work"
    ],
    "tags": [
     "فيليكسير",
     "أبولو",
-    "عطر نشيط",
-    "عطر رجالي",
-    "عطر يومي"
-   ]
+    "عطور خشبية",
+    "عطور منعشة"
+   ],
+   "style": 2
   },
   "VEL-1093": {
    "sourceHash": "vdl7s9",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
    "nameAr": "فيليكسير هيليوس",
    "nameEn": "Velixir Helios 100ml EDP",
-   "descriptionAr": "عطر دافئ وحار يمنحك حضوراً جريئاً وعصرياً يلفت الأنظار. مناسب للأمسيات والمناسبات الخاصة بفضل طابعه الجذاب.",
-   "descriptionEn": "Velixir Helios 100ml EDP is a warm spicy woody fragrance designed for those who prefer a bold, radiant and modern scent profile.",
+   "descriptionAr": "عطر خشبي حار يضم توليفة من الحمضيات والتوابل في المقدمة، وقلباً أروماتك دافئاً، وقاعدة من العنبر والأخشاب.",
+   "descriptionEn": "Velixir Helios 100ml EDP is a warm spicy woody fragrance. It opens with citrus and spices, with an aromatic warm heart, and a base of amber and woods.",
    "gender": "unisex",
    "families": [
-    "spicy",
     "woody",
+    "spicy",
     "amber"
    ],
    "notes": {
@@ -47648,23 +47649,23 @@
    "tags": [
     "فيليكسير",
     "هيليوس",
-    "عطر دافئ",
-    "عطر مسائي",
-    "عطر فخم"
-   ]
+    "عطور حارة",
+    "عطور خشبية"
+   ],
+   "style": 2
   },
   "VEL-1094": {
    "sourceHash": "1khqb4w",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
    "nameAr": "فيليكسير بالادين",
    "nameEn": "Velixir Paladin 100ml EDP",
-   "descriptionAr": "عطر شرقي فانيلا يوازن بين الحلاوة والعمق العطري المنعش. يضفي لمسة من الأناقة والجاذبية على إطلالتك اليومية.",
-   "descriptionEn": "Velixir Paladin 100ml EDP is an aromatic vanilla fragrance designed for those who prefer a smooth balance between sweetness and fresh aromatic depth.",
+   "descriptionAr": "عطر شرقي بالفانيليا يبدأ بنفحات الفانيليا الناعمة، يليه قلب من اللافندر والأخاديد الأروماتك، وقاعدة من نجيل الهند.",
+   "descriptionEn": "Velixir Paladin 100ml EDP is an aromatic vanilla fragrance. It opens with vanilla, with a heart of lavender, and a base of vetiver.",
    "gender": "unisex",
    "families": [
     "oriental",
-    "amber"
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -47678,33 +47679,36 @@
     ]
    },
    "seasons": [
-    "all"
+    "all",
+    "autumn",
+    "winter"
    ],
    "occasions": [
     "daily",
-    "work"
+    "work",
+    "evening"
    ],
    "tags": [
     "فيليكسير",
     "بالادين",
-    "عطر فانيلا",
-    "عطر أنيق",
-    "عطر يومي"
-   ]
+    "عطور فانيليا",
+    "عطور شرقية"
+   ],
+   "style": 2
   },
   "PEN-1095": {
    "sourceHash": "1v9ztat",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "أولترا مارين من بندورا سنتس",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "ألترا مارين من بندورا سنتس",
    "nameEn": "Ultra Marine 100ml by Pendora Scents",
-   "descriptionAr": "عطر مائي خشبي منعش ينبض بالحيوية والانتعاش. يجمع بين نفحات البحر العطرة والأخشاب الدافئة.",
-   "descriptionEn": "Ultra Marine 100ml by Pendora Scents. The fragrance opens with bergamot, lemon, and marine accords.",
+   "descriptionAr": "عطر رجالي بحري خشبي يفتتح بالبرغموت والليمون والنوتات البحرية، يليه قلب من اللافندر وإكليل الجبل والجرانيوم، وقاعدة من خشب الأرز والعنبر والمسك والباتشولي.",
+   "descriptionEn": "Ultra Marine 100ml by Pendora Scents opens with bergamot, lemon, and marine accords, with a heart of lavender, rosemary, and geranium, and a base of cedarwood, amber, musk, and patchouli.",
    "gender": "men",
    "families": [
     "aquatic",
-    "fresh",
-    "woody"
+    "woody",
+    "fresh"
    ],
    "notes": {
     "top": [
@@ -47725,33 +47729,34 @@
    },
    "seasons": [
     "summer",
-    "spring"
+    "spring",
+    "all"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "أولترا مارين",
+    "ألترا مارين",
     "بندورا سنتس",
-    "عطر بحري",
-    "عطر رجالي",
-    "عطر منعش"
-   ]
+    "عطور بحرية",
+    "عطور رجالية"
+   ],
+   "style": 2
   },
   "VEL-1096": {
    "sourceHash": "7iyd8g",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "نيكس فيليكسير بارفامز",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "نيكس فيليكسير بارفومز",
    "nameEn": "Nyx Velixir Parfums 100ml for Unisex",
-   "descriptionAr": "عطر خشبي دافئ يجمع بين نعومة البودرة ولمسات البخور العطرة. يمنحك إحساساً بالراحة والجاذبية الهادئة.",
-   "descriptionEn": "Nyx Velixir Parfums – Eau de Parfum for Women and Men. A warm woody fragrance with a soft powdery character.",
+   "descriptionAr": "عطر خشبي شرقي يضم خشب الصندل والبخور في المقدمة، وقاعدة من العنبر.",
+   "descriptionEn": "Nyx Velixir Parfums is a warm woody fragrance with sandalwood, incense, and amber.",
    "gender": "unisex",
    "families": [
     "woody",
     "oriental",
-    "powdery"
+    "amber"
    ],
    "notes": {
     "top": [
@@ -47772,25 +47777,25 @@
     "special"
    ],
    "tags": [
-    "نيكس فيليكسير",
-    "عطر للجنسين",
-    "عطر خشبي",
-    "عطر فخم",
-    "عطور بارفامز"
-   ]
+    "نيكس",
+    "فيليكسير",
+    "عطور خشبية",
+    "بخور"
+   ],
+   "style": 2
   },
   "VEL-1097": {
    "sourceHash": "clcbtq",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "فليكسير آريس",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "فيليكسير آريس",
    "nameEn": "Velixir Ares 100ml EDP",
-   "descriptionAr": "عطر خشبي حمضي يمنحك انتعاشاً حيوياً ومظهراً أنيقاً يلائم مختلف الأوقات. يجمع بين نفحات الحمضيات والأخشاب الدافئة ليضفي طابعاً عصرية ومميزاً.",
-   "descriptionEn": "Velixir Ares 100ml EDP is a citrus woody fragrance designed for those who prefer a fresh, clean and versatile scent profile. It opens with a bright blend of grapefruit, mandarin orange and citrus accords, delivering an energetic and uplifting start. The heart develops into smooth sandalwood and ceda",
+   "descriptionAr": "عطر حمضي خشبي يفتتح بالغريب فروت واليوسفي، يليه قلب من خشب الصندل وخشب الأرز، وقاعدة من العنبر والمسك والباتشولي.",
+   "descriptionEn": "Velixir Ares 100ml EDP is a citrus woody fragrance. It opens with grapefruit and mandarin orange, with a heart of sandalwood and cedarwood, and a base of amber, musk and patchouli.",
    "gender": "unisex",
    "families": [
-    "woody",
-    "citrus"
+    "citrus",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -47817,21 +47822,21 @@
     "work"
    ],
    "tags": [
-    "عطر فليكسير",
-    "عطر حمضي خشبي",
-    "عطر للجنسين",
-    "عطر يومي",
-    "عطر منعش"
-   ]
+    "فيليكسير",
+    "آريس",
+    "عطور حمضية",
+    "عطور خشبية"
+   ],
+   "style": 2
   },
   "VEL-1098": {
    "sourceHash": "152sp8v",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "فليكسير أفروديت",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "فيليكسير أفروديت",
    "nameEn": "Velixir Aphrodite 100ml EDP",
-   "descriptionAr": "عطر زهري فواكه يجسد الأناقة الناعمة والأنوثة العصرية بجاذبية فائقة. يتميز بتركيبة متوازنة تمنحك شعوراً بالانتعاش والبهجة.",
-   "descriptionEn": "Velixir Aphrodite 100ml EDP is a floral fruity fragrance designed to capture soft elegance and modern sensuality. It opens with a bright blend of bergamot, litchi and ginger, delivering a fresh and slightly spicy introduction. The heart develops into a smooth floral composition of rose and peony lay",
+   "descriptionAr": "عطر زهري فواكه يفتتح بالبرغموت والليتشي والزنجبيل، يليه قلب من الورد والفاوانيا والكاكاو، وقاعدة من الباتشولي.",
+   "descriptionEn": "Velixir Aphrodite 100ml EDP is a floral fruity fragrance. It opens with bergamot, litchi and ginger, with a heart of rose, peony and cacao, and a base of patchouli.",
    "gender": "unisex",
    "families": [
     "floral",
@@ -47862,21 +47867,21 @@
     "work"
    ],
    "tags": [
-    "عطر فليكسير",
-    "عطر زهري فواكه",
-    "عطر ناعم",
-    "عطر يومي",
-    "عطر رومنسي"
-   ]
+    "فيليكسير",
+    "أفروديت",
+    "عطور زهرية",
+    "فواكه"
+   ],
+   "style": 2
   },
   "ASD-1099": {
    "sourceHash": "1mnrg34",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "مجد السلطان من أصدف",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "مجد السلطان من لطافة أصداف",
    "nameEn": "Majd Al Sultan by Asdaaf 100ml EDP",
-   "descriptionAr": "عطر شرقي خشبي غني ودخاني يعكس الجرأة والفخامة المطلقة للرجال. يمنحك حضوراً قوياً وجذاباً يناسب السهرات والأوقات الباردة.",
-   "descriptionEn": "Majd Al Sultan by Asdaaf – 100ml Eau de Parfum.\nMajd Al Sultan by Asdaaf 100ml EDP A rich, dark, and smoky oriental-woody fragrance crafted for men who appreciate bold sophistication and regal allure. Opening with an intense burst of smoky incense, spices, and a touch of crisp apple, it evolves into",
+   "descriptionAr": "عطر رجالي شرقي خشبي يفتتح بالبخور والتفاح، يليه قلب من المر والزعفران والعنبر، وقاعدة من الفانيليا وخشب الأرز والعود والمسك الأبيض.",
+   "descriptionEn": "Majd Al Sultan by Asdaaf – 100ml Eau de Parfum. Top Notes: Incense, Apple. Heart Notes: Myrrh, Saffron, Amber. Base Notes: Vanilla, Cedarwood, Oud, White Musk.",
    "gender": "men",
    "families": [
     "oriental",
@@ -47909,21 +47914,21 @@
     "special"
    ],
    "tags": [
-    "عطر مجد السلطان",
-    "عطر أصدف",
-    "عطر رجالي فخم",
-    "عطر شرقي",
-    "عطر دخاني"
-   ]
+    "مجد السلطان",
+    "أصداف",
+    "عطور رجالية",
+    "عود"
+   ],
+   "style": 2
   },
   "VEL-1100": {
    "sourceHash": "1xyp0aj",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "سيلين فليكسير بارفان",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "سيلين فيليكسير بارفومز",
    "nameEn": "Selene Velixir Parfums 100ml",
-   "descriptionAr": "عطر زهري فواكه مضيء يجمع بين الانتعاش الفاكهي والنفحات الزهرية البيضاء الأنيقة. يمنحك حضوراً مميزاً.",
-   "descriptionEn": "Selene Velixir Parfums – Eau de Parfum for Women and Men.\nVelixir Parfums Selene A luminous floral fruity fragrance with juicy freshness and an elegant white-floral character. It opens with raspberry, creating a bright, sweet and lively fruity impression. The heart combines peony, magnolia, jasmine",
+   "descriptionAr": "عطر زهري فواكه يفتح بنفحات التوت الأحمدي، يليه قلب من الفاوانيا والماغنوليا والياسمين والورد وإبرة الراعي.",
+   "descriptionEn": "Selene Velixir Parfums is a floral fruity fragrance opening with raspberry, with a heart of peony, magnolia, jasmine sambac, rose and geranium.",
    "gender": "unisex",
    "families": [
     "floral",
@@ -47951,28 +47956,28 @@
    ],
    "occasions": [
     "daily",
-    "evening"
+    "work"
    ],
    "tags": [
-    "عطر سيلين",
-    "فليكسير بارفان",
-    "عطر زهري",
-    "عطر فواكه",
-    "عطر للجنسين"
-   ]
+    "سيلين",
+    "فيليكسير",
+    "عطور زهرية",
+    "توت"
+   ],
+   "style": 2
   },
   "VEL-1101": {
    "sourceHash": "1a0hftq",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "فليكسير نارسيسوس",
-   "nameEn": "Velixir Narcisus 100ml EDP",
-   "descriptionAr": "عطر حمضي زهري خشبي يناسب الباحثين عن النقاء والأناقة العصرية المطلقة. يترك انطباعاً منعشاً ومتوازناً يلائم كافة الأوقات اليومية.",
-   "descriptionEn": "Velixir Narcisus 100ml EDP is a citrus floral woody fragrance designed for those who prefer a clean, elegant and modern scent profile. It opens with fresh bergamot, delivering a bright and slightly zesty introduction. The heart develops into smooth orange blossom, adding a soft white floral characte",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "فيليكسير نارسيسوس",
+   "nameEn": "Velixir Narcisus",
+   "descriptionAr": "عطر بتركيبة حمضية زهرية خشبية يفتتح بنفحات منعشة من البرغموت، ويليها قلب من زهر البرتقال، بينما يستقر في القاعدة على الأمبروفيكس والباتشولي.",
+   "descriptionEn": "A citrus floral woody fragrance opening with fresh bergamot, leading to an orange blossom heart, and settling on a base of ambrofix and patchouli.",
    "gender": "unisex",
    "families": [
     "fresh",
-    "citrus",
+    "floral",
     "woody"
    ],
    "notes": {
@@ -47988,8 +47993,8 @@
     ]
    },
    "seasons": [
-    "summer",
     "spring",
+    "summer",
     "all"
    ],
    "occasions": [
@@ -47997,26 +48002,27 @@
     "work"
    ],
    "tags": [
-    "عطر فليكسير",
-    "عطر عصري",
-    "عطر نظيف",
-    "عطر يومي",
-    "عطر للجنسين"
-   ]
+    "Velixir",
+    "Narcisus",
+    "EDP",
+    "Citrus",
+    "Woody"
+   ],
+   "style": 2
   },
   "RAV-1102": {
    "sourceHash": "17isen8",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
    "nameAr": "ناو إنتنس من ريف",
-   "nameEn": "Now Intense by Rave 100ml EDP",
-   "descriptionAr": "عطر رجالي منعش وحار يجمع بين الحيوية والقوة. يتميز بتركيبة عطرية جذابة تلائم مختلف الأوقات.",
-   "descriptionEn": "Now Intense by Rave – 100 ml Eau de Parfum.\nNow Intense ni bau dia fresh, spicy & masculine—tahan lama, powerful dan sesuai dipakai siang atau malam.\nTop Notes: Fresh Citrus, Spicy Notes\nMiddle Notes: Aromatic Herbs, Woody Notes\nBase Notes: Amber, Musk, Dry Woods",
+   "nameEn": "Now Intense by Rave",
+   "descriptionAr": "عطر يجمع بين الحمضيات المنعشة والتوابل، مع قلب من الأعشاب العطرية والأخشاب، وقاعدة من الأمبر والمسك والأخشاب الجافة.",
+   "descriptionEn": "A fresh and spicy fragrance featuring top notes of fresh citrus and spices, a heart of aromatic herbs and woody notes, and a base of amber, musk, and dry woods.",
    "gender": "men",
    "families": [
     "citrus",
-    "fresh",
-    "spicy"
+    "spicy",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -48034,34 +48040,34 @@
     ]
    },
    "seasons": [
-    "all",
-    "summer"
+    "all"
    ],
    "occasions": [
     "daily",
     "evening"
    ],
    "tags": [
-    "عطر ناو إنتنس",
-    "عطر ريف",
-    "عطر رجالي",
-    "عطر منعش",
-    "عطر حار"
-   ]
+    "Rave",
+    "Now Intense",
+    "EDP",
+    "Citrus",
+    "Spicy"
+   ],
+   "style": 2
   },
   "RAV-1103": {
    "sourceHash": "1p8ixte",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
    "nameAr": "ناو روج من ريف",
-   "nameEn": "Now Rouge Perfume EDP 100ml by RAVE",
-   "descriptionAr": "عطر ينبض بالحيوية بفضل افتتاحية الفواكه والتوابل التي تتطور إلى قلب زهري أنيق. ينتهي بقاعدة دافئة من العنبر والفانيليا.",
-   "descriptionEn": "Now Rouge Perfume EDP 100ml by RAVE\nNow Rouge Perfume EDP 100ml by RAVE Opens with vibrant fruity and spicy accords before developing into a refined floral heart. The fragrance settles into a warm amber, vanilla, and woody base, creating a smooth.",
+   "nameEn": "Now Rouge Perfume by RAVE",
+   "descriptionAr": "عطر يفتتح بنفحات فواكهية وتوابل نابضة بالحياة، ويتطور إلى قلب زهري، ليستقر في النهاية على قاعدة دافئة من الأمبر والفانيليا والأخشاب.",
+   "descriptionEn": "A fragrance opening with vibrant fruity and spicy accords before developing into a refined floral heart, settling into a warm amber, vanilla, and woody base.",
    "gender": "unisex",
    "families": [
-    "floral",
     "fruity",
-    "oriental"
+    "floral",
+    "amber"
    ],
    "notes": {
     "top": [],
@@ -48069,34 +48075,34 @@
     "base": []
    },
    "seasons": [
-    "all",
-    "winter"
+    "all"
    ],
    "occasions": [
     "daily",
     "evening"
    ],
    "tags": [
-    "عطر ناو روج",
-    "عطر ريف",
-    "عطر للجنسين",
-    "عطر فانيليا",
-    "عطر عنبري"
-   ]
+    "Rave",
+    "Now Rouge",
+    "EDP",
+    "Fruity",
+    "Floral"
+   ],
+   "style": 2
   },
   "VEL-1104": {
    "sourceHash": "ky638",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "هارمونيا فليكسير بارفان",
-   "nameEn": "Harmonia Velixir Parfums 100ml for Unisex",
-   "descriptionAr": "عطر منعش ومهدئ يجمع بين النفحات العشبية والشاي والأخشاب الناعمة. يمنحك شعوراً بالسلام الداخلي ويناسب الاستخدام اليومي للجنسين.",
-   "descriptionEn": "Harmonia Velixir Parfums – 100ml Eau de Parfum for Women and Men.\nHarmonia Velixir Parfums A fresh and soothing fragrance with citrus, green and gently spicy accords. Tea and lemongrass create a clean, bright and aromatic opening. Rose and magnolia add a soft floral character, while woody notes prov",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "هارمونيا فيليكسير",
+   "nameEn": "Harmonia Velixir Parfums",
+   "descriptionAr": "عطر منعش يفتتح بالشاي، ويتطور بقلب وقاعدة من الورد والماغنوليا والأخشاب.",
+   "descriptionEn": "A fresh and soothing fragrance opening with tea, complemented by rose, magnolia, and woody notes.",
    "gender": "unisex",
    "families": [
-    "fresh",
     "oriental",
-    "woody"
+    "fresh",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -48118,26 +48124,27 @@
     "work"
    ],
    "tags": [
-    "عطر هارمونيا",
-    "فليكسير بارفان",
-    "عطر للجنسين",
-    "عطر منعش",
-    "عطر عشبي"
-   ]
+    "Velixir",
+    "Harmonia",
+    "EDP",
+    "Green",
+    "Floral"
+   ],
+   "style": 2
   },
   "VEL-1105": {
    "sourceHash": "pzwg2x",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "فليكسير ديمتير",
-   "nameEn": "Velixir Demeter 100ml EDP",
-   "descriptionAr": "عطر أخضر منعش يعج بالحيوية ويمنحك شعوراً بالانتعاش الفوري مع لمسات عشبية وحمضية. خيار مناسب للاستخدام اليومي والأجواء الحارة.",
-   "descriptionEn": "Velixir Demeter 100ml EDP is a fresh green aromatic fragrance designed for those who prefer a clean, energetic and refreshing scent profile. It opens with a vibrant blend of mint, lemon, basil and thyme, delivering a crisp and uplifting citrus-herbal start. The heart develops into a smooth aromatic",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "فيليكسير ديمتير",
+   "nameEn": "Velixir Demeter",
+   "descriptionAr": "عطر عشبي منعش يفتتح بمزيج من النعناع والليمون والريحان والزعتر، مع قلب من الكشمش الأسود والخزامى الياسمين وإكليل الجبل، وقاعدة من المسك وخشب الأرز.",
+   "descriptionEn": "A fresh green aromatic fragrance opening with mint, lemon, basil, and thyme, a heart of blackcurrant, lavender, jasmine, and rosemary, and a base of musk and cedarwood.",
    "gender": "unisex",
    "families": [
     "fresh",
-    "floral",
-    "woody"
+    "woody",
+    "floral"
    ],
    "notes": {
     "top": [
@@ -48159,28 +48166,30 @@
    },
    "seasons": [
     "summer",
-    "spring"
+    "spring",
+    "all"
    ],
    "occasions": [
     "daily",
     "work"
    ],
    "tags": [
-    "عطر فليكسير",
-    "عطر أخضر",
-    "عطر منعش",
-    "عطر صيفي",
-    "عطر للجنسين"
-   ]
+    "Velixir",
+    "Demeter",
+    "EDP",
+    "Fresh",
+    "Green"
+   ],
+   "style": 2
   },
   "RAV-1106": {
    "sourceHash": "12xlnos",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "أو سوليل من ريف",
-   "nameEn": "Au Soleil by Rave 100ml EDP",
-   "descriptionAr": "أو سوليل من ريف — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
-   "descriptionEn": "Au Soleil by Rave 100ml EDP — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "أو سولاي من ريف",
+   "nameEn": "Au Soleil by Rave",
+   "descriptionAr": "أو سولاي من ريف — ماء عطر (EDP)، 100 مل، للجنسين. المورد لم ينشر نوتات هذا العطر، فنعرض البيانات المنشورة فقط.",
+   "descriptionEn": "Au Soleil by Rave — Eau de Parfum, 100 ml, unisex. The supplier has not published this perfume's notes, so only the published details are shown.",
    "gender": "unisex",
    "families": [
     "floral",
@@ -48200,26 +48209,25 @@
     "work"
    ],
    "tags": [
-    "عطر أو سوليل",
-    "عطر ريف",
-    "عطر زهري فواكه",
-    "عطر صيفي",
-    "عطر للجنسين"
-   ]
+    "Rave",
+    "Au Soleil",
+    "EDP",
+    "Floral Fruity"
+   ],
+   "style": 2
   },
   "ASD-1107": {
    "sourceHash": "d6befr",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "شغف مان من أصدف",
-   "nameEn": "Shaghaf Man by Asdaaf (Lattafa) – 100 ml for Men",
-   "descriptionAr": "عطر رجالي يجمع بين الانتعاش الحمضي والدفء الشرقي الخشبي ببراعة. يمنحك حضوراً قوياً ومميزاً يناسب الرجل العصري الواثق من نفسه.",
-   "descriptionEn": "Shaghaf Man by Asdaaf (Lattafa) – 100 ml Eau de Parfum for Men\nFragrance Family: Aromatic • Citrus • Woody • Oriental\nTop Notes: Lemon, Lavender, Chinese Orange\nMiddle Notes: Tagetes, Sage, Cardamom, Cinnamon\nBase Notes: Patchouli, Praline, Tolu Balsam, Ebony Rosewood, Black Amber",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "شغف مان من أصداف",
+   "nameEn": "Shaghaf Man by Asdaaf",
+   "descriptionAr": "عطر رجالي يفتتح بنفحات الليمون والخزامى والبرتقال الصيني، مع قلب من القطيفة والمريمية والهيل والقرفة، وقاعدة من الباتشولي والبرالين وبلسم تولو وخشب اليبوس والعنبر الأسود.",
+   "descriptionEn": "A men's fragrance featuring top notes of lemon, lavender, and chinese orange, heart notes of tagetes, sage, cardamom, and cinnamon, and base notes of patchouli, praline, tolu balsam, ebony, rosewood, and black amber.",
    "gender": "men",
    "families": [
     "citrus",
-    "woody",
-    "oriental"
+    "woody"
    ],
    "notes": {
     "top": [
@@ -48243,34 +48251,36 @@
     ]
    },
    "seasons": [
-    "all",
-    "winter"
+    "winter",
+    "autumn",
+    "all"
    ],
    "occasions": [
     "daily",
     "evening"
    ],
    "tags": [
-    "عطر شغف مان",
-    "عطر أصدف",
-    "عطر رجالي",
-    "عطر شرقي",
-    "عطر خشبي"
-   ]
+    "Asdaaf",
+    "Shaghaf Man",
+    "Lattafa",
+    "EDP",
+    "Oriental"
+   ],
+   "style": 2
   },
   "AHM-1108": {
    "sourceHash": "77y8l5",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
    "nameAr": "روز نوار من أحمد المغربي",
-   "nameEn": "Rose Noir by Ahmed Al Maghribi EDP Women",
-   "descriptionAr": "عطر نسائي فاخر يجمع بين نفحات الورد التركي والزعفران مع قاعدة دافئة من الفانيليا والمسك. يمنحك أناقة طاغية في كل مناسبة.",
-   "descriptionEn": "Rose Noir by Ahmed Al Maghribi – Eau de Parfum for Women\nTop Notes: Turkish Rose, Saffron, Pink Pepper\nHeart Notes: Jasmine, Patchouli, Amber\nBase Notes: Vanilla, Musk, Sandalwood",
+   "nameEn": "Rose Noir by Ahmed Al Maghribi",
+   "descriptionAr": "عطر نسائي يفتتح بالورد التركي والزعفران والفلفل الوردي، مع قلب من الياسمين والباتشولي والعنبر، وقاعدة من الفانيليا والمسك وخشب الصندل.",
+   "descriptionEn": "A women's fragrance with top notes of Turkish rose, saffron, and pink pepper, a heart of jasmine, patchouli, and amber, and a base of vanilla, musk, and sandalwood.",
    "gender": "women",
    "families": [
     "floral",
-    "oriental",
-    "musk"
+    "amber",
+    "woody"
    ],
    "notes": {
     "top": [
@@ -48299,26 +48309,27 @@
     "special"
    ],
    "tags": [
-    "عطر روز نوار",
-    "أحمد المغربي",
-    "عطر نسائي",
-    "عطر ورد",
-    "عطر شرقي"
-   ]
+    "Ahmed Al Maghribi",
+    "Rose Noir",
+    "EDP",
+    "Women",
+    "Floral"
+   ],
+   "style": 2
   },
   "NAF-1109": {
    "sourceHash": "137xqug",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
    "nameAr": "عود ملوكي من نفحات",
-   "nameEn": "Oud Maluky by Nafahat 100ml Unisex",
-   "descriptionAr": "عطر شرقي خشبي فاخر مستوحى من أعماق العود الأندونيسي الأصيل. يمنحك حضوراً جريئاً وأنيقاً يناسب عشاق العطور الشرقية المميزة.",
-   "descriptionEn": "Oud Maluky by Nafahat – Eau de Parfum 100ml\nOud Maluky by Nafahat is a rich woody-oriental fragrance With a scent profile rooted in Maluku island oud. Opening with fresh woods and subtle lemongrass, it evolves into a heart of patchouli and premium Indonesian agarwood (oud), and dries down into smoot",
+   "nameEn": "Oud Maluky by Nafahat",
+   "descriptionAr": "عطر خشبي شرقي يفتتح بعشبة الليمون والأخشاب الطازجة، ويتطور إلى قلب من خشب العود الإندونيسي والباتشولي، وقاعدة من الخشب المحروق والمسك الخشبي.",
+   "descriptionEn": "A rich woody-oriental fragrance opening with lemongrass and fresh wood, a heart of Indonesian agarwood and patchouli, and a base of burnt wood and woody musk.",
    "gender": "unisex",
    "families": [
     "oud",
-    "oriental",
-    "woody"
+    "woody",
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -48344,25 +48355,26 @@
     "special"
    ],
    "tags": [
-    "عطر عود ملوكي",
-    "نفحات",
-    "عطر عود",
-    "عطر شرقي",
-    "عطر للجنسين"
-   ]
+    "Nafahat",
+    "Oud Maluky",
+    "EDP",
+    "Oud",
+    "Oriental"
+   ],
+   "style": 2
   },
   "MAH-1110": {
    "sourceHash": "pqvu34",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "عود الخليفة من محبوب",
-   "nameEn": "Oud Khalifah by Mahabub Perfumes – 100 ml",
-   "descriptionAr": "عطر شرقي غني بنفحات العود الفاخر والتوابل الدافئة والأخشاب المدخنة. يعكس الفخامة والأصالة في إطلالة عطرية فريدة للجنسين.",
-   "descriptionEn": "Oud Al Khalifah by Mahabub Perfumes – 100 ml Eau De Parfum\nFragrance Notes:\nTop: Oud, Spices\nHeart: Amber, Woods, Resin\nBase: Musk, Smoky Woods, Warm Amber",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "عود الخليفة من مهبوب",
+   "nameEn": "Oud Al Khalifah by Mahabub Perfumes",
+   "descriptionAr": "عطر يفتتح بنفحات العود والتوابل، مع قلب من العنبر والأخشاب والراتنج، وقاعدة من المسك والأخشاب المدخنة والعنبر الدافئ.",
+   "descriptionEn": "A fragrance with top notes of oud and spices, a heart of amber, woods, and resin, and a base of musk, smoky woods, and warm amber.",
    "gender": "unisex",
    "families": [
     "oud",
-    "oriental",
+    "amber",
     "woody"
    ],
    "notes": {
@@ -48383,33 +48395,35 @@
    },
    "seasons": [
     "winter",
-    "autumn"
+    "autumn",
+    "all"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "عطر عود الخليفة",
-    "محبوب للعتور",
-    "عطر عود",
-    "عطر شرقي",
-    "عطر فاخر"
-   ]
+    "Mahabub",
+    "Oud Al Khalifah",
+    "EDP",
+    "Oud",
+    "Amber"
+   ],
+   "style": 2
   },
   "NIC-1111": {
    "sourceHash": "18hulve",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "خنجر من نيش إماراتية",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "خنجر من نيش إماراتى",
    "nameEn": "Khanjar by Niche Emarati",
-   "descriptionAr": "عطر شرقي فاخر وغني بلمحات دخانية عميقة وتركيبة خشبية جريئة. يمنحك حضوراً طاغياً بفضل مزيجه الفريد من العود والعنبر والتوابل.",
-   "descriptionEn": "Khanjar by Niche Emarati is a rich, smoky, and oud-heavy oriental fragrance with creamy amber and lasting woods.",
+   "descriptionAr": "عطر يفتتح بنفحات التوابل والأخشاب، مع قلب من العود والعنبر، وقاعدة من الأخشاب المدخنة والمسك والفانيليا.",
+   "descriptionEn": "A fragrance opening with spicy and woody notes, a heart of oud and amber, and a base of smoky woods, musk, and vanilla.",
    "gender": "unisex",
    "families": [
     "oud",
-    "oriental",
-    "woody"
+    "amber",
+    "spicy"
    ],
    "notes": {
     "top": [
@@ -48436,25 +48450,26 @@
     "special"
    ],
    "tags": [
-    "نيش إماراتية",
-    "عطر خنجر",
-    "عطر عود",
-    "عطر دخاني",
-    "عطر فاخر"
-   ]
+    "Niche Emarati",
+    "Khanjar",
+    "EDP",
+    "Oud",
+    "Arabic"
+   ],
+   "style": 2
   },
   "FRE-1112": {
    "sourceHash": "8s0lqz",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "أناتوليا أبسولو ليكستري من فرنش أفينيو",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "أناتوليا أبسولو ليس إكسسترايت من فرنش أفينيو",
    "nameEn": "Anatolia Absolus Les Extraits by French Avenue",
-   "descriptionAr": "عطر شرقي دافئ يجمع بين النفحات الحمضية والتوابل الغنية بأسلوب ساحر. يستقر على قاعدة عميقة من العود والعنبر الرمادي لإحساس فاخر.",
-   "descriptionEn": "Anatolia Absolus Les Extraits by French Avenue is a warm spicy, smoky and ambery oriental fragrance with oud and ambergris.",
+   "descriptionAr": "عطر شرقي بتركيز إكسترايت دي بارفان يفتتح بالمندرين والقرفة، مع قلب من الفلفل والنفحات المدخنة، وقاعدة من العود والعنبر وعنبر الحوت.",
+   "descriptionEn": "An oriental extrait de parfum opening with mandarin and cinnamon, a heart of pepper and smoky notes, and a base of oud, amber, and ambergris.",
    "gender": "unisex",
    "families": [
     "oriental",
-    "woody",
+    "oud",
     "amber"
    ],
    "notes": {
@@ -48481,26 +48496,27 @@
     "special"
    ],
    "tags": [
-    "فرنش أفينيو",
-    "أناتوليا أبسولو",
-    "عطر شرقي",
-    "عطر عنبر",
-    "عطر إكستريت"
-   ]
+    "French Avenue",
+    "Anatolia Absolus",
+    "Extrait",
+    "Oriental",
+    "Oud"
+   ],
+   "style": 2
   },
   "FRE-1113": {
    "sourceHash": "kfn7kw",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
    "nameAr": "شادو أبسولو من فرنش أفينيو",
-   "nameEn": "Shadow Absolus by French Avenue Extrait Unisex",
-   "descriptionAr": "عطر شرقي خشبي يوازن بين حلاوة التوت الداكن ودفء التوابل والأخشاب الفاخرة. يترك انطباعاً غنياً وناعماً بفضل قاعدة الجلد والعنبر والمسك.",
-   "descriptionEn": "Shadow Absolus by French Avenue is an oriental woody extrait with spicy, fruity, and deep woody notes ending in amber, leather, and musk.",
+   "nameEn": "Shadow Absolus by French Avenue Extrait",
+   "descriptionAr": "عطر خشبي شرقي يفتتح بإبرة الراعي والزعفران والزنجبيل، مع قلب من التوت والعود وخشب الغاياك، وقاعدة من العنبر والجلود والمسك.",
+   "descriptionEn": "An oriental woody extrait opening with geranium, saffron, and ginger, a heart of raspberry, oud, and guaiac wood, and a base of amber, leather, and musk.",
    "gender": "unisex",
    "families": [
     "oriental",
     "woody",
-    "spicy"
+    "oud"
    ],
    "notes": {
     "top": [
@@ -48521,34 +48537,34 @@
    },
    "seasons": [
     "winter",
-    "autumn",
-    "all"
+    "autumn"
    ],
    "occasions": [
     "evening",
     "special"
    ],
    "tags": [
-    "فرنش أفينيو",
-    "شادو أبسولو",
-    "عطر خشبي",
-    "عطر جلدي",
-    "عطر توت"
-   ]
+    "French Avenue",
+    "Shadow Absolus",
+    "Extrait",
+    "Oud",
+    "Woody"
+   ],
+   "style": 2
   },
   "FRE-1114": {
    "sourceHash": "j0by1d",
    "editor": "shaheen",
-   "updatedAt": "2026-10-17T16:58:43.168Z",
-   "nameAr": "أنَنون أبسولو ليكستري من فرنش أفينيو",
+   "updatedAt": "2026-11-19T19:01:47.197Z",
+   "nameAr": "أنكنون أبسولو ليس إكسترايت من فرنش أفينيو",
    "nameEn": "Unknown Absolus Les Extraits by French Avenue",
-   "descriptionAr": "عطر خشبي وتوابل غني يفتتح بنفحات حارة وجريئة من الفلفل والزعفران والهيل. يتطور إلى قاعدة حلوة وراتنجية دافئة تغلفها الفانيليا والبنزوين.",
-   "descriptionEn": "Unknown Absolus by French Avenue is a woody spicy fragrance opening with pepper, saffron, and cardamom, resting on a sweet, resinous, and ambery base.",
+   "descriptionAr": "عطر خشبي توابلي يفتتح بالفلفل والزعفران والهيل، مع قلب من الورد وخشب الأرز، وقاعدة من السكر المعالج والبنزوين والقست واللابدانوم والفانيليا.",
+   "descriptionEn": "A woody spicy fragrance opening with pepper, saffron, and cardamom, a heart of rose and cedarwood, and a base of cooked sugar, benzoin, ciste, labdanum, and vanilla.",
    "gender": "unisex",
    "families": [
     "woody",
     "spicy",
-    "amber"
+    "oriental"
    ],
    "notes": {
     "top": [
@@ -48577,12 +48593,13 @@
     "special"
    ],
    "tags": [
-    "فرنش أفينيو",
-    "عطر خشبي حار",
-    "عطر فانيليا",
-    "عطر شرقي",
-    "عطر للجنسين"
-   ]
+    "French Avenue",
+    "Unknown Absolus",
+    "Extrait",
+    "Woody",
+    "Spicy"
+   ],
+   "style": 2
   },
   "IMP-1115": {
    "sourceHash": "18rcta3",
