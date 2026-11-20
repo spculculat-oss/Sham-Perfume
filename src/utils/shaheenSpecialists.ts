@@ -9,6 +9,7 @@
  * كل متخصص مسجّل رسمياً في سجل الروبوتات (src/utils/shaheenOrg.ts) بنفس الـ id، وعنده وردية
  * مراقبة وخبير فحص، وعلومه محددة بنطاقه فقط (L-32).
  */
+import { ISLAMIC_LIBRARY_TITLE } from '../library/islamic/entry';
 import type { BotId } from './shaheenOrg';
 
 /** مسارات مدرسة شاهين الـ37 (نفس معرفات scripts/shaheen-school/curriculum.ts — اختبار يتأكد من التطابق). */
@@ -181,6 +182,7 @@ export const SITE_SECTIONS: SiteSection[] = [
   { id: 'master_ai', titleAr: 'الخبير شاهين', titleEn: 'Shaheen the expert', consultants: ['specialist_tech', 'specialist_security', 'specialist_engineering'] },
   { id: 'perfume_news', titleAr: 'أخبار العطور', titleEn: 'Perfume news', consultants: ['specialist_society', 'specialist_business', 'specialist_culture'] },
   { id: 'raw_materials', titleAr: 'المواد الخام', titleEn: 'Raw materials', consultants: ['specialist_scents', 'specialist_health'] },
+  { id: 'islamic_library', titleAr: ISLAMIC_LIBRARY_TITLE.ar, titleEn: ISLAMIC_LIBRARY_TITLE.en, consultants: ['specialist_culture', 'specialist_society'] },
   { id: 'world_perfumes', titleAr: 'عطور العالم', titleEn: 'World perfumes', consultants: ['specialist_society', 'specialist_scents', 'specialist_culture'] },
   { id: 'perfume_designers', titleAr: 'قسم المصممين — عطور', titleEn: 'Designers — perfume', consultants: ['specialist_scents', 'specialist_science', 'specialist_health'] },
   { id: 'cosmetic_designers', titleAr: 'قسم المصممين — تجميل', titleEn: 'Designers — cosmetics', consultants: ['specialist_health', 'specialist_science', 'specialist_business'] },

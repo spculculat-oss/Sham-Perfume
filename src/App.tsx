@@ -116,6 +116,7 @@ const CommunityApp = lazyWithReload(() => import('./community/CommunityApp'));
 const FORMULA_SHARE_TABS = new Set(['concentration', 'pyramid', 'molecule_studio', 'maceration_simulator']);
 const CosmeticsHub = lazyWithReload(() => import('./components/CosmeticsHub'));
 const DesignersStudio = lazyWithReload(() => import('./components/DesignersStudio'));
+const IslamicLibrary = lazyWithReload(() => import('./library/islamic/IslamicLibrary'));
 // «مساحة شاهين»: the general assistant (loaded only when opened — its document and code tools are heavy).
 const ShaheenWorkspace = lazyWithReload(() => import('./workspace/ShaheenWorkspace'));
 const EngineeringCalculator = lazyWithReload(() => import('./components/EngineeringCalculator'));
@@ -473,6 +474,9 @@ export default function App() {
           return;
         }
       }
+
+      // The library owns its in-tab book history. Closing a volume must not jump away from its shelf.
+      if (targetTab === 'islamic_library' && activeTab === targetTab) return;
 
       // 4. Update tab & synchronize historyStack
       setActiveTab(targetTab);
@@ -1198,9 +1202,8 @@ export default function App() {
           />
         )}
 
-        {/* Store Promo Hub: promotional banner with store deals.
-            Not on «مجتمع شام» or «مساحة شاهين»: both open straight on their own workspace above the fold. */}
-        {!(activeTab === 'community' || activeTab.startsWith('community/') || activeTab === 'workspace') && (
+        {/* Keep the community, workspace and reading hall free of storefront promotions. */}
+        {!(activeTab === 'community' || activeTab.startsWith('community/') || activeTab === 'workspace' || activeTab === 'islamic_library') && (
           <TopPromoHub
             currentLang={currentLang}
             onViewStore={() => navigateToTab('store')}
@@ -1235,6 +1238,7 @@ export default function App() {
                   : undefined
               }
               currentLang={currentLang}
+              compact={activeTab === 'islamic_library'}
               onOpenPrintModal={handleOpenSpecModal}
             />
           )}
@@ -1311,6 +1315,17 @@ export default function App() {
             onApplyNewsNotesToCalculator={handleApplyToConcentrationCalculator}
             onAddNoteToPyramid={handleAddMaterialToPyramid}
           />
+        )}
+
+        {activeTab === 'islamic_library' && (
+          <ErrorBoundary compact area="Islamic library" ar={currentLang === 'ar'}>
+            <Suspense fallback={<div className="py-16 text-center text-emerald-900" role="status">
+              <Loader2 className="w-8 h-8 animate-spin mx-auto mb-3" aria-hidden="true" />
+              {currentLang === 'ar' ? 'جاري فتح أرفف المكتبة…' : 'Opening the library shelves…'}
+            </div>}>
+              <IslamicLibrary currentLang={currentLang} />
+            </Suspense>
+          </ErrorBoundary>
         )}
 
         {activeTab === 'world_perfumes' && (
@@ -1491,14 +1506,14 @@ export default function App() {
         onCalculateCosting={handleCalculateCosting}
         onPrintSpecSheet={handlePrintSpecSheetForFormula}
         onOpenTool={handleOpenShaheenTool}
-        hidden={activeTab === 'master_ai' || activeTab === 'workspace'}
+        hidden={activeTab === 'master_ai' || activeTab === 'workspace' || activeTab === 'islamic_library'}
       />
 
       {/* Sham Core services assistant: orders, store, bespoke, B2B, support (opposite corner to Shaheen) */}
       <ShamAssistant currentLang={currentLang} />
 
       {/* «مجلس المتخصصين»: استشارة علوم شاهين في أي قسم وفي أي وقت (وسط الشاشة السفلي) */}
-      <SpecialistsHub section={activeTab} lang={currentLang} />
+      {activeTab !== 'islamic_library' && <SpecialistsHub section={activeTab} lang={currentLang} />}
 
       {/* «الأيقونات العائمة»: شريط جانبي يظهر بس لما أيقونة تتخفي أو تتحرك — يرجّعها أو يرجّع أماكنها */}
       <FloatingDockManager lang={currentLang} />

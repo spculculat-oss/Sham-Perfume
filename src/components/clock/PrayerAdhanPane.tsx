@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Bell, BellOff, ExternalLink, Headphones, Play, Upload, Volume2, VolumeX } from 'lucide-react';
-import { ADHAN_RECORDINGS, FAMOUS_ADHAN_LINKS, validAdhanFile, type AdhanVariant } from '../../data/adhanVoices';
+import { Bell, BellOff, BookOpen, ChevronDown, ExternalLink, Headphones, Landmark, Play, Upload, Volume2, VolumeX } from 'lucide-react';
+import { ADHAN_LISTENING_GROUPS } from '../../data/adhanListening';
+import { ADHAN_RECORDINGS, validAdhanFile, type AdhanVariant } from '../../data/adhanVoices';
 import type { SupportedLanguage } from '../../types/i18n';
 import { loc } from '../../لغات/localize';
+import { formatLocalizedNumber } from '../../لغات/numerals';
 import { REMINDER_PRAYERS, type AdhanVoiceId, type PrayerPreferences, type ReminderMode } from '../../utils/prayerConfig';
 import { PRAYER_LABELS, prayerT } from './prayerText';
 import type { usePrayerReminders } from './usePrayerReminders';
@@ -10,6 +12,37 @@ import type { usePrayerReminders } from './usePrayerReminders';
 export type LocalRecordings = Partial<Record<AdhanVariant, File>>;
 const variants = ['regular', 'fajr'] as const;
 const modes = [{ name: 'off', Icon: BellOff }, { name: 'visual', Icon: Bell }, { name: 'audio', Icon: Volume2 }] as const;
+
+function AdhanListeningLibrary({ lang }: { lang: SupportedLanguage }) {
+  const label = prayerT(lang);
+  return <details className="prayer-card prayer-details prayer-listening">
+    <summary>
+      <Headphones size={18} aria-hidden="true" />
+      <span className="prayer-listening-title"><strong>{label('listenLibrary')}</strong><small>{label('listenOnly')}</small></span>
+      <ChevronDown className="prayer-listening-chevron" size={16} aria-hidden="true" />
+    </summary>
+    <div className="prayer-details-body">
+      <p className="prayer-help">{label('listenHelp')}</p>
+      <div className="prayer-listening-grid">
+        {ADHAN_LISTENING_GROUPS.map(({ id, title, links }) => {
+          const Icon = id === 'reciters' ? BookOpen : Landmark;
+          return <section className="prayer-listening-group" data-collection={id} key={id}>
+            <h3><Icon size={15} aria-hidden="true" />{loc(lang, title)}</h3>
+            <ul>{links.map((entry) => <li key={entry.url}>
+              <a href={entry.url} target="_blank" rel="noopener noreferrer">
+                <span>
+                  <strong>{loc(lang, entry.title)}</strong>
+                  <small><bdi>{loc(lang, entry.publisher)}</bdi>{entry.year && <> · <bdi>{formatLocalizedNumber(lang, entry.year, { grouping: false })}</bdi></>}</small>
+                </span>
+                <ExternalLink size={14} aria-hidden="true" />
+              </a>
+            </li>)}</ul>
+          </section>;
+        })}
+      </div>
+    </div>
+  </details>;
+}
 
 export function PrayerAdhanPane({ lang, prefs, update, canArm, hasPlace, hasSchedule, audio, files, onFile, onPreview, onChoosePlace }: {
   lang: SupportedLanguage; prefs: PrayerPreferences; update: (delta: Partial<PrayerPreferences>) => void;
@@ -34,6 +67,7 @@ export function PrayerAdhanPane({ lang, prefs, update, canArm, hasPlace, hasSche
   const canStop = status.state === 'playing' || status.state === 'loading';
   const changeMode = (next: ReminderMode) => { void audio.changeMode(next); };
   return <div className="prayer-pane">
+    <AdhanListeningLibrary lang={lang} />
     <section className="prayer-card prayer-reminder-settings">
       <h3><Bell size={18} aria-hidden="true" />{label('reminders')}</h3>
       <p className="prayer-help">{label('reminderHelp')}</p>
@@ -54,7 +88,7 @@ export function PrayerAdhanPane({ lang, prefs, update, canArm, hasPlace, hasSche
       </fieldset>
     </section>
     <section className="prayer-card prayer-voices">
-      <h3><Headphones size={18} aria-hidden="true" />{label('adhan')}</h3>
+      <h3><Volume2 size={18} aria-hidden="true" />{label('reminderVoices')}</h3>
       <div className="prayer-voice-grid">
         {variants.map((variant) => {
           const title = label(variant === 'fajr' ? 'fajrVoice' : 'regularVoice');
@@ -86,11 +120,5 @@ export function PrayerAdhanPane({ lang, prefs, update, canArm, hasPlace, hasSche
         }))}
       </ul></details>
     </section>
-    <details className="prayer-card prayer-details prayer-famous">
-      <summary><Headphones size={16} aria-hidden="true" /><strong>{label('famous')}</strong><ExternalLink size={14} aria-hidden="true" /></summary>
-      <div className="prayer-details-body"><p className="prayer-help">{label('famousNote')}</p><ul>
-        {FAMOUS_ADHAN_LINKS.map((item) => <li key={item.url}><a href={item.url} target="_blank" rel="noreferrer">{loc(lang, item.title)} <ExternalLink size={13} aria-hidden="true" /></a><small>{item.publisher}</small></li>)}
-      </ul></div>
-    </details>
   </div>;
 }

@@ -32,6 +32,7 @@ import { LText, makeT, pickArEn } from '../لغات/localize';
 import { isRTL } from '../لغات/localizedContent';
 import { uiLabel } from '../لغات/uiTextL10n';
 import { cosmeticsText } from '../لغات/cosmeticsL10n';
+import { ISLAMIC_LIBRARY_TITLE } from '../library/islamic/entry';
 import { designersText } from '../لغات/designersL10n';
 
 
@@ -66,6 +67,7 @@ interface NavigationBreadcrumbsProps {
   previousTabLabel?: string;
   currentLang?: SupportedLanguage;
   onOpenPrintModal?: () => void;
+  compact?: boolean;
 }
 
 export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
@@ -76,6 +78,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
   previousTabLabel,
   currentLang = 'ar',
   onOpenPrintModal,
+  compact = false,
 }) => {
   const isRtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
@@ -89,6 +92,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
     molecule_studio: { label: uiLabel('molecule_studio', currentLang), icon: Atom },
     perfume_news: { label: t('nav_news', currentLang), icon: Newspaper },
     world_perfumes: { label: t('nav_world_perfumes', currentLang), icon: Compass },
+    islamic_library: { label: pickArEn(currentLang, ISLAMIC_LIBRARY_TITLE.ar, ISLAMIC_LIBRARY_TITLE.en), icon: BookOpen },
     raw_materials: { label: t('nav_raw_materials', currentLang), icon: Scale },
     pyramid: { label: t('nav_pyramid', currentLang), icon: Layers },
     alcohol: { label: t('nav_alcohol', currentLang), icon: Hourglass },
@@ -180,7 +184,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
         </div>
 
         {/* Spec Sheet Print Shortcut */}
-        {onOpenPrintModal && (
+        {!compact && onOpenPrintModal && (
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={onOpenPrintModal}
@@ -195,7 +199,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
       </div>
 
       {/* Jump To Bar */}
-      <div className="mt-3 pt-2.5 border-t border-stone-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-xs">
+      {!compact && <div className="mt-3 pt-2.5 border-t border-stone-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-xs">
         <span className="text-[11px] font-bold text-stone-400 shrink-0 ml-1">
           {L('jump_to')}
         </span>
@@ -217,7 +221,7 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
             </button>
           );
         })}
-      </div>
+      </div>}
     </div>
   );
 };

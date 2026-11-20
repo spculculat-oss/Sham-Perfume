@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { ADHAN_LISTENING_GROUPS } from '../src/data/adhanListening';
 import { ADHAN_RECORDINGS, validAdhanFile, MAX_ADHAN_FILE_BYTES } from '../src/data/adhanVoices';
 import { ADHKAR, ADHKAR_CATEGORIES, HISN_AL_MUSLIM_URL } from '../src/data/prayerAdhkar';
 import { decodePrayerPreferences, defaultPrayerPreferences, PRAYER_NAMES, REMINDER_PRAYERS, type PrayerPlace } from '../src/utils/prayerConfig';
@@ -197,6 +198,29 @@ test('bundled recordings match the licensed assets and Fajr has its own files', 
   assert.ok(validAdhanFile({ type: 'audio/mpeg', name: 'فجر.MP3', size: 5 }));
   assert.ok(!validAdhanFile({ type: 'text/html', name: 'test.mp3', size: 4096 }));
   assert.ok(!validAdhanFile({ type: 'audio/mpeg', name: 'large.mp3', size: MAX_ADHAN_FILE_BYTES + 1 }));
+});
+
+test('mosque and reciter listening links point to publisher pages, not to reminder tracks', () => {
+  assert.deepEqual(ADHAN_LISTENING_GROUPS.map(({ id }) => id), ['makkah', 'madinah', 'hagia-sophia', 'reciters']);
+  const links = ADHAN_LISTENING_GROUPS.flatMap(({ links }) => links);
+  assert.equal(new Set(links.map(({ url }) => url)).size, links.length);
+  for (const group of ADHAN_LISTENING_GROUPS) {
+    assert.ok(group.title.ar && group.title.en && group.links.length >= 2);
+    for (const link of group.links) {
+      assert.ok(link.title.ar && link.title.en && link.publisher.ar && link.publisher.en);
+      const url = new URL(link.url);
+      assert.equal(url.protocol, 'https:');
+      assert.ok(!url.username && !url.password);
+      assert.doesNotMatch(url.pathname, /\/download\/|\/embed\/|\.(?:mp3|m4a|aac|wav|ogg|mp4)$/i);
+    }
+    // Catalog IDs must never become selectable audio via the preferences decoder.
+    const prefs = decodePrayerPreferences(JSON.stringify({ regularVoice: group.id, fajrVoice: group.id }));
+    assert.equal(prefs.regularVoice, 'ahmed-khalaf');
+    assert.equal(prefs.fajrVoice, 'ahmed-khalaf');
+  }
+  const hagia = ADHAN_LISTENING_GROUPS.find(({ id }) => id === 'hagia-sophia')!;
+  assert.ok(hagia.links.some(({ url }) => new URL(url).hostname === 'www.diyanet.tv'), 'link to the broadcaster’s Fajr clip');
+  assert.ok(hagia.links.some(({ url }) => url === 'https://www.youtube.com/watch?v=Ayj5R2ll73Y'), 'link to the documented reopening adhan');
 });
 
 test('the local adhkar collection has auditable sources, categories and verbatim Quran references', () => {
