@@ -1,17 +1,18 @@
 import type { SupportedLanguage } from '../../types/i18n';
-import { formatLocalizedNumber } from '../../لغات/numerals';
+import { formatLocalizedNumber, usesNativeDigits } from '../../لغات/numerals';
 import { ENGINEERING_EXPRESSION_LIMIT, ENGINEERING_VARIABLES, radiansPerUnit, type AngleMode, type EngineeringFunctions, type EngineeringValue, type EngineeringVariable } from '../../utils/engineeringCalculator';
-import { exact, exactApproximation, type ExactValue } from '../../utils/engineeringExact';
+import { exact, exactApproximation, recurringDecimal, type ExactValue } from '../../utils/engineeringExact';
 
 export type CalcText = (ar: string, en: string) => string;
-export const FORMATS = ['math', 'decimal', 'mixed', 'eng', 'sci', 'fixed', 'dms', 'polar'] as const;
+export const FORMATS = ['math', 'decimal', 'mixed', 'recurring', 'eng', 'sci', 'fixed', 'dms', 'polar'] as const;
 export type CalcFormat = typeof FORMATS[number];
 export const FORMAT_LABEL: Record<CalcFormat, [string, string]> = {
   math: ['كسور وجذور', 'Exact / textbook'], decimal: ['عشري', 'Decimal'], mixed: ['كسر مختلط', 'Mixed fraction'],
+  recurring: ['عشري دوري (الدورة جوّه القوس)', 'Recurring decimal (cycle in parentheses)'],
   eng: ['هندسي', 'Engineering'], sci: ['ترميز علمي', 'Scientific notation'], fixed: ['منازل عشرية ثابتة', 'Fixed decimals'],
   dms: ['درجات ودقائق وثوانٍ', 'Degrees, minutes, seconds'], polar: ['الصيغة القطبية', 'Polar form'],
 };
-export const FORMAT_TAG: Record<CalcFormat, string> = { math: 'MATH', decimal: 'DEC', mixed: 'MIX', eng: 'ENG', sci: 'SCI', fixed: 'FIX', dms: 'DMS', polar: 'POL' };
+export const FORMAT_TAG: Record<CalcFormat, string> = { math: 'MATH', decimal: 'DEC', mixed: 'MIX', recurring: 'RPT', eng: 'ENG', sci: 'SCI', fixed: 'FIX', dms: 'DMS', polar: 'POL' };
 
 export function displayDigits(text: string, lang: SupportedLanguage) {
   return text.replace(/[0-9]/g, (value) => formatLocalizedNumber(lang, Number(value), { grouping: false }));
@@ -39,6 +40,15 @@ export function formatComplex(value: EngineeringValue, lang: SupportedLanguage) 
   return re ? `${displayNumber(re, lang)} ${im < 0 ? '−' : '+'} ${imaginary}` : `${im < 0 ? '−' : ''}${imaginary}`;
 }
 
+/** An exact, short decimal equivalent for the fraction shown on the LCD or in study steps. */
+export function exactDecimalText(value: EngineeringValue, lang: SupportedLanguage): string | undefined {
+  if (value.im || !value.exact || value.exact.symbol || value.exact.denominator === 1n) return;
+  const text = recurringDecimal(value.exact, 16);
+  // Never put an equals sign next to a rounded decimal or overflow the compact readout.
+  if (!text || text.includes('(') || text.length > 24) return;
+  return displayDigits(text.replace('-', '−').replace('.', usesNativeDigits(lang) ? '٫' : '.'), lang);
+}
+
 export type Readout = { text: string } | { whole?: string; sign?: string; top: string; bottom: string };
 
 function formatExact(value: ExactValue, lang: SupportedLanguage, mixed: boolean): Readout {
@@ -57,8 +67,12 @@ export function formatReadout(value: EngineeringValue, format: CalcFormat, preci
   if (format === 'polar') return { text: `${displayNumber(Math.hypot(value.re, value.im), lang)} ∠ ${displayNumber(value.im || value.re ? Math.atan2(value.im, value.re) / radiansPerUnit(angle) : 0, lang)}${angle === 'DEG' ? '°' : angle === 'GRAD' ? 'g' : ''}` };
   if (value.im) return { text: formatComplex(value, lang) };
   const n = value.re;
-  if ((format === 'math' || format === 'mixed') && value.exact && (value.exact.symbol || value.exact.denominator !== 1n || Math.abs(n) < 1e12)) return formatExact(value.exact, lang, format === 'mixed');
-  if (format === 'sci' || format === 'eng') return { text: scientific(n, lang, Math.max(3, precision + 1), format === 'eng') };
+  if (format === 'recurring') {
+    const exactText = value.exact && recurringDecimal(value.exact);
+    return { text: exactText === undefined ? `≈ ${displayNumber(n, lang)}` : displayDigits(exactText.replace('-', '−').replace('.', usesNativeDigits(lang) ? '٫' : '.'), lang) };
+  }
+  if ((format === 'math' || format === 'mixed') && value.exact) return formatExact(value.exact, lang, format === 'mixed');
+  if (format === 'sci' || format === 'eng') return { text: scientific(n, lang, precision + 1, format === 'eng') };
   if (format === 'fixed' && Math.abs(n) < 1e15) return { text: formatLocalizedNumber(lang, n, { grouping: false, fractionDigits: precision }) };
   if (format === 'dms' && Math.abs(n) <= 1e9) {
     const millis = Math.round(Math.abs(n) * 3_600_000);
@@ -73,7 +87,7 @@ export function formatReadout(value: EngineeringValue, format: CalcFormat, preci
 /** A copyable expression, independent of the display locale and notation preferences. */
 export function copyableNumber(value: EngineeringValue, exactPreferred: boolean): string {
   const v = value.exact;
-  if (v && exactPreferred && (v.symbol || v.denominator !== 1n)) {
+  if (v && exactPreferred) {
     const symbol = v.symbol === 'pi' ? '*pi' : v.symbol ? `*sqrt(${v.symbol})` : '';
     return `${v.numerator}${symbol}${v.denominator !== 1n ? `/${v.denominator}` : ''}`;
   }

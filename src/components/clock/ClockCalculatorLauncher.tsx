@@ -8,7 +8,7 @@ export const ENGINEERING_WINDOW_ID = 'engineering-calculator-window';
 export type ClockCalculatorState = 'closed' | 'open' | 'minimized';
 const TEXT = {
   calculator: { ar: 'حاسبة هندسية', en: 'Engineering calculator' },
-  features: { ar: 'دوال علمية ومعادلات وتحويل وحدات', en: 'Scientific functions, equations & unit conversion' },
+  features: { ar: 'حساب عادي وعلمي ومعادلات وتحويل وحدات', en: 'Standard, scientific, equations & unit conversion' },
   closed: { ar: 'افتح النافذة العائمة', en: 'Open floating window' },
   open: { ar: 'ارجع للنافذة', en: 'Focus the window' },
   minimized: { ar: 'استعد النافذة', en: 'Restore the window' },

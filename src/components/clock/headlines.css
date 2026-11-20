@@ -15,7 +15,7 @@
 .clock-headlines-day { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; color: #f2d4af; font-size: 0.77rem; font-weight: 650; }
 .clock-headlines-day svg { flex: none; }
 .clock-headlines-updated { color: #ded0c2; font-size: 0.7rem; line-height: 1.35; }
-.clock-headlines :is(button, a):focus-visible { outline: 2px solid #ffd499; outline-offset: 2px; }
+.clock-headlines :is(button, a, select, summary):focus-visible { outline: 2px solid #ffd499; outline-offset: 2px; }
 .clock-headlines button {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem;
   min-height: 40px; min-width: 40px; padding: 0.24rem 0.46rem; border: 1px solid #ffdba338;
@@ -31,7 +31,7 @@
   display: flex; flex-direction: column; min-width: 0; gap: 0.65rem; padding: clamp(0.62rem, 1.4vw, 0.9rem);
   border: 1px solid #ffe3b932; border-radius: 0.9rem; background: linear-gradient(140deg, var(--news-tint), transparent 55%), #201917;
 }
-.clock-headline[data-news-region="world"] { --news-accent: #a8e7d3; --news-tint: #53a99522; }
+.clock-headline:is([data-news-region="world"], [data-press-region="world"]) { --news-accent: #a8e7d3; --news-tint: #53a99522; }
 .clock-headline-icon { width: 31px; height: 31px; color: var(--news-accent); background: var(--news-tint); }
 .clock-headline-header h3 { color: #fff4e7; font-size: 0.96rem; line-height: 1.25; font-weight: 760; overflow-wrap: anywhere; }
 .clock-headline-kind { color: #dccab8; font-size: 0.68rem; }
@@ -44,20 +44,40 @@
 .clock-headline-position { display: inline-flex; direction: ltr; gap: 0.24rem; color: var(--news-accent); padding-inline: 0.17rem; font-size: 0.77rem; font-variant-numeric: tabular-nums; }
 .clock-headlines button.clock-headline-expand { background: var(--news-tint); color: var(--news-accent); text-align: start; }
 .clock-headline-expand[aria-expanded="true"] :last-child { transform: rotate(180deg); }
+.clock-headline-story { min-width: 0; }
 .clock-headline-link {
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 0.6rem; min-width: 0; padding: 0.68rem;
+  display: flex; flex-direction: column; justify-content: center; gap: 0.6rem; min-width: 0; padding: 0.68rem;
   border: 1px solid #ffe5c421; border-radius: 0.62rem; background: #09060459; text-decoration: none;
 }
 .clock-headline-link:hover { border-color: #ffe5c46b; background: #fff5e90a; }
-.clock-headline-stage .clock-headline-link { min-height: 4.95rem; align-items: center; border-inline-start: 3px solid var(--news-accent); }
+.clock-headline-stage .clock-headline-link { min-height: 4.95rem; border-inline-start: 3px solid var(--news-accent); }
+.clock-headline-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.6rem; min-width: 0; }
 .clock-headline-slide, .clock-headline-list-copy { display: grid; flex: 1; min-width: 0; gap: 0.32rem; }
+.clock-headline-media {
+  position: relative; display: block; height: clamp(108px, 16vw, 174px); overflow: hidden;
+  border-radius: 0.4rem; background: #171310; border: 1px solid #dcffef20;
+}
+.clock-headline-photo, .clock-headline-cover { display: block; width: 100%; height: 100%; }
+.clock-headline-photo { object-fit: contain; }
+.clock-headline-cover { object-fit: cover; }
+.clock-headline-illustration {
+  position: absolute; inset-inline-start: 6px; inset-block-end: 6px; padding: 0.2rem 0.37rem;
+  border-radius: 0.35rem; background: #19130fee; color: #f9e9d4; font-size: 0.66rem; line-height: 1.15;
+}
+.clock-headline-attributions, .clock-headline-photo-credit { display: flex; flex-wrap: wrap; gap: 0.12rem 0.38rem; }
+.clock-headline-attributions { justify-content: space-between; padding: 0.32rem 0.22rem 0; color: #dfd2c5; font-size: 0.69rem; overflow-wrap: anywhere; }
+.clock-headline-attributions a { color: var(--news-accent); text-decoration: underline; text-underline-offset: 2px; }
+.clock-headline-attributions > a { color: #e0d5c8; }
 .clock-headline-slide { animation: headline-arrive 280ms ease-out both; }
 @keyframes headline-arrive { from { opacity: 0.3; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 .clock-headline-title { color: #fff6ec; font-size: clamp(0.91rem, 1.6vw, 1.05rem); font-weight: 720; line-height: 1.42; overflow-wrap: anywhere; }
 .clock-headline-byline { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem 0.4rem; color: #dfcdbb; font-size: 0.71rem; line-height: 1.35; overflow-wrap: anywhere; }
 .clock-headline-out { color: var(--news-accent); flex: none; }
 .clock-headline-list { display: grid; gap: 0.33rem; margin: 0; padding: 0; list-style: none; }
-.clock-headline-list .clock-headline-link { padding: 0.5rem; }
+.clock-headline-list .clock-headline-link { flex-direction: row; align-items: center; justify-content: flex-start; padding: 0.5rem; }
+.clock-headline-list .clock-headline-media { flex: 0 0 clamp(74px, 17vw, 108px); height: 72px; }
+.clock-headline-list .clock-headline-row { flex: 1; }
+.clock-headline-list .clock-headline-illustration { inset-inline-start: 3px; inset-block-end: 3px; font-size: 0.61rem; padding: 0.2rem; }
 .clock-headline-list .clock-headline-title { font-size: 0.87rem; }
 .clock-headline-order { min-width: 1.8rem; padding: 0.18rem; border-radius: 0.35rem; color: var(--news-accent); background: var(--news-tint); font-size: 0.72rem; text-align: center; }
 .clock-headline-empty { color: #ead8c7; font-size: 0.85rem; line-height: 1.45; padding-block: 0.3rem; }
@@ -66,13 +86,52 @@
 .clock-headline-sources { margin-block-start: auto; color: #d9c5b0; font-size: 0.69rem; line-height: 1.4; overflow-wrap: anywhere; }
 .clock-headline-credit a { color: #f4dfc6; text-decoration: underline; text-underline-offset: 2px; }
 .clock-headline-credit a + a { color: #ddc9b5; }
+.clock-headline-filter { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0.38rem 0.6rem; font-size: 0.75rem; color: #dfd5c9; }
+.clock-headline-filter select {
+  appearance: auto; color-scheme: dark; width: 100%; min-width: 0; min-height: 40px; padding: 0.28rem 0.46rem;
+  border: 1px solid #a8e7d33b; border-radius: 0.5rem; color: #eff9f5; background: #202c28; font: inherit;
+}
+/* Picture shelves are visible before the live stories and do not depend on the feeds. */
+.clock-press-showcase { display: grid; gap: 0.45rem; margin-block-end: 0.9rem; }
+.clock-press-note { font-size: 0.75rem; line-height: 1.45; color: #f2dbbd; }
+.clock-press-grid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 0.75rem; }
+.clock-press-shelf { background: linear-gradient(148deg, var(--news-tint), transparent 65%), #251e1a; }
+.clock-press-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.48rem; margin: 0; padding: 0; list-style: none; }
+.clock-press-cards li { min-width: 0; }
+.clock-press-card {
+  display: flex; flex-direction: column; height: 100%; min-width: 0; overflow: hidden;
+  border: 1px solid #ffe3b92d; border-radius: 0.6rem; background: #181310; text-decoration: none;
+}
+.clock-press-card:hover { border-color: var(--news-accent); background: #ffffff0b; }
+.clock-press-cover { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; background: var(--news-tint); }
+.clock-press-card-name {
+  display: flex; flex: 1; align-items: center; justify-content: space-between; gap: 0.28rem; min-height: 2.7rem;
+  padding: 0.37rem 0.46rem; border-block-start: 1px solid #ffe3b92d; color: #fff0df;
+  font-size: 0.79rem; font-weight: 720; line-height: 1.32; overflow-wrap: anywhere;
+}
+.clock-press-card-name svg { flex: none; color: var(--news-accent); }
+.clock-press-actions { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.35rem; }
+.clock-press-position { color: var(--news-accent); font-size: 0.71rem; font-weight: 650; }
+.clock-press-index {
+  display: flex; align-items: center; gap: 0.43rem; min-height: 44px; min-width: 0; padding: 0.38rem 0.5rem;
+  border: 1px solid #ffe3b92d; border-radius: 0.5rem; color: var(--news-accent); background: var(--news-tint);
+  font-size: 0.73rem; font-weight: 680; line-height: 1.4; text-decoration: none;
+}
+.clock-press-index:hover { text-decoration: underline; }
+.clock-press-index svg { flex: none; }
+.clock-press-index-cover { flex: none; width: 64px; height: 42px; object-fit: cover; border-radius: 0.3rem; background: #181310; }
+.clock-press-index span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 
 @media (min-width: 720px) {
-  .clock-headline-grid, .clock-headline-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .clock-press-grid, .clock-headline-grid, .clock-headline-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .clock-headline-grid:has(.clock-headline-expand[aria-expanded="true"]) { grid-template-columns: minmax(0, 1fr); }
 }
+@media (min-width: 1040px) { .clock-press-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 480px) {
   .clock-headlines button { min-width: 44px; min-height: 44px; }
+  .clock-headline-filter { grid-template-columns: minmax(0, 1fr); }
+  .clock-headline-filter select { min-height: 44px; }
+  .clock-press-select { grid-template-columns: auto minmax(0, 1fr); }
   .clock-headline-nav { gap: 0.35rem; }
 }
 @media (prefers-reduced-motion: reduce) { .clock-headline-slide { animation: none; } }

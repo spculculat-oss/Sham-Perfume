@@ -9,7 +9,8 @@ export const CATALOG = [
     item('logₐ', 'log(', 'القيمة، الأساس (اختياري)', 'Value, base (optional)'), item('x⁻¹', '^(-1)', 'المقلوب', 'Reciprocal'),
     item('⌊x⌋', 'floor(', 'تقريب لأسفل', 'Floor'), item('⌈x⌉', 'ceil(', 'تقريب لأعلى', 'Ceiling'), item('Round', 'round('), item('Int', 'trunc('),
     item('GCD', 'gcd(', 'أكبر قاسم مشترك', 'Greatest common divisor'), item('LCM', 'lcm(', 'أصغر مضاعف مشترك', 'Least common multiple'),
-    item('DMS', 'dms(', 'درجات، دقائق، ثوانٍ', 'Degrees, minutes, seconds'), item('mod', ' mod ', 'باقي القسمة', 'Remainder'), item('%', '%'),
+    item('RPT', 'repeat(', 'عشري دوري: البداية، أرقام الدورة. مثال repeat(0.1,6)', 'Recurring decimal: prefix and cycle digits, e.g. repeat(0.1,6)'),
+    item('DMS', 'dms(', 'درجات، دقائق، ثوانٍ', 'Degrees, minutes, seconds'), item('mod', ' mod ', 'باقي القسمة', 'Remainder'), item('%', '%', 'قسمة على ١٠٠. لزيادة ١٠٪: اكتب ٢٠٠×(١+١٠٪)', 'Divide by 100. To add 10%, enter 200×(1+10%).'),
   ] },
   { id: 'trig', label: ['زوايا', 'Trig'], entries: [
     ...['sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'atan2', 'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh'].map((name) => item(name, `${name}(`)),
@@ -35,7 +36,7 @@ export const CATALOG = [
   { id: 'constants', label: ['ثوابت', 'Constants'], entries: ENGINEERING_CONSTANTS.map(([name, symbol, , unit]) => item(symbol, name, `${name} · ${unit}`, `${name} · ${unit}`)) },
 ] as const;
 
-export interface CalcKey { face: string; insert?: string; alt?: string; shift?: string; label?: [string, string]; action?: 'del' | 'clear' | 'format' | 'execute'; tone?: 'edit' | 'operator' | 'exe' }
+export interface CalcKey { face: string; insert?: string; alt?: string; shift?: string; label?: [string, string]; action?: 'del' | 'clear' | 'format' | 'execute' | 'exponent'; tone?: 'edit' | 'operator' | 'exe' }
 export const FUNCTION_KEYS: CalcKey[] = [
   { face: 'x', insert: 'x', alt: 'i', shift: 'i' },
   { face: 'ⁿ⁄ₘ', insert: '/', alt: 'x⁻¹', shift: '^(-1)', label: ['كسر', 'Fraction'] },
@@ -55,6 +56,18 @@ export const NUMBER_KEYS: CalcKey[] = [
   { face: 'DEL', action: 'del', tone: 'edit', label: ['حذف', 'Delete'] }, { face: 'AC', action: 'clear', tone: 'edit', label: ['مسح الكل', 'All clear'] },
   { face: '4', insert: '4' }, { face: '5', insert: '5' }, { face: '6', insert: '6' }, { face: '×', insert: '×', tone: 'operator' }, { face: '÷', insert: '÷', tone: 'operator' },
   { face: '1', insert: '1' }, { face: '2', insert: '2' }, { face: '3', insert: '3' }, { face: '+', insert: '+', tone: 'operator' }, { face: '−', insert: '−', tone: 'operator' },
-  { face: '0', insert: '0' }, { face: '.', insert: '.' }, { face: '×10ˣ', insert: '×10^', alt: 'eˣ', shift: 'exp(' },
+  { face: '0', insert: '0' }, { face: '.', insert: '.' }, { face: '×10ˣ', action: 'exponent', alt: 'eˣ', shift: 'exp(' },
   { face: 'FORMAT', action: 'format', label: ['صيغة الناتج', 'Result format'], tone: 'operator' }, { face: 'EXE', action: 'execute', tone: 'exe', label: ['تنفيذ', 'Execute'] },
+];
+
+/** The ordinary desk keypad keeps the four operations and equals visible without SHIFT. */
+export const STANDARD_KEYS: CalcKey[] = [
+  { face: 'AC', action: 'clear', tone: 'edit', label: ['مسح الكل', 'All clear'] },
+  { face: 'DEL', action: 'del', tone: 'edit', label: ['حذف', 'Delete'] },
+  { face: 'Ans', insert: 'Ans', label: ['آخر ناتج', 'Last answer'] },
+  { face: '÷', insert: '÷', tone: 'operator' },
+  { face: '7', insert: '7' }, { face: '8', insert: '8' }, { face: '9', insert: '9' }, { face: '×', insert: '×', tone: 'operator' },
+  { face: '4', insert: '4' }, { face: '5', insert: '5' }, { face: '6', insert: '6' }, { face: '−', insert: '−', tone: 'operator' },
+  { face: '1', insert: '1' }, { face: '2', insert: '2' }, { face: '3', insert: '3' }, { face: '+', insert: '+', tone: 'operator' },
+  { face: '0', insert: '0' }, { face: '.', insert: '.' }, { face: '=', action: 'execute', tone: 'exe', label: ['يساوي', 'Equals'] },
 ];

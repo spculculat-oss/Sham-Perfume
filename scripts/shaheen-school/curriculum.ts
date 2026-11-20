@@ -537,6 +537,12 @@ const QUANTUM_LESSONS: AcademyPair[] = [
 interface ToolField { field: string; goalAr: string; aboutAr: string; developAr: string }
 
 export const TOOL_FIELDS: Record<AiToolId, ToolField> = {
+  calculator_tutor: {
+    field: 'تعليم الرياضيات',
+    goalAr: 'الطالب يفهم طريقة الحل ويفحص خطوته بنفسه.',
+    aboutAr: 'تلميح اختياري للمسألة المكتوبة، وصيغة مقترحة قابلة للتعديل. لا تساوي صحة الحساب صحة تفسير نص السؤال.',
+    developAr: 'اختبر عينة متنوعة من مسائل مدرسية وصيغ أعلى مستوى، والتمييز بين نتائج المحرك المحلي والتلميحات غير المتحققة، وراجع مسار عدم توافر الخدمة واحترام خصوصية الطالب.',
+  },
   finance_agent: {
     field: 'المحاسبة',
     goalAr: 'سجل تحصيل موثق وتقارير صادقة.',

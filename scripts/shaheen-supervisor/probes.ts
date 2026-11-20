@@ -9,6 +9,7 @@ import { defaultControls } from '../../src/utils/ownerAuthority';
 import { emptyStateOrders } from '../../src/utils/platformState';
 import { stateReply } from '../../src/utils/stateRoom';
 import { readFileSync } from 'node:fs';
+import { readTutorReply, runStudyPlan } from '../../src/utils/engineeringStudy';
 import type { AiToolId } from '../../src/utils/aiTools';
 import { readSeoState, stateSummary } from '../../src/seo/agentState';
 import { inspectAnswer, type Probe } from './checks';
@@ -117,6 +118,43 @@ async function newsArticleProbes(ctx: ProbeContext): Promise<Probe[]> {
 }
 
 /** «مساحة شاهين»: what is open (no vendor names), and one everyday question outside perfume answered in the visitor's language. */
+async function calculatorTutorProbes(ctx: ProbeContext): Promise<Probe[]> {
+  const questions = [
+    { question: 'احسب ١٥٪ من ٢٤٠؟', expected: 'local' },
+    { question: 'كتاب كان سعره ٨٠ جنيه واتعمل عليه خصم ١٥٪؛ إزاي أبدأ أحسب السعر بعد الخصم؟', expected: 'suggestion' },
+  ];
+  const out: Probe[] = [];
+  for (const { question, expected } of questions) {
+    const r = await timed(() => json<unknown>(ctx.fetch, `${ctx.site}/api/calculator/tutor`, post({ question, language: 'ar' }), 17_000));
+    const reply = readTutorReply(r.value);
+    const findings: Probe['findings'] = [];
+    let ok = false;
+    let answer = '';
+    if (expected === 'local' && reply?.kind === 'local') {
+      try { const result = runStudyPlan(reply.plan); ok = result.kind === 'calculation' && result.value.re === 36; } catch { /* invalid plan */ }
+      answer = ok ? 'الحاسبة حسبت خمسة عشر بالمئة من مئتين وأربعين محلياً: ستة وثلاثون.' : 'الحساب المحلي غير مطابق للمرجع.';
+    } else if (expected === 'suggestion' && reply?.kind === 'unavailable') {
+      // Optional engine outage is an honest fallback, not a generated answer.
+      ok = true;
+      answer = 'شرح شاهين غير متاح؛ الحاسبة المحلية لسه شغالة.';
+      findings.push({ severe: false, text: 'تعذّر اختبار التلميح الأونلاين؛ مسار عدم التوافر رجع بشكل صحيح.' });
+    } else if (expected === 'suggestion' && reply?.kind === 'suggestion') {
+      answer = reply.hint;
+      ok = true;
+      findings.push(...inspectAnswer(answer, { language: 'ar', ms: r.ms }));
+      if (!reply.plan) findings.push({ severe: false, text: 'مسألة الخصم واضحة ولم تُقترح لها صيغة قابلة للحساب.' });
+      else {
+        try {
+          const result = runStudyPlan(reply.plan);
+          if (result.kind !== 'calculation' || Math.abs(result.value.re - 68) > 1e-9) throw new Error('incorrect translation');
+        } catch { findings.push({ severe: true, text: 'الصيغة المقترحة لا تطابق مسألة الخصم المعروفة.' }); }
+      }
+    }
+    out.push({ tool: 'calculator_tutor', question, answer, ms: r.ms, ok, error: r.error, findings });
+  }
+  return out;
+}
+
 async function workspaceProbes(ctx: ProbeContext): Promise<Probe[]> {
   const status = await timed(() => json<{ ai?: boolean; search?: string; image?: string }>(ctx.fetch, `${ctx.site}/api/workspace/status`));
   const s = status.value;
@@ -545,4 +583,5 @@ export const PROBES: Record<AiToolId, (ctx: ProbeContext) => Probe[] | Promise<P
   platform_owner_agent: platformOwnerProbes,
   visitor_suggestions: visitorSuggestionsProbes,
   shaheen_workspace: workspaceProbes,
+  calculator_tutor: calculatorTutorProbes,
 };

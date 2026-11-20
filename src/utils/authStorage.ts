@@ -1,5 +1,6 @@
 import { UserProfile, CraftLevel } from '../types/auth';
 import { CLOCK_TOOLS_CLEARED, CLOCK_TOOLS_KEY, decodeClockTools } from './clockTools';
+import { PRAYER_CLAIM_KEY, PRAYER_CLEARED, PRAYER_PREFS_KEY, decodePrayerPreferences } from './prayerConfig';
 import { CommunityApiError, cx, getSessionToken, setSessionToken, type AuthResult, type Me, type PendingLogin } from '../community/api';
 
 /**
@@ -284,6 +285,8 @@ export function wipeAllUserData(): void {
     localStorage.removeItem('miyaar_daily_perfume_news_v2');
     localStorage.removeItem('miyaar_perfume_news_last_refresh_date');
     localStorage.removeItem(CLOCK_TOOLS_KEY);
+    localStorage.removeItem(PRAYER_PREFS_KEY);
+    localStorage.removeItem(PRAYER_CLAIM_KEY);
     // تنظيف أي بقايا plain قديمة
     try {
       const raw = localStorage.getItem(REGISTERED_USERS_KEY);
@@ -292,7 +295,10 @@ export function wipeAllUserData(): void {
       }
     } catch {}
   } catch (e) {}
-  if (typeof window !== 'undefined') window.dispatchEvent(new Event(CLOCK_TOOLS_CLEARED));
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(CLOCK_TOOLS_CLEARED));
+    window.dispatchEvent(new Event(PRAYER_CLEARED));
+  }
 }
 
 export function exportAllUserData(user: UserProfile): void {
@@ -301,6 +307,7 @@ export function exportAllUserData(user: UserProfile): void {
     const rawAddress = localStorage.getItem('sham_perfume_user_detailed_address');
     const rawEnv = localStorage.getItem('sham_perfume_user_environment_profile');
     const rawClock = localStorage.getItem(CLOCK_TOOLS_KEY);
+    const rawPrayer = localStorage.getItem(PRAYER_PREFS_KEY);
     const rawCommunity = (() => {
       try { return localStorage.getItem('sham_community_session_v1') ? '[session active — export via /api/community/export]' : null; } catch { return null; }
     })();
@@ -314,6 +321,7 @@ export function exportAllUserData(user: UserProfile): void {
       detailedAddress: rawAddress ? JSON.parse(rawAddress) : null,
       environmentProfile: rawEnv ? JSON.parse(rawEnv) : null,
       clockTools: rawClock ? decodeClockTools(rawClock) : null,
+      prayerPreferences: rawPrayer ? decodePrayerPreferences(rawPrayer) : null,
       hasCommunitySession: !!rawCommunity,
       legalBasis: 'GDPR Art.20 / مصر 151/2020 / SA PDPL — حق نقل البيانات',
     };

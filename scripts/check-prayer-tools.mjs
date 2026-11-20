@@ -1,0 +1,330 @@
+/** Browser smoke: run against a built site. The clock and geolocation are simulated;
+ * actual Chromium Web Audio decodes and plays the bundled MP3 and a local WAV. */
+import assert from 'node:assert/strict';
+import { chromium } from 'playwright-core';
+
+const base = process.env.CLOCK_BASE_URL || 'http://localhost:3000/';
+const origin = new URL(base).origin;
+const scenario = process.env.PRAYER_SCENARIO || 'all';
+const apiOrigin = process.env.PRAYER_API_ORIGIN || origin;
+const cairoFajr = Date.parse('2026-11-18T02:52:00Z');
+const initial = new Date('2026-11-18T02:12:00Z');
+const cairo = { placeId: 'EG:cairo', cityEn: 'Cairo', cityAr: 'القاهرة', country: 'EG', lat: 30.04, lon: 31.24, precision: 'edge-coords' };
+const launch = () => chromium.launch({ executablePath: process.env.BROWSER_EXECUTABLE, headless: true,
+  args: ['--no-sandbox', '--disable-dev-shm-usage', '--no-zygote', '--single-process', '--use-gl=angle', '--use-angle=swiftshader'],
+});
+let browser;
+
+const audioURLs = (fixture) => fixture.requests.filter(({ url }) => /\/audio\/adhan\//.test(url)).map(({ url }) => new URL(url).pathname);
+const probe = (page) => page.evaluate(() => window.prayerTest);
+const open = async (page, lang = 'en') => {
+  await page.getByTestId('prayer-tools-launcher').click();
+  const dialog = page.getByRole('dialog', { name: lang === 'ar' ? 'أوقات الصلاة' : 'Prayer times', exact: true });
+  await dialog.getByRole('button', { name: lang === 'ar' ? 'جدول الصلاة' : 'Schedule', exact: true }).waitFor();
+  return dialog;
+};
+const state = async (page, mode) => page.waitForFunction((value) => document.querySelector('[data-testid=prayer-reminder-state]')?.dataset.mode === value, mode);
+const playback = async (page, status) => page.waitForFunction((value) => document.querySelector('[data-testid=adhan-playback]')?.dataset.state === value, status);
+const timeOf = async (dialog, prayer) => Date.parse(await dialog.getByTestId(`prayer-${prayer}`).locator('time').getAttribute('datetime'));
+const moveTo = async (page, at) => { await page.clock.setSystemTime(at); await page.clock.fastForward(1500); };
+const startNear = (page, at) => moveTo(page, at - 16_000);
+const cross = (page, at) => moveTo(page, at + 3000);
+const noNotice = async (page) => assert.equal(await page.getByTestId('prayer-notice').count(), 0);
+const screenshot = async (page, name) => {
+  if (process.env.PRAYER_SCREENSHOTS) await page.screenshot({ path: `${process.env.PRAYER_SCREENSHOTS}/sham-prayer-${name}.png`, animations: 'disabled', timeout: 45_000 });
+};
+
+async function fixture({ lang = 'en', mobile = false, geo = { country: 'EG', timezone: 'Africa/Cairo', location: cairo }, timezoneId = 'America/Los_Angeles' } = {}) {
+  const context = await browser.newContext({ viewport: mobile ? { width: 320, height: 740 } : { width: 1360, height: 900 },
+    timezoneId, locale: lang === 'ar' ? 'ar-EG' : 'en-GB', isMobile: mobile, hasTouch: mobile, reducedMotion: 'reduce' });
+  const requests = [];
+  const errors = [];
+  context.on('request', (r) => requests.push({ url: r.url(), body: r.postData() || '' }));
+  await context.grantPermissions(['geolocation'], { origin });
+  await context.addInitScript((language) => {
+    localStorage.setItem('sham_perfume_user_language', language);
+    localStorage.setItem('sham_perfume_user_override_lang', 'true');
+    localStorage.setItem('sham_cookie_consent_v1', JSON.stringify({ version: '1.1', essential: true, analytics: false, marketing: false, timestamp: new Date().toISOString() }));
+    const probe = window.prayerTest = { locations: 0, created: 0, played: 0, stopped: 0, block: false, denied: true };
+    Object.defineProperty(navigator.geolocation, 'getCurrentPosition', { value: (success, failure) => {
+      probe.locations += 1;
+      queueMicrotask(() => probe.denied ? failure({ code: 1 }) : success({ timestamp: Date.now(), coords: { latitude: 43.648713, longitude: -79.384761, accuracy: 14 } }));
+    } });
+    const Actual = window.AudioContext;
+    Object.defineProperty(window, 'AudioContext', { configurable: true, value: class extends Actual {
+      constructor(...args) { super(...args); probe.created += 1; }
+      get state() { return probe.block ? 'suspended' : super.state; }
+      resume() { return probe.block ? Promise.reject(new DOMException('Blocked in fixture', 'NotAllowedError')) : super.resume(); }
+      createBufferSource() {
+        const source = super.createBufferSource();
+        const start = source.start.bind(source), stop = source.stop.bind(source);
+        source.start = (...args) => { const r = start(...args); probe.played += 1; return r; };
+        source.stop = (...args) => { const r = stop(...args); probe.stopped += 1; return r; };
+        return source;
+      }
+    } });
+  }, lang);
+  await context.route('**/*', async (route) => {
+    const url = new URL(route.request().url());
+    if (url.origin === apiOrigin) {
+      const headers = { 'access-control-allow-origin': origin };
+      if (url.pathname === '/api/geo') return route.fulfill({ json: geo, headers });
+      if (url.pathname === '/api/clock') return route.fulfill({ json: { unixMs: initial.getTime(), timezone: geo.timezone, source: 'server' }, headers });
+      if (url.pathname === '/api/weather') return route.fulfill({ json: { temperatureC: 22, weatherCode: 0 }, headers });
+      if (url.pathname === '/api/home-headlines') return route.fulfill({ status: 503, json: {}, headers });
+    }
+    return url.origin === origin ? route.continue() : route.abort();
+  });
+  // Playwright exposes the same clock to every page in a context.
+  await context.clock.install({ time: initial });
+  const newPage = async () => {
+    const page = await context.newPage();
+    page.on('pageerror', (error) => errors.push(error.message));
+    page.setDefaultTimeout(22_000);
+    await page.goto(base, { waitUntil: 'domcontentloaded' });
+    const cookies = page.getByRole('button', { name: /Reject non-essential|رفض غير الضروري/ });
+    if (await cookies.isVisible()) await cookies.click();
+    await page.getByTestId('prayer-tools-launcher').waitFor();
+    return page;
+  };
+  return { context, page: await newPage(), newPage, requests, errors };
+}
+
+function localWav() {
+  const frames = 8_000 * 40;
+  const bytes = Buffer.alloc(44 + frames * 2);
+  bytes.write('RIFF'); bytes.writeUInt32LE(bytes.length - 8, 4); bytes.write('WAVEfmt ', 8); bytes.writeUInt32LE(16, 16);
+  bytes.writeUInt16LE(1, 20); bytes.writeUInt16LE(1, 22); bytes.writeUInt32LE(8000, 24); bytes.writeUInt32LE(16000, 28);
+  bytes.writeUInt16LE(2, 32); bytes.writeUInt16LE(16, 34); bytes.write('data', 36); bytes.writeUInt32LE(frames * 2, 40);
+  for (let i = 0; i < frames; i += 1) bytes.writeInt16LE(Math.round(Math.sin(i * 2 * Math.PI * 262 / 8000) * 640), 44 + i * 2);
+  return bytes;
+}
+
+async function checkDesktop() {
+  console.log('Desktop: optional entry, local timetable, preview, Fajr and silent reminders after navigation…');
+  const desktop = await fixture();
+  const { page } = desktop;
+  assert.equal((await probe(page)).locations, 0, 'already-granted GPS must not be requested');
+  assert.equal((await probe(page)).created, 0, 'no AudioContext on entry');
+  assert.deepEqual(audioURLs(desktop), []);
+  assert.ok(!desktop.requests.some(({ url }) => url.includes('PrayerToolsRuntime')), 'prayer runtime stays lazy');
+  let dialog = await open(page);
+  await dialog.getByTestId('prayer-place').getByText(/Cairo/).waitFor();
+  assert.equal(await dialog.getByTestId('prayer-fajr').locator('time').textContent(), '04:52');
+  assert.equal(await dialog.locator('.prayer-schedule-pane').getAttribute('data-prayer-place-source'), 'network');
+  const fajr = await timeOf(dialog, 'fajr');
+  const sunrise = await timeOf(dialog, 'sunrise');
+  const dhuhr = await timeOf(dialog, 'dhuhr');
+  const asr = await timeOf(dialog, 'asr');
+  assert.equal(fajr, cairoFajr);
+  await screenshot(page, 'desktop');
+  await dialog.locator('.prayer-schedule-pane summary').click();
+  assert.equal(await dialog.locator('.prayer-schedule-pane details').evaluate((el) => el.open), true);
+  await dialog.getByLabel('Country / territory', { exact: true }).selectOption('US');
+  await dialog.getByLabel('Find a city', { exact: true }).fill('Los Angeles');
+  await dialog.getByLabel('City', { exact: true }).selectOption({ label: 'Los Angeles · America/Los_Angeles' });
+  await dialog.getByTestId('prayer-place').getByText(/Los Angeles/).waitFor();
+  assert.equal(await dialog.locator('.prayer-local-date time').getAttribute('datetime'), '2026-11-17');
+  assert.match(await dialog.locator('.prayer-method-note').textContent(), /North America · ISNA/);
+  await dialog.getByRole('button', { name: 'Use automatic location', exact: true }).click();
+  await dialog.getByTestId('prayer-place').getByText(/Cairo/).waitFor();
+  await dialog.getByRole('button', { name: 'Adhan & reminders', exact: true }).click();
+  await state(page, 'off');
+  console.log('  Cairo and Los Angeles dates are correct; checking the disabled and enabled deadlines.');
+  await cross(page, fajr);
+  await noNotice(page);
+  assert.deepEqual(audioURLs(desktop), []);
+  assert.equal((await probe(page)).created, 0);
+  await dialog.getByLabel('Voice for other prayers', { exact: true }).selectOption('aaqib-azeez');
+  await dialog.getByRole('button', { name: 'Preview regular adhan', exact: true }).click();
+  await playback(page, 'playing');
+  assert.deepEqual(audioURLs(desktop), ['/audio/adhan/aaqib-azeez.mp3'].map((url) => new URL(url.slice(1), base).pathname));
+  await dialog.getByRole('button', { name: 'Stop sound', exact: true }).click();
+  assert.equal((await probe(page)).stopped, 1);
+  console.log('  A licensed MP3 decoded and played only via its Preview button.');
+  await state(page, 'off');
+  const local = dialog.getByLabel('File from my device · Voice for Fajr', { exact: true });
+  await local.setInputFiles({ name: 'my-adhan.wav', mimeType: 'audio/wav', buffer: localWav() });
+  await dialog.getByRole('button', { name: 'Preview Fajr adhan', exact: true }).click();
+  await playback(page, 'playing');
+  await dialog.getByRole('button', { name: 'Stop sound', exact: true }).click();
+  assert.equal(audioURLs(desktop).length, 1, 'imported file should never make an audio request');
+  await dialog.getByLabel('Voice for Fajr', { exact: true }).selectOption('ahmed-khalaf');
+  const saved = await page.evaluate(() => localStorage.getItem('sham_prayer_preferences_v1'));
+  assert.ok(!saved.includes('my-adhan.wav'));
+  await startNear(page, fajr);
+  await dialog.getByRole('button', { name: 'Reminder with adhan', exact: true }).click();
+  await state(page, 'audio');
+  assert.equal(audioURLs(desktop).length, 1, 'arming does not start or preload sound');
+  await dialog.getByRole('button', { name: 'Close prayer times', exact: true }).click();
+  await page.evaluate(() => { location.hash = 'guide'; });
+  const compact = page.locator('[data-clock-layout="compact"]');
+  await compact.waitFor();
+  await cross(page, fajr);
+  const notice = page.getByTestId('prayer-notice');
+  await notice.getByText(/time for prayer.*Fajr/).waitFor();
+  await page.waitForFunction(() => window.prayerTest.played === 3);
+  assert.match(audioURLs(desktop).at(-1), /ahmed-khalaf-fajr\.mp3$/);
+  console.log('  Fajr fired after navigation, using the Fajr recording.');
+  await notice.getByRole('button', { name: 'Dismiss reminder' }).click();
+  assert.equal((await probe(page)).stopped, 3);
+  await startNear(page, fajr);
+  await cross(page, fajr);
+  await noNotice(page);
+  await cross(page, sunrise);
+  await noNotice(page);
+  assert.equal(audioURLs(desktop).length, 2);
+  await compact.getByRole('button', { name: 'Clock tools', exact: true }).click();
+  dialog = await open(page);
+  await state(page, 'audio');
+  await startNear(page, dhuhr);
+  await dialog.getByRole('button', { name: 'Silent on-page reminder', exact: true }).click();
+  await state(page, 'visual');
+  await cross(page, dhuhr);
+  await notice.getByText(/time for prayer.*Dhuhr/).waitFor();
+  assert.equal(audioURLs(desktop).length, 2, 'silent reminder requested no recording');
+  await dialog.getByRole('button', { name: 'Reminders off', exact: true }).click();
+  await state(page, 'off');
+  await cross(page, asr);
+  await noNotice(page);
+  await dialog.getByRole('button', { name: 'Hide tool and turn reminders off', exact: true }).click();
+  await page.getByRole('button', { name: 'Show prayer times', exact: true }).waitFor();
+  await page.evaluate(() => { location.hash = 'home'; });
+  await page.locator('[data-clock-layout="home"]').waitFor();
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.getByRole('button', { name: 'Show prayer times', exact: true }).waitFor();
+  dialog = await open(page);
+  await dialog.getByRole('button', { name: 'Adhan & reminders', exact: true }).click();
+  await state(page, 'off');
+  assert.equal(await dialog.getByLabel('Voice for other prayers', { exact: true }).inputValue(), 'aaqib-azeez');
+  const decoded = await page.evaluate(async (root) => {
+    const audio = new AudioContext();
+    try {
+      const seconds = [];
+      for (const name of ['ahmed-khalaf.mp3', 'besim-azemi-fajr.m4a']) {
+        const response = await fetch(new URL(`audio/adhan/${name}`, root));
+        seconds.push(Math.round((await audio.decodeAudioData(await response.arrayBuffer())).duration));
+      }
+      return seconds;
+    } finally { await audio.close(); }
+  }, base);
+  assert.ok(decoded.every((seconds) => seconds > 70 && seconds < 300), `decoded durations ${decoded}`);
+  assert.deepEqual(desktop.errors, []);
+  console.log('  All four recordings decoded; local WAV, silent reminder, hide and reset passed.');
+  await page.close();
+}
+
+async function checkMobile() {
+  console.log('Arabic mobile: timezone suggestion, explicit GPS, blocked audio, searchable adhkar and focus…');
+  const mobile = await fixture({ lang: 'ar', mobile: true, geo: { country: null, timezone: null, location: null }, timezoneId: 'Africa/Cairo' });
+  const small = mobile.page;
+  const dialog = await open(small, 'ar');
+  assert.equal(await dialog.locator('.prayer-schedule-pane').getAttribute('data-prayer-place-source'), 'timezone');
+  assert.equal(await dialog.getByTestId('prayer-fajr').locator('time').textContent(), '٠٤:٥٢');
+  assert.equal((await probe(small)).locations, 0);
+  const fits = () => dialog.evaluate((el) => el.scrollWidth <= el.clientWidth + 1 && document.documentElement.scrollWidth <= innerWidth + 1);
+  assert.ok(await fits(), 'schedule fits at 320px');
+  await screenshot(small, 'mobile');
+  await dialog.getByRole('button', { name: 'الأذان والتنبيه', exact: true }).click();
+  assert.ok(await dialog.getByRole('button', { name: 'تنبيه بصوت الأذان', exact: true }).isDisabled());
+  await dialog.getByRole('button', { name: 'المكان وطريقة الحساب', exact: true }).click();
+  await dialog.getByRole('button', { name: 'استخدم موقعي', exact: true }).click();
+  await dialog.getByText(/المتصفح لم يسمح بالموقع/).waitFor();
+  await small.evaluate(() => { window.prayerTest.denied = false; });
+  await dialog.getByRole('button', { name: 'استخدم موقعي', exact: true }).click();
+  await dialog.getByTestId('prayer-place').getByText('موقع الجهاز', { exact: true }).waitFor();
+  await dialog.getByText('America/Toronto', { exact: true }).waitFor();
+  assert.equal((await probe(small)).locations, 2);
+  assert.ok(!mobile.requests.some(({ url, body }) => /43\.64|79\.38/.test(url + body)), 'GPS must stay on the page');
+  await dialog.getByRole('button', { name: 'الأذان والتنبيه', exact: true }).click();
+  await small.evaluate(() => { window.prayerTest.block = true; });
+  await dialog.getByRole('button', { name: 'تنبيه بصوت الأذان', exact: true }).click();
+  await dialog.getByRole('alert').filter({ hasText: 'المتصفح منع الصوت' }).waitFor();
+  await state(small, 'off');
+  assert.deepEqual(audioURLs(mobile), []);
+  await dialog.getByText('اسمع مؤذنين وأصوات مشهورة', { exact: true }).click();
+  assert.equal(await dialog.getByRole('link', { name: 'مشاري راشد العفاسي', exact: true }).getAttribute('href'), 'https://misharialafasy.net/azan');
+  await dialog.getByRole('button', { name: 'الأذكار والأدعية', exact: true }).click();
+  await dialog.getByRole('link', { name: 'اقرأ حصن المسلم كاملًا', exact: true }).waitFor();
+  await dialog.getByRole('searchbox', { name: 'ابحث في الأذكار', exact: true }).fill('سَيِّد الاستِغْفار');
+  await dialog.getByRole('heading', { name: 'سيّد الاستغفار', exact: true }).waitFor();
+  assert.equal(await dialog.locator('.prayer-dhikr-card').count(), 1);
+  await dialog.getByRole('searchbox', { name: 'ابحث في الأذكار', exact: true }).fill('بسم الله الذي لا يضر');
+  await dialog.getByRole('button', { name: 'عدّ التكرار · بسم الله الذي لا يضر', exact: true }).click();
+  await dialog.getByText('١ / ٣', { exact: true }).waitFor();
+  await screenshot(small, 'adhkar');
+  assert.ok(await fits(), 'adhkar fits at 320px');
+  await dialog.getByRole('button', { name: 'إغلاق أوقات الصلاة', exact: true }).click();
+  await small.waitForFunction(() => document.activeElement?.matches('[data-testid=prayer-tools-launcher]'));
+  assert.deepEqual(mobile.errors, []);
+  await small.close();
+}
+
+async function checkTwoTabs() {
+  console.log('Two tabs: one opted-in adhan for one deadline…');
+  const two = await fixture();
+  const tabs = [two.page];
+  const panels = [];
+  for (let index = 0; index < 2; index += 1) {
+    const target = tabs[index] ?? await two.newPage();
+    tabs[index] = target;
+    await target.bringToFront();
+    target.setDefaultTimeout(35_000);
+    const panel = await open(target);
+    await panel.getByTestId('prayer-place').getByText(/Cairo/).waitFor();
+    assert.equal(await timeOf(panel, 'fajr'), cairoFajr);
+    await panel.getByRole('button', { name: 'Adhan & reminders', exact: true }).click();
+    panels.push(panel);
+  }
+  const lead = 5 * 60_000;
+  // First load both dialogs, then freeze their single shared clock. Forced
+  // clicks here skip animation stability checks but still use real gestures.
+  await two.context.clock.pauseAt(cairoFajr - lead);
+  for (const [index, target] of tabs.entries()) {
+    await target.bringToFront();
+    await panels[index].getByRole('button', { name: 'Reminder with adhan', exact: true }).click({ force: true });
+    await target.locator('[data-testid="prayer-reminder-state"][data-mode="audio"]').waitFor({ state: 'attached' });
+    assert.equal(await target.evaluate(() => Date.now()), cairoFajr - lead);
+  }
+  assert.deepEqual(audioURLs(two), []);
+  console.log('  Both tabs armed before the same frozen deadline.');
+  await two.context.clock.fastForward(lead + 3_000);
+  await two.context.clock.resume();
+  try {
+    await Promise.any(tabs.map((target) => target.locator('[data-testid="adhan-playback"][data-state="playing"]').waitFor({ state: 'attached' })));
+  } catch (error) {
+    console.error('Two-tab state:', await Promise.all(tabs.map((target) => target.evaluate(() => ({
+      now: new Date().toISOString(), visibility: document.visibilityState, probe: window.prayerTest,
+      mode: document.querySelector('[data-testid=prayer-reminder-state]')?.dataset.mode,
+      notice: document.querySelector('[data-testid=prayer-notice]')?.textContent,
+      audio: document.querySelector('[data-testid=adhan-playback]')?.textContent,
+    })))), audioURLs(two), two.errors);
+    throw error;
+  }
+  assert.equal((await probe(two.page)).played + (await probe(tabs[1])).played, 1);
+  assert.equal(audioURLs(two).length, 1);
+  assert.deepEqual(two.errors, []);
+}
+
+async function checkPages() {
+  console.log('Pages: prefixed same-origin asset URL and working Web Audio…');
+  const assets = await fixture();
+  const dialog = await open(assets.page);
+  await dialog.getByTestId('prayer-place').getByText(/Cairo/).waitFor();
+  await dialog.getByRole('button', { name: 'Adhan & reminders', exact: true }).click();
+  await dialog.getByRole('button', { name: 'Preview Fajr adhan', exact: true }).click();
+  await playback(assets.page, 'playing');
+  assert.deepEqual(audioURLs(assets), [new URL('audio/adhan/ahmed-khalaf-fajr.mp3', base).pathname]);
+  assert.deepEqual(assets.errors, []);
+}
+
+const checks = { desktop: checkDesktop, mobile: checkMobile, two: checkTwoTabs, pages: checkPages };
+const selected = scenario === 'all' ? ['desktop', 'mobile', 'two'] : [scenario];
+for (const name of selected) {
+  if (!Object.hasOwn(checks, name)) throw new Error(`Unknown PRAYER_SCENARIO ${name}`);
+  // A clean instance isolates browser emulation/audio state between scenarios.
+  browser = await launch();
+  try { await checks[name](); }
+  finally { await browser.close(); }
+}
+console.log(`Prayer tools browser smoke passed (${scenario}).`);

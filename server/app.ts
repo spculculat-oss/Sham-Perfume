@@ -13,6 +13,7 @@ import { liveNews, supervisorGuidance } from './core/liveData';
 import { articlesFromCollected } from './newsFallback';
 import { RateLimiter, clientKey } from './core/rateLimit';
 import { createWorkspaceRouter } from './workspace';
+import { createCalculatorTutorRouter } from './calculatorTutor';
 import { createNewsRouter } from './newsExplain';
 import { createVoiceRouter } from './voiceSpeak';
 import { corsMiddleware } from './cors';
@@ -37,6 +38,7 @@ app.use(['/api/community', '/api/admin/community'], express.json({ limit: '3mb' 
 // «مساحة شاهين»: the visitor's files and pages travel with his question (an image to edit too).
 app.use('/api/workspace', express.json({ limit: '4mb' }));
 app.use('/api/admin/owner-room', express.json({ limit: '512kb' })); // the files Shaheen reads in the owner's room
+app.use('/api/calculator', express.json({ limit: '6kb' }));
 app.use(express.json({ limit: '128kb' }));
 app.use((error: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (error?.type === 'entity.parse.failed' || error?.type === 'entity.too.large') {
@@ -82,6 +84,7 @@ app.use('/api/specialists', createSpecialistsRouter({ repo: shamCore.repo, runti
 app.use('/api', createMediaRouter());
 // «مساحة شاهين»: Shaheen as a general assistant (any subject) — search, reading pages and PDFs, images, the owner's Notion/Slack.
 app.use('/api/workspace', createWorkspaceRouter({ health: shamCore.runtime.health }));
+app.use('/api/calculator', createCalculatorTutorRouter({ health: shamCore.runtime.health }));
 // «نشرة شاهين — شاهين يشرحلك الخبر»: POST /api/news/explain (server/newsExplain.ts).
 app.use('/api/news', createNewsRouter());
 // «صوت شاهين البشري»: replies in a human man's or woman's voice — POST /api/voice/speak (server/voiceSpeak.ts).

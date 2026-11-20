@@ -1,5 +1,8 @@
-import { EngineeringError, compileEngineeringExpression, radiansPerUnit, type AngleMode, type EvaluateOptions } from './engineeringCalculator';
-import { addComplex, complex, divideComplex, magnitude, multiplyComplex, scaleComplex, sqrtComplex, subtractComplex, type ComplexValue } from './engineeringComplex';
+import { EngineeringError, compileEngineeringExpression, normalizeEngineeringInput, radiansPerUnit, type AngleMode, type EvaluateOptions } from './engineeringCalculator';
+import { complex } from './engineeringComplex';
+import { exactAdd, exactApproximation, exactLiteral } from './engineeringExact';
+import { commonDecimalScale, compensatedSum, decimalRatio } from './engineeringNumeric';
+export { solvePolynomial, solvePolynomialInequality, type InequalityOperator, type Interval } from './engineeringPolynomial';
 
 const fail = (message: string): never => { throw new EngineeringError('math', message); };
 const finite = (value: number) => Number.isFinite(value) ? value : fail('Result is outside the supported numeric range.');
@@ -16,27 +19,24 @@ function matrixSize(a: Matrix): [number, number] {
   return [n, m];
 }
 
-const vectorDot = (a: number[], b: number[]) => finite(sum(a.map((item, i) => item * b[i])));
+const vectorDot = (a: number[], b: number[]) => finite(compensatedSum(a.map((item, i) => item * b[i])));
 const transpose = (a: Matrix): Matrix => a[0].map((_, col) => a.map((row) => row[col]));
 export const identityMatrix = (n: number): Matrix => {
   if (!Number.isInteger(n) || n < 1 || n > 4) return fail('Matrix size must be from 1 to 4.');
   return Array.from({ length: n }, (_, row) => Array.from({ length: n }, (_, col) => Number(row === col)));
 };
 
-function reduceSquare(a: Matrix, right: Matrix): { determinant: number; solution: Matrix | null } {
+function reduceSquare(a: Matrix, right: Matrix): Matrix | null {
   const n = a.length;
-  let swaps = 0;
-  const pivots: number[] = [];
   const scales = a.map((row) => Math.max(...row.map(Math.abs)));
-  if (scales.some((scale) => !scale)) return { determinant: 0, solution: null };
+  if (scales.some((scale) => !scale)) return null;
   const m = a.map((row, i) => row.concat(right[i]).map((value) => finite(value / scales[i])));
   for (let col = 0; col < n; col++) {
     let pivot = col;
     for (let i = col + 1; i < n; i++) if (Math.abs(m[i][col]) > Math.abs(m[pivot][col])) pivot = i;
     const scale = m[pivot][col];
-    if (Math.abs(scale) < 4 * Number.EPSILON) return { determinant: 0, solution: null };
-    if (col !== pivot) { [m[col], m[pivot]] = [m[pivot], m[col]]; swaps++; }
-    pivots.push(scale);
+    if (Math.abs(scale) < 4 * Number.EPSILON) return null;
+    if (col !== pivot) [m[col], m[pivot]] = [m[pivot], m[col]];
     m[col] = m[col].map((value) => finite(value / scale));
     for (let i = 0; i < n; i++) {
       if (i === col) continue;
@@ -44,16 +44,18 @@ function reduceSquare(a: Matrix, right: Matrix): { determinant: number; solution
       m[i] = m[i].map((value, j) => j === col ? 0 : finite(value - factor * m[col][j]));
     }
   }
-  // Separate mantissa/exponent so a huge row scale followed by a small one does not overflow prematurely.
-  let mantissa = swaps % 2 ? -1 : 1;
-  let exponent = 0;
-  for (const factor of scales.concat(pivots)) {
-    const [part, exp] = factor.toExponential().split('e');
-    mantissa *= Number(part);
-    exponent += Number(exp);
-  }
-  const [part, exp] = mantissa.toExponential().split('e');
-  return { determinant: Number(`${part}e${exponent + Number(exp)}`), solution: m.map((row) => row.slice(n)) };
+  return m.map((row) => row.slice(n));
+}
+
+function determinant(a: Matrix): number {
+  const { integers, exponent } = commonDecimalScale(a.flat());
+  const n = a.length;
+  const rows = a.map((_, i) => integers.slice(i * n, (i + 1) * n));
+  const expand = (m: bigint[][]): bigint => m.length === 1 ? m[0][0] : m[0].reduce((total, coefficient, i) =>
+    coefficient ? total + (i % 2 ? -1n : 1n) * coefficient * expand(m.slice(1).map((row) => row.filter((_, j) => i !== j))) : total, 0n);
+  const exact = expand(rows);
+  const value = finite(Number(`${exact}e${exponent * n}`));
+  return !value && exact ? fail('The determinant is too small to represent.') : value;
 }
 
 export function calculateMatrix(op: MatrixOperation, a: Matrix, b: Matrix = []): Matrix | number {
@@ -62,9 +64,8 @@ export function calculateMatrix(op: MatrixOperation, a: Matrix, b: Matrix = []):
   if (op === 'identity') return identityMatrix(rows);
   if (op === 'det' || op === 'inverse') {
     if (rows !== cols) return fail('This operation requires a square matrix.');
-    const reduction = reduceSquare(a, op === 'det' ? a.map(() => []) : identityMatrix(rows));
-    if (op === 'det') return finite(reduction.determinant);
-    return reduction.solution ?? fail('This matrix is singular or too ill-conditioned to invert.');
+    if (op === 'det') return determinant(a);
+    return reduceSquare(a, identityMatrix(rows)) ?? fail('This matrix is singular or too ill-conditioned to invert.');
   }
   const [bRows, bCols] = matrixSize(b);
   if (op === 'multiply') {
@@ -79,8 +80,8 @@ export function calculateMatrix(op: MatrixOperation, a: Matrix, b: Matrix = []):
 export function solveLinearSystem(a: Matrix, b: number[]): number[] {
   const [rows, cols] = matrixSize(a);
   if (rows < 2 || rows !== cols || b.length !== rows || !b.every(Number.isFinite)) return fail('Enter a square system with 2–4 unknowns.');
-  const { solution } = reduceSquare(a, b.map((value) => [value]));
-  return solution?.map(([value]) => value) ?? fail('The system has no unique solution.');
+  const solution = reduceSquare(a, b.map((value) => [value]));
+  return solution?.map(([value]) => value) ?? fail('No numerically reliable unique solution for this system.');
 }
 
 export type VectorOperation = 'add' | 'subtract' | 'dot' | 'cross' | 'angle' | 'unit' | 'norm';
@@ -97,7 +98,10 @@ export function calculateVector(op: VectorOperation, a: number[], b: number[] = 
   };
   if (op === 'unit') return unit(a);
   if (a.length !== b.length || !b.every(Number.isFinite)) return fail('Both vectors must have the same dimension.');
-  if (op === 'angle') return Math.acos(Math.max(-1, Math.min(1, vectorDot(unit(a), unit(b))))) / radiansPerUnit(angle);
+  if (op === 'angle') {
+    const u = unit(a), v = unit(b);
+    return 2 * Math.atan2(Math.hypot(...u.map((x, i) => x - v[i])), Math.hypot(...u.map((x, i) => x + v[i]))) / radiansPerUnit(angle);
+  }
   if (op === 'dot') return vectorDot(a, b);
   if (op === 'cross') {
     if (a.length !== 3) return fail('The cross product requires two 3D vectors.');
@@ -106,176 +110,41 @@ export function calculateVector(op: VectorOperation, a: number[], b: number[] = 
   return a.map((value, i) => finite(value + (op === 'add' ? b[i] : -b[i])));
 }
 
-const horner = (coefficients: number[], x: number) => coefficients.reduce((a, b) => a * x + b, 0);
-const hornerScale = (coefficients: number[], x: number) => coefficients.reduce((a, b) => a * Math.abs(x) + Math.abs(b), 0);
-
-function polynomialScale(coefficients: number[]) {
-  if (coefficients.length < 3 || coefficients.length > 5 || !coefficients.every(Number.isFinite) || !coefficients[0]) {
-    return fail('Use a degree 2–4 polynomial with a nonzero leading coefficient.');
-  }
-  // Let x = scale · t so root finding is well-conditioned for very large roots.
-  const logLead = Math.log(Math.abs(coefficients[0]));
-  const maxLog = Math.max(...coefficients.slice(1).map((c, i) => c ? (Math.log(Math.abs(c)) - logLead) / (i + 1) : -Infinity));
-  // Power-of-two scaling avoids introducing roundoff when scaling by an exact binary exponent.
-  const power = maxLog === -Infinity ? 0 : Math.max(-1074, Math.min(1023, Math.floor(maxLog / Math.LN2)));
-  const scale = 2 ** power;
-  const normalized = [1, ...coefficients.slice(1).map((c, i) => {
-    if (!c) return 0;
-    const direct = c / coefficients[0] / scale ** (i + 1);
-    const value = direct && Number.isFinite(direct) ? direct : Math.sign(c) * Math.sign(coefficients[0])
-      * Math.exp(Math.log(Math.abs(c)) - logLead - (i + 1) * power * Math.LN2);
-    if (!value || !Number.isFinite(value) || Math.abs(value) > 32) return fail('The polynomial is outside the supported numeric range.');
-    return value;
-  })];
-  return { normalized, scale };
-}
-
-function realRoots(coefficients: number[]): number[] {
-  const degree = coefficients.length - 1;
-  if (degree === 1) return [-coefficients[1] / coefficients[0]];
-  // A polynomial is monotone between roots of its derivative. Check the turning points too, for even multiplicities.
-  const bound = 1 + Math.max(...coefficients.slice(1).map((c) => Math.abs(c / coefficients[0])));
-  const derivative = coefficients.slice(0, -1).map((c, i) => c * (degree - i));
-  const breakpoints = [-bound, ...realRoots(derivative).filter((x) => Math.abs(x) < bound), bound];
-  const values = breakpoints.map((x) => horner(coefficients, x));
-  const isRoot = breakpoints.map((x, i) => i > 0 && i < breakpoints.length - 1 && Math.abs(values[i]) <= 8 * Number.EPSILON * hornerScale(coefficients, x));
-  const roots: number[] = [];
-  for (let i = 0; i < values.length - 1; i++) {
-    if (isRoot[i]) roots.push(breakpoints[i]);
-    if (isRoot[i] || isRoot[i + 1] || Math.sign(values[i]) === Math.sign(values[i + 1])) continue;
-    let lo = breakpoints[i];
-    let hi = breakpoints[i + 1];
-    const sign = Math.sign(values[i]);
-    for (let step = 0; step < 1100; step++) {
-      const mid = lo + (hi - lo) / 2;
-      if (mid === lo || mid === hi) break;
-      const value = horner(coefficients, mid);
-      if (!value) { lo = hi = mid; break; }
-      if (Math.sign(value) === sign) lo = mid;
-      else hi = mid;
-    }
-    roots.push(lo + (hi - lo) / 2);
-  }
-  return roots;
-}
-
-function laguerre(coefficients: ComplexValue[], initial: ComplexValue): ComplexValue | undefined {
-  let x = initial;
-  const n = coefficients.length - 1;
-  for (let step = 1; step <= 100; step++) {
-    let p = coefficients[0];
-    let d = complex(0);
-    let dd = complex(0);
-    let scale = magnitude(p);
-    const r = magnitude(x);
-    for (const c of coefficients.slice(1)) {
-      dd = addComplex(multiplyComplex(dd, x), scaleComplex(d, 2));
-      d = addComplex(multiplyComplex(d, x), p);
-      p = addComplex(multiplyComplex(p, x), c);
-      scale = r * scale + magnitude(c);
-    }
-    if (magnitude(p) <= 8 * Number.EPSILON * scale) return x;
-    const g = divideComplex(d, p);
-    const g2 = multiplyComplex(g, g);
-    const h = subtractComplex(g2, divideComplex(dd, p));
-    const discriminant = sqrtComplex(scaleComplex(subtractComplex(scaleComplex(h, n), g2), n - 1));
-    const plus = addComplex(g, discriminant);
-    const minus = subtractComplex(g, discriminant);
-    const divisor = magnitude(plus) >= magnitude(minus) ? plus : minus;
-    const delta = magnitude(divisor) ? divideComplex(complex(n), divisor) : complex(Math.cos(step), Math.sin(step));
-    const next = subtractComplex(x, scaleComplex(delta, step % 10 === 0 ? 0.5 : 1));
-    if (!Number.isFinite(magnitude(next))) return undefined;
-    if (next.re === x.re && next.im === x.im) return next;
-    x = next;
-  }
-  return undefined;
-}
-
-function quadratic(b: number, c: number): ComplexValue[] {
-  const d = (b / 2) ** 2 - c;
-  if (d < 0) return [complex(-b / 2, -Math.sqrt(-d)), complex(-b / 2, Math.sqrt(-d))];
-  if (d === 0) return [complex(-b / 2), complex(-b / 2)];
-  const q = -b / 2 - (b < 0 ? -1 : 1) * Math.sqrt(d);
-  return [complex(q), complex(c / q)];
-}
-
-export function solvePolynomial(coefficients: number[]): ComplexValue[] {
-  const { normalized, scale } = polynomialScale(coefficients);
-  const sorted = (roots: ComplexValue[]) => roots.map((z) => complex(finite(z.re * scale) || 0, finite(z.im * scale) || 0)).sort((a, b) => a.re - b.re || a.im - b.im);
-  if (normalized.length === 3) return sorted(quadratic(normalized[1], normalized[2]));
-  if (normalized.length === 5 && !normalized[1] && !normalized[3]) return sorted(quadratic(normalized[2], normalized[4]).flatMap((v) => {
-    const z = sqrtComplex(v);
-    return [z, scaleComplex(z, -1)];
-  }));
-  const roots: ComplexValue[] = [];
-  let remainder = normalized.map((c) => complex(c));
-  const deflate = (z: ComplexValue) => {
-    roots.push(z);
-    remainder = remainder.slice(0, -1).reduce<ComplexValue[]>((array, value) => [...array, array.length ? addComplex(value, multiplyComplex(z, array.at(-1)!)) : value], []);
-  };
-  // Real isolation first preserves real and repeated roots. Laguerre supplies the remaining complex pairs.
-  const real = realRoots(normalized);
-  for (const x of real) {
-    if (remainder.length < 2) break;
-    deflate(complex(x));
-  }
-  while (remainder.length > 1) {
-    if (remainder.length === 2) { deflate(divideComplex(scaleComplex(remainder[1], -1), remainder[0])); break; }
-    const root = laguerre(remainder, complex(0)) ?? laguerre(remainder, complex(0.7, 0.6)) ?? laguerre(remainder, complex(-0.4, 1));
-    if (!root) return fail('Could not resolve the polynomial roots at this precision.');
-    const known = real.find((x) => Math.hypot(root.re - x, root.im) < 2e-7 * Math.max(Math.abs(x), 1e-6));
-    deflate(known === undefined ? root : complex(known));
-  }
-  return sorted(roots);
-}
-
-export type InequalityOperator = '>' | '>=' | '<' | '<=';
-export interface Interval { from: number; to: number; includeFrom: boolean; includeTo: boolean }
-
-export function solvePolynomialInequality(coefficients: number[], op: InequalityOperator): Interval[] {
-  const { normalized, scale } = polynomialScale(coefficients);
-  const roots = realRoots(normalized);
-  const borders = [-Infinity, ...roots, Infinity];
-  const ascending = op[0] === '>';
-  const inclusive = op.length > 1;
-  const sign = Math.sign(coefficients[0]);
-  const rescale = (x: number) => Number.isFinite(x) ? finite(x * scale) || 0 : x;
-  const inside = borders.slice(0, -1).map((from, i) => {
-    const to = borders[i + 1];
-    const testPoint = !Number.isFinite(from) ? Math.min(-3, to - 1) : !Number.isFinite(to) ? Math.max(3, from + 1) : from + (to - from) / 2;
-    const value = sign * horner(normalized, testPoint);
-    return ascending ? value > 0 : value < 0;
-  });
-  const intervals: Interval[] = [];
-  borders.slice(0, -1).forEach((from, i) => {
-    const to = borders[i + 1];
-    if (inside[i]) {
-      const previous = intervals.at(-1);
-      if (inclusive && previous?.to === rescale(from)) {
-        previous.to = rescale(to);
-        previous.includeTo = Number.isFinite(to);
-      } else intervals.push({ from: rescale(from), to: rescale(to), includeFrom: inclusive && Number.isFinite(from), includeTo: inclusive && Number.isFinite(to) });
-    } else if (inclusive && Number.isFinite(from) && !inside[i - 1]) {
-      intervals.push({ from: rescale(from), to: rescale(from), includeFrom: true, includeTo: true });
-    }
-  });
-  return intervals;
-}
-
 export function solveNumericEquation(source: string, guess: number, options: EvaluateOptions = {}): { root: number; residual: number } {
-  const sides = source.split('=');
+  const sides = normalizeEngineeringInput(source).split('=');
   if (sides.length > 2) return fail('Use f(x) or one equals sign in an equation.');
-  const left = compileEngineeringExpression(sides[0]);
-  const right = sides.length === 2 ? compileEngineeringExpression(sides[1]) : () => complex(0);
+  const left = compileEngineeringExpression(sides[0], true);
+  const right = sides.length === 2 ? compileEngineeringExpression(sides[1], true) : undefined;
   if (!Number.isFinite(guess)) return fail('Enter a finite starting value.');
   const value = (x: number) => {
-    const config = { ...options, variables: { ...options.variables, x }, complex: false };
-    return finite(left(config).re - right(config).re);
+    const exact = exactLiteral(String(x));
+    const config = { ...options, variables: { ...options.variables, x: { ...complex(x), exact } }, complex: false };
+    const a = left(config);
+    if (!right) return finite(a.re);
+    const b = right(config);
+    const difference = exactAdd(a.exact, b.exact, -1n);
+    return finite(difference ? exactApproximation(difference) : a.re - b.re);
+  };
+  const near = (x: number): number | undefined => {
+    try { return Number.isFinite(x) ? value(x) : undefined; } catch { return undefined; }
+  };
+  const isolated = (x: number): boolean => {
+    const h = Math.max(1, Math.abs(x)) * 1e-6;
+    const neighbors = [near(x - h), near(x + h), near(x - 64 * h), near(x + 64 * h)];
+    // Domain endpoints may have samples only on one side, but an interval of zeros is not an isolated root.
+    return !neighbors.includes(0) && neighbors.some((sample) => sample !== undefined);
+  };
+  const crossesNearby = (x: number, residual: number): boolean => {
+    const h = Math.max(Number.MIN_VALUE, Math.abs(x) * (16 * Number.EPSILON));
+    const a = near(x - h), b = near(x + h);
+    return a !== undefined && b !== undefined && Math.sign(a) * Math.sign(b) === -1
+      && Math.abs(residual) < Math.min(Math.abs(a), Math.abs(b));
   };
   let x = guess;
   let y = value(x);
-  if (y === 0) return { root: x, residual: 0 };
-  const initialResidual = Math.abs(y);
+  const verified = (root: number, residual: number) => isolated(root)
+    ? { root, residual } : fail('Could not verify an isolated root at this point.');
+  if (!y || crossesNearby(x, y)) return verified(x, y);
   for (let iteration = 0; iteration < 60; iteration++) {
     const h = Math.cbrt(Number.EPSILON) * Math.max(1, Math.abs(x));
     let a: number | undefined;
@@ -294,8 +163,15 @@ export function solveNumericEquation(source: string, guess: number, options: Eva
         if (Math.abs(candidate) <= Math.abs(nextY)) { next = x - step; nextY = candidate; break; }
       } catch { /* shorten a step that leaves the real domain */ }
     }
-    if (!nextY || (Math.abs(next - x) <= 1e-10 * Math.max(1, Math.abs(next)) && Math.abs(nextY) <= initialResidual * 1e-10)) return { root: next, residual: nextY };
-    if (next === x) break;
+    if (!nextY || crossesNearby(next, nextY)) return verified(next, nextY);
+    if (next === x) {
+      // Newton may stall one representable number away from a touching root. Only accept an actual zero here.
+      const ulp = Math.max(Number.MIN_VALUE, 2 ** (Math.floor(Math.log2(Math.abs(x))) - 52));
+      for (const step of [ulp / 2, ulp, 2 * ulp]) {
+        for (const point of [x - step, x + step]) if (point !== x && near(point) === 0) return verified(point, 0);
+      }
+      break;
+    }
     x = next;
     y = nextY;
   }
@@ -339,21 +215,27 @@ export function calculateBaseN(first: string, second: string, radix: Radix, op: 
 
 export function solveRatio(a: number, b: number, known: number, missing: 'left' | 'right'): number {
   if (b === 0 || (missing === 'right' ? a === 0 || known === 0 : known === 0)) return fail('These values do not give a unique, defined ratio.');
-  return finite(missing === 'left' ? a / b * known : b / a * known);
+  if (![a, b, known].every(Number.isFinite)) return fail('Enter finite ratio values.');
+  const { integers: [x, y, v], exponent } = commonDecimalScale([a, b, known]);
+  return finite(missing === 'left' ? decimalRatio(x * v, y, exponent) : decimalRatio(y * v, x, exponent));
 }
 
 export function engineeringTable(functions: string[], start: number, end: number, step: number, options: EvaluateOptions = {}): (number | null)[][] {
-  const intervals = (end - start) / step;
-  const rows = Math.floor(intervals + 1e-10) + 1;
-  if (functions.length < 1 || functions.length > 2 || !Number.isFinite(intervals) || intervals < 0 || step <= 0 || start > end || rows > 45 || (end > start && start + step === start)) {
+  if (functions.length < 1 || functions.length > 2 || ![start, end, step].every(Number.isFinite) || step <= 0 || start > end) {
     return fail('Choose an increasing range and positive step that give at most 45 distinct rows.');
   }
-  const compiled = functions.map(compileEngineeringExpression);
-  return Array.from({ length: rows }, (_, index) => {
-    const x = start + index * step;
+  const { integers: [a, b, increment], exponent } = commonDecimalScale([start, end, step]);
+  const rows = (b - a) / increment + 1n;
+  if (rows > 45n) return fail('Choose an increasing range and positive step that give at most 45 distinct rows.');
+  const compiled = functions.map((body) => compileEngineeringExpression(body, true));
+  let previous = -Infinity;
+  return Array.from({ length: Number(rows) }, (_, index) => {
+    const x = Number(`${a + BigInt(index) * increment}e${exponent}`);
+    if (!(x > previous)) return fail('The table step is too small to produce distinct values.');
+    previous = x;
     return [x, ...compiled.map((fn) => {
       try { return fn({ ...options, complex: false, variables: { ...options.variables, x } }).re; }
-      catch (error) { if (error instanceof EngineeringError && error.kind !== 'syntax') return null; throw error; }
+      catch (error) { if (error instanceof EngineeringError && error.kind === 'math') return null; throw error; }
     })];
   });
 }

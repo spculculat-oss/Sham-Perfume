@@ -20,18 +20,39 @@ before(async () => {
   await cp(path.join(output, 'functions/api.func/index.cjs'), path.join(isolatedDirectory, 'index.cjs'));
   await writeFile(path.join(isolatedDirectory, 'serve.cjs'), `
     const http = require('node:http');
-    // Only the known publisher feeds are fixtures; geo routing, parsing and filtering run from the built artifact.
+    // Upstream responses are fixtures; geo routing, attribution checks and filtering run from the packaged app.
     const networkFetch = globalThis.fetch;
+    const file = 'https://commons.wikimedia.org/wiki/File:Example.jpg';
+    const license = 'https://creativecommons.org/licenses/by-sa/4.0/';
+    const caption = '<figure><img src="https://globalvoices.org/example.jpg" alt="An example landscape"><figcaption><a href="' + file + '">Example</a> by Fixture Photographer <a href="' + license + '">CC BY-SA 4.0</a></figcaption></figure>';
+    const feeds = new Map([
+      ['https://www.youm7.com/rss/SectionRss?SectionID=97', ['Egypt fixture', 'https://www.youm7.com/101']],
+      ['https://www.youm7.com/rss/SectionRss?SectionID=286', ['World fixture', 'https://www.youm7.com/102']],
+      ['https://globalvoices.org/-/world/middle-east-north-africa/egypt/feed/', []],
+      ['https://www.egypt-today.com/egypt-football/rss.xml', ['Egypt football fixture', 'https://www.egypt-today.com/1236/002000-fixture', '<enclosure url="https://img.egypt-today.com/fixture.jpg" type="image/jpeg"/>']],
+      ['https://www.arabstoday.net/arabstoday-breakingnews/rss.xml', ['Arabs Today fixture', 'https://www.arabstoday.net/1152/001000-fixture']],
+      ['https://www.service-public.gouv.fr/abonnements/rss/actu-actualites-particuliers.rss', ['France fixture', 'https://www.service-public.gouv.fr/particuliers/actualites/A103']],
+      ['https://www.service-public.gouv.fr/abonnements/rss/actu-actu-pro.rss', []],
+      ['https://www.info.gouv.fr/rss/actualites.xml', []],
+      ['https://agenciabrasil.ebc.com.br/rss/geral/feed.xml', ['Brazil fixture', 'https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/fixture', '<dc:creator>Agência Brasil</dc:creator>']],
+      ['https://agenciabrasil.ebc.com.br/rss/politica/feed.xml', []],
+      ['https://globalvoices.org/feed/', ['Community fixture', 'https://globalvoices.org/2026/11/19/example/', '<dc:creator>Fixture Writer</dc:creator><content:encoded><![CDATA[' + caption + ']]></content:encoded>']],
+      ['https://news.mongabay.com/feed/', ['Environment fixture', 'https://news.mongabay.com/2026/11/example/', '<dc:creator>Environment Writer</dc:creator>']],
+      ['https://www.europarl.europa.eu/rss/doc/press-releases/en.xml', []],
+    ]);
     globalThis.fetch = (input, init) => {
-      const url = String(input);
-      let item;
-      if (url === 'https://www.youm7.com/rss/SectionRss?SectionID=97') item = ['Egypt fixture', 'https://www.youm7.com/101'];
-      else if (url === 'https://www.youm7.com/rss/SectionRss?SectionID=286') item = ['World fixture', 'https://www.youm7.com/102'];
-      else if (url === 'https://www.service-public.gouv.fr/abonnements/rss/actu-actualites-particuliers.rss') item = ['France fixture', 'https://www.service-public.gouv.fr/particuliers/actualites/A103'];
-      else if (url === 'https://www.service-public.gouv.fr/abonnements/rss/actu-actu-pro.rss' || url === 'https://www.info.gouv.fr/rss/actualites.xml') item = [];
-      else return networkFetch(input, init);
-      const story = item.length ? '<item><title>' + item[0] + '</title><link>' + item[1] + '</link><pubDate>' + new Date().toISOString() + '</pubDate></item>' : '';
-      return Promise.resolve(new Response('<rss><channel>' + story + '</channel></rss>'));
+      const url = new URL(String(input));
+      if (url.href === 'https://news.un.org/feed/subscribe/ar/news/all/rss.xml') return Promise.resolve(new Response(null, { status: 503 }));
+      if (url.origin + url.pathname === 'https://commons.wikimedia.org/w/api.php' && url.searchParams.get('titles') === 'File:Example.jpg') {
+        return Promise.resolve(Response.json({ query: { pages: [{ ns: 6, imagerepository: 'local', imageinfo: [{
+          mime: 'image/jpeg', descriptionurl: file, thumburl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/Example.jpg/640px-Example.jpg?utm_source=commons',
+          extmetadata: { Artist: { value: '<b>Fixture Photographer</b>' }, LicenseUrl: { value: license }, Restrictions: { value: '' } },
+        }] }] } }));
+      }
+      const item = feeds.get(url.href);
+      if (!item) return networkFetch(input, init);
+      const story = item.length ? '<item><title>' + item[0] + '</title><link>' + item[1] + '</link><pubDate>' + new Date().toISOString() + '</pubDate>' + (item[2] || '') + '</item>' : '';
+      return Promise.resolve(new Response('<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel>' + story + '</channel></rss>'));
     };
     const app = require('./index.cjs');
     const server = http.createServer(app);
@@ -43,6 +64,7 @@ before(async () => {
       ...process.env, NODE_ENV: 'production', NODE_PATH: '',
       GEMINI_API_KEY: '', DEEPSEEK_API_KEY: '', OPENAI_API_KEY: '', ANTHROPIC_API_KEY: '',
       SHAM_LLM_BASE_URL: '', SHAM_STORE: '', SHAM_ADMIN_TOKEN: '', VERCEL: '1', SHAM_WEB_RESEARCH: 'off',
+      SHAM_HOME_NEWS: 'on', SHAM_LIVE_DATA: 'on', SHAM_CALCULATOR_TUTOR: 'off',
     },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -90,6 +112,11 @@ test('Vercel config builds explicit full-stack output instead of Vite-only dist'
   assert.ok(metadata.maxDuration > 30); // longer than the chat's total deadline
   assert.equal(metadata.environment, undefined); // never bake credentials into the artifact
   assert.ok((await stat(path.join(output, 'static/index.html'))).isFile());
+  assert.match(await readFile(path.join(output, 'static/third-party/magvar.txt'), 'utf8'), /MIT License/);
+  assert.match(await readFile(path.join(output, 'static/third-party/adhan-js.txt'), 'utf8'), /MIT License/);
+  assert.match(await readFile(path.join(output, 'static/third-party/tz-lookup.txt'), 'utf8'), /CC0/);
+  for (const file of ['ahmed-khalaf.mp3', 'ahmed-khalaf-fajr.mp3', 'aaqib-azeez.mp3', 'besim-azemi-fajr.m4a']) assert.ok((await stat(path.join(output, 'static/audio/adhan', file))).size > 100_000);
+  for (const cover of ['morning', 'print', 'world', 'desk']) assert.ok((await stat(path.join(output, 'static/images/press', `${cover}.webp`))).isFile());
 });
 
 test('the unused second Vercel project redirects to the main site and does not rebuild', async () => {
@@ -104,7 +131,7 @@ test('the unused second Vercel project redirects to the main site and does not r
 test('all API methods/paths route before the filesystem and SPA fallback', () => {
   const route = config.routes[1];
   const pattern = new RegExp(`^(?:${route.src})$`);
-  for (const url of ['/api', '/api/health', '/api/models', '/api/chat', '/api/news', '/api/news/refresh', '/api/assistant/chat', '/api/admin/overview', '/api/missing']) {
+  for (const url of ['/api', '/api/health', '/api/models', '/api/chat', '/api/news', '/api/news/refresh', '/api/assistant/chat', '/api/calculator/tutor', '/api/admin/overview', '/api/missing']) {
     assert.ok(pattern.test(url), url);
   }
   for (const url of ['/', '/home', '/apiary', '/assets/index.js']) assert.equal(pattern.test(url), false, url);
@@ -170,15 +197,33 @@ test('the bundled Home briefing resolves each entry country privately and keeps 
     assert.equal(response.headers.get('access-control-allow-origin'), origin);
     return response.json();
   }
-  const [france, egypt, unknown] = await Promise.all([brief('FR'), brief('EG'), brief(null)]);
+  const [france, egypt, brazil, saudi, unknown] = await Promise.all([brief('FR'), brief('EG'), brief('BR'), brief('SA'), brief(null)]);
   assert.equal(france.country, 'FR');
   assert.deepEqual(france.local.items.map((item) => item.title), ['France fixture']);
   assert.equal(egypt.country, 'EG');
-  assert.deepEqual(egypt.local.items.map((item) => item.title), ['Egypt fixture']);
+  assert.equal(egypt.local.status, 'fresh');
+  assert.deepEqual(egypt.local.items.map((item) => item.title).sort(), ['Egypt fixture', 'Egypt football fixture']);
+  assert.ok(egypt.local.items.every((item) => !item.photo), 'Egypt Today thumbnails are not licensed by its headline terms');
+  assert.equal(brazil.country, 'BR');
+  assert.equal(brazil.timeZone, 'America/Sao_Paulo');
+  assert.deepEqual(brazil.local.items.map((item) => [item.title, item.author]), [['Brazil fixture', 'Agência Brasil']]);
+  assert.equal(saudi.country, 'SA');
+  assert.equal(saudi.local.status, 'unsupported', 'press links do not need local upstream requests');
+  assert.deepEqual(saudi.local.items, []);
   assert.equal(unknown.country, null);
   assert.equal(unknown.local.status, 'unsupported');
   assert.deepEqual(unknown.local.items, []);
-  for (const edition of [france, egypt, unknown]) assert.deepEqual(edition.world.items.map((item) => item.title), ['World fixture']);
+  for (const edition of [france, egypt, brazil, saudi, unknown]) {
+    assert.equal(edition.world.status, 'partial', 'a failed feed must not hide the other publishers');
+    assert.deepEqual(edition.world.items.map((item) => item.title).sort(), ['Arabs Today fixture', 'Community fixture', 'Environment fixture', 'World fixture']);
+    const community = edition.world.items.find((item) => item.publisher === 'global-voices');
+    assert.equal(community.author, 'Fixture Writer');
+    assert.deepEqual(community.photo, {
+      url: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/Example.jpg/640px-Example.jpg',
+      source: 'https://commons.wikimedia.org/wiki/File:Example.jpg', license: 'by-sa/4.0',
+      credit: 'Fixture Photographer', alt: 'An example landscape',
+    });
+  }
 });
 
 test('news without a key: GET shows the collected headlines (not AI-written), refresh POST fails', async () => {
@@ -241,4 +286,20 @@ test('isolated production function exposes real agent capabilities without priva
   });
   assert.equal(chat.status, 503);
   assert.equal((await chat.json()).code, 'PROVIDER_NOT_CONFIGURED');
+});
+
+
+test('packaged tutor serves local math and an honest no-engine fallback with Pages CORS', async () => {
+  const origin = 'https://spculculat-oss.github.io';
+  const endpoint = `${baseUrl}/api/calculator/tutor`;
+  const preflight = await fetch(endpoint, { method: 'OPTIONS', headers: { Origin: origin, 'Access-Control-Request-Method': 'POST', 'Access-Control-Request-Headers': 'content-type' } });
+  assert.equal(preflight.status, 204);
+  assert.equal(preflight.headers.get('access-control-allow-origin'), origin);
+  const ask = (question) => fetch(endpoint, { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json' }, body: JSON.stringify({ question, language: 'ar' }) });
+  const local = await ask('١٥٪ من ٢٤٠؟');
+  assert.equal(local.status, 200);
+  assert.equal(local.headers.get('cache-control'), 'private, no-store');
+  assert.deepEqual(await local.json(), { kind: 'local', plan: { action: 'calculate', math: '15% * 240' } });
+  assert.deepEqual(await (await ask('معايا كتاب ومحتاج أحسب قيمة الخصم، أبدأ إزاي؟')).json(), { kind: 'unavailable' });
+  assert.equal((await ask('student@example.org')).status, 400);
 });

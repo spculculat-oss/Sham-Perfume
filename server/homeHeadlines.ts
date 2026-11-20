@@ -1,15 +1,19 @@
 import { SaxesParser } from 'saxes';
 import { geoDetailsFromHeaders, resolveVisitorEntryLocation } from '../src/data/worldEntryGazetteer';
-import { HEADLINE_PUBLISHERS, localHeadlineEdition, WORLD_HEADLINE_EDITION, type HeadlineEdition, type HeadlineFeed } from '../src/data/homeHeadlineEditions';
+import { localHeadlineEdition, WORLD_HEADLINE_EDITION, type HeadlineEdition, type HeadlineFeed } from '../src/data/homeHeadlineEditions';
 import {
   HEADLINE_REFRESH_MS, HEADLINE_RETRY_MS, NEWS_DAY_MS, distinctHeadlines, emptyHeadlines,
-  headlineDay, headlineLink, headlineTimeZone, headlineTitle, type HeadlineSection, type HomeHeadline, type HomeHeadlines,
+  headlineAuthor, headlineDay, headlineLink, headlineNeedsByline, headlineTimeZone, headlineTitle, type HeadlineSection, type HomeHeadline, type HomeHeadlines,
 } from '../src/utils/homeHeadlines';
+import type { HeadlinePhoto } from '../src/utils/headlinePhoto';
+import { commonsHeadlineQuery, findGlobalVoicesPhoto, readCommonsHeadlinePhotos, type HeadlinePhotoCandidate } from './homeHeadlineMedia';
 import { isCountry } from '../src/utils/pricing';
 import { countryFromHeaders } from './core/replyMoney';
 
 const XML_BYTES = 1024 * 1024;
-const USER_AGENT = 'ShamPerfumeHeadlineReader/2.0 (+https://spculculat-oss.github.io/Sham-Perfume/)';
+const PHOTO_HTML_CHARS = 65_536;
+const PHOTO_LOOKUP_BYTES = 128 * 1024;
+const USER_AGENT = 'ShamPerfumeHeadlineReader/3.0 (+https://spculculat-oss.github.io/Sham-Perfume/)';
 interface EntryEdition { country: string | null; timeZone: string }
 
 /** Only entry-network metadata; never the site's language, checkout country, or GPS weather. */
@@ -61,11 +65,17 @@ const cdataText = (value: string) => value.replace(/&(#x[\da-f]+|#\d+|[a-z]+);/g
   return point > 0 && point <= 0x10ffff && !(point >= 0xd800 && point <= 0xdfff) ? String.fromCodePoint(point) : '';
 });
 
-/** Parse only direct RSS item / Atom entry metadata. No DTD, bodies, image URLs or article requests. */
-export function parseHomeHeadlineFeed(xml: string, feed: HeadlineFeed): HomeHeadline[] {
+type ParsedHeadline = HomeHeadline & { photoCandidate?: HeadlinePhotoCandidate };
+
+/** Parse direct RSS/Atom metadata and inspect Global Voices' embedded captions. No DTD,
+ * retained article content, or requests to article pages. */
+export function parseHomeHeadlineFeed(xml: string, feed: HeadlineFeed): ParsedHeadline[] {
   const parser = new SaxesParser({ xmlns: false });
-  const items: HomeHeadline[] = [];
+  const items: ParsedHeadline[] = [];
   const fields = new Set(['title', 'link', 'pubdate', 'dc:date', 'published', 'updated']);
+  if (headlineNeedsByline(feed.publisher)) fields.add('dc:creator');
+  if (feed.publisher === 'agencia-brasil') fields.add('author');
+  if (feed.publisher === 'global-voices') fields.add('content:encoded');
   let depth = 0;
   let atom = false;
   let inChannel = false;
@@ -96,7 +106,7 @@ export function parseHomeHeadlineFeed(xml: string, feed: HeadlineFeed): HomeHead
     }
   });
   const collect = (value: string) => {
-    if (item && field) item.set(field, ((item.get(field) || '') + value).slice(0, 5000));
+    if (item && field) item.set(field, ((item.get(field) || '') + value).slice(0, field === 'content:encoded' ? PHOTO_HTML_CHARS : 5000));
   };
   parser.on('text', collect);
   parser.on('cdata', (value) => collect(field === 'title' ? cdataText(value).replace(/<[^>]*>/g, ' ') : value));
@@ -111,7 +121,15 @@ export function parseHomeHeadlineFeed(xml: string, feed: HeadlineFeed): HomeHead
       const dated = dateKind === 'published' ? pub
         : dateKind === 'date' ? datedEpoch(item.get('dc:date') || '', feed.publisher)
           : atom && feed.publisher === 'gov-uk' ? datedEpoch(item.get('updated') || '', feed.publisher) : NaN;
-      if (title && url && Number.isFinite(dated)) items.push({ title, url, datedAt: new Date(dated).toISOString(), dateKind, publisher: feed.publisher });
+      if (title && url && Number.isFinite(dated)) {
+        const datedAt = new Date(dated).toISOString();
+        const author = feed.publisher === 'european-parliament' ? `© European Union, ${datedAt.slice(0, 4)} – EP`
+          : headlineAuthor(item.get('dc:creator') || item.get('author'), feed.publisher);
+        if (!headlineNeedsByline(feed.publisher) || author) {
+          const photoCandidate = feed.publisher === 'global-voices' ? findGlobalVoicesPhoto(item.get('content:encoded') || '') : undefined;
+          items.push({ title, url, datedAt, dateKind, publisher: feed.publisher, ...(author ? { author } : {}), ...(photoCandidate ? { photoCandidate } : {}) });
+        }
+      }
       item = undefined;
     }
     if (depth === 2 && name.toLowerCase() === 'channel' && !atom) inChannel = false;
@@ -123,7 +141,7 @@ export function parseHomeHeadlineFeed(xml: string, feed: HeadlineFeed): HomeHead
   return items;
 }
 
-async function boundedXml(response: Response): Promise<string> {
+async function boundedHeadlineBody(response: Response, limit: number): Promise<string> {
   if (!response.body) throw new Error('Missing feed body');
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
@@ -134,12 +152,35 @@ async function boundedXml(response: Response): Promise<string> {
       const { done, value } = await reader.read();
       if (done) return result + decoder.decode();
       length += value.byteLength;
-      if (length > XML_BYTES) throw new Error('Feed exceeded byte limit');
+      if (length > limit) throw new Error('Response exceeded byte limit');
       result += decoder.decode(value, { stream: true });
     }
   } finally {
     void reader.cancel().catch(() => {});
   }
+}
+
+/** One bounded, best-effort Commons lookup per refreshed Global Voices feed. Photos are
+ * optional: a failure (or no verified license) never suppresses or stales the source's titles. */
+async function attachHeadlinePhotos(items: ParsedHeadline[], request: typeof fetch, now: number): Promise<HomeHeadline[]> {
+  const files = [...new Set(items.flatMap(({ photoCandidate, datedAt }) => {
+    const age = now - Date.parse(datedAt);
+    return photoCandidate && age >= 0 && age < NEWS_DAY_MS + 2 * 3600_000 ? [photoCandidate.title] : [];
+  }))].slice(0, 12);
+  let photos: Map<string, HeadlinePhoto> | undefined;
+  if (files.length) {
+    try {
+      const response = await request(commonsHeadlineQuery(files), {
+        redirect: 'error', signal: AbortSignal.timeout(1600), headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
+      });
+      if (response.ok) photos = readCommonsHeadlinePhotos(JSON.parse(await boundedHeadlineBody(response, PHOTO_LOOKUP_BYTES)));
+      else void response.body?.cancel().catch(() => {});
+    } catch { /* Best effort. Return the same headlines without photos. */ }
+  }
+  return items.map(({ photoCandidate, ...headline }) => {
+    const photo = photoCandidate && photos?.get(photoCandidate.title);
+    return photo && photo.license === photoCandidate.license ? { ...headline, photo: { ...photo, alt: photoCandidate.alt } } : headline;
+  });
 }
 
 interface FeedSnapshot { checkedAt: number; items: HomeHeadline[] }
@@ -157,7 +198,8 @@ export function createHomeHeadlines(request: typeof fetch = fetch, now: () => nu
       void response.body?.cancel().catch(() => {});
       throw new Error(`Publisher returned ${response.status}`);
     }
-    const items = parseHomeHeadlineFeed(await boundedXml(response), feed);
+    const parsed = parseHomeHeadlineFeed(await boundedHeadlineBody(response, XML_BYTES), feed);
+    const items = feed.publisher === 'global-voices' ? await attachHeadlinePhotos(parsed, request, now()) : parsed;
     return { checkedAt: now(), items };
   }
   async function load(feed: HeadlineFeed): Promise<CacheEntry> {
