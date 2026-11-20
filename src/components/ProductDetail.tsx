@@ -22,6 +22,7 @@ import { ProductPayMethods } from '../bank/ProductPayMethods';
 import { useStoreMoney } from '../utils/storeCheckout';
 import { LegalDisclaimer } from './LegalDisclaimer';
 import { ProductReviewsSection } from './ProductReviewsSection';
+import { useShareable } from './CommunityShareBar';
 import { localLongevity } from '../لغات/longevity';
 import { cleanNote, noteAr } from '../utils/noteNames';
 
@@ -103,6 +104,12 @@ export const ProductDetail: React.FC<Props> = ({ productId, currentLang, onClose
     if (product?.sku) void peopleAlsoViewed(product.sku).then((skus) => { if (live) setTogether(skus); });
     return () => { live = false; };
   }, [product?.sku]);
+  // «شارك في المجتمع»: the product (name, brand, notes) with its own link — never the visitor's price or cart.
+  useShareable('productDetail', product ? {
+    source: 'productDetail', kind: 'creation', title: storeLocalized(product.name, currentLang),
+    body: [product.brand || '', [...product.notes.top, ...product.notes.heart, ...product.notes.base].map((n) => cleanNote(n)).filter(Boolean).slice(0, 12).join(currentLang === 'ar' ? '، ' : ', ')].filter(Boolean).join('\n'),
+    link: typeof window === 'undefined' ? undefined : `${window.location.origin}${window.location.pathname}#product=${product.id}`,
+  } : null);
   const Back = isRTL(currentLang) ? ArrowRight : ArrowLeft;
 
   if (!product && loading) return <div className="min-h-[60vh] flex items-center justify-center text-stone-500" data-testid="product-loading">{L.loading}</div>;

@@ -57,6 +57,8 @@ import { StaticHostingNotice } from './StaticHostingNotice';
 import { FloatingDock } from './FloatingDock';
 import { useReadAloud } from '../hooks/useReadAloud';
 import { askMessages } from '../utils/heardFix';
+import { ShareToCommunityButton } from './CommunityShareBar';
+import { chatDraft } from '../community/share';
 
 
 const S = {
@@ -1547,6 +1549,28 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
                               </>
                             )}
                           </button>
+
+                          {/* «شارك في المجتمع»: the question and Shaheen's answer → a discussion (or a post / story) */}
+                          {msg.role === 'assistant' && msg.id !== 'welcome' && (
+                            <ShareToCommunityButton
+                              lang={currentLang}
+                              label={pickArEn(currentLang, 'شارك في المجتمع', 'Share to community')}
+                              className="px-2 py-0.5 rounded bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 transition-colors flex items-center gap-1 cursor-pointer font-medium text-[11px]"
+                              onShared={closeChat}
+                              getDraft={() => chatDraft(askedBefore[askedBefore.length - 1]?.text || '', stripFormulaBlock(activeDisplayContent), currentLang, extractedFormula ? {
+                                title: extractedFormula.title,
+                                data: {
+                                  formulation: {
+                                    bottleVolumeMl: extractedFormula.bottleVolumeMl, concentrationPercent: extractedFormula.concentrationPercent, concentrationType: extractedFormula.concentrationType,
+                                    alcoholPercentage: extractedFormula.alcoholPercentage, waterPercent: extractedFormula.waterPercent, fixativePercent: extractedFormula.fixativePercent,
+                                  },
+                                  pyramidNotes: extractedFormula.pyramidNotes.map(({ nameAr, nameEn, category, percentageOfOil }) => ({ nameAr, nameEn, category, percentageOfOil })),
+                                  macerationDays: extractedFormula.macerationDays,
+                                  notes: extractedFormula.summary,
+                                },
+                              } : undefined)}
+                            />
+                          )}
 
                           {msg.role === 'assistant' && (
                             <>
