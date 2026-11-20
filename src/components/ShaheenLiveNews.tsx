@@ -6,7 +6,6 @@ import { makeNewsT } from '../لغات/newsL10n';
 import type { NewsTextKey } from '../لغات/newsKeys';
 import { storeLocalized } from '../لغات/storeL10n';
 import { loadLiveNews, newsItemPicture, relativeTime, type NewsFile, type NewsItem } from '../utils/liveNews';
-import { NEWS_IMAGE_LIST, getEditorialImageForCategory } from '../data/newsImages';
 import { isStaticHosting, requestApi } from '../utils/api';
 import { explainText } from './newsExplainText';
 
@@ -73,19 +72,25 @@ export function ShaheenLiveNews({ currentLang = 'ar' }: { currentLang?: Supporte
           )}
 
           <ol className="mt-4 grid gap-3 md:grid-cols-2">
-            {items.slice(0, shown).map((item, index) => {
-              // The publisher's own photo when its feed carried one; otherwise a labelled editorial photo.
-              const sourcePhoto = newsItemPicture(item);
-              const photo = sourcePhoto || getEditorialImageForCategory(item.category, index) || NEWS_IMAGE_LIST[0];
+            {items.slice(0, shown).map((item) => {
+              // Only the publisher's own photo is shown for a real story. When its feed carried
+              // none we say so plainly instead of substituting a stock or generated picture.
+              const photo = newsItemPicture(item);
               return (
               <li key={item.id} className="flex flex-col justify-between overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-xs transition hover:border-amber-300 hover:shadow-md">
-                <a href={item.url} target="_blank" rel="noopener noreferrer nofollow" className="relative block aspect-video overflow-hidden bg-stone-100">
-                  <img loading="lazy" decoding="async" src={photo} alt={storeLocalized(item.title, currentLang)}
-                    className="h-full w-full object-cover" referrerPolicy={sourcePhoto ? 'no-referrer' : undefined} />
-                  <span className="absolute bottom-1.5 start-1.5 rounded-md bg-stone-950/75 px-1.5 py-0.5 text-[10px] font-bold text-white backdrop-blur-xs">
-                    {sourcePhoto ? L('photo_source') : L('photo_stock')}
-                  </span>
-                </a>
+                {photo ? (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer nofollow" className="relative block aspect-video overflow-hidden bg-stone-100">
+                    <img loading="lazy" decoding="async" src={photo} alt={storeLocalized(item.title, currentLang)}
+                      className="h-full w-full object-cover" referrerPolicy="no-referrer" />
+                    <span className="absolute bottom-1.5 start-1.5 rounded-md bg-stone-950/75 px-1.5 py-0.5 text-[10px] font-bold text-white backdrop-blur-xs">
+                      {L('photo_source')}
+                    </span>
+                  </a>
+                ) : (
+                  <p className="flex items-center gap-1.5 border-b border-stone-100 bg-stone-50 px-4 py-2 text-[11px] font-bold text-stone-500" dir="auto">
+                    <span aria-hidden="true">🚫</span>{L('photo_none')}
+                  </p>
+                )}
                 <div className="space-y-2 p-4">
                   <div className="flex flex-wrap items-center gap-2 text-[11px] text-stone-500">
                     <span className="rounded-full bg-amber-100 px-2 py-0.5 font-bold text-amber-900">{L(`live_cat_${item.category}` as NewsTextKey)}</span>
@@ -113,7 +118,6 @@ export function ShaheenLiveNews({ currentLang = 'ar' }: { currentLang?: Supporte
               );
             })}
           </ol>
-          <p className="mt-2 text-[11px] leading-relaxed text-stone-500">{L('photo_stock_note')}</p>
           {items.length > shown && (
             <button type="button" onClick={() => setShown((n) => n + 8)} className="mt-4 w-full cursor-pointer rounded-xl border border-amber-300 bg-white py-2 text-sm font-bold text-amber-900 hover:bg-amber-50">{L('live_more')}</button>
           )}
