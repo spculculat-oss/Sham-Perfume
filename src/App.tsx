@@ -2,7 +2,7 @@ import { popBelongsToCheckout } from './utils/checkoutHistory';
 import { setInsightsContext, trackInsight } from './utils/insightsTracker';
 import { isVerifiedCustomer } from './utils/paymentAccess';
 import { BookLibrary } from './library/BookLibrary';
-import React, { useState, useEffect, Suspense, useCallback, useRef } from 'react';
+import React, { useState, useEffect, Suspense, useCallback, useRef, lazy } from 'react';
 import { Header } from './components/Header';
 import { ToastNotification } from './components/ToastNotification';
 import { UserProfilePage } from './components/UserProfilePage';
@@ -27,6 +27,10 @@ import { MacerationTimeSimulator } from './components/MacerationTimeSimulator';
 import { ManufacturingSpecSheet } from './components/ManufacturingSpecSheet';
 import { PerfumerAIChatbot } from './components/PerfumerAIChatbot';
 import { PerfumerMasterLabView } from './components/PerfumerMasterLabView';
+// «جديد من جوجل استوديو»: the designer lab, its AR/3D simulators and the crystal flacon studio.
+// Loaded on their own (three.js is heavy) so the rest of the site is not slowed down.
+const PerfumerDesignerLab = lazy(() => import('./components/PerfumerDesignerLab').then((m) => ({ default: m.PerfumerDesignerLab })));
+const ThreePerfumeStudio = lazy(() => import('./components/ThreePerfumeStudio').then((m) => ({ default: m.ThreePerfumeStudio })));
 import { ShamAssistant } from './assistant/ShamAssistant';
 import SpecialistsHub from './components/SpecialistsHub';
 import { FloatingDockManager } from './components/FloatingDock';
@@ -514,6 +518,14 @@ export default function App() {
       window.removeEventListener('hashchange', handleHashChange);
     };
   }, [activeTab]);
+
+  // Both new Studio sections work on the same formulation state the rest of the site uses.
+  const [isStaticHosting, setIsStaticHosting] = useState(false);
+  useEffect(() => {
+    let live = true;
+    import('./utils/api').then((m) => { if (live) setIsStaticHosting(Boolean(m.isStaticHosting)); }).catch(() => undefined);
+    return () => { live = false; };
+  }, []);
 
   // Core formulation state
   const [formulation, setFormulation] = useState<FormulationState>({
@@ -1423,6 +1435,39 @@ export default function App() {
               <ShaheenWorkspace currentLang={currentLang} />
             </Suspense>
           </ErrorBoundary>
+        )}
+
+        {activeTab === 'designer' && (
+          <Suspense fallback={<div className="py-16 text-center"><Loader2 className="mx-auto h-8 w-8 animate-spin text-amber-700" aria-label="loading" /></div>}>
+          <PerfumerDesignerLab
+            currentLang={currentLang}
+            formulaTitle={formulaTitle}
+            setFormulaTitle={setFormulaTitle}
+            formulation={formulation}
+            setFormulation={setFormulation}
+            pyramidNotes={pyramidNotes}
+            setPyramidNotes={setPyramidNotes}
+            macerationDays={macerationDays}
+            setMacerationDays={setMacerationDays}
+            isStaticHosting={isStaticHosting}
+            onSyncNotice={(msg) => showToast(msg)}
+            onOpenSaveModal={handleOpenSaveModal}
+            onOpenSpecModal={handleOpenSpecModal}
+            onNavigateToTab={(tab) => navigateToTab(tab)}
+          />
+          </Suspense>
+        )}
+
+        {activeTab === 'studio_3d' && (
+          <Suspense fallback={<div className="py-16 text-center"><Loader2 className="mx-auto h-8 w-8 animate-spin text-amber-700" aria-label="loading" /></div>}>
+          <ThreePerfumeStudio
+            currentLang={currentLang}
+            formulaTitle={formulaTitle}
+            batchCode={batchCode}
+            formulation={formulation}
+            onNavigate={(tab) => navigateToTab(tab)}
+          />
+          </Suspense>
         )}
 
         {activeTab === 'master_ai' && (

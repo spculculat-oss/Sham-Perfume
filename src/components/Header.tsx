@@ -22,6 +22,9 @@ import {
   Flower2,
   Droplets,
   Wand2,
+  Box,
+  Flame,
+  Palette,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { wsText } from '../workspace/strings';
@@ -171,6 +174,8 @@ export const Header: React.FC<HeaderProps> = ({
         { id: 'alcohol', label: t('nav_alcohol_short', currentLang, t('nav_alcohol', currentLang)), fullLabel: t('nav_alcohol', currentLang), icon: FlaskConical },
         { id: 'costing', label: t('nav_costing_short', currentLang, t('nav_costing', currentLang)), fullLabel: t('nav_costing', currentLang), icon: Newspaper },
         { id: 'maceration_simulator', label: t('nav_maceration_short', currentLang, t('nav_maceration', currentLang)), fullLabel: t('nav_maceration', currentLang, 'محاكي التعتيق الزمني'), icon: FlaskConical },
+        { id: 'designer', label: pickArEn(currentLang, 'المصمم الذكي', 'Designer Lab'), fullLabel: pickArEn(currentLang, 'معمل المصمم الذكي وتوافق العطر', 'AI Designer Lab & harmony'), icon: Palette, isNew: true },
+        { id: 'studio_3d', label: pickArEn(currentLang, 'استوديو 3D', '3D Studio'), fullLabel: pickArEn(currentLang, 'استوديو الزجاجة الكريستالية 3D', '3D Crystal Flacon Studio'), icon: Box, isNew: true },
       ],
     },
     {

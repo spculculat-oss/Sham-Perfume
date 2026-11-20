@@ -73,6 +73,9 @@ import { LText, makeT, loc, fmt, LOCALE_MAP, pickArEn } from '../لغات/locali
 import { uiLabel } from '../لغات/uiTextL10n';
 import { designersText } from '../لغات/designersL10n';
 import { lazy, Suspense } from 'react';
+// «جديد من جوجل استوديو»: the portal windows as a 3D room — an extra view, loaded only when picked.
+const HomeARPortals = lazy(() => import('./HomeARPortals').then((m) => ({ default: m.HomeARPortals })));
+import type { ARPortalItem } from './HomeARPortals';
 import { loadLiveNews, relativeTime, type NewsFile } from '../utils/liveNews';
 import { PORTAL_L10N as PORTAL_L10N_BASE, NEWS_L10N_A, NewsL10N } from '../لغات/hubL10n';
 
@@ -1147,6 +1150,38 @@ export const HomeHub: React.FC<HomeHubProps> = ({
     }
   };
 
+  // «جديد من جوجل استوديو»: نفس بيانات البوابات، بشكل غرفة 3D (عرض إضافي).
+  const [portalViewMode, setPortalViewMode] = useState<'both' | 'ar' | 'grid'>('grid');
+  const PORTAL_AR_PALETTE: Record<string, { hex: number; css: string }> = {
+    portal_concentration: { hex: 0xf59e0b, css: '#f59e0b' },
+    portal_news: { hex: 0xf97316, css: '#f97316' },
+    portal_world_perfumes: { hex: 0xeab308, css: '#eab308' },
+    portal_raw_materials: { hex: 0x10b981, css: '#10b981' },
+    portal_pyramid: { hex: 0xf43f5e, css: '#f43f5e' },
+    portal_alcohol: { hex: 0x06b6d4, css: '#06b6d4' },
+    portal_costing: { hex: 0x22c55e, css: '#22c55e' },
+    portal_master_ai: { hex: 0x34d399, css: '#34d399' },
+  };
+  const arPortals: ARPortalItem[] = filteredPortals.map((portal) => {
+    const idx = portalIndexes[portal.id] || 0;
+    const raw = portal.news[idx] || portal.news[0];
+    const news = localizePortalNews(portal.id, raw) || raw;
+    const palette = PORTAL_AR_PALETTE[portal.id] || { hex: 0xf59e0b, css: '#f59e0b' };
+    return {
+      id: portal.id,
+      targetTab: portal.targetTab,
+      category: portal.category,
+      title: localizedPortalTitle(portal.id, portal.titleAr, portal.titleEn),
+      subtitle: localizedPortalSubtitle(portal.id, portal.subtitleAr),
+      statsBadge: localizedStatsBadge(portal.id, portal.statsBadge),
+      metricLabel: news?.metric || '',
+      actionHint: news?.actionHint || '',
+      accentHex: palette.hex,
+      accentCssHex: palette.css,
+      onEnter: () => handleCardClick(portal),
+    };
+  });
+
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       
@@ -1376,7 +1411,26 @@ export const HomeHub: React.FC<HomeHubProps> = ({
         </div>
       </div>
 
+      {/* «3D» من استوديو جوجل: نفس البوابات في غرفة ثلاثية الأبعاد — الشبكة الأصلية زي ما هي. */}
+      <div className="flex flex-wrap items-center gap-2">
+        {([['grid', pickArEn(currentLang, 'شبكة', 'Grid')], ['both', pickArEn(currentLang, 'الاتنين', 'Both')], ['ar', pickArEn(currentLang, 'غرفة 3D', '3D room')]] as const).map(([mode, label]) => (
+          <button
+            key={mode}
+            type="button"
+            onClick={() => setPortalViewMode(mode)}
+            className={`rounded-xl px-3 py-1.5 text-xs font-bold transition cursor-pointer ${portalViewMode === mode ? 'bg-stone-900 text-white' : 'bg-white text-stone-700 ring-1 ring-stone-200 hover:bg-stone-50'}`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      {portalViewMode !== 'grid' && (
+        <Suspense fallback={<div className="py-10 text-center text-sm text-stone-500">{pickArEn(currentLang, 'بيتحمّل…', 'Loading…')}</div>}>
+          <HomeARPortals currentLang={currentLang} portals={arPortals} />
+        </Suspense>
+      )}
       {/* ===================== ZONE 4: THE 12 DYNAMIC PORTAL WINDOWS ===================== */}
+      {portalViewMode !== 'ar' && (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPortals.map((portal) => {
           const currentNewsIdx = portalIndexes[portal.id] || 0;
@@ -1512,6 +1566,7 @@ export const HomeHub: React.FC<HomeHubProps> = ({
           );
         })}
       </div>
+      )}
 
       {/* ===================== ZONE 5: BOTTOM LUXURY PERFUMERY TIPS STRIP ===================== */}
       <section className="bg-gradient-to-r from-stone-900 via-stone-900 to-amber-950 text-white rounded-3xl p-6 sm:p-8 border border-amber-800/30 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
