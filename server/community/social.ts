@@ -25,8 +25,12 @@ const POST_SELECT = `
     (SELECT coalesce(json_object_agg(kind, n), '{}') FROM (SELECT kind, count(*)::int AS n FROM reactions r WHERE r.post_id = p.id GROUP BY kind) k) AS reaction_counts,
     (SELECT kind FROM reactions r WHERE r.post_id = p.id AND r.user_id = $1) AS my_reaction,
     EXISTS (SELECT 1 FROM saved_posts sp WHERE sp.post_id = p.id AND sp.user_id = $1) AS saved,
+    pp.question AS poll_question, pp.options AS poll_options,
+    (SELECT coalesce(json_object_agg(option_index::text, n), '{}') FROM (SELECT pv.option_index, count(*)::int AS n FROM poll_votes pv WHERE pv.post_id = p.id GROUP BY pv.option_index) k) AS poll_counts,
+    (SELECT pv.option_index FROM poll_votes pv WHERE pv.post_id = p.id AND pv.user_id = $1) AS my_poll_vote,
     rc.title AS recipe_title, rc.data AS recipe_data, rc.visibility AS recipe_visibility
-  FROM posts p JOIN users u ON u.id = p.author_id LEFT JOIN merchants m ON m.user_id = u.id LEFT JOIN recipes rc ON rc.id = p.recipe_id`;
+  FROM posts p JOIN users u ON u.id = p.author_id LEFT JOIN merchants m ON m.user_id = u.id
+    LEFT JOIN recipes rc ON rc.id = p.recipe_id LEFT JOIN post_polls pp ON pp.post_id = p.id`;
 
 /** Rows the viewer may see: visible, author active, not blocked either way, public or a friend's (or own). */
 const VISIBLE = `p.status = 'visible' AND u.status = 'active'
@@ -34,12 +38,32 @@ const VISIBLE = `p.status = 'visible' AND u.status = 'active'
   AND (p.visibility = 'public' OR p.author_id = $1 OR EXISTS (
     SELECT 1 FROM friendships f WHERE f.status = 'accepted' AND ((f.user_a = $1 AND f.user_b = p.author_id) OR (f.user_b = $1 AND f.user_a = p.author_id))))`;
 
+const MAX_POLL_OPTIONS = 6;
+/** A poll from the client: a question (or none) and 2–6 non-empty options, each at most 120 characters. */
+function readPoll(raw: unknown): { question: string; options: string[] } | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const input = raw as { question?: unknown; options?: unknown };
+  const options = Array.isArray(input.options)
+    ? input.options.map((o) => clean(o, 120)).filter(Boolean).slice(0, MAX_POLL_OPTIONS)
+    : [];
+  if (options.length < 2) return null;
+  return { question: clean(input.question, 200), options };
+}
+
 function postView(row: Row, viewerId: string) {
   const recipeVisible = row.recipe_title && (row.recipe_visibility !== 'private' || row.author_id === viewerId);
   return {
     id: row.post_id, body: row.body, image: row.image || null, visibility: row.visibility, createdAt: iso(row.post_created), editedAt: iso(row.edited_at),
     author: publicUser(row), mine: row.author_id === viewerId, comments: row.comments,
     saved: Boolean(row.saved), reactions: row.reaction_counts || {}, myReaction: row.my_reaction || null,
+    poll: Array.isArray(row.poll_options) && row.poll_options.length
+      ? {
+        question: row.poll_question || '',
+        options: row.poll_options as string[],
+        counts: (row.poll_counts || {}) as Record<string, number>,
+        myVote: row.my_poll_vote === null || row.my_poll_vote === undefined ? null : Number(row.my_poll_vote),
+      }
+      : null,
     recipe: recipeVisible ? { id: row.recipe_id, title: row.recipe_title, data: row.recipe_data } : null,
   };
 }
@@ -55,7 +79,7 @@ export async function feed(ctx: Ctx, viewerId: string, options: { before?: unkno
   return rows.map((r) => postView(r, viewerId));
 }
 
-export async function createPost(ctx: Ctx, authorId: string, input: { body?: unknown; image?: unknown; visibility?: unknown; recipeId?: unknown }) {
+export async function createPost(ctx: Ctx, authorId: string, input: { body?: unknown; image?: unknown; visibility?: unknown; recipeId?: unknown; poll?: unknown }) {
   const body = clean(input.body, 5000);
   const picture = image(input.image, 500);
   let recipeId: string | null = null;
@@ -64,7 +88,9 @@ export async function createPost(ctx: Ctx, authorId: string, input: { body?: unk
     if (!r) fail(404, 'NOT_FOUND');
     recipeId = r.id;
   }
-  if (!body && !picture && !recipeId) fail(400, 'EMPTY_POST');
+  // A poll is a question plus 2–6 short options; it never replaces the body rules above.
+  const poll = readPoll(input.poll);
+  if (!body && !picture && !recipeId && !poll) fail(400, 'EMPTY_POST');
   const [{ n }] = await ctx.sql.query(`SELECT count(*)::int AS n FROM posts WHERE author_id = $1 AND created_at > now() - interval '1 hour'`, [authorId]);
   if (n >= 30) fail(429, 'RATE_LIMITED');
   const id = newId('p');
@@ -91,6 +117,8 @@ export async function createPost(ctx: Ctx, authorId: string, input: { body?: unk
       return { moderated: true as const, strike, banned };
     }
     await tx.query(`INSERT INTO posts (id, author_id, body, image, recipe_id, visibility) VALUES ($1,$2,$3,$4,$5,$6)`, [id, authorId, body, picture, recipeId, visibility]);
+    // «استفتاء» من استوديو جوجل: الخيارات في صفها المستقل، ونفس المعاملة تمنع استفتاء بلا خبر.
+    if (poll) await tx.query(`INSERT INTO post_polls (post_id, question, options) VALUES ($1,$2,$3::jsonb)`, [id, poll.question, JSON.stringify(poll.options)]);
     return { moderated: false as const };
   });
   if (outcome.moderated) fail(422, outcome.banned ? 'POST_REMOVED_ACCOUNT_BANNED' : 'POST_REMOVED_POSTING_SUSPENDED');
@@ -163,6 +191,24 @@ export async function react(ctx: Ctx, userId: string, postId: string, kind: unkn
     await ctx.sql.query(`INSERT INTO reactions (post_id, user_id, kind) VALUES ($1,$2,$3) ON CONFLICT (post_id, user_id) DO UPDATE SET kind = EXCLUDED.kind`, [postId, userId, kind]);
     if (!post.myReaction) await notify(ctx, post.author.id, 'reaction', userId, postId);
   }
+  return getPost(ctx, userId, postId);
+}
+
+/**
+ * «استفتاء» من استوديو جوجل: صوت واحد لكل عضو، ويتغيّر بدل ما يتكرر. القراءة تمرّ دائمًا بـ VISIBLE
+ * (getPost) — التصويت عمره ما بيدّي وصول لخبر مش مسموح بيه.
+ */
+export async function votePoll(ctx: Ctx, userId: string, postId: string, optionIndex: unknown) {
+  const post = await getPost(ctx, userId, postId);
+  const poll = post.poll;
+  if (!poll) fail(404, 'NOT_FOUND');
+  const idx = Number(optionIndex);
+  if (!Number.isInteger(idx) || idx < 0 || idx >= poll!.options.length) fail(400, 'INVALID_FIELD', 'optionIndex');
+  await ctx.sql.query(
+    `INSERT INTO poll_votes (post_id, user_id, option_index) VALUES ($1,$2,$3)
+     ON CONFLICT (post_id, user_id) DO UPDATE SET option_index = EXCLUDED.option_index`,
+    [postId, userId, idx]
+  );
   return getPost(ctx, userId, postId);
 }
 

@@ -38,8 +38,9 @@ import {
   Heart,
   ExternalLink,
   Radio,
+  BarChart3,
 } from 'lucide-react';
-import { CommunityApiError, cx, resizeImage, type Comment, type Notification, type Post, type PublicUser, type Recipe, type Thread } from './api';
+import { CommunityApiError, cx, resizeImage, type Comment, type Notification, type Post, type PostPoll, type PublicUser, type Recipe, type Thread } from './api';
 import { pulseNow, signOut, type SessionState } from './session';
 import { Avatar, Btn, Card, Empty, Sheet, Spinner, errorText, inputClass, timeAgo, tx, useLoad, type Lang } from './ui';
 import { StoriesBar } from './StoriesBar';
@@ -503,8 +504,16 @@ function Composer({
   const [pickRecipe, setPickRecipe] = useState(false);
   const [feeling, setFeeling] = useState<string | null>(null);
   const [showFeelings, setShowFeelings] = useState(false);
+  /* «استفتاء رأي» من استوديو جوجل — سؤال وخياران على الأقل، يتشال تلقائيًا لو الخيارات ناقصة. */
+  const [pollOpen, setPollOpen] = useState(false);
+  const [pollQuestion, setPollQuestion] = useState('');
+  const [pollOptions, setPollOptions] = useState<string[]>(['', '']);
   const [busy, setBusy] = useState(false);
   const file = useRef<HTMLInputElement>(null);
+  const pollChoices = pollOptions.map((o) => o.trim()).filter(Boolean).slice(0, 4);
+  const pollDraft = pollQuestion.trim() && pollChoices.length >= 2
+    ? { question: pollQuestion.trim(), options: pollChoices }
+    : null;
 
   if (!me) {
     return (
@@ -527,13 +536,16 @@ function Composer({
     try {
       const fullBody = feeling ? `[شعور: ${feeling}]\n\n${body}` : body;
       const post = await cx<Post>('/community/posts', {
-        body: { body: fullBody, image, visibility, recipeId: recipe?.id },
+        body: { body: fullBody, image, visibility, recipeId: recipe?.id, poll: pollDraft },
       });
       onPosted(post);
       setBody('');
       setImage(null);
       setRecipe(null);
       setFeeling(null);
+      setPollOpen(false);
+      setPollQuestion('');
+      setPollOptions(['', '']);
       toast(t('تم نشر المنشور في مجتمع شام 🎉', 'Post published! 🎉'));
     } catch (e) {
       if (e instanceof CommunityApiError && e.code === 'POST_REMOVED_POSTING_SUSPENDED') {
@@ -630,6 +642,68 @@ function Composer({
         </div>
       )}
 
+      {/* Poll builder drawer — «استفتاء رأي» من استوديو جوجل، مبني على جدولي post_polls/poll_votes */}
+      {pollOpen && (
+        <div className="mt-3 space-y-2 rounded-2xl border border-amber-200 bg-amber-50/40 p-3">
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-1.5 text-xs font-bold text-amber-900">
+              <BarChart3 className="h-4 w-4 text-amber-700" />
+              {t('استفتاء رأي لصانعي العطور', 'Perfumers poll')}
+            </span>
+            <button
+              type="button"
+              onClick={() => { setPollOpen(false); setPollQuestion(''); setPollOptions(['', '']); }}
+              className="text-stone-400 hover:text-stone-700 cursor-pointer"
+              aria-label={t('إغلاق الاستفتاء', 'Close poll')}
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          <input
+            value={pollQuestion}
+            onChange={(e) => setPollQuestion(e.target.value)}
+            maxLength={200}
+            placeholder={t('سؤالك… مثال: إيه أنسب نوتة للصيف؟', 'Your question… e.g. best summer note?')}
+            className={inputClass}
+          />
+          {pollOptions.map((opt, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <input
+                value={opt}
+                onChange={(e) => setPollOptions((prev) => prev.map((v, j) => (j === i ? e.target.value : v)))}
+                maxLength={120}
+                placeholder={t(`الخيار ${i + 1}`, `Option ${i + 1}`)}
+                className={inputClass}
+              />
+              {pollOptions.length > 2 && (
+                <button
+                  type="button"
+                  onClick={() => setPollOptions((prev) => prev.filter((_, j) => j !== i))}
+                  className="rounded-lg p-1.5 text-stone-400 hover:bg-white hover:text-rose-600 cursor-pointer"
+                  aria-label={t('حذف الخيار', 'Remove option')}
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+          ))}
+          {pollOptions.length < 4 && (
+            <button
+              type="button"
+              onClick={() => setPollOptions((prev) => [...prev, ''])}
+              className="text-xs font-bold text-amber-800 hover:underline cursor-pointer"
+            >
+              + {t('خيار إضافي', 'Add option')}
+            </button>
+          )}
+          {!pollDraft && (pollQuestion.trim() || pollChoices.length) && (
+            <p className="text-[10px] font-semibold text-rose-600">
+              {t('الاستفتاء محتاج سؤالًا وخيارين على الأقل، وإلا هينشر بدون استفتاء.', 'A poll needs a question and at least two options — otherwise it posts without one.')}
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Composer Action Toolbar */}
       <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-stone-100 pt-3">
         <input
@@ -663,6 +737,16 @@ function Composer({
           {t('شعور / نوتة اليوم', 'Scent Feeling')}
         </Btn>
 
+        <Btn
+          variant="ghost"
+          small
+          onClick={() => setPollOpen((v) => !v)}
+          className={pollOpen ? 'text-amber-800 bg-amber-50' : ''}
+        >
+          <BarChart3 className="h-4 w-4 text-sky-600" />
+          {t('استفتاء', 'Poll')}
+        </Btn>
+
         <select
           value={visibility}
           onChange={(e) => setVisibility(e.target.value as 'public' | 'friends')}
@@ -676,7 +760,7 @@ function Composer({
           className="ms-auto"
           small
           busy={busy}
-          disabled={!body.trim() && !image && !recipe && !feeling}
+          disabled={!body.trim() && !image && !recipe && !feeling && !pollDraft}
           onClick={() => void submit()}
         >
           <Send className="h-3.5 w-3.5" />
@@ -743,6 +827,87 @@ export function RecipePicker({
         </div>
       )}
     </Sheet>
+  );
+}
+
+/* ------------------------------------------------- Poll Block ------------------------------------------------- */
+
+/** Bars + single changeable vote; the server returns the whole post after a vote so counts stay honest. */
+export function PostPollBlock({
+  poll,
+  postId,
+  lang,
+  onChange,
+  toast,
+}: {
+  poll: PostPoll;
+  postId: string;
+  lang: Lang;
+  onChange: (p: Post) => void;
+  toast: (s: string) => void;
+}) {
+  const t = tx(lang);
+  const [busy, setBusy] = useState<number | null>(null);
+  const total = Object.values(poll.counts).reduce((sum, n) => sum + n, 0);
+  const mine = poll.myVote;
+  const pct = (i: number) => (total > 0 ? Math.round(((poll.counts[String(i)] || 0) / total) * 100) : 0);
+
+  const vote = async (i: number) => {
+    if (busy !== null) return;
+    setBusy(i);
+    try {
+      onChange(await cx<Post>(`/community/posts/${postId}/poll/vote`, { body: { optionIndex: i } }));
+    } catch (e) {
+      toast(errorText(e, lang));
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  return (
+    <div className="mx-4 mt-3 rounded-2xl border border-sky-200/80 bg-sky-50/40 p-3">
+      <p className="mb-2 flex items-start gap-1.5 text-sm font-bold text-stone-900">
+        <BarChart3 className="mt-0.5 h-4 w-4 shrink-0 text-sky-700" />
+        <span>{poll.question || t('استفتاء', 'Poll')}</span>
+      </p>
+      <div className="space-y-2">
+        {poll.options.map((opt, i) => {
+          const chosen = mine === i;
+          const showResults = mine !== null || total > 0;
+          return (
+            <button
+              key={i}
+              type="button"
+              disabled={busy !== null}
+              onClick={() => void vote(i)}
+              className={`relative block w-full overflow-hidden rounded-xl border px-3 py-2 text-start text-xs font-semibold transition cursor-pointer disabled:opacity-60 ${
+                chosen ? 'border-sky-500 bg-white text-sky-900' : 'border-stone-200 bg-white text-stone-700 hover:border-sky-400'
+              }`}
+            >
+              {showResults && (
+                <span
+                  aria-hidden
+                  className={`absolute inset-y-0 start-0 ${chosen ? 'bg-sky-200/70' : 'bg-stone-100'}`}
+                  style={{ width: `${pct(i)}%` }}
+                />
+              )}
+              <span className="relative flex items-center justify-between gap-2">
+                <span className="flex items-center gap-1.5">
+                  {chosen && <Check className="h-3.5 w-3.5 text-sky-700" />}
+                  {opt}
+                </span>
+                {showResults && <span className="tabular-nums text-stone-500">{pct(i)}%</span>}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+      <p className="mt-2 text-[10px] font-semibold text-stone-500">
+        {total} {t('صوت', 'votes')} · {mine === null
+          ? t('صوّت لاختيارك، وتقدر تغيّره بعدين', 'Pick an option — you can change it later')
+          : t('صوتك محفوظ، اضغط خيارًا آخر لتغييره', 'Your vote is saved — tap another option to change it')}
+      </p>
+    </div>
   );
 }
 
@@ -1021,6 +1186,9 @@ export function PostCard({
           )
         )}
       </div>
+
+      {/* Poll from the studio: results bars, one vote per member (changeable) */}
+      {post.poll && <PostPollBlock poll={post.poll} postId={post.id} lang={lang} onChange={onChange} toast={toast} />}
 
       {/* Fragrance Recipe Card Attachment */}
       {post.recipe && (

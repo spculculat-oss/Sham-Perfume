@@ -10,6 +10,7 @@ import { pulseNow } from './session';
 import { openFormulaInLab } from './sync';
 import { Avatar, Btn, Card, Empty, Spinner, errorText, timeAgo, tx, useLoad, type Lang } from './ui';
 import { PostCard, RecipeCard } from './SocialPortal';
+import { ImageCropperModal } from './ImageCropperModal';
 
 type Tab = 'timeline' | 'about' | 'recipes' | 'friends' | 'photos';
 
@@ -27,12 +28,47 @@ export async function bannerImage(file: File, resize: (file: File, max?: number,
   return '';
 }
 
+/**
+ * Fits a cropped picture (a data URL from `ImageCropperModal`) into the cover's ceiling: a small one is kept as it
+ * is, and a bigger one is redrawn smaller until it fits — the same ceiling `bannerImage` applies to a plain upload.
+ * Returns '' when even the smallest redraw is too large (or there is no canvas to redraw with).
+ */
+export async function fittedBanner(dataUrl: string): Promise<string> {
+  if (dataUrl.length <= BANNER_MAX_CHARS) return dataUrl;
+  if (typeof document === 'undefined') return '';
+  let current = dataUrl;
+  for (const [max, quality] of [[1600, 0.82], [1280, 0.75], [1000, 0.68], [800, 0.6]] as const) {
+    const picture = await new Promise<string>((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, max / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(img.width * scale));
+        canvas.height = Math.max(1, Math.round(img.height * scale));
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { resolve(''); return; }
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = () => resolve('');
+      img.src = current;
+    });
+    if (!picture) return '';
+    if (picture.length <= BANNER_MAX_CHARS) return picture;
+    current = picture;
+  }
+  return '';
+}
+
 export function ProfilePage({ handle, lang, go, toast, onOpenMessenger }: { handle: string; lang: Lang; go: (route: string) => void; toast: (s: string) => void; onOpenMessenger?: (userId: string) => void }) {
   const t = tx(lang);
   const { data, setData, loading, error, reload } = useLoad(() => cx<ProfileView>(`/community/profile/${encodeURIComponent(handle)}`), [handle]);
   const [tab, setTab] = useState<Tab>('timeline');
   const bannerFile = useRef<HTMLInputElement>(null);
   const [bannerBusy, setBannerBusy] = useState(false);
+  /* «قص البانر» من استوديو جوجل: الصورة من الجهاز تتقص وتتدوّر وتتلوّن قبل الرفع (ImageCropperModal). */
+  const [cropOpen, setCropOpen] = useState(false);
+  const [cropSource, setCropSource] = useState<string | null>(null);
   if (loading) return <Spinner />;
   if (error || !data) return <Card><Empty title={errorText(error, lang)} /></Card>;
   const u = data.user;
@@ -47,7 +83,28 @@ export function ProfilePage({ handle, lang, go, toast, onOpenMessenger }: { hand
     if (!file || bannerBusy) return;
     setBannerBusy(true);
     try {
-      const picture = await bannerImage(file, resizeImage);
+      // The device picture goes through the studio's crop/rotate/filter step first, then the same fitting as before.
+      const source = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ''));
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      });
+      if (!source) throw new Error('no canvas');
+      setCropSource(source);
+      setCropOpen(true);
+      return;
+    } catch (e) {
+      toast(e instanceof Error && /not an image|bad image|no canvas/.test(e.message) ? t('الصورة دي مش مدعومة', 'Unsupported image') : errorText(e, lang));
+    } finally { setBannerBusy(false); }
+  };
+
+  /** The cropped cover (a JPEG data URL) fitted to the size the server stores, exactly as a plain upload was. */
+  const applyCroppedBanner = async (cropped: string) => {
+    setCropOpen(false);
+    setBannerBusy(true);
+    try {
+      const picture = await fittedBanner(cropped);
       if (!picture) { toast(t('الصورة دي كبيرة قوي، جرّب صورة تانية', 'This picture is too large, try another one')); return; }
       await cx('/community/me', { method: 'PATCH', body: { banner: picture } });
       toast(t('اتحدث البانر ✨', 'Banner updated ✨'));
@@ -213,6 +270,17 @@ export function ProfilePage({ handle, lang, go, toast, onOpenMessenger }: { hand
           {photos.map((p) => <a key={p.id} href={p.src} target="_blank" rel="noreferrer" className="block aspect-square overflow-hidden rounded-xl bg-stone-100"><img src={p.src} alt="" loading="lazy" className="h-full w-full object-cover transition hover:scale-105" /></a>)}
         </Card>
       ) : <Card><Empty icon={<ImageIcon className="h-10 w-10 text-stone-300" />} title={t('مفيش صور لسه', 'No photos yet')} /></Card>)}
+
+      {/* The studio's cropper: the cover is cut, turned and toned on the device before it is sent. */}
+      {cropOpen && cropSource && (
+        <ImageCropperModal
+          isOpen={cropOpen}
+          imageUrl={cropSource}
+          lang={lang}
+          onClose={() => { setCropOpen(false); setCropSource(null); }}
+          onApply={(cropped) => { setCropSource(null); void applyCroppedBanner(cropped); }}
+        />
+      )}
     </div>
   );
 }

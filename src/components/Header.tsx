@@ -25,6 +25,8 @@ import {
   Box,
   Flame,
   Palette,
+  BarChart3,
+  AudioLines,
 } from 'lucide-react';
 import { SupportedLanguage } from '../types/i18n';
 import { wsText } from '../workspace/strings';
@@ -175,6 +177,10 @@ export const Header: React.FC<HeaderProps> = ({
         { id: 'costing', label: t('nav_costing_short', currentLang, t('nav_costing', currentLang)), fullLabel: t('nav_costing', currentLang), icon: Newspaper },
         { id: 'maceration_simulator', label: t('nav_maceration_short', currentLang, t('nav_maceration', currentLang)), fullLabel: t('nav_maceration', currentLang, 'محاكي التعتيق الزمني'), icon: FlaskConical },
         { id: 'designer', label: pickArEn(currentLang, 'المصمم الذكي', 'Designer Lab'), fullLabel: pickArEn(currentLang, 'معمل المصمم الذكي وتوافق العطر', 'AI Designer Lab & harmony'), icon: Palette, isNew: true },
+        { id: 'perfumer_analytics', label: pickArEn(currentLang, 'تحليلاتي', 'My analytics'), fullLabel: pickArEn(currentLang, 'تحليلات تركيباتي ونشاطي', 'My formula analytics'), icon: BarChart3, isNew: true },
+        { id: 'perfume_atlas', label: pickArEn(currentLang, 'أطلس العطور', 'Perfume atlas'), fullLabel: pickArEn(currentLang, 'أطلس العطور والمناطق', 'Fragrance atlas map'), icon: MapPin, isNew: true },
+        { id: 'perfumer_game', label: pickArEn(currentLang, 'تحدي المزج', 'Blending game'), fullLabel: pickArEn(currentLang, 'تحدي قطّارة العطار السريع', 'Artisan blending challenge'), icon: Flame, isNew: true },
+        { id: 'studio_voice', label: pickArEn(currentLang, 'استوديو الصوت', 'Voice studio'), fullLabel: pickArEn(currentLang, 'تسجيل صوتي وموسيقى العطر والصوت البشري', 'Recording to text, fragrance music and human voice'), icon: AudioLines, isNew: true },
         { id: 'studio_3d', label: pickArEn(currentLang, 'استوديو 3D', '3D Studio'), fullLabel: pickArEn(currentLang, 'استوديو الزجاجة الكريستالية 3D', '3D Crystal Flacon Studio'), icon: Box, isNew: true },
       ],
     },

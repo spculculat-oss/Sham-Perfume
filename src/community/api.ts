@@ -69,6 +69,11 @@ export interface Post {
   saved?: boolean;
   author: PublicUser; mine: boolean; comments: number; reactions: Record<string, number>; myReaction: string | null;
   recipe: { id: string; title: string; data: Record<string, unknown> } | null;
+  /** «استفتاء» من استوديو جوجل (server/community/social.ts): سؤال + 2–6 خيارات وأصواتها. */
+  poll?: PostPoll | null;
+}
+export interface PostPoll {
+  question: string; options: string[]; counts: Record<string, number>; myVote: number | null;
 }
 export interface Comment { id: string; body: string; createdAt: string; author: PublicUser; mine: boolean }
 export interface Notification { id: string; kind: string; ref: string; createdAt: string; read: boolean; actor: PublicUser | null }

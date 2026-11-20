@@ -16,6 +16,7 @@ import { createWorkspaceRouter } from './workspace';
 import { createCalculatorTutorRouter } from './calculatorTutor';
 import { createNewsRouter } from './newsExplain';
 import { createVoiceRouter } from './voiceSpeak';
+import { createStudioVoiceRouter } from './studioVoice';
 import { corsMiddleware } from './cors';
 import { createCommunity, createCommunityRouter } from './community/router';
 import { createContractsRouter } from './contracts/router';
@@ -39,6 +40,8 @@ app.use(['/api/community', '/api/admin/community'], express.json({ limit: '3mb' 
 app.use('/api/workspace', express.json({ limit: '4mb' }));
 app.use('/api/admin/owner-room', express.json({ limit: '512kb' })); // the files Shaheen reads in the owner's room
 app.use('/api/calculator', express.json({ limit: '6kb' }));
+// «أدوات الاستوديو الصوتية»: a visitor's recording travels as base64 with the request (server/studioVoice.ts).
+app.use('/api/ai', express.json({ limit: '8mb' }));
 app.use(express.json({ limit: '128kb' }));
 app.use((error: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (error?.type === 'entity.parse.failed' || error?.type === 'entity.too.large') {
@@ -89,6 +92,7 @@ app.use('/api/calculator', createCalculatorTutorRouter({ health: shamCore.runtim
 app.use('/api/news', createNewsRouter());
 // «صوت شاهين البشري»: replies in a human man's or woman's voice — POST /api/voice/speak (server/voiceSpeak.ts).
 app.use('/api/voice', createVoiceRouter({ memory: shamCore.memory }));
+app.use('/api/ai', createStudioVoiceRouter());
 // «منارة شاهين»: the live SEO files and the public status snapshot. The static build also ships copies of
 // robots/sitemap/llms/feed, so crawlers are served even on GitHub Pages.
 app.use('/api', createSeoRouter(shamCore.seo));
