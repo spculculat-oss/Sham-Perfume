@@ -1,22 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { isStaticHosting, requestApi } from '../../utils/api';
-import { HEADLINE_REFRESH_MS, HEADLINE_RETRY_MS, emptyHeadlines, headlineDay, nextHeadlineDay, readHeadlines, type HomeHeadlines } from '../../utils/homeHeadlines';
+import { ageHeadlines, HEADLINE_REFRESH_MS, HEADLINE_REQUEST_MS, HEADLINE_RETRY_MS, nextHeadlineChange, readHeadlines, type HomeHeadlines } from '../../utils/homeHeadlines';
 
-interface CheckedBriefing { briefing: HomeHeadlines; received: number }
-
-function currentEdition(checked: CheckedBriefing, unavailable = false): HomeHeadlines {
-  const { briefing, received } = checked;
-  const day = headlineDay(briefing.asOf + Math.max(0, performance.now() - received), briefing.timeZone);
-  if (day !== briefing.day) return {
-    ...briefing, day,
-    local: briefing.local.status === 'unsupported' ? briefing.local : emptyHeadlines(),
-    world: emptyHeadlines(),
-  };
-  if (!unavailable) return briefing;
-  const fallback = (section: HomeHeadlines['local']) => section.status === 'unsupported' ? section
-    : section.items.length ? { ...section, status: 'stale' as const } : emptyHeadlines();
-  return { ...briefing, local: fallback(briefing.local), world: fallback(briefing.world) };
-}
+interface CheckedBriefing { briefing: HomeHeadlines; tick: number; wallTime: number }
 
 export function useHomeHeadlines() {
   // No cross-mount browser cache: each mount asks the API to resolve its entry country anew.
@@ -28,42 +14,49 @@ export function useHomeHeadlines() {
   const [nextCheck, setNextCheck] = useState<number>();
   const [expires, setExpires] = useState<number>();
 
-  const retain = useCallback(() => {
-    setData(checked.current ? currentEdition(checked.current, true) : undefined);
+  const showAvailable = useCallback((failed = false) => {
+    const last = checked.current;
+    if (!last) return;
+    // Anchor to checked server time. A suspended device may only advance the wall clock;
+    // a backwards change to its date must never prolong old headlines.
+    const tick = performance.now();
+    const wallTime = Date.now();
+    const asOf = last.briefing.asOf + Math.max(0, tick - last.tick, wallTime - last.wallTime);
+    const briefing = ageHeadlines(last.briefing, asOf, failed);
+    checked.current = { briefing, tick, wallTime };
+    setData(briefing);
+    setExpires(tick + nextHeadlineChange(briefing) - asOf);
   }, []);
   const refresh = useCallback(async () => {
     if (isStaticHosting || request.current) return;
-    if (navigator.onLine === false) { retain(); setLoading(false); return; }
+    if (navigator.onLine === false) { showAvailable(true); setLoading(false); return; }
     const controller = new AbortController();
     request.current = controller;
     setLoading(true);
     try {
-      const payload = await requestApi<unknown>('/api/home-headlines', { cache: 'no-store', signal: controller.signal }, 8000);
+      const payload = await requestApi<unknown>('/api/home-headlines', { cache: 'no-store', signal: controller.signal }, HEADLINE_REQUEST_MS);
       if (controller.signal.aborted) return;
       const briefing = readHeadlines(payload);
       const received = performance.now();
-      checked.current = { briefing, received };
-      setData(currentEdition(checked.current));
-      setExpires(received + nextHeadlineDay(briefing.asOf, briefing.timeZone) - briefing.asOf);
+      checked.current = { briefing, tick: received, wallTime: Date.now() };
+      showAvailable();
       const ok = [briefing.local.status, briefing.world.status].every((status) => status === 'fresh' || status === 'empty' || status === 'unsupported');
       setNextCheck(received + (ok ? HEADLINE_REFRESH_MS : HEADLINE_RETRY_MS));
     } catch {
-      if (!controller.signal.aborted) { retain(); setNextCheck(performance.now() + HEADLINE_RETRY_MS); }
+      if (!controller.signal.aborted) { showAvailable(true); setNextCheck(performance.now() + HEADLINE_RETRY_MS); }
     } finally {
       if (request.current === controller) { request.current = null; setLoading(false); }
     }
-  }, [retain]);
+  }, [showAvailable]);
 
   useEffect(() => {
     const wake = () => {
       if (document.hidden) return;
-      // Timers may have been suspended. Clear an expired edition before asking the API again.
-      const last = checked.current;
-      if (last && currentEdition(last).day !== last.briefing.day) setData(currentEdition(last));
+      showAvailable(navigator.onLine === false);
       void refresh();
     };
     const visibility = () => { setVisible(!document.hidden); wake(); };
-    const offline = () => { request.current?.abort(); retain(); };
+    const offline = () => { request.current?.abort(); showAvailable(true); };
     wake();
     document.addEventListener('visibilitychange', visibility);
     window.addEventListener('online', wake);
@@ -75,7 +68,7 @@ export function useHomeHeadlines() {
       request.current?.abort();
       request.current = null;
     };
-  }, [refresh, retain]);
+  }, [refresh, showAvailable]);
 
   useEffect(() => {
     if (!visible || nextCheck === undefined) return;
@@ -85,12 +78,10 @@ export function useHomeHeadlines() {
 
   useEffect(() => {
     if (expires === undefined) return;
-    const timer = window.setTimeout(() => {
-      if (checked.current) setData(currentEdition(checked.current));
-      if (!document.hidden) void refresh();
-    }, Math.max(0, expires - performance.now()) + 25);
+    // On midnight, update the heading; on age expiry, remove old stories. Neither adds network traffic.
+    const timer = window.setTimeout(() => showAvailable(), Math.max(0, expires - performance.now()) + 25);
     return () => window.clearTimeout(timer);
-  }, [expires, refresh]);
+  }, [expires, showAvailable]);
 
   return { data, loading, visible, refresh };
 }

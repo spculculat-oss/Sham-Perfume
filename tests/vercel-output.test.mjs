@@ -52,7 +52,9 @@ before(async () => {
       const item = feeds.get(url.href);
       if (!item) return networkFetch(input, init);
       const story = item.length ? '<item><title>' + item[0] + '</title><link>' + item[1] + '</link><pubDate>' + new Date().toISOString() + '</pubDate>' + (item[2] || '') + '</item>' : '';
-      return Promise.resolve(new Response('<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel>' + story + '</channel></rss>'));
+      // Before the local calendar day, but still inside the recent-news window.
+      const previous = url.searchParams.get('SectionID') === '97' ? '<item><title>Earlier Egypt fixture</title><link>https://www.youm7.com/104</link><pubDate>' + new Date(Date.now() - 26 * 3600000).toISOString() + '</pubDate></item>' : '';
+      return Promise.resolve(new Response('<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel>' + story + previous + '</channel></rss>'));
     };
     const app = require('./index.cjs');
     const server = http.createServer(app);
@@ -202,7 +204,8 @@ test('the bundled Home briefing resolves each entry country privately and keeps 
   assert.deepEqual(france.local.items.map((item) => item.title), ['France fixture']);
   assert.equal(egypt.country, 'EG');
   assert.equal(egypt.local.status, 'fresh');
-  assert.deepEqual(egypt.local.items.map((item) => item.title).sort(), ['Egypt fixture', 'Egypt football fixture']);
+  assert.deepEqual(egypt.local.items.map((item) => item.title).sort(), ['Earlier Egypt fixture', 'Egypt fixture', 'Egypt football fixture']);
+  assert.ok(egypt.local.items.at(-1).datedAt.slice(0, 10) < egypt.day, 'the packaged API retains the earlier item with its own date');
   assert.ok(egypt.local.items.every((item) => !item.photo), 'Egypt Today thumbnails are not licensed by its headline terms');
   assert.equal(brazil.country, 'BR');
   assert.equal(brazil.timeZone, 'America/Sao_Paulo');

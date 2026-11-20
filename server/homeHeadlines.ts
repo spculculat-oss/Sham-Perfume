@@ -2,7 +2,7 @@ import { SaxesParser } from 'saxes';
 import { geoDetailsFromHeaders, resolveVisitorEntryLocation } from '../src/data/worldEntryGazetteer';
 import { localHeadlineEdition, WORLD_HEADLINE_EDITION, type HeadlineEdition, type HeadlineFeed } from '../src/data/homeHeadlineEditions';
 import {
-  HEADLINE_REFRESH_MS, HEADLINE_RETRY_MS, NEWS_DAY_MS, distinctHeadlines, emptyHeadlines,
+  HEADLINE_REFRESH_MS, HEADLINE_RETRY_MS, HEADLINE_WINDOW_MS, distinctHeadlines, emptyHeadlines, isRecentHeadline,
   headlineAuthor, headlineDay, headlineLink, headlineNeedsByline, headlineTimeZone, headlineTitle, type HeadlineSection, type HomeHeadline, type HomeHeadlines,
 } from '../src/utils/homeHeadlines';
 import type { HeadlinePhoto } from '../src/utils/headlinePhoto';
@@ -164,8 +164,7 @@ async function boundedHeadlineBody(response: Response, limit: number): Promise<s
  * optional: a failure (or no verified license) never suppresses or stales the source's titles. */
 async function attachHeadlinePhotos(items: ParsedHeadline[], request: typeof fetch, now: number): Promise<HomeHeadline[]> {
   const files = [...new Set(items.flatMap(({ photoCandidate, datedAt }) => {
-    const age = now - Date.parse(datedAt);
-    return photoCandidate && age >= 0 && age < NEWS_DAY_MS + 2 * 3600_000 ? [photoCandidate.title] : [];
+    return photoCandidate && isRecentHeadline(Date.parse(datedAt), now) ? [photoCandidate.title] : [];
   }))].slice(0, 12);
   let photos: Map<string, HeadlinePhoto> | undefined;
   if (files.length) {
@@ -186,8 +185,8 @@ async function attachHeadlinePhotos(items: ParsedHeadline[], request: typeof fet
 interface FeedSnapshot { checkedAt: number; items: HomeHeadline[] }
 interface CacheEntry { good?: FeedSnapshot; triedAt?: number; pending?: Promise<void> }
 
-/** Only configured feeds are fetched, coalesced per source on this instance. Daily filtering is
- * done after retrieval, so a warm world feed cannot leak one visitor's calendar day to another. */
+/** Only configured feeds are fetched, coalesced per source on this instance. A rolling window
+ * keeps dated articles across midnight without relabeling them as today's stories. */
 export function createHomeHeadlines(request: typeof fetch = fetch, now: () => number = Date.now) {
   const cache = new Map<string, CacheEntry>();
   async function fetchFeed(feed: HeadlineFeed): Promise<FeedSnapshot> {
@@ -230,11 +229,8 @@ export function createHomeHeadlines(request: typeof fetch = fetch, now: () => nu
       if (!edition) return emptyHeadlines('unsupported');
       if (!entries.length) return emptyHeadlines();
       const fresh = entries.filter((entry) => entry.good && entry.triedAt === entry.good.checkedAt);
-      const recent = entries.flatMap((entry) => entry.good && asOf - entry.good.checkedAt < NEWS_DAY_MS ? [entry.good] : []);
-      const items = distinctHeadlines(recent.flatMap(({ items }) => items.filter((item) => {
-        const epoch = Date.parse(item.datedAt);
-        return epoch <= asOf && headlineDay(epoch, timeZone) === day;
-      })));
+      const recent = entries.flatMap((entry) => entry.good && asOf - entry.good.checkedAt < HEADLINE_WINDOW_MS ? [entry.good] : []);
+      const items = distinctHeadlines(recent.flatMap(({ items }) => items.filter(({ datedAt }) => isRecentHeadline(Date.parse(datedAt), asOf))));
       const last = Math.max(...recent.map((snapshot) => snapshot.checkedAt));
       const checkedAt = Number.isFinite(last) ? new Date(last).toISOString() : null;
       if (!items.length) return emptyHeadlines(fresh.length === entries.length ? 'empty' : 'unavailable', checkedAt);
