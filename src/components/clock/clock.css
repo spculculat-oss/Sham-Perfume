@@ -124,3 +124,98 @@
 .clock-launchers button:focus-visible { outline: 2px solid #ffd499; outline-offset: 2px; }
 .clock-tools-dialog :is(button, input, select, summary):focus-visible, .clock-notice button:focus-visible { outline: 2px solid #98613a; outline-offset: 2px; }
 .clock-tools-header button:focus-visible { outline-color: #ffdfa8; }
+
+/* The living glass: the card keeps its bronze body and gains a light that moves
+   with the visitor's hour, the pointer, a drag, or the compass heading.
+   --sky-glow / --sky-wash / --sky-sheen / --sky-base / --sky-angle / --sky-x
+   are set inline by useClockSky for the current phase. */
+.clock-glass {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-image:
+    radial-gradient(ellipse 70% 90% at var(--sky-x, 50%) -10%, var(--sky-glow, #ffd7a8) 0%, transparent 62%),
+    radial-gradient(ellipse 85% 70% at calc(100% - var(--sky-x, 50%)) 115%, var(--sky-wash, #ffcf9d) 0%, transparent 70%),
+    linear-gradient(125deg, color-mix(in oklab, var(--sky-base, #4a332a) 78%, #9b7350) 0%, var(--sky-base, #4a332a) 55%, #2f231d 100%);
+  transition: background-image 900ms ease, box-shadow 900ms ease;
+}
+/* A slow sheen travelling along the glass that turns with the drag and compass. */
+.clock-glass-sheen {
+  position: absolute;
+  inset: -40% -10%;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(var(--sky-angle, 0deg), transparent 38%, var(--sky-sheen, #ffe7c7) 50%, transparent 62%);
+  opacity: 0.22;
+  mix-blend-mode: screen;
+  transition: transform 220ms ease-out, background 900ms ease;
+  animation: clock-glass-drift 14s ease-in-out infinite alternate;
+}
+.clock-glass > *:not(.clock-glass-sheen) { position: relative; z-index: 1; }
+/* Pressing the glass pushes a little extra light under the finger. */
+.clock-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle 180px at var(--sky-x, 50%) 0%, var(--sky-sheen, #ffe7c7) 0%, transparent 70%);
+  opacity: 0.12;
+  transition: opacity 300ms ease;
+}
+.clock-glass:active::after { opacity: 0.26; }
+@keyframes clock-glass-drift {
+  from { transform: translate3d(-6%, 0, 0) rotate(0.001deg); }
+  to { transform: translate3d(6%, 0, 0) rotate(0.001deg); }
+}
+
+.clock-sky-toolbar {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  gap: 0.4rem 0.7rem; padding: 0.5rem 0.75rem 0;
+}
+.clock-sky-caption { color: #f6e3cd; font-size: 0.68rem; font-weight: 600; opacity: 0.8; }
+.clock-sky-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; margin-inline-start: auto; }
+.clock-sky-phase, .clock-sky-compass {
+  display: inline-flex; align-items: center; gap: 0.32rem; min-height: 34px;
+  padding: 0.22rem 0.55rem; border: 1px solid #ffe3bd45; border-radius: 999px;
+  background: #fff0d216; color: #fff1dc; font-size: 0.72rem; font-weight: 700;
+  backdrop-filter: blur(6px); cursor: pointer;
+  transition: background 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+.clock-sky-phase:hover, .clock-sky-compass:hover { background: #fff0d22e; border-color: #ffe3bd85; }
+.clock-sky-phase:focus-visible, .clock-sky-compass:focus-visible { outline: 2px solid #ffd497; outline-offset: 2px; }
+.clock-sky-dot {
+  width: 0.5rem; height: 0.5rem; border-radius: 50%; flex: none;
+  background: var(--sky-sheen, #ffe7c7);
+  box-shadow: 0 0 8px var(--sky-sheen, #ffe7c7);
+  animation: clock-sky-pulse 3.2s ease-in-out infinite;
+}
+.clock-sky-phase[aria-pressed='true'] { border-color: #ffd8a2; box-shadow: inset 0 0 0 1px #ffd8a266; }
+.clock-sky-compass[data-state='ready'] { color: #d8f5df; border-color: #9fe6b577; background: #9fe6b51f; }
+.clock-sky-compass[data-state='waiting'] { color: #ffe6bd; }
+.clock-sky-compass[data-state='waiting'] svg { animation: clock-sky-spin 2.4s linear infinite; }
+.clock-sky-compass bdi { font: 700 0.7rem ui-monospace, monospace; opacity: 0.85; }
+@keyframes clock-sky-pulse { 0%, 100% { opacity: 0.55; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
+@keyframes clock-sky-spin { to { transform: rotate(360deg); } }
+@media (max-width: 480px) {
+  .clock-sky-caption { display: none; }
+  .clock-sky-toolbar { padding-inline: 0.45rem; }
+  .clock-sky-phase, .clock-sky-compass { min-height: 44px; }
+  .clock-sky-compass span, .clock-sky-phase span { font-size: 0.69rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .clock-glass-sheen { animation: none; }
+  .clock-sky-dot, .clock-sky-compass[data-state='waiting'] svg { animation: none; }
+  .clock-glass, .clock-glass-sheen, .clock-glass::after { transition: none; }
+}
+
+/* The compact bar on every other page keeps the same glass, only tighter. */
+.visitor-clock-compact-shell.clock-glass { border-color: #b79169; }
+.visitor-clock-compact-top .clock-sky-legend { margin-inline-start: 0; }
+.visitor-clock-compact-top .clock-sky-phase, .visitor-clock-compact-top .clock-sky-compass { min-height: 38px; padding-inline: 0.45rem; }
+.visitor-clock-compact-top .clock-sky-compass span { max-width: 9.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.visitor-clock-compact-details .clock-sky-legend { grid-column: 1 / -1; margin-inline-start: 0; }
+@media (max-width: 480px) {
+  .visitor-clock-compact-top .clock-sky-compass span { display: none; }
+  .visitor-clock-compact-top .clock-sky-legend { gap: 0.28rem; }
+}
