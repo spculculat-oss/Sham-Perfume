@@ -1,12 +1,18 @@
 /**
  * Keys of the news page (WorldPerfumeNews) and its embedded live-news strip
  * (ShaheenLiveNews, the `live_` keys). Every supported language carries all
- * 79 strings (newsL10nData1–5), aligned as rows in this order. `{d}`, `{n}`,
+ * 83 strings (newsL10nData1–5), aligned as rows in this order. The four `photo_`
+ * keys label news pictures honestly: the publisher's own photo, or a clearly
+ * marked editorial photo when the source published none. `{d}`, `{n}`,
  * `{t}`, `{v}` and `{h}` in the template keys are filled by the callers'
  * `fmt()` — the resolver returns the raw template, exactly like the local
  * dictionaries this pack replaced.
  */
 export const NEWS_KEYS = [
+  'photo_none',
+  'photo_source',
+  'photo_stock',
+  'photo_stock_note',
   'load_1',
   'load_2',
   'load_3',

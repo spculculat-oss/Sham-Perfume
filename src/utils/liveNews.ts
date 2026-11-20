@@ -8,6 +8,12 @@ export type { NewsFile, NewsItem };
  */
 export const LIVE_NEWS_URL = 'https://raw.githubusercontent.com/spculculat-oss/Sham-Perfume/main/src/data/live/shaheen-news.json';
 
+/** The publisher's own picture for a live story, if its feed carried a usable one. */
+export function newsItemPicture(item: { image?: unknown } | undefined): string | undefined {
+  const url = item && typeof item.image === 'string' ? item.image.trim() : '';
+  return /^https?:\/\/[^\s]+$/i.test(url) && url.length <= 1000 ? url : undefined;
+}
+
 export function isNewsFile(data: unknown): data is NewsFile {
   const d = data as NewsFile;
   return Boolean(d && typeof d === 'object' && typeof d.updatedAt === 'string' && Array.isArray(d.items) &&

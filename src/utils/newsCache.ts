@@ -54,6 +54,19 @@ export function restoreNewsCache(raw: string | null, bundled: PerfumeNewsItem[])
   }
 }
 
+/**
+ * What a news card's picture really is, so the page can label it honestly:
+ *   - `source`: the publisher's own photo (from its feed) — no label needed beyond credit;
+ *   - `editorial`: our build's editorial photo, used because the story carried none;
+ *   - `none`: no picture at all.
+ */
+export type NewsPictureKind = 'source' | 'editorial' | 'none';
+
+export function newsPictureKind(sourceUrl: string | undefined, shownUrl: string | undefined): NewsPictureKind {
+  if (!shownUrl) return 'none';
+  return sourceUrl && sourceUrl === shownUrl ? 'source' : 'editorial';
+}
+
 /** Reject obsolete hashed assets and /src paths from older deployments/APIs. */
 export function resolveNewsImage(imageUrl: string | undefined, currentImages: string[], fallback: string): string {
   if (imageUrl && (currentImages.includes(imageUrl) || /^(https?:\/\/|data:image\/)/i.test(imageUrl))) {

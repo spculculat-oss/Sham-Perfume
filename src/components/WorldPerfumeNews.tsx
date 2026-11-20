@@ -34,7 +34,7 @@ import { getLocalizedNewsArticle, isRTL } from '../لغات/localizedContent';
 import { fmt, loc, LOCALE_MAP } from '../لغات/localize';
 import { makeNewsT } from '../لغات/newsL10n';
 import { ApiError, isStaticHosting, requestApi } from '../utils/api';
-import { isNewsArticle, mergeNewsArticles, restoreNewsCache, resolveNewsImage } from '../utils/newsCache';
+import { isNewsArticle, mergeNewsArticles, newsPictureKind, restoreNewsCache, resolveNewsImage } from '../utils/newsCache';
 import { StaticHostingNotice, API_ERROR_NOTICE } from './StaticHostingNotice';
 import { ShaheenLiveNews } from './ShaheenLiveNews';
 import masterShaheenImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
@@ -265,6 +265,11 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
   // Use current build assets, not stale /src paths or old hashes from localStorage.
   const resolveArticleImage = (item: PerfumeNewsItem, index: number) =>
     resolveNewsImage(item.imageUrl, NEWS_IMAGE_LIST, getEditorialImageForCategory(item.category, index));
+  // Honest picture label: the publisher's own photo, or our editorial photo when it published none.
+  const pictureLabel = (item: PerfumeNewsItem, index: number) => {
+    const kind = newsPictureKind(item.imageUrl, resolveArticleImage(item, index));
+    return kind === 'source' ? L('photo_source') : kind === 'editorial' ? L('photo_stock') : L('photo_none');
+  };
 
   const todayDisplay = new Date().toLocaleDateString(LOCALE_MAP[currentLang], {
     day: 'numeric',
@@ -416,6 +421,9 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                 <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                 <span>{L('featured_lbl')}</span>
               </div>
+              <span className={`absolute top-12 ${rtl ? 'left-3' : 'right-3'} px-2 py-0.5 rounded bg-stone-950/75 backdrop-blur-xs text-white text-[10px] font-bold`}>
+                {pictureLabel(featuredHotNews, 0)}
+              </span>
               <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-xs text-white text-[11px] font-mono-numbers flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5 text-amber-300" />
                 <span>{featuredHotNews.readTime || L('read_time_default')}</span>
@@ -603,6 +611,9 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                     )}
                   </div>
 
+                  <span className={`absolute bottom-3 ${rtl ? 'right-3' : 'left-3'} px-2 py-0.5 rounded bg-black/70 backdrop-blur-xs text-white text-[10px] font-bold`}>
+                    {pictureLabel(item, index)}
+                  </span>
                   <div className={`absolute bottom-3 ${rtl ? 'left-3' : 'right-3'} px-2 py-0.5 rounded bg-black/70 backdrop-blur-xs text-white text-[10px] flex items-center gap-1 font-mono-numbers`}>
                     <Clock className="w-3 h-3 text-stone-300" />
                     <span>{loc.readTime || L('read_time_default')}</span>
@@ -744,6 +755,9 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
                 <div className={`absolute bottom-4 ${rtl ? 'right-4' : 'left-4'} flex items-center gap-2`}>
                   <span className="px-3 py-1 rounded-lg bg-stone-950/90 text-amber-300 text-xs font-bold shadow-md">
                     {modalLoc.categoryLabelAr}
+                  </span>
+                  <span className="px-2 py-1 rounded-lg bg-stone-950/80 text-white text-[11px] font-bold shadow-md">
+                    {pictureLabel(selectedArticle, 0)}
                   </span>
                   {selectedArticle.isDailyRefreshed && (
                     <span className="px-3 py-1 rounded-lg bg-amber-600 text-white text-xs font-bold shadow-md">
