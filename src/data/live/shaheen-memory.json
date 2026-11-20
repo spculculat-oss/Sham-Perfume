@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updatedAt": "2026-11-19T19:04:46.738Z",
+ "updatedAt": "2026-11-20T19:21:15.308Z",
  "entries": [
   {
    "id": "ar|auto|ازاي اخلي ريحة العطر تثبت علي الهدوم",
@@ -34,6 +34,26 @@
    "hits": 1,
    "source": "study",
    "lastUsed": "2026-10-22T11:05:06.645Z"
+  },
+  {
+   "id": "ar|auto|ليه العطر بيختفي بسرعة علي جلدي؟ وازود الثبات ازاي",
+   "question": "ليه العطر بيختفي بسرعة على جلدي؟ وأزود الثبات ازاي؟",
+   "lang": "ar",
+   "style": "auto",
+   "answer": "جلتّك جافة أو طبيعة بشرتك بتشرب العطر بسرعة، والزيوت الطبيعية في الجلد هي اللي بتثبت الريحة.\n\nعلشان تثبّت العطر لأطول وقت:\n- رطّب جسمك بكريم مرطب من غير ريحة قبل ما ترش العطر.\n- رش على أماكن النبض زي الرقبة ومعصم الإيدين.\n- ابعد عن فرك المعصمين ببعض علشان ذرات العطر ما تتكسرش وتطير أسرع.\n- خزن العزاس في مكان ضلمة وبارد بعيد عن الشمس والحمام.\n\nعايز تركيبة عطرية تكون ثابتة أكتر ومركّزة معاك؟",
+   "at": "2026-11-20T19:21:15.308Z",
+   "hits": 0,
+   "source": "chat"
+  },
+  {
+   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
+   "question": "What fixative works best for a citrus cologne, and at what percentage?",
+   "lang": "en",
+   "style": "auto",
+   "answer": "For a citrus cologne, Hedione or Ambroxan work best as fixatives. They extend the lifespan of volatile citrus notes without altering the bright, fresh character.\n\nUse them at a percentage of 1% to 3% of the total oil concentration.\n\n```sham-formula\n{\n  \"title\": \"Citrus Cologne Fixative Guide\",\n  \"author\": \"شاهين — مقترح تجريبي\",\n  \"concentrationPercent\": 15,\n  \"concentrationType\": \"edc\",\n  \"bottleVolumeMl\": 50,\n  \"alcoholPercentage\": 96,\n  \"waterPercent\": 0,\n  \"fixativePercent\": 2,\n  \"macerationDays\": 14,\n  \"summary\": \"مقترح يحتاج مراجعة السلامة\",\n  \"pyramidNotes\": [\n    {\n      \"id\": \"note-1\",\n      \"nameAr\": \"برغموت\",\n      \"nameEn\": \"Bergamot\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 60\n    },\n    {\n      \"id\": \"note-2\",\n      \"nameAr\": \"ليمون\",\n      \"nameEn\": \"Lemon\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 30\n    },\n    {\n      \"id\": \"note-3\",\n      \"nameAr\": \"أمبروكسان\",\n      \"nameEn\": \"Ambroxan\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 10\n    }\n  ]\n}\n```\n\n```sham-tool\n{\"tools\":[{\"tool\":\"guide\"}]}\n```",
+   "at": "2026-11-20T19:21:15.308Z",
+   "hits": 0,
+   "source": "chat"
   },
   {
    "id": "ar|auto|ايه افضل خلطة شتوية دافية",
@@ -1176,16 +1196,6 @@
    "source": "chat"
   },
   {
-   "id": "ar|auto|ليه العطر بيختفي بسرعة علي جلدي؟ وازود الثبات ازاي",
-   "question": "ليه العطر بيختفي بسرعة على جلدي؟ وأزود الثبات ازاي؟",
-   "lang": "ar",
-   "style": "auto",
-   "answer": "ثبات العطر على الجلد بيعتمد بشكل أساسي على طبيعة الجلد نفسه، وكمان على طريقة الاستخدام. الأسباب الشائعة لاختفاء العطر بسرعة هي:\n\n1. **جفاف الجلد:** الجلد الجاف بيشرب الزيوت العطرية كأنه إسفنجة وبيخليها تتبخر بسرعة.\n2. **نوع العطر:** التركيزات الخفيفة زي ماء التواليت فيها نسبة زيت أقل وبتبخر أسرع مقارنة بماء البارفان أو الإكستريه.\n3. **أماكن الرش:** الرش على الملابس اللي فيها خامات صناعية أو أماكن الحركة المستمرة بيقلل الثبات.\n\n### ازاي تزود الثبات بطريقة عملية:\n\n- **رطّب بشرتك الأول:** استخدم مرطب جسم خالي من العطور (زي فازلين أو لوشن مرطب) قبل ما ترش العطر، الجلد الرطب بيحبس الجزيئات العطرية ويخليها تعيش أطول.\n- **رش على أماكن النبض:** زي الرقبة، خلف الأذنين، ومعصم اليد؛ الحرارة الناتجة عن نبضات الدم بتساعد العطر يفوح ببطء وثبات.\n- **الرش على القماش:** رش رشة خفيفة على الهدوم (يفضل القطن أو الصوف) لأن النسيج بيحتفظ بريحة العطر أكتر بكتير من الجلد.\n- **بلاش فرك المعصم ببعضه:** فرك العطر بعد ما ترشه بيكسر جزيئات النوتات العليا وبيخليه يطير أسرع، سيبه ينشف لوحده على الجلد.\n\nتحب نرشحلك عطر بتركيز عالي وثبات قوي يناسب يومك؟\n\nالمعلومة دي محتاجة مراجعة أكتر قبل ما أأكدها.",
-   "at": "2026-11-18T14:12:20.155Z",
-   "hits": 0,
-   "source": "chat"
-  },
-  {
    "id": "ar|auto|احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
    "question": "احسب تكلفة 100 زجاجة 50 مل تركيز 20% لو الزيت 3 جنيه للمل والكحول 0.2 جنيه للمل",
    "lang": "ar",
@@ -1224,16 +1234,6 @@
    "at": "2026-11-13T03:31:27.670Z",
    "hits": 0,
    "source": "study"
-  },
-  {
-   "id": "en|auto|what fixative works best for a citrus cologne, and at what percentage",
-   "question": "What fixative works best for a citrus cologne, and at what percentage?",
-   "lang": "en",
-   "style": "auto",
-   "answer": "For a citrus cologne, the best fixatives are those that anchor the volatile top notes without weighing down the clean, bright character of the fragrance.\n\n### Best Fixatives for Citrus Colognes\n\n*   **Ambroxan:** Adds a modern, clean, slightly woody-amber warmth. It extends the fresh opening beautifully.\n*   **Iso E Super:** Imparts a velvety, transparent cedarwood nuance that lifts citrus notes and adds diffusion.\n*   **Benzyl Benzoate:** A classic, odorless solvent and fixative that slows down evaporation without altering the scent profile.\n\n### Recommended Percentage\nFixatives in a citrus cologne are typically used at **1 to 3 percent** of the total formula volume to maintain the refreshing, airy nature of the scent.\n\n```sham-formula\n{\n  \"title\": \"Citrus Cologne Base\",\n  \"author\": \"شاهين — مقترح تجريبي\",\n  \"concentrationPercent\": 15,\n  \"concentrationType\": \"edc\",\n  \"bottleVolumeMl\": 50,\n  \"alcoholPercentage\": 96,\n  \"waterPercent\": 0,\n  \"fixativePercent\": 2,\n  \"macerationDays\": 14,\n  \"summary\": \"مقترح تجريبي يوازن بين الانتعاش والثبات\",\n  \"pyramidNotes\": [\n    {\n      \"id\": \"note-1\",\n      \"nameEn\": \"Bergamot\",\n      \"nameAr\": \"برغموت\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 40\n    },\n    {\n      \"id\": \"note-2\",\n      \"nameEn\": \"Lemon\",\n      \"nameAr\": \"ليمون\",\n      \"category\": \"top\",\n      \"percentageOfOil\": 30\n    },\n    {\n      \"id\": \"note-3\",\n      \"nameEn\": \"Neroli\",\n      \"nameAr\": \"نيرولي\",\n      \"category\": \"heart\",\n      \"percentageOfOil\": 20\n    },\n    {\n      \"id\": \"note-4\",\n      \"nameEn\": \"Ambroxan\",\n      \"nameAr\": \"أمبروكسان\",\n      \"category\": \"base\",\n      \"percentageOfOil\": 10\n    }\n  ]\n}\n```\n\n```sham-tool\n{\n  \"tools\": [\n    {\n      \"tool\": \"guide\"\n    }\n  ]\n}\n```",
-   "at": "2026-11-12T23:49:57.068Z",
-   "hits": 0,
-   "source": "chat"
   },
   {
    "id": "ar|auto|كم يوم اعتق عطر فيه مسك وعنبر وعود",
