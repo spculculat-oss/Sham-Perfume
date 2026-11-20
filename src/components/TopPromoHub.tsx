@@ -48,6 +48,7 @@ import newsBackdrop from '../assets/images/perfume_news_global_trends_1791696027
 import pyramidBackdrop from '../assets/images/perfume_ingredients_pyramid_1791692429360.jpg';
 import materialsBackdrop from '../assets/images/botanical_harvest_raw_1791968832488.jpg';
 import libraryBackdrop from '../assets/images/luxury_perfume_exhibition_1791696134494.jpg';
+import islamicLibraryBackdrop from '../library/islamic/assets/hall-small.webp';
 import communityBackdrop from '../assets/images/fragrance_summit_expo_1791968814926.jpg';
 import storeBackdrop from '../assets/images/store_campaign_lifestyle.jpg';
 
@@ -100,6 +101,7 @@ const PLATFORM_PROMO_BACKDROPS: Record<PromoVisual, string> = {
   costing: homeBackdrop,
   materials: materialsBackdrop,
   library: libraryBackdrop,
+  islamic_library: islamicLibraryBackdrop,
   news: newsBackdrop,
   guide: labBackdrop,
   expert: labBackdrop,

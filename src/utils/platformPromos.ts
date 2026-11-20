@@ -1,10 +1,11 @@
+import { ISLAMIC_LIBRARY_TITLE } from '../library/islamic/entry';
 import { SEO_PAGES } from '../seo/pages';
 import { loc, type LText } from '../لغات/localize';
 import type { SupportedLanguage } from '../types/i18n';
 
 export type PromoVisual =
   | 'home' | 'formula' | 'analysis' | 'pyramid' | 'alcohol' | 'maceration'
-  | 'costing' | 'materials' | 'library' | 'news' | 'guide' | 'expert' | 'store'
+  | 'costing' | 'materials' | 'library' | 'islamic_library' | 'news' | 'guide' | 'expert' | 'store'
   | 'community' | 'country' | 'privacy';
 
 export type PlatformPromoAction =
@@ -75,6 +76,12 @@ const PAGE_COPY: Record<string, PromoCopy> = {
     title: { ar: 'اكتشف المواد الخام العطرية', en: 'Explore fragrance materials' },
     description: { ar: 'ابحث في معلومات المواد والعائلات العطرية وراجع ملاحظات السلامة المتاحة.', en: 'Search material and scent-family information, and review the available safety notes.' },
     visual: 'materials',
+  },
+  islamic_library: {
+    tag: ISLAMIC_LIBRARY_TITLE,
+    title: { ar: 'اقرأ المصحف وتصفّح كتب التراث', en: 'Read the Quran and browse classical works' },
+    description: { ar: 'اقرأ المصحف بالرسم العثماني، واكتشف كتب التفسير والحديث والسيرة وروابط قراءتها عند مصادرها.', en: 'Read the Uthmani Quran and explore tafsir, hadith, and seerah editions at their sources.' },
+    visual: 'islamic_library',
   },
   world_perfumes: {
     tag: { ar: 'مكتبة مرجعية تعليمية', en: 'Educational reference library' },
