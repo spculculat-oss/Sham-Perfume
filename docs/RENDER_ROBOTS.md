@@ -3,6 +3,8 @@
 الروبوتات كلها (32 روبوت على مواعيدهم) بقت بتشتغل على **سيرفر واحد مجاني على Render** بدل GitHub.
 الملف اللي بيوصف السيرفر: `render.yaml`، والكود في `scripts/robots/`.
 
+> **من غير فيزا؟** نفس السيرفر يشتغل على Hugging Face ببلاش ومن غير كارت: الخطوات في `docs/HUGGINGFACE_ROBOTS.md`.
+
 ## ١) مفتاح GitHub للروبوتات (مرة واحدة)
 
 1. افتح: https://github.com/settings/personal-access-tokens/new
