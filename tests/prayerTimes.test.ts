@@ -260,8 +260,8 @@ test('the Home board and compact chip share the reminder location and calendar w
   const clock = readFileSync(new URL('../src/components/VisitorLocalDashboard.tsx', import.meta.url), 'utf8');
   const board = readFileSync(new URL('../src/components/clock/PrayerTimesBoard.tsx', import.meta.url), 'utf8');
   const runtime = readFileSync(new URL('../src/components/clock/PrayerToolsRuntime.tsx', import.meta.url), 'utf8');
-  assert.match(clock, /<PrayerClockSummary lang=\{currentLang\} now=\{now\} \/>/);
-  assert.match(clock, /<PrayerClockSummary lang=\{currentLang\} now=\{now\} compact \/>/);
+  assert.match(clock, /<PrayerClockSummary lang=\{currentLang\} now=\{now\} onNavigate=\{onNavigate\} \/>/);
+  assert.match(clock, /<PrayerClockSummary lang=\{currentLang\} now=\{now\} onNavigate=\{onNavigate\} compact \/>/);
   for (const text of [board, runtime]) assert.match(text, /usePrayerCalendar\(/);
   for (const fragment of ['data-testid="prayer-times"', 'data-testid="prayer-chip"', 'prayer-arc', 'prayer-strip']) assert.ok(board.includes(fragment), fragment);
   assert.doesNotMatch(board, /fetch\(/);

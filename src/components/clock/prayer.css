@@ -7,40 +7,48 @@
   box-shadow: inset 0 1px #fff9ec12, 0 3px 10px #14100e24;
 }
 .prayer-launcher:hover { border-color: #d2e4b69a; background-color: #3b5041; }
-.prayer-launcher:focus-visible { outline: 2px solid #dfedb2; outline-offset: 2px; }
+.prayer-launcher:focus-visible, .clock-library-shortcut:focus-visible { outline: 2px solid #dfedb2; outline-offset: 2px; }
 .prayer-launcher-icon { display: grid; place-items: center; width: 42px; aspect-ratio: 1; border-radius: 0.8rem; color: #eff1b0; border: 1px solid #efeec938; background: #ebefa919; }
-.prayer-launcher-text { display: grid; gap: 0.16rem; line-height: 1.35; }
+.prayer-launcher-text { display: grid; min-width: 0; gap: 0.16rem; line-height: 1.35; overflow-wrap: anywhere; }
 .prayer-launcher-text strong { font-size: clamp(0.92rem, 1.65vw, 1.19rem); font-weight: 790; }
 .prayer-launcher-text > span { font-size: 0.74rem; color: #f4edde; }
 .prayer-launcher-text small { font-size: 0.68rem; color: #d6e5c0; }
 .prayer-launcher-arrow { color: #e9edb5; }
 [dir='rtl'] .prayer-launcher-arrow { transform: rotate(180deg); }
 .prayer-launcher[data-hidden='true'] {
-  min-height: 48px; margin: 0.65rem 0.7rem; padding: 0.43rem 0.64rem;
+  min-height: 48px; padding: 0.43rem 0.64rem;
   border: 1px dashed #d9dfac70; border-radius: 0.75rem; background: #253c3073; box-shadow: none;
 }
 .prayer-launcher[data-hidden='true']:hover { background: #364c3d; border-color: #e7edb9; }
 .prayer-launcher[data-hidden='true'] .prayer-launcher-icon { width: 32px; border-radius: 0.55rem; }
 .prayer-launcher[data-hidden='true'] strong { font-size: 0.86rem; }
 .prayer-clock-panel { display: grid; min-width: 0; }
+.prayer-clock-actions { display: flex; min-width: 0; max-width: 100%; gap: 0.38rem; }
+.prayer-clock-panel > .prayer-clock-actions { justify-content: flex-end; margin: 0 0.7rem 0.45rem; }
+.prayer-clock-panel > .prayer-clock-actions[data-hidden='true'] { margin-block: 0.65rem; }
+.prayer-clock-actions[data-hidden='true'] > .prayer-launcher { flex: 1; }
+.clock-library-shortcut {
+  display: inline-flex; flex: none; align-items: center; justify-content: center; gap: 0.34rem;
+  min-inline-size: 44px; min-block-size: 44px; padding: 0.25rem 0.48rem; border-radius: 0.6rem;
+  border: 1px solid #d0c18580; background: #244537; color: #fff0c2; font-size: 0.74rem; font-weight: 750;
+}
+.clock-library-shortcut:hover { border-color: #e7e4a4; background: #315746; }
 .prayer-compact-shortcut {
-  display: inline-flex; align-items: center; gap: 0.32rem; max-width: 100%; min-height: 40px;
+  display: inline-flex; align-items: center; gap: 0.32rem; min-width: 0; max-width: 100%; min-height: 40px;
   padding: 0.2rem 0.5rem; border: 1px solid #ffdfb538; border-radius: 0.55rem;
   background: #fff0d214; color: #fff0d8; text-align: start; font-size: 0.72rem; font-weight: 700;
 }
 .prayer-compact-shortcut svg { color: #f5cc97; flex: none; }
+.prayer-compact-shortcut > span { min-width: 0; overflow-wrap: anywhere; }
 .prayer-compact-shortcut[data-hidden='true'] { border: 1px dashed #d9dfac70; background: #253c3073; color: #fff6db; }
 .prayer-compact-shortcut[data-hidden='true'] svg { color: #eff1b0; }
 .prayer-compact-shortcut:hover { border-color: #dbe1b0; background: #fff0d226; }
 .prayer-compact-shortcut:focus-visible { outline: 2px solid #dfedb2; outline-offset: 2px; }
-@media (max-width: 480px) {
-  .prayer-compact-shortcut { min-height: 44px; }
-  .prayer-compact-shortcut[data-hidden='true'] { max-inline-size: 55%; }
-}
 .prayer-launcher-summary:not([data-hidden='true']) {
-  display: inline-flex; justify-self: end; min-height: 44px; gap: 0.38rem; margin: 0 0.7rem 0.45rem;
+  display: inline-flex; min-height: 44px; gap: 0.38rem;
   padding: 0.25rem 0.58rem; border-radius: 0.6rem; font-size: 0.76rem; font-weight: 720;
 }
+.prayer-launcher-summary > span { min-width: 0; overflow-wrap: anywhere; }
 .prayer-launcher-summary svg { flex: none; }
 @media (min-width: 740px) { .visitor-clock-compact-details > .prayer-launcher { grid-column: 1 / -1; } }
 @media (min-width: 1000px) {
