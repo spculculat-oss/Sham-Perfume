@@ -23,7 +23,9 @@ import { makeBannerT } from '../لغات/bannerL10n';
 import type { BannerTextKey } from '../لغات/bannerKeys';
 import { storeGenderLabel, storeLocalized, storeText } from '../لغات/storeL10n';
 import { isRTL } from '../لغات/localizedContent';
+import { loc } from '../لغات/localize';
 import type { SupportedLanguage } from '../types/i18n';
+import { localizedPlatformPromos, PLATFORM_PROMO_UI, type LocalizedPlatformPromo, type PromoVisual } from '../utils/platformPromos';
 import { loadStoreCatalog, storeImageSrc } from '../utils/liveStore';
 import type { StoreProduct } from '../utils/storeCatalog';
 import { filterShowcase, isStockPhoto, rankShowcase, thumbWindow, type ShowcaseCategory } from '../utils/promoShowcase';
@@ -39,10 +41,21 @@ import {
 import commercialMan from '../assets/images/perfume_art_spray_man_1792313195183.jpg';
 import commercialWoman from '../assets/images/perfume_art_spray_woman_1792313196930.jpg';
 import commercialMist from '../assets/images/perfume_mist_cinematic_1792313197406.jpg';
+import homeBackdrop from '../assets/images/hero_luxury_perfume_1791692409081.jpg';
+import labBackdrop from '../assets/images/perfume_lab_compounding_1791692420116.jpg';
+import newsBackdrop from '../assets/images/perfume_news_global_trends_1791696027070.jpg';
+import pyramidBackdrop from '../assets/images/perfume_ingredients_pyramid_1791692429360.jpg';
+import materialsBackdrop from '../assets/images/botanical_harvest_raw_1791968832488.jpg';
+import libraryBackdrop from '../assets/images/luxury_perfume_exhibition_1791696134494.jpg';
+import communityBackdrop from '../assets/images/fragrance_summit_expo_1791968814926.jpg';
+import storeBackdrop from '../assets/images/store_campaign_lifestyle.jpg';
 
 interface TopPromoHubProps {
   currentLang?: SupportedLanguage;
   onViewStore?: () => void;
+  onNavigateToTab?: (tab: string) => void;
+  onOpenEnvironmentModal?: () => void;
+  onOpenPrivacyModal?: () => void;
   onSelectProduct?: (productId: number | string) => void;
 }
 
@@ -76,6 +89,29 @@ const SCENES: CommercialScene[] = [
   },
 ];
 
+const PLATFORM_PROMO_BACKDROPS: Record<PromoVisual, string> = {
+  home: homeBackdrop,
+  formula: labBackdrop,
+  analysis: labBackdrop,
+  pyramid: pyramidBackdrop,
+  alcohol: labBackdrop,
+  maceration: pyramidBackdrop,
+  costing: homeBackdrop,
+  materials: materialsBackdrop,
+  library: libraryBackdrop,
+  news: newsBackdrop,
+  guide: labBackdrop,
+  expert: labBackdrop,
+  store: storeBackdrop,
+  community: communityBackdrop,
+  country: materialsBackdrop,
+  privacy: homeBackdrop,
+};
+
+type ReelSlide =
+  | { kind: 'fragrance'; id: string; image: string; scene: CommercialScene }
+  | { kind: 'platform'; id: string; image: string; promo: LocalizedPlatformPromo };
+
 /** Deterministic particle field for the reel's drifting golden mist (stable across renders/SSR). */
 const REEL_PARTICLES = Array.from({ length: 18 }, (_, i) => ({
   x: (i * 37 + 11) % 100,
@@ -88,13 +124,28 @@ const REEL_PARTICLES = Array.from({ length: 18 }, (_, i) => ({
 export const TopPromoHub: React.FC<TopPromoHubProps> = ({
   currentLang = 'ar',
   onViewStore,
+  onNavigateToTab,
+  onOpenEnvironmentModal,
+  onOpenPrivacyModal,
   onSelectProduct,
 }) => {
   const rtl = isRTL(currentLang);
   const L = makeBannerT(currentLang);
+  const platformPromos = useMemo(() => localizedPlatformPromos(currentLang), [currentLang]);
+  const reelSlides = useMemo<ReelSlide[]>(() => [
+    ...SCENES.map((scene) => ({ kind: 'fragrance' as const, id: scene.id, image: scene.image, scene })),
+    ...platformPromos.map((promo) => ({
+      kind: 'platform' as const,
+      id: promo.id,
+      image: PLATFORM_PROMO_BACKDROPS[promo.visual],
+      promo,
+    })),
+  ], [platformPromos]);
 
   const [expanded, setExpanded] = useState(true);
-  const [sceneIndex, setSceneIndex] = useState(0);
+  const [reelIndex, setReelIndex] = useState(0);
+  const [previousReelIndex, setPreviousReelIndex] = useState<number | null>(null);
+  const reelFadeTimerRef = useRef<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [productSlideIndex, setProductSlideIndex] = useState(0);
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
@@ -143,22 +194,42 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
   const photoOf = (p: StoreProduct): string | undefined => (p.images.length ? p.images : p.imageUrl ? [p.imageUrl] : []).find((u) => !failedImages[u]);
   const markFailed = (url: string) => setFailedImages((prev) => (prev[url] ? prev : { ...prev, [url]: true }));
 
-  // Active scene
-  const activeScene = SCENES[sceneIndex] || SCENES[0];
+  // The reel keeps the original fragrance commercials, then rotates through the complete page-promo set.
+  const activeSlide = reelSlides[reelIndex] ?? reelSlides[0]!;
+  const activeScene = activeSlide.kind === 'fragrance' ? activeSlide.scene : null;
+  const activePromo = activeSlide.kind === 'platform' ? activeSlide.promo : null;
+  const activeSlideTitle = activeScene ? L(activeScene.keys.title) : activePromo?.title || '';
+  const activeSlideTag = activeScene ? L(activeScene.keys.tag) : activePromo?.tag || '';
+
+  const moveToReelSlide = (index: number) => {
+    const next = ((index % reelSlides.length) + reelSlides.length) % reelSlides.length;
+    if (next === reelIndex) return;
+    setPreviousReelIndex(reelIndex);
+    setReelIndex(next);
+    if (reelFadeTimerRef.current !== null) window.clearTimeout(reelFadeTimerRef.current);
+    reelFadeTimerRef.current = window.setTimeout(() => {
+      setPreviousReelIndex(null);
+      reelFadeTimerRef.current = null;
+    }, 1100);
+  };
 
   // Reset slide index when search or category filter changes
   useEffect(() => {
     setProductSlideIndex(0);
   }, [selectedCategory, productSearch]);
 
-  // Autoplay timer for the commercial scenes
+  // Autoplay cycles through fragrance scenes and platform-page promotions in the same cinematic reel.
   useEffect(() => {
     if (!expanded || !isPlaying) return;
     const interval = window.setInterval(() => {
-      setSceneIndex((prev) => (prev + 1) % SCENES.length);
+      moveToReelSlide(reelIndex + 1);
     }, 7000);
     return () => window.clearInterval(interval);
-  }, [expanded, isPlaying]);
+  }, [expanded, isPlaying, reelSlides.length, reelIndex]);
+
+  useEffect(() => () => {
+    if (reelFadeTimerRef.current !== null) window.clearTimeout(reelFadeTimerRef.current);
+  }, []);
 
   // Off screen or hidden tab: hold the carousel still.
   useEffect(() => {
@@ -188,11 +259,33 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
   }, [expanded, productPaused, showcaseProducts.length, safeIndex]);
 
   const handleNextScene = () => {
-    setSceneIndex((prev) => (prev + 1) % SCENES.length);
+    moveToReelSlide(reelIndex + 1);
   };
 
   const handlePrevScene = () => {
-    setSceneIndex((prev) => (prev - 1 + SCENES.length) % SCENES.length);
+    moveToReelSlide(reelIndex - 1);
+  };
+
+  const openPlatformPromo = (promo: LocalizedPlatformPromo) => {
+    const { action } = promo;
+    if (action.type === 'environment-modal') {
+      onOpenEnvironmentModal?.();
+      return;
+    }
+    if (action.type === 'privacy-modal') {
+      onOpenPrivacyModal?.();
+      return;
+    }
+    if (action.tab === 'store' && onViewStore) {
+      onViewStore();
+      return;
+    }
+    if (onNavigateToTab) {
+      onNavigateToTab(action.tab);
+      return;
+    }
+    window.location.hash = `#${action.tab}`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const goToProduct = (index: number, dir: 1 | -1) => {
@@ -388,29 +481,35 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
 
             {/* SCREEN VIEWPORT: CINEMATIC COMMERCIAL REEL + INTEGRATED PRODUCT DRAWER */}
             <div className="relative grid min-h-[460px] sm:min-h-[520px] lg:min-h-[580px] lg:grid-cols-[1.28fr_0.72fr]">
-              {/* THE CINEMA STAGE: ART COMMERCIAL WITH HIGH-FASHION PERSON SPRAYING PERFUME */}
+              {/* THE CINEMA STAGE: the original fragrance commercials plus page-by-page platform spots */}
               <div className="relative overflow-hidden min-h-[300px] sm:min-h-[360px] lg:min-h-full">
                 {/* Background Crossfading Images */}
-                {SCENES.map((scene, idx) => (
-                  <div
-                    key={scene.id}
-                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                      idx === sceneIndex ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-                    }`}
-                  >
-                    <img
-                      src={scene.image}
-                      alt={L(scene.keys.title)}
-                      className={`sham-reel-img sham-reel-motion-${idx % 3} h-full w-full object-cover object-center`}
-                      data-paused={isPlaying ? undefined : 'true'}
-                      loading={idx === 0 ? 'eager' : 'lazy'}
-                    />
-                    {/* Cinema Vignette & Editorial Gradients */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-stone-950/20" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-stone-950/80 via-transparent to-stone-950/90" />
-                    <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
-                  </div>
-                ))}
+                {reelSlides.map((slide, idx) => {
+                  const title = slide.kind === 'fragrance' ? L(slide.scene.keys.title) : slide.promo.title;
+                  return (
+                    <div
+                      key={slide.id}
+                      data-slide-id={slide.id}
+                      className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                        idx === reelIndex ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+                      }`}
+                    >
+                      {(idx === reelIndex || idx === previousReelIndex) && slide.image && (
+                        <img
+                          src={slide.image}
+                          alt={title}
+                          className={`sham-reel-img sham-reel-motion-${idx % 3} h-full w-full object-cover object-center`}
+                          data-paused={isPlaying ? undefined : 'true'}
+                          loading={idx === reelIndex ? 'eager' : 'lazy'}
+                        />
+                      )}
+                      {/* Cinema Vignette & Editorial Gradients */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/40 to-stone-950/20" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-stone-950/80 via-transparent to-stone-950/90" />
+                      <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
+                    </div>
+                  );
+                })}
 
                 {/* Living mist: golden particles drifting over the reel (pure CSS, no video weight) */}
                 <div aria-hidden="true" className="sham-reel-mist pointer-events-none absolute inset-0 z-[15] overflow-hidden" data-paused={isPlaying ? undefined : 'true'}>
@@ -436,30 +535,41 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                   <div className="inline-flex items-center gap-2 rounded-full border border-amber-200/30 bg-black/50 px-3.5 py-1.5 backdrop-blur-md shadow-lg">
                     <span className="flex h-2 w-2 rounded-full bg-red-500 animate-ping" />
                     <span className="text-[10px] sm:text-xs font-bold tracking-widest text-amber-200 uppercase">
-                      {L(activeScene.keys.tag)}
+                      {activeSlideTag}
                     </span>
                   </div>
                 </div>
 
 
 
-                {/* Cinema Bottom Subtitles & Story Caption */}
+                {/* Cinema Bottom Subtitles & Page Promotion Caption */}
                 <div className="absolute bottom-5 start-4 end-4 sm:bottom-7 sm:start-7 sm:end-7 z-20 max-w-xl">
-                  <div key={activeScene.id} className="sham-reel-caption space-y-2">
+                  <div key={activeSlide.id} className="sham-reel-caption space-y-2">
                     <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 uppercase tracking-widest">
                       <Sparkles className="h-3 w-3 text-amber-400" />
-                      {L(activeScene.keys.mood)}
+                      {activeScene ? L(activeScene.keys.mood) : loc(currentLang, PLATFORM_PROMO_UI.pageSpotlight)}
                     </span>
                     <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-                      {L(activeScene.keys.title)}
+                      {activeSlideTitle}
                     </h2>
                     <p className="text-xs sm:text-sm text-stone-200/90 leading-relaxed drop-shadow max-w-lg">
-                      {L(activeScene.keys.subtitle)}
+                      {activeScene ? L(activeScene.keys.subtitle) : activePromo?.description}
                     </p>
+                    {activePromo && (
+                      <button
+                        type="button"
+                        onClick={() => openPlatformPromo(activePromo)}
+                        aria-label={`${loc(currentLang, PLATFORM_PROMO_UI.discover)}: ${activePromo.title}`}
+                        className="inline-flex items-center gap-2 rounded-xl border border-amber-300/50 bg-gradient-to-r from-amber-400 to-orange-500 px-4 py-2 text-xs font-extrabold text-stone-950 shadow-lg shadow-black/30 transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                      >
+                        <span>{loc(currentLang, PLATFORM_PROMO_UI.discover)}</span>
+                        <ArrowDir className="h-3.5 w-3.5" />
+                      </button>
+                    )}
                   </div>
 
-                  {/* Scene Navigation Bar */}
-                  <div className="mt-4 flex items-center gap-2">
+                  {/* Navigation through fragrance ads and every registered platform page */}
+                  <div className="mt-3 flex items-center gap-2">
                     <button
                       type="button"
                       onClick={handlePrevScene}
@@ -468,18 +578,27 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
                     >
                       <PreviousIcon className="h-4 w-4" />
                     </button>
-                    <div className="flex items-center gap-1.5 px-2">
-                      {SCENES.map((_, i) => (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => setSceneIndex(i)}
-                          className={`h-1.5 rounded-full transition-all duration-300 ${
-                            i === sceneIndex ? 'w-6 bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]' : 'w-2 bg-white/30 hover:bg-white/60'
-                          }`}
-                        />
-                      ))}
+                    <div className="flex max-w-[38vw] items-center gap-1.5 overflow-x-auto px-2 py-2 no-scrollbar sm:max-w-xs" role="group" aria-label={loc(currentLang, PLATFORM_PROMO_UI.pageSpotlight)}>
+                      {reelSlides.map((slide, i) => {
+                        const label = slide.kind === 'fragrance' ? L(slide.scene.keys.title) : slide.promo.title;
+                        return (
+                          <button
+                            key={slide.id}
+                            type="button"
+                            onClick={() => moveToReelSlide(i)}
+                            aria-label={label}
+                            aria-current={i === reelIndex ? 'true' : undefined}
+                            title={label}
+                            className={`h-1.5 shrink-0 rounded-full transition-all duration-300 ${
+                              i === reelIndex ? 'w-6 bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]' : 'w-2 bg-white/30 hover:bg-white/60'
+                            }`}
+                          />
+                        );
+                      })}
                     </div>
+                    <span className="font-mono text-[10px] text-amber-200/90 whitespace-nowrap" aria-live="polite">
+                      {reelIndex + 1} / {reelSlides.length}
+                    </span>
                     <button
                       type="button"
                       onClick={handleNextScene}
@@ -847,7 +966,7 @@ export const TopPromoHub: React.FC<TopPromoHubProps> = ({
             </span>
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-amber-200">{L('live_commercial')}</span>
-              <span className="hidden sm:inline-block text-[11px] text-stone-400">· {L(activeScene.keys.title)}</span>
+              <span className="hidden sm:inline-block text-[11px] text-stone-400">· {activeSlideTitle}</span>
             </div>
           </div>
 

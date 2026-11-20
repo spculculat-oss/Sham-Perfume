@@ -949,6 +949,9 @@ export default function App() {
           <TopPromoHub
             currentLang={currentLang}
             onViewStore={() => navigateToTab('store')}
+            onNavigateToTab={(tab) => navigateToTab(tab)}
+            onOpenEnvironmentModal={handleOpenEnvironmentModal}
+            onOpenPrivacyModal={handleOpenPrivacyModal}
           />
         )}
 
