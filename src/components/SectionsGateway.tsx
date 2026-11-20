@@ -1,10 +1,11 @@
 import React from 'react';
-import { ArrowLeft, ArrowRight, BookOpen, Calculator, Database, FlaskConical, Leaf, PenLine, Store } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, Calculator, Database, FlaskConical, Leaf, LibraryBig, PenLine, Store } from 'lucide-react';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../types/i18n';
 import { cosmeticsText, type CosmeticsUiKey } from '../لغات/cosmeticsL10n';
 import { t as ui } from '../لغات/i18n';
 import { designersText } from '../لغات/designersL10n';
 import { wsText } from '../workspace/strings';
+import { ISLAMIC_LIBRARY_HASH, ISLAMIC_LIBRARY_TITLE } from '../library/islamic/entry';
 
 interface Props {
   currentLang: SupportedLanguage;
@@ -66,6 +67,20 @@ export function SectionsGateway({ currentLang, onNavigate }: Props) {
         {card('perfumes', ct('navPerfumes'), ct('perfumeCardText'), perfumeTools, 'amber', '🌹', 'perfumes')}
         {card('cosmetics', ct('sectionCosmetics'), ct('cosmeticCardText'), cosmeticTools, 'rose', '🧴', 'cosmetics')}
       </div>
+      <a href={ISLAMIC_LIBRARY_HASH} data-testid="gateway-islamic-library"
+        onClick={(event) => {
+          if (event.button !== 0 || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+          event.preventDefault();
+          onNavigate(ISLAMIC_LIBRARY_HASH.slice(1));
+        }}
+        className="w-full flex items-center gap-3 sm:gap-4 rounded-3xl border border-emerald-900 bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-900 p-5 text-start text-amber-50 shadow-xs hover:border-amber-500 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700">
+        <span className="grid place-items-center w-12 h-12 shrink-0 rounded-xl border border-amber-300/45 bg-amber-100/10 text-amber-200"><LibraryBig className="w-6 h-6" aria-hidden="true" /></span>
+        <span className="flex-1 min-w-0">
+          <span className="block text-lg sm:text-xl font-black">{ISLAMIC_LIBRARY_TITLE[currentLang === 'ar' ? 'ar' : 'en']}</span>
+          <span className="block text-xs sm:text-sm text-amber-50/85 leading-relaxed">{currentLang === 'ar' ? 'افتح المصحف، أو اختر كتابًا من أرفف التفسير والحديث والفقه والسيرة.' : 'Open the Quran or choose a book from the tafsir, hadith, fiqh and seerah shelves.'}</span>
+        </span>
+        <Arrow className="w-5 h-5 shrink-0 text-amber-200" aria-hidden="true" />
+      </a>
       {/* «مساحة شاهين»: the general assistant — open to any subject, not only perfume and cosmetics. */}
       <button type="button" onClick={() => onNavigate('workspace')} data-testid="gateway-workspace"
         className="w-full flex items-center gap-4 rounded-3xl border border-violet-200 bg-gradient-to-br from-stone-900 via-stone-800 to-violet-900 p-5 text-start text-white shadow-xs hover:shadow-md cursor-pointer">

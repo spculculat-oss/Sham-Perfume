@@ -78,9 +78,9 @@ export default function PrayerTimesBoard({ lang, now, compact, ...settings }: Pr
   const placeName = prayerPlaceLabel(lang, resolved);
   const source = resolved?.source;
   if (compact) return upcoming ? <span className="prayer-chip" data-testid="prayer-chip" title={`${label('prayers')} · ${placeName}`}>
-    <Moon size={13} aria-hidden="true" /><span>{loc(lang, PRAYER_LABELS[upcoming.prayer])}</span>
+    <Moon size={13} aria-hidden="true" /><span className="sr-only">{copy('upcoming')} · </span><span>{loc(lang, PRAYER_LABELS[upcoming.prayer])}</span>
     <time dir="ltr" dateTime={new Date(upcoming.at).toISOString()}>{format.time.format(upcoming.at)}</time>
-  </span> : null;
+  </span> : <><Moon size={13} aria-hidden="true" /><span>{label('prayers')}</span></>;
   const remaining = upcoming && now !== undefined ? splitPrayerRemaining(upcoming.at - now) : undefined;
   const current = now === undefined ? undefined : events.filter((event) => event.at <= now).at(-1);
   const eventDay = zone && upcoming ? prayerDayKey(zone, upcoming.at) : undefined;

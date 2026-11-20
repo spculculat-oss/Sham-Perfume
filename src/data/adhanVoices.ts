@@ -41,15 +41,6 @@ export const ADHAN_RECORDINGS: Record<AdhanVariant, Partial<Record<AdhanVoiceId,
 
 export const adhanFileUrl = (recording: AdhanRecording): string => prayerAssetUrl(`audio/adhan/${recording.file}`);
 
-// Links, not embedded media. A famous name without a reusable recording is not a reminder preset.
-export const FAMOUS_ADHAN_LINKS: { title: LText; url: string; publisher: string }[] = [
-  { title: { ar: 'مشاري راشد العفاسي', en: 'Mishary Rashid Alafasy' }, url: 'https://misharialafasy.net/azan', publisher: 'Alafasy' },
-  { title: { ar: 'عبد الباسط عبد الصمد', en: 'Abdul Basit Abdus Samad' }, url: 'https://audio.islamweb.com/audio/info/197594', publisher: 'IslamWeb' },
-  { title: { ar: 'عبد الباسط عبد الصمد · أذان الفجر', en: 'Abdul Basit Abdus Samad · Fajr adhan' }, url: 'https://audio.islamweb.net/audio/info/404627', publisher: 'IslamWeb' },
-  { title: { ar: 'مصطفى إسماعيل', en: 'Mustafa Ismail' }, url: 'https://audio.islamweb.net/audio/info/176760', publisher: 'IslamWeb' },
-  { title: { ar: 'الحصري، والمنشاوي، وعلي ملا وأصوات من الحرمين والأقصى', en: 'Al-Husary, Al-Minshawi, Ali Mulla and recordings from the holy mosques' }, url: 'https://www.assabile.com/adhan-call-prayer', publisher: 'Assabile' },
-];
-
 export const MAX_ADHAN_FILE_BYTES = 12 * 1024 * 1024;
 export const validAdhanFile = (file: Pick<File, 'name' | 'size' | 'type'>): boolean => file.size > 0 && file.size <= MAX_ADHAN_FILE_BYTES
   && /\.(mp3|m4a|aac|wav)$/i.test(file.name) && (!file.type || file.type === 'application/octet-stream' || file.type.startsWith('audio/') || file.type === 'video/mp4');

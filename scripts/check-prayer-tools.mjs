@@ -17,14 +17,14 @@ let browser;
 
 const audioURLs = (fixture) => fixture.requests.filter(({ url }) => /\/audio\/adhan\//.test(url)).map(({ url }) => new URL(url).pathname);
 const probe = (page) => page.evaluate(() => window.prayerTest);
-const open = async (page, lang = 'en') => {
-  await page.getByTestId('prayer-tools-launcher').click();
+const open = async (page, lang = 'en', launcher = page.getByTestId('prayer-tools-launcher')) => {
+  await launcher.click();
   const dialog = page.getByRole('dialog', { name: lang === 'ar' ? 'أوقات الصلاة' : 'Prayer times', exact: true });
   await dialog.getByRole('button', { name: lang === 'ar' ? 'جدول الصلاة' : 'Schedule', exact: true }).waitFor();
   return dialog;
 };
-const state = async (page, mode) => page.waitForFunction((value) => document.querySelector('[data-testid=prayer-reminder-state]')?.dataset.mode === value, mode);
-const playback = async (page, status) => page.waitForFunction((value) => document.querySelector('[data-testid=adhan-playback]')?.dataset.state === value, status);
+const state = (page, mode) => page.locator(`[data-testid="prayer-reminder-state"][data-mode="${mode}"]`).waitFor({ state: 'attached' });
+const playback = (page, status) => page.locator(`[data-testid="adhan-playback"][data-state="${status}"]`).waitFor({ state: 'attached' });
 const timeOf = async (dialog, prayer) => Date.parse(await dialog.getByTestId(`prayer-${prayer}`).locator('time').getAttribute('datetime'));
 const moveTo = async (page, at) => { await page.clock.setSystemTime(at); await page.clock.fastForward(1500); };
 const startNear = (page, at) => moveTo(page, at - 16_000);
@@ -34,14 +34,17 @@ const screenshot = async (page, name) => {
   if (process.env.PRAYER_SCREENSHOTS) await page.screenshot({ path: `${process.env.PRAYER_SCREENSHOTS}/sham-prayer-${name}.png`, animations: 'disabled', timeout: 45_000 });
 };
 
-async function fixture({ lang = 'en', mobile = false, geo = { country: 'EG', timezone: 'Africa/Cairo', location: cairo }, timezoneId = 'America/Los_Angeles' } = {}) {
+async function fixture({ lang = 'en', mobile = false, geo = { country: 'EG', timezone: 'Africa/Cairo', location: cairo }, timezoneId = 'America/Los_Angeles', savedPrayerPrefs } = {}) {
   const context = await browser.newContext({ viewport: mobile ? { width: 320, height: 740 } : { width: 1360, height: 900 },
     timezoneId, locale: lang === 'ar' ? 'ar-EG' : 'en-GB', isMobile: mobile, hasTouch: mobile, reducedMotion: 'reduce' });
   const requests = [];
   const errors = [];
   context.on('request', (r) => requests.push({ url: r.url(), body: r.postData() || '' }));
   await context.grantPermissions(['geolocation'], { origin });
-  await context.addInitScript((language) => {
+  await context.addInitScript(({ language, savedPrayerPrefs }) => {
+    if (window === window.top && savedPrayerPrefs && !localStorage.getItem('sham_prayer_preferences_v1')) {
+      localStorage.setItem('sham_prayer_preferences_v1', JSON.stringify(savedPrayerPrefs));
+    }
     localStorage.setItem('sham_perfume_user_language', language);
     localStorage.setItem('sham_perfume_user_override_lang', 'true');
     localStorage.setItem('sham_cookie_consent_v1', JSON.stringify({ version: '1.1', essential: true, analytics: false, marketing: false, timestamp: new Date().toISOString() }));
@@ -63,7 +66,7 @@ async function fixture({ lang = 'en', mobile = false, geo = { country: 'EG', tim
         return source;
       }
     } });
-  }, lang);
+  }, { language: lang, savedPrayerPrefs });
   await context.route('**/*', async (route) => {
     const url = new URL(route.request().url());
     if (url.origin === apiOrigin) {
@@ -194,11 +197,11 @@ async function checkDesktop() {
   await cross(page, asr);
   await noNotice(page);
   await dialog.getByRole('button', { name: 'Hide tool and turn reminders off', exact: true }).click();
-  await page.getByRole('button', { name: 'Show prayer times', exact: true }).waitFor();
+  await page.getByRole('button', { name: 'Restore prayer times & adhkar', exact: true }).waitFor();
   await page.evaluate(() => { location.hash = 'home'; });
   await page.locator('[data-clock-layout="home"]').waitFor();
   await page.reload({ waitUntil: 'domcontentloaded' });
-  await page.getByRole('button', { name: 'Show prayer times', exact: true }).waitFor();
+  await page.getByRole('button', { name: 'Restore prayer times & adhkar', exact: true }).waitFor();
   await page.getByTestId('prayer-times').waitFor({ state: 'detached' });
   dialog = await open(page);
   await dialog.getByRole('button', { name: 'Adhan & reminders', exact: true }).click();
@@ -222,7 +225,7 @@ async function checkDesktop() {
 }
 
 async function checkMobile() {
-  console.log('Arabic mobile: timezone suggestion, explicit GPS, blocked audio, searchable adhkar and focus…');
+  console.log('Arabic mobile: timezone suggestion, explicit GPS, blocked audio, publisher listening links, adhkar and focus…');
   const mobile = await fixture({ lang: 'ar', mobile: true, geo: { country: null, timezone: null, location: null }, timezoneId: 'Africa/Cairo' });
   const small = mobile.page;
   const dialog = await open(small, 'ar');
@@ -249,8 +252,34 @@ async function checkMobile() {
   await dialog.getByRole('alert').filter({ hasText: 'المتصفح منع الصوت' }).waitFor();
   await state(small, 'off');
   assert.deepEqual(audioURLs(mobile), []);
-  await dialog.getByText('اسمع مؤذنين وأصوات مشهورة', { exact: true }).click();
-  assert.equal(await dialog.getByRole('link', { name: 'مشاري راشد العفاسي', exact: true }).getAttribute('href'), 'https://misharialafasy.net/azan');
+  const library = dialog.locator('.prayer-listening');
+  const contextBefore = (await probe(small)).created;
+  await library.locator('summary').click();
+  for (const name of ['الحرم المكي', 'المسجد النبوي', 'مسجد آيا صوفيا', 'مشاهير القرّاء']) {
+    await library.getByRole('heading', { name, exact: true }).waitFor();
+  }
+  assert.equal(await library.getByRole('link', { name: /^علي بن أحمد ملا/ }).getAttribute('href'), 'https://audio.islamweb.net/audio/info/3');
+  assert.equal(await library.getByRole('link', { name: /^عصام بخاري/ }).getAttribute('href'), 'https://audio.islamweb.net/audio/info/5');
+  assert.equal(await library.getByRole('link', { name: /^مشاري راشد العفاسي/ }).getAttribute('href'), 'https://misharialafasy.net/azan');
+  const dawn = library.getByRole('link', { name: /^أذان الفجر من آيا صوفيا/ });
+  const dawnUrl = 'https://www.diyanet.tv/bereket-vakti-ayasofya-2017/video/ayasofyada-sabah-ezani';
+  assert.equal(await dawn.getAttribute('href'), dawnUrl);
+  assert.match(await dawn.textContent(), /٢٠١٧/);
+  assert.match(await library.getByRole('link', { name: /^أذان الجمعة يوم إعادة الافتتاح/ }).textContent(), /٢٠٢٠/);
+  assert.equal(await library.locator('iframe, audio, video').count(), 0, 'opening the library must not embed outside media');
+  assert.ok(!mobile.requests.some(({ url }) => /islamweb|assabile|misharialafasy|diyanet\.tv|youtube\.com/.test(url)), 'no connection to an audio publisher before clicking a link');
+  assert.ok(await fits(), 'listening library fits at 320px');
+  await screenshot(small, 'listening-mobile');
+  // Route the new tab to a local fixture: exercises the link without claiming external media playback.
+  await mobile.context.route(dawnUrl, (route) => route.fulfill({ contentType: 'text/html', body: '<title>Diyanet publisher fixture</title>' }));
+  const [publisher] = await Promise.all([mobile.context.waitForEvent('page'), dawn.click()]);
+  await publisher.waitForURL(dawnUrl);
+  assert.equal(await publisher.evaluate(() => window.opener === null), true);
+  await publisher.close();
+  await small.bringToFront();
+  await state(small, 'off');
+  assert.equal((await probe(small)).created, contextBefore);
+  assert.deepEqual(audioURLs(mobile), []);
   await dialog.getByRole('button', { name: 'الأذكار والأدعية', exact: true }).click();
   await dialog.getByRole('link', { name: 'اقرأ حصن المسلم كاملًا', exact: true }).waitFor();
   await dialog.getByRole('searchbox', { name: 'ابحث في الأذكار', exact: true }).fill('سَيِّد الاستِغْفار');
@@ -265,6 +294,83 @@ async function checkMobile() {
   await small.waitForFunction(() => document.activeElement?.matches('[data-testid=prayer-tools-launcher]'));
   assert.deepEqual(mobile.errors, []);
   await small.close();
+}
+
+async function checkRestore() {
+  console.log('Restore: existing hidden setting, compact shortcut, retained choices and no automatic rearming…');
+  const savedPrayerPrefs = { hidden: true, cityKey: 'city:cairo', method: 'Egyptian', asr: 'hanafi', prayers: ['fajr'], regularVoice: 'aaqib-azeez', fajrVoice: 'besim-azemi-fajr' };
+  const restore = await fixture({ lang: 'ar', mobile: true, savedPrayerPrefs });
+  const { page } = restore;
+  const recoveryName = 'استرجاع المواقيت والأذكار';
+  const savedPrefs = () => page.evaluate(() => JSON.parse(localStorage.getItem('sham_prayer_preferences_v1')));
+  const home = page.locator('[data-clock-layout="home"]');
+  await home.getByRole('button', { name: recoveryName, exact: true }).waitFor();
+  await home.getByText('مخفية · التنبيهات متوقفة', { exact: true }).waitFor();
+  assert.equal(await page.getByTestId('prayer-times').count(), 0);
+  await screenshot(page, 'restore-mobile');
+  await page.evaluate(() => { location.hash = 'guide'; });
+  const compact = page.locator('[data-clock-layout="compact"]');
+  await compact.waitFor();
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  const compactLauncher = compact.getByTestId('prayer-compact-shortcut');
+  await compact.getByRole('button', { name: recoveryName, exact: true }).waitFor();
+  const clockTools = compact.getByRole('button', { name: 'أدوات الساعة', exact: true });
+  assert.equal(await clockTools.getAttribute('aria-expanded'), 'false');
+  assert.equal(await compact.getByTestId('prayer-chip').count(), 0);
+  assert.deepEqual(await savedPrefs(), savedPrayerPrefs, 'pre-update hidden preferences survived the reload');
+  assert.ok(!restore.requests.some(({ url }) => /PrayerTimesBoard|PrayerToolsRuntime/.test(url)), 'hidden clock did not load timetable or runtime');
+  assert.equal((await probe(page)).created, 0);
+  assert.equal((await probe(page)).locations, 0);
+  assert.deepEqual(audioURLs(restore), []);
+  assert.ok(await compactLauncher.evaluate((el) => el.getBoundingClientRect().height >= 44 && document.documentElement.scrollWidth <= innerWidth + 1));
+  assert.ok(await compact.locator('.visitor-clock-compact-time').evaluate((el) => el.scrollWidth <= el.clientWidth + 1), 'clock digits do not overlap the weather or the restore shortcut');
+  await screenshot(page, 'restore-compact-mobile');
+
+  let dialog = await open(page, 'ar', compactLauncher);
+  await dialog.getByTestId('prayer-place').getByText(/القاهرة/).waitFor();
+  assert.equal(await dialog.locator('.prayer-schedule-pane').getAttribute('data-prayer-place-source'), 'manual');
+  assert.match(await dialog.locator('.prayer-method-note').textContent(), /الهيئة المصرية.*الحنفي/);
+  const fajr = await timeOf(dialog, 'fajr');
+  assert.deepEqual(await savedPrefs(), { ...savedPrayerPrefs, hidden: false });
+  await dialog.getByRole('button', { name: 'الأذان والتنبيه', exact: true }).click();
+  await state(page, 'off');
+  assert.equal(await dialog.getByLabel('صوت أذان باقي الصلوات', { exact: true }).inputValue(), 'aaqib-azeez');
+  assert.equal(await dialog.getByLabel('صوت أذان الفجر', { exact: true }).inputValue(), 'besim-azemi-fajr');
+  assert.equal((await probe(page)).created, 0);
+  assert.equal((await probe(page)).locations, 0);
+  assert.deepEqual(audioURLs(restore), []);
+  await dialog.getByRole('button', { name: 'الأذكار والأدعية', exact: true }).click();
+  await dialog.getByRole('link', { name: 'اقرأ حصن المسلم كاملًا', exact: true }).waitFor();
+  await dialog.getByRole('button', { name: 'إغلاق أوقات الصلاة', exact: true }).click();
+  await page.waitForFunction(() => document.activeElement?.matches('[data-testid=prayer-compact-shortcut]'));
+  await clockTools.click();
+  dialog = await open(page, 'ar');
+  await dialog.getByRole('button', { name: 'الأذان والتنبيه', exact: true }).click();
+  await startNear(page, fajr);
+  await dialog.getByRole('button', { name: 'تنبيه بصوت الأذان', exact: true }).click();
+  await state(page, 'audio');
+  await dialog.getByRole('button', { name: 'اسمع أذان باقي الصلوات', exact: true }).click();
+  await playback(page, 'playing');
+  await dialog.getByRole('button', { name: 'إخفاء الأداة وإيقاف التنبيهات', exact: true }).click();
+  await page.waitForFunction(() => document.activeElement?.matches('[data-testid=prayer-compact-shortcut][data-hidden=true]'));
+  assert.equal((await probe(page)).stopped, 1);
+  assert.deepEqual(await savedPrefs(), savedPrayerPrefs);
+  assert.equal(await compact.getByTestId('prayer-tools-launcher').count(), 0, 'only one restore shortcut in the compact clock');
+  await cross(page, fajr);
+  await noNotice(page);
+  assert.equal(audioURLs(restore).length, 1, 'hide stopped reminders; the only request was the preview');
+
+  await page.evaluate(() => { location.hash = 'home'; });
+  await home.getByRole('button', { name: recoveryName, exact: true }).waitFor();
+  dialog = await open(page, 'ar');
+  await dialog.getByTestId('prayer-fajr').waitFor();
+  await dialog.getByRole('button', { name: 'الأذان والتنبيه', exact: true }).click();
+  await state(page, 'off');
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await home.getByTestId('prayer-times').locator('.prayer-arc').waitFor();
+  assert.deepEqual(await savedPrefs(), { ...savedPrayerPrefs, hidden: false });
+  assert.deepEqual(restore.errors, []);
+  await page.close();
 }
 
 async function checkTwoTabs() {
@@ -310,6 +416,22 @@ async function checkTwoTabs() {
   }
   assert.equal((await probe(two.page)).played + (await probe(tabs[1])).played, 1);
   assert.equal(audioURLs(two).length, 1);
+
+  // Hide/restore are shared browser preferences, but permission to play is not.
+  const recoveryName = 'Restore prayer times & adhkar';
+  await panels[1].getByRole('button', { name: 'Hide tool and turn reminders off', exact: true }).click();
+  for (const tab of tabs) {
+    await tab.getByRole('button', { name: recoveryName, exact: true }).waitFor();
+    await tab.getByTestId('prayer-times').waitFor({ state: 'detached' });
+    await tab.getByTestId('prayer-reminder-state').waitFor({ state: 'detached' });
+    await noNotice(tab);
+  }
+  await tabs[0].bringToFront();
+  const restored = await open(tabs[0]);
+  await restored.getByRole('button', { name: 'Adhan & reminders', exact: true }).click();
+  await state(tabs[0], 'off');
+  await tabs[1].getByTestId('prayer-times').waitFor();
+  assert.equal(audioURLs(two).length, 1, 'restoring in a second tab starts no new sound');
   assert.deepEqual(two.errors, []);
 }
 
@@ -325,8 +447,8 @@ async function checkPages() {
   assert.deepEqual(assets.errors, []);
 }
 
-const checks = { desktop: checkDesktop, mobile: checkMobile, two: checkTwoTabs, pages: checkPages };
-const selected = scenario === 'all' ? ['desktop', 'mobile', 'two'] : [scenario];
+const checks = { desktop: checkDesktop, mobile: checkMobile, restore: checkRestore, two: checkTwoTabs, pages: checkPages };
+const selected = scenario === 'all' ? ['desktop', 'mobile', 'restore', 'two'] : [scenario];
 for (const name of selected) {
   if (!Object.hasOwn(checks, name)) throw new Error(`Unknown PRAYER_SCENARIO ${name}`);
   // A clean instance isolates browser emulation/audio state between scenarios.

@@ -13,6 +13,7 @@ import {
   Globe,
   Database,
   Bookmark,
+  LibraryBig,
   MapPin,
   Home,
   Store,
@@ -32,6 +33,7 @@ import { UserProfile } from '../types/auth';
 import { UserEnvironmentProfile } from '../utils/environmentAdapter';
 import { LText, makeT, pickArEn } from '../لغات/localize';
 import { uiLabel } from '../لغات/uiTextL10n';
+import { ISLAMIC_LIBRARY_TITLE } from '../library/islamic/entry';
 
 
 const S = {
@@ -126,6 +128,8 @@ export const Header: React.FC<HeaderProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const readingHall = activeTab === 'islamic_library';
+
   // Smart navigation groups keep tool and reference destinations in compact sections.
   const navGroups = [
     {
@@ -178,6 +182,7 @@ export const Header: React.FC<HeaderProps> = ({
       iconColor: 'text-amber-600',
       items: [
         { id: 'perfume_news', label: t('nav_news_short', currentLang, t('nav_news', currentLang)), fullLabel: t('nav_news', currentLang), icon: Newspaper, isNew: true },
+        { id: 'islamic_library', label: pickArEn(currentLang, ISLAMIC_LIBRARY_TITLE.ar, ISLAMIC_LIBRARY_TITLE.en), fullLabel: pickArEn(currentLang, ISLAMIC_LIBRARY_TITLE.ar, ISLAMIC_LIBRARY_TITLE.en), icon: LibraryBig, isNew: true },
         { id: 'world_perfumes', label: t('nav_world_perfumes_short', currentLang, t('nav_world_perfumes', currentLang)), fullLabel: t('nav_world_perfumes', currentLang), icon: Compass },
         { id: 'pyramid', label: t('nav_pyramid_short', currentLang, t('nav_pyramid', currentLang)), fullLabel: t('nav_pyramid', currentLang), icon: Compass },
         { id: 'raw_materials', label: t('nav_raw_materials_short', currentLang, t('nav_raw_materials', currentLang)), fullLabel: t('nav_raw_materials', currentLang), icon: Database },
@@ -250,7 +255,7 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* Quick Return to Home Button when inside any sub-section */}
-          {activeTab !== 'home' && (
+          {activeTab !== 'home' && !readingHall && (
             <button
               onClick={() => setActiveTab('home')}
               className="hidden sm:flex shrink-0 items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold shadow-xs transition-all cursor-pointer me-1 animate-in fade-in"
@@ -263,7 +268,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Zone 2: Navigation links - Compact icon-only bar with dropdowns */}
-        <nav aria-label={L('primary_navigation')} className="hidden xl:block relative flex items-center justify-center py-1">
+        <nav aria-label={L('primary_navigation')} className={readingHall ? 'hidden 2xl:block relative py-1' : 'hidden xl:block relative flex items-center justify-center py-1'}>
           {/* Logical edge fades frame the compact navigation in both reading directions. */}
           <div aria-hidden="true" className="absolute start-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white/95 to-transparent pointer-events-none z-10 rtl:bg-gradient-to-l"></div>
           <div aria-hidden="true" className="absolute end-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/95 to-transparent pointer-events-none z-10 rtl:bg-gradient-to-r"></div>
@@ -548,8 +553,8 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {/* 6. Print Spec Sheet */}
-          <button
+          {/* 6. Print Spec Sheet — not used in the reading hall. */}
+          {!readingHall && <button
             onClick={onOpenPrintModal}
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-700 bg-stone-100 hover:bg-stone-200/80 rounded-xl transition-all cursor-pointer border border-stone-200 shrink-0"
             title={L('print_tooltip')}
@@ -557,7 +562,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Printer className="w-3.5 h-3.5 text-amber-700" />
             <span className="hidden min-[2000px]:inline">{L('print_btn')}</span>
-          </button>
+          </button>}
 
           {/* 5. My Profile Button - Personal page shortcut */}
           {currentUser && (
@@ -576,7 +581,7 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Mobile & Tablet Navigation — keep every destination reachable without shrinking labels. */}
-      <nav aria-label={L('primary_navigation')} className="xl:hidden relative" data-nav-group="true">
+      <nav aria-label={L('primary_navigation')} className={readingHall ? '2xl:hidden relative' : 'xl:hidden relative'} data-nav-group="true">
         <div className="relative -mx-3 sm:mx-0 mt-2 border-t border-stone-100">
           <div
             role="region"

@@ -245,12 +245,23 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     tags: ['البوصلة', 'القبلة', 'الكعبة', 'الساعة', 'compass', 'heading', 'qibla'],
   },
   {
+    id: 'prayer_listening', group: 'help', tab: 'home', docId: 'kb-platform-prayer-listening',
+    name: { ar: 'استرجاع المواقيت ومكتبة الأذان', en: 'Restore prayer times & adhan library' },
+    summary: { ar: 'لو أخفيت المواقيت والأذكار، خانة «استرجاع المواقيت والأذكار» بتفضل ظاهرة في الساعة على نفس المتصفح.', en: 'If you hide prayer times and adhkar, the clock keeps a Restore prayer times & adhkar shortcut on the same browser.' },
+    details: {
+      ar: 'اضغط «استرجاع المواقيت والأذكار» جنب البوصلة في الرئيسية أو مباشرة في شريط الساعة بأي قسم. اختيار المدينة والطريقة والأصوات المحفوظة بيفضل، لكن التنبيه مايرجعش إلا لما تفعّله بنفسك. للاستماع افتح «الأذان والتنبيه» ثم «أذان الحرمين وآيا صوفيا والقرّاء». اختار الحرم المكي (علي ملا)، المسجد النبوي (عصام بخاري)، مسجد آيا صوفيا (أذان إعادة الافتتاح أو الفجر)، أو مشاهير القرّاء زي عبد الباسط والحصري والمنشاوي والعفاسي. التسجيلات دي بتفتح عند الناشر للاستماع، مش أصوات تنبيه. للتنبيه اختار تسجيل مرخّص داخل الموقع أو «ملف من جهازي» لو التسجيل عندك.',
+      en: 'Choose Restore prayer times & adhkar beside the compass on Home or directly in the compact clock on other pages. Your saved city, calculation and voice choices stay in place; reminders stay off until you turn them back on. In Adhan & reminders, open Adhan from the holy mosques, Hagia Sophia & reciters. There are separate groups for Makkah (including Ali Mulla), Madinah (including Issam Bukhari), Hagia Sophia (reopening and dawn), and reciters such as Abdul Basit, Al-Husary, Al-Minshawi and Alafasy. These are links for listening on the publisher’s site, not reminder options. Use a licensed built-in recording or File from my device for reminders.',
+    },
+    keywords: ['استرجاع المواقيت', 'استرجاع أوقات الصلاة', 'إظهار أوقات الصلاة', 'اختفت مواقيت الصلاة', 'مواقيت الصلاة مخفية', 'مكتبة الأذان', 'الحرم المكي', 'المسجد النبوي', 'الحرم المدني', 'الأذان المكي', 'الأذان المدني', 'آيا صوفيا', 'مشاهير القراء', 'restore prayer times', 'restore hidden prayer times', 'hidden prayer times', 'adhan library', 'makkah adhan', 'madinah adhan', 'hagia sophia'],
+    tags: ['استرجاع', 'الحرمين', 'آيا صوفيا', 'adhan listening', 'prayer tools'],
+  },
+  {
     id: 'prayer_times', group: 'help', tab: 'home', docId: 'kb-platform-prayer-times',
     name: { ar: 'أوقات الصلاة والأذان والأذكار', en: 'Prayer times, adhan and adhkar' },
     summary: { ar: '«أوقات الصلاة» جنب البوصلة في الرئيسية. فيها جدول تقريبي حسب البلد والمدينة، وتذكير اختياري ومكتبة أذكار.', en: 'Prayer times beside the Home compass offers a city-local estimated schedule, optional reminders and an adhkar library.' },
     details: {
-      ar: 'افتح «أوقات الصلاة» جنب البوصلة، أو من «أدوات الساعة» في الصفحات التانية. في «المكان وطريقة الحساب» اختار البلد والمدينة أو استخدم موقعك بموافقتك، وتقدر تغيّر طريقة الحساب أو حساب العصر. راجع تقويم مسجدك لأن المواعيد تقديرية. في «الأذان والتنبيه» اختار تنبيه صامت أو أذان، وصلوات التذكير وصوت مستقل للفجر. مفيش صوت تلقائي، والتنبيه مقفول لحد ما تفعّله من الصفحة المفتوحة، ومش مضمون وهي مقفولة أو المتصفح موقّفها. فيه تسجيلات مرخّصة وتجربة صوت وملف من جهازك من غير رفع، وروابط استماع خارجية لأصوات مشهورة مش ضمن أصوات التنبيه. «الأذكار والأدعية» فيها بحث ومصادر وعدّاد ورابط حصن المسلم كاملًا. لو مش محتاج الأداة اضغط «إخفاء الأداة وإيقاف التنبيهات».',
-      en: 'Open Prayer times beside the compass, or under Clock tools on other pages. In Location and calculation, choose your country and city or allow device location, and change the method or Asr convention as needed. Check your mosque’s timetable: these are estimates. In Adhan & reminders, choose silent or audible reminders, prayers, and a separate Fajr voice. There is no autoplay or default reminder, and a closed or suspended page cannot reliably remind you. Preview licensed recordings or use a device file without uploading. External links to well-known voices are not built-in sounds. Adhkar & duas offers search, references, a repetition counter and a link to the complete Hisn al-Muslim. Hide tool and turn reminders off removes the card if you do not want it.',
+      ar: 'افتح «أوقات الصلاة» جنب البوصلة، أو اضغط وقت الصلاة القادمة في شريط الساعة بالصفحات التانية. في «المكان وطريقة الحساب» اختار البلد والمدينة أو استخدم موقعك بموافقتك، وتقدر تغيّر طريقة الحساب أو حساب العصر. راجع تقويم مسجدك لأن المواعيد تقديرية. في «الأذان والتنبيه» اختار تنبيه صامت أو أذان، وصلوات التذكير وصوت مستقل للفجر. مفيش صوت تلقائي، والتنبيه مقفول لحد ما تفعّله من الصفحة المفتوحة، ومش مضمون وهي مقفولة أو المتصفح موقّفها. فيه تسجيلات مرخّصة وتجربة صوت وملف من جهازك من غير رفع، وروابط استماع خارجية لأصوات مشهورة مش ضمن أصوات التنبيه. «الأذكار والأدعية» فيها بحث ومصادر وعدّاد ورابط حصن المسلم كاملًا. لو مش محتاج الأداة اضغط «إخفاء الأداة وإيقاف التنبيهات». لو حبيت ترجعها، اضغط «استرجاع المواقيت والأذكار» في بطاقة الساعة.',
+      en: 'Open Prayer times beside the compass, or choose the next-prayer shortcut in the clock on other pages. In Location and calculation, choose your country and city or allow device location, and change the method or Asr convention as needed. Check your mosque’s timetable: these are estimates. In Adhan & reminders, choose silent or audible reminders, prayers, and a separate Fajr voice. There is no autoplay or default reminder, and a closed or suspended page cannot reliably remind you. Preview licensed recordings or use a device file without uploading. External links to well-known voices are not built-in sounds. Adhkar & duas offers search, references, a repetition counter and a link to the complete Hisn al-Muslim. Hide tool and turn reminders off leaves a Restore prayer times & adhkar shortcut in the clock. Restoring the card does not turn reminders on.',
     },
     keywords: ['اوقات الصلاة', 'مواقيت الصلاة', 'وقت الصلاة', 'تذكير الصلاة', 'تنبيه الصلاة', 'تنبيه الأذان', 'صوت الاذان', 'الاذان', 'اذان الفجر', 'الأذكار', 'اذكار الصباح', 'حصن المسلم', 'prayer times', 'prayer reminder', 'salah times', 'adhan', 'fajr', 'adhkar', 'hisn al-muslim'],
     tags: ['أوقات الصلاة', 'الأذان', 'الأذكار', 'prayer times', 'reminders'],
@@ -338,6 +349,17 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
     },
     keywords: ['مكتبة الكتب', 'كتب العطور', 'كتب', 'كتاب', 'كتيّبات', 'كتاب إلكتروني', 'epub', 'book library', 'books about perfume'],
     tags: ['كتب', 'مكتبة', 'epub', 'books', 'reading'],
+  },
+  {
+    id: 'islamic_library', group: 'reference', tab: 'islamic_library', docId: 'kb-platform-islamic-library',
+    name: { ar: 'مكتبة شام الإسلامية', en: 'Sham Islamic Library' },
+    summary: { ar: 'أرفف لكتب إسلامية مختارة، وبحث بالعنوان والمؤلف، ومصحف كامل للقراءة داخل المكتبة.', en: 'Shelves of selected Islamic books, search by title or author, and a full in-site Quran reader.' },
+    details: {
+      ar: 'افتح مكتبة شام الإسلامية من الرئيسية أو من قائمة استكشف. اختَر الرف أو ابحث، واضغط على غلاف الكتاب. «افتح المصحف» يفتح نص تنزيل بالرسم العثماني، وتقدر تختار السورة والآية وتحتفظ بعلامة على جهازك. الكتب المكتوب عليها «عند المصدر» تفتح بطاقتها ثم رابط القراءة في تبويب جديد، بدون استضافة طبعاتها. «فهارس أوسع» تكمّل المجموعة المختارة، ومفيش ادعاء إن الأرفف تضم كل الكتب.',
+      en: 'Open Sham Islamic Library from Home or Explore. Choose a shelf or search, then open a cover. Open the Quran for the Tanzil Uthmani text, surah and verse navigation, and a device-local bookmark. At source books open a card and then the reading link in a new tab; their editions are not hosted here. Wider catalogues supplement the selection without claiming exhaustive coverage.',
+    },
+    keywords: ['مكتبة شام الإسلامية', 'مكتبة إسلامية', 'المكتبة الإسلامية', 'أرفف الكتب الإسلامية', 'الكتب الإسلامية', 'افتح المصحف', 'فتح المصحف', 'قارئ المصحف', 'islamic library', 'islamic book shelves', 'quran reader', 'open the quran'],
+    tags: ['كتب إسلامية', 'مصحف', 'قراءة', 'Islamic library', 'Quran'],
   },
   {
     id: 'news', group: 'reference', tab: 'perfume_news', docId: 'kb-platform-news',

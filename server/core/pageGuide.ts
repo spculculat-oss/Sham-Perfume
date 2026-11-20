@@ -18,7 +18,7 @@ export type PageId =
   | 'home' | 'store' | 'productDetail' | 'concentration' | 'pyramid' | 'alcohol' | 'costing'
   | 'molecule_studio' | 'maceration_simulator' | 'raw_materials' | 'world_perfumes' | 'perfume_news'
   | 'workspace' | 'master_ai' | 'library' | 'community' | 'community/merchant' | 'community/me' | 'guide' | 'perfumes' | 'cosmetics'
-  | 'perfume_designers' | 'cosmetic_designers';
+  | 'perfume_designers' | 'cosmetic_designers' | 'islamic_library';
 
 /** What an answer must contain to count as a sensible answer *on that page*. */
 export type PageExpect =
@@ -57,12 +57,14 @@ export const PAGES: PageGuide[] = [
   {
     id: 'home', label: { ar: 'الرئيسية', en: 'Home' },
     what: { ar: 'الزائر في الرئيسية بيشوف أقسام الموقع والساعة والبوصلة المرقمة باتجاه القبلة وأداة أوقات الصلاة والأذكار الاختيارية والحاسبة الهندسية بتبدأ بالحساب العادي بالترتيب، وفيها حساب علمي ورسم الدوال وشاهين للمذاكرة، والمنبّهات والعداد التنازلي وساعة الإيقاف. تحتها عرض مصوّر للصحف المحلية والعالمية، وبعده عناوين اليوم المتاحة.', en: 'On Home the visitor sees the site sections, clock, numbered compass with Qibla, optional prayer times and adhkar, engineering calculator with default Standard mode, Scientific, graphing and Shaheen Study, alarms, timer and stopwatch. Below is a picture guide to the local and world press, followed by today’s available headlines.' },
-    offer: { ar: 'وجّهه للبوصلة جنب الساعة؛ «حدّد القبلة بموقعي» أو «اختار مدينة»، وبعدها «فعّل البوصلة» على جهاز مدعوم. «أوقات الصلاة» جنب البوصلة، وتذكير الأذان مقفول لحد ما الزائر يختاره. وللأخبار، وجّهه لـ«الصحف المحلية» و«الصحف العالمية». يقدر يختار بلد أو يضغط «كل الصحف» ويفتح موقع الناشر من الغلاف التوضيحي، حتى لو مفيش عناوين مباشرة. تحت العرض، «كل عناوين اليوم» فيها العناوين المتاحة وصور الأخبار المرخّصة. لباقي الأسئلة وجّهه للمتجر أو المعمل أو المكتبة أو متابعة الطلب.', en: 'Point to the compass by the clock: use location or choose a city for Qibla, then Enable compass on supported phones. Prayer times is beside it; adhan reminders are off until chosen. For news, point to Local newspapers or World press. Pick a country or select All outlets, then open the publisher from its illustrated cover even with no live headlines. All today’s headlines below shows available stories and licensed news pictures. For other questions guide them to the store, lab, library, or order tracking.' },
+    offer: { ar: 'وجّهه للبوصلة جنب الساعة؛ «حدّد القبلة بموقعي» أو «اختار مدينة»، وبعدها «فعّل البوصلة» على جهاز مدعوم. «أوقات الصلاة» جنب البوصلة، ولو مخفية اضغط «استرجاع المواقيت والأذكار». روابط أذان الحرمين وآيا صوفيا والقرّاء في «الأذان والتنبيه» للاستماع عند الناشر، وتذكير الأذان مقفول لحد ما الزائر يختاره. وللأخبار، وجّهه لـ«الصحف المحلية» و«الصحف العالمية». يقدر يختار بلد أو يضغط «كل الصحف» ويفتح موقع الناشر من الغلاف التوضيحي، حتى لو مفيش عناوين مباشرة. تحت العرض، «كل عناوين اليوم» فيها العناوين المتاحة وصور الأخبار المرخّصة. لباقي الأسئلة وجّهه للمتجر أو المعمل أو المكتبة أو متابعة الطلب.', en: 'Point to the compass by the clock: use location or choose a city for Qibla, then Enable compass on supported phones. Prayer times is beside it; if hidden, choose Restore prayer times & adhkar. The Adhan & reminders tab has links for listening to the holy mosques, Hagia Sophia and reciters on the publisher’s site. Adhan reminders are off until chosen. For news, point to Local newspapers or World press. Pick a country or select All outlets, then open the publisher from its illustrated cover even with no live headlines. All today’s headlines below shows available stories and licensed news pictures. For other questions guide them to the store, lab, library, or order tracking.' },
     questions: [
       { ar: 'أبدأ منين؟', en: 'Where do I start?', expect: 'any' },
       { ar: 'إزاي أستخدم البوصلة؟', en: 'How do I use the compass?', expect: 'any' },
       { ar: 'إزاي أعرف اتجاه القبلة من البوصلة؟', en: 'How can I find Qibla with the compass?', expect: 'any' },
       { ar: 'إزاي أشغّل تنبيه الأذان؟', en: 'How do I turn on an adhan reminder?', expect: 'any' },
+      { ar: 'اختفت مواقيت الصلاة أرجعها إزاي؟', en: 'How do I restore hidden prayer times?', expect: 'any' },
+      { ar: 'فين أذان مسجد آيا صوفيا؟', en: 'Where can I listen to the Hagia Sophia adhan?', expect: 'any' },
       { ar: 'فين الحاسبة الهندسية اللي في الساعة؟', en: 'Where is the engineering calculator in the clock?', expect: 'any' },
       { ar: 'إزاي أستخدم شاهين للمذاكرة عشان أشوف خطوات الحل؟', en: 'How do I use Shaheen Study to see solution steps?', expect: 'any' },
       { ar: 'إزاي أضبط منبه من الساعة؟', en: 'How do I set a clock alarm?', expect: 'any' },
@@ -200,6 +202,16 @@ export const PAGES: PageGuide[] = [
     ],
   },
   {
+    id: 'islamic_library', label: { ar: 'مكتبة شام الإسلامية', en: 'Sham Islamic Library' },
+    what: { ar: 'الزائر بيتصفح أرفف الكتب الإسلامية وبيبحث بالعنوان أو المؤلف. المصحف كامل داخل الموقع، والكتب التانية بتتفتح عند مصادرها.', en: 'The visitor is browsing Islamic books by shelf, title or author. The complete Quran opens here; other books open at their sources.' },
+    offer: { ar: 'قول له يضغط على الغلاف عشان يفتح المصحف أو يشوف الطبعة ومصدر القراءة، ويوسّع اختياراته من الفهارس. ما تدّعيش حصر الكتب أو استضافة الطبعات الخارجية.', en: 'Tell them to open a cover for the Quran reader or the linked edition, and use the wider catalogues for more. Do not claim exhaustive coverage or local copies of linked editions.' },
+    questions: [
+      { ar: 'إزاي أفتح المصحف في المكتبة؟', en: 'How do I open the Quran reader?', expect: 'tool' },
+      { ar: 'فين أرفف الكتب الإسلامية؟', en: 'Where are the Islamic book shelves?', expect: 'tool' },
+      { ar: 'إيه أسعار المنتجات؟', en: 'What are the prices?', expect: 'prices' },
+    ],
+  },
+  {
     id: 'perfume_news', label: { ar: 'أخبار العطور', en: 'Perfume news' },
     what: { ar: 'الزائر في تبويب أخبار العطور: بيقرأ آخر الأخبار والصيحات بمصادرها.', en: 'The visitor is on Perfume news: the latest news and trends with their sources.' },
     offer: { ar: 'حوّل أسئلة الأخبار للخبير شاهين وزر التبويب، وما تخترعش خبر.', en: 'Send news questions to Shaheen and the tab; never invent a news item.' },
@@ -284,7 +296,7 @@ export function pageGuide(id?: string): PageGuide | undefined {
 const PAGE_FEATURE: Partial<Record<PageId, string>> = {
   home: 'guide', store: 'store', productDetail: 'store', concentration: 'concentration', pyramid: 'pyramid',
   alcohol: 'alcohol', costing: 'costing', molecule_studio: 'molecule_studio', maceration_simulator: 'maceration',
-  raw_materials: 'raw_materials', world_perfumes: 'world_perfumes', perfume_news: 'news', master_ai: 'shaheen',
+  raw_materials: 'raw_materials', world_perfumes: 'world_perfumes', islamic_library: 'islamic_library', perfume_news: 'news', master_ai: 'shaheen',
   library: 'library', community: 'community', 'community/merchant': 'merchant', 'community/me': 'account', guide: 'guide',
   perfumes: 'guide', cosmetics: 'guide', perfume_designers: 'designers', cosmetic_designers: 'designers',
 };

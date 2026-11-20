@@ -96,17 +96,9 @@
 }
 .prayer-board[data-polar='true'] .prayer-foot { opacity: 0.9; color: #ffd7a2; }
 
-/* A one-line chip in the shared compact bar: just the next prayer and its time. */
-.prayer-chip {
-  display: inline-flex; align-items: center; gap: 0.32rem;
-  min-height: 40px; padding: 0.2rem 0.5rem;
-  border: 1px solid #ffdfb538; border-radius: 0.55rem;
-  background: #fff0d214; color: #fff0d8;
-  font-size: 0.72rem; font-weight: 700; white-space: nowrap;
-}
-.prayer-chip svg { color: #f5cc97; flex: none; }
+/* A one-line next-prayer label inside the compact launcher. */
+.prayer-chip { display: inline-flex; align-items: center; gap: 0.32rem; white-space: nowrap; }
 .prayer-chip time { font: 750 0.7rem ui-monospace, monospace; color: #ffe3b6; }
-.prayer-chip[data-state='unknown'] { display: none; }
 
 @media (min-width: 560px) { .prayer-strip { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
 @media (min-width: 1024px) {
@@ -115,7 +107,6 @@
 @media (max-width: 480px) {
   .prayer-board { padding-inline: 0.55rem; }
   .prayer-strip { gap: 0.22rem; }
-  .prayer-chip { min-height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .prayer-badge { animation: none; }
