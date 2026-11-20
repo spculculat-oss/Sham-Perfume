@@ -115,7 +115,7 @@ test('the listening and recovery guide reaches a v25 store without overwriting t
   await store.put('settings', 'core', { ...defaultSettings(), id: 'core', knowledgeSeedVersion: 25 });
   const edited = { ...defaultKnowledge().find((doc) => doc.id === 'kb-platform-prayer-times')!, content: 'تعديل التاجر على دليل المواقيت' };
   await store.put('knowledge', edited.id, edited);
-  assert.deepEqual(knowledgeSeedAdditions(25).map((doc) => doc.id), ['kb-platform-prayer-listening', 'kb-platform-islamic-library']);
+  assert.deepEqual(knowledgeSeedAdditions(25).map((doc) => doc.id), ['kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
 
   const repo = new Repository(store, {});
   await repo.ready();
@@ -125,7 +125,7 @@ test('the listening and recovery guide reaches a v25 store without overwriting t
 });
 
 test('a v26 store receives the Islamic-library guide without replacing its books or listening guides', async () => {
-  assert.deepEqual(knowledgeSeedAdditions(26).map((doc) => doc.id), ['kb-platform-islamic-library']);
+  assert.deepEqual(knowledgeSeedAdditions(26).map((doc) => doc.id), ['kb-platform-islamic-library', 'kb-platform-home-news-desk']);
   const store = new MemoryStore();
   await store.put('settings', 'core', { ...defaultSettings(), id: 'core', knowledgeSeedVersion: 26 });
   const existing = { ...defaultKnowledge().find((doc) => doc.id === 'kb-platform-books')!, content: 'مكتبة العطور الخاصة بالتاجر' };
@@ -138,32 +138,45 @@ test('a v26 store receives the Islamic-library guide without replacing its books
   assert.equal(docs.some((doc) => doc.id === 'kb-platform-prayer-listening'), false, 'deleted guides are not restored');
 });
 
+test('a v27 store receives the new Home briefing guide without replacing the merchant’s press guide', async () => {
+  assert.deepEqual(knowledgeSeedAdditions(27).map((doc) => doc.id), ['kb-platform-home-news-desk']);
+  const store = new MemoryStore();
+  await store.put('settings', 'core', { ...defaultSettings(), id: 'core', knowledgeSeedVersion: 27 });
+  const old = { id: 'kb-platform-press-showcase', title: 'دليل التاجر للصحف', content: 'اختيارات التاجر', tags: [], updatedAt: new Date().toISOString() };
+  await store.put('knowledge', old.id, old);
+  const repo = new Repository(store, {});
+  await repo.ready();
+  const docs = await repo.knowledge();
+  assert.deepEqual(docs.find((doc) => doc.id === old.id), old);
+  assert.match(docs.find((doc) => doc.id === 'kb-platform-home-news-desk')!.content, /فوق الساعة.*افتح النشرة.*محلي.*عالمي.*دليل الصحف/);
+});
+
 test('knowledgeSeedAdditions only lists what a given version introduced', () => {
   const fresh = knowledgeSeedAdditions(1);
   assert.ok(fresh.length >= 12);
   assert.ok(fresh.every((d) => d.id.startsWith('kb-platform-') || d.id.startsWith('kb-store-')), 'only the guides added after v1');
   assert.ok(fresh.some((d) => d.id.startsWith('kb-platform-')), 'the platform guide is in the upgrade');
   assert.deepEqual(knowledgeSeedAdditions(KNOWLEDGE_SEED_VERSION), []);
-  assert.deepEqual(knowledgeSeedAdditions(14).map((d) => d.id), ['kb-platform-clock-tools', 'kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library']);
-  assert.deepEqual(knowledgeSeedAdditions(15).map((d) => d.id), ['kb-platform-clock-tools', 'kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library']);
-  assert.deepEqual(knowledgeSeedAdditions(16).map((d) => d.id), ['kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library']);
-  assert.deepEqual(knowledgeSeedAdditions(17).map((d) => d.id), ['kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library']);
-  assert.deepEqual(knowledgeSeedAdditions(18).map((d) => d.id), ['kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library']);
-  assert.deepEqual(knowledgeSeedAdditions(19).map((d) => d.id), ['kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library']);
-  assert.deepEqual(knowledgeSeedAdditions(20).map((d) => d.id), ['kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library']);
-  assert.deepEqual(knowledgeSeedAdditions(21).map((d) => d.id), ['kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library']);
-  assert.deepEqual(knowledgeSeedAdditions(22).map((d) => d.id), ['kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library']);
-  assert.deepEqual(knowledgeSeedAdditions(23).map((d) => d.id), ['kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library']);
-  assert.deepEqual(knowledgeSeedAdditions(24).map((d) => d.id), ['kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library']);
+  assert.deepEqual(knowledgeSeedAdditions(14).map((d) => d.id), ['kb-platform-clock-tools', 'kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
+  assert.deepEqual(knowledgeSeedAdditions(15).map((d) => d.id), ['kb-platform-clock-tools', 'kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
+  assert.deepEqual(knowledgeSeedAdditions(16).map((d) => d.id), ['kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
+  assert.deepEqual(knowledgeSeedAdditions(17).map((d) => d.id), ['kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
+  assert.deepEqual(knowledgeSeedAdditions(18).map((d) => d.id), ['kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
+  assert.deepEqual(knowledgeSeedAdditions(19).map((d) => d.id), ['kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
+  assert.deepEqual(knowledgeSeedAdditions(20).map((d) => d.id), ['kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
+  assert.deepEqual(knowledgeSeedAdditions(21).map((d) => d.id), ['kb-platform-calculator-standard', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
+  assert.deepEqual(knowledgeSeedAdditions(22).map((d) => d.id), ['kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
+  assert.deepEqual(knowledgeSeedAdditions(23).map((d) => d.id), ['kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
+  assert.deepEqual(knowledgeSeedAdditions(24).map((d) => d.id), ['kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
   assert.match(fresh.find((d) => d.id === 'kb-platform-prayer-times')!.content, /مفيش صوت تلقائي.*حصن المسلم كاملًا/);
   assert.match(fresh.find((d) => d.id === 'kb-platform-qibla-compass')!.content, /حدّد القبلة بموقعي.*اختار مدينة.*الجيروسكوب لوحده مايكفيش/);
-  assert.match(fresh.find((d) => d.id === 'kb-platform-press-showcase')!.content, /كل الصحف.*الأغلفة توضيحية/);
+  assert.match(fresh.find((d) => d.id === 'kb-platform-home-news-desk')!.content, /افتح النشرة.*دليل الصحف.*كل الصحف.*الأغلفة توضيحية/);
   assert.match(fresh.find((d) => d.id === 'kb-platform-calculator-standard')!.content, /٦٢ كناتج مرحلي.*٠٫٦٢.*٧٦٫٨٥/);
   assert.match(fresh.find((d) => d.id === 'kb-platform-calculator-study')!.content, /مش من إن تفسير السؤال صحيح/);
   // Existing v2 stores get the v3 store guide; v3 stores get the v4 suggestions and v5 voice guides.
   assert.ok(knowledgeSeedAdditions(2).some((d) => d.id.startsWith('kb-store-')), 'v3 adds the store guide');
-  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions', 'kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice', 'kb-platform-clock-tools', 'kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library']);
-  assert.deepEqual(knowledgeSeedAdditions(4).map((d) => d.id), ['kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice', 'kb-platform-clock-tools', 'kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library'], 'later guides include the public voice-chat guide');
+  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions', 'kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice', 'kb-platform-clock-tools', 'kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk']);
+  assert.deepEqual(knowledgeSeedAdditions(4).map((d) => d.id), ['kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice', 'kb-platform-clock-tools', 'kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-qibla-compass', 'kb-platform-prayer-times', 'kb-platform-prayer-listening', 'kb-platform-islamic-library', 'kb-platform-home-news-desk'], 'later guides include the public voice-chat guide');
 });
 
 test('the router recognises platform questions and never reads an English word as an order reference', () => {
@@ -191,6 +204,7 @@ test('the router recognises platform questions and never reads an English word a
     ['إزاي أضبط منبه من الساعة؟', 'clock_tools'],
     ['Can I set a countdown timer?', 'clock_tools'],
     ['فين موجز الأخبار اللي جنب الساعة؟', 'home_headlines'],
+    ['إزاي افتح نشرة شام؟', 'home_headlines'],
     ['Where is the home news briefing?', 'home_headlines'],
     ['إزاي أوقّف تدوير الأخبار؟', 'home_headlines'],
     ['فين منصات أخبار العالم؟', 'home_headlines'],

@@ -1,255 +1,312 @@
-import { memo, useEffect, useId, useMemo, useState } from 'react';
-import { ArrowUpRight, CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Globe2, List, MapPin, Newspaper, Pause, Play, RefreshCw } from 'lucide-react';
+import React, { memo, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { ArrowUpRight, CalendarDays, ChevronDown, Globe2, MapPin, Newspaper, Pause, Play, RefreshCw, X } from 'lucide-react';
 import type { SupportedLanguage } from '../../types/i18n';
-import { SUPPORTED_LANGUAGES } from '../../types/i18n';
-import { makeT, loc, type LText } from '../../لغات/localize';
+import { isRTL } from '../../لغات/localizedContent';
+import { fmt, loc, makeT } from '../../لغات/localize';
 import { formatLocalizedNumber } from '../../لغات/numerals';
 import { HEADLINE_PUBLISHERS, localHeadlineEdition, WORLD_HEADLINE_EDITION, type HeadlineEdition, type HeadlinePublisher } from '../../data/homeHeadlineEditions';
-import { localPressDirectory } from '../../data/localPressDirectories';
-import { HEADLINE_PHOTO_LICENSES } from '../../utils/headlinePhoto';
+import { HEADLINE_PHOTO_LICENSES, type HeadlinePhoto } from '../../utils/headlinePhoto';
 import { HEADLINE_ROTATE_MS, emptyHeadlines, headlineRotation, type HeadlineSection, type HomeHeadline } from '../../utils/homeHeadlines';
 import { isStaticHosting } from '../../utils/api';
 import { clockLocale } from './clockText';
-import { PressIllustration, PressShowcase } from './PressShowcase';
+import { HEADLINE_TEXT } from './homeHeadlineText';
+import { PressShowcase } from './PressShowcase';
 import { useHomeHeadlines } from './useHomeHeadlines';
 import './headlines.css';
 
-const NEWS_TEXT = {
-  title: { ar: 'موجز الأخبار', en: 'News briefing' },
-  today: { ar: 'عرض الصحف المحلية والعالمية بالصور، وعناوين النهارده', en: 'Local and world newspapers in pictures, plus today’s headlines' },
-  refresh: { ar: 'حدّث الأخبار', en: 'Refresh headlines' },
-  checking: { ar: 'بنحدّث الأخبار…', en: 'Checking for headlines…' },
-  local: { ar: 'أخبار محلية', en: 'Local news' },
-  world: { ar: 'أخبار العالم', en: 'World news' },
-  checked: { ar: 'آخر تحديث', en: 'Last checked' },
-  updated: { ar: 'تحديث', en: 'Updated' },
-  official: { ar: 'من مصادر رسمية', en: 'Official updates' },
-  partial: { ar: 'بعض المصادر ما اتحدّثتش.', en: 'Some sources couldn’t be refreshed.' },
-  stale: { ar: 'عناوين متاحة من النهارده؛ التحديث تعذّر.', en: 'Last available headlines from today; refresh failed.' },
-  unavailable: { ar: 'الأخبار مش متاحة دلوقتي.', en: 'Headlines are unavailable right now.' },
-  empty: { ar: 'لسه مفيش عناوين بتاريخ النهارده من المصادر دي.', en: 'These sources have no headlines dated today yet.' },
-  unknown: { ar: 'ماقدرناش نحدد بلد الدخول. تقدر تختار بلدك في عرض الصحف فوق.', en: 'We couldn’t detect your entry country. You can choose a country in the picture guide above.' },
-  unsupported: { ar: 'لسه مفيش عناوين مباشرة مفعّلة لبلد الدخول دي.', en: 'No live headlines are configured for this entry country yet.' },
-  pressOnly: { ar: 'مفيش عناوين مباشرة مفعّلة للبلد دي دلوقتي. الصحف موجودة في العرض فوق.', en: 'Live headlines aren’t configured for this country yet. You can browse its newspapers above.' },
-  sources: { ar: 'المصادر', en: 'Sources' },
-  sourceFilter: { ar: 'تصفية حسب المصدر', en: 'Filter by source' },
-  allSources: { ar: 'كل المصادر', en: 'All sources' },
-  sourceEmpty: { ar: 'مفيش عناوين متاحة من المصدر ده دلوقتي.', en: 'No headlines available from this source right now.' },
-  configuredSources: { ar: 'المصادر المفعّلة: {n}', en: 'Configured sources: {n}' },
-  filteredCount: { ar: 'العناوين المعروضة: {n} من {total}', en: 'Showing {n} of {total} headlines' },
-  illustration: { ar: 'صورة توضيحية', en: 'Illustration' },
-  photoCredit: { ar: 'الصورة', en: 'Photo' },
-  headlineCredit: { ar: 'ترخيص العنوان', en: 'Headline license' },
-  count: { ar: 'عدد العناوين: {n}', en: 'Headlines: {n}' },
-  previous: { ar: 'الخبر اللي قبله', en: 'Previous story' },
-  next: { ar: 'الخبر اللي بعده', en: 'Next story' },
-  rotationPause: { ar: 'إيقاف التدوير', en: 'Pause rotation' },
-  rotationPlay: { ar: 'تشغيل التدوير', en: 'Resume rotation' },
-  pause: { ar: 'إيقاف', en: 'Pause' },
-  play: { ar: 'تشغيل', en: 'Play' },
-  show: { ar: 'كل عناوين اليوم', en: 'All today’s headlines' },
-  hide: { ar: 'طيّ القائمة', en: 'Collapse list' },
-} satisfies Record<string, LText>;
-
+type EditionKey = 'local' | 'world';
+type View = EditionKey | 'press';
+type StoryFormat = { lang: SupportedLanguage; dates: ReturnType<typeof storyDates> };
+type StoryProps = StoryFormat & { article: HomeHeadline };
+const VIEWS = [{ value: 'local', Icon: MapPin }, { value: 'world', Icon: Globe2 }, { value: 'press', Icon: Newspaper }] as const;
+const NO_HEADLINES = emptyHeadlines();
+const DESK_SIZE = 4;
 const motionQuery = '(prefers-reduced-motion: reduce)';
-const publisherArt = Object.keys(HEADLINE_PUBLISHERS);
-function StoryDetails({ article, timeZone, lang }: { article: HomeHeadline; timeZone: string; lang: SupportedLanguage }) {
-  const label = makeT(lang, NEWS_TEXT);
-  const source = HEADLINE_PUBLISHERS[article.publisher];
+const narrowDesk = '(max-width: 720px)';
+const linkProps = { target: '_blank', rel: 'noopener noreferrer' } as const;
+
+function storyDates(lang: SupportedLanguage, timeZone: string) {
   const { locale, numberingSystem } = clockLocale(lang);
-  const date = new Intl.DateTimeFormat(locale, {
-    timeZone, numberingSystem, ...(article.dateKind === 'date' ? { month: 'short', day: 'numeric' } : { hour: '2-digit', minute: '2-digit' }),
-  }).format(new Date(article.datedAt));
-  return <>
-    <span className="clock-headline-title" lang={source.lang} dir="auto">{article.title}</span>
-    <span className="clock-headline-byline">
-      <bdi>{loc(lang, source.name)}</bdi><span aria-hidden="true">·</span>
-      {article.author && <><bdi>{article.author}</bdi><span aria-hidden="true">·</span></>}
-      <time dateTime={article.datedAt}>{article.dateKind === 'updated' && `${label('updated')} `}{date}</time>
-    </span>
-  </>;
+  return {
+    time: new Intl.DateTimeFormat(locale, { timeZone, numberingSystem, hour: '2-digit', minute: '2-digit' }),
+    date: new Intl.DateTimeFormat(locale, { timeZone, numberingSystem, month: 'short', day: 'numeric' }),
+  };
 }
 
-function StoryLink({ article, timeZone, lang, order }: { article: HomeHeadline; timeZone: string; lang: SupportedLanguage; order?: string }) {
-  const label = makeT(lang, NEWS_TEXT);
-  const [failed, setFailed] = useState<string>();
-  const photo = article.photo?.url !== failed ? article.photo : undefined;
+function StoryMeta({ article, lang, dates }: StoryProps) {
+  const date = (article.dateKind === 'date' ? dates.date : dates.time).format(new Date(article.datedAt));
+  return <div className="hn-byline">
+    <bdi className="hn-source">{loc(lang, HEADLINE_PUBLISHERS[article.publisher].name)}</bdi><span aria-hidden="true">·</span>
+    <time dateTime={article.datedAt}>{article.dateKind === 'updated' && `${makeT(lang, HEADLINE_TEXT)('updated')} `}{date}</time>
+    {article.author && <><span aria-hidden="true">·</span><bdi>{article.author}</bdi></>}
+  </div>;
+}
+
+function HeadlineLicense({ article, lang }: Omit<StoryProps, 'dates'>) {
   const source = HEADLINE_PUBLISHERS[article.publisher];
-  const license = 'license' in source ? source.license : undefined;
-  return <div className="clock-headline-story">
-    <a href={article.url} target="_blank" rel="noopener noreferrer" className="clock-headline-link" title={article.title}>
-      <span className="clock-headline-media">
-        {photo ? <img className="clock-headline-photo" src={photo.url} alt={photo.alt} loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setFailed(photo.url)} />
-          : <><PressIllustration className="clock-headline-cover" variant={publisherArt.indexOf(article.publisher)} />
-            <span className="clock-headline-illustration">{label('illustration')}</span></>}
-      </span>
-      <span className="clock-headline-row">
-        {order !== undefined && <span className="clock-headline-order" aria-hidden="true">{order}</span>}
-        <span className={order === undefined ? 'clock-headline-slide' : 'clock-headline-list-copy'}><StoryDetails article={article} lang={lang} timeZone={timeZone} /></span>
-        <ArrowUpRight className="clock-headline-out" size={order === undefined ? 17 : 15} aria-hidden="true" />
-      </span>
-    </a>
-    {(photo || license) && <div className="clock-headline-attributions">
-      {photo && <span className="clock-headline-photo-credit">
-        <span>{label('photoCredit')}:</span>
-        <a href={photo.source} target="_blank" rel="noopener noreferrer"><bdi>{photo.credit}</bdi></a>
-        <span aria-hidden="true">·</span>
-        <a href={`https://creativecommons.org/licenses/${photo.license}/`} target="_blank" rel="noopener noreferrer" lang="en" dir="ltr">{HEADLINE_PHOTO_LICENSES[photo.license]}</a>
-      </span>}
-      {license && <a href={license.url} target="_blank" rel="noopener noreferrer" aria-label={`${label('headlineCredit')}: ${license.name}`} lang="en" dir="ltr">{license.name}</a>}
-    </div>}
-  </div>;
+  if (!('license' in source)) return null;
+  return <a className="hn-license" href={source.license.url} {...linkProps} lang={source.lang}
+    aria-label={`${makeT(lang, HEADLINE_TEXT)('headlineCredit')}: ${source.license.name}`}><bdi>{source.license.name}</bdi></a>;
 }
 
-function PublisherCredits({ edition, lang }: { edition: HeadlineEdition; lang: SupportedLanguage }) {
-  const label = makeT(lang, NEWS_TEXT);
-  return <div className="clock-headline-sources"><span>{label('sources')}:</span>
-    {[...new Set(edition.feeds.map((feed) => feed.publisher))].map((name) => {
+function StoryTitle({ article }: Pick<StoryProps, 'article'>) {
+  return <bdi lang={HEADLINE_PUBLISHERS[article.publisher].lang}>{article.title}</bdi>;
+}
+
+// Photos reach the desk only through readHeadlines' publisher and license checks.
+function StoryPhoto({ photo, lang, lazy = false }: { photo: HeadlinePhoto; lang: SupportedLanguage; lazy?: boolean }) {
+  const [failed, setFailed] = useState<string>();
+  if (failed === photo.url) return null;
+  return <figure className="hn-photo">
+    <img src={photo.url} alt={photo.alt} width={640} height={360} loading={lazy ? 'lazy' : 'eager'} decoding="async"
+      referrerPolicy="no-referrer" onError={() => setFailed(photo.url)} />
+    <figcaption>
+      {makeT(lang, HEADLINE_TEXT)('photoCredit')}: <a href={photo.source} {...linkProps}><bdi>{photo.credit}</bdi></a>
+      <span aria-hidden="true"> · </span><a href={`https://creativecommons.org/licenses/${photo.license}/`} {...linkProps} dir="ltr" lang="en">{HEADLINE_PHOTO_LICENSES[photo.license]}</a>
+    </figcaption>
+  </figure>;
+}
+
+function LeadStory({ article, lang, dates }: StoryProps) {
+  const T = makeT(lang, HEADLINE_TEXT);
+  return <article className="hn-lead" data-testid="home-news-lead">
+    {article.photo && <StoryPhoto photo={article.photo} lang={lang} />}
+    <div className="hn-lead-copy">
+      <p className="hn-eyebrow"><span className="hn-dot" />{T('lead')}</p>
+      <h4 className="hn-lead-title"><a href={article.url} {...linkProps}><StoryTitle article={article} /></a></h4>
+      <StoryMeta {...{ article, lang, dates }} />
+      <HeadlineLicense {...{ article, lang }} />
+      <a className="hn-button hn-read" href={article.url} {...linkProps}>{T('read')}<ArrowUpRight size={16} aria-hidden="true" /></a>
+    </div>
+  </article>;
+}
+
+function StoryRow({ article, lang, dates, order }: StoryProps & { order: string }) {
+  return <li>
+    <bdi className="hn-order" aria-hidden="true">{order}</bdi>
+    <div className="hn-row-copy">
+      <a className="hn-row-link" href={article.url} {...linkProps}>
+        <span><StoryTitle article={article} /></span><ArrowUpRight size={15} aria-hidden="true" />
+      </a>
+      <StoryMeta {...{ article, lang, dates }} />
+      <HeadlineLicense {...{ article, lang }} />
+      {article.photo && <StoryPhoto photo={article.photo} lang={lang} lazy />}
+    </div>
+  </li>;
+}
+
+function Sources({ lang, publishers }: { lang: SupportedLanguage; publishers: HeadlinePublisher[] }) {
+  return <details className="hn-sources">
+    <summary>{makeT(lang, HEADLINE_TEXT)('sources')}</summary>
+    <ul>{publishers.map((name) => {
       const source = HEADLINE_PUBLISHERS[name];
-      return <span className="clock-headline-credit" key={name}>
-        <a href={source.page} target="_blank" rel="noopener noreferrer"><bdi>{loc(lang, source.name)}</bdi></a>
-        {'license' in source && <a href={source.license.url} target="_blank" rel="noopener noreferrer" lang={source.lang} dir="auto">{source.license.name}</a>}
-      </span>;
-    })}
-  </div>;
+      return <li key={name}><a href={source.page} {...linkProps}>{loc(lang, source.name)}</a>
+        {'license' in source && <a href={source.license.url} {...linkProps} lang={source.lang} dir="auto">{source.license.name}</a>}</li>;
+    })}</ul>
+  </details>;
 }
 
-function HeadlineRail({ region, edition, country, countryName, data, loading, visible, lang, timeZone, rtl }: {
-  region: 'local' | 'world'; edition?: HeadlineEdition; country?: string | null; countryName?: string; data: HeadlineSection;
-  loading: boolean; visible: boolean; lang: SupportedLanguage; timeZone: string; rtl: boolean;
-}) {
-  const label = makeT(lang, NEWS_TEXT);
+function Edition({ region, section, edition, countryName, lang, dates, loading, openPress }: {
+  region: EditionKey; section: HeadlineSection; edition?: HeadlineEdition; countryName?: string;
+  loading: boolean; openPress: () => void;
+} & StoryFormat) {
+  const T = makeT(lang, HEADLINE_TEXT);
+  const titleId = useId();
   const listId = useId();
-  const [selected, setSelected] = useState<string>();
-  const [expanded, setExpanded] = useState(false);
-  const [playing, setPlaying] = useState(() => typeof matchMedia !== 'function' || !matchMedia(motionQuery).matches);
-  const [hover, setHover] = useState(false);
   const [publisher, setPublisher] = useState<HeadlinePublisher>();
+  const [showAll, setShowAll] = useState(false);
+  const number = (n: number) => formatLocalizedNumber(lang, n, { grouping: false });
+  const publishers = useMemo(() => [...new Set(edition?.feeds.map(({ publisher }) => publisher))], [edition]);
   const counts = useMemo(() => {
     const totals = new Map<HeadlinePublisher, number>();
-    for (const item of data.items) totals.set(item.publisher, (totals.get(item.publisher) ?? 0) + 1);
+    for (const item of section.items) totals.set(item.publisher, (totals.get(item.publisher) ?? 0) + 1);
     return totals;
-  }, [data.items]);
-  const publishers = useMemo(() => [...new Set(edition?.feeds.map(({ publisher }) => publisher))], [edition]);
-  const filtered = useMemo(() => publisher ? data.items.filter((item) => item.publisher === publisher) : data.items, [data.items, publisher]);
-  const sequence = useMemo(() => {
-    if (publisher) return filtered;
-    // If there is a licensed picture today, show it first, then take a turn from other sources.
-    const firstPhoto = filtered.findIndex((item) => item.photo);
-    return headlineRotation(firstPhoto > 0 ? [filtered[firstPhoto], ...filtered.slice(0, firstPhoto), ...filtered.slice(firstPhoto + 1)] : filtered);
-  }, [filtered, publisher]);
-  const length = sequence.length;
-  const index = Math.max(0, sequence.findIndex((article) => article.url === selected));
-  const story = sequence[index];
-  const nav = (by: number) => setSelected(sequence[(index + by + length) % length]?.url);
-  const rotating = length > 1 && playing && !hover && !expanded && visible;
-  useEffect(() => {
-    if (!rotating) return;
-    const timer = window.setTimeout(() => setSelected(sequence[(index + 1) % length]?.url), HEADLINE_ROTATE_MS);
-    return () => window.clearTimeout(timer);
-  }, [rotating, index, length, sequence]);
-  useEffect(() => {
-    if (typeof matchMedia !== 'function') return;
-    const preference = matchMedia(motionQuery);
-    const changed = () => { if (preference.matches) setPlaying(false); };
-    preference.addEventListener('change', changed);
-    return () => preference.removeEventListener('change', changed);
-  }, []);
-  const title = countryName ? `${label(region)} · ${countryName}` : label(region);
-  const press = region === 'local' ? localPressDirectory(country ?? null) : undefined;
-  const icon = region === 'local' ? <MapPin size={17} /> : <Globe2 size={17} />;
-  const Prev = rtl ? ChevronRight : ChevronLeft;
-  const Next = rtl ? ChevronLeft : ChevronRight;
-  const number = (n: number) => formatLocalizedNumber(lang, n, { grouping: false });
-  const emptyMessage = loading && !data.checkedAt && data.status !== 'unsupported' ? 'checking' : publisher && data.items.length ? 'sourceEmpty' : data.status === 'empty' ? 'empty'
-    : data.status === 'unsupported' ? press ? 'pressOnly' : country ? 'unsupported' : 'unknown' : 'unavailable';
+  }, [section.items]);
+  const items = publisher ? section.items.filter((item) => item.publisher === publisher) : section.items;
+  // Give today's first credited picture front-page space. The remaining list retains publication order.
+  const lead = items.find((item) => item.photo) ?? items[0];
+  const latest = lead ? items.filter((item) => item.url !== lead.url) : [];
+  const title = region === 'local' ? `${T('localTitle')}${countryName ? ` · ${countryName}` : ''}` : T('worldTitle');
+  const empty = isStaticHosting ? 'static'
+    : loading && !section.checkedAt && section.status !== 'unsupported' ? 'checking'
+      : publisher && section.items.length ? 'sourceEmpty' : section.status === 'empty' ? 'empty'
+        : section.status === 'unsupported' ? (countryName ? 'unsupported' : 'unknown') : 'unavailable';
+  const count = fmt(T(publisher ? 'filteredCount' : 'count'), { n: number(items.length), total: number(section.items.length) });
+  const rows = (articles: HomeHeadline[], offset = 0) => articles.map((article, index) => (
+    <StoryRow key={article.url} {...{ article, lang, dates }} order={number(offset + index + 1)} />
+  ));
 
-  return <section className="clock-headline" data-news-region={region} aria-label={title}
-    onPointerEnter={(event) => { if (event.pointerType === 'mouse') setHover(true); }}
-    onPointerLeave={() => setHover(false)}
-    onFocusCapture={(event) => { if (event.target.matches(':focus-visible')) setPlaying(false); }}>
-    <header className="clock-headline-header">
-      <div className="clock-headline-edition">
-        <span className="clock-headline-icon" aria-hidden="true">{icon}</span>
-        <div><h3>{title}</h3>{edition?.official && <span className="clock-headline-kind">{label('official')}</span>}
-          {publishers.length > 1 && !edition?.official && <span className="clock-headline-kind">{label('configuredSources').replace('{n}', number(publishers.length))}</span>}</div>
-      </div>
-      {edition && <span className="clock-headline-count">{publisher && data.items.length
-        ? label('filteredCount').replace('{n}', number(length)).replace('{total}', number(data.items.length)) : label('count').replace('{n}', number(length))}</span>}
-    </header>
-
-    {publishers.length > 1 && data.items.length > 0 && <label className="clock-headline-filter">
-      <span>{label('sourceFilter')}</span>
-      <select value={publisher || ''} onChange={(event) => {
-        setPublisher(publishers.find((source) => source === event.currentTarget.value));
-        setSelected(undefined);
-      }}>
-        <option value="">{label('allSources')}</option>
-        {publishers.map((name) => <option key={name} value={name}>{loc(lang, HEADLINE_PUBLISHERS[name].name)} · {number(counts.get(name) ?? 0)}</option>)}
-      </select>
-    </label>}
-
-    {story ? <>
-      <div className="clock-headline-tools">
-        {length > 1 && !expanded && <div className="clock-headline-nav" role="group" aria-label={title}>
-          <button type="button" className="clock-headline-play" aria-label={label(playing ? 'rotationPause' : 'rotationPlay')}
-            onClick={() => setPlaying(!playing)}>
-            {playing ? <Pause size={13} aria-hidden="true" /> : <Play size={13} aria-hidden="true" />}{label(playing ? 'pause' : 'play')}
-          </button>
-          <button type="button" aria-label={label('previous')} title={label('previous')} onClick={() => nav(-1)}><Prev size={17} aria-hidden="true" /></button>
-          <span className="clock-headline-position" dir="ltr"><bdi>{number(index + 1)}</bdi><span> / </span><bdi>{number(length)}</bdi></span>
-          <button type="button" aria-label={label('next')} title={label('next')} onClick={() => nav(1)}><Next size={17} aria-hidden="true" /></button>
+  return <section className="hn-edition" data-news-region={region} aria-labelledby={titleId}>
+    <header className="hn-section-header">
+      <div><h3 id={titleId}>{title}</h3>
+        {(edition?.official || (section.items.length > 0 && !latest.length)) && <div className="hn-edition-meta">
+          {edition?.official && <span>{T('official')}</span>}
+          {section.items.length > 0 && !latest.length && <span role="status">{count}</span>}
         </div>}
-        <button type="button" className="clock-headline-expand" aria-expanded={expanded} aria-controls={listId}
-          onClick={() => setExpanded(!expanded)}>
-          <List size={15} aria-hidden="true" />{label(expanded ? 'hide' : 'show')}<ChevronDown size={14} aria-hidden="true" />
-        </button>
       </div>
-      {!expanded && <div aria-live={playing ? 'off' : 'polite'} aria-atomic="true" className="clock-headline-stage">
-        <StoryLink key={story.url} article={story} lang={lang} timeZone={timeZone} />
+      {publishers.length > 1 && section.items.length > 0 && <label className="hn-filter">
+        <span>{T('sourceFilter')}</span>
+        <select value={publisher ?? ''} onChange={(event) => {
+          setPublisher(publishers.find((source) => source === event.currentTarget.value));
+          setShowAll(false);
+        }}>
+          <option value="">{T('allSources')}</option>
+          {publishers.map((name) => <option key={name} value={name}>{loc(lang, HEADLINE_PUBLISHERS[name].name)} · {number(counts.get(name) ?? 0)}</option>)}
+        </select>
+      </label>}
+    </header>
+    {(section.status === 'partial' || section.status === 'stale') && <p className="hn-warning" role="status">{T(section.status)}</p>}
+    {lead ? <div className="hn-feature-grid" data-solo={!latest.length}>
+      <LeadStory key={lead.url} article={lead} {...{ lang, dates }} />
+      {latest.length > 0 && <div className="hn-latest">
+        <div className="hn-latest-heading"><h4><span className="hn-dot" />{T('latest')}</h4>
+          <span className="hn-count" role="status">{count}</span></div>
+        <ol className="hn-list" role="list">{rows(latest.slice(0, DESK_SIZE))}</ol>
+        {latest.length > DESK_SIZE && <>
+          <button type="button" className="hn-button hn-more" onClick={() => setShowAll(!showAll)}
+            aria-controls={listId} aria-expanded={showAll}>{T(showAll ? 'hide' : 'show')}<ChevronDown size={16} aria-hidden="true" /></button>
+          <ol className="hn-list hn-list-more" role="list" id={listId} start={DESK_SIZE + 1} hidden={!showAll}>
+            {showAll && rows(latest.slice(DESK_SIZE), DESK_SIZE)}
+          </ol>
+        </>}
       </div>}
-      <div id={listId} hidden={!expanded}>
-        {expanded && <ol className="clock-headline-list" role="list">
-          {filtered.map((article, i) => <li key={article.url}>
-            <StoryLink article={article} lang={lang} timeZone={timeZone} order={number(i + 1)} />
-          </li>)}
-        </ol>}
-      </div>
-    </> : <p className="clock-headline-empty">{label(emptyMessage)}</p>}
-    {(data.status === 'partial' || data.status === 'stale') && <p className="clock-headline-stale" role="status">{label(data.status)}</p>}
-    {edition && <PublisherCredits edition={edition} lang={lang} />}
+    </div> : <div className="hn-empty">
+      <Newspaper size={23} aria-hidden="true" /><p role="status">{T(empty)}</p>
+      {empty !== 'checking' && empty !== 'sourceEmpty' && <button type="button" className="hn-button" onClick={openPress}>{T('press')}<Newspaper size={16} aria-hidden="true" /></button>}
+    </div>}
+    {publishers.length > 0 && <Sources {...{ lang, publishers }} />}
   </section>;
 }
 
-// The clock above re-renders once a second; the independently timed briefing does not need to.
+// The clock above this component changes once a second; the briefing has its own timers.
 export const HomeHeadlineBriefing = memo(function HomeHeadlineBriefing({ lang }: { lang: SupportedLanguage }) {
-  const label = makeT(lang, NEWS_TEXT);
-  const headingId = useId();
+  const T = makeT(lang, HEADLINE_TEXT);
+  const id = useId();
+  const panelId = useId();
+  const paperTitleId = useId();
+  const bar = useRef<HTMLDivElement>(null);
+  const paper = useRef<HTMLDivElement>(null);
+  const pressTab = useRef<HTMLButtonElement>(null);
+  const toggle = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(false);
+  const [chosen, setChosen] = useState<View>();
+  const [playing, setPlaying] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(() => typeof matchMedia === 'function' && matchMedia(motionQuery).matches);
+  const [hovering, setHovering] = useState(false);
+  const [tickerIndex, setTickerIndex] = useState(0);
   const { data, loading, visible, refresh } = useHomeHeadlines();
-  const rtl = SUPPORTED_LANGUAGES.find((item) => item.code === lang)?.dir === 'rtl';
+  const rtl = isRTL(lang);
   const { locale, numberingSystem } = clockLocale(lang);
-  const countryName = data?.country ? new Intl.DisplayNames([locale], { type: 'region' }).of(data.country) || data.country : undefined;
   const timeZone = data?.timeZone || 'UTC';
-  const day = data?.day && new Intl.DateTimeFormat(locale, { timeZone: 'UTC', numberingSystem, month: 'long', day: 'numeric', weekday: 'short' }).format(new Date(`${data.day}T12:00:00Z`));
-  const latest = [data?.local.checkedAt, data?.world.checkedAt].filter((value): value is string => Boolean(value)).sort().at(-1);
-  return <aside className="clock-headlines" aria-labelledby={headingId} dir={rtl ? 'rtl' : 'ltr'}>
-    <header className="clock-headlines-header">
-      <div className="clock-headlines-heading">
-        <span className="clock-headlines-emblem"><Newspaper size={22} aria-hidden="true" /></span>
-        <div><h2 id={headingId}>{label('title')}</h2><p>{label('today')}</p></div>
+  const country = data?.country ?? null;
+  const countryName = useMemo(() => country ? (new Intl.DisplayNames([locale], { type: 'region' }).of(country) ?? country) : undefined, [country, locale]);
+  const dates = useMemo(() => storyDates(lang, timeZone), [lang, timeZone]);
+  const automatic: EditionKey = data?.local.items.length || !data?.world.items.length ? 'local' : 'world';
+  const view = chosen ?? automatic;
+  const region = view === 'press' ? automatic : view;
+  const section = data?.[region] ?? NO_HEADLINES;
+  const sequence = useMemo(() => headlineRotation(section.items), [section.items]);
+  const current = sequence.length ? sequence[tickerIndex % sequence.length] : undefined;
+  // Only explicit play moves the strip. The front page and list never rotate.
+  useEffect(() => {
+    if (!playing || hovering || !visible || sequence.length < 2 || reduceMotion) return;
+    const timer = window.setTimeout(() => setTickerIndex((n) => (n + 1) % sequence.length), HEADLINE_ROTATE_MS);
+    return () => window.clearTimeout(timer);
+  }, [playing, hovering, visible, sequence, tickerIndex, reduceMotion]);
+  useEffect(() => {
+    if (typeof matchMedia !== 'function') return;
+    const preference = matchMedia(motionQuery);
+    const update = () => {
+      setReduceMotion(preference.matches);
+      if (preference.matches) setPlaying(false);
+    };
+    preference.addEventListener('change', update);
+    return () => preference.removeEventListener('change', update);
+  }, []);
+  useEffect(() => {
+    // On phones the masthead, not the much taller shared clock, is the start of reading.
+    if (open && window.matchMedia(narrowDesk).matches) {
+      paper.current?.focus({ preventScroll: true });
+      paper.current?.scrollIntoView({ block: 'start' });
+    }
+  }, [open]);
+  const changeView = (value: View) => {
+    setChosen(value);
+    if (value === view) return;
+    setTickerIndex(0);
+    setPlaying(false);
+  };
+  const close = () => {
+    setOpen(false);
+    setPlaying(false);
+    toggle.current?.focus({ preventScroll: true });
+    bar.current?.scrollIntoView({ block: 'nearest' });
+  };
+
+  const day = data?.day && new Intl.DateTimeFormat(locale, { timeZone: 'UTC', numberingSystem, weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+    .format(new Date(`${data.day}T12:00:00Z`));
+  const checkedAt = section.checkedAt;
+  const checkedTime = checkedAt && dates.time.format(new Date(checkedAt));
+  const stripStatus = section.status === 'stale' ? 'cached' : section.status === 'partial' ? 'limited' : undefined;
+
+  return <aside className="home-news-desk" aria-labelledby={id} dir={rtl ? 'rtl' : 'ltr'} data-testid="home-news-briefing">
+    <div className="hn-bar" ref={bar}>
+      <div className="hn-brand">
+        <span className="hn-mark"><Newspaper size={20} aria-hidden="true" /></span>
+        <div><h2 id={id}>{T('brand')}</h2><p>{T('scope')}</p></div>
       </div>
-      <div className="clock-headlines-status">
-        {day && <span className="clock-headlines-day"><CalendarDays size={14} aria-hidden="true" /><time dateTime={data.day}>{day}</time></span>}
-        <span className="clock-headlines-updated" role="status">{loading ? label('checking') : latest ? <>{label('checked')} <time dateTime={latest}>{new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', timeZone, numberingSystem }).format(new Date(latest))}</time></> : null}</span>
-        {!isStaticHosting && <button type="button" className="clock-headlines-refresh" aria-label={label('refresh')} title={label('refresh')}
-          disabled={loading} onClick={() => { void refresh(); }}><RefreshCw size={16} aria-hidden="true" className={loading ? 'motion-safe:animate-spin' : undefined} /></button>}
+      <div className="hn-strip" aria-live="off" onPointerEnter={(event) => { if (event.pointerType === 'mouse') setHovering(true); }}
+        onPointerLeave={() => setHovering(false)} onFocusCapture={() => setPlaying(false)}>
+        {current ? <>
+          <span className="hn-strip-label"><span className="hn-dot" />{T(region)}</span>
+          <div className="hn-strip-story">
+            <a href={current.url} {...linkProps} className="hn-strip-link" title={current.title}><StoryTitle article={current} /><ArrowUpRight size={14} aria-hidden="true" /></a>
+            <div className="hn-strip-meta">
+              <StoryMeta article={current} {...{ lang, dates }} /><HeadlineLicense article={current} lang={lang} />
+              {stripStatus && <span className="hn-strip-status">{T(stripStatus)}</span>}
+            </div>
+          </div>
+        </> : <p className="hn-strip-empty">{T(loading ? 'checking' : 'noHeadlines')}</p>}
       </div>
-    </header>
-    <PressShowcase country={data?.country ?? null} {...{ lang, rtl }} />
-    <div className="clock-headline-grid">
-      <HeadlineRail key={data?.country || 'unknown'} region="local" edition={localHeadlineEdition(data?.country ?? null)} country={data?.country} countryName={countryName}
-        data={data?.local ?? emptyHeadlines()} {...{ loading, visible, lang, timeZone, rtl }} />
-      <HeadlineRail region="world" edition={WORLD_HEADLINE_EDITION} data={data?.world ?? emptyHeadlines()} {...{ loading, visible, lang, timeZone, rtl }} />
+      <button type="button" ref={toggle} className="hn-button hn-toggle" aria-expanded={open} aria-controls={panelId} onClick={() => {
+        if (open) close(); else setOpen(true);
+      }}>{T(open ? 'close' : 'open')}<ChevronDown size={16} aria-hidden="true" /></button>
+    </div>
+    <div id={panelId} hidden={!open} ref={paper} className="hn-paper" tabIndex={-1} role="region" aria-labelledby={open ? paperTitleId : undefined} onKeyDown={(event) => {
+      if (event.key === 'Escape' && !event.defaultPrevented && !(event.target instanceof HTMLSelectElement)) {
+        event.preventDefault();
+        event.stopPropagation();
+        close();
+      }
+    }}>
+      {open && <>
+        <div className="hn-masthead">
+          <div className="hn-masthead-intro"><p className="hn-eyebrow"><span className="hn-dot" />{T('brand')}</p><p className="hn-banner" id={paperTitleId}>{T('title')}</p><p className="hn-muted">{T('subtitle')}</p></div>
+          <button type="button" className="hn-icon hn-quick-close" onClick={close} aria-label={T('close')}><X size={18} aria-hidden="true" /></button>
+          {day && <div className="hn-date"><span>{T('date')}</span><time dateTime={data.day}><CalendarDays size={16} aria-hidden="true" />{day}</time></div>}
+        </div>
+        <div className="hn-toolbar">
+          <div className="hn-tabs" role="group" aria-label={T('title')}>
+            {VIEWS.map(({ value, Icon }) => (
+              <button type="button" key={value} ref={value === 'press' ? pressTab : undefined} aria-pressed={value === view} onClick={() => changeView(value)}>
+                <Icon size={16} aria-hidden="true" />{T(value)}
+              </button>
+            ))}
+          </div>
+          {view !== 'press' && <div className="hn-controls">
+            <span className="hn-checked" role="status">{loading ? T('checking') : checkedTime && <>{T('checked')} <time dateTime={checkedAt ?? undefined}>{checkedTime}</time></>}</span>
+            {!reduceMotion && sequence.length > 1 && <button type="button" className="hn-icon" aria-label={T(playing ? 'rotationPause' : 'rotationPlay')} title={T(playing ? 'rotationPause' : 'rotationPlay')}
+              onClick={() => setPlaying(!playing)}>{playing ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}</button>}
+            {!isStaticHosting && <button type="button" className="hn-icon" aria-label={T('refresh')} title={T('refresh')} disabled={loading} onClick={() => void refresh()}>
+              <RefreshCw size={16} className={loading ? 'motion-safe:animate-spin' : undefined} aria-hidden="true" />
+            </button>}
+          </div>}
+        </div>
+        {view === 'press' ? <PressShowcase {...{ country, lang, rtl }} /> : <Edition key={view === 'local' ? `local-${country}` : 'world'}
+          region={view} section={section} edition={view === 'world' ? WORLD_HEADLINE_EDITION : localHeadlineEdition(country)}
+          {...{ countryName, lang, dates, loading }} openPress={() => { changeView('press'); pressTab.current?.focus(); }} />}
+        <button type="button" className="hn-button hn-done" onClick={close}>{T('close')}<ChevronDown size={16} aria-hidden="true" /></button>
+      </>}
     </div>
   </aside>;
 });

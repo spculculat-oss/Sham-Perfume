@@ -1,6 +1,7 @@
 /** Home news interaction smoke, using only synthetic API responses. Start the built site first:
  * BROWSER_EXECUTABLE=/path/to/chromium node scripts/check-home-headlines.mjs
- * HEADLINES_SCENARIO=desktop|mobile|midnight|cold optionally runs one scenario. */
+ * HEADLINES_SCENARIO=desktop|mobile|fallback|midnight|cold optionally runs one scenario;
+ * use HEADLINES_SCENARIO=static against a Pages build without an API. */
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright-core';
 
@@ -13,7 +14,7 @@ const launch = () => chromium.launch({ executablePath: process.env.BROWSER_EXECU
 let browser;
 const sampleTime = Date.parse('2026-11-18T14:00:00Z');
 const date = (epoch, timeZone) => new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(epoch);
-const zone = { BR: 'America/Sao_Paulo', EG: 'Africa/Cairo', FR: 'Europe/Paris' };
+const zone = { BR: 'America/Sao_Paulo', EG: 'Africa/Cairo', FR: 'Europe/Paris', GB: 'Europe/London' };
 const brazilUrl = 'https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/fixture';
 const photo = {
   url: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/Fixture.jpg/640px-Fixture.jpg',
@@ -31,16 +32,19 @@ const imageFixture = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 3
 const sections = (country, asOf, mode) => {
   const timeZone = zone[country] || 'UTC';
   const checkedAt = new Date(asOf).toISOString();
-  const datedAt = new Date(asOf - 200).toISOString();
-  const story = (publisher, title, url) => ({ title, url, publisher, datedAt, dateKind: 'published' });
-  const items = country === 'FR' ? Array.from({ length: 8 }, (_, i) => story('service-public', `Titre français de test ${i + 1}`, `https://www.service-public.gouv.fr/particuliers/actualites/A${41000 + i}`))
+  const includeItems = mode === 'fresh' || mode === 'partial';
+  let offset = 0;
+  const story = (publisher, title, url, dateKind = 'published') => ({ title, url, publisher, datedAt: new Date(asOf - ++offset * 60_000).toISOString(), dateKind });
+  const items = country === 'FR' ? Array.from({ length: 8 }, (_, i) => story('service-public', `Titre français de test ${i + 1}`, `https://www.service-public.gouv.fr/particuliers/actualites/A${41000 + i}`, 'date'))
+    : country === 'GB' ? [story('gov-uk', 'Official update for testing a long attribution', 'https://www.gov.uk/government/news/headline-fixture', 'updated')]
     : country === 'BR' ? [{ ...story('agencia-brasil', 'Notícia brasileira de teste', brazilUrl), author: 'Agência Brasil' }]
     : [...Array.from({ length: 8 }, (_, i) => story('youm7', `خبر مصري تجريبي ${i + 1}`, `https://www.youm7.com/${42000 + i}`)),
       story('egypt-today', 'عنوان الكرة المصرية التجريبي', egyptTodayUrl)];
+  offset = 0; // The independent world edition starts its own timeline.
   return {
     country, timeZone, asOf, day: date(asOf, timeZone),
-    local: zone[country] ? { status: mode, checkedAt, items: mode === 'fresh' ? items : [] } : { status: 'unsupported', checkedAt: null, items: [] },
-    world: { status: mode, checkedAt, items: mode === 'fresh' ? [
+    local: zone[country] ? { status: mode, checkedAt, items: includeItems ? items : [] } : { status: 'unsupported', checkedAt: null, items: [] },
+    world: { status: mode, checkedAt, items: includeItems ? [
       story('youm7', 'عنوان عالمي تجريبي', 'https://www.youm7.com/43000'),
       story('youm7', 'عنوان عالمي تاني', 'https://www.youm7.com/43001'),
       { ...story('global-voices', communityStory, communityUrl), author: 'Fixture Writer', photo },
@@ -59,7 +63,10 @@ async function openHome({ country = 'FR', lang = 'en', viewport = { width: 1360,
   if (!mobile) await page.clock.install({ time: new Date(start) });
   const state = { country, mode: initialMode, calls: 0, photoReferrers: [], outbound: [] };
   const cors = { 'access-control-allow-origin': origin };
+  const errors = [];
+  page.on('pageerror', (error) => errors.push(error.message));
   await context.addInitScript((language) => {
+    if (window.top !== window) return;
     localStorage.setItem('sham_perfume_user_language', language);
     localStorage.setItem('sham_perfume_user_override_lang', 'true');
     localStorage.setItem('sham_cookie_consent_v1', JSON.stringify({ version: '1.1', essential: true, analytics: false, marketing: false, timestamp: new Date().toISOString() }));
@@ -84,9 +91,11 @@ async function openHome({ country = 'FR', lang = 'en', viewport = { width: 1360,
   });
   await page.goto(base, { waitUntil: 'domcontentloaded' });
   const board = page.getByTestId('visitor-local-dashboard');
-  const briefing = board.locator('.clock-headlines');
+  const briefing = board.getByTestId('home-news-briefing');
   await briefing.waitFor();
-  return { page, context, board, briefing, state,
+  return { page, context, board, briefing, state, errors,
+    toggle: briefing.locator('.hn-toggle'), strip: briefing.locator('.hn-strip'), panel: briefing.locator('.hn-paper'),
+    tab: (name) => briefing.locator('.hn-tabs').getByRole('button', { name, exact: true }),
     local: briefing.locator('[data-news-region="local"]'), world: briefing.locator('[data-news-region="world"]'),
     localPress: briefing.locator('[data-press-region="local"]'), worldPress: briefing.locator('[data-press-region="world"]'),
   };
@@ -104,65 +113,114 @@ async function checkCover(link, href) {
   assert.equal(await image.evaluate((element) => element.naturalWidth), 480);
 }
 
+async function fit({ page, briefing }) {
+  const measurements = await briefing.evaluate((element) => ({
+    width: element.clientWidth, content: element.scrollWidth,
+    document: document.documentElement.scrollWidth, viewport: innerWidth,
+  }));
+  assert.ok(measurements.content <= measurements.width + 1, `briefing overflows: ${JSON.stringify(measurements)}`);
+  assert.ok(measurements.viewport <= page.viewportSize().width + 1, `page zoomed out: ${JSON.stringify(measurements)}`);
+}
+
+async function originalLink(link, url) {
+  assert.equal(await link.getAttribute('href'), url);
+  assert.equal(await link.getAttribute('target'), '_blank');
+  assert.equal(await link.getAttribute('rel'), 'noopener noreferrer');
+}
+
 async function desktop() {
-  const { page, context, board, briefing, local, world, localPress, worldPress, state } = await openHome();
-  const refresh = briefing.getByRole('button', { name: 'Refresh headlines' });
-  const stage = local.locator('.clock-headline-stage');
-  const story = (n) => stage.getByText(`Titre français de test ${n}`, { exact: true });
-  const next = local.getByRole('button', { name: 'Next story' });
-  const previous = local.getByRole('button', { name: 'Previous story' });
-  console.log('Checking country separation, count, responsive expansion and the continuous loop…');
-  await local.getByRole('heading', { name: 'Local news · France' }).waitFor();
-  await local.getByText('Headlines: 8', { exact: true }).waitFor();
-  await world.getByRole('heading', { name: 'World news' }).waitFor();
-  await story(1).waitFor();
-  assert.equal(await stage.getByRole('link').getAttribute('href'), 'https://www.service-public.gouv.fr/particuliers/actualites/A41000');
-  await stage.getByText('Illustration', { exact: true }).waitFor();
-  assert.equal(await stage.locator('.clock-headline-photo').count(), 0, 'local publisher images stay on their own sites');
+  const home = await openHome();
+  const { page, context, board, briefing, local, world, localPress, worldPress, toggle, panel, strip, tab, state } = home;
+  const refresh = panel.getByRole('button', { name: 'Refresh headlines' });
+  const stripLink = strip.locator('.hn-strip-link');
+  const french = (n) => stripLink.getByText(`Titre français de test ${n}`, { exact: true });
+  const localLead = local.getByTestId('home-news-lead');
+  const worldLead = world.getByTestId('home-news-lead');
+  const frenchUrl = 'https://www.service-public.gouv.fr/particuliers/actualites/A41000';
+  console.log('Checking the compact top strip, keyboard disclosure, and stable lead/list…');
+  await french(1).waitFor();
+  await originalLink(stripLink, frenchUrl);
+  assert.equal(await panel.isVisible(), false);
+  assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
+  assert.equal(await toggle.getAttribute('aria-controls'), await panel.getAttribute('id'));
+  assert.equal(await worldPress.count(), 0, 'directory images stay unloaded until requested');
+  assert.deepEqual(state.photoReferrers, [], 'collapsed strip makes no photo requests');
+  assert.ok((await briefing.boundingBox()).height < 90, 'collapsed briefing fits in a toolbar');
   assert.ok((await briefing.boundingBox()).width >= (await board.boundingBox()).width - 70);
+  assert.ok(await briefing.evaluate((element) => element.compareDocumentPosition(element.parentElement.querySelector('.clock-glass')) & Node.DOCUMENT_POSITION_FOLLOWING), 'Home news is above the clock');
+  assert.equal(await strip.locator('time').innerText(), '18 Nov', 'the date-only source is not shown with a made-up time');
+  await page.clock.fastForward(8100);
+  await french(1).waitFor();
+  await toggle.focus();
+  await page.keyboard.press('Enter');
+  await panel.waitFor();
+  await page.keyboard.press('Tab');
+  assert.equal(await tab('Local').evaluate((element) => element === document.activeElement), true);
+  await page.keyboard.press('Escape');
+  assert.equal(await panel.isVisible(), false);
+  assert.equal(await toggle.evaluate((element) => element === document.activeElement), true);
+  await page.keyboard.press('Enter');
+  await local.getByRole('heading', { name: 'Local news · France' }).waitFor();
+  await local.getByText('Official updates').waitFor();
+  await local.getByText('Headlines: 8', { exact: true }).waitFor();
+  assert.equal(await tab('Local').getAttribute('aria-pressed'), 'true');
+  assert.equal(await world.count(), 0);
+  await originalLink(localLead.getByRole('link', { name: 'Read at the source' }), frenchUrl);
+  assert.equal(await localLead.locator('bdi[lang=fr]').textContent(), 'Titre français de test 1');
+  assert.equal(await localLead.locator('img').count(), 0, 'no unlicensed event photos');
+  const list = local.locator('.hn-list li');
+  assert.equal(await list.count(), 4);
+  assert.ok((await local.locator('.hn-latest').boundingBox()).x > (await localLead.boundingBox()).x, 'lead and headlines are side by side on desktop');
+  await fit(home);
+  const all = local.getByRole('button', { name: 'All today’s headlines' });
+  await all.click();
+  assert.equal(await list.count(), 7, 'all remaining headlines are available without repeating the lead');
+  assert.equal(await local.getByRole('button', { name: 'Show fewer headlines' }).getAttribute('aria-expanded'), 'true');
+  assert.equal(await list.last().locator('.hn-row-link').innerText(), 'Titre français de test 8');
+  await local.getByRole('button', { name: 'Show fewer headlines' }).click();
+  assert.equal(await list.count(), 4);
+
+  console.log('Checking opt-in rotation, pause on focus/hover and reduced motion…');
+  const play = panel.getByRole('button', { name: 'Rotate headline strip' });
+  const pause = panel.getByRole('button', { name: 'Pause headline strip' });
+  await play.click();
   for (const n of [2, 3, 4, 5, 6, 7, 8, 1]) {
     await page.clock.fastForward(8100);
-    await story(n).waitFor();
+    await french(n).waitFor();
   }
-  await local.getByRole('button', { name: 'Pause rotation' }).click();
+  await strip.hover();
+  await page.clock.fastForward(8100);
+  await french(1).waitFor();
   await page.mouse.move(4, 4);
   await page.clock.fastForward(8100);
-  await story(1).waitFor();
-  await previous.click();
-  await story(8).waitFor();
-  await next.click();
-  await story(1).waitFor();
-  const collapsedHeight = (await local.boundingBox()).height;
-  const expand = local.getByRole('button', { name: 'All today’s headlines' });
-  await expand.click();
-  assert.equal(await local.getByRole('button', { name: 'Collapse list' }).getAttribute('aria-expanded'), 'true');
-  assert.equal(await local.locator('.clock-headline-list li').count(), 8);
-  assert.ok((await local.boundingBox()).height > collapsedHeight + 100, 'the list grows in normal page flow');
-  await local.getByRole('button', { name: 'Collapse list' }).click();
-  await story(1).waitFor();
-  await local.getByRole('button', { name: 'Resume rotation' }).click();
+  await french(2).waitFor();
+  await pause.click();
   await page.clock.fastForward(8100);
-  await story(1).waitFor(); // hovered
-  await page.mouse.move(4, 4);
+  await french(2).waitFor();
+  await play.click();
+  await stripLink.focus();
+  await play.waitFor();
   await page.clock.fastForward(8100);
-  await story(2).waitFor();
-  await page.keyboard.press('Tab');
-  await next.focus();
-  await local.getByRole('button', { name: 'Resume rotation' }).waitFor();
+  await french(2).waitFor();
+  await play.click();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await pause.waitFor({ state: 'hidden' });
   await page.clock.fastForward(8100);
-  await story(2).waitFor();
+  await french(2).waitFor();
+  await localLead.getByRole('heading', { name: 'Titre français de test 1' }).waitFor();
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
 
-  console.log('Checking both visible picture shelves, all outlets, and country browsing…');
+  console.log('Checking the independent, illustrated press directory and its country controls…');
+  await tab('Press directory').click();
+  assert.equal(await local.count(), 0);
   await localPress.getByRole('heading', { name: 'Local newspapers · France', exact: true }).waitFor();
   const leMonde = localPress.getByRole('link', { name: 'Le Monde', exact: true });
   const reuters = worldPress.getByRole('link', { name: 'Reuters', exact: true });
-  // No expansion, scrolling widget, or API article is required to reveal these outlets.
   assert.equal(await localPress.locator('.clock-press-card:visible').count(), 4);
   assert.equal(await worldPress.locator('.clock-press-card:visible').count(), 4);
   await checkCover(leMonde, 'https://www.lemonde.fr/');
   await checkCover(reuters, 'https://www.reuters.com/world/');
   await worldPress.getByRole('link', { name: 'BBC News Arabic', exact: true }).waitFor();
-  assert.ok(!(await page.evaluate(() => document.querySelector('details')?.contains(document.querySelector('.clock-press-card')))), 'not hidden in a closed directory');
   await worldPress.getByRole('button', { name: 'Next group of outlets' }).click();
   await worldPress.getByText('Group 2 of 5').waitFor();
   await checkCover(worldPress.getByRole('link', { name: 'Al Arabiya', exact: true }), 'https://www.alarabiya.net/');
@@ -183,8 +241,6 @@ async function desktop() {
   await checkCover(worldPress.getByRole('link', { name: 'Folha de S.Paulo', exact: true }), 'https://www.folha.uol.com.br/');
   await localCountry.selectOption('EG');
   await checkCover(localPress.getByRole('link', { name: 'Al-Ahram', exact: true }), 'https://gate.ahram.org.eg/');
-  await local.getByRole('heading', { name: 'Local news · France' }).waitFor();
-  assert.equal(state.calls, callsBeforeBrowse, 'browsing the shelves does not request another edition');
   await worldCountry.selectOption('');
   await localCountry.selectOption('');
   await leMonde.waitFor();
@@ -192,198 +248,259 @@ async function desktop() {
   const browsePress = localPress.getByRole('link', { name: 'Newspaper directory by country' });
   assert.equal(await morePress.getAttribute('href'), 'https://www.w3newspapers.com/france/');
   assert.ok(!state.outbound.some((host) => ['www.lemonde.fr', 'www.w3newspapers.com', 'gate.ahram.org.eg', 'www.alarabiya.net', 'www.reuters.com'].includes(host)),
-    'covers are bundled; the user does not contact the outlets while browsing');
+    'covers are bundled; the browser does not contact the outlets while browsing');
+  await tab('Local').click();
+  await local.getByRole('heading', { name: 'Local news · France' }).waitFor();
+  assert.equal(state.calls, callsBeforeBrowse, 'browsing the shelves does not request or switch the live edition');
 
-  console.log('Checking headline source filters and verified photo attribution…');
-  const worldStage = world.locator('.clock-headline-stage');
-  const filter = world.getByRole('combobox', { name: 'Filter by source' });
-  await world.getByText('Configured sources: 6').waitFor();
+  console.log('Checking world headlines, sources, filters and verified photo attribution…');
+  await tab('World').click();
+  assert.equal(await tab('World').getAttribute('aria-pressed'), 'true');
+  assert.equal(await local.count(), 0);
+  await world.getByRole('heading', { name: 'World news' }).waitFor();
   await world.getByText('Headlines: 6', { exact: true }).waitFor();
-  await filter.selectOption('global-voices');
-  await world.getByText('Showing 1 of 6 headlines').waitFor();
-  await worldStage.getByText(communityStory, { exact: true }).waitFor();
-  const img = worldStage.getByRole('img', { name: photo.alt });
-  await img.scrollIntoViewIfNeeded();
-  await page.waitForFunction(() => (document.querySelector('.clock-headline-stage .clock-headline-photo')?.naturalWidth || 0) > 0);
+  await worldLead.getByRole('heading', { name: communityStory, exact: true }).waitFor();
+  await worldLead.getByText('Fixture Writer', { exact: true }).waitFor();
+  const img = worldLead.getByRole('img', { name: photo.alt });
+  await img.evaluate((element) => element.decode());
   assert.equal(await img.getAttribute('referrerpolicy'), 'no-referrer');
   assert.ok(state.photoReferrers.length && state.photoReferrers.every((referer) => !referer));
-  assert.equal(await worldStage.locator('.clock-headline-link').getAttribute('href'), communityUrl);
-  assert.equal(await worldStage.getByRole('link', { name: photo.credit }).getAttribute('href'), photo.source);
-  assert.equal(await worldStage.getByRole('link', { name: 'CC BY-SA 4.0', exact: true }).getAttribute('href'), 'https://creativecommons.org/licenses/by-sa/4.0/');
-  assert.equal(await worldStage.getByRole('link', { name: 'Headline license: CC BY 3.0' }).getAttribute('href'), 'https://creativecommons.org/licenses/by/3.0/');
-  await worldStage.getByText('Fixture Writer', { exact: true }).waitFor();
-  await world.getByRole('button', { name: 'All today’s headlines' }).click();
-  assert.equal(await world.locator('.clock-headline-list li').count(), 1);
-  await world.locator('.clock-headline-list').getByRole('img', { name: photo.alt }).waitFor();
+  await originalLink(worldLead.getByRole('link', { name: 'Read at the source' }), communityUrl);
+  await originalLink(worldLead.getByRole('link', { name: photo.credit }), photo.source);
+  await originalLink(worldLead.getByRole('link', { name: 'CC BY-SA 4.0', exact: true }), 'https://creativecommons.org/licenses/by-sa/4.0/');
+  await originalLink(worldLead.getByRole('link', { name: 'Headline license: CC BY 3.0' }), 'https://creativecommons.org/licenses/by/3.0/');
+  assert.match(await worldLead.locator('time').innerText(), /^14:57$/, 'publication time is in the declared edition zone');
+  await page.evaluate(() => scrollTo(0, 0));
+  const filter = world.getByRole('combobox', { name: 'Filter by source' });
+  await filter.selectOption('global-voices');
+  await world.getByText('Showing 1 of 6 headlines').waitFor();
+  assert.equal(await world.locator('.hn-list li').count(), 0);
+  await worldLead.getByRole('heading', { name: communityStory, exact: true }).waitFor();
   await filter.selectOption('european-parliament');
   await world.getByText('No headlines available from this source right now.').waitFor();
+  await world.getByText('Showing 0 of 6 headlines').waitFor();
+  assert.equal(await worldLead.count(), 0);
   await filter.selectOption('');
-  assert.equal(await world.locator('.clock-headline-list li').count(), 6);
-  await world.getByRole('button', { name: 'Collapse list' }).click();
-  await worldStage.getByText(communityStory, { exact: true }).waitFor();
-  const nextWorld = world.getByRole('button', { name: 'Next story' });
-  await nextWorld.click();
-  await worldStage.getByText('عنوان عالمي تجريبي', { exact: true }).waitFor();
-  await worldStage.getByText('Illustration', { exact: true }).waitFor();
-  assert.equal(await worldStage.locator('.clock-headline-photo').count(), 0);
-  await nextWorld.click();
-  await worldStage.getByText('عنوان الأمم المتحدة التجريبي', { exact: true }).waitFor();
-  await nextWorld.click();
-  await worldStage.getByText('An environment headline for testing', { exact: true }).waitFor();
-  await nextWorld.click();
-  await worldStage.getByText('عنوان العرب اليوم التجريبي', { exact: true }).waitFor();
-  assert.equal(await worldStage.locator('.clock-headline-link').getAttribute('href'), arabsTodayUrl);
-  await nextWorld.click();
-  await worldStage.getByText('عنوان عالمي تاني', { exact: true }).waitFor();
+  await world.getByRole('button', { name: 'All today’s headlines' }).click();
+  assert.equal(await world.locator('.hn-list li').count(), 5);
+  await originalLink(world.getByRole('link', { name: 'عنوان العرب اليوم التجريبي', exact: true }), arabsTodayUrl);
+  await world.getByText('Sources and licenses', { exact: true }).click();
+  await originalLink(world.locator('.hn-sources').getByRole('link', { name: 'UN News', exact: true }), 'https://news.un.org/ar/');
 
-  console.log('Checking refresh, offline and empty modes, and country/perfume separation…');
+  console.log('Checking auto-refresh, partial updates, offline retention, and empty modes…');
   const before = state.calls;
+  const checked = panel.locator('.hn-checked time');
+  const previousCheck = await checked.getAttribute('datetime');
   await page.clock.fastForward(5 * 60_000 + 15_000);
-  await page.waitForFunction(() => !document.querySelector('.clock-headlines-refresh')?.disabled);
+  await page.waitForFunction((previous) => Boolean(document.querySelector('.hn-checked time')?.dateTime && document.querySelector('.hn-checked time').dateTime !== previous), previousCheck);
   assert.ok(state.calls > before, 'visible editions are checked again automatically');
+  state.mode = 'partial';
+  await refresh.click();
+  await world.getByText('Some sources couldn’t be refreshed.').waitFor();
+  await strip.getByText('Partial update').waitFor();
+  await worldLead.getByRole('heading', { name: communityStory }).waitFor();
   state.mode = 'failed';
   await refresh.click();
-  await local.getByText('Last available headlines from today; refresh failed.').waitFor();
-  await story(2).waitFor();
-  await leMonde.waitFor();
+  await world.getByText('Last available headlines from today; refresh failed.').waitFor();
+  await strip.getByText('Last available').waitFor();
+  await worldLead.getByRole('heading', { name: communityStory }).waitFor();
   await context.setOffline(true);
   await page.waitForFunction(() => !navigator.onLine);
-  await leMonde.waitFor();
-  await reuters.waitFor();
   const offlineCalls = state.calls;
   await refresh.click();
   assert.equal(state.calls, offlineCalls);
+  await tab('Press directory').click();
+  await leMonde.waitFor();
+  await reuters.waitFor();
+  await tab('World').click();
   state.mode = 'empty';
   await context.setOffline(false);
-  await local.getByText('These sources have no headlines dated today yet.').waitFor();
   await world.getByText('These sources have no headlines dated today yet.').waitFor();
-  assert.equal(await local.locator('.clock-headline-stage').count(), 0);
-  await reuters.waitFor();
-  await leMonde.waitFor();
+  assert.equal(await stripLink.count(), 0);
+  assert.equal(await worldLead.count(), 0);
+  await tab('Local').click();
+  await local.getByText('These sources have no headlines dated today yet.').waitFor();
   state.mode = 'unavailable';
   await refresh.click();
   await local.getByText('Headlines are unavailable right now.').waitFor();
-  await leMonde.waitFor();
+
+  console.log('Checking entry-country changes, unsupported countries and separation from the perfume Journal…');
   state.mode = 'fresh';
   state.country = 'EG';
   await refresh.click();
   await local.getByRole('heading', { name: 'Local news · Egypt' }).waitFor();
-  await local.getByText('خبر مصري تجريبي 1', { exact: true }).waitFor();
-  const egyptFilter = local.getByRole('combobox', { name: 'Filter by source' });
-  await egyptFilter.selectOption('egypt-today');
-  await local.getByText('عنوان الكرة المصرية التجريبي', { exact: true }).waitFor();
-  assert.equal(await local.locator('.clock-headline-link').getAttribute('href'), egyptTodayUrl);
-  await local.getByText('Illustration', { exact: true }).waitFor();
+  await localLead.getByRole('heading', { name: 'خبر مصري تجريبي 1', exact: true }).waitFor();
+  await local.getByRole('combobox', { name: 'Filter by source' }).selectOption('egypt-today');
+  await localLead.getByRole('heading', { name: 'عنوان الكرة المصرية التجريبي', exact: true }).waitFor();
+  await originalLink(localLead.getByRole('link', { name: 'Read at the source' }), egyptTodayUrl);
+  assert.equal(await localLead.locator('img').count(), 0);
+  await tab('Press directory').click();
   await checkCover(localPress.getByRole('link', { name: 'Al-Masry Al-Youm', exact: true }), 'https://www.almasryalyoum.com/');
+  await tab('Local').click();
   state.country = 'BR';
   await refresh.click();
   await local.getByRole('heading', { name: 'Local news · Brazil' }).waitFor();
-  const brazilian = local.getByText('Notícia brasileira de teste', { exact: true });
-  await brazilian.waitFor();
-  assert.equal(await brazilian.getAttribute('lang'), 'pt-BR');
-  assert.equal(await local.locator('.clock-headline-link').getAttribute('href'), brazilUrl);
+  assert.equal(await localLead.getByText('Notícia brasileira de teste', { exact: true }).getAttribute('lang'), 'pt-BR');
+  await originalLink(localLead.getByRole('link', { name: 'Read at the source' }), brazilUrl);
+  await tab('Press directory').click();
   await localPress.getByRole('button', { name: 'All outlets', exact: true }).click();
   await checkCover(localPress.getByRole('link', { name: 'Diário do Nordeste', exact: true }), 'https://diariodonordeste.verdesmares.com.br/');
-  state.country = 'JP';
-  await refresh.click();
-  await local.getByRole('heading', { name: 'Local news · Japan' }).waitFor();
-  await local.getByText('Live headlines aren’t configured for this country yet.', { exact: false }).waitFor();
-  await checkCover(localPress.getByRole('link', { name: 'Asahi Shimbun', exact: true }), 'https://www.asahi.com/');
-  assert.equal(await morePress.getAttribute('href'), 'https://www.w3newspapers.com/japan/');
-  assert.equal(await local.locator('.clock-headline-header .clock-headline-count').count(), 0, 'a directory is not a feed');
-  assert.equal(await localPress.locator('a[href*="agenciabrasil.ebc.com.br"]').count(), 0);
-  for (const [country, title, message, path] of [
-    ['AD', 'Andorra', 'Live headlines aren’t configured for this country yet.', 'andorra/'],
-    ['AQ', 'Antarctica', 'No live headlines are configured for this entry country yet.', ''],
-    [null, null, 'We couldn’t detect your entry country.', ''],
-  ]) {
+  await tab('Local').click();
+  for (const [country, title, path] of [['JP', 'Japan', 'japan/'], ['AD', 'Andorra', 'andorra/'], ['AQ', 'Antarctica', ''], [null, null, '']]) {
     state.country = country;
     await refresh.click();
     await local.getByRole('heading', { name: title ? `Local news · ${title}` : 'Local news', exact: true }).waitFor();
-    await local.getByText(message, { exact: false }).waitFor();
-    await checkCover(path ? morePress : browsePress, `https://www.w3newspapers.com/${path}`);
-    assert.equal(await localPress.locator('.clock-press-card').count(), 0);
+    await local.getByText(country ? 'Local headlines aren’t configured for this entry country.' : 'We couldn’t detect your entry country.', { exact: false }).waitFor();
+    assert.equal(await localLead.count(), 0, 'unsupported local editions are not replaced with another country’s news');
+    await local.getByRole('button', { name: 'Press directory', exact: true }).click();
+    assert.equal(await tab('Press directory').evaluate((element) => element === document.activeElement), true);
+    if (country === 'JP') {
+      await checkCover(localPress.getByRole('link', { name: 'Asahi Shimbun', exact: true }), 'https://www.asahi.com/');
+      assert.equal(await morePress.getAttribute('href'), 'https://www.w3newspapers.com/japan/');
+    } else {
+      await checkCover(path ? morePress : browsePress, `https://www.w3newspapers.com/${path}`);
+      assert.equal(await localPress.locator('.clock-press-card').count(), 0);
+    }
+    await tab('World').click();
     await world.getByText('Headlines: 6', { exact: true }).waitFor();
+    await tab('Local').click();
   }
+  state.country = 'GB';
+  await refresh.click();
+  await local.getByRole('heading', { name: 'Local news · United Kingdom' }).waitFor();
+  assert.match(await localLead.locator('time').innerText(), /^Updated \d{2}:\d{2}$/);
+  await localLead.getByText('Contains public sector information licensed under the Open Government Licence v3.0.').waitFor();
   await page.goto(new URL('#perfume_news', base).href);
-  await page.getByRole('heading', { name: 'Global Perfume Trends Observatory with Exclusive Photos', exact: true }).waitFor();
+  await page.getByTestId('news-portal').waitFor();
   await briefing.waitFor({ state: 'detached' });
+  assert.equal(await board.getAttribute('data-clock-layout'), 'compact');
+  assert.deepEqual(home.errors, [], 'unexpected browser errors');
 }
 
 async function mobile() {
-  console.log('Checking Arabic at 320px and respecting reduced-motion preferences…');
+  console.log('Checking Arabic touch controls, right-to-left layout, and photo failure at 320px…');
   const phone = await openHome({ country: 'EG', lang: 'ar', viewport: { width: 320, height: 667 }, mobile: true, reducedMotion: 'reduce', rejectPhoto: true });
-  await phone.local.getByText('خبر مصري تجريبي 1', { exact: true }).waitFor();
-  await phone.local.getByText('عدد العناوين: ٩').waitFor();
-  await phone.local.getByText('١ / ٩').waitFor();
-  const digits = phone.local.locator('.clock-headline-position bdi');
-  assert.ok((await digits.first().boundingBox()).x < (await digits.last().boundingBox()).x, 'the current position precedes the total even in RTL');
-  await phone.local.getByRole('button', { name: 'تشغيل التدوير' }).waitFor();
-  await phone.localPress.getByText('صحف ومواقع: ١٨').waitFor();
-  await checkCover(phone.localPress.getByRole('link', { name: 'الأهرام', exact: true }), 'https://gate.ahram.org.eg/');
-  await checkCover(phone.worldPress.getByRole('link', { name: 'بي بي سي عربي', exact: true }), 'https://www.bbc.com/arabic');
-  assert.ok((await phone.localPress.getByRole('link', { name: 'دليل صحف البلد' }).boundingBox()).height >= 44);
-  assert.equal(await phone.briefing.getAttribute('dir'), 'rtl');
-  await phone.localPress.getByRole('button', { name: 'كل الصحف', exact: true }).tap();
-  assert.equal(await phone.localPress.locator('.clock-press-card').count(), 18);
-  await checkCover(phone.localPress.getByRole('link', { name: 'مصراوي', exact: true }), 'https://www.masrawy.com/');
-  await phone.localPress.getByRole('button', { name: 'عرض أقل', exact: true }).tap();
-  await phone.local.getByRole('button', { name: 'كل عناوين اليوم' }).tap();
-  assert.equal(await phone.local.locator('.clock-headline-list li').count(), 9);
-  await phone.world.getByText('المصادر المفعّلة: ٦').waitFor();
-  await phone.world.getByText('عدد العناوين: ٦', { exact: true }).waitFor();
-  const phoneStage = phone.world.locator('.clock-headline-stage');
-  await phoneStage.scrollIntoViewIfNeeded();
-  await phoneStage.getByText(communityStory, { exact: true }).waitFor();
-  await phoneStage.getByText('صورة توضيحية', { exact: true }).waitFor();
-  assert.equal(await phoneStage.locator('.clock-headline-photo').count(), 0);
-  assert.ok(phone.state.photoReferrers.length > 0, 'a failed photo was attempted');
-  assert.equal(await phoneStage.locator('.clock-headline-photo-credit').count(), 0);
-  assert.equal(await phoneStage.locator('.clock-headline-link').getAttribute('href'), communityUrl, 'the original article still works without the image');
-  const phoneFilter = phone.world.getByRole('combobox', { name: 'تصفية حسب المصدر' });
-  await phoneFilter.selectOption('un-news');
-  await phone.world.getByText('العناوين المعروضة: ١ من ٦').waitFor();
-  await phoneStage.getByText('عنوان الأمم المتحدة التجريبي', { exact: true }).waitFor();
-  const overflow = await phone.briefing.evaluate((element) => ({ outer: element.clientWidth, inner: element.scrollWidth }));
-  assert.ok(overflow.inner <= overflow.outer, 'expanded Arabic briefing fits 320px without horizontal scroll');
-  assert.ok((await phone.world.boundingBox()).y >= (await phone.local.boundingBox()).y + (await phone.local.boundingBox()).height);
+  const { page, briefing, strip, toggle, local, world, localPress, worldPress, tab, state } = phone;
+  await strip.getByText('خبر مصري تجريبي 1', { exact: true }).waitFor();
+  assert.equal(await briefing.getAttribute('dir'), 'rtl');
+  assert.ok((await toggle.boundingBox()).height >= 44, 'the opening button is a touch target');
+  await fit(phone);
+  await toggle.tap();
+  await local.getByText('العناوين: ٩', { exact: true }).waitFor();
+  const localLead = local.getByTestId('home-news-lead');
+  const localList = local.locator('.hn-latest');
+  await page.waitForFunction(() => {
+    const title = document.querySelector('.hn-lead-title')?.getBoundingClientRect();
+    return title && title.top > 0 && title.bottom < innerHeight - 94;
+  });
+  assert.ok((await localList.boundingBox()).y >= (await localLead.boundingBox()).y + (await localLead.boundingBox()).height);
+  assert.equal(await briefing.getByRole('button', { name: 'شغّل تدوير شريط العناوين' }).count(), 0);
+  await fit(phone);
+  await local.getByRole('button', { name: 'كل عناوين اليوم' }).tap();
+  assert.equal(await local.locator('.hn-list li').count(), 8);
+  assert.equal(await local.locator('.hn-list li .hn-order').last().innerText(), '٨');
+  await tab('عالمي').tap();
+  await world.getByText('العناوين: ٦', { exact: true }).waitFor();
+  const lead = world.getByTestId('home-news-lead');
+  await lead.getByRole('heading', { name: communityStory }).waitFor();
+  await lead.locator('.hn-photo').waitFor({ state: 'detached' });
+  assert.ok(state.photoReferrers.length > 0, 'the licensed photo was attempted');
+  assert.equal(await lead.locator('img').count(), 0, 'there is no misleading replacement image');
+  await originalLink(lead.getByRole('link', { name: 'اقرأ عند المصدر' }), communityUrl);
+  const filter = world.getByRole('combobox', { name: 'تصفية حسب المصدر' });
+  await filter.selectOption('un-news');
+  await world.getByText('العناوين المعروضة: ١ من ٦', { exact: true }).waitFor();
+  await lead.getByRole('heading', { name: 'عنوان الأمم المتحدة التجريبي' }).waitFor();
+  await fit(phone);
+  await tab('دليل الصحف').tap();
+  await localPress.getByText('صحف ومواقع: ١٨').waitFor();
+  await checkCover(localPress.getByRole('link', { name: 'الأهرام', exact: true }), 'https://gate.ahram.org.eg/');
+  await checkCover(worldPress.getByRole('link', { name: 'بي بي سي عربي', exact: true }), 'https://www.bbc.com/arabic');
+  assert.ok((await localPress.getByRole('link', { name: 'دليل صحف البلد' }).boundingBox()).height >= 44);
+  await localPress.getByRole('button', { name: 'كل الصحف', exact: true }).tap();
+  assert.equal(await localPress.locator('.clock-press-card').count(), 18);
+  await checkCover(localPress.getByRole('link', { name: 'مصراوي', exact: true }), 'https://www.masrawy.com/');
+  await localPress.getByRole('button', { name: 'عرض أقل', exact: true }).tap();
+  await fit(phone);
+  await briefing.locator('.hn-done').tap();
+  assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
+  assert.equal(await toggle.evaluate((element) => element === document.activeElement), true);
+  await toggle.tap();
+  await briefing.locator('.hn-quick-close').tap();
+  assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
+  assert.deepEqual(phone.errors, []);
+}
+
+async function fallback() {
+  console.log('Checking the world default when a country has no local feed, with long German labels…');
+  const home = await openHome({ country: 'JP', lang: 'de', viewport: { width: 360, height: 740 }, mobile: true, initialMode: 'partial' });
+  await home.strip.getByText('Welt', { exact: true }).waitFor();
+  await home.strip.getByText('Teilweise aktualisiert').waitFor();
+  await fit(home);
+  await home.toggle.tap();
+  assert.equal(await home.tab('Welt').getAttribute('aria-pressed'), 'true');
+  await home.world.getByTestId('home-news-lead').getByRole('heading', { name: communityStory }).waitFor();
+  await fit(home);
+  await home.tab('Lokal').tap();
+  await home.local.getByRole('heading', { name: 'Lokale Nachrichten · Japan', exact: true }).waitFor();
+  await home.local.getByText('Für dieses Zugriffsland sind keine lokalen Meldungen eingerichtet.', { exact: false }).waitFor();
+  assert.equal(await home.local.getByTestId('home-news-lead').count(), 0);
+  assert.equal(await home.strip.locator('.hn-strip-link').count(), 0);
+  await fit(home);
+  assert.deepEqual(home.errors, []);
 }
 
 async function midnight() {
-  console.log('Checking that Paris midnight clears stale stories even when the next request is still pending…');
+  console.log('Checking that Paris midnight clears stale stories before the next request finishes…');
   const night = await openHome({ start: Date.parse('2026-11-18T22:59:30Z'), reducedMotion: 'reduce' });
-  await night.local.getByText('Titre français de test 1', { exact: true }).waitFor();
-  const nightPress = night.localPress.getByRole('link', { name: 'Le Monde', exact: true });
-  await nightPress.waitFor();
+  await night.strip.getByText('Titre français de test 1', { exact: true }).waitFor();
+  await night.toggle.click();
+  await night.local.getByTestId('home-news-lead').waitFor();
   let unblock;
   night.state.block = new Promise((resolve) => { unblock = resolve; });
   night.state.mode = 'empty';
   try {
     await night.page.clock.fastForward(33_000);
-    await night.local.locator('.clock-headline-stage').waitFor({ state: 'hidden' });
+    await night.local.getByTestId('home-news-lead').waitFor({ state: 'detached' });
+    await night.strip.locator('.hn-strip-link').waitFor({ state: 'detached' });
     await night.briefing.locator('time[datetime="2026-11-19"]').waitFor();
-    await nightPress.waitFor(); // edition stays available during the next day’s pending request
+    await night.tab('Press directory').click();
+    await night.localPress.getByRole('link', { name: 'Le Monde', exact: true }).waitFor();
   } finally { unblock(); }
+  await night.tab('Local').click();
   await night.local.getByText('These sources have no headlines dated today yet.').waitFor();
+  assert.deepEqual(night.errors, []);
 }
 
-async function coldStart() {
-  console.log('Checking a cold start with the headlines API unavailable…');
+async function coldStart(staticBuild = false) {
+  console.log(`Checking a cold start ${staticBuild ? 'in a deployment with no API' : 'with the headlines API unavailable'}…`);
   const cold = await openHome({ initialMode: 'failed', reducedMotion: 'reduce' });
-  await cold.world.getByText('Headlines are unavailable right now.').waitFor();
+  await cold.strip.getByText('No headlines in this section right now.', { exact: true }).waitFor();
+  await cold.toggle.click();
+  const message = staticBuild ? 'Live headlines aren’t available on this version of the site. The press directory is available.' : 'Headlines are unavailable right now.';
+  await cold.local.getByText(message, { exact: true }).waitFor();
+  await cold.tab('World').click();
+  await cold.world.getByText(message, { exact: true }).waitFor();
+  assert.equal(await cold.briefing.getByTestId('home-news-lead').count(), 0, 'there is no fallback to invented headlines');
+  if (staticBuild) {
+    assert.equal(cold.state.calls, 0);
+    assert.equal(await cold.briefing.getByRole('button', { name: 'Refresh headlines' }).count(), 0);
+  }
+  await cold.world.getByRole('button', { name: 'Press directory', exact: true }).click();
   await cold.localPress.getByText('Choose a country to see its newspapers.').waitFor();
   await checkCover(cold.worldPress.getByRole('link', { name: 'Al Jazeera', exact: true }), 'https://www.aljazeera.net/');
   await cold.localPress.getByRole('combobox', { name: 'Local press country' }).selectOption('EG');
   await checkCover(cold.localPress.getByRole('link', { name: 'Al-Ahram', exact: true }), 'https://gate.ahram.org.eg/');
+  await cold.tab('Local').click();
   await cold.local.getByRole('heading', { name: 'Local news', exact: true }).waitFor();
-  await cold.local.getByText('Headlines are unavailable right now.').waitFor();
-  assert.equal(await cold.briefing.locator('.clock-headline-stage').count(), 0, 'there is no fallback to invented headlines');
+  await cold.local.getByText(message, { exact: true }).waitFor();
+  assert.deepEqual(cold.errors, []);
 }
 
-const scenarios = { desktop, mobile, midnight, cold: coldStart };
+const scenarios = { desktop, mobile, fallback, midnight, cold: () => coldStart(), static: () => coldStart(true) };
 const selection = process.env.HEADLINES_SCENARIO;
 assert.ok(!selection || Object.hasOwn(scenarios, selection), `Unknown scenario: ${selection}`);
-for (const name of selection ? [selection] : Object.keys(scenarios)) {
+for (const name of selection ? [selection] : ['desktop', 'mobile', 'fallback', 'midnight', 'cold']) {
   // The single-process runner shares one renderer: give each scenario a fresh browser.
   browser = await launch();
   try { await scenarios[name](); } finally { await browser.close(); }
