@@ -334,6 +334,11 @@ export function GeneralNewsPeriodic({ lang, go, toast, compactTickerOnly }: Prop
                   {article.categoryLabelAr}
                 </span>
               </div>
+              {article.imageUrl && (
+                <span className="absolute bottom-3 start-3 rounded-lg bg-stone-950/75 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-xs">
+                  {isArabic ? 'صورة تحريرية مش من الخبر' : 'Editorial image, not from the story'}
+                </span>
+              )}
               {article.isHot && (
                 <div className="absolute top-3 end-3">
                   <span className="px-2 py-0.5 rounded-full bg-rose-600 text-white text-[9px] font-black flex items-center gap-1 shadow-xs">

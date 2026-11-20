@@ -55,7 +55,7 @@ const hasGluedLatin = (s: string) => {
 const TOKENS = (s: string) => (s.match(/\{[a-z]\}/g) || []).sort().join(' ');
 
 test('every platform language carries the full news page, translated, with no Arabic or script mixing', () => {
-  assert.equal(NEWS_KEYS.length, 79);
+  assert.equal(NEWS_KEYS.length, 83, 'the four photo_ keys label news pictures honestly');
   assert.deepEqual(newsLanguages(), SUPPORTED_LANGUAGES.map((l) => l.code));
   const english = NEWS_PACKS.en as NewsRow;
   for (const { code } of SUPPORTED_LANGUAGES) {

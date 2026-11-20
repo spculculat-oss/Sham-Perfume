@@ -11,6 +11,8 @@ export interface CollectedArticle {
   id: string; badge: string; titleAr: string; titleEn: string; category: EditorialCategory; categoryLabelAr: string;
   isHot: boolean; summaryAr: string; summaryEn?: string; contentAr: string; contentEn?: string; date: string;
   readTime: string; source: string; imageUrl: string; tags: string[]; author: string; location?: string;
+  /** True only when the picture is the publisher's own; otherwise it is an editorial photo. */
+  imageFromSource?: boolean;
 }
 
 const CATEGORY: Record<string, [EditorialCategory, string]> = {
@@ -44,7 +46,8 @@ export function articlesFromCollected(items: LiveNewsItem[], images: string[], t
         date: Number.isFinite(published) ? new Date(published).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric' }) : todayArabic,
         readTime: '2 دقائق',
         source,
-        imageUrl: images[index % images.length] || '',
+        imageUrl: /^https:\/\//.test(text(item.image, 1000)) ? text(item.image, 1000) : images[index % images.length] || '',
+        imageFromSource: /^https:\/\//.test(text(item.image, 1000)),
         tags: ['أخبار العطور', label],
         author: `نشرة شاهين — عن ${source}`,
       };

@@ -10,6 +10,8 @@ export type NewsCategory = typeof NEWS_CATEGORIES[number];
 export interface NewsItem {
   id: string; url: string; source: string; publishedAt?: string; category: NewsCategory; importance: number;
   original: string; lang: RawItem['lang']; title: Bi; summary: Bi; note?: Bi;
+  /** The publisher's own picture for this story, when its feed carried one. */
+  image?: string;
 }
 export interface NewsFile {
   version: 1; updatedAt: string; nextUpdateAt: string; intervalHours: number;
@@ -105,6 +107,7 @@ export function itemsFromEditor(reply: unknown, candidates: RawItem[]): { items:
       category: NEWS_CATEGORIES.includes(r.category as NewsCategory) ? r.category as NewsCategory : guessCategory(c.title),
       importance: Math.min(5, Math.max(1, Math.round(Number(r.importance)) || 2)),
       title, summary: bi(r.summary, 420) || { ar: title.ar, en: title.en }, note: bi(r.note, 300),
+      ...(c.image ? { image: c.image } : {}),
     });
   }
   return { items, digest: bi(data.digest, 700) };
@@ -154,6 +157,7 @@ export function itemsFromFeeds(candidates: RawItem[], max = 20): NewsItem[] {
       id: storyId(c), url: c.url, source: c.source, publishedAt: c.publishedAt, original: c.title, lang: c.lang, category, importance: 2,
       title: { ar: c.title, en: c.title },
       summary: { ar: arabic ? c.snippet || c.title : arabicContext(c, category), en: c.snippet || c.title },
+      ...(c.image ? { image: c.image } : {}),
     };
   });
 }

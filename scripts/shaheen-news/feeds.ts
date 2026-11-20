@@ -4,7 +4,7 @@
  * A source that fails or changes its address is skipped; the others still publish.
  */
 export interface FeedSource { id: string; name: string; url: string; lang: 'ar' | 'en' | 'fr'; kind: 'search' | 'trade' }
-export interface RawItem { title: string; url: string; source: string; publishedAt?: string; snippet: string; feed: string; lang: FeedSource['lang'] }
+export interface RawItem { title: string; url: string; source: string; publishedAt?: string; snippet: string; feed: string; lang: FeedSource['lang']; /** The publisher's own picture (enclosure / media:content / its own <img>) — never a stock or generated photo. */ image?: string }
 
 const gnews = (q: string, lang: 'ar' | 'en' | 'fr') => {
   const region = { ar: 'hl=ar&gl=EG&ceid=EG:ar', en: 'hl=en-US&gl=US&ceid=US:en', fr: 'hl=fr&gl=FR&ceid=FR:fr' }[lang];
@@ -37,8 +37,30 @@ export function decode(text: string): string {
 }
 export const plain = (html: string) => decode(decode(html)).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 
-const tag = (block: string, name: string) => block.match(new RegExp(`<${name}(?:\\s[^>]*)?>([\\s\\S]*?)</${name}>`, 'i'))?.[1];
+// Element names may carry a namespace colon (media:content), which must stay literal in the pattern.
+const tag = (block: string, name: string) => { const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); return block.match(new RegExp(`<${escaped}(?:\\s[^>]*)?>([\\s\\S]*?)</${escaped}>`, 'i'))?.[1]; };
 const attr = (block: string, name: string, key: string) => block.match(new RegExp(`<${name}\\s[^>]*${key}="([^"]+)"`, 'i'))?.[1];
+
+/**
+ * The picture the publisher attached to its own story: an RSS enclosure, a media
+ * thumbnail/content, or the item's own <img>. Only absolute http(s) addresses in
+ * a picture format (or a conventional image path) qualify, so a tracker, a data
+ * URI or a podcast file never becomes a news photo.
+ */
+export function pictureOf(block: string): string | undefined {
+  const candidates = [
+    attr(block, 'enclosure', 'url'), attr(block, 'media:content', 'url'), attr(block, 'media:thumbnail', 'url'),
+    ...[...block.matchAll(/<img[^>]*\ssrc="([^"]+)"/gi)].map((match) => match[1]),
+  ];
+  for (const raw of candidates) {
+    if (!raw) continue;
+    const url = raw.trim().replace(/&amp;/g, '&');
+    if (!/^https?:\/\//i.test(url)) continue;
+    if (!/\.(?:jpe?g|png|webp|avif)(?:[?#]|$)/i.test(url) && !/(?:\/|^)(?:image|images|img|media|photo|photos|uploads)\//i.test(url)) continue;
+    return url.slice(0, 1000);
+  }
+  return undefined;
+}
 
 /** RSS 2.0 items and Atom entries, without an XML dependency. */
 export function parseFeed(xml: string, feed: FeedSource): RawItem[] {
@@ -55,7 +77,8 @@ export function parseFeed(xml: string, feed: FeedSource): RawItem[] {
     let snippet = plain(tag(block, 'description') || tag(block, 'summary') || tag(block, 'content:encoded') || tag(block, 'content') || '');
     if (feed.kind === 'search') snippet = ''; // Google's description only repeats the headline
     if (!title || !/^https?:\/\//.test(link)) continue;
-    items.push({ title: title.slice(0, 300), url: link, source: publisher || feed.name, publishedAt: published, snippet: snippet.slice(0, 500), feed: feed.id, lang: feed.lang });
+    const image = pictureOf(block);
+    items.push({ title: title.slice(0, 300), url: link, source: publisher || feed.name, publishedAt: published, snippet: snippet.slice(0, 500), feed: feed.id, lang: feed.lang, ...(image ? { image } : {}) });
   }
   return items;
 }
