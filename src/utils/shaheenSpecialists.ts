@@ -187,6 +187,8 @@ export const SITE_SECTIONS: SiteSection[] = [
   { id: 'perfume_designers', titleAr: 'قسم المصممين — عطور', titleEn: 'Designers — perfume', consultants: ['specialist_scents', 'specialist_science', 'specialist_health'] },
   { id: 'cosmetic_designers', titleAr: 'قسم المصممين — تجميل', titleEn: 'Designers — cosmetics', consultants: ['specialist_health', 'specialist_science', 'specialist_business'] },
   { id: 'molecule_studio', titleAr: 'استوديو الجزيئات', titleEn: 'Molecule studio', consultants: ['specialist_science', 'specialist_tech', 'specialist_engineering'] },
+  { id: 'designer', titleAr: 'معمل المصمم الذكي', titleEn: 'AI designer lab', consultants: ['specialist_scents', 'specialist_science', 'specialist_tech'] },
+  { id: 'studio_3d', titleAr: 'استوديو الزجاجة 3D', titleEn: '3D flacon studio', consultants: ['specialist_scents', 'specialist_tech', 'specialist_engineering'] },
   { id: 'library', titleAr: 'مكتبة شاهين', titleEn: "Shaheen's library", consultants: ['specialist_society', 'specialist_scents', 'specialist_learning', 'specialist_culture'] },
   { id: 'community', titleAr: 'المجتمع', titleEn: 'Community', consultants: ['specialist_society', 'specialist_business', 'specialist_health', 'specialist_learning', 'specialist_culture'] },
   { id: 'admin_panel', titleAr: 'لوحة الإدارة', titleEn: 'Admin panel', consultants: ['specialist_business', 'specialist_tech', 'specialist_security', 'specialist_engineering'] },

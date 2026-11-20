@@ -113,6 +113,18 @@ const PAGE_COPY: Record<string, PromoCopy> = {
     description: { ar: 'اطلب إرشاداً حول التركيب والخامات والحسابات؛ تحقّق من السلامة قبل التصنيع.', en: 'Get guidance on formulas, materials, and calculations; verify safety before production.' },
     visual: 'expert',
   },
+  designer: {
+    tag: { ar: 'معمل المصمم الذكي', en: 'AI designer lab' },
+    title: { ar: 'صمّم عطرك مع تحليل توافق النوتات', en: 'Design a fragrance with harmony analysis' },
+    description: { ar: 'جرّب نوتاتك، شوف توافقها العطري، ومحاكاة الأداء والثبات على بشرتك قبل التحضير.', en: 'Try your notes, see how they harmonise, and simulate performance and longevity before you mix.' },
+    visual: 'analysis',
+  },
+  studio_3d: {
+    tag: { ar: 'استوديو الزجاجة 3D', en: '3D flacon studio' },
+    title: { ar: 'شوف زجاجتك قبل ما تتصنّع', en: 'See your flacon before it is made' },
+    description: { ar: 'اعرض الزجاجة والتركيبة بمجسم ثلاثي الأبعاد يقرأ نفس بيانات تركيبتك.', en: 'View the bottle and your formula in 3D, reading the same formulation data.' },
+    visual: 'analysis',
+  },
   store: {
     tag: { ar: 'متجر شام', en: 'Sham fragrance shop' },
     title: { ar: 'تصفّح العطور المتاحة وأسعارها', en: 'Browse available fragrances and prices' },
@@ -138,6 +150,9 @@ const HOME_PROMO = makeTabPromo('home', 'home', {
 
 /** Existing app pages that do not have a dedicated, indexable SEO route. */
 const ADDITIONAL_PAGE_PROMOS: PlatformPromo[] = [
+  // «جديد من جوجل استوديو»: the designer lab and the 3D flacon studio get their own promotion like every page.
+  makeTabPromo('designer', 'designer', PAGE_COPY.designer),
+  makeTabPromo('studio_3d', 'studio_3d', PAGE_COPY.studio_3d),
   makeTabPromo('workspace', 'workspace', {
     tag: { ar: 'مساحة شاهين · مساعد عام', en: "Shaheen's workspace · general assistant" },
     title: { ar: 'أنجز مهامك في مساحة شاهين', en: 'Get work done in Shaheen’s workspace' },

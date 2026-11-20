@@ -1,6 +1,6 @@
 import { LegalDisclaimer } from './LegalDisclaimer';
 import { LocalizedNumberInput } from './LocalizedNumberInput';
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import {
   Layers,
   Plus,
@@ -17,11 +17,14 @@ import {
   ArrowRight,
   ArrowLeft,
   Atom,
+  Box,
 } from 'lucide-react';
 import { CalculationResult, FormulationState, PyramidNote } from '../types/perfume';
 import { CURATED_FORMULA_PRESETS, POPULAR_NOTES_DIRECTORY } from '../data/presets';
 import { calculatePyramidBreakdown, formatNum } from '../utils/calculations';
 import { FragrancePyramidGraphic } from './FragrancePyramidGraphic';
+// «جديد من جوجل استوديو»: the 3D/AR pyramid, loaded only when the visitor asks for it (three.js is heavy).
+const FragrancePyramidAR3D = lazy(() => import('./FragrancePyramidAR3D').then((m) => ({ default: m.FragrancePyramidAR3D })));
 import { PerfumeSpraySimulator } from './PerfumeSpraySimulator';
 import { CalculatorCriteriaGuide } from './CalculatorCriteriaGuide';
 import compoundingImg from '../assets/images/perfume_lab_compounding_1791692420116.jpg';
@@ -109,6 +112,30 @@ const S = {
     zh: '喷雾与肌肤固着模拟 💨',
     tr: 'Püskürtme ve cilt simülatörü 💨',
     fa: 'شبیه‌ساز اسپری و پوست 💨',
+  },
+  tab_ar3d: {
+    ar: 'الهرم ثلاثي الأبعاد والواقع المعزز 🥽',
+    en: '3D & AR Pyramid 🥽',
+    fr: 'Pyramide 3D & RA 🥽',
+    es: 'Pirámide 3D y RA 🥽',
+    it: 'Piramide 3D & AR 🥽',
+    de: '3D- & AR-Pyramide 🥽',
+    ru: 'Пирамида 3D и AR 🥽',
+    zh: '3D 与 AR 香调金字塔 🥽',
+    tr: '3D ve AR Piramit 🥽',
+    fa: 'هرم سه‌بعدی و واقعیت افزوده 🥽',
+  },
+  loading: {
+    ar: 'بيتحمّل…',
+    en: 'Loading…',
+    fr: 'Chargement…',
+    es: 'Cargando…',
+    it: 'Caricamento…',
+    de: 'Wird geladen…',
+    ru: 'Загрузка…',
+    zh: '加载中…',
+    tr: 'Yükleniyor…',
+    fa: 'در حال بارگذاری…',
   },
   tab_guide: {
     ar: 'شرح المعايير 📚',
@@ -635,7 +662,7 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
   setPyramidNotes,
   result,
 }) => {
-  const [viewMode, setViewMode] = useState<'graphic' | 'compounding' | 'both' | 'guide' | 'spray_simulator'>('graphic');
+  const [viewMode, setViewMode] = useState<'graphic' | 'compounding' | 'both' | 'guide' | 'spray_simulator' | 'ar3d'>('graphic');
   const [selectedDirectoryCategory, setSelectedDirectoryCategory] = useState<'all' | 'top' | 'heart' | 'base'>('all');
   const [newNoteName, setNewNoteName] = useState('');
   const [newNoteCategory, setNewNoteCategory] = useState<'top' | 'heart' | 'base'>('top');
@@ -784,6 +811,19 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
 
           <button
             type="button"
+            onClick={() => setViewMode('ar3d')}
+            className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+              viewMode === 'ar3d'
+                ? 'bg-gradient-to-r from-indigo-700 to-violet-800 text-white shadow-sm font-bold ring-2 ring-indigo-400/40'
+                : 'text-indigo-800 hover:text-indigo-950 font-bold bg-indigo-500/15'
+            }`}
+          >
+            <Box className="w-3.5 h-3.5 text-indigo-400" />
+            <span>{L('tab_ar3d')}</span>
+          </button>
+
+          <button
+            type="button"
             onClick={() => setViewMode('guide')}
             className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
               viewMode === 'guide'
@@ -836,6 +876,25 @@ export const PyramidCalculator: React.FC<PyramidCalculatorProps> = ({
           ))}
         </div>
       </div>
+      )}
+
+      {/* «3D/AR» من استوديو جوجل: a fourth way to see the same pyramid — the graphic view stays as it was. */}
+      {viewMode === 'ar3d' && (
+        <Suspense fallback={<div className="py-16 text-center text-sm text-stone-500">{L('loading')}</div>}>
+          <FragrancePyramidAR3D
+            currentLang={currentLang}
+            topPct={breakdown.topPct}
+            heartPct={breakdown.heartPct}
+            basePct={breakdown.basePct}
+            selectedTier={selectedDirectoryCategory}
+            onSelectTier={setSelectedDirectoryCategory}
+            isTopActive={selectedDirectoryCategory === 'all' || selectedDirectoryCategory === 'top'}
+            isHeartActive={selectedDirectoryCategory === 'all' || selectedDirectoryCategory === 'heart'}
+            isBaseActive={selectedDirectoryCategory === 'all' || selectedDirectoryCategory === 'base'}
+            activeSillagePercent={0}
+            currentMinutes={0}
+          />
+        </Suspense>
       )}
 
       {/* 1. Graphic Fragrance Pyramid & Post-Spray Olfactory Evolution Scenario */}

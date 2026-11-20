@@ -1,6 +1,6 @@
 import { ShaheenAgentPanel, ShaheenAgentReport } from './ShaheenAgentPanel';
 import { useChatPrices } from '../utils/storeCheckout';
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { Suspense, useState, useEffect, useRef, useMemo } from 'react';
 import {
   Sparkles,
   Droplet,
@@ -29,11 +29,13 @@ import { motion, AnimatePresence } from 'motion/react';
 import perfumerImg from '../assets/images/master_perfumer_compounding_1791693212967.jpg';
 import { linkTools, type ToolLink } from '../utils/shaheenTools';
 import { ShaheenToolLinks } from './ShaheenToolLinks';
+// «جديد من جوجل استوديو»: محلّل التوافق العطري — يجيب نفس بيانات المعمل ويشتغل بلوحة شاهين.
+const OlfactoryHarmonyAnalyzer = React.lazy(() => import('./OlfactoryHarmonyAnalyzer').then((m) => ({ default: m.OlfactoryHarmonyAnalyzer })));
 import { extractFormulaFromAIMessage, extractFormulasFromAIMessage, isFormulaTransferCommand, ExtractedAIPerfume } from '../utils/aiFormulaExtractor';
 import { exportChatTranscriptToFile } from '../utils/chatStorage';
 import { SupportedLanguage } from '../types/i18n';
 import { isRTL } from '../لغات/localizedContent';
-import { LText, makeT, fmt, loc } from '../لغات/localize';
+import { LText, makeT, fmt, loc, pickArEn } from '../لغات/localize';
 import { isStaticHosting } from '../utils/api';
 import { StaticHostingNotice } from './StaticHostingNotice';
 import { ShaheenModesPanel, ShaheenServiceStatus, busyNoteText, chatErrorText, shaheenWelcome } from './ShaheenServiceStatus';
@@ -361,6 +363,7 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
     L('comp_4'),
   ];
 
+  const [showHarmonyAnalyzer, setShowHarmonyAnalyzer] = useState(false);
   const handleSend = async (customText?: string, overrideModel?: ShaheenModelChoice, fromVoice = false, voiceTurnInfo?: ShaheenVoiceTurn): Promise<boolean> => {
     const text = (customText || input).trim();
     // «شاهين يقرا الصور»: the picture waiting above the box goes with the typed question (or alone).
@@ -540,6 +543,29 @@ export const PerfumerMasterLabView: React.FC<PerfumerMasterLabViewProps> = ({
             </button>
           </div>
         </div>
+      )}
+
+      {/* «جديد من جوجل استوديو»: محلّل التوافق العطري، اختياري وبتحميل منفصل. */}
+      <div className="flex items-center justify-end">
+        <button
+          type="button"
+          onClick={() => setShowHarmonyAnalyzer((v) => !v)}
+          aria-pressed={showHarmonyAnalyzer}
+          className="rounded-xl bg-white px-3 py-1.5 text-xs font-bold text-emerald-800 ring-1 ring-emerald-200 transition hover:bg-emerald-50"
+        >
+          {pickArEn(currentLang, 'محلّل التوافق العطري', 'Olfactory harmony')}
+        </button>
+      </div>
+      {showHarmonyAnalyzer && (
+        <Suspense fallback={<div className="py-10 text-center text-sm text-stone-500">{pickArEn(currentLang, 'بيتحمّل…', 'Loading…')}</div>}>
+          <OlfactoryHarmonyAnalyzer
+            currentLang={currentLang}
+            isStaticHosting={isStaticHosting}
+            onAskShaheenFollowUp={(prompt) => void handleSend(prompt)}
+            onOpenPyramidTool={() => onOpenTool?.({ tool: 'pyramid' } as ToolLink)}
+            onApplyToPyramidCalculator={onApplyToPyramidCalculator}
+          />
+        </Suspense>
       )}
 
       {/* 2. Expanded Chat Board Container */}
