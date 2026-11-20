@@ -159,4 +159,14 @@ export function nextSnapshotAt(now: number, hour: number): number {
   return at > now ? at : at + 86_400_000;
 }
 
+/**
+ * The server's own public address: Render gives RENDER_EXTERNAL_URL, a Hugging Face Space gives SPACE_HOST
+ * (sham3331-sham-robots.hf.space). Empty when neither (a local run): then it never visits itself.
+ */
+export function selfUrl(e: Record<string, string | undefined>): string {
+  if (e.RENDER_EXTERNAL_URL?.trim()) return e.RENDER_EXTERNAL_URL.trim().replace(/\/$/, '');
+  const host = e.SPACE_HOST?.trim().replace(/^https?:\/\//, '').replace(/\/$/, '');
+  return host ? `https://${host}` : '';
+}
+
 export { ROBOTS };

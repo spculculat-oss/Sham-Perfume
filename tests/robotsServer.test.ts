@@ -5,9 +5,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
 import { AI_KEYS, inSnapshot, ROBOTS, robotOf, SECRET_NAMES } from '../scripts/robots/registry';
-import { dueRobots, gate, lastFinished, nextSnapshotAt, parseOutputs, robotEnv, runRobot, SERVER_WORKFLOWS, snapshotFiles, type Exec } from '../scripts/robots/runner';
+import { dueRobots, gate, lastFinished, nextSnapshotAt, parseOutputs, robotEnv, runRobot, selfUrl, SERVER_WORKFLOWS, snapshotFiles, type Exec } from '../scripts/robots/runner';
 import { fetchRuns, onDemandWorkflows } from '../scripts/shaheen-council/runs';
-import { allLive, GITHUB_SCHEDULES, mergeRuns, SCHEDULES, serverRunsAsGh, type RobotServerRun } from '../src/utils/opsLive';
+import { allLive, GITHUB_SCHEDULES, mergeRuns, ROBOTS_SERVER_URL, ROBOTS_SERVER_URLS, SCHEDULES, serverRunsAsGh, type RobotServerRun } from '../src/utils/opsLive';
 import { BOTS } from '../src/utils/shaheenOrg';
 import { changeRule } from '../src/utils/ownerFiles';
 
@@ -177,6 +177,46 @@ test('render.yaml: one free web service, the keys entered on Render only, the co
   for (const p of ['scripts/robots/server.mts', 'render.yaml', 'Dockerfile', '.dockerignore', 'scripts/owner/gateRule.mjs']) assert.equal(changeRule(p).allowed, false, p);
 });
 
+test('Hugging Face Space (no card): the same tools and start script as Render, as the Space\'s user, on its port', () => {
+  const read = (p: string) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
+  const space = read('scripts/robots/huggingface/Dockerfile');
+  const setup = read('scripts/robots/space-setup.sh');
+  const root = read('Dockerfile');
+  // The owner pastes it into the Space: short, and it takes the rest from main on GitHub (public, no key).
+  assert.ok(space.trim().split('\n').length <= 8, 'a few lines to paste');
+  assert.match(space, /^FROM node:22-bookworm-slim$/m);
+  assert.match(space, /^ADD https:\/\/raw\.githubusercontent\.com\/spculculat-oss\/Sham-Perfume\/main\/scripts\/robots\/space-setup\.sh \/space-setup\.sh$/m);
+  assert.match(space, /^USER node$/m, 'a Space runs as the user 1000');
+  assert.match(space, /PORT=7860/, 'the port a Docker Space opens');
+  assert.match(space, /ROBOTS_WORK_DIR=\/home\/node\/work/);
+  assert.match(space, /CMD \["bash", "\/boot\.sh"\]/);
+  assert.doesNotMatch(space + setup, /_KEY=|_TOKEN=/, 'no key in the image: the Space\'s secrets only');
+  // The same packages and the same pinned Bun as the root Dockerfile.
+  const pkgs = (t: string) => /--no-install-recommends ([^\\\n]+)/.exec(t)?.[1].trim();
+  assert.equal(pkgs(setup), pkgs(root));
+  const bun = JSON.parse(read('package.json')).packageManager.split('@')[1];
+  assert.ok(setup.includes(`bun@${bun}`) && root.includes(`bun@${bun}`), 'the pinned Bun');
+  assert.match(setup, /raw\.githubusercontent\.com\/\$\{REPO\}\/main\/scripts\/robots\/boot\.sh" -o \/boot\.sh/);
+  assert.match(setup, /chown -R node:node \/home\/node/);
+  assert.match(read('scripts/robots/boot.sh'), /WORK="\$\{ROBOTS_WORK_DIR:-\/work\}"/);
+  assert.match(read('scripts/robots/boot.sh'), /PORT="\$\{PORT:-10000\}"/);
+  // Shaheen's proposals can never change them.
+  for (const p of ['scripts/robots/huggingface/Dockerfile', 'scripts/robots/space-setup.sh']) assert.equal(changeRule(p).allowed, false, p);
+  // The docs give the owner the very lines of the file.
+  assert.ok(read('docs/HUGGINGFACE_ROBOTS.md').includes(space.trim()), 'the steps paste the same Dockerfile');
+});
+
+test('the server knows its own address on Render or on a Space; the map asks the Space first, then Render', () => {
+  assert.equal(selfUrl({ RENDER_EXTERNAL_URL: 'https://sham-robots.onrender.com/' }), 'https://sham-robots.onrender.com');
+  assert.equal(selfUrl({ SPACE_HOST: 'sham3331-sham-robots.hf.space' }), 'https://sham3331-sham-robots.hf.space');
+  assert.equal(selfUrl({}), '');
+  assert.deepEqual([...ROBOTS_SERVER_URLS], ['https://sham3331-sham-robots.hf.space', 'https://sham-robots.onrender.com']);
+  assert.equal(ROBOTS_SERVER_URL, ROBOTS_SERVER_URLS[0]);
+  const url = 'https://sham3331-sham-robots.hf.space';
+  const run: RobotServerRun = { id: 1, workflow: 'shaheen-import.yml', status: 'completed', conclusion: 'success', trigger: 'schedule', createdAt: '2026-11-20T01:00:00Z', updatedAt: '2026-11-20T01:10:00Z' };
+  assert.equal(serverRunsAsGh({ runs: [run] }, url)[0].html_url, `${url}/status`);
+});
+
 test('the live map reads the server\'s runs like GitHub\'s: robots on the server are not «waiting to move»', () => {
   const NOW = Date.parse('2026-11-19T12:00:00Z');
   const run: RobotServerRun = { id: 9, workflow: 'shaheen-import.yml', status: 'completed', conclusion: 'success', trigger: 'schedule', createdAt: '2026-11-19T11:37:00Z', startedAt: '2026-11-19T11:37:05Z', updatedAt: '2026-11-19T11:50:00Z' };
@@ -188,7 +228,7 @@ test('the live map reads the server\'s runs like GitHub\'s: robots on the server
   assert.ok(on.next, 'its next turn on the server');
   const off = allLive({ runs: [], now: NOW }).find((l) => l.id === importer.id)!;
   assert.equal(off.pausedBy, 'moving');
-  assert.match(off.noteAr, /Render/);
+  assert.match(off.noteAr, /سيرفر الروبوتات مش بيرد/);
   const running = mergeRuns([], serverRunsAsGh({ runs: [{ ...run, status: 'in_progress', conclusion: null, step: 'x' }] }));
   assert.equal(allLive({ runs: running, now: NOW, onRobotServer: true }).find((l) => l.id === importer.id)!.state, 'running');
 });

@@ -45,7 +45,13 @@ one at a time:
   service sleeps after 15 minutes without visits; the server visits its own `/health` every 10 minutes and the
   admin's live map wakes it too. A free instance can restart: the server publishes the day's results when Render
   stops it.
-- **The ops map** reads `https://sham-robots.onrender.com/status` (`ROBOTS_SERVER_URL` in `src/utils/opsLive.ts`)
+- **Where it runs (no card):** the owner's free Hugging Face Space `sham3331/sham-robots` (Docker, CPU basic 2 vCPU /
+  16 GB) — `scripts/robots/huggingface/Dockerfile` runs `scripts/robots/space-setup.sh` (the same tools as the root
+  Dockerfile) and the same `boot.sh`; the keys are the Space's secrets. A free Space sleeps after 48 hours without
+  visits; `SPACE_HOST` gives the server its own address to visit. Steps: `docs/HUGGINGFACE_ROBOTS.md`. Render stays
+  the other home (`render.yaml`).
+- **The ops map** reads `https://sham3331-sham-robots.hf.space/status`, then `https://sham-robots.onrender.com/status`
+  (`ROBOTS_SERVER_URLS` in `src/utils/opsLive.ts`)
   next to GitHub's runs. The pre-meeting check and the patrol judge the robots by their runs on the server.
 
 | Group | Robots | Main place | Fallback |

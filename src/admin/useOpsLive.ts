@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { mergeRuns, ROBOTS_SERVER_URL, serverRunsAsGh, type GhJob, type GhRun, type GhWorkflow, type RobotServerStatus } from '../utils/opsLive';
+import { mergeRuns, ROBOTS_SERVER_URLS, serverRunsAsGh, type GhJob, type GhRun, type GhWorkflow, type RobotServerStatus } from '../utils/opsLive';
 
 /**
  * Live GitHub Actions state of the public repository, read in the admin's browser without any key.
@@ -44,12 +44,17 @@ const serverJobs = (server?: RobotServerStatus): Record<number, GhJob[]> => Obje
   .filter((r) => r.status === 'in_progress' && r.step)
   .map((r) => [r.id, [{ name: r.workflow, status: 'in_progress', conclusion: null, steps: [{ name: r.step!, status: 'in_progress', conclusion: null, number: 1 }] }]]));
 
+/** The address that answered last (asked first next time). */
+let serverUrl = ROBOTS_SERVER_URLS[0];
 async function robotServer(): Promise<RobotServerStatus | undefined> {
-  try {
-    const r = await fetch(`${ROBOTS_SERVER_URL}/status`, { cache: 'no-store', signal: AbortSignal.timeout(8_000) });
-    const s = r.ok ? await r.json() as RobotServerStatus : undefined;
-    return s && Array.isArray(s.runs) ? s : undefined;
-  } catch { return undefined; }
+  for (const url of [serverUrl, ...ROBOTS_SERVER_URLS.filter((u) => u !== serverUrl)]) {
+    try {
+      const r = await fetch(`${url}/status`, { cache: 'no-store', signal: AbortSignal.timeout(8_000) });
+      const s = r.ok ? await r.json() as RobotServerStatus : undefined;
+      if (s && Array.isArray(s.runs)) { serverUrl = url; return s; }
+    } catch { /* asleep or not there: the next address */ }
+  }
+  return undefined;
 }
 
 class Limited extends Error { constructor(public until: number) { super('rate limited'); } }
@@ -83,7 +88,7 @@ export function useOpsLive(enabled = true): OpsLiveState & { refresh: () => void
     try {
       const [ghRuns, server] = await Promise.all([gh<{ workflow_runs?: GhRun[] }>('/runs?per_page=100&branch=main&exclude_pull_requests=true'), robotServer()]);
       const githubRuns = ghRuns.workflow_runs || [];
-      const runs = mergeRuns(githubRuns, serverRunsAsGh(server));
+      const runs = mergeRuns(githubRuns, serverRunsAsGh(server, serverUrl));
       let workflows: GhWorkflow[] | undefined;
       if (Date.now() - workflowsAt.current > WORKFLOWS_EVERY_MS) {
         workflows = (await gh<{ workflows?: GhWorkflow[] }>('/workflows?per_page=100')).workflows;

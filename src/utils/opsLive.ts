@@ -14,7 +14,7 @@ import type { StateOrders } from './platformState';
 
 // ── Schedules (UTC cron) and the other triggers ──────────────────────────────────────────────────────────────
 /**
- * The robots' timetables (UTC cron). Since 2026-11 they run on the robots' own server on Render
+ * The robots' timetables (UTC cron). Since 2026-11 they run on the robots' own server (a free Hugging Face Space, or Render)
  * (scripts/robots, docs/ROBOT_DISTRIBUTION.md): GitHub Actions only builds, tests and deploys the site, so a
  * timetable listed here but not in GITHUB_SCHEDULES does not run on GitHub (see OFF_GITHUB).
  */
@@ -57,12 +57,16 @@ export const SCHEDULES: Record<string, string[]> = {
 export const GITHUB_SCHEDULES: Record<string, string[]> = {
   'live-smoke.yml': ['0 6 * * *'],
 };
-/** Robots whose timetable no longer runs on GitHub: they run on the robots' server (Render) instead. */
+/** Robots whose timetable no longer runs on GitHub: they run on the robots' server instead. */
 export const OFF_GITHUB: ReadonlySet<string> = new Set(Object.keys(SCHEDULES).filter((f) => !GITHUB_SCHEDULES[f]));
 
-// ── The robots' server (Render) ──────────────────────────────────────────────────────────────────────────────
-/** Where the robots' server answers (render.yaml: the web service «sham-robots»). Read-only, no key, no personal data. */
-export const ROBOTS_SERVER_URL = 'https://sham-robots.onrender.com';
+// ── The robots' server (a free Hugging Face Space; Render as the other home) ──────────────────────────────────
+/**
+ * Where the robots' server may answer, in order: the owner's free Space «sham3331/sham-robots» (no card —
+ * docs/HUGGINGFACE_ROBOTS.md), then the Render web service (render.yaml). Read-only, no key, no personal data.
+ */
+export const ROBOTS_SERVER_URLS: readonly string[] = ['https://sham3331-sham-robots.hf.space', 'https://sham-robots.onrender.com'];
+export const ROBOTS_SERVER_URL = ROBOTS_SERVER_URLS[0];
 /** One robot run on the server, as its /status page lists it. */
 export interface RobotServerRun {
   id: number; workflow: string; status: 'queued' | 'in_progress' | 'completed';
@@ -242,7 +246,7 @@ export function botLive(bot: Bot, input: { latest: Record<string, GhRun>; finish
 
 export const PAUSED_AR: Record<PausedBy, string> = {
   owner: 'موقوف بأمر صاحب الموقع', state: 'موقوف بأمر دولة المنصة', frozen: 'موقوف: فرامل الطوارئ شغالة (كل الروبوتات واقفة)',
-  moving: 'سيرفر الروبوتات (Render) مش بيرد دلوقتي — بيصحى أو لسه بيتجهز، والروبوت مستنيه (تشغيل يدوي من GitHub في الطوارئ بس)',
+  moving: 'سيرفر الروبوتات مش بيرد دلوقتي — بيصحى أو لسه بيتجهز، والروبوت مستنيه (تشغيل يدوي من GitHub في الطوارئ بس)',
 };
 /** Who stopped a bot on purpose: its workflow's gate stops it when any robot sharing that workflow is paused. */
 export function pausedByOf(bot: Bot, controls?: OwnerControls, stateOrders?: StateOrders): PausedBy | undefined {

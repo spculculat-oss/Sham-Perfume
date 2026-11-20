@@ -1,5 +1,5 @@
 /**
- * «سيرفر الروبوتات» on Render — runs every robot on its timetable, one at a time, on its own copy of the site.
+ * «سيرفر الروبوتات» (a free Hugging Face Space, or Render) — runs every robot on its timetable, one at a time, on its own copy of the site.
  *   node --import tsx scripts/robots/server.mts        (started by boot.sh inside the copy; see render.yaml)
  *
  * - Timetables: SCHEDULES (src/utils/opsLive.ts); the steps: scripts/robots/registry.ts.
@@ -8,7 +8,7 @@
  * - The site's code is refreshed from main after each snapshot; when the server's own code changed it restarts.
  * - A small read-only web page: / (Arabic summary), /health, /status (JSON for the admin's live map). No key, no
  *   personal data, no secrets — names of robots and times only.
- * Settings (Render → Environment): ROBOTS_GITHUB_TOKEN (the owner's token: push the snapshot, issues, pull
+ * Settings (the Space's «Variables and secrets», or Render → Environment): ROBOTS_GITHUB_TOKEN (the owner's token: push the snapshot, issues, pull
  * requests), the robots' keys (same names as the GitHub secrets), ROBOTS_HEAVY=1 on a bigger server,
  * ROBOTS_ENABLED=0 to stop every timetable, ROBOTS_RUN_NOW=<workflow,…> to run some once at start.
  */
@@ -17,9 +17,9 @@ import { createServer } from 'node:http';
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
-import type { RobotServerRun, RobotServerStatus } from '../../src/utils/opsLive';
+import { ROBOTS_SERVER_URL, type RobotServerRun, type RobotServerStatus } from '../../src/utils/opsLive';
 import { robotOf, type FollowUp, type Robot } from './registry';
-import { dueRobots, gate, gitAuthEnv, lastFinished, nextSnapshotAt, parseOutputs, robotEnv, runRobot, SERVER_WORKFLOWS, snapshotFiles, type Exec } from './runner';
+import { dueRobots, gate, gitAuthEnv, lastFinished, nextSnapshotAt, parseOutputs, robotEnv, runRobot, selfUrl, SERVER_WORKFLOWS, snapshotFiles, type Exec } from './runner';
 
 const env = process.env;
 const ROOT = process.cwd();
@@ -29,7 +29,7 @@ const HEAVY = env.ROBOTS_HEAVY === '1';
 const ENABLED = env.ROBOTS_ENABLED !== '0';
 const SNAPSHOT_HOUR = Math.min(23, Math.max(0, Number(env.ROBOTS_SNAPSHOT_HOUR ?? 2) || 0));
 const PORT = Number(env.PORT || 10000);
-const SELF = (env.RENDER_EXTERNAL_URL || '').replace(/\/$/, '');
+const SELF = selfUrl(env);
 const TEMP = mkdtempSync(join(tmpdir(), 'robots-'));
 // Kept outside the copy of the site (a restart of the server inside the same machine keeps them).
 const STATE_DIR = env.ROBOTS_STATE_DIR || join(tmpdir(), 'robots-state');
@@ -65,7 +65,7 @@ function saveRuns() {
   runs = runs.slice(-300);
   try {
     writeFileSync(HISTORY_FILE, JSON.stringify(runs));
-    writeFileSync(RUNS_FILE, JSON.stringify(lastFinished(runs, SELF || 'https://sham-robots.onrender.com')));
+    writeFileSync(RUNS_FILE, JSON.stringify(lastFinished(runs, SELF || ROBOTS_SERVER_URL)));
   } catch { /* the page still has them in memory */ }
 }
 
@@ -267,10 +267,10 @@ createServer((req, res) => {
   res.writeHead(404, headers); res.end();
 }).listen(PORT, '0.0.0.0', () => say(`Listening on ${PORT} · ${SERVER_WORKFLOWS.length} robots · heavy steps ${HEAVY ? 'on' : 'off'} · snapshot ${SNAPSHOT_HOUR}:30 UTC`));
 
-// A free Render server sleeps after 15 minutes with no visit: it visits itself (and the admin's map wakes it too).
+// A free server sleeps with no visit (Render: 15 minutes, a Space: 48 hours): it visits itself (and the admin's map wakes it too).
 if (SELF && env.ROBOTS_KEEP_AWAKE !== '0') setInterval(() => { void fetch(`${SELF}/health`, { signal: AbortSignal.timeout(20_000) }).catch(() => undefined); }, 10 * 60_000).unref();
 
-// Render stops the server on a restart or a new deploy: the robot running now stops, the day's results are published.
+// Render or the Space stops the server on a restart or a new deploy: the robot running now stops, the day's results are published.
 async function stop(signal: string) {
   if (stopping) return;
   stopping = true;
