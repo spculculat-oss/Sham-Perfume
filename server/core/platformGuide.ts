@@ -369,8 +369,8 @@ export const PLATFORM_FEATURES: PlatformFeature[] = [
       en: 'A perfume news and trends digest gathered by the Sham expert from public sources, with sources credited.',
     },
     details: {
-      ar: 'التبويب بيعرض آخر الأخبار ويحدّثها تلقائياً، وتقدر تنقل ملاحظة من خبر لحاسبة التركيز أو للهرم. الأخبار تنقل ولا تُخترع: أي خبر بدون مصدر واضح بيتم استبعاده.',
-      en: 'The tab shows the latest items and refreshes automatically; a note from a news item can be carried into the concentration calculator or the pyramid. News is reported, never invented: items without a clear source are dropped.',
+      ar: 'واجهة مجلة شام بتعرض الخبر الرئيسي وآخر العناوين بروابط لمصادرها. اختَر «آخر العناوين» للبحث في المصادر أو صفّي تقارير شام حسب الموضوع واحفظها على جهازك. افتح تقريرًا لنقل مكوّن للهرم العطري أو تجربة الأكورد في حاسبة التركيز. التقارير التحريرية للتعلّم، وهي منفصلة عن الأخبار المنشورة عند المصادر.',
+      en: 'The Sham Journal has a lead story and recent headlines linked to their publishers. Choose Latest headlines to search sources, or filter the Sham reports by topic and bookmark them on your device. Open a report to add an ingredient to the fragrance pyramid or try the accord in the concentration calculator. Editorial learning reports are separate from publisher headlines.',
     },
     // No routing keywords on purpose: «إيه آخر أخبار العطور؟» asks for the news itself, so it must keep
     // going to retrieval (the live digest) instead of being answered with “this is the news page”.

@@ -1,131 +1,109 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { ExternalLink, Loader2, MessageCircle, Radio, RefreshCw, Sparkles } from 'lucide-react';
+import React, { useEffect, useId, useMemo, useState } from 'react';
+import { ExternalLink, ImageOff, Loader2, MessageCircle, Newspaper, Radio, Search, Sparkles } from 'lucide-react';
 import type { SupportedLanguage } from '../types/i18n';
-import { fmt, LOCALE_MAP } from '../لغات/localize';
+import { fmt, makeT } from '../لغات/localize';
+import { formatLocalizedNumber } from '../لغات/numerals';
 import { makeNewsT } from '../لغات/newsL10n';
 import type { NewsTextKey } from '../لغات/newsKeys';
+import { NEWS_DESK_TEXT } from '../لغات/newsDeskL10n';
 import { storeLocalized } from '../لغات/storeL10n';
-import { loadLiveNews, newsItemPicture, relativeTime, type NewsFile, type NewsItem } from '../utils/liveNews';
+import { loadBundledNews, loadLiveNews, newsItemPicture, type NewsFile, type NewsItem } from '../utils/liveNews';
 import { isStaticHosting, requestApi } from '../utils/api';
+import { matchesNewsQuery, newsDate } from './news/newsDesk';
 import { explainText } from './newsExplainText';
 
-
-export function ShaheenLiveNews({ currentLang = 'ar' }: { currentLang?: SupportedLanguage }) {
-  const L = makeNewsT(currentLang);
-  const locale = LOCALE_MAP[currentLang] || 'en';
+export function useNewsEdition(enabled = true) {
   const [news, setNews] = useState<NewsFile | null>(null);
+  useEffect(() => {
+    if (!enabled) return;
+    let alive = true;
+    const show = (data: NewsFile) => { if (alive) setNews(data); };
+    // Put the bundled edition on screen immediately; a slow network must not hide the front page.
+    void loadBundledNews().then(show, () => {});
+    void loadLiveNews().then(show, () => {});
+    return () => { alive = false; };
+  }, [enabled]);
+  return news;
+}
+
+function PublisherPhoto({ item, lang }: { item: NewsItem; lang: SupportedLanguage }) {
+  const L = makeNewsT(lang);
+  const [failed, setFailed] = useState(false);
+  // Real headlines use only the picture from their own feed, not an unrelated editorial image.
+  const photo = newsItemPicture(item);
+  return photo && !failed ? (
+    <figure className="sn-source-photo">
+      <img src={photo} alt="" loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setFailed(true)} />
+      <figcaption>{L('photo_source')}</figcaption>
+    </figure>
+  ) : <p className="sn-photo-absent"><ImageOff size={15} aria-hidden="true" />{failed ? makeT(lang, NEWS_DESK_TEXT)('photoUnavailable') : L('photo_none')}</p>;
+}
+
+export function ShaheenLiveNews({ currentLang = 'ar', edition, query = '', clearSearch }: {
+  currentLang?: SupportedLanguage;
+  edition?: NewsFile | null;
+  query?: string;
+  clearSearch?: () => void;
+}) {
+  const L = makeNewsT(currentLang);
+  const T = makeT(currentLang, NEWS_DESK_TEXT);
+  const ownEdition = useNewsEdition(edition === undefined);
+  const news = edition === undefined ? ownEdition : edition;
+  const headingId = useId();
   const [category, setCategory] = useState('all');
   const [shown, setShown] = useState(8);
-  const [, tick] = useState(0);
+  useEffect(() => { setShown(8); }, [query]);
+  const categories = useMemo(() => [...new Set((news?.items ?? []).map((item) => item.category))], [news]);
+  const label = (category: string) => category === 'all' ? L('live_all') : L(`live_cat_${category}` as NewsTextKey);
+  const items = (news?.items ?? []).filter((item) => (category === 'all' || item.category === category) && matchesNewsQuery(
+    query, storeLocalized(item.title, currentLang), storeLocalized(item.summary, currentLang), item.title.en, item.source, label(item.category),
+  ));
+  const updated = newsDate(news?.updatedAt, currentLang, { hour: '2-digit', minute: '2-digit' });
 
-  useEffect(() => {
-    let alive = true;
-    loadLiveNews().then((data) => { if (alive) setNews(data); }, () => {});
-    const timer = setInterval(() => tick((n) => n + 1), 60_000); // keeps «منذ…» current
-    return () => { alive = false; clearInterval(timer); };
-  }, []);
-
-  const categories = useMemo(() => [...new Set((news?.items || []).map((i) => i.category))], [news]);
-  const items = (news?.items || []).filter((i) => category === 'all' || i.category === category);
-  const nextIn = news ? Date.parse(news.nextUpdateAt) - Date.now() : 0;
-
-  return (
-    <section className="rounded-3xl border border-amber-200 bg-gradient-to-b from-amber-50/70 to-white p-4 shadow-sm sm:p-6" data-testid="shaheen-live-news" aria-labelledby="shaheen-live-news-title">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="space-y-1.5">
-          <h2 id="shaheen-live-news-title" className="flex items-center gap-2 text-lg font-extrabold text-stone-900 sm:text-xl">
-            <span className="relative flex h-3 w-3"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-60" /><span className="relative inline-flex h-3 w-3 rounded-full bg-red-500" /></span>
-            {L('live_title')}
-          </h2>
-          <p className="flex items-center gap-1.5 text-xs font-bold text-amber-800"><Radio className="h-3.5 w-3.5" aria-hidden />{fmt(L('live_badge'), { h: news?.intervalHours || 12 })}</p>
-        </div>
-        {news && news.items.length > 0 && (
-          <div className="flex flex-col items-end gap-0.5 text-[11px] text-stone-600">
-            <span className="flex items-center gap-1"><RefreshCw className="h-3 w-3" aria-hidden />{fmt(L('live_updated'), { t: relativeTime(news.updatedAt, locale) })}</span>
-            <span>{nextIn > 5 * 60_000 ? fmt(L('live_next'), { t: relativeTime(news.nextUpdateAt, locale) }) : L('live_nextSoon')}</span>
-          </div>
-        )}
-      </div>
-
-      {!news && <p className="mt-4 animate-pulse text-sm text-stone-500">{L('live_loading')}</p>}
-      {news && !news.items.length && <p className="mt-4 rounded-xl bg-white p-4 text-sm leading-relaxed text-stone-700 ring-1 ring-amber-100">{L('live_empty')}</p>}
-
-      {news && news.items.length > 0 && (
-        <>
-          {news.editor === 'shaheen' && news.digest && (
-            <div className="mt-4 rounded-2xl bg-stone-900 p-4 text-sm leading-relaxed text-amber-50">
-              <p className="mb-1 text-xs font-extrabold text-amber-400">👑 {L('live_digest')}</p>
-              <p dir="auto">{storeLocalized(news.digest, currentLang)}</p>
+  return <section className="sn-live" data-testid="shaheen-live-news" aria-labelledby={headingId}>
+    <header className="sn-section-heading">
+      <div><span className="sn-kicker"><Radio size={15} aria-hidden="true" />{fmt(L('live_badge'), { h: formatLocalizedNumber(currentLang, news?.intervalHours || 12) })}</span>
+        <h2 id={headingId}>{L('live_title')}</h2></div>
+      {updated && <span className="sn-muted">{fmt(L('live_updated'), { t: updated })}</span>}
+    </header>
+    {!news ? <p className="sn-state" role="status">{L('live_loading')}</p> : !news.items.length ? (
+      <p className="sn-state">{L('live_empty')}</p>
+    ) : <>
+      {news.editor === 'shaheen' && news.digest && <div className="sn-column"><h3>{L('live_digest')}</h3><p dir="auto">{storeLocalized(news.digest, currentLang)}</p></div>}
+      {news.editor === 'feeds' && <p className="sn-muted sn-feed-note">{L('live_headlines')}</p>}
+      {categories.length > 1 && <div className="sn-topics" role="group" aria-label={L('live_title')}>
+        {['all', ...categories].map((id) => <button type="button" key={id} aria-pressed={category === id}
+          onClick={() => { setCategory(id); setShown(8); }}>{label(id)}</button>)}
+      </div>}
+      <p className="sn-result-count" role="status">{formatLocalizedNumber(currentLang, items.length)} · {T('headlines')}</p>
+      {!items.length ? <div className="sn-state">
+        <Search aria-hidden="true" /><h3>{T('noResults')}</h3><p>{T('tryAgain')}</p>
+        <button type="button" className="sn-button" onClick={() => { setCategory('all'); setShown(8); clearSearch?.(); }}>{T('reset')}</button>
+      </div> : <ol className="sn-live-grid">
+        {items.slice(0, shown).map((item) => {
+          const title = storeLocalized(item.title, currentLang);
+          const summary = storeLocalized(item.summary, currentLang);
+          const date = newsDate(item.publishedAt, currentLang);
+          return <li key={item.id} className="sn-live-card">
+            <PublisherPhoto key={item.image} item={item} lang={currentLang} />
+            <div className="sn-story-body">
+              <span className="sn-story-topic">{label(item.category)}</span>
+              <p className="sn-meta"><Newspaper size={14} aria-hidden="true" /><bdi>{item.source}</bdi>{date && <><span aria-hidden="true">·</span><time dateTime={item.publishedAt}>{date}</time></>}</p>
+              <h3 dir="auto" lang={title === item.original ? item.lang : undefined}><a href={item.url} target="_blank" rel="noopener noreferrer nofollow">{title}</a></h3>
+              {summary && summary !== title && <p className="sn-summary" dir="auto">{summary}</p>}
+              {item.note && <p className="sn-source-note" dir="auto"><MessageCircle size={15} aria-hidden="true" /><span><b>{L('live_note')}</b> {storeLocalized(item.note, currentLang)}</span></p>}
+              <div className="sn-story-actions">
+                <a href={item.url} target="_blank" rel="noopener noreferrer nofollow" className="sn-text-link">{L('live_read')} <ExternalLink size={14} aria-hidden="true" /></a>
+                {!isStaticHosting && <ExplainButton item={item} lang={currentLang} />}
+              </div>
             </div>
-          )}
-          {news.editor === 'feeds' && <p className="mt-3 text-xs text-stone-500">{L('live_headlines')}</p>}
-
-          {categories.length > 1 && (
-            <div className="mt-4 flex flex-wrap gap-1.5" role="tablist">
-              {['all', ...categories].map((c) => (
-                <button key={c} type="button" role="tab" aria-selected={category === c} onClick={() => { setCategory(c); setShown(8); }}
-                  className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-bold transition ${category === c ? 'border-amber-700 bg-amber-700 text-white' : 'border-stone-200 bg-white text-stone-700 hover:border-amber-400'}`}>
-                  {c === 'all' ? L('live_all') : L(`live_cat_${c}` as NewsTextKey)}
-                </button>
-              ))}
-            </div>
-          )}
-
-          <ol className="mt-4 grid gap-3 md:grid-cols-2">
-            {items.slice(0, shown).map((item) => {
-              // Only the publisher's own photo is shown for a real story. When its feed carried
-              // none we say so plainly instead of substituting a stock or generated picture.
-              const photo = newsItemPicture(item);
-              return (
-              <li key={item.id} className="flex flex-col justify-between overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-xs transition hover:border-amber-300 hover:shadow-md">
-                {photo ? (
-                  <a href={item.url} target="_blank" rel="noopener noreferrer nofollow" className="relative block aspect-video overflow-hidden bg-stone-100">
-                    <img loading="lazy" decoding="async" src={photo} alt={storeLocalized(item.title, currentLang)}
-                      className="h-full w-full object-cover" referrerPolicy="no-referrer" />
-                    <span className="absolute bottom-1.5 start-1.5 rounded-md bg-stone-950/75 px-1.5 py-0.5 text-[10px] font-bold text-white backdrop-blur-xs">
-                      {L('photo_source')}
-                    </span>
-                  </a>
-                ) : (
-                  <p className="flex items-center gap-1.5 border-b border-stone-100 bg-stone-50 px-4 py-2 text-[11px] font-bold text-stone-500" dir="auto">
-                    <span aria-hidden="true">🚫</span>{L('photo_none')}
-                  </p>
-                )}
-                <div className="space-y-2 p-4">
-                  <div className="flex flex-wrap items-center gap-2 text-[11px] text-stone-500">
-                    <span className="rounded-full bg-amber-100 px-2 py-0.5 font-bold text-amber-900">{L(`live_cat_${item.category}` as NewsTextKey)}</span>
-                    <span className="font-bold text-stone-700">{item.source}</span>
-                    {item.publishedAt && <time dateTime={item.publishedAt}>{relativeTime(item.publishedAt, locale)}</time>}
-                  </div>
-                  <h3 className="text-[15px] font-extrabold leading-snug text-stone-900" dir="auto">{storeLocalized(item.title, currentLang)}</h3>
-                  {storeLocalized(item.summary, currentLang) !== storeLocalized(item.title, currentLang) && (
-                    <p className="text-sm leading-relaxed text-stone-700" dir="auto">{storeLocalized(item.summary, currentLang)}</p>
-                  )}
-                  {item.note && (
-                    <p className="flex gap-1.5 rounded-xl bg-amber-50 p-2.5 text-xs leading-relaxed text-amber-950" dir="auto">
-                      <MessageCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-700" aria-hidden />
-                      <span><b>{L('live_note')}</b> {storeLocalized(item.note, currentLang)}</span>
-                    </p>
-                  )}
-                </div>
-                <div className="mt-3 flex flex-wrap items-center gap-3">
-                  <a href={item.url} target="_blank" rel="noopener noreferrer nofollow" className="inline-flex items-center gap-1 text-xs font-bold text-amber-800 hover:text-amber-950 hover:underline">
-                    {L('live_read')} <ExternalLink className="h-3 w-3" aria-hidden />
-                  </a>
-                  {!isStaticHosting && <ExplainButton item={item} lang={currentLang} />}
-                </div>
-              </li>
-              );
-            })}
-          </ol>
-          {items.length > shown && (
-            <button type="button" onClick={() => setShown((n) => n + 8)} className="mt-4 w-full cursor-pointer rounded-xl border border-amber-300 bg-white py-2 text-sm font-bold text-amber-900 hover:bg-amber-50">{L('live_more')}</button>
-          )}
-          <p className="mt-3 text-[11px] text-stone-500">{L('live_disclaimer')}</p>
-        </>
-      )}
-    </section>
-  );
+          </li>;
+        })}
+      </ol>}
+      {items.length > shown && <button type="button" className="sn-button sn-more" onClick={() => setShown((n) => n + 8)}>{L('live_more')}</button>}
+      <p className="sn-editor-note">{L('live_disclaimer')}</p>
+    </>}
+  </section>;
 }
 
 type Explained = { title: string; summary: string; note: string };
@@ -143,7 +121,7 @@ function ExplainButton({ item, lang }: { item: NewsItem; lang: SupportedLanguage
   };
   if (state === 'done' && out) {
     return (
-      <div className="basis-full space-y-1.5 rounded-xl border border-amber-200 bg-amber-50/60 p-3" dir="auto" data-testid="news-explained">
+      <div className="sn-explained" role="status" dir="auto" data-testid="news-explained">
         <p className="flex items-center gap-1 text-[11px] font-extrabold text-amber-800"><Sparkles className="h-3.5 w-3.5" aria-hidden />{explainText(lang, 'by')}</p>
         <p className="text-sm font-extrabold text-stone-900">{out.title}</p>
         <p className="text-sm leading-relaxed text-stone-700">{out.summary}</p>
@@ -154,7 +132,7 @@ function ExplainButton({ item, lang }: { item: NewsItem; lang: SupportedLanguage
   return (
     <>
       <button type="button" onClick={() => void explain()} disabled={state === 'busy'} data-testid="news-explain"
-        className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-amber-300 bg-white px-2.5 py-1 text-xs font-bold text-amber-900 hover:bg-amber-50 disabled:cursor-wait disabled:opacity-70">
+        className="sn-button sn-quiet">
         {state === 'busy' ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden /> : <Sparkles className="h-3.5 w-3.5" aria-hidden />}
         {state === 'busy' ? explainText(lang, 'explaining') : explainText(lang, 'explain')}
       </button>

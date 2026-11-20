@@ -136,6 +136,19 @@ export const NavigationBreadcrumbs: React.FC<NavigationBreadcrumbsProps> = ({
 
   if (activeTab === 'home') return null;
 
+  if (activeTab === 'perfume_news') return (
+    <nav className="flex min-w-0 flex-wrap items-center gap-x-2 text-xs text-stone-600" aria-label={L('jump_to')}>
+      <button type="button" onClick={() => onNavigate('home')} className="inline-flex min-h-11 items-center gap-1.5 font-semibold hover:text-rose-900" title={L('home_tooltip')}>
+        <Home className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />{L('home_trail')}
+      </button>
+      <Separator className="h-3.5 w-3.5 shrink-0 text-stone-500" aria-hidden="true" />
+      <span aria-current="page">{L('ql_news')}</span>
+      {canGoBack && <button type="button" onClick={onGoBack} className="ms-auto inline-flex min-h-11 items-center gap-1.5 font-semibold hover:text-rose-900" title={L('back_tooltip')}>
+        <BackIcon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />{L('back_btn')}
+      </button>}
+    </nav>
+  );
+
   return (
     <div className="mb-6 bg-white/90 backdrop-blur-md border border-stone-200/90 rounded-2xl p-3 sm:p-4 shadow-xs">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
