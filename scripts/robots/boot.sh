@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# «سيرفر الروبوتات» — the start of the server on Render (render.yaml → scripts/robots/Dockerfile).
+# «سيرفر الروبوتات» — the start of the server on Render (render.yaml / the root Dockerfile).
 # Takes a copy of the site from GitHub (public: no key needed to read it), installs its libraries, then keeps the
 # robots' server running (scripts/robots/server.mts). Exit 75 = the server updated its own code: start again.
 # While the libraries install, a tiny page answers /health so Render knows the server is coming up.

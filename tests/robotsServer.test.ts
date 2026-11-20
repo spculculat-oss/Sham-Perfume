@@ -163,16 +163,18 @@ test('render.yaml: one free web service, the keys entered on Render only, the co
   assert.match(y, /plan: free/);
   assert.match(y, /autoDeploy: false/);
   assert.match(y, /healthCheckPath: \/health/);
-  assert.ok(existsSync(new URL('../scripts/robots/Dockerfile', import.meta.url)));
+  assert.ok(existsSync(new URL('../Dockerfile', import.meta.url)), 'at the root: Render finds it with no path to type');
+  assert.match(readFileSync(new URL('../.dockerignore', import.meta.url), 'utf8'), /^\*\n!scripts\/robots\/boot\.sh$/m, 'the image gets the start script only');
   assert.ok(existsSync(new URL('../scripts/robots/boot.sh', import.meta.url)));
   for (const m of y.matchAll(/- key: ([A-Z_]+)\n\s+(\w+):/g)) {
     if (SECRET_NAMES.includes(m[1])) assert.equal(m[2], 'sync', `${m[1]} is entered by the owner on Render`);
   }
-  const docker = readFileSync(new URL('../scripts/robots/Dockerfile', import.meta.url), 'utf8');
+  const docker = readFileSync(new URL('../Dockerfile', import.meta.url), 'utf8');
+  assert.match(docker, /COPY scripts\/robots\/boot\.sh \/boot\.sh/);
   assert.match(docker, new RegExp(`bun@${JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).packageManager.split('@')[1].replace(/\./g, '\\.')}`), 'the pinned Bun');
   assert.doesNotMatch(docker, /NODE_ENV=production/, 'the robots need the dev libraries (tsx)');
   // Shaheen's proposals can never change how the robots' server runs.
-  for (const p of ['scripts/robots/server.mts', 'render.yaml', 'scripts/owner/gateRule.mjs']) assert.equal(changeRule(p).allowed, false, p);
+  for (const p of ['scripts/robots/server.mts', 'render.yaml', 'Dockerfile', '.dockerignore', 'scripts/owner/gateRule.mjs']) assert.equal(changeRule(p).allowed, false, p);
 });
 
 test('the live map reads the server\'s runs like GitHub\'s: robots on the server are not «waiting to move»', () => {

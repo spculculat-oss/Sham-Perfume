@@ -7,8 +7,8 @@ services:
     runtime: docker
     plan: free
     region: frankfurt
-    dockerfilePath: ./scripts/robots/Dockerfile
-    dockerContext: ./scripts/robots
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     healthCheckPath: /health
     # The server refreshes the site's code from main by itself after each daily snapshot (no restart on every push).
     autoDeploy: false
