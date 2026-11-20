@@ -1,6 +1,6 @@
 /**
  * «بوابة جوجل استوديو» — Google AI Studio gets its own repository (the studio, by default
- * spculculat-oss/Sham-Perfume-Studio) where it can push freely: no robots, no workflows, nothing that makes
+ * spculculat-oss/Sham-new) where it can push freely: no robots, no workflows, nothing that makes
  * its «Finalizing commit» step fail. This bridge (.github/workflows/aistudio-bridge.yml) brings the
  * merchant's real changes from there into the site:
  *
@@ -22,7 +22,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { scanSecrets } from './review';
 
-export const DEFAULT_STUDIO_REPO = 'spculculat-oss/Sham-Perfume-Studio';
+export const DEFAULT_STUDIO_REPO = 'spculculat-oss/Sham-new';
 /** Largest file the bridge carries (photos for the site are fine; videos and archives are not). */
 export const MAX_FILE_BYTES = 5 * 1024 * 1024;
 
@@ -143,6 +143,34 @@ export function commitFromDir(cwd: string, dir: string, message = 'AI Studio dow
 }
 
 /**
+ * «جوجل معندهوش كل الأقسام»: a studio copy of a file the site already has may be missing whole sections the site
+ * built — writing it whole would delete them silently. Counts the top-level lines the studio version dropped and
+ * refuses the swap when it drops more than a token slice of the file (a real edit rarely deletes a tenth of it).
+ */
+export const MAX_DROPPED_SHARE = 0.1;
+/** Below these sizes a "lost lines" count means nothing (a rewritten one-line variable is not a lost section). */
+export const DROP_GUARD_MIN_LINES = 40;
+export const DROP_GUARD_MIN_DROPPED = 6;
+export function droppedShare(ours: string, theirs: string): { share: number; dropped: number } {
+  const lines = (s: string) => s.split('\n').map((l) => l.trim()).filter(Boolean);
+  const mine = lines(ours);
+  if (mine.length < DROP_GUARD_MIN_LINES) return { share: 0, dropped: 0 };
+  const left = new Map<string, number>();
+  for (const l of lines(theirs)) left.set(l, (left.get(l) || 0) + 1);
+  let kept = 0;
+  const seen = new Map<string, number>();
+  for (const l of mine) {
+    const n = (seen.get(l) || 0) + 1;
+    seen.set(l, n);
+    if ((left.get(l) || 0) >= n) kept += 1;
+  }
+  const dropped = mine.length - kept;
+  // A handful of changed lines is an edit; whole sections missing is a shorter copy of the site's file.
+  if (dropped < DROP_GUARD_MIN_DROPPED) return { share: 0, dropped };
+  return { share: dropped / mine.length, dropped };
+}
+
+/**
  * The import plan: what comes from the studio (head) into the site (main), and why the rest does not.
  * `base` = the studio commit imported last time (absent = first import).
  */
@@ -182,16 +210,43 @@ export function planImport(run: Run, opts: { head: string; base?: string; main?:
     }
 
     if (!base) {
-      // First import: a copy equal to an older site version is stale; anything else waits for approval.
+      // First import: a copy equal to an older site version is stale; anything else waits for approval —
+      // except a file the site has never had: that is the studio's own new work, and it only adds.
       const id = blobId(run, head, path);
       if (ours && id && mainVersions(run, main, path).has(id)) { skipped.push({ path, reason: 'نسخة قديمة من الملف (الموقع عنده أحدث)' }); continue; }
-      files.push({ path, action: 'write', how: ours ? 'studio' : 'new', cls: 'review', reason: 'أول استيراد — محتاج موافقة', content: theirs });
+      if (!ours) {
+        files.push({ path, action: 'write', how: 'new', cls, reason: 'ملف جديد من جوجل استوديو — إضافة على الموقع', content: theirs });
+        continue;
+      }
+      const { share, dropped } = binary ? { share: 0, dropped: 0 } : droppedShare(text(ours), text(theirs));
+      if (share > MAX_DROPPED_SHARE) {
+        skipped.push({ path, reason: `نسخة جوجل استوديو ناقصة ${dropped} سطر من الملف (${Math.round(share * 100)}%) — مش هتكتب كاملة علشان ما تمسحش أقسام الموقع` });
+        continue;
+      }
+      files.push({ path, action: 'write', how: 'studio', cls: 'review', reason: 'أول استيراد — محتاج موافقة', content: theirs });
       continue;
     }
 
     const before = blobAt(run, base, path);
+    if (ours && !before) {
+      // A name the site already uses that the studio did not have before: a different, smaller file
+      // (Sham-new does not carry every section) — never swapped blindly over the site's own file.
+      const { share } = binary ? { share: 1 } : droppedShare(text(ours), text(theirs));
+      skipped.push({ path, reason: share > MAX_DROPPED_SHARE
+        ? `نسخة جوجل استوديو ناقصة ${Math.round(share * 100)}% من الملف — مش هتكتب كاملة علشان ما تمسحش أقسام الموقع`
+        : 'ملف جديد في جوجل استوديو بنفس اسم ملف موجود عندنا — محتاج دمج يدوي' });
+      continue;
+    }
     if (!ours || (before && ours.equals(before))) {
-      // The site did not touch it since: the studio's version as is.
+      // The site did not touch it since: the studio's version as is — unless it comes back missing
+      // sections the site has (Sham-new does not carry every section of the site).
+      if (ours && !binary) {
+        const { share, dropped } = droppedShare(text(ours), text(theirs));
+        if (share > MAX_DROPPED_SHARE) {
+          skipped.push({ path, reason: `نسخة جوجل استوديو ناقصة ${dropped} سطر من الملف (${Math.round(share * 100)}%) — مش هتكتب كاملة علشان ما تمسحش أقسام الموقع` });
+          continue;
+        }
+      }
       files.push({ path, action: 'write', how: ours ? 'studio' : 'new', cls, ...(where.reason ? { reason: where.reason } : {}), content: theirs });
       continue;
     }
@@ -199,6 +254,11 @@ export function planImport(run: Run, opts: { head: string; base?: string; main?:
     const merged = mergeText(text(ours), text(before), text(theirs));
     if (merged === undefined) { skipped.push({ path, reason: 'تعديل جوجل استوديو بيتعارض مع تعديل أحدث في الموقع — اتساب علشان ما يمسحش شغل' }); continue; }
     if (merged === text(ours)) continue;
+    const dropped = droppedShare(text(ours), merged);
+    if (dropped.share > MAX_DROPPED_SHARE) {
+      skipped.push({ path, reason: `الدمج كان هيشيل ${dropped.dropped} سطر من الملف (${Math.round(dropped.share * 100)}%) — اتساب للمراجعة` });
+      continue;
+    }
     files.push({ path, action: 'write', how: 'merged', cls, ...(where.reason ? { reason: where.reason } : {}), content: Buffer.from(merged) });
   }
 

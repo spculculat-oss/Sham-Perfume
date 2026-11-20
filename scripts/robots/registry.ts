@@ -95,7 +95,7 @@ export const ROBOTS: Robot[] = [
     workflow: 'aistudio-bridge.yml', bots: ['studio_bridge'], nameAr: 'بوابة جوجل استوديو', timeoutMin: 25,
     heavy: 'بيبني الموقع كله ويختبره قبل ما ينشر كود — محتاج سيرفر أكبر (لحد كده بيشتغل يدوي من GitHub)',
     secrets: ['AISTUDIO_REPO_TOKEN'], github: true, isolated: { keep: ['src/data/live/aistudio-bridge.json'] },
-    env: { STUDIO_REPO: or('AISTUDIO_REPO', 'spculculat-oss/Sham-Perfume-Studio'), BRIDGE_PUBLISH: 'true', BRIDGE_FILE: 'src/data/live/aistudio-bridge.json' },
+    env: { STUDIO_REPO: or('AISTUDIO_REPO', 'spculculat-oss/Sham-new'), BRIDGE_PUBLISH: 'true', BRIDGE_FILE: 'src/data/live/aistudio-bridge.json' },
     steps: [
       { id: 'plan', name: 'Filter the studio changes', run: 'git fetch -q --unshallow origin main 2>/dev/null || true; ' + tsx('scripts/aistudio/bridge.mts', 'plan') },
       { name: 'Publish, or park for approval', run: 'export BRIDGE_AUTHOR="Sham Perfume <$(printf \'%s\' "${AISTUDIO_AUTHORS:-s.p.culculat@gmail.com}" | cut -d, -f1 | tr -d \' \')>"; ' + tsx('scripts/aistudio/bridge.mts', 'finish') },
