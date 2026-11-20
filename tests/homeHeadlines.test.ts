@@ -4,7 +4,7 @@ import { createHomeHeadlines, headlineEntry, parseHomeHeadlineFeed } from '../se
 import { readCommonsHeadlinePhotos } from '../server/homeHeadlineMedia';
 import { localHeadlineEdition, WORLD_HEADLINE_EDITION } from '../src/data/homeHeadlineEditions';
 import { readHeadlinePhoto } from '../src/utils/headlinePhoto';
-import { HEADLINE_REFRESH_MS, HEADLINE_RETRY_MS, headlineDay, headlineLink, nextHeadlineDay, readHeadlines, headlineRotation } from '../src/utils/homeHeadlines';
+import { HEADLINE_REFRESH_MS, HEADLINE_RETRY_MS, HEADLINE_WINDOW_MS, ageHeadlines, headlineDay, headlineLink, headlineRoll, headlineRotation, nextHeadlineChange, nextHeadlineDay, readHeadlines } from '../src/utils/homeHeadlines';
 
 const now = Date.parse('2026-11-19T00:35:00Z');
 const stamp = new Date(now).toISOString();
@@ -58,7 +58,7 @@ test('RSS and Atom extract genuine dates, original titles and safe direct links 
   assert.equal(headlineLink('https://www.gov.uk/redirect?to=example', 'gov-uk'), null);
 });
 
-test('concurrent country editions use only their configured feeds and return every distinct headline from today', async () => {
+test('concurrent country editions use only their configured feeds and return every distinct recent headline without crossing the editions', async () => {
   const calls: string[] = [];
   const load = createHomeHeadlines(async (input, init) => {
     const url = String(input);
@@ -66,7 +66,8 @@ test('concurrent country editions use only their configured feeds and return eve
     assert.ok(init?.signal);
     assert.equal(init?.redirect, 'error');
     if (url === egypt.url) return body(...Array.from({ length: 14 }, (_, i) => story(i + 1)),
-      story(1, arabicDate, 'http://youm7.com/1?tracking=0'), story(100, '2026-11-18T21:59:00Z'), story(101, '2026-11-19T00:36:00Z'));
+      story(1, arabicDate, 'http://youm7.com/1?tracking=0'), story(100, '2026-11-18T21:59:00Z'),
+      story(101, '2026-11-19T00:36:00Z'), story(102, '2026-11-17T00:35:00Z'));
     if (url === france.url) return body(frStory(11), frStory(12), frStory(13, '2026-11-18T23:59:00+01:00'));
     if (url === franceBusiness.url) return body(frStory(11), frStory(14, undefined, 'Actualité française 12 !'), frStory(15));
     if (url === gouvernement.url) return body(infoStory('Un autre titre du jour'));
@@ -81,11 +82,11 @@ test('concurrent country editions use only their configured feeds and return eve
   assert.deepEqual(calls.sort(), [...egyptFeeds, france, franceBusiness, gouvernement, ...WORLD_HEADLINE_EDITION.feeds].map(({ url }) => url).sort(), 'world requests are coalesced across countries');
   assert.equal(eg.local.status, 'fresh');
   assert.equal(eg.country, 'EG');
-  assert.deepEqual(urls(eg.local.items), Array.from({ length: 14 }, (_, i) => article(i + 1)));
+  assert.deepEqual(urls(eg.local.items), [...Array.from({ length: 14 }, (_, i) => article(i + 1)), article(100)]);
   assert.equal(fr.country, 'FR');
-  assert.deepEqual(urls(fr.local.items), ['https://www.info.gouv.fr/actualite/exemple', frenchArticle(11), frenchArticle(12), frenchArticle(15)]);
-  assert.deepEqual(urls(fr.world.items), [article(500)], 'world still uses visitor’s date, not the Egypt filter');
-  assert.deepEqual(urls(eg.world.items), [article(500), article(501)]);
+  assert.deepEqual(urls(fr.local.items), ['https://www.info.gouv.fr/actualite/exemple', frenchArticle(11), frenchArticle(12), frenchArticle(15), frenchArticle(13)]);
+  assert.deepEqual(urls(fr.world.items), [article(500), article(501)], 'recent world news crosses editorial days in every zone');
+  assert.deepEqual(eg.world, fr.world);
   for (const unequipped of [other, unknown]) {
     assert.equal(unequipped.local.status, 'unsupported');
     assert.equal(unequipped.local.items.length, 0);
@@ -94,7 +95,7 @@ test('concurrent country editions use only their configured feeds and return eve
   assert.deepEqual(readHeadlines(eg), eg, 'browser keeps all entries, not only a fixed handful');
 });
 
-test('source failures stay independent; valid empty is not an outage or an old article', async () => {
+test('source failures stay independent; valid empty replaces earlier data; failures expire', async () => {
   let time = now;
   let fail = false;
   let empty = false;
@@ -125,15 +126,20 @@ test('source failures stay independent; valid empty is not an outage or an old a
   time = Date.parse('2026-11-19T23:00:01Z');
   const tomorrow = await load(paris);
   assert.equal(tomorrow.day, '2026-11-20');
-  assert.equal(tomorrow.local.status, 'unavailable');
-  assert.deepEqual(tomorrow.local.items, []);
-  assert.equal(tomorrow.world.status, 'empty');
+  assert.equal(tomorrow.local.status, 'partial');
+  assert.deepEqual(tomorrow.local.items, partial.local.items, 'a remaining publisher outage does not drop still-recent headlines');
+  assert.equal(tomorrow.world.status, 'fresh');
+  time = now + HEADLINE_WINDOW_MS;
+  const expired = await load(paris);
+  assert.equal(expired.local.status, 'unavailable');
+  assert.deepEqual(expired.local.items, []);
+  assert.equal(expired.world.status, 'empty', 'a running feed with only expired stories is not unavailable');
   const before = firstCalls;
   assert.equal((await load(paris, false)).world.status, 'unavailable');
   assert.equal(firstCalls, before, 'off switches do not read providers');
 });
 
-test('midnight filters a still-warm snapshot, and the next day starts on the zone’s real midnight', async () => {
+test('Cairo midnight updates the edition date without deleting recent published titles', async () => {
   let time = Date.parse('2026-11-18T21:59:59Z');
   const load = createHomeHeadlines(async () => body(story(1, '2026-11-18T21:58:00Z')), () => time);
   const yesterday = await load(cairo);
@@ -144,22 +150,38 @@ test('midnight filters a still-warm snapshot, and the next day starts on the zon
   time = midnight;
   const today = await load(cairo);
   assert.equal(today.day, '2026-11-19');
-  assert.equal(today.local.status, 'empty');
-  assert.deepEqual(today.local.items, []);
+  assert.equal(today.local.status, 'fresh');
+  assert.deepEqual(today.local.items, yesterday.local.items);
+  assert.equal(today.local.items[0].datedAt, '2026-11-18T21:58:00.000Z');
+  assert.deepEqual(readHeadlines(today), today);
+  assert.equal(nextHeadlineChange(yesterday), midnight);
+  const nearExpiry = Date.parse(yesterday.local.items[0].datedAt) + HEADLINE_WINDOW_MS - 1;
+  const stale = ageHeadlines(yesterday, nearExpiry, true);
+  assert.equal(stale.local.status, 'stale');
+  assert.deepEqual(stale.local.items, today.local.items);
+  assert.equal(nextHeadlineChange(stale), nearExpiry + 1);
+  const expired = ageHeadlines(stale, nearExpiry + 1);
+  assert.equal(expired.local.status, 'unavailable');
+  assert.deepEqual(expired.local.items, []);
+  time = nearExpiry + 1;
+  assert.equal((await load(cairo)).local.status, 'empty');
   assert.equal(headlineDay(midnight, 'Europe/Paris'), '2026-11-18');
   assert.equal(nextHeadlineDay(Date.parse('2026-03-28T23:00:00Z'), 'Europe/Paris'), Date.parse('2026-03-29T22:00:00Z'));
 });
 
-test('client schema rejects a foreign publisher, yesterday, tampered URLs and missing dates', () => {
+test('client schema allows a dated recent fallback but rejects old, future, foreign, and invalid entries', () => {
   const invalid = { title: 'Unsafe', url: 'https://example.org/story', publisher: 'service-public', dateKind: 'published', datedAt: stamp };
   const valid = { ...invalid, title: 'Report', url: frenchArticle(10) };
+  const previous = { ...valid, url: frenchArticle(11), title: 'Recent from yesterday', datedAt: '2026-11-18T22:12:00.000Z' };
   const response = {
     ...paris, day: '2026-11-19', asOf: now,
-    local: { status: 'fresh', checkedAt: stamp, items: [valid, invalid, { ...valid, url: frenchArticle(11), title: 'Old', datedAt: '2026-11-18T22:12:00.000Z' },
+    local: { status: 'fresh', checkedAt: stamp, items: [valid, invalid, previous,
+      { ...valid, url: frenchArticle(13), title: 'Old', datedAt: '2026-11-17T00:35:00.000Z' },
+      { ...valid, url: frenchArticle(14), title: 'Future', datedAt: '2026-11-19T00:36:00.000Z' },
       { ...valid, url: article(1), publisher: 'youm7' }, { ...valid, url: frenchArticle(12), title: 'Undated', datedAt: null }] },
     world: { status: 'fresh', checkedAt: stamp, items: [valid] },
   };
-  assert.deepEqual(readHeadlines(response).local.items, [valid]);
+  assert.deepEqual(readHeadlines(response).local.items, [valid, previous]);
   assert.equal(readHeadlines(response).world.status, 'unavailable');
   assert.equal(readHeadlines({ ...response, country: 'BW' }).local.status, 'unsupported');
   assert.throws(() => readHeadlines({ ...response, country: 'not-a-country' }));
@@ -218,14 +240,15 @@ test('the Guria caption in Global Voices and its Commons imageinfo use the same 
   });
 });
 
-test('new publisher feeds are separate, date-filtered and never reuse RSS thumbnails', async () => {
+test('Egypt Today and Arabs Today keep recent dated titles in their editions and never reuse RSS thumbnails', async () => {
   const localUrl = 'https://www.egypt-today.com/1236/002000-%D8%AE%D8%A8%D8%B1';
   const globalUrl = 'https://www.arabstoday.net/1152/001000-%D8%B9%D8%A7%D8%AC%D9%84';
   const thumbnail = `<description><![CDATA[Full text <img src="${photoUrl}" />]]></description>
     <enclosure url="${photoUrl}" type="image/jpeg" />`;
   const load = createHomeHeadlines(async (url) => {
     if (url === egyptToday.url) return body(newsItem('الكرة المصرية', localUrl, thumbnail, 'Thu, 19 Nov 2026 00:20:00 GMT'),
-      newsItem('فريق أمس', `${localUrl}-old`, thumbnail, 'Wed, 18 Nov 2026 21:58:00 GMT'));
+      newsItem('فريق أمس', `${localUrl}-older`, thumbnail, 'Wed, 18 Nov 2026 21:58:00 GMT'),
+      newsItem('فريق قديم', `${localUrl}-expired`, thumbnail, 'Mon, 16 Nov 2026 21:58:00 GMT'));
     if (url === arabsToday.url) return body(newsItem('العنوان العاجل', `${globalUrl}?ref=rss`, thumbnail),
       newsItem('العنوان العاجل !', `${globalUrl}-duplicate`, '', 'Thu, 19 Nov 2026 00:09:00 GMT'),
       newsItem('خبر لاحق', `${globalUrl}-future`, '', 'Thu, 19 Nov 2026 00:40:00 GMT'),
@@ -234,7 +257,10 @@ test('new publisher feeds are separate, date-filtered and never reuse RSS thumbn
     return body();
   }, () => now);
   const eg = readHeadlines(await load(cairo));
-  assert.deepEqual(eg.local.items, [{ title: 'الكرة المصرية', publisher: 'egypt-today', url: localUrl, dateKind: 'published', datedAt: '2026-11-19T00:20:00.000Z' }]);
+  assert.deepEqual(eg.local.items, [
+    { title: 'الكرة المصرية', publisher: 'egypt-today', url: localUrl, dateKind: 'published', datedAt: '2026-11-19T00:20:00.000Z' },
+    { title: 'فريق أمس', publisher: 'egypt-today', url: `${localUrl}-older`, dateKind: 'published', datedAt: '2026-11-18T21:58:00.000Z' },
+  ]);
   assert.deepEqual(eg.world.items, [{ title: 'العنوان العاجل', publisher: 'arabs-today', url: globalUrl, dateKind: 'published', datedAt: '2026-11-19T00:10:00.000Z' }]);
   assert.deepEqual((await load({ country: null, timeZone: 'UTC' })).world, eg.world);
   assert.deepEqual(readHeadlines({ ...eg, local: { ...eg.local, items: [...eg.local.items, ...eg.world.items] },
@@ -331,7 +357,8 @@ test('Brazil receives only its own dated, first-party agency headlines and does 
     const url = String(input);
     calls.push(url);
     if (url === general.url) return body(eligible,
-      agencyStory('dc:creator', byline, '2026-11-19T01:59:00Z', `${link}-old`, 'Ontem no Brasil'),
+      agencyStory('dc:creator', byline, '2026-11-19T01:59:00Z', `${link}-older`, 'Ontem no Brasil'),
+      agencyStory('dc:creator', byline, '2026-11-17T01:59:00Z', `${link}-expired`, 'Notícia antiga'),
       agencyStory('dc:creator', byline, '2026-11-19T13:00:01Z', `${link}-future`, 'Ainda não publicado'),
       agencyStory('dc:creator', 'Publicador parceiro', day, `${link}-partner`, 'Não reutilizar'));
     if (url === politics.url) return new Response(null, { status: 503 });
@@ -342,7 +369,7 @@ test('Brazil receives only its own dated, first-party agency headlines and does 
   const [eg, br, bw] = await Promise.all([load(cairo), load(brasil), load({ country: 'BW', timeZone: 'Africa/Gaborone' })]);
   assert.equal(eg.local.items[0].publisher, 'youm7');
   assert.equal(br.local.status, 'partial');
-  assert.deepEqual(urls(br.local.items), [link]);
+  assert.deepEqual(urls(br.local.items), [link, `${link}-older`]);
   assert.equal(br.local.items[0].photo, undefined);
   assert.deepEqual(readHeadlines(br), br);
   assert.equal(bw.local.status, 'unsupported', 'the Botswana directory needs no feed requests');
@@ -352,4 +379,17 @@ test('Brazil receives only its own dated, first-party agency headlines and does 
   assert.deepEqual(mixed.world, br.world);
   const withoutRights = readHeadlines({ ...br, local: { ...br.local, items: [{ ...br.local.items[0], author: 'Reuters' }] } });
   assert.equal(withoutRights.local.status, 'unavailable');
+});
+
+
+test('the roll interleaves labelled editions, favors recent dates, and skips cross-edition duplicates', () => {
+  const localItems = parseHomeHeadlineFeed(rss(story(1), story(2)), egypt);
+  const worldItems = parseHomeHeadlineFeed(rss(story(1, arabicDate, 'https://youm7.com/1', 'Same story, short link'), story(3), story(4)), world);
+  const recent = parseHomeHeadlineFeed(rss(gvStory(imageCaption)), globalVoices)[0];
+  const previous = { ...recent, title: 'Earlier World story', url: `${recent.url}-older`, datedAt: '2026-11-18T21:30:00.000Z' };
+  assert.deepEqual(headlineRoll(localItems, [...worldItems, recent, previous], cairo.timeZone).map(({ region, article }) => [region, article.title]), [
+    ['local', 'خبر 1'], ['world', 'خبر 3'], ['local', 'خبر 2'], ['world', 'World perspective'], ['world', 'خبر 4'], ['world', 'Earlier World story'],
+  ]);
+  assert.deepEqual(headlineRoll([], [recent], cairo.timeZone), [{ region: 'world', article: recent }]);
+  assert.deepEqual(headlineRoll([], [], cairo.timeZone), []);
 });

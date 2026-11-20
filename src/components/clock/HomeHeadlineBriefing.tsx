@@ -1,12 +1,12 @@
 import React, { memo, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { ArrowUpRight, CalendarDays, ChevronDown, Globe2, MapPin, Newspaper, Pause, Play, RefreshCw, X } from 'lucide-react';
+import { ArrowUpRight, CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Globe2, MapPin, Newspaper, Pause, Play, RefreshCw, X } from 'lucide-react';
 import type { SupportedLanguage } from '../../types/i18n';
 import { isRTL } from '../../لغات/localizedContent';
 import { fmt, loc, makeT } from '../../لغات/localize';
 import { formatLocalizedNumber } from '../../لغات/numerals';
 import { HEADLINE_PUBLISHERS, localHeadlineEdition, WORLD_HEADLINE_EDITION, type HeadlineEdition, type HeadlinePublisher } from '../../data/homeHeadlineEditions';
 import { HEADLINE_PHOTO_LICENSES, type HeadlinePhoto } from '../../utils/headlinePhoto';
-import { HEADLINE_ROTATE_MS, emptyHeadlines, headlineRotation, type HeadlineSection, type HomeHeadline } from '../../utils/homeHeadlines';
+import { HEADLINE_ROTATE_MS, emptyHeadlines, headlineDay, headlineRoll, type HeadlineSection, type HomeHeadline, type HomeHeadlines } from '../../utils/homeHeadlines';
 import { isStaticHosting } from '../../utils/api';
 import { clockLocale } from './clockText';
 import { HEADLINE_TEXT } from './homeHeadlineText';
@@ -29,12 +29,13 @@ function storyDates(lang: SupportedLanguage, timeZone: string) {
   const { locale, numberingSystem } = clockLocale(lang);
   return {
     time: new Intl.DateTimeFormat(locale, { timeZone, numberingSystem, hour: '2-digit', minute: '2-digit' }),
+    stamp: new Intl.DateTimeFormat(locale, { timeZone, numberingSystem, month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
     date: new Intl.DateTimeFormat(locale, { timeZone, numberingSystem, month: 'short', day: 'numeric' }),
   };
 }
 
 function StoryMeta({ article, lang, dates }: StoryProps) {
-  const date = (article.dateKind === 'date' ? dates.date : dates.time).format(new Date(article.datedAt));
+  const date = (article.dateKind === 'date' ? dates.date : dates.stamp).format(new Date(article.datedAt));
   return <div className="hn-byline">
     <bdi className="hn-source">{loc(lang, HEADLINE_PUBLISHERS[article.publisher].name)}</bdi><span aria-hidden="true">·</span>
     <time dateTime={article.datedAt}>{article.dateKind === 'updated' && `${makeT(lang, HEADLINE_TEXT)('updated')} `}{date}</time>
@@ -51,6 +52,68 @@ function HeadlineLicense({ article, lang }: Omit<StoryProps, 'dates'>) {
 
 function StoryTitle({ article }: Pick<StoryProps, 'article'>) {
   return <bdi lang={HEADLINE_PUBLISHERS[article.publisher].lang}>{article.title}</bdi>;
+}
+
+/** One source-labelled roll above the clock, independent of the desk's active tab. */
+function HeadlineRoll({ data, lang, dates, loading, visible, rtl }: StoryFormat & {
+  data?: HomeHeadlines; loading: boolean; visible: boolean; rtl: boolean;
+}) {
+  const T = makeT(lang, HEADLINE_TEXT);
+  const wireId = useId();
+  const [selected, setSelected] = useState<string>();
+  const [paused, setPaused] = useState(false);
+  const [hovering, setHovering] = useState(false);
+  const [reading, setReading] = useState(false);
+  const [reduced, setReduced] = useState(() => typeof matchMedia === 'function' && matchMedia(motionQuery).matches);
+  const local = data?.local ?? NO_HEADLINES;
+  const world = data?.world ?? NO_HEADLINES;
+  const timeZone = data?.timeZone ?? 'UTC';
+  const entries = useMemo(() => headlineRoll(local.items, world.items, timeZone), [local.items, world.items, timeZone]);
+  const index = Math.max(0, entries.findIndex(({ article }) => article.url === selected));
+  const item = entries[index];
+  const canRotate = entries.length > 1 && !paused && !reduced;
+  const Next = rtl ? ChevronLeft : ChevronRight;
+  useEffect(() => {
+    if (typeof matchMedia !== 'function') return;
+    const preference = matchMedia(motionQuery);
+    const update = () => setReduced(preference.matches);
+    preference.addEventListener('change', update);
+    return () => preference.removeEventListener('change', update);
+  }, []);
+  useEffect(() => {
+    if (!canRotate || !visible || hovering || reading) return;
+    const next = (index + 1) % entries.length;
+    const timer = window.setTimeout(() => setSelected(entries[next].article.url), HEADLINE_ROTATE_MS);
+    return () => window.clearTimeout(timer);
+  }, [canRotate, entries, hovering, index, reading, visible]);
+  const status = item && (item.region === 'local' ? local : world).status;
+  const earlier = item && data && headlineDay(Date.parse(item.article.datedAt), data.timeZone) !== data.day;
+  const flag = status === 'stale' ? 'cached' : earlier ? 'earlier' : status === 'partial' ? 'limited' : undefined;
+  return <div className="hn-strip" role="group" aria-label={T('roll')}
+    onPointerEnter={(event) => { if (event.pointerType === 'mouse') setHovering(true); }} onPointerLeave={() => setHovering(false)}>
+    <div className="hn-wire" id={wireId} aria-live={canRotate ? 'off' : 'polite'} aria-atomic="true"
+      onFocusCapture={() => setReading(true)} onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setReading(false);
+      }}>
+      {item ? <>
+        <span className="hn-strip-label"><span className="hn-dot" aria-hidden="true" />{T(item.region)}</span>
+        <div className="hn-strip-story">
+          <a href={item.article.url} {...linkProps} className="hn-strip-link" title={item.article.title}><StoryTitle article={item.article} /><ArrowUpRight size={14} aria-hidden="true" /></a>
+          <div className="hn-strip-meta">
+            <StoryMeta article={item.article} {...{ lang, dates }} /><HeadlineLicense article={item.article} lang={lang} />
+            {flag && <span className="hn-strip-status">{T(flag)}</span>}
+          </div>
+        </div>
+      </> : <p className="hn-strip-empty">{T(loading ? 'checking' : 'noHeadlines')}</p>}
+    </div>
+    {entries.length > 1 && <div className="hn-roll-actions">
+      {!reduced && <button type="button" className="hn-icon hn-roll-button" aria-controls={wireId}
+        aria-label={T(paused ? 'rotationPlay' : 'rotationPause')} title={T(paused ? 'rotationPlay' : 'rotationPause')}
+        onClick={() => setPaused(!paused)}>{paused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}</button>}
+      <button type="button" className="hn-icon hn-roll-button" aria-controls={wireId} aria-label={T('nextHeadline')} title={T('nextHeadline')}
+        onClick={() => { setPaused(true); setSelected(entries[(index + 1) % entries.length].article.url); }}><Next size={18} aria-hidden="true" /></button>
+    </div>}
+  </div>;
 }
 
 // Photos reach the desk only through readHeadlines' publisher and license checks.
@@ -106,9 +169,9 @@ function Sources({ lang, publishers }: { lang: SupportedLanguage; publishers: He
   </details>;
 }
 
-function Edition({ region, section, edition, countryName, lang, dates, loading, openPress }: {
+function Edition({ region, section, edition, countryName, lang, dates, timeZone, loading, openPress }: {
   region: EditionKey; section: HeadlineSection; edition?: HeadlineEdition; countryName?: string;
-  loading: boolean; openPress: () => void;
+  timeZone: string; loading: boolean; openPress: () => void;
 } & StoryFormat) {
   const T = makeT(lang, HEADLINE_TEXT);
   const titleId = useId();
@@ -123,8 +186,9 @@ function Edition({ region, section, edition, countryName, lang, dates, loading, 
     return totals;
   }, [section.items]);
   const items = publisher ? section.items.filter((item) => item.publisher === publisher) : section.items;
-  // Give today's first credited picture front-page space. The remaining list retains publication order.
-  const lead = items.find((item) => item.photo) ?? items[0];
+  // Choose a credited picture from the newest represented day, not an older lead just for its image.
+  const newestDay = items[0] && headlineDay(Date.parse(items[0].datedAt), timeZone);
+  const lead = items.find((item) => item.photo && headlineDay(Date.parse(item.datedAt), timeZone) === newestDay) ?? items[0];
   const latest = lead ? items.filter((item) => item.url !== lead.url) : [];
   const title = region === 'local' ? `${T('localTitle')}${countryName ? ` · ${countryName}` : ''}` : T('worldTitle');
   const empty = isStaticHosting ? 'static'
@@ -178,7 +242,7 @@ function Edition({ region, section, edition, countryName, lang, dates, loading, 
   </section>;
 }
 
-// The clock above this component changes once a second; the briefing has its own timers.
+// The clock changes once a second; the briefing has its own timers.
 export const HomeHeadlineBriefing = memo(function HomeHeadlineBriefing({ lang }: { lang: SupportedLanguage }) {
   const T = makeT(lang, HEADLINE_TEXT);
   const id = useId();
@@ -190,10 +254,6 @@ export const HomeHeadlineBriefing = memo(function HomeHeadlineBriefing({ lang }:
   const toggle = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const [chosen, setChosen] = useState<View>();
-  const [playing, setPlaying] = useState(false);
-  const [reduceMotion, setReduceMotion] = useState(() => typeof matchMedia === 'function' && matchMedia(motionQuery).matches);
-  const [hovering, setHovering] = useState(false);
-  const [tickerIndex, setTickerIndex] = useState(0);
   const { data, loading, visible, refresh } = useHomeHeadlines();
   const rtl = isRTL(lang);
   const { locale, numberingSystem } = clockLocale(lang);
@@ -203,26 +263,7 @@ export const HomeHeadlineBriefing = memo(function HomeHeadlineBriefing({ lang }:
   const dates = useMemo(() => storyDates(lang, timeZone), [lang, timeZone]);
   const automatic: EditionKey = data?.local.items.length || !data?.world.items.length ? 'local' : 'world';
   const view = chosen ?? automatic;
-  const region = view === 'press' ? automatic : view;
-  const section = data?.[region] ?? NO_HEADLINES;
-  const sequence = useMemo(() => headlineRotation(section.items), [section.items]);
-  const current = sequence.length ? sequence[tickerIndex % sequence.length] : undefined;
-  // Only explicit play moves the strip. The front page and list never rotate.
-  useEffect(() => {
-    if (!playing || hovering || !visible || sequence.length < 2 || reduceMotion) return;
-    const timer = window.setTimeout(() => setTickerIndex((n) => (n + 1) % sequence.length), HEADLINE_ROTATE_MS);
-    return () => window.clearTimeout(timer);
-  }, [playing, hovering, visible, sequence, tickerIndex, reduceMotion]);
-  useEffect(() => {
-    if (typeof matchMedia !== 'function') return;
-    const preference = matchMedia(motionQuery);
-    const update = () => {
-      setReduceMotion(preference.matches);
-      if (preference.matches) setPlaying(false);
-    };
-    preference.addEventListener('change', update);
-    return () => preference.removeEventListener('change', update);
-  }, []);
+  const section = data?.[view === 'press' ? automatic : view] ?? NO_HEADLINES;
   useEffect(() => {
     // On phones the masthead, not the much taller shared clock, is the start of reading.
     if (open && window.matchMedia(narrowDesk).matches) {
@@ -230,15 +271,8 @@ export const HomeHeadlineBriefing = memo(function HomeHeadlineBriefing({ lang }:
       paper.current?.scrollIntoView({ block: 'start' });
     }
   }, [open]);
-  const changeView = (value: View) => {
-    setChosen(value);
-    if (value === view) return;
-    setTickerIndex(0);
-    setPlaying(false);
-  };
   const close = () => {
     setOpen(false);
-    setPlaying(false);
     toggle.current?.focus({ preventScroll: true });
     bar.current?.scrollIntoView({ block: 'nearest' });
   };
@@ -247,27 +281,14 @@ export const HomeHeadlineBriefing = memo(function HomeHeadlineBriefing({ lang }:
     .format(new Date(`${data.day}T12:00:00Z`));
   const checkedAt = section.checkedAt;
   const checkedTime = checkedAt && dates.time.format(new Date(checkedAt));
-  const stripStatus = section.status === 'stale' ? 'cached' : section.status === 'partial' ? 'limited' : undefined;
 
-  return <aside className="home-news-desk" aria-labelledby={id} dir={rtl ? 'rtl' : 'ltr'} data-testid="home-news-briefing">
+  return <section className="home-news-desk" aria-labelledby={id} dir={rtl ? 'rtl' : 'ltr'} data-testid="home-news-briefing">
     <div className="hn-bar" ref={bar}>
       <div className="hn-brand">
         <span className="hn-mark"><Newspaper size={20} aria-hidden="true" /></span>
         <div><h2 id={id}>{T('brand')}</h2><p>{T('scope')}</p></div>
       </div>
-      <div className="hn-strip" aria-live="off" onPointerEnter={(event) => { if (event.pointerType === 'mouse') setHovering(true); }}
-        onPointerLeave={() => setHovering(false)} onFocusCapture={() => setPlaying(false)}>
-        {current ? <>
-          <span className="hn-strip-label"><span className="hn-dot" />{T(region)}</span>
-          <div className="hn-strip-story">
-            <a href={current.url} {...linkProps} className="hn-strip-link" title={current.title}><StoryTitle article={current} /><ArrowUpRight size={14} aria-hidden="true" /></a>
-            <div className="hn-strip-meta">
-              <StoryMeta article={current} {...{ lang, dates }} /><HeadlineLicense article={current} lang={lang} />
-              {stripStatus && <span className="hn-strip-status">{T(stripStatus)}</span>}
-            </div>
-          </div>
-        </> : <p className="hn-strip-empty">{T(loading ? 'checking' : 'noHeadlines')}</p>}
-      </div>
+      <HeadlineRoll {...{ data, lang, dates, loading, visible, rtl }} />
       <button type="button" ref={toggle} className="hn-button hn-toggle" aria-expanded={open} aria-controls={panelId} onClick={() => {
         if (open) close(); else setOpen(true);
       }}>{T(open ? 'close' : 'open')}<ChevronDown size={16} aria-hidden="true" /></button>
@@ -288,15 +309,13 @@ export const HomeHeadlineBriefing = memo(function HomeHeadlineBriefing({ lang }:
         <div className="hn-toolbar">
           <div className="hn-tabs" role="group" aria-label={T('title')}>
             {VIEWS.map(({ value, Icon }) => (
-              <button type="button" key={value} ref={value === 'press' ? pressTab : undefined} aria-pressed={value === view} onClick={() => changeView(value)}>
+              <button type="button" key={value} ref={value === 'press' ? pressTab : undefined} aria-pressed={value === view} onClick={() => setChosen(value)}>
                 <Icon size={16} aria-hidden="true" />{T(value)}
               </button>
             ))}
           </div>
           {view !== 'press' && <div className="hn-controls">
             <span className="hn-checked" role="status">{loading ? T('checking') : checkedTime && <>{T('checked')} <time dateTime={checkedAt ?? undefined}>{checkedTime}</time></>}</span>
-            {!reduceMotion && sequence.length > 1 && <button type="button" className="hn-icon" aria-label={T(playing ? 'rotationPause' : 'rotationPlay')} title={T(playing ? 'rotationPause' : 'rotationPlay')}
-              onClick={() => setPlaying(!playing)}>{playing ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}</button>}
             {!isStaticHosting && <button type="button" className="hn-icon" aria-label={T('refresh')} title={T('refresh')} disabled={loading} onClick={() => void refresh()}>
               <RefreshCw size={16} className={loading ? 'motion-safe:animate-spin' : undefined} aria-hidden="true" />
             </button>}
@@ -304,9 +323,9 @@ export const HomeHeadlineBriefing = memo(function HomeHeadlineBriefing({ lang }:
         </div>
         {view === 'press' ? <PressShowcase {...{ country, lang, rtl }} /> : <Edition key={view === 'local' ? `local-${country}` : 'world'}
           region={view} section={section} edition={view === 'world' ? WORLD_HEADLINE_EDITION : localHeadlineEdition(country)}
-          {...{ countryName, lang, dates, loading }} openPress={() => { changeView('press'); pressTab.current?.focus(); }} />}
+          {...{ countryName, lang, dates, timeZone, loading }} openPress={() => { setChosen('press'); pressTab.current?.focus(); }} />}
         <button type="button" className="hn-button hn-done" onClick={close}>{T('close')}<ChevronDown size={16} aria-hidden="true" /></button>
       </>}
     </div>
-  </aside>;
+  </section>;
 });

@@ -75,9 +75,9 @@ async function openHome({ country = 'FR', lang = 'en', viewport = { width: 1360,
     const url = new URL(route.request().url());
     if (url.pathname === '/api/home-headlines') {
       state.calls++;
+      if (state.block) await state.block;
       if (state.mode === 'failed') await route.fulfill({ status: 503, headers: cors, json: { code: 'FIXTURE_UNAVAILABLE' } });
       else {
-        if (state.block) await state.block;
         await route.fulfill({ headers: cors, json: sections(state.country, await page.evaluate(() => Date.now()), state.mode) });
       }
     } else if (url.href === photo.url) {
@@ -137,7 +137,7 @@ async function desktop() {
   const localLead = local.getByTestId('home-news-lead');
   const worldLead = world.getByTestId('home-news-lead');
   const frenchUrl = 'https://www.service-public.gouv.fr/particuliers/actualites/A41000';
-  console.log('Checking the compact top strip, keyboard disclosure, and stable lead/list…');
+  console.log('Checking the automatically rotating top strip before opening the desk…');
   await french(1).waitFor();
   await originalLink(stripLink, frenchUrl);
   assert.equal(await panel.isVisible(), false);
@@ -149,8 +149,43 @@ async function desktop() {
   assert.ok((await briefing.boundingBox()).width >= (await board.boundingBox()).width - 70);
   assert.ok(await briefing.evaluate((element) => element.compareDocumentPosition(element.parentElement.querySelector('.clock-glass')) & Node.DOCUMENT_POSITION_FOLLOWING), 'Home news is above the clock');
   assert.equal(await strip.locator('time').innerText(), '18 Nov', 'the date-only source is not shown with a made-up time');
+  const worldFirst = stripLink.getByText('عنوان عالمي تجريبي', { exact: true });
+  const pause = strip.getByRole('button', { name: 'Pause headline strip' });
+  const play = strip.getByRole('button', { name: 'Rotate headline strip' });
+  const next = strip.getByRole('button', { name: 'Next headline' });
   await page.clock.fastForward(8100);
-  await french(1).waitFor();
+  await worldFirst.waitFor();
+  await strip.getByText('World', { exact: true }).waitFor();
+  assert.equal(await panel.isVisible(), false, 'opening the desk is not required to see world headlines');
+  await stripLink.focus();
+  await page.clock.fastForward(8100);
+  await worldFirst.waitFor();
+  await stripLink.blur();
+  await stripLink.hover();
+  await page.clock.fastForward(8100);
+  await worldFirst.waitFor();
+  await page.mouse.move(4, 4);
+  await page.clock.fastForward(8100);
+  await french(2).waitFor();
+  await pause.click();
+  await page.mouse.move(4, 4);
+  await page.clock.fastForward(8100);
+  await french(2).waitFor();
+  await next.click();
+  await stripLink.getByText(communityStory).waitFor();
+  await originalLink(stripLink, communityUrl);
+  await play.click();
+  await page.mouse.move(4, 4);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await pause.waitFor({ state: 'hidden' });
+  await page.clock.fastForward(8100);
+  await stripLink.getByText(communityStory).waitFor();
+  await next.click();
+  await french(3).waitFor();
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await play.waitFor();
+
+  console.log('Checking keyboard disclosure and a stable lead and list…');
   await toggle.focus();
   await page.keyboard.press('Enter');
   await panel.waitFor();
@@ -172,43 +207,13 @@ async function desktop() {
   assert.equal(await list.count(), 4);
   assert.ok((await local.locator('.hn-latest').boundingBox()).x > (await localLead.boundingBox()).x, 'lead and headlines are side by side on desktop');
   await fit(home);
-  const all = local.getByRole('button', { name: 'All today’s headlines' });
+  const all = local.getByRole('button', { name: 'All available headlines' });
   await all.click();
   assert.equal(await list.count(), 7, 'all remaining headlines are available without repeating the lead');
   assert.equal(await local.getByRole('button', { name: 'Show fewer headlines' }).getAttribute('aria-expanded'), 'true');
   assert.equal(await list.last().locator('.hn-row-link').innerText(), 'Titre français de test 8');
   await local.getByRole('button', { name: 'Show fewer headlines' }).click();
   assert.equal(await list.count(), 4);
-
-  console.log('Checking opt-in rotation, pause on focus/hover and reduced motion…');
-  const play = panel.getByRole('button', { name: 'Rotate headline strip' });
-  const pause = panel.getByRole('button', { name: 'Pause headline strip' });
-  await play.click();
-  for (const n of [2, 3, 4, 5, 6, 7, 8, 1]) {
-    await page.clock.fastForward(8100);
-    await french(n).waitFor();
-  }
-  await strip.hover();
-  await page.clock.fastForward(8100);
-  await french(1).waitFor();
-  await page.mouse.move(4, 4);
-  await page.clock.fastForward(8100);
-  await french(2).waitFor();
-  await pause.click();
-  await page.clock.fastForward(8100);
-  await french(2).waitFor();
-  await play.click();
-  await stripLink.focus();
-  await play.waitFor();
-  await page.clock.fastForward(8100);
-  await french(2).waitFor();
-  await play.click();
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await pause.waitFor({ state: 'hidden' });
-  await page.clock.fastForward(8100);
-  await french(2).waitFor();
-  await localLead.getByRole('heading', { name: 'Titre français de test 1' }).waitFor();
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
 
   console.log('Checking the independent, illustrated press directory and its country controls…');
   await tab('Press directory').click();
@@ -269,7 +274,7 @@ async function desktop() {
   await originalLink(worldLead.getByRole('link', { name: photo.credit }), photo.source);
   await originalLink(worldLead.getByRole('link', { name: 'CC BY-SA 4.0', exact: true }), 'https://creativecommons.org/licenses/by-sa/4.0/');
   await originalLink(worldLead.getByRole('link', { name: 'Headline license: CC BY 3.0' }), 'https://creativecommons.org/licenses/by/3.0/');
-  assert.match(await worldLead.locator('time').innerText(), /^14:57$/, 'publication time is in the declared edition zone');
+  assert.match(await worldLead.locator('time').innerText(), /^18 Nov.*14:57$/, 'publication time is in the declared edition zone');
   await page.evaluate(() => scrollTo(0, 0));
   const filter = world.getByRole('combobox', { name: 'Filter by source' });
   await filter.selectOption('global-voices');
@@ -281,7 +286,7 @@ async function desktop() {
   await world.getByText('Showing 0 of 6 headlines').waitFor();
   assert.equal(await worldLead.count(), 0);
   await filter.selectOption('');
-  await world.getByRole('button', { name: 'All today’s headlines' }).click();
+  await world.getByRole('button', { name: 'All available headlines' }).click();
   assert.equal(await world.locator('.hn-list li').count(), 5);
   await originalLink(world.getByRole('link', { name: 'عنوان العرب اليوم التجريبي', exact: true }), arabsTodayUrl);
   await world.getByText('Sources and licenses', { exact: true }).click();
@@ -301,7 +306,7 @@ async function desktop() {
   await worldLead.getByRole('heading', { name: communityStory }).waitFor();
   state.mode = 'failed';
   await refresh.click();
-  await world.getByText('Last available headlines from today; refresh failed.').waitFor();
+  await world.getByText('Refresh failed; showing the last available headlines with their dates.').waitFor();
   await strip.getByText('Last available').waitFor();
   await worldLead.getByRole('heading', { name: communityStory }).waitFor();
   await context.setOffline(true);
@@ -315,11 +320,11 @@ async function desktop() {
   await tab('World').click();
   state.mode = 'empty';
   await context.setOffline(false);
-  await world.getByText('These sources have no headlines dated today yet.').waitFor();
+  await world.getByText('These sources have no recent headlines right now.').waitFor();
   assert.equal(await stripLink.count(), 0);
   assert.equal(await worldLead.count(), 0);
   await tab('Local').click();
-  await local.getByText('These sources have no headlines dated today yet.').waitFor();
+  await local.getByText('These sources have no recent headlines right now.').waitFor();
   state.mode = 'unavailable';
   await refresh.click();
   await local.getByText('Headlines are unavailable right now.').waitFor();
@@ -368,7 +373,7 @@ async function desktop() {
   state.country = 'GB';
   await refresh.click();
   await local.getByRole('heading', { name: 'Local news · United Kingdom' }).waitFor();
-  assert.match(await localLead.locator('time').innerText(), /^Updated \d{2}:\d{2}$/);
+  assert.match(await localLead.locator('time').innerText(), /^Updated 18 Nov.*\d{2}:\d{2}$/);
   await localLead.getByText('Contains public sector information licensed under the Open Government Licence v3.0.').waitFor();
   await page.goto(new URL('#perfume_news', base).href);
   await page.getByTestId('news-portal').waitFor();
@@ -384,6 +389,13 @@ async function mobile() {
   await strip.getByText('خبر مصري تجريبي 1', { exact: true }).waitFor();
   assert.equal(await briefing.getAttribute('dir'), 'rtl');
   assert.ok((await toggle.boundingBox()).height >= 44, 'the opening button is a touch target');
+  const next = strip.getByRole('button', { name: 'العنوان التالي' });
+  assert.ok((await next.boundingBox()).height >= 44, 'next is a touch target');
+  await next.tap();
+  await strip.getByText('عنوان عالمي تجريبي', { exact: true }).waitFor();
+  await strip.getByText('عالمي', { exact: true }).waitFor();
+  assert.match(await strip.locator('time').innerText(), /[٠-٩]/u, 'dates and times follow the site language');
+  await originalLink(strip.locator('.hn-strip-link'), 'https://www.youm7.com/43000');
   await fit(phone);
   await toggle.tap();
   await local.getByText('العناوين: ٩', { exact: true }).waitFor();
@@ -396,7 +408,7 @@ async function mobile() {
   assert.ok((await localList.boundingBox()).y >= (await localLead.boundingBox()).y + (await localLead.boundingBox()).height);
   assert.equal(await briefing.getByRole('button', { name: 'شغّل تدوير شريط العناوين' }).count(), 0);
   await fit(phone);
-  await local.getByRole('button', { name: 'كل عناوين اليوم' }).tap();
+  await local.getByRole('button', { name: 'كل العناوين المتاحة' }).tap();
   assert.equal(await local.locator('.hn-list li').count(), 8);
   assert.equal(await local.locator('.hn-list li .hn-order').last().innerText(), '٨');
   await tab('عالمي').tap();
@@ -445,37 +457,69 @@ async function fallback() {
   await home.local.getByRole('heading', { name: 'Lokale Nachrichten · Japan', exact: true }).waitFor();
   await home.local.getByText('Für dieses Zugriffsland sind keine lokalen Meldungen eingerichtet.', { exact: false }).waitFor();
   assert.equal(await home.local.getByTestId('home-news-lead').count(), 0);
-  assert.equal(await home.strip.locator('.hn-strip-link').count(), 0);
+  await home.strip.locator('.hn-strip-link').waitFor();
+  await home.strip.getByText('Welt', { exact: true }).waitFor();
   await fit(home);
   assert.deepEqual(home.errors, []);
 }
 
 async function midnight() {
-  console.log('Checking that Paris midnight clears stale stories before the next request finishes…');
-  const night = await openHome({ start: Date.parse('2026-11-18T22:59:30Z'), reducedMotion: 'reduce' });
-  await night.strip.getByText('Titre français de test 1', { exact: true }).waitFor();
+  console.log('Checking that a delayed refresh and an offline midnight retain dated news, then expire it…');
+  const midnight = Date.parse('2026-11-18T23:00:00Z');
+  const night = await openHome({ start: midnight - 60_000, reducedMotion: 'reduce' });
+  const link = night.strip.locator('.hn-strip-link');
+  const time = night.strip.locator('time');
+  const lead = night.local.getByTestId('home-news-lead');
+  await link.getByText('Titre français de test 1', { exact: true }).waitFor();
+  const timestamp = await time.getAttribute('datetime');
   await night.toggle.click();
-  await night.local.getByTestId('home-news-lead').waitFor();
+  await night.briefing.locator('time[datetime="2026-11-18"]').waitFor();
+  await lead.waitFor();
+
+  await night.page.clock.fastForward(midnight - (await night.page.evaluate(() => Date.now())) - 5000);
+  const refresh = night.panel.getByRole('button', { name: 'Refresh headlines' });
   let unblock;
   night.state.block = new Promise((resolve) => { unblock = resolve; });
-  night.state.mode = 'empty';
+  night.state.mode = 'failed';
   try {
-    await night.page.clock.fastForward(33_000);
-    await night.local.getByTestId('home-news-lead').waitFor({ state: 'detached' });
-    await night.strip.locator('.hn-strip-link').waitFor({ state: 'detached' });
+    const request = night.page.waitForRequest((request) => new URL(request.url()).pathname === '/api/home-headlines');
+    await refresh.click();
+    await request;
+    await night.page.clock.fastForward(7500);
     await night.briefing.locator('time[datetime="2026-11-19"]').waitFor();
-    await night.tab('Press directory').click();
-    await night.localPress.getByRole('link', { name: 'Le Monde', exact: true }).waitFor();
+    assert.equal(await refresh.isDisabled(), true, 'the API refresh has not finished yet');
+    await night.strip.getByText('Earlier headline', { exact: true }).waitFor();
+    assert.equal(await time.getAttribute('datetime'), timestamp, 'the story was not relabelled with the newer edition date');
+    assert.equal(await time.innerText(), '18 Nov');
+    await lead.waitFor();
   } finally { unblock(); }
+
+  await night.strip.getByText('Last available').waitFor();
+  await night.context.setOffline(true);
+  await night.page.waitForFunction(() => !navigator.onLine);
+  await night.tab('Press directory').click();
+  await night.localPress.getByRole('link', { name: 'Le Monde', exact: true }).waitFor();
   await night.tab('Local').click();
-  await night.local.getByText('These sources have no headlines dated today yet.').waitFor();
+  await lead.waitFor();
+  const expiry = Date.parse(timestamp) + 48 * 3600_000;
+  const span = expiry - (await night.page.evaluate(() => Date.now()));
+  await night.page.clock.fastForward(span - 5000);
+  await link.waitFor();
+  await night.page.clock.fastForward(6000);
+  await link.waitFor({ state: 'detached' });
+  await lead.waitFor({ state: 'detached' });
+  await night.local.getByText('Headlines are unavailable right now.').waitFor();
+  night.state.mode = 'fresh';
+  await night.context.setOffline(false);
+  await lead.waitFor();
+  assert.notEqual(await time.getAttribute('datetime'), timestamp, 'reconnecting loads new stories');
   assert.deepEqual(night.errors, []);
 }
 
 async function coldStart(staticBuild = false) {
   console.log(`Checking a cold start ${staticBuild ? 'in a deployment with no API' : 'with the headlines API unavailable'}…`);
   const cold = await openHome({ initialMode: 'failed', reducedMotion: 'reduce' });
-  await cold.strip.getByText('No headlines in this section right now.', { exact: true }).waitFor();
+  await cold.strip.getByText('No headlines available right now.', { exact: true }).waitFor();
   await cold.toggle.click();
   const message = staticBuild ? 'Live headlines aren’t available on this version of the site. The press directory is available.' : 'Headlines are unavailable right now.';
   await cold.local.getByText(message, { exact: true }).waitFor();

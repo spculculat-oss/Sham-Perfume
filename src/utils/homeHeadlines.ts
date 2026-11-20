@@ -5,7 +5,8 @@ import { isCountry } from './pricing';
 export const HEADLINE_REFRESH_MS = 5 * 60_000;
 export const HEADLINE_RETRY_MS = 60_000;
 export const HEADLINE_ROTATE_MS = 8000;
-export const NEWS_DAY_MS = 86_400_000;
+export const HEADLINE_WINDOW_MS = 48 * 3600_000;
+export const HEADLINE_REQUEST_MS = 12_000;
 export type HeadlineStatus = 'fresh' | 'partial' | 'stale' | 'empty' | 'unavailable' | 'unsupported';
 export interface HomeHeadline {
   title: string;
@@ -26,11 +27,38 @@ export interface HomeHeadlines {
   country: string | null;
   timeZone: string;
   asOf: number;
-  day: string;
+  day: string; // Current editorial date, not the date of every item.
   local: HeadlineSection;
   world: HeadlineSection;
 }
 export const emptyHeadlines = (status: HeadlineStatus = 'unavailable', checkedAt: string | null = null): HeadlineSection => ({ status, checkedAt, items: [] });
+
+/** A real date from a publisher can cross midnight, but cannot be future-dated or kept indefinitely. */
+export function isRecentHeadline(instant: number, asOf: number): boolean {
+  return instant <= asOf && asOf - instant < HEADLINE_WINDOW_MS;
+}
+
+/** Revalidate an already trusted response as time passes, including while the visitor is offline. */
+export function ageHeadlines(briefing: HomeHeadlines, asOf: number, refreshFailed = false): HomeHeadlines {
+  const trim = (section: HeadlineSection): HeadlineSection => {
+    if (section.status === 'unsupported') return section;
+    const items = section.items.filter(({ datedAt }) => isRecentHeadline(Date.parse(datedAt), asOf));
+    if (refreshFailed) return items.length ? { ...section, status: 'stale', items } : emptyHeadlines('unavailable', section.checkedAt);
+    if (items.length === section.items.length) return section;
+    return items.length ? { ...section, items }
+      : emptyHeadlines(section.status === 'fresh' ? 'empty' : 'unavailable', section.checkedAt);
+  };
+  return { ...briefing, asOf, day: headlineDay(asOf, briefing.timeZone), local: trim(briefing.local), world: trim(briefing.world) };
+}
+
+/** The next time a displayed date or the retained articles can change without a fetch. */
+export function nextHeadlineChange(briefing: HomeHeadlines): number {
+  let next = nextHeadlineDay(briefing.asOf, briefing.timeZone);
+  for (const items of [briefing.local.items, briefing.world.items]) {
+    for (const { datedAt } of items) next = Math.min(next, Date.parse(datedAt) + HEADLINE_WINDOW_MS);
+  }
+  return next;
+}
 
 const dayFormats = new Map<string, Intl.DateTimeFormat>();
 function dayFormat(timeZone: string): Intl.DateTimeFormat {
@@ -91,19 +119,24 @@ export function headlineAuthor(input: unknown, publisher: HeadlinePublisher): st
   return author;
 }
 const normalizedTitle = (title: string) => title.normalize('NFKD').toLowerCase().replace(/\p{M}+/gu, '').replace(/[\p{P}\s]+/gu, ' ').trim();
+const headlineKey = (item: HomeHeadline) => item.publisher === 'youm7' ? `youm7:${item.url.split('/').at(-1)}` : item.url;
 
-/** Same URL (including Youm7's short/full links), or exactly the same normalized headline. */
-export function distinctHeadlines(items: readonly HomeHeadline[]): HomeHeadline[] {
+function firstHeadlines() {
   const urls = new Set<string>();
   const titles = new Set<string>();
-  return [...items].sort((a, b) => b.datedAt.localeCompare(a.datedAt)).filter((item) => {
-    const id = item.publisher === 'youm7' ? `youm7:${item.url.split('/').at(-1)}` : item.url;
+  return (item: HomeHeadline) => {
+    const id = headlineKey(item);
     const title = normalizedTitle(item.title);
     if (urls.has(id) || titles.has(title)) return false;
     urls.add(id);
     titles.add(title);
     return true;
-  });
+  };
+}
+
+/** Same URL (including Youm7's short/full links), or exactly the same normalized headline. */
+export function distinctHeadlines(items: readonly HomeHeadline[]): HomeHeadline[] {
+  return [...items].sort((a, b) => b.datedAt.localeCompare(a.datedAt)).filter(firstHeadlines());
 }
 
 /** Let each source take a turn in the slideshow without losing stories from a busy feed. */
@@ -123,10 +156,32 @@ export function headlineRotation(items: readonly HomeHeadline[]): HomeHeadline[]
   return ordered;
 }
 
+/** The Home roll shows both editions without pretending that a world story is local. */
+export function headlineRoll(local: readonly HomeHeadline[], world: readonly HomeHeadline[], timeZone: string) {
+  const first = firstHeadlines();
+  const editions = [local, world].map((items) => {
+    // Balance sources within each day, but don't put yesterday's titles ahead of today's.
+    const byDay = new Map<string, HomeHeadline[]>();
+    for (const item of items.filter(first)) {
+      const day = headlineDay(Date.parse(item.datedAt), timeZone);
+      const group = byDay.get(day);
+      if (group) group.push(item);
+      else byDay.set(day, [item]);
+    }
+    return [...byDay.values()].flatMap(headlineRotation);
+  });
+  const entries: { region: 'local' | 'world'; article: HomeHeadline }[] = [];
+  for (let i = 0; i < Math.max(editions[0].length, editions[1].length); i++) {
+    if (editions[0][i]) entries.push({ region: 'local', article: editions[0][i] });
+    if (editions[1][i]) entries.push({ region: 'world', article: editions[1][i] });
+  }
+  return entries;
+}
+
 const dateIso = (value: unknown): string | null => typeof value === 'string' && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z$/.test(value)
   && Number.isFinite(Date.parse(value)) && new Date(value).toISOString() === value ? value : null;
 
-/** The browser accepts only headlines for the declared edition and editorial day. */
+/** The browser accepts only recent headlines from publishers for the declared editions. */
 export function readHeadlines(input: unknown): HomeHeadlines {
   if (!input || typeof input !== 'object') throw new Error('Invalid headline response');
   const raw = input as Partial<HomeHeadlines>;
@@ -151,7 +206,7 @@ export function readHeadlines(input: unknown): HomeHeadlines {
       const epoch = datedAt ? Date.parse(datedAt) : NaN;
       const author = headlineAuthor(item.author, item.publisher);
       const photo = item.publisher === 'global-voices' ? readHeadlinePhoto(item.photo) : undefined;
-      return url && title && datedAt && epoch <= asOf && headlineDay(epoch, timeZone) === day
+      return url && title && datedAt && isRecentHeadline(epoch, asOf)
         && (item.dateKind === 'published' || item.dateKind === 'updated' || item.dateKind === 'date')
         && (!headlineNeedsByline(item.publisher) || author)
         ? [{ title, url, datedAt, dateKind: item.dateKind, publisher: item.publisher, ...(author ? { author } : {}), ...(photo ? { photo } : {}) }] : [];
