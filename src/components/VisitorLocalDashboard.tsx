@@ -118,11 +118,12 @@ type ClockSyncState = 'syncing' | 'synced' | 'stale' | 'unavailable';
 
 const WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
 
-export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculatorState, onOpenCalculator }: {
+export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculatorState, onOpenCalculator, onNavigate }: {
   currentLang: SupportedLanguage;
   showHomeDetails: boolean;
   calculatorState: ClockCalculatorState;
   onOpenCalculator: (launcher: HTMLButtonElement) => void;
+  onNavigate: (tab: string) => void;
 }) {
   const [compactTools, setCompactTools] = useState(false);
   const detailsId = useId();
@@ -379,7 +380,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
           <span className="visitor-clock-compact-weather" title={weatherText}>
             <ConditionIcon size={14} aria-hidden="true" /><bdi dir="ltr">{temperatureText}</bdi>
           </span>
-          <PrayerClockSummary lang={currentLang} now={now} compact />
+          <PrayerClockSummary lang={currentLang} now={now} onNavigate={onNavigate} compact />
           <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} compact />
           <ClockSkyLegend sky={sky} lang={currentLang} compact />
           <button className="visitor-clock-compact-toggle" type="button" aria-expanded={compactTools} aria-controls={detailsId} onClick={() => setCompactTools((open) => !open)}>
@@ -460,7 +461,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
             <ClockToolsLaunchers lang={currentLang} timeZone={localTimeZone} />
           </div>
           <div className="visitor-clock-side">
-            <PrayerClockSummary lang={currentLang} now={now} />
+            <PrayerClockSummary lang={currentLang} now={now} onNavigate={onNavigate} />
             <div className="visitor-instrument-row" dir={SUPPORTED_LANGUAGES.find((language) => language.code === currentLang)?.dir}>
               <VisitorCompass lang={currentLang} />
               <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} />

@@ -1178,7 +1178,7 @@ export default function App() {
         />
 
         {/* Keep the clock in the shared shell; the full dial and briefing open on Home. */}
-        <VisitorLocalDashboard currentLang={currentLang} showHomeDetails={activeTab === 'home'} calculatorState={calculator} onOpenCalculator={openCalculator} />
+        <VisitorLocalDashboard currentLang={currentLang} showHomeDetails={activeTab === 'home'} calculatorState={calculator} onOpenCalculator={openCalculator} onNavigate={navigateToTab} />
         {activeTab === 'studio' && (
           <ProjectStudio
             lang={currentLang}

@@ -47,6 +47,22 @@ const volume = (page, id) => library(page).locator(`[data-book="${id}"]`);
 const verse = (page, n) => modal(page).locator(`[data-quran-ayah="${n}"] .il-quran-text`);
 const goto = (page, to = hash) => page.goto(`${base.href}${to}`, { waitUntil: 'domcontentloaded' });
 const focusHas = (element) => element.evaluate((e) => e === e.ownerDocument.activeElement);
+async function clockLibraryLink(page, prayerTestId, lang = 'ar') {
+  const clock = page.getByTestId('visitor-local-dashboard');
+  const link = clock.getByRole('link', { name: lang === 'ar' ? 'مكتبة شام الإسلامية' : 'Sham Islamic Library', exact: true });
+  assert.equal(await link.getAttribute('href'), hash);
+  assert.ok(await link.evaluate((element, testId) => {
+    const prayer = element.previousElementSibling;
+    if (prayer?.getAttribute('data-testid') !== testId) return false;
+    const button = prayer.getBoundingClientRect();
+    const shortcut = element.getBoundingClientRect();
+    const gap = Math.max(shortcut.left - button.right, button.left - shortcut.right);
+    return gap >= 0 && gap <= 12 && Math.abs(button.top - shortcut.top) < 1
+      && shortcut.width >= 44 && shortcut.height >= 44 && shortcut.left >= 0 && shortcut.right <= innerWidth + 1;
+  }, prayerTestId), 'the book icon fits next to the prayer control with a 44 px touch target');
+  return link;
+}
+
 const checkedViewport = async (page) => assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), 'document does not overflow horizontally');
 const close = async (page) => { await page.keyboard.press('Escape'); await modal(page).waitFor({ state: 'detached' }); };
 const capture = async (page, name, viewportTop) => {
@@ -63,6 +79,16 @@ async function desktop(browser) {
   const { context, page, requests, errors } = await fixture(browser);
   try {
     await goto(page, '#home');
+    const shortcut = await clockLibraryLink(page, 'prayer-tools-launcher');
+    await page.getByTestId('prayer-tools-launcher').focus();
+    await page.keyboard.press('Tab');
+    assert.ok(await focusHas(shortcut), 'the library shortcut is the next keyboard stop after the prayer launcher');
+    await shortcut.press('Enter');
+    await library(page).getByRole('heading', { name: 'مكتبة شام الإسلامية', exact: true }).waitFor();
+    assert.equal(new URL(page.url()).hash, hash);
+    assert.equal(await page.locator('[data-testid="prayer-reminder-state"]').count(), 0);
+    await page.goBack();
+    assert.equal(new URL(page.url()).hash, '#home');
     const launch = page.getByTestId('gateway-islamic-library');
     assert.equal(await launch.getAttribute('href'), hash);
     await launch.click();
@@ -168,6 +194,7 @@ async function mobile(browser) {
     await modal(page).waitFor({ state: 'detached' });
     assert.equal(new URL(page.url()).hash, hash, 'close direct entry stays in the library');
     assert.equal(await library(page).getAttribute('dir'), 'ltr');
+    await clockLibraryLink(page, 'prayer-compact-shortcut', 'en');
     await library(page).getByRole('combobox', { name: 'Filter by shelf', exact: true }).selectOption('seerah');
     assert.equal(await library(page).locator('[data-book]').count(), 5);
     await volume(page, 'rahiq').click();
@@ -183,7 +210,19 @@ async function mobileArabic(browser) {
   try {
     const p = arabic.page;
     await p.route(asset, (route) => route.fulfill({ status: 503, body: 'Not available' }), { times: 1 });
+    await p.addInitScript(() => localStorage.setItem('sham_prayer_preferences_v1', '{"hidden":true}'));
+    await goto(p, '#guide');
+    await p.getByRole('button', { name: 'استرجاع المواقيت والأذكار', exact: true }).waitFor();
+    const shortcut = await clockLibraryLink(p, 'prayer-compact-shortcut');
+    await shortcut.tap();
+    await library(p).getByRole('heading', { name: 'مكتبة شام الإسلامية', exact: true }).waitFor();
+    assert.equal(new URL(p.url()).hash, hash);
+    assert.equal(await p.evaluate(() => JSON.parse(localStorage.getItem('sham_prayer_preferences_v1')).hidden), true);
+    assert.equal(await p.getByTestId('prayer-reminder-state').count(), 0, 'library navigation does not restore the prayer tool');
+    await p.goBack();
+    assert.equal(new URL(p.url()).hash, '#guide');
     await goto(p, '#home');
+    await clockLibraryLink(p, 'prayer-tools-launcher');
     await p.getByRole('navigation', { name: 'التنقل الرئيسي' }).getByRole('button', { name: /^استكشف/ }).click();
     await p.locator('#mobile-nav-menu-explore').getByRole('button', { name: /مكتبة شام الإسلامية/ }).click();
     await library(p).locator('.il-hall img').evaluate((img) => img.decode());
@@ -209,4 +248,4 @@ for (const scenario of [desktop, mobile, mobileArabic]) {
   const browser = await launchBrowser();
   try { await scenario(browser); } finally { await browser.close(); }
 }
-console.log('Islamic library browser checks passed: Home to 11 shelves, search, edition links, full Quran, bookmark/refresh, desktop, and narrow mobile with failed-fetch retry.');
+console.log('Islamic library browser checks passed: clock shortcut (keyboard and touch), Home to 11 shelves, search, edition links, full Quran, bookmark/refresh, desktop, and narrow mobile with failed-fetch retry.');
