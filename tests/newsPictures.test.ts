@@ -64,11 +64,13 @@ test('every news view prefers the publisher photo and labels an editorial one', 
   const live = readFileSync(new URL('../src/components/ShaheenLiveNews.tsx', import.meta.url), 'utf8');
   const page = readFileSync(new URL('../src/components/WorldPerfumeNews.tsx', import.meta.url), 'utf8');
   const community = readFileSync(new URL('../src/community/GeneralNewsPeriodic.tsx', import.meta.url), 'utf8');
-  assert.match(live, /const sourcePhoto = newsItemPicture\(item\);/);
-  assert.match(live, /const photo = sourcePhoto \|\|/);
-  assert.match(live, /sourcePhoto \? L\('photo_source'\) : L\('photo_stock'\)/);
-  assert.match(live, /L\('photo_stock_note'\)/);
-  assert.match(live, /referrerPolicy=\{sourcePhoto \? 'no-referrer' : undefined\}/);
+  // A live story shows its own publisher photo or says plainly that there is none — never a stock picture.
+  assert.match(live, /const photo = newsItemPicture\(item\);/);
+  assert.match(live, /\{photo \? \(/);
+  assert.match(live, /L\('photo_source'\)/);
+  assert.match(live, /L\('photo_none'\)/);
+  assert.doesNotMatch(live, /getEditorialImageForCategory/, 'the live strip no longer substitutes an editorial picture');
+  assert.doesNotMatch(live, /NEWS_IMAGE_LIST/, 'nor a build photo');
   assert.match(page, /newsPictureKind\(item\.imageUrl, resolveArticleImage\(item, index\)\)/);
   assert.match(page, /kind === 'source' \? L\('photo_source'\) : kind === 'editorial' \? L\('photo_stock'\) : L\('photo_none'\)/);
   assert.match(community, /Editorial image, not from the story/);

@@ -575,6 +575,12 @@ export const WorldPerfumeNews: React.FC<WorldPerfumeNewsProps> = ({
         </div>
       </div>
 
+      {/* Curated reports: the picture label says which pictures are editorial, never passing
+          a stock or generated image off as the story's own photo. */}
+      <p className="rounded-2xl border border-amber-200 bg-amber-50/70 px-4 py-2.5 text-[11px] leading-relaxed text-amber-950">
+        {L('photo_stock_note')}
+      </p>
+
       {/* 4. ARTICLES GRID WITH HIGH RESOLUTION PICTURES */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredNews.map((item, index) => {
