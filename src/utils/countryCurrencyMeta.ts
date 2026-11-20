@@ -1,4 +1,5 @@
-import { BUNDLED_FX, currencyFor } from './pricing';
+import { BUNDLED_FX, currencyFor, priceIn } from './pricing';
+import { formatLocalizedNumber } from '../لغات/numerals';
 import type { SupportedLanguage } from '../types/i18n';
 
 export interface CountryMeta {
@@ -95,5 +96,38 @@ export function getCountryMeta(countryCode: string, lang: SupportedLanguage = 'a
     currency,
     symbolAr,
     symbolEn,
+  };
+}
+
+/**
+ * «سعر المنتج بعملة بلد الزائر» (from Google AI Studio): converts a base catalog price in EGP into the
+ * country's local currency and formats it in the visitor's language. Our own money format stays the
+ * single rule for the cart and the banner (useStoreMoney); this is the extra, additive helper.
+ */
+export function formatProductPriceInCountry(
+  egpPrice: number,
+  countryCode: string,
+  lang: SupportedLanguage = 'ar'
+): {
+  amount: number;
+  currency: string;
+  formatted: string;
+  symbol: string;
+  countryName: string;
+  flag: string;
+} {
+  const meta = getCountryMeta(countryCode, lang);
+  const localAmount = priceIn(egpPrice, meta.currency, BUNDLED_FX);
+  const isWhole = Math.round(localAmount * 100) % 100 === 0;
+  // Site language only, through the shared helper (never the browser locale).
+  const numStr = formatLocalizedNumber(lang, localAmount, { maximumFractionDigits: isWhole ? 0 : 2 });
+  const symbol = lang === 'ar' ? meta.symbolAr : meta.symbolEn;
+  return {
+    amount: localAmount,
+    currency: meta.currency,
+    formatted: lang === 'ar' ? `${numStr} ${symbol}` : `${symbol} ${numStr}`,
+    symbol,
+    countryName: lang === 'ar' ? meta.nameAr : meta.nameEn,
+    flag: meta.flag,
   };
 }
