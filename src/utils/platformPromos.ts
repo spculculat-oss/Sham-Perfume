@@ -125,6 +125,30 @@ const PAGE_COPY: Record<string, PromoCopy> = {
     description: { ar: 'اعرض الزجاجة والتركيبة بمجسم ثلاثي الأبعاد يقرأ نفس بيانات تركيبتك.', en: 'View the bottle and your formula in 3D, reading the same formulation data.' },
     visual: 'analysis',
   },
+  perfumer_analytics: {
+    tag: { ar: 'تحليلات التركيبات', en: 'Formula analytics' },
+    title: { ar: 'شوف أنماط تركيباتك بالأرقام', en: 'See the patterns in your formulas' },
+    description: { ar: 'لوحة تحليل تركيبباتك المحفوظة: العائلات، توزيع النوتات، وأكثر الخامات استخدامًا.', en: 'A dashboard over your saved formulas: families, note distribution and most-used materials.' },
+    visual: 'analysis',
+  },
+  perfume_atlas: {
+    tag: { ar: 'أطلس العطور', en: 'Fragrance atlas' },
+    title: { ar: 'اتنقّل بين مناطق العطور في العالم', en: 'Travel the world of perfume regions' },
+    description: { ar: 'خريطة تعليمية لبلاد العطور ومحاصيلها وخاماتها الشهيرة.', en: 'An educational map of perfumery regions, their crops and signature materials.' },
+    visual: 'library',
+  },
+  perfumer_game: {
+    tag: { ar: 'تحدي المزج', en: 'Blending challenge' },
+    title: { ar: 'اختبر حسّك العطري في تحدي سريع', en: 'Test your nose in a quick challenge' },
+    description: { ar: 'لعبة مزج قصيرة تتدرّب فيها على موازنة النوتات قبل التركيب الحقيقي.', en: 'A short blending game that trains note balance before the real mix.' },
+    visual: 'pyramid',
+  },
+  studio_voice: {
+    tag: { ar: 'استوديو الصوت', en: 'Voice studio' },
+    title: { ar: 'سجّل بصوتك واسمع عطرك', en: 'Record by voice, hear your fragrance' },
+    description: { ar: 'تحويل التسجيل لنص، موسيقى مستوحاة من نوتات عطرك، وصوت بشري يقرا ما تكتبه.', en: 'Turn a recording into text, hear music inspired by your notes, and have your words read in a human voice.' },
+    visual: 'analysis',
+  },
   store: {
     tag: { ar: 'متجر شام', en: 'Sham fragrance shop' },
     title: { ar: 'تصفّح العطور المتاحة وأسعارها', en: 'Browse available fragrances and prices' },
@@ -152,6 +176,10 @@ const HOME_PROMO = makeTabPromo('home', 'home', {
 const ADDITIONAL_PAGE_PROMOS: PlatformPromo[] = [
   // «جديد من جوجل استوديو»: the designer lab and the 3D flacon studio get their own promotion like every page.
   makeTabPromo('designer', 'designer', PAGE_COPY.designer),
+  makeTabPromo('perfumer_analytics', 'perfumer_analytics', PAGE_COPY.perfumer_analytics),
+  makeTabPromo('perfume_atlas', 'perfume_atlas', PAGE_COPY.perfume_atlas),
+  makeTabPromo('perfumer_game', 'perfumer_game', PAGE_COPY.perfumer_game),
+  makeTabPromo('studio_voice', 'studio_voice', PAGE_COPY.studio_voice),
   makeTabPromo('studio_3d', 'studio_3d', PAGE_COPY.studio_3d),
   makeTabPromo('workspace', 'workspace', {
     tag: { ar: 'مساحة شاهين · مساعد عام', en: "Shaheen's workspace · general assistant" },

@@ -7,7 +7,7 @@ import { after, before, test } from 'node:test';
 import { Vault } from '../server/community/crypto';
 import { SCHEMA, SCHEMA_VERSION, connectPglite, migrate, type Sql } from '../server/community/db';
 
-const SCHEMA_STATEMENTS = 90;
+const SCHEMA_STATEMENTS = 93;
 import * as svc from '../server/community/service';
 import * as social from '../server/community/social';
 import { BANNER_MAX_CHARS, bannerImage } from '../src/community/ProfilePage';
@@ -80,7 +80,7 @@ test('a database made before the cover existed gets the column on the next start
 test('adding a schema statement without raising SCHEMA_VERSION fails here, not on the live site', () => {
   // The live database only re-runs the schema when the version goes up. When you add a statement:
   // raise SCHEMA_VERSION in server/community/db.ts, then update BOTH numbers below.
-  assert.deepEqual({ version: SCHEMA_VERSION, statements: SCHEMA.length }, { version: 12, statements: SCHEMA_STATEMENTS });
+  assert.deepEqual({ version: SCHEMA_VERSION, statements: SCHEMA.length }, { version: 13, statements: SCHEMA_STATEMENTS });
 });
 
 test('the whole road: the page\'s own address saves a large device picture over HTTP and the member page returns it', async () => {

@@ -85,7 +85,7 @@ export async function connectPglite(dataDir?: string): Promise<Sql> {
   return wrap(db);
 }
 
-export const SCHEMA_VERSION = 12;
+export const SCHEMA_VERSION = 13;
 
 export const SCHEMA: string[] = [
   `CREATE TABLE IF NOT EXISTS community_meta (key text PRIMARY KEY, value text NOT NULL)`,
@@ -282,6 +282,22 @@ export const SCHEMA: string[] = [
     created_at timestamptz NOT NULL DEFAULT now(),
     PRIMARY KEY (user_id, post_id)
   )`,
+  /* «استفتاءات» من استوديو جوجل (إضافة): خيارات الاستفتاء في صف مستقل، والأصوات في جدول تالٍ.
+     الجداول إضافية بالكامل — أي نشر قديم يعمل كما هو. */
+  `CREATE TABLE IF NOT EXISTS post_polls (
+    post_id text PRIMARY KEY REFERENCES posts(id) ON DELETE CASCADE,
+    question text NOT NULL DEFAULT '',
+    options jsonb NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now()
+  )`,
+  `CREATE TABLE IF NOT EXISTS poll_votes (
+    post_id text NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    option_index integer NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    PRIMARY KEY (post_id, user_id)
+  )`,
+  `CREATE INDEX IF NOT EXISTS poll_votes_post ON poll_votes (post_id)`,
   `CREATE TABLE IF NOT EXISTS reactions (
     post_id text NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
     user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,

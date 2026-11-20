@@ -84,4 +84,8 @@ export interface SavedFormula {
   macerationDays?: number;
   formulation: FormulationState;
   pyramidNotes: PyramidNote[];
+  /** «جديد من جوجل استوديو»: optional perfume family and tags used by the analytics dashboard. */
+  category?: 'floral' | 'oriental' | 'woody' | 'fresh' | 'citrus' | 'gourmand' | 'aromatic' | 'chypre' | 'leather' | string;
+  tags?: string[];
+  createdAt?: string;
 }

@@ -59,6 +59,7 @@ import { useReadAloud } from '../hooks/useReadAloud';
 import { askMessages } from '../utils/heardFix';
 import { ShareToCommunityButton } from './CommunityShareBar';
 import { chatDraft } from '../community/share';
+import { VoiceTranscribeButton } from './VoiceTranscribeButton';
 
 
 const S = {
@@ -1709,6 +1710,12 @@ export const PerfumerAIChatbot: React.FC<PerfumerAIChatbotProps> = ({
               className="p-3 bg-white border-t border-stone-200 flex items-center gap-2 shrink-0"
             >
               <ShaheenVoiceModeButton language={currentLang} voice={voice} disabled={isStaticHosting || hidden} />
+              {/* «اكتب بصوتك» من استوديو جوجل: التسجيل يتحوّل نص في نفس الخانة (POST /api/ai/transcribe). */}
+              <VoiceTranscribeButton
+                lang={currentLang}
+                compact
+                onTranscribed={(text) => setInput((prev) => (prev.trim() ? `${prev} ${text}` : text))}
+              />
               <ImageAttachButton pick={imagePick} disabled={isStaticHosting || isLoading || modelStatus.isUnavailable(selectedModel)} />
               <input
                 ref={inputRef}
