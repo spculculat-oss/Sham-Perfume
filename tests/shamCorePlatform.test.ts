@@ -116,14 +116,26 @@ test('knowledgeSeedAdditions only lists what a given version introduced', () => 
   assert.ok(fresh.every((d) => d.id.startsWith('kb-platform-') || d.id.startsWith('kb-store-')), 'only the guides added after v1');
   assert.ok(fresh.some((d) => d.id.startsWith('kb-platform-')), 'the platform guide is in the upgrade');
   assert.deepEqual(knowledgeSeedAdditions(KNOWLEDGE_SEED_VERSION), []);
-  assert.deepEqual(knowledgeSeedAdditions(14).map((d) => d.id), ['kb-platform-clock-tools', 'kb-platform-visitor-compass', 'kb-platform-calculator-live', 'kb-platform-daily-news-editions']);
-  assert.deepEqual(knowledgeSeedAdditions(15).map((d) => d.id), ['kb-platform-clock-tools', 'kb-platform-visitor-compass', 'kb-platform-calculator-live', 'kb-platform-daily-news-editions']);
-  assert.deepEqual(knowledgeSeedAdditions(16).map((d) => d.id), ['kb-platform-visitor-compass', 'kb-platform-calculator-live', 'kb-platform-daily-news-editions']);
-  assert.deepEqual(knowledgeSeedAdditions(17).map((d) => d.id), ['kb-platform-calculator-live', 'kb-platform-daily-news-editions']);
+  assert.deepEqual(knowledgeSeedAdditions(14).map((d) => d.id), ['kb-platform-clock-tools', 'kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times']);
+  assert.deepEqual(knowledgeSeedAdditions(15).map((d) => d.id), ['kb-platform-clock-tools', 'kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times']);
+  assert.deepEqual(knowledgeSeedAdditions(16).map((d) => d.id), ['kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times']);
+  assert.deepEqual(knowledgeSeedAdditions(17).map((d) => d.id), ['kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times']);
+  assert.deepEqual(knowledgeSeedAdditions(18).map((d) => d.id), ['kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times']);
+  assert.deepEqual(knowledgeSeedAdditions(19).map((d) => d.id), ['kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times']);
+  assert.deepEqual(knowledgeSeedAdditions(20).map((d) => d.id), ['kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times']);
+  assert.deepEqual(knowledgeSeedAdditions(21).map((d) => d.id), ['kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times']);
+  assert.deepEqual(knowledgeSeedAdditions(22).map((d) => d.id), ['kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times']);
+  assert.deepEqual(knowledgeSeedAdditions(23).map((d) => d.id), ['kb-platform-qibla-compass', 'kb-platform-prayer-times']);
+  assert.deepEqual(knowledgeSeedAdditions(24).map((d) => d.id), ['kb-platform-prayer-times']);
+  assert.match(fresh.find((d) => d.id === 'kb-platform-prayer-times')!.content, /مفيش صوت تلقائي.*حصن المسلم كاملًا/);
+  assert.match(fresh.find((d) => d.id === 'kb-platform-qibla-compass')!.content, /حدّد القبلة بموقعي.*اختار مدينة.*الجيروسكوب لوحده مايكفيش/);
+  assert.match(fresh.find((d) => d.id === 'kb-platform-press-showcase')!.content, /كل الصحف.*الأغلفة توضيحية/);
+  assert.match(fresh.find((d) => d.id === 'kb-platform-calculator-standard')!.content, /٦٢ كناتج مرحلي.*٠٫٦٢.*٧٦٫٨٥/);
+  assert.match(fresh.find((d) => d.id === 'kb-platform-calculator-study')!.content, /مش من إن تفسير السؤال صحيح/);
   // Existing v2 stores get the v3 store guide; v3 stores get the v4 suggestions and v5 voice guides.
   assert.ok(knowledgeSeedAdditions(2).some((d) => d.id.startsWith('kb-store-')), 'v3 adds the store guide');
-  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions', 'kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice', 'kb-platform-clock-tools', 'kb-platform-visitor-compass', 'kb-platform-calculator-live', 'kb-platform-daily-news-editions']);
-  assert.deepEqual(knowledgeSeedAdditions(4).map((d) => d.id), ['kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice', 'kb-platform-clock-tools', 'kb-platform-visitor-compass', 'kb-platform-calculator-live', 'kb-platform-daily-news-editions'], 'later guides include the public voice-chat guide');
+  assert.deepEqual(knowledgeSeedAdditions(3).map((d) => d.id), ['kb-platform-suggestions', 'kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice', 'kb-platform-clock-tools', 'kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times']);
+  assert.deepEqual(knowledgeSeedAdditions(4).map((d) => d.id), ['kb-platform-shaheen-voice', 'kb-platform-shaheen-tools', 'kb-platform-real-photos', 'kb-platform-conversation-context', 'kb-platform-workspace-motion', 'kb-platform-imagination', 'kb-platform-painter', 'kb-platform-painter-wonders', 'kb-platform-painter-studio', 'kb-platform-live-chat', 'kb-platform-block-tools', 'kb-platform-assistant-voice', 'kb-platform-clock-tools', 'kb-platform-calculator-live', 'kb-platform-calculator-study', 'kb-platform-calculator-standard', 'kb-platform-press-showcase', 'kb-platform-qibla-compass', 'kb-platform-prayer-times'], 'later guides include the public voice-chat guide');
 });
 
 test('the router recognises platform questions and never reads an English word as an order reference', () => {
@@ -132,13 +144,27 @@ test('the router recognises platform questions and never reads an English word a
     ['إزاي أستخدم حاسبة التركيز؟', 'concentration'],
     ['فين الحاسبة الهندسية اللي في الساعة؟', 'engineering_calculator'],
     ['How do I open the scientific calculator?', 'engineering_calculator'],
+    ['فين الحساب العادي في الآلة؟', 'calculator_standard'],
+    ['How do I use the desk calculator?', 'calculator_standard'],
+    ['إزاي أستخدم شاهين للمذاكرة عشان أشوف خطوات الحل؟', 'calculator_study'],
+    ['Where do I find Shaheen Study?', 'calculator_study'],
     ['إزاي أشغل البوصلة؟', 'visitor_compass'],
     ['How do I use the compass?', 'visitor_compass'],
+    ['عايز اتجاه القبله فى البوصله', 'visitor_compass'],
+    ['How can I find Qibla?', 'visitor_compass'],
+    ['إزاي أشغّل تنبيه الأذان؟', 'prayer_times'],
+    ['فين أذكار الصباح؟', 'prayer_times'],
+    ['How do I activate prayer times reminders?', 'prayer_times'],
     ['إزاي أضبط منبه من الساعة؟', 'clock_tools'],
     ['Can I set a countdown timer?', 'clock_tools'],
     ['فين موجز الأخبار اللي جنب الساعة؟', 'home_headlines'],
     ['Where is the home news briefing?', 'home_headlines'],
     ['إزاي أوقّف تدوير الأخبار؟', 'home_headlines'],
+    ['فين منصات أخبار العالم؟', 'home_headlines'],
+    ['How are news photos chosen?', 'home_headlines'],
+    ['فين الصحف المحلية في بلد دخولي؟', 'home_headlines'],
+    ['How can I find local newspapers?', 'home_headlines'],
+    ['فين عرض الصحف بالصور؟', 'home_headlines'],
     ['عايز أعرف عن معمل الجزيئات', 'molecule_studio'],
     ['فين مكتبة الكتب؟', 'books'],
     ['إزاي أستخدم بريد شام', 'community'],

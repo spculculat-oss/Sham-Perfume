@@ -8,7 +8,7 @@ export type AiToolId =
   | 'shaheen_chat' | 'sham_assistant' | 'specialists_agent' | 'news_articles' | 'news_bulletin' | 'assistant_training' | 'media' | 'admin_agent'
   | 'store_advisor' | 'store_catalog' | 'store_import' | 'shaheen_school' | 'seo_agent' | 'shaheen_council' | 'finance_agent'
   | 'contracts_agent' | 'design_agent' | 'language_agent' | 'owner_room' | 'platform_owner_agent' | 'visitor_suggestions'
-  | 'shaheen_workspace';
+  | 'shaheen_workspace' | 'calculator_tutor';
 
 export interface AiToolDef {
   id: AiToolId;
@@ -24,6 +24,11 @@ export interface AiToolDef {
 }
 
 export const AI_TOOLS: AiToolDef[] = [
+  {
+    id: 'calculator_tutor', nameAr: 'شاهين للمذاكرة — الحاسبة الهندسية', nameEn: 'Shaheen Study — engineering calculator',
+    descriptionAr: 'تلميح لمسألة رياضية واقتراح صيغة عند الطلب فقط. النتائج والخطوات المدعومة من محرك الحاسبة المحلي، والصيغة المقترحة تحتاج مراجعة الطالب. بدون حفظ لنص السؤال أو بحث خارجي.',
+    sources: ['server/calculatorTutor.ts', 'src/components/engineering/CalculatorStudy.tsx', 'src/utils/engineeringStudy.ts'], routes: ['/api/calculator/tutor'], acceptsGuidance: true,
+  },
   {
     id: 'finance_agent', nameAr: 'أمين شاهين — الإدارة المالية', nameEn: 'Shaheen Finance',
     descriptionAr: 'وكيل قواعد محاسبية تحت إدارة شاهين: سجل تحصيل موثق، تقارير يومية وأسبوعية وشهرية، فحص بيانات الدفع والأداء، وبلاغات خاصة. لا نموذج يولّد الأرقام ولا تحويلات أو استردادات تلقائية.',

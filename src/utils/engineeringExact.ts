@@ -1,3 +1,5 @@
+import { decimalRatio } from './engineeringNumeric';
+
 /** A bounded exact value: a rational, a rational multiple of π, or a single square root. */
 export interface ExactValue {
   numerator: bigint;
@@ -85,5 +87,26 @@ export function exactPower(base: ExactValue | undefined, exponent: ExactValue | 
 
 export function exactApproximation(value: ExactValue): number {
   const factor = value.symbol === 'pi' ? Math.PI : value.symbol ? Math.sqrt(value.symbol) : 1;
-  return Number(value.numerator) / Number(value.denominator) * factor;
+  return decimalRatio(value.numerator, value.denominator) * factor;
+}
+
+/** The parenthesized suffix repeats. Long periods are deliberately not rounded and called exact. */
+export function recurringDecimal(value: ExactValue, maxDigits = 32): string | undefined {
+  if (value.symbol) return undefined;
+  const { numerator, denominator } = value;
+  const n = abs(numerator);
+  const whole = `${numerator < 0n ? '-' : ''}${n / denominator}`;
+  let remainder = n % denominator;
+  const seen = new Map<bigint, number>();
+  let digits = '';
+  while (remainder) {
+    const start = seen.get(remainder);
+    if (start !== undefined) return `${whole}.${digits.slice(0, start)}(${digits.slice(start)})`;
+    if (digits.length >= maxDigits) return undefined;
+    seen.set(remainder, digits.length);
+    remainder *= 10n;
+    digits += String(remainder / denominator);
+    remainder %= denominator;
+  }
+  return digits ? `${whole}.${digits}` : whole;
 }

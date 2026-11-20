@@ -91,8 +91,8 @@
   50% { box-shadow: 0 2px 8px #120b0670, 0 0 0 4px #ffd9a300; }
 }
 .prayer-foot {
-  display: flex; align-items: center; justify-content: space-between; gap: 0.4rem;
-  font-size: 0.58rem; color: #eadacb; opacity: 0.62;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.22rem 0.5rem;
+  font-size: 0.65rem; color: #eadacb; opacity: 0.62;
 }
 .prayer-board[data-polar='true'] .prayer-foot { opacity: 0.9; color: #ffd7a2; }
 
@@ -105,7 +105,7 @@
   font-size: 0.72rem; font-weight: 700; white-space: nowrap;
 }
 .prayer-chip svg { color: #f5cc97; flex: none; }
-.prayer-chip bdi { font: 750 0.7rem ui-monospace, monospace; color: #ffe3b6; }
+.prayer-chip time { font: 750 0.7rem ui-monospace, monospace; color: #ffe3b6; }
 .prayer-chip[data-state='unknown'] { display: none; }
 
 @media (min-width: 560px) { .prayer-strip { grid-template-columns: repeat(6, minmax(0, 1fr)); } }

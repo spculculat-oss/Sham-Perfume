@@ -88,7 +88,7 @@ export function browserVisitorCountry(
     .find((part) => isCountry(part));
 }
 
-/** Requests precise device coordinates only after the visitor acts or has already granted permission. */
+/** Requests a device fix for weather only after the visitor uses its location button. */
 export async function locateVisitorDevice(): Promise<VisitorEntryLocation> {
   if (typeof navigator === 'undefined' || !navigator.geolocation) throw new Error('GEOLOCATION_UNSUPPORTED');
   const position = await new Promise<GeolocationPosition>((resolve, reject) => {

@@ -1,4 +1,5 @@
 import { HEADLINE_PUBLISHERS, localHeadlineEdition, WORLD_HEADLINE_EDITION, type HeadlineEdition, type HeadlinePublisher } from '../data/homeHeadlineEditions';
+import { cleanHeadlineText, readHeadlinePhoto, type HeadlinePhoto } from './headlinePhoto';
 import { isCountry } from './pricing';
 
 export const HEADLINE_REFRESH_MS = 5 * 60_000;
@@ -10,6 +11,8 @@ export interface HomeHeadline {
   title: string;
   url: string;
   publisher: HeadlinePublisher;
+  author?: string;
+  photo?: HeadlinePhoto;
   // RSS publication date; GOV.UK Atom supplies the official update date instead.
   datedAt: string;
   dateKind: 'published' | 'updated' | 'date';
@@ -67,6 +70,7 @@ export function headlineLink(input: unknown, publisher: HeadlinePublisher): stri
     if (!['https:', 'http:'].includes(url.protocol) || !source.hosts.some((host) => host === url.hostname) || url.username || url.password || url.port || !source.path.test(url.pathname)) return null;
     url.protocol = 'https:';
     if (publisher === 'youm7') url.hostname = 'www.youm7.com';
+    if (publisher === 'un-news') url.pathname = url.pathname.replace(/^\/feed\/view/, '');
     url.search = '';
     url.hash = '';
     url.pathname = url.pathname.replace(/\/$/, '');
@@ -74,7 +78,18 @@ export function headlineLink(input: unknown, publisher: HeadlinePublisher): stri
   } catch { return null; }
 }
 
-export const headlineTitle = (input: string) => input.replace(/[\s\u0000-\u001f\u007f\u200e\u200f\u202a-\u202e\u2066-\u2069]+/g, ' ').trim().slice(0, 400);
+export const headlineTitle = (input: string) => cleanHeadlineText(input);
+export function headlineNeedsByline(publisher: HeadlinePublisher): boolean {
+  const source = HEADLINE_PUBLISHERS[publisher];
+  return 'byline' in source && source.byline;
+}
+export function headlineAuthor(input: unknown, publisher: HeadlinePublisher): string {
+  const author = cleanHeadlineText(input, 160);
+  // EBC allows reuse of its newsroom's own reporting, not partner/wire stories. Require a
+  // first-party credit from the publisher's item rather than treating its domain as a license.
+  if (publisher === 'agencia-brasil' && !/^(?:Agência Brasil|.+\s[-–]\sRepórter da Agência Brasil)$/i.test(author)) return '';
+  return author;
+}
 const normalizedTitle = (title: string) => title.normalize('NFKD').toLowerCase().replace(/\p{M}+/gu, '').replace(/[\p{P}\s]+/gu, ' ').trim();
 
 /** Same URL (including Youm7's short/full links), or exactly the same normalized headline. */
@@ -89,6 +104,23 @@ export function distinctHeadlines(items: readonly HomeHeadline[]): HomeHeadline[
     titles.add(title);
     return true;
   });
+}
+
+/** Let each source take a turn in the slideshow without losing stories from a busy feed. */
+export function headlineRotation(items: readonly HomeHeadline[]): HomeHeadline[] {
+  const sources = new Map<HeadlinePublisher, HomeHeadline[]>();
+  for (const item of items) {
+    const queue = sources.get(item.publisher);
+    if (queue) queue.push(item);
+    else sources.set(item.publisher, [item]);
+  }
+  let queues = [...sources.values()];
+  const ordered: HomeHeadline[] = [];
+  for (let i = 0; queues.length; i++) {
+    for (const queue of queues) ordered.push(queue[i]);
+    queues = queues.filter((queue) => queue.length > i + 1);
+  }
+  return ordered;
 }
 
 const dateIso = (value: unknown): string | null => typeof value === 'string' && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z$/.test(value)
@@ -117,9 +149,12 @@ export function readHeadlines(input: unknown): HomeHeadlines {
       const title = headlineTitle(item.title);
       const datedAt = dateIso(item.datedAt);
       const epoch = datedAt ? Date.parse(datedAt) : NaN;
+      const author = headlineAuthor(item.author, item.publisher);
+      const photo = item.publisher === 'global-voices' ? readHeadlinePhoto(item.photo) : undefined;
       return url && title && datedAt && epoch <= asOf && headlineDay(epoch, timeZone) === day
         && (item.dateKind === 'published' || item.dateKind === 'updated' || item.dateKind === 'date')
-        ? [{ title, url, datedAt, dateKind: item.dateKind, publisher: item.publisher }] : [];
+        && (!headlineNeedsByline(item.publisher) || author)
+        ? [{ title, url, datedAt, dateKind: item.dateKind, publisher: item.publisher, ...(author ? { author } : {}), ...(photo ? { photo } : {}) }] : [];
     }));
     return items.length ? { status: data.status, checkedAt, items } : emptyHeadlines('unavailable', checkedAt);
   };

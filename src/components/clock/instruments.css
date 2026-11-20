@@ -25,15 +25,29 @@
 .clock-compass-mark { fill: #f1dbc3; font-size: 13px; font-weight: 680; }
 .clock-compass-cardinal { fill: #e2bc89; font-size: 13px; font-weight: 750; }
 .clock-compass-cardinal[data-north='true'], .clock-compass-mark[data-degree='0'] { fill: #ffb199; }
-.clock-compass-arrow { transform-box: view-box; transform-origin: center; transition: transform 130ms ease-out; }
+.clock-compass-arrow, .clock-compass-scale, .clock-qibla-needle, .clock-qibla-emblem, .clock-qibla-art {
+  transform-box: view-box; transform-origin: center;
+}
+.clock-compass-scale { transform: rotate(var(--dial-north, 0deg)); }
+.clock-compass-scale text {
+  transform-box: fill-box; transform-origin: center;
+  transform: rotate(calc(-1 * var(--dial-north, 0deg)));
+}
+.clock-compass-arrow, .clock-compass[data-qibla-mode='live'] :is(.clock-compass-scale, .clock-compass-scale text, .clock-qibla-needle) { transition: transform 130ms ease-out; }
 .clock-compass-tip { fill: #ff936e; stroke: #ffd4b8; stroke-width: 0.75; stroke-linejoin: round; }
 .clock-compass-highlight { fill: #ffbe95; }
 .clock-compass-tail { fill: #c6ccb9; stroke: #e9e8de80; stroke-width: 0.8; }
-.clock-compass-pin { fill: #3a3028; stroke: #f3d3a4; stroke-width: 1.65; }
-.clock-compass:not([data-state='ready']) .clock-compass-arrow { opacity: 0.56; transition: none; }
-.clock-compass:not([data-state='ready']) .clock-compass-tip { fill: #9c9287; stroke: #d2c3b1; }
-.clock-compass:not([data-state='ready']) .clock-compass-highlight { fill: #bbb0a3; }
-.clock-compass:not([data-state='ready']) .clock-compass-tail { fill: #666568; }
+.clock-compass:not([data-state='ready']) .clock-compass-arrow,
+.clock-compass:not([data-qibla-mode='idle']) .clock-compass-arrow { visibility: hidden; }
+.clock-qibla-halo { fill: #2b2220; stroke: #a88b58; stroke-width: 1.2; }
+.clock-qibla-art { transform: rotate(var(--kaaba-tilt, 0deg)); transition: transform 200ms ease-out; }
+.clock-compass:not([data-qibla-mode='idle']) .clock-qibla-emblem { animation: clock-qibla-reveal 420ms ease-out both; }
+@keyframes clock-qibla-reveal { from { transform: translateY(3px) scale(0.91); } to { transform: none; } }
+.clock-qibla-tip { fill: #a5e6cc; stroke: #e0ffeb; stroke-width: 1.25; stroke-linejoin: round; }
+.clock-qibla-trail { stroke: #9bd7b9; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 3 4; }
+.clock-qibla-index { fill: #f8d79c; stroke: #ffecd1; stroke-width: 0.7; }
+.clock-compass[data-qibla-aligned='true'] :is(.clock-qibla-tip, .clock-qibla-index) { fill: #fae2a4; stroke: #fff7cd; }
+.clock-compass[data-qibla-aligned='true'] .clock-qibla-halo { stroke: #e3ce8d; fill: #443729; }
 .clock-compass-info { display: grid; align-content: center; min-width: 0; gap: 0.22rem; }
 .clock-compass-info h2 { display: flex; align-items: center; gap: 0.38rem; font-size: 0.91rem; font-weight: 760; }
 .clock-compass-info h2 svg { color: #edc795; flex: none; }
@@ -41,14 +55,41 @@
 .clock-compass-reading { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 0.38rem; line-height: 1.2; }
 .clock-compass-reading bdi { color: #fbd1a1; font: 780 clamp(1.27rem, 2.3vw, 1.82rem)/1.05 system-ui, sans-serif; font-variant-numeric: tabular-nums; }
 .clock-compass-reading span { font-size: 0.76rem; font-weight: 720; }
-.clock-compass-info button {
+.clock-compass :is(button, summary) {
   justify-self: start; display: inline-flex; align-items: center; justify-content: center; gap: 0.32rem;
-  min-height: 36px; max-width: 100%; padding: 0.2rem 0.48rem; border: 1px solid #eac89c64; border-radius: 0.55rem;
+  min-height: 36px; max-width: 100%; padding: 0.24rem 0.48rem; border: 1px solid #eac89c64; border-radius: 0.55rem;
   background: #ffdb9f1a; color: #ffe8c4; font-size: 0.7rem; font-weight: 740; line-height: 1.25;
 }
-.clock-compass-info button:hover:not(:disabled) { background: #ffdfa335; }
-.clock-compass-info button:disabled { cursor: wait; opacity: 0.7; }
-.clock-compass-info button svg { flex: none; }
+.clock-compass :is(button, summary):hover:not(:disabled) { background: #ffdfa335; }
+.clock-compass button:disabled { cursor: wait; opacity: 0.7; }
+.clock-compass button svg { flex: none; }
+.clock-qibla {
+  display: grid; grid-column: 1 / -1; min-width: 0; align-content: start; gap: 0.35rem; padding: 0.56rem 0.65rem;
+  border: 1px solid #b4dfc539; border-radius: 0.72rem; background: linear-gradient(140deg, #90d8b913, transparent 72%), #211d1b;
+}
+.clock-qibla-title { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 0.35rem; }
+.clock-qibla-title h3 { font-size: 0.87rem; font-weight: 760; color: #d5f3df; }
+.clock-qibla-title bdi { font: 800 1.2rem/1 system-ui, sans-serif; color: #b9f1ce; font-variant-numeric: tabular-nums; }
+.clock-qibla :is(.clock-qibla-origin, .clock-qibla-status) { color: #eadbcc; font-size: 0.71rem; line-height: 1.45; overflow-wrap: anywhere; }
+.clock-qibla-origin { display: flex; align-items: flex-start; gap: 0.32rem; }
+.clock-qibla-origin svg { color: #a8dbc0; flex: none; margin-block-start: 0.1rem; }
+.clock-compass[data-qibla-aligned='true'] .clock-qibla-status { color: #fbe3a7; font-weight: 740; }
+.clock-qibla-actions { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.34rem; min-width: 0; }
+.clock-qibla-actions button { color: #d8f3e2; background: #5f9f8227; border-color: #a5e7c45a; }
+.clock-qibla-actions button:hover:not(:disabled) { background: #5f9f8244; }
+.clock-qibla-actions details { min-width: 0; }
+.clock-qibla-actions details[open] { flex: 1 1 100%; }
+.clock-qibla-actions summary { cursor: pointer; }
+.clock-qibla-actions summary::-webkit-details-marker { display: none; }
+.clock-qibla-actions summary::after {
+  content: ''; inline-size: 5px; block-size: 5px; border: solid currentColor; border-width: 0 1px 1px 0;
+  transform: rotate(45deg); margin-inline: 0.1rem;
+}
+.clock-qibla-actions details[open] summary::after { transform: rotate(225deg); }
+.clock-qibla-actions select {
+  display: block; appearance: auto; color-scheme: dark; width: 100%; min-width: 0; min-height: 38px; margin-block-start: 0.35rem;
+  padding-inline: 0.42rem; border: 1px solid #a5e7c45a; border-radius: 0.48rem; background: #282d27; color: #f1f5ee; font-size: 0.75rem;
+}
 .clock-calculator-launcher {
   display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center;
   gap: clamp(0.55rem, 2.2vw, 1.2rem); padding: 0.6rem 0.7rem; text-align: start;
@@ -61,7 +102,7 @@
 .clock-calculator-text > span { font-size: 0.74rem; color: #e7d9c7; }
 .clock-calculator-text small { color: #efc58e; margin-block-start: 0.17rem; font-weight: 700; font-size: 0.7rem; }
 .clock-calculator-popout { color: #f6d3ab; width: 1.1rem; height: 1.1rem; }
-.clock-calculator-launcher:focus-visible, .clock-compass-info button:focus-visible { outline: 2px solid #ffd497; outline-offset: 2px; }
+.clock-calculator-launcher:focus-visible, .clock-compass :is(button, summary, select):focus-visible { outline: 2px solid #ffd497; outline-offset: 2px; }
 .clock-calculator-loading {
   position: fixed; z-index: 95; inset-inline-end: 1rem; bottom: max(88px, calc(env(safe-area-inset-bottom) + 74px));
   max-width: calc(100vw - 2rem); border: 1px solid #967b57; border-radius: 0.75rem; padding: 0.65rem 0.85rem;
@@ -72,10 +113,16 @@
   .clock-compass, .clock-calculator-launcher { padding-inline: 0.9rem; }
 }
 @media (max-width: 450px) {
-  .clock-compass-info button { min-height: 44px; }
+  .clock-compass :is(button, summary, select) { min-height: 44px; }
   .clock-calculator-text > span { font-size: 0.68rem; }
 }
-@media (prefers-reduced-motion: reduce) { .clock-compass-arrow { transition: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .clock-compass .clock-compass-arrow,
+  .clock-compass[data-qibla-mode='live'] :is(.clock-compass-scale, .clock-compass-scale text, .clock-qibla-needle),
+  .clock-qibla-art { transition: none; }
+  .clock-compass:not([data-qibla-mode='idle']) .clock-qibla-emblem { animation: none; }
+  .clock-qibla-art { transform: none; }
+}
 
 /* Other pages retain the shared clock without pushing the store or workspace
    down by the height of the Home briefing. Opening details mounts the dial. */

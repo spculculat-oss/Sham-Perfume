@@ -16,14 +16,22 @@ export function divideComplex(a: ComplexValue, b: ComplexValue): ComplexValue {
   const norm = c * c + d * d;
   const re = a.re / size / norm;
   const im = a.im / size / norm;
-  return complex(re * c + im * d, im * c - re * d);
+  const value = complex(re * c + im * d, im * c - re * d);
+  if (Number.isFinite(value.re) && Number.isFinite(value.im)) return value;
+  // The intermediate a/|b| can overflow although the final components fit.
+  const scale = Math.max(Math.abs(a.re), Math.abs(a.im));
+  if (!scale) return complex(0);
+  const u = a.re / scale, v = a.im / scale;
+  const restore = (part: number) => part * scale / size;
+  return complex(restore((u * c + v * d) / norm), restore((v * c - u * d) / norm));
 }
 
 export function sqrtComplex(z: ComplexValue): ComplexValue {
   if (!z.im) return z.re < 0 ? complex(0, Math.sqrt(-z.re)) : complex(Math.sqrt(z.re));
-  const halfMagnitude = Math.hypot(z.re / 2, z.im / 2);
-  const t = Math.sqrt(halfMagnitude + Math.abs(z.re) / 2);
-  return z.re >= 0 ? complex(t, z.im / (2 * t)) : complex(Math.abs(z.im) / (2 * t), Math.sign(z.im) * t);
+  const size = Math.max(Math.abs(z.re), Math.abs(z.im));
+  const a = z.re / size, b = z.im / size;
+  const t = Math.sqrt(size) * Math.sqrt((Math.hypot(a, b) + Math.abs(a)) / 2);
+  return z.re >= 0 ? complex(t, (z.im / t) / 2) : complex((Math.abs(z.im) / t) / 2, Math.sign(z.im) * t);
 }
 
 export function powerComplex(a: ComplexValue, b: ComplexValue): ComplexValue {
@@ -39,7 +47,8 @@ export function powerComplex(a: ComplexValue, b: ComplexValue): ComplexValue {
   if (!a.im && !b.im && (a.re >= 0 || Number.isInteger(b.re))) return complex(a.re ** b.re);
   if (b.re === 0.5 && !b.im) return sqrtComplex(a);
   const arg = Math.atan2(a.im || 0, a.re);
-  const log = Math.log(magnitude(a));
+  const size = Math.max(Math.abs(a.re), Math.abs(a.im));
+  const log = Math.log(size) + Math.log(Math.hypot(a.re / size, a.im / size));
   const radius = Math.exp(b.re * log - b.im * arg);
   const phase = b.re * arg + b.im * log;
   return complex(radius * Math.cos(phase), radius * Math.sin(phase));

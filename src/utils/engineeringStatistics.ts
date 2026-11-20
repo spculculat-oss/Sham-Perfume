@@ -1,10 +1,17 @@
 import { EngineeringError } from './engineeringCalculator';
 import { solveLinearSystem } from './engineeringAdvanced';
+import { compensatedSum } from './engineeringNumeric';
 
 const fail = (message: string): never => { throw new EngineeringError('math', message); };
 const finite = (n: number) => Number.isFinite(n) ? n : fail('Result is outside the supported numeric range.');
-const sum = (values: number[]) => values.reduce((a, b) => a + b, 0);
-const mean = (values: number[]) => sum(values.map((x) => x / values.length));
+const sum = (values: number[]) => {
+  const plain = compensatedSum(values);
+  return Number.isFinite(plain) ? plain : compensatedSum(values.map((v) => v / values.length)) * values.length;
+};
+const mean = (values: number[]) => {
+  const total = sum(values);
+  return Number.isFinite(total) ? total / values.length : compensatedSum(values.map((v) => v / values.length));
+};
 
 export function summarizeStatistics(values: number[]) {
   if (!values.length || values.length > 180 || !values.every(Number.isFinite)) return fail('Enter 1–180 finite values.');
@@ -13,7 +20,7 @@ export function summarizeStatistics(values: number[]) {
   const deviation = Math.hypot(...values.map((x) => (x / Math.sqrt(n)) - (average / Math.sqrt(n))));
   const sorted = [...values].sort((a, b) => a - b);
   return {
-    n, sum: finite(sum(values)), mean: average, min: sorted[0], max: sorted[n - 1], median: sorted[Math.floor((n - 1) / 2)] / 2 + sorted[Math.floor(n / 2)] / 2,
+    n, sum: finite(sum(values)), mean: average, min: sorted[0], max: sorted[n - 1], median: n % 2 ? sorted[(n - 1) / 2] : mean(sorted.slice(n / 2 - 1, n / 2 + 1)),
     populationDeviation: finite(deviation), sampleDeviation: n > 1 ? finite(deviation * Math.sqrt(n / (n - 1))) : null,
   };
 }
@@ -61,30 +68,41 @@ function upperTail(x: number): number {
   if (x < 0) return 1 - upperTail(-x);
   if (x > 38.5) return 0;
   const exponential = Math.exp(-x * x / 2);
-  if (x < 7.07106781186547) {
+  if (x < 5) {
     const p = [0.0352624965998911, 0.700383064443688, 6.37396220353165, 33.912866078383, 112.079291497871, 221.213596169931, 220.206867912376];
     const q = [0.0883883476483184, 1.75566716318264, 16.064177579207, 86.7807322029461, 296.564248779674, 637.333633378831, 793.826512519948, 440.413735824752];
     const evaluate = (coefficients: number[]) => coefficients.reduce((value, c) => value * x + c);
     return exponential * evaluate(p) / evaluate(q);
   }
-  return exponential * INV_SQRT_2PI / (x + 1 / (x + 2 / (x + 3 / (x + 4 / (x + 0.65)))));
+  let fraction = 0;
+  for (let k = 48; k >= 1; k--) fraction = k / (x + fraction);
+  return Math.exp(-x * x / 2 + Math.log(INV_SQRT_2PI / (x + fraction)));
 }
 
 function validateNormal(mean: number, sd: number) {
   if (!Number.isFinite(mean) || !Number.isFinite(sd) || sd <= 0) fail('Normal distribution needs a finite mean and positive standard deviation.');
 }
 
+const standardized = (x: number, mean: number, sd: number) => Number.isFinite(x) && !Number.isFinite(x - mean) ? x / sd - mean / sd : (x - mean) / sd;
+
 export function normalDensity(x: number, mean: number, sd: number): number {
   validateNormal(mean, sd);
-  const z = (x - mean) / sd;
-  return finite(Math.exp(-(z ** 2) / 2) * INV_SQRT_2PI / sd);
+  const z = standardized(x, mean, sd);
+  return finite(Math.exp(-(z ** 2) / 2 + Math.log(INV_SQRT_2PI) - Math.log(sd)));
 }
 
 export function normalProbability(from: number, to: number, mean: number, sd: number): number {
   validateNormal(mean, sd);
   if (!(from <= to)) return fail('The lower bound must be ≤ the upper bound.');
-  const a = (from - mean) / sd;
-  const b = (to - mean) / sd;
+  const a = standardized(from, mean, sd);
+  const b = standardized(to, mean, sd);
+  const width = (to - from) / sd;
+  if (Number.isFinite(a) && Number.isFinite(b) && width > 0 && width * (1 + Math.max(Math.abs(a), Math.abs(b))) < 1e-3) {
+    // Subtracting nearly equal CDFs loses all digits for a small interval; integrate its density locally.
+    const h = width / 2, m = a + h;
+    const left = Math.exp(h * (m - h / 2)), right = Math.exp(-h * (m + h / 2));
+    return Math.exp(Math.log(width) - m * m / 2 + Math.log(INV_SQRT_2PI)) * (left + 4 + right) / 6;
+  }
   return Math.max(0, a < 0 ? upperTail(-b) - upperTail(-a) : upperTail(a) - upperTail(b));
 }
 

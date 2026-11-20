@@ -2,27 +2,35 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { compassPoint, compassXY, nextCompassRotation, normalizeBearing, readCompassBearing } from '../src/utils/visitorCompass';
 
+const flat = { beta: 0, gamma: 0 };
+
 test('the dial reads absolute heading clockwise from north and follows screen rotation', () => {
   for (const [alpha, expected] of [[0, 0], [270, 90], [180, 180], [90, 270], [360, 0]]) {
-    assert.equal(Math.round(readCompassBearing({ absolute: true, alpha })!), expected);
+    assert.equal(Math.round(readCompassBearing({ absolute: true, alpha, ...flat })!), expected);
   }
-  assert.equal(readCompassBearing({ absolute: true, alpha: 90 }, 90), 0);
-  assert.equal(readCompassBearing({ absolute: true, alpha: 90 }, -90), 180);
+  assert.equal(readCompassBearing({ absolute: true, alpha: 90, ...flat }, 90), 0);
+  assert.equal(readCompassBearing({ absolute: true, alpha: 90, ...flat }, -90), 180);
   assert.equal(Math.round(readCompassBearing({ absolute: true, alpha: 225, beta: 55, gamma: 10 })!), 135);
   assert.equal(readCompassBearing({ absolute: true, alpha: 225, beta: 90, gamma: 10 }), undefined, 'a vertical top edge has no bearing');
   assert.equal(Math.round(readCompassBearing({ absolute: true, alpha: 0, beta: 45, gamma: 45 }, 90)!), 55, 'landscape projects the physical side edge');
 });
 
 test('WebKit heading, including north at zero, outranks yaw; unusable samples never become north', () => {
-  assert.equal(readCompassBearing({ absolute: false, alpha: 180, webkitCompassHeading: 0, webkitCompassAccuracy: 10 }), 0);
-  assert.equal(readCompassBearing({ absolute: false, alpha: null, webkitCompassHeading: 350 }, 90), 80);
-  assert.equal(readCompassBearing({ absolute: false, alpha: 270 }), undefined);
-  assert.equal(readCompassBearing({ absolute: false, alpha: 200, webkitCompassHeading: 0, webkitCompassAccuracy: -1 }), undefined);
-  assert.equal(readCompassBearing({ absolute: true, alpha: 270, webkitCompassHeading: 0, webkitCompassAccuracy: -1 }), 90);
-  for (const alpha of [null, Number.NaN, -1, 361, Infinity]) {
-    assert.equal(readCompassBearing({ absolute: true, alpha }), undefined);
+  assert.equal(readCompassBearing({ absolute: false, alpha: 180, ...flat, webkitCompassHeading: 0, webkitCompassAccuracy: 10 }), 0);
+  assert.equal(readCompassBearing({ absolute: false, alpha: null, ...flat, webkitCompassHeading: 350 }, 90), 80);
+  assert.equal(Math.round(readCompassBearing({ absolute: false, alpha: 20, beta: 45, gamma: 45, webkitCompassHeading: 10 }, 90)!), 65);
+  assert.equal(readCompassBearing({ absolute: false, alpha: 20, beta: 90, gamma: 0, webkitCompassHeading: 10 }), undefined);
+  assert.equal(readCompassBearing({ absolute: false, alpha: 270, ...flat }), undefined);
+  for (const webkitCompassAccuracy of [-1, 26, Infinity, NaN]) {
+    assert.equal(readCompassBearing({ absolute: false, alpha: 200, ...flat, webkitCompassHeading: 0, webkitCompassAccuracy }), undefined);
   }
-  assert.equal(readCompassBearing({ absolute: false, alpha: null, webkitCompassHeading: -1 }), undefined);
+  assert.equal(readCompassBearing({ absolute: true, alpha: 270, ...flat, webkitCompassHeading: 0, webkitCompassAccuracy: -1 }), 90);
+  for (const alpha of [null, Number.NaN, -1, 361, Infinity]) {
+    assert.equal(readCompassBearing({ absolute: true, alpha, ...flat }), undefined);
+  }
+  assert.equal(readCompassBearing({ absolute: true, alpha: 1, beta: null, gamma: 0 }), undefined);
+  assert.equal(readCompassBearing({ absolute: true, alpha: 1, beta: 0, gamma: Infinity }), undefined);
+  assert.equal(readCompassBearing({ absolute: false, alpha: null, ...flat, webkitCompassHeading: -1 }), undefined);
 });
 
 test('dial quadrants, degree normalization and shortest needle path agree', () => {

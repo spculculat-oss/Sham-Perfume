@@ -15,6 +15,11 @@ await access(new URL('.nojekyll', output));
 await access(new URL('media/index.html', output));
 await access(new URL('og/concentration.png', output));
 await access(new URL('og/pin-concentration.png', output));
+assert.match(await readFile(new URL('third-party/magvar.txt', output), 'utf8'), /MIT License/);
+assert.match(await readFile(new URL('third-party/adhan-js.txt', output), 'utf8'), /MIT License/);
+assert.match(await readFile(new URL('third-party/tz-lookup.txt', output), 'utf8'), /CC0/);
+for (const file of ['ahmed-khalaf.mp3', 'ahmed-khalaf-fajr.mp3', 'aaqib-azeez.mp3', 'besim-azemi-fajr.m4a']) await access(new URL(`audio/adhan/${file}`, output));
+for (const cover of ['morning', 'print', 'world', 'desk']) await access(new URL(`images/press/${cover}.webp`, output));
 assert.ok(!html.includes('/src/main.tsx'), 'Pages must serve built JavaScript, not TypeScript source.');
 
 const assets = [...html.matchAll(/(?:src|href)="([^"]+\.(?:js|css))"/g)].map((match) => match[1]);

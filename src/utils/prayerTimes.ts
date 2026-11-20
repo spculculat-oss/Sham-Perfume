@@ -1,222 +1,120 @@
-/**
- * Prayer times computed on the visitor's own device from their approximate
- * coordinates: no prayer API is called, so the city never leaves the page.
- *
- * The astronomy is the standard solar-position method used by PrayTimes:
- * declination and equation of time give solar noon, and each prayer is an
- * hour angle before or after it. All results are exact UTC instants, so the
- * display can follow any IANA timezone with Intl.
- */
+import { CalculationMethod, Coordinates, HighLatitudeRule, Madhab, PrayerTimes } from 'adhan';
+import { PRAYER_NAMES, REMINDER_PRAYERS, type AsrRule, type PrayerMethod, type PrayerName, type PrayerPlace, type ReminderPrayer } from './prayerConfig';
 
-export type PrayerKey = 'fajr' | 'sunrise' | 'dhuhr' | 'asr' | 'maghrib' | 'isha';
-
-export interface PrayerMethod {
-  id: string;
-  /** Twilight angle below the horizon used for Fajr. */
-  fajrAngle: number;
-  /** Isha angle, or a fixed number of minutes after Maghrib. */
-  ishaAngle?: number;
-  ishaMinutes?: number;
-  /** Shadow length used for Asr: 1 is the majority (Shafi'i), 2 the Hanafi school. */
-  asrFactor: number;
-}
-
-export const PRAYER_METHODS: Record<string, PrayerMethod> = {
-  egypt: { id: 'egypt', fajrAngle: 19.5, ishaAngle: 17.5, asrFactor: 1 },
-  mwl: { id: 'mwl', fajrAngle: 18, ishaAngle: 17, asrFactor: 1 },
-  isna: { id: 'isna', fajrAngle: 15, ishaAngle: 15, asrFactor: 1 },
-  karachi: { id: 'karachi', fajrAngle: 18, ishaAngle: 18, asrFactor: 1 },
-  dubai: { id: 'dubai', fajrAngle: 18.2, ishaAngle: 18.2, asrFactor: 1 },
-  turkey: { id: 'turkey', fajrAngle: 18, ishaAngle: 17, asrFactor: 1 },
-  ummAlQura: { id: 'ummAlQura', fajrAngle: 18.5, ishaMinutes: 90, asrFactor: 1 },
+const METHODS_BY_COUNTRY: Readonly<Record<string, PrayerMethod>> = {
+  EG: 'Egyptian', SA: 'UmmAlQura', AE: 'Dubai', QA: 'Qatar', KW: 'Kuwait', TR: 'Turkey', IR: 'Tehran',
+  PK: 'Karachi', IN: 'Karachi', BD: 'Karachi', AF: 'Karachi', SG: 'Singapore',
+  US: 'NorthAmerica', CA: 'NorthAmerica', GB: 'MoonsightingCommittee',
 };
+const HANAFI_COUNTRIES = new Set(['AF', 'BD', 'IN', 'PK', 'TR']);
+export const methodForCountry = (country: string): PrayerMethod => METHODS_BY_COUNTRY[country] ?? 'MuslimWorldLeague';
+export const asrForCountry = (country: string): Exclude<AsrRule, 'auto'> => HANAFI_COUNTRIES.has(country) ? 'hanafi' : 'standard';
 
-/** Pick the convention most visitors of that country expect; MWL is the world-wide default. */
-export function prayerMethodFor(country: string | undefined): PrayerMethod {
-  switch (country?.toUpperCase()) {
-    case 'EG': case 'SD': case 'LY': case 'SY': case 'JO': return PRAYER_METHODS.egypt;
-    case 'SA': return PRAYER_METHODS.ummAlQura;
-    case 'AE': return PRAYER_METHODS.dubai;
-    case 'PK': case 'IN': case 'BD': case 'AF': return { ...PRAYER_METHODS.karachi, asrFactor: 2 };
-    case 'TR': return PRAYER_METHODS.turkey;
-    case 'US': case 'CA': return PRAYER_METHODS.isna;
-    default: return PRAYER_METHODS.mwl;
+const DAY = 86_400_000;
+const civilFormatters = new Map<string, Intl.DateTimeFormat>();
+const utcDay = (key: string) => Date.parse(`${key}T00:00:00Z`);
+
+/** Civil date at the chosen city, not at the device, hosting server, or UTC. */
+export function prayerDayKey(timeZone: string, at: number): string | undefined {
+  if (!Number.isFinite(at)) return undefined;
+  try {
+    let formatter = civilFormatters.get(timeZone);
+    if (!formatter) {
+      formatter = new Intl.DateTimeFormat('en-CA-u-ca-gregory-nu-latn', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
+      if (civilFormatters.size >= 64) civilFormatters.clear();
+      civilFormatters.set(timeZone, formatter);
+    }
+    const parts = formatter.formatToParts(at);
+    return ['year', 'month', 'day'].map((part) => parts.find((item) => item.type === part)?.value).join('-');
+  } catch { return undefined; }
+}
+
+export function shiftPrayerDay(day: string, days: number): string {
+  return new Date(utcDay(day) + days * DAY).toISOString().slice(0, 10);
+}
+
+function ummAlQuraRamadan(day: string): boolean {
+  // The prayer-day table is civil; Isha is after sunset, when the next Hijri
+  // day starts. Use the calculated Umm al-Qura calendar, not a moon-sighting claim.
+  try {
+    const calendar = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn', { timeZone: 'UTC', month: 'numeric' });
+    return calendar.resolvedOptions().calendar === 'islamic-umalqura'
+      && calendar.formatToParts(utcDay(day) + DAY).find((p) => p.type === 'month')?.value === '9';
+  } catch { return false; }
+}
+
+export interface PrayerEvent { prayer: ReminderPrayer; at: number; day: string }
+export interface PrayerDay {
+  key: string;
+  times: Readonly<Record<PrayerName, number | undefined>>;
+  reliable: boolean;
+  events: readonly PrayerEvent[];
+}
+
+export function calculatePrayerDay(place: PrayerPlace, key: string, method: PrayerMethod, asr: Exclude<AsrRule, 'auto'>): PrayerDay | undefined {
+  const day = utcDay(key);
+  if (!Number.isFinite(day) || !Number.isFinite(place.lat) || Math.abs(place.lat) >= 90
+    || !Number.isFinite(place.lon) || Math.abs(place.lon) > 180 || !prayerDayKey(place.timeZone, day)) return undefined;
+  const params = CalculationMethod[method]();
+  params.madhab = asr === 'hanafi' ? Madhab.Hanafi : Madhab.Shafi;
+  params.highLatitudeRule = Math.abs(place.lat) > 48 ? HighLatitudeRule.SeventhOfTheNight : HighLatitudeRule.MiddleOfTheNight;
+  if (method === 'UmmAlQura' && ummAlQuraRamadan(key)) params.ishaInterval = 120;
+  const coordinates = new Coordinates(place.lat, place.lon);
+  const forSolarDay = (epoch: number) => {
+    // Adhan reads getFullYear/Month/Date, then returns UTC instants. Noon avoids
+    // a local midnight DST jump even when the device is in a different zone.
+    const d = new Date(epoch);
+    return new PrayerTimes(coordinates, new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 12), params);
+  };
+  let times = forSolarDay(day);
+  const solarDay = prayerDayKey(place.timeZone, times.dhuhr.getTime());
+  // Across the date line (e.g. Kiritimati) the sun's longitude date and the
+  // legal civil date can differ by one day. Match the city's date of solar noon.
+  if (solarDay && solarDay !== key) {
+    const delta = day - utcDay(solarDay);
+    if (Math.abs(delta) === DAY) times = forSolarDay(day + delta);
   }
+  if (prayerDayKey(place.timeZone, times.dhuhr.getTime()) !== key) return undefined;
+  const at = Object.fromEntries(PRAYER_NAMES.map((name) => {
+    const ms = times[name].getTime();
+    return [name, Number.isFinite(ms) ? ms : undefined];
+  })) as Record<PrayerName, number | undefined>;
+  // Do not claim precise alerts on a polar day with no valid sunrise/sunset, or
+  // if estimated twilight crosses another event. Partial display is still useful.
+  const reliable = PRAYER_NAMES.every((name, i) => at[name] !== undefined && (i === 0 || at[name]! > at[PRAYER_NAMES[i - 1]]!));
+  return { key, times: at, reliable, events: reliable ? REMINDER_PRAYERS.map((prayer) => ({ prayer, at: at[prayer]!, day: key })) : [] };
 }
 
-export const PRAYER_KEYS: readonly PrayerKey[] = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'];
-
-const RAD = Math.PI / 180;
-const DEG = 180 / Math.PI;
-const sin = (degrees: number) => Math.sin(degrees * RAD);
-const cos = (degrees: number) => Math.cos(degrees * RAD);
-const tan = (degrees: number) => Math.tan(degrees * RAD);
-const asin = (value: number) => Math.asin(value) * DEG;
-const atan2 = (y: number, x: number) => Math.atan2(y, x) * DEG;
-const fixAngle = (angle: number) => ((angle % 360) + 360) % 360;
-const fixHour = (hour: number) => ((hour % 24) + 24) % 24;
-
-/** Julian day at 0h UT of the given UTC date. */
-function julianDay(year: number, month: number, day: number): number {
-  let y = year;
-  let m = month;
-  if (m <= 2) { y -= 1; m += 12; }
-  const a = Math.floor(y / 100);
-  const b = 2 - a + Math.floor(a / 4);
-  return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + b - 1524.5;
+/** Include adjacent solar days: at very late sunsets an Isha can fall after civil midnight.
+ * A fixed-interval method can also overlap the next dawn in a very short night; do not ring an ambiguous day. */
+export function calculatePrayerCalendar(place: PrayerPlace, key: string, method: PrayerMethod, asr: Exclude<AsrRule, 'auto'>) {
+  const [previous, today, next] = [-1, 0, 1].map((i) => calculatePrayerDay(place, shiftPrayerDay(key, i), method, asr));
+  const rejected = new Set<string>();
+  for (const [left, right] of [[previous, today], [today, next]] as const) {
+    if (left?.reliable && right?.reliable && left.times.isha! >= right.times.fajr!) {
+      rejected.add(left.key);
+      rejected.add(right.key);
+    }
+  }
+  const events = [previous, today, next].flatMap((day) => day && !rejected.has(day.key) ? day.events : []).sort((a, b) => a.at - b.at);
+  return { today: today && rejected.has(today.key) ? { ...today, events: [], reliable: false } : today, events };
 }
 
-/** Solar declination (degrees) and equation of time (hours) for a Julian day. */
-export function sunPosition(jd: number): { declination: number; equation: number } {
-  const d = jd - 2451545.0;
-  const g = fixAngle(357.529 + 0.98560028 * d);
-  const q = fixAngle(280.459 + 0.98564736 * d);
-  const l = fixAngle(q + 1.915 * sin(g) + 0.020 * sin(2 * g));
-  const e = 23.439 - 0.00000036 * d;
-  const declination = asin(sin(e) * sin(l));
-  const rightAscension = fixHour(atan2(cos(e) * sin(l), cos(l)) / 15);
-  return { declination, equation: q / 15 - rightAscension };
+/** Decorative progress between the same sunrise and sunset shown on the clock. */
+export function prayerSunArc(times: PrayerDay['times'], at: number) {
+  const start = times.sunrise;
+  const end = times.maghrib;
+  if (start === undefined || end === undefined || end <= start || !Number.isFinite(at)) return undefined;
+  return { progress: Math.max(0, Math.min(1, (at - start) / (end - start))), daylight: start <= at && at < end };
 }
 
-/** Solar noon in UTC hours for a given day and longitude (east positive). */
-function solarNoonUTC(jd: number, longitude: number): number {
-  return fixHour(12 - sunPosition(jd).equation - longitude / 15);
-}
-
-/**
- * Hours from solar noon to the moment the sun sits at `angle` below the horizon
- * (negative values are below). Undefined above the polar circle, where the sun
- * never reaches the angle that day.
- */
-function hourAngle(angle: number, jd: number, latitude: number): number | undefined {
-  const { declination } = sunPosition(jd);
-  const numerator = sin(angle) - sin(latitude) * sin(declination);
-  const denominator = cos(latitude) * cos(declination);
-  const ratio = numerator / denominator;
-  if (!Number.isFinite(ratio) || ratio > 1 || ratio < -1) return undefined;
-  return Math.acos(ratio) * DEG / 15;
-}
-
-export interface PrayerTimes {
-  /** UTC instants, in order: fajr, sunrise, dhuhr, asr, maghrib, isha. */
-  times: Record<PrayerKey, number>;
-  /** True seconds (ms) of sunrise/sunset so the card can draw the sun's arc. */
-  sunset: number;
-  /** True above the polar circle, where the sun never sets on that day. */
-  estimated: boolean;
-  coordinates: { latitude: number; longitude: number };
-  method: string;
-}
-
-export interface PrayerOptions {
-  latitude: number;
-  longitude: number;
-  /** A Date anywhere inside the wanted day; the day is read in UTC. */
-  date: Date;
-  method?: PrayerMethod;
-}
-
-/**
- * The five prayers plus sunrise for one day. Extra minutes are deliberately
- * small (the classical 1–2 minute precaution) so times stay honest.
- */
-export function prayerTimesFor({ latitude, longitude, date, method = PRAYER_METHODS.mwl }: PrayerOptions): PrayerTimes | undefined {
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || Math.abs(latitude) > 90 || Math.abs(longitude) > 180) return undefined;
-  if (Number.isNaN(date.getTime())) return undefined;
-  const jd = julianDay(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate());
-  const start = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
-  const noon = solarNoonUTC(jd, longitude);
-
-  // Refine with the solar position at each prayer's approximate moment.
-  const at = (hoursFromNoon: number, estimate: number) => solarNoonUTC(jd + estimate / 24, longitude) + hoursFromNoon;
-  const noonRefined = at(0, noon);
-  const riseOffset = hourAngle(-0.833, jd + (noonRefined - 6) / 24, latitude);
-  const setOffset = hourAngle(-0.833, jd + (noonRefined + 6) / 24, latitude);
-  const fajrOffset = hourAngle(-method.fajrAngle, jd + (noonRefined - 6) / 24, latitude);
-  // Asr: the sun's altitude when the shadow reaches `asrFactor` times the object.
-  const asrAngle = Math.atan(1 / (method.asrFactor + tan(Math.abs(latitude - sunPosition(jd).declination)))) * DEG;
-  const asrOffset = hourAngle(asrAngle, jd + (noonRefined + 3) / 24, latitude);
-  const ishaOffset = method.ishaAngle === undefined ? undefined : hourAngle(-method.ishaAngle, jd + (noonRefined + 6) / 24, latitude);
-
-  // Above the polar circle a prayer can have no astronomical moment. Fall back
-  // to one seventh of the night, the usual high-latitude precaution.
-  const polar = riseOffset === undefined || setOffset === undefined;
-  const nightHours = polar ? 8 : 24 - (riseOffset! + setOffset!);
-  const sunriseHours = riseOffset ?? 6;
-  const sunsetHours = setOffset ?? 6;
-  const fallbackNight = Math.max(1, nightHours);
-  const fajrHours = fajrOffset ?? sunriseHours - fallbackNight / 7;
-  const ishaHours = method.ishaMinutes !== undefined
-    ? sunsetHours + method.ishaMinutes / 60
-    : (ishaOffset ?? sunsetHours + fallbackNight / 7);
-
-  const toEpoch = (hours: number) => {
-    if (!Number.isFinite(hours)) return undefined;
-    return start + Math.round(fixHour(hours) * 3_600_000);
-  };
-  const fajr = toEpoch(noonRefined - fajrHours);
-  const sunrise = toEpoch(noonRefined - sunriseHours);
-  const dhuhr = toEpoch(noonRefined);
-  const asr = toEpoch(noonRefined + (asrOffset ?? 3));
-  const maghrib = toEpoch(noonRefined + sunsetHours);
-  const isha = toEpoch(noonRefined + ishaHours);
-  if ([fajr, sunrise, dhuhr, asr, maghrib, isha].some((value) => value === undefined)) return undefined;
-
-  return {
-    times: { fajr: fajr!, sunrise: sunrise!, dhuhr: dhuhr!, asr: asr!, maghrib: maghrib!, isha: isha! },
-    sunset: maghrib!,
-    estimated: polar,
-    coordinates: { latitude, longitude },
-    method: method.id,
-  };
-}
-
-export interface NextPrayer {
-  key: PrayerKey;
-  /** The instant of the upcoming prayer. */
-  at: number;
-  remainingMs: number;
-}
-
-/**
- * The next prayer after `now`. After Isha the answer is tomorrow's Fajr, so the
- * countdown never runs out.
- */
-export function nextPrayer(times: PrayerTimes, now: number): NextPrayer | undefined {
-  if (!Number.isFinite(now)) return undefined;
-  const ordered = PRAYER_KEYS.filter((key) => key !== 'sunrise').map((key) => ({ key, at: times.times[key] }));
-  const upcoming = ordered.find((prayer) => prayer.at > now);
-  if (upcoming) return { ...upcoming, remainingMs: upcoming.at - now };
-  const tomorrow = prayerTimesFor({ ...times.coordinates, date: new Date(times.times.fajr + 24 * 3_600_000), method: PRAYER_METHODS[times.method] });
-  if (!tomorrow) return undefined;
-  return { key: 'fajr', at: tomorrow.times.fajr, remainingMs: tomorrow.times.fajr - now };
-}
-
-/** "1 س 20 د" style remaining time; the labels come from the caller. */
-export function splitRemaining(remainingMs: number): { hours: number; minutes: number } {
-  const total = Math.max(0, Math.round(remainingMs / 60_000));
+export function splitPrayerRemaining(ms: number) {
+  const total = Math.max(0, Math.round(ms / 60_000));
   return { hours: Math.floor(total / 60), minutes: total % 60 };
 }
 
-/** 0 at sunrise, 1 at sunset, and outside that range the clamped edges. */
-export function sunProgress(times: PrayerTimes, now: number): number {
-  const span = times.times.maghrib - times.times.sunrise;
-  if (!(span > 0)) return 0;
-  return Math.max(0, Math.min(1, (now - times.times.sunrise) / span));
-}
-
-export function isDaylight(times: PrayerTimes, now: number): boolean {
-  return now >= times.times.sunrise && now < times.times.maghrib;
-}
-
-/** Local clock text for a prayer in the visitor's timezone. */
-export function formatPrayerTime(epoch: number, timeZone: string, locale: string, numberingSystem?: string): string {
-  try {
-    return new Intl.DateTimeFormat(locale, {
-      hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone,
-      ...(numberingSystem ? { numberingSystem } : {}),
-    }).format(new Date(epoch));
-  } catch {
-    return new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'UTC' }).format(new Date(epoch));
-  }
+export const PRAYER_REMINDER_GRACE_MS = 60_000;
+export function duePrayer(events: readonly PrayerEvent[], selected: readonly ReminderPrayer[], after: number, now: number): PrayerEvent | undefined {
+  if (!Number.isFinite(after) || !Number.isFinite(now) || after >= now) return undefined;
+  return [...events].reverse().find((event) => selected.includes(event.prayer) && event.at > after && event.at <= now && now - event.at <= PRAYER_REMINDER_GRACE_MS);
 }

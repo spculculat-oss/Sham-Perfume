@@ -1,10 +1,9 @@
-import { useMemo, useState, type FormEvent, type ReactNode } from 'react';
-import { ArrowLeftRight, BarChart3, Calculator, ChartSpline, Dice5, Equal, FunctionSquare, Grid2x2, Hash, MoveUpRight, Percent, Sheet, Sigma, Table2 } from 'lucide-react';
-import type { SupportedLanguage } from '../../types/i18n';
+import { useMemo, useState, type ReactNode } from 'react';
+import { ArrowLeftRight, BarChart3, Calculator, ChartSpline, Boxes, Dice5, Equal, FunctionSquare, GraduationCap, Grid2x2, Hash, LineChart, ListOrdered, MoveUpRight, Percent, Sheet, Sigma, Table2, Wallet } from 'lucide-react';
 import { toLatinDigits } from '../../لغات/numerals';
 import {
-  convertEngineeringUnit, ENGINEERING_EXPRESSION_LIMIT, ENGINEERING_UNITS, evaluateEngineeringExpression,
-  type EngineeringFunctions, type EngineeringUnitCategory, type EvaluateOptions,
+  convertEngineeringUnit, ENGINEERING_UNITS,
+  type EngineeringUnitCategory,
 } from '../../utils/engineeringCalculator';
 import {
   calculateBaseN, calculateMatrix, calculateVector, engineeringTable, identityMatrix, simulateMathBox,
@@ -13,11 +12,26 @@ import {
 } from '../../utils/engineeringAdvanced';
 import { binomialProbability, fitRegression, inverseNormal, normalDensity, normalProbability, poissonProbability, summarizeStatistics, type RegressionKind } from '../../utils/engineeringStatistics';
 import { evaluateEngineeringSheet, SHEET_CELL_LENGTH, SHEET_CELL_LIMIT, SHEET_COLUMNS, SHEET_ROWS } from '../../utils/engineeringSpreadsheet';
-import { displayDigits, displayNumber, formatComplex, type CalcText } from './calculatorDisplay';
+import { displayDigits, displayNumber, formatComplex } from './calculatorDisplay';
+import { splitEngineeringValues } from '../../utils/engineeringInput';
+import { CalculatorModeRevision, CalcInput, CalcSelect, DataList, ModeForm, ResultTable, nfmt, num, optionsFor, type ModeProps } from './calculatorFields';
+import { GraphMode, SurfaceMode } from './CalculatorGraph';
+import { AlgebraMode, FinanceMode, SequenceMode } from './CalculatorLabs';
+import { StudyMode } from './CalculatorStudy';
+import { CircleTool, NumberLineTool } from './CalculatorVisuals';
+import { BoxPlot, InferenceMode, RegressionPlot } from './CalculatorStats';
 
 export const MODES = [
-  { id: 'calculate', icon: Calculator, label: ['حساب علمي', 'Calculate'], note: ['عمليات علمية وكسور وتفاضل وتكامل', 'Scientific expressions, fractions and calculus'] },
+  { id: 'standard', icon: Calculator, label: ['حساب عادي', 'Standard'], note: ['جمع وطرح وضرب وقسمة بالترتيب اللي بتضغط بيه', 'Add, subtract, multiply and divide in key-entry order'] },
+  { id: 'calculate', icon: Sigma, label: ['حساب علمي', 'Scientific'], note: ['أولوية العمليات والكسور والدوال', 'Operator precedence, fractions and functions'] },
+  { id: 'graph', icon: LineChart, label: ['رسم الدوال', 'Graph'], note: ['ديكارتي وقطبي وبارامتري مع تتبّع وتحليل', 'Cartesian, polar and parametric graphs with trace'] },
+  { id: 'study', icon: GraduationCap, label: ['شاهين للمذاكرة', 'Shaheen Study'], note: ['تلميح، جرّب إجابتك، وخطوات محسوبة محليًا', 'Hints, self-check and locally calculated steps'] },
+  { id: 'algebra', icon: FunctionSquare, label: ['جبر رمزي', 'Symbolic algebra'], note: ['عمليات على متعددات الحدود في متغير واحد', 'Exact operations on one-variable polynomials'] },
+  { id: 'surface', icon: Boxes, label: ['رسم ثلاثي', '3D surfaces'], note: ['أسطح قابلة للّف في شبكة ثلاثية الأبعاد', 'Rotate sampled surfaces in three dimensions'] },
+  { id: 'sequence', icon: ListOrdered, label: ['متتاليات', 'Sequences'], note: ['صيغ مباشرة وتكرار من حد أو حدّين', 'Explicit and first-/second-order recurrences'] },
+  { id: 'finance', icon: Wallet, label: ['حساب مالي', 'Finance'], note: ['فائدة وتدفقات وسداد وتعادل للتعلّم', 'Interest, cash flows, loans and break-even for learning'] },
   { id: 'statistics', icon: BarChart3, label: ['إحصاء', 'Statistics'], note: ['وصف البيانات والانحدار', 'Descriptive statistics and regression'] },
+  { id: 'inference', icon: ChartSpline, label: ['اختبارات إحصائية', 'Statistical tests'], note: ['اختبار t أو z وفترة ثقة لمتوسط عينة واحدة', 'One-sample t/z tests and confidence intervals'] },
   { id: 'distribution', icon: ChartSpline, label: ['توزيعات', 'Distribution'], note: ['طبيعي، ثنائي الحدين، وبواسون', 'Normal, binomial and Poisson'] },
   { id: 'spreadsheet', icon: Sheet, label: ['جدول بيانات', 'Spreadsheet'], note: ['خمس أعمدة وصيغ تربط الخلايا', 'Five columns and cell formulas'] },
   { id: 'table', icon: Table2, label: ['جدول الدوال', 'Table'], note: ['احسب قيم دالة أو دالتين في نطاق', 'Sample one or two functions over a range'] },
@@ -28,62 +42,16 @@ export const MODES = [
   { id: 'matrix', icon: Grid2x2, label: ['مصفوفات', 'Matrix'], note: ['عمليات حتى ٤ × ٤', 'Matrix arithmetic up to 4 × 4'] },
   { id: 'vector', icon: MoveUpRight, label: ['متجهات', 'Vector'], note: ['متجهات في بعدين أو ثلاثة', 'Two- and three-dimensional vectors'] },
   { id: 'ratio', icon: Percent, label: ['تناسب', 'Ratio'], note: ['أوجد الحد المجهول في التناسب', 'Find an unknown term in a proportion'] },
-  { id: 'mathbox', icon: Dice5, label: ['Math Box', 'Math Box'], note: ['تجارب النرد والعملات', 'Dice and coin experiments'] },
+  { id: 'mathbox', icon: Dice5, label: ['Math Box', 'Math Box'], note: ['نرد وعملات وخط أعداد ودائرة الوحدة', 'Dice, coins, number line and unit circle'] },
   { id: 'units', icon: ArrowLeftRight, label: ['تحويل الوحدات', 'Unit conversion'], note: ['الطول والحرارة والطاقة وغيرها', 'Length, temperature, energy and more'] },
 ] as const;
 
 export type CalcMode = typeof MODES[number]['id'];
-export type ToolMode = Exclude<CalcMode, 'calculate' | 'complex'>;
-interface ModeProps {
-  lang: SupportedLanguage;
-  t: CalcText;
-  options: EvaluateOptions;
-  functions: EngineeringFunctions;
-  updateFunction: (key: 'f' | 'g', body: string) => void;
-}
-
-function Field({ label, children }: { label: string; children: ReactNode }) {
-  return <label className="cw-field"><span>{label}</span>{children}</label>;
-}
-export function CalcInput({ label, value, set, placeholder, area = false, max = ENGINEERING_EXPRESSION_LIMIT }: { label: string; value: string; set: (next: string) => void; placeholder?: string; area?: boolean; max?: number }) {
-  const common = { value, placeholder, dir: 'ltr', maxLength: max, spellCheck: false, autoComplete: 'off', className: 'cw-control cw-mono' } as const;
-  return <Field label={label}>{area ? <textarea {...common} rows={3} onChange={(e) => set(e.target.value)} /> : <input {...common} onChange={(e) => set(e.target.value)} />}</Field>;
-}
-
-export function CalcSelect<T extends string>({ label, value, set, items, ltr }: { label: string; value: T; set: (next: T) => void; items: ReadonlyArray<readonly [T, string]>; ltr?: boolean }) {
-  return <Field label={label}><select className="cw-control" dir={ltr ? 'ltr' : undefined} value={value} onChange={(e) => set(e.target.value as T)}>{items.map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></Field>;
-}
-
-function ResultTable({ headers, rows }: { headers: ReactNode[]; rows: ReactNode[][] }) {
-  return <div className="cw-table-wrap" dir="ltr"><table className="cw-table"><thead><tr>{headers.map((label, i) => <th key={i} scope="col">{label}</th>)}</tr></thead><tbody>{rows.map((row, i) => <tr key={i}>{row.map((value, j) => <td className="cw-mono" key={j}>{value}</td>)}</tr>)}</tbody></table></div>;
-}
-
-function DataList({ rows }: { rows: [ReactNode, ReactNode][] }) {
-  return <dl className="cw-data-list">{rows.map(([key, value], index) => <div key={index}><dt>{key}</dt><dd dir="ltr" className="cw-mono">{value}</dd></div>)}</dl>;
-}
-
-function ModeForm({ t, children, run, action, note, revision }: { t: CalcText; children: ReactNode; run: () => ReactNode; action?: string; note?: string; revision?: unknown }) {
-  const [outcome, setOutcome] = useState<{ result?: ReactNode; error?: Error; revision: unknown }>();
-  const execute = (e: FormEvent) => {
-    e.preventDefault();
-    try { setOutcome({ result: run(), revision }); }
-    catch (error) { setOutcome({ error: error instanceof Error ? error : new Error('Check the input.'), revision }); }
-  };
-  const current = outcome?.revision === revision ? outcome : undefined;
-  return <form onSubmit={execute} onChange={() => { if (outcome) setOutcome(undefined); }} className="cw-mode-form">
-    {children}
-    {note && <p className="cw-help">{note}</p>}
-    <button type="submit" className="cw-action">{action ?? t('احسب', 'Calculate')} <span dir="ltr">EXE</span></button>
-    {current?.error && <p role="alert" className="cw-form-error">{t('راجع القيم والصيغة المطلوبة.', current.error.message)}</p>}
-    {current?.result !== undefined && <div className="cw-mode-output" role="status">{current.result}</div>}
-  </form>;
-}
-
-const num = (text: string, props: ModeProps) => evaluateEngineeringExpression(text, props.options);
-const nfmt = (value: number, props: ModeProps) => displayNumber(value, props.lang);
-const numericList = (text: string, props: ModeProps) => text.trim().split(/[\s,،;؛]+/).map((item) => num(item, props));
+export type WorksheetMode = Extract<CalcMode, 'standard' | 'calculate' | 'complex'>;
+export type ToolMode = Exclude<CalcMode, WorksheetMode>;
+const numericList = (text: string, props: ModeProps) => splitEngineeringValues(text).map((item) => num(item, props));
 const numericRows = (text: string, props: ModeProps) => text.trim().split(/[\n;؛]+/).filter((row) => row.trim()).map((row) => numericList(row, props));
-const optionsFor = <T extends string>(items: Record<T, [string, string]>, t: CalcText) => (Object.keys(items) as T[]).map((key) => [key, t(items[key][0], items[key][1])] as const);
+
 
 const MATRIX_OPERATIONS: Record<MatrixOperation, [string, string]> = {
   add: ['A + B', 'A + B'], subtract: ['A − B', 'A − B'], multiply: ['A × B', 'A × B'], det: ['المحدِّد det(A)', 'Determinant det(A)'],
@@ -222,7 +190,10 @@ function StatisticsMode(props: ModeProps) {
       [t('أصغر قيمة', 'Minimum'), s.min], [t('أكبر قيمة', 'Maximum'), s.max], ['σ', s.populationDeviation], ['s', s.sampleDeviation]] as [string, number | null][];
   };
   return <ModeForm t={t} revision={options.angleMode} note={kind === 'single' ? t('افصل الأعداد بمسافات أو فواصل. σ للمجتمع وs للعينة.', 'Separate values with spaces or commas. σ is population SD; s is sample SD.') : t('اكتب كل زوج x وy في سطر مستقل.', 'Enter one x and y pair per line.')} run={() => {
-    if (kind === 'single') return <DataList rows={stats(numericList(data, props)).map(([key, value]) => [key, value === null ? '—' : nfmt(value, props)])} />;
+    if (kind === 'single') {
+      const values = numericList(data, props);
+      return <><DataList rows={stats(values).map(([key, value]) => [key, value === null ? '—' : nfmt(value, props)])} /><BoxPlot values={values} props={props} /></>;
+    }
     const points = numericRows(pairs, props);
     if (points.some((row) => row.length !== 2)) throw new Error('Enter exactly two values per line.');
     const fit = fitRegression(kind, points as [number, number][]);
@@ -231,7 +202,7 @@ function StatisticsMode(props: ModeProps) {
     rows.push(['R²', fit.rSquared === null ? '—' : nfmt(fit.rSquared, props)]);
     if (predict.trim()) rows.push(['ŷ', nfmt(fit.predict(num(predict, props)), props)]);
     const yStats = stats(points.map(([, y]) => y));
-    return <><DataList rows={rows} /><details className="cw-details"><summary>{t('إحصاء x وy', 'Summary for x and y')}</summary><ResultTable headers={['', 'x', 'y']} rows={stats(points.map(([x]) => x)).map(([label, x], i) => { const y = yStats[i][1]; return [label, x === null ? '—' : nfmt(x, props), y === null ? '—' : nfmt(y, props)]; })} /></details></>;
+    return <><DataList rows={rows} /><RegressionPlot points={points as [number, number][]} predict={fit.predict} props={props} /><details className="cw-details"><summary>{t('إحصاء x وy', 'Summary for x and y')}</summary><ResultTable headers={['', 'x', 'y']} rows={stats(points.map(([x]) => x)).map(([label, x], i) => { const y = yStats[i][1]; return [label, x === null ? '—' : nfmt(x, props), y === null ? '—' : nfmt(y, props)]; })} /></details></>;
   }}>
     <CalcSelect label={t('وضع الإحصاء', 'Statistics mode')} value={kind} set={setKind} items={[['single', t('متغير واحد', 'One variable')], ...optionsFor(REGRESSIONS, t)]} />
     {kind === 'single' ? <CalcInput label={t('القيم', 'Values')} value={data} set={setData} max={3500} area /> : <><CalcInput label={t('أزواج x وy', 'x and y pairs')} value={pairs} set={setPairs} max={3500} area /><CalcInput label={t('توقُّع y عند x (اختياري)', 'Predict y at x (optional)')} value={predict} set={setPredict} /></>}
@@ -303,6 +274,7 @@ const CATEGORY_NAMES: Record<EngineeringUnitCategory, [string, string]> = {
   length: ['طول', 'Length'], area: ['مساحة', 'Area'], volume: ['حجم', 'Volume'], mass: ['كتلة', 'Mass'], temperature: ['حرارة', 'Temperature'],
   pressure: ['ضغط', 'Pressure'], speed: ['سرعة', 'Speed'], energy: ['طاقة', 'Energy'], power: ['قدرة', 'Power'], voltage: ['جهد كهربائي', 'Voltage'],
   current: ['تيار كهربائي', 'Current'], resistance: ['مقاومة', 'Resistance'], frequency: ['تردد', 'Frequency'],
+  time: ['وقت', 'Time'], angle: ['زاوية', 'Angle'], force: ['قوة', 'Force'], data: ['بيانات رقمية', 'Digital storage'],
 };
 function UnitMode(props: ModeProps) {
   const { t, options } = props;
@@ -321,7 +293,7 @@ function UnitMode(props: ModeProps) {
   </ModeForm>;
 }
 
-function MathBoxMode(props: ModeProps) {
+function SimulationTool(props: ModeProps) {
   const { t, lang } = props;
   const [kind, setKind] = useState<'dice' | 'coin'>('dice');
   const [items, setItems] = useState('2');
@@ -338,6 +310,17 @@ function MathBoxMode(props: ModeProps) {
     <div className="cw-form-grid"><CalcSelect label={t('العدد لكل رمية', 'Items per trial')} value={items} set={setItems} items={['1', '2', '3'].map((i) => [i, displayDigits(i, lang)])} /><CalcInput label={t('المحاولات', 'Trials')} value={trials} set={setTrials} /></div>
     <CalcSelect label={t('النتيجة المتكررة', 'Repeatable result')} value={seed} set={setSeed} items={[[ '', t('عشوائية', 'Random')], ...['1', '2', '3'].map((i) => [i, `#${displayDigits(i, lang)}`] as const)]} />
   </ModeForm>;
+}
+
+function MathBoxMode(props: ModeProps) {
+  const { t } = props;
+  const [tool, setTool] = useState<'simulation' | 'line' | 'circle'>('simulation');
+  return <div className="cw-mode-form">
+    <CalcSelect label={t('أداة التعلّم', 'Math Box tool')} value={tool} set={setTool} items={[[ 'simulation', t('محاكاة نرد وعملات', 'Dice and coins')], ['line', t('خط الأعداد', 'Number line')], ['circle', t('دائرة الوحدة', 'Unit circle')]]} />
+    <div hidden={tool !== 'simulation'}><SimulationTool {...props} /></div>
+    <div hidden={tool !== 'line'}><NumberLineTool {...props} /></div>
+    <div hidden={tool !== 'circle'}><CircleTool {...props} /></div>
+  </div>;
 }
 
 function SpreadsheetMode({ t, lang, options }: ModeProps) {
@@ -358,8 +341,8 @@ function SpreadsheetMode({ t, lang, options }: ModeProps) {
     {Array.from({ length: SHEET_ROWS }, (_, index) => <tr key={index}><th scope="row">{displayDigits(String(index + 1), lang)}</th>{SHEET_COLUMNS.map((col, colIndex) => {
       const key = `${col}${index + 1}`;
       const result = results[key];
-      const value = result && ('value' in result ? displayNumber(result.value, lang, 7) : result.error === 'cycle' ? '#REF!' : '#ERR');
-      return <td key={key}><button type="button" className="cw-cell cw-mono" data-cell={key} aria-pressed={key === active} tabIndex={key === active ? 0 : -1} aria-label={`${displayDigits(key, lang)} ${value || ''}`.trim()}
+      const value = result && ('value' in result ? result.exactInteger ? displayDigits(result.exactInteger, lang) : displayNumber(result.value, lang, 7) : result.error === 'cycle' ? '#REF!' : '#ERR');
+      return <td key={key}><button type="button" className="cw-cell cw-mono" data-cell={key} title={value || undefined} aria-pressed={key === active} tabIndex={key === active ? 0 : -1} aria-label={`${displayDigits(key, lang)} ${value || ''}`.trim()}
         onClick={() => { setActive(key); setError(false); }} onKeyDown={(e) => {
           const rowOffset = e.key === 'ArrowUp' ? -1 : e.key === 'ArrowDown' ? 1 : 0;
           const colOffset = e.key === 'ArrowLeft' ? -1 : e.key === 'ArrowRight' ? 1 : 0;
@@ -376,12 +359,14 @@ function SpreadsheetMode({ t, lang, options }: ModeProps) {
   </div>;
 }
 
-const TOOL_PANELS = { matrix: MatrixMode, vector: VectorMode, equation: EquationMode, inequality: InequalityMode, table: TableMode, statistics: StatisticsMode, distribution: DistributionMode, base: BaseMode, ratio: RatioMode, units: UnitMode, mathbox: MathBoxMode, spreadsheet: SpreadsheetMode } satisfies Record<ToolMode, (props: ModeProps) => ReactNode>;
+const TOOL_PANELS = { matrix: MatrixMode, vector: VectorMode, equation: EquationMode, inequality: InequalityMode, table: TableMode, statistics: StatisticsMode, distribution: DistributionMode, base: BaseMode, ratio: RatioMode, units: UnitMode, mathbox: MathBoxMode, spreadsheet: SpreadsheetMode, graph: GraphMode, surface: SurfaceMode, algebra: AlgebraMode, sequence: SequenceMode, finance: FinanceMode, inference: InferenceMode } satisfies Record<Exclude<ToolMode, 'study'>, (props: ModeProps) => ReactNode>;
 
 /** Keep visited drafts when switching apps, without mounting the entire spreadsheet on the home screen. */
-export function CalculatorModes({ current, visited, ...props }: ModeProps & { current: CalcMode | null; visited: readonly ToolMode[] }) {
-  return <>{visited.map((mode) => {
+export function CalculatorModes({ current, visited, studySeed, ...props }: ModeProps & { current: CalcMode | null; visited: readonly ToolMode[]; studySeed?: { id: number; text: string } }) {
+  const scope = useMemo(() => ({ lang: props.lang, options: props.options }), [props.lang, props.options]);
+  return <CalculatorModeRevision.Provider value={scope}>{visited.map((mode) => {
+    if (mode === 'study') return <div key={mode} className="cw-app" hidden={mode !== current}><StudyMode key={studySeed?.id ?? 0} initial={studySeed?.text} {...props} /></div>;
     const Panel = TOOL_PANELS[mode];
     return <div key={mode} className="cw-app" hidden={mode !== current}><Panel {...props} /></div>;
-  })}</>;
+  })}</CalculatorModeRevision.Provider>;
 }

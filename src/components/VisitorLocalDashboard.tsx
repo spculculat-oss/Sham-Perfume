@@ -44,7 +44,8 @@ import { ClockCalculatorLauncher, type ClockCalculatorState } from './clock/Cloc
 import { VisitorCompass } from './clock/VisitorCompass';
 import { ClockSkyLegend, skySurfaceProps } from './clock/ClockSkyLegend';
 import { skyStyle, useClockSky } from './clock/useClockSky';
-import { PrayerTimesBoard, PrayerChip } from './clock/PrayerTimesBoard';
+import { PrayerClockSummary, PrayerToolsLauncher, PrayerToolsProvider } from './clock/PrayerTools';
+import type { PrayerGeo } from '../utils/prayerPlaces';
 
 const TEXT = {
   local_info: { ar: 'معلوماتك المحلية', en: 'Your local details' },
@@ -130,6 +131,8 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
   const [clockSync, setClockSync] = useState<ClockSyncState>('syncing');
   const hasServerClock = useRef(false);
   const [place, setPlace] = useState<VisitorEntryLocation | undefined>();
+  const [prayerGeo, setPrayerGeo] = useState<PrayerGeo>();
+  const [prayerBrowserZone] = useState(browserTimeZone);
   const [entryCountry, setEntryCountry] = useState<string | undefined>(() => browserVisitorCountry());
   const [timeZone, setTimeZone] = useState<string | undefined>(() => browserTimeZone());
   const [weather, setWeather] = useState<CurrentWeather | undefined>();
@@ -192,7 +195,6 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
   useEffect(() => {
     let live = true;
     let running = false;
-    let permissionChecked = false;
     const refresh = async () => {
       if (running) return;
       running = true;
@@ -200,8 +202,8 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
       try {
         let nextTimeZone: string | undefined;
         let nextCountry: string | undefined;
-        // Always offer a city: the gazetteer hub for the visitor's timezone lets
-        // prayer times show immediately, and edge/device coordinates refine it.
+        // Keep a timezone hub for the clock's location strip until the network
+        // returns a city. Prayer tools resolve their own place without using weather GPS.
         let nextPlace = deviceLocation.current
           || resolveVisitorEntryLocation({ country: entryCountry, timezone: timeZone })
           || resolveVisitorEntryLocation({ timezone: timeZone });
@@ -211,6 +213,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
             const response = await fetch(apiUrl('/api/geo'), { cache: 'no-store', signal: AbortSignal.timeout(4500) });
             if (response.ok) {
               const geo = readVisitorGeo(await response.json());
+              if (live) setPrayerGeo(geo);
               if (geo.country) nextCountry = geo.country;
               if (geo.timezone) nextTimeZone = geo.timezone;
               if (!deviceLocation.current && hasCityPrecision(geo.location)) nextPlace = geo.location;
@@ -220,25 +223,8 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
           }
         }
 
-        // Reuse device location only when permission was already granted; never trigger a prompt on page load.
-        if (!permissionChecked && !deviceLocation.current) {
-          permissionChecked = true;
-          try {
-            if (typeof navigator !== 'undefined' && navigator.permissions) {
-              const permission = await navigator.permissions.query({ name: 'geolocation' });
-              if (permission.state === 'granted') {
-                const precise = await locateVisitorDevice();
-                deviceLocation.current = precise;
-                nextPlace = precise;
-                if (precise.country !== 'UN') nextCountry = precise.country;
-                if (live) setLocationRequest('ready');
-              }
-            }
-          } catch {
-            // The CDN city remains available if a previously granted device lookup is temporarily unavailable.
-          }
-        }
-
+        // Browser location permission is origin-wide, and could have been granted for
+        // on-device Qibla only. Use a device fix for weather only after its own button.
         if (deviceLocation.current) nextPlace = deviceLocation.current;
         if (!live) return;
         setPlace(nextPlace);
@@ -274,7 +260,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
   }, [currentLang]);
 
   // The timezone can arrive after the first geo/weather pass (server clock or CDN
-  // headers). Keep the visitor's hub city in step so prayer times are never blank.
+  // headers). Keep the clock's approximate location strip in step without GPS.
   useEffect(() => {
     setPlace((current) => {
       if (hasCityPrecision(current)) return current;
@@ -354,11 +340,6 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
   const condition = weather ? weatherKind(weather.weatherCode) : undefined;
   const ConditionIcon = condition ? WEATHER_ICONS[condition] : Thermometer;
 
-  // Prayer times follow the visitor's confirmed city; until then, the gazetteer hub
-  // city for their zone keeps the card useful (labelled as an estimate).
-  const prayerPlace = place && Number.isFinite(place.lat) && Number.isFinite(place.lon) && !(place.lat === 0 && place.lon === 0)
-    ? { lat: place.lat, lon: place.lon, country: place.country || entryCountry || 'UN' }
-    : undefined;
   const temperatureText = temperature ? `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(temperature.value)}${temperature.unit}` : '—°';
   const weatherText = weather ? weatherDescription(weather.weatherCode, currentLang)
     : !hasCityPrecision(place) ? label('location_unavailable') : weatherLoading || !weatherError ? label('loading_weather') : label('weather_unavailable');
@@ -386,7 +367,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
     </div>
   );
 
-  if (!showHomeDetails) return (
+  const compactDashboard = !showHomeDetails ? (
     <section data-testid="visitor-local-dashboard" data-clock-layout="compact" aria-label={label('local_info')} className="visitor-clock-compact mx-auto w-full max-w-7xl shrink-0 px-4 pt-2 sm:px-8">
       <div className="visitor-clock-compact-shell clock-glass" style={skyStyle(sky)} {...skySurfaceProps(sky)}>
         <div className="visitor-clock-compact-top">
@@ -398,7 +379,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
           <span className="visitor-clock-compact-weather" title={weatherText}>
             <ConditionIcon size={14} aria-hidden="true" /><bdi dir="ltr">{temperatureText}</bdi>
           </span>
-          <PrayerChip lang={currentLang} place={prayerPlace} now={now} timeZone={localTimeZone} />
+          <PrayerClockSummary lang={currentLang} now={now} compact />
           <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} compact />
           <ClockSkyLegend sky={sky} lang={currentLang} compact />
           <button className="visitor-clock-compact-toggle" type="button" aria-expanded={compactTools} aria-controls={detailsId} onClick={() => setCompactTools((open) => !open)}>
@@ -411,16 +392,17 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
               <ClockSkyLegend sky={sky} lang={currentLang} />
               <ClockToolsLaunchers lang={currentLang} timeZone={localTimeZone} />
               <VisitorCompass lang={currentLang} />
+              <PrayerToolsLauncher lang={currentLang} />
             </div>
             {locationStrip}
           </>}
         </div>
       </div>
     </section>
-  );
+  ) : null;
 
-  return (
-    <section
+  return <PrayerToolsProvider lang={currentLang} geo={prayerGeo} browserZone={prayerBrowserZone}>
+    {compactDashboard ?? <section
       data-testid="visitor-local-dashboard"
       data-clock-layout="home"
       aria-label={label('local_info')}
@@ -478,7 +460,7 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
             <ClockToolsLaunchers lang={currentLang} timeZone={localTimeZone} />
           </div>
           <div className="visitor-clock-side">
-            <PrayerTimesBoard lang={currentLang} place={prayerPlace} now={now} timeZone={localTimeZone} />
+            <PrayerClockSummary lang={currentLang} now={now} />
             <div className="visitor-instrument-row" dir={SUPPORTED_LANGUAGES.find((language) => language.code === currentLang)?.dir}>
               <VisitorCompass lang={currentLang} />
               <ClockCalculatorLauncher lang={currentLang} state={calculatorState} onOpen={onOpenCalculator} />
@@ -488,6 +470,6 @@ export function VisitorLocalDashboard({ currentLang, showHomeDetails, calculator
         {locationStrip}
         <HomeHeadlineBriefing lang={currentLang} />
       </div>
-    </section>
-  );
+    </section>}
+  </PrayerToolsProvider>;
 }
