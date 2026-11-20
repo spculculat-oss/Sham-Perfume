@@ -1,0 +1,123 @@
+/* Prayer times sit beside the clock inside the same bronze glass card.
+   The palette borrows the card's copper light, and the next prayer is the only
+   element that glows, so the eye lands on it first. */
+.prayer-board {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 0.7rem 0.85rem 0.8rem;
+  color: #fff3e2;
+  border-block-start: 1px solid #ffe5c426;
+  background:
+    radial-gradient(ellipse 90% 60% at 80% -20%, #ffd9a51f, transparent 70%),
+    linear-gradient(160deg, #2c211b9e, #43301f66);
+}
+.prayer-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.3rem 0.6rem; }
+.prayer-title {
+  display: inline-flex; align-items: center; gap: 0.36rem;
+  font-size: 0.8rem; font-weight: 760; letter-spacing: 0.01em; color: #ffe6c3;
+}
+.prayer-title svg { color: #f3c68b; flex: none; }
+.prayer-place { font-size: 0.62rem; font-weight: 600; color: #eddbc6; opacity: 0.72; }
+.prayer-empty { font-size: 0.72rem; line-height: 1.5; color: #eedcc8; opacity: 0.85; }
+
+.prayer-hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.15rem; }
+.prayer-arc { display: block; width: 100%; height: auto; max-height: 74px; overflow: visible; }
+.prayer-sun { filter: drop-shadow(0 0 6px #ffe2acb0); transition: cx 900ms ease, cy 900ms ease; }
+.prayer-countdown { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.1rem 0.5rem; min-width: 0; }
+.prayer-next-label { font-size: 0.66rem; font-weight: 700; color: #ffd9a3; letter-spacing: 0.02em; }
+.prayer-next-time {
+  font: 800 clamp(1.05rem, 3.6cqw, 1.6rem)/1 ui-monospace, monospace;
+  color: #ffe9c9; font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 16px #ffbf7a5c;
+}
+.prayer-remaining { font-size: 0.66rem; font-weight: 650; color: #f0dcc4; opacity: 0.88; }
+.prayer-remaining bdi { font-variant-numeric: tabular-nums; }
+
+.prayer-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.prayer-strip li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.05rem;
+  min-width: 0;
+  padding: 0.34rem 0.2rem;
+  border: 1px solid #ffdfb524;
+  border-radius: 0.6rem;
+  background: linear-gradient(170deg, #fff3df0d, #120c0814);
+  transition: border-color 220ms ease, background 220ms ease, box-shadow 220ms ease;
+}
+.prayer-strip .prayer-icon { color: #e9c393; opacity: 0.85; }
+.prayer-name { font-size: 0.62rem; font-weight: 680; color: #f4e3cd; white-space: nowrap; }
+.prayer-time {
+  font: 750 0.78rem/1.15 ui-monospace, monospace;
+  color: #ffe5bd; font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+/* The window the visitor is in right now stays soft; the upcoming one glows. */
+.prayer-strip li[data-current='true'] { border-color: #ffdfb540; background: #fff3df14; }
+.prayer-strip li[data-next='true'] {
+  border-color: #ffcf8acc;
+  background: linear-gradient(165deg, #ffd9a336, #a86b2a26);
+  box-shadow: 0 0 0 1px #ffcf8a40, 0 6px 18px #150d0824;
+}
+.prayer-strip li[data-next='true'] :is(.prayer-icon, .prayer-name) { color: #fff0d2; opacity: 1; }
+.prayer-strip li[data-next='true'] .prayer-time { color: #fff6e4; }
+.prayer-badge {
+  position: absolute;
+  inset-block-start: -0.42rem;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  padding: 0.03rem 0.36rem;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #f6c184, #e79b52);
+  color: #3a2312;
+  font-size: 0.53rem;
+  font-weight: 820;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px #120b0670;
+  animation: prayer-badge-glow 2.6s ease-in-out infinite;
+}
+@keyframes prayer-badge-glow {
+  0%, 100% { box-shadow: 0 2px 8px #120b0670, 0 0 0 0 #ffd9a355; }
+  50% { box-shadow: 0 2px 8px #120b0670, 0 0 0 4px #ffd9a300; }
+}
+.prayer-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 0.4rem;
+  font-size: 0.58rem; color: #eadacb; opacity: 0.62;
+}
+.prayer-board[data-polar='true'] .prayer-foot { opacity: 0.9; color: #ffd7a2; }
+
+/* A one-line chip in the shared compact bar: just the next prayer and its time. */
+.prayer-chip {
+  display: inline-flex; align-items: center; gap: 0.32rem;
+  min-height: 40px; padding: 0.2rem 0.5rem;
+  border: 1px solid #ffdfb538; border-radius: 0.55rem;
+  background: #fff0d214; color: #fff0d8;
+  font-size: 0.72rem; font-weight: 700; white-space: nowrap;
+}
+.prayer-chip svg { color: #f5cc97; flex: none; }
+.prayer-chip bdi { font: 750 0.7rem ui-monospace, monospace; color: #ffe3b6; }
+.prayer-chip[data-state='unknown'] { display: none; }
+
+@media (min-width: 560px) { .prayer-strip { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+@media (min-width: 1024px) {
+  .prayer-arc { max-height: 62px; }
+}
+@media (max-width: 480px) {
+  .prayer-board { padding-inline: 0.55rem; }
+  .prayer-strip { gap: 0.22rem; }
+  .prayer-chip { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .prayer-badge { animation: none; }
+  .prayer-sun { transition: none; }
+}

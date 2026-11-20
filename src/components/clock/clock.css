@@ -1,5 +1,7 @@
 /* Clock and instruments share a row when the Home card has room. */
 .visitor-clock-board { display: grid; grid-template-columns: minmax(0, 1fr); }
+/* Prayer times and the instruments share the column beside the clock. */
+.visitor-clock-side { display: grid; align-content: center; min-width: 0; }
 .visitor-clock-face { align-self: center; min-width: 0; container-type: inline-size; }
 .visitor-clock-digits { font-size: clamp(1.5rem, 8.8cqw, 4.5rem); }
 .visitor-clock-temp { font-size: clamp(0.85rem, 4.6cqw, 1.9rem); letter-spacing: -0.045em; }
@@ -18,7 +20,8 @@
 @media (min-width: 1024px) {
   .visitor-clock-board { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
   .visitor-clock-digits { font-size: clamp(2.1rem, 9.75cqw, 4.6rem); }
-  .visitor-clock-board .visitor-instrument-row { border-block-start: 0; border-inline-start: 1px solid #ffe5c426; }
+  .visitor-clock-side { align-content: stretch; border-inline-start: 1px solid #ffe5c426; }
+  .visitor-clock-board .visitor-instrument-row { border-block-start: 1px solid #ffe5c426; border-inline-start: 0; }
   .clock-launchers { padding-block-end: 0.6rem; }
 }
 @media (max-width: 450px) {
