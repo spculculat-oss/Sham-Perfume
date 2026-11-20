@@ -30,6 +30,10 @@ import { PerfumerMasterLabView } from './components/PerfumerMasterLabView';
 // «جديد من جوجل استوديو»: the designer lab, its AR/3D simulators and the crystal flacon studio.
 // Loaded on their own (three.js is heavy) so the rest of the site is not slowed down.
 const PerfumerDesignerLab = lazy(() => import('./components/PerfumerDesignerLab').then((m) => ({ default: m.PerfumerDesignerLab })));
+const PerfumerAnalytics = lazy(() => import('./components/PerfumerAnalytics').then((m) => ({ default: m.PerfumerAnalytics })));
+const PerfumeAtlasMap = lazy(() => import('./components/PerfumeAtlasMap').then((m) => ({ default: m.PerfumeAtlasMap })));
+const PerfumerAtelierGame = lazy(() => import('./components/PerfumerAtelierGame').then((m) => ({ default: m.PerfumerAtelierGame })));
+const StudioVoiceHub = lazy(() => import('./components/StudioVoiceHub').then((m) => ({ default: m.StudioVoiceHub })));
 const ThreePerfumeStudio = lazy(() => import('./components/ThreePerfumeStudio').then((m) => ({ default: m.ThreePerfumeStudio })));
 import { ShamAssistant } from './assistant/ShamAssistant';
 import SpecialistsHub from './components/SpecialistsHub';
@@ -1467,6 +1471,40 @@ export default function App() {
             formulation={formulation}
             onNavigate={(tab) => navigateToTab(tab)}
           />
+          </Suspense>
+        )}
+
+        {activeTab === 'perfumer_analytics' && (
+          <Suspense fallback={<div className="py-16 text-center"><Loader2 className="mx-auto h-8 w-8 animate-spin text-amber-700" aria-label="loading" /></div>}>
+            <PerfumerAnalytics
+              savedFormulas={savedFormulas}
+              currentLang={currentLang}
+              onNavigateToTab={(tab) => navigateToTab(tab)}
+              onOpenFormula={(f) => handleLoadFormula(f)}
+            />
+          </Suspense>
+        )}
+
+        {activeTab === 'perfume_atlas' && (
+          <Suspense fallback={<div className="py-16 text-center"><Loader2 className="mx-auto h-8 w-8 animate-spin text-amber-700" aria-label="loading" /></div>}>
+            <PerfumeAtlasMap
+              currentLang={currentLang}
+              onAskShaheenPrompt={(prompt) => {
+                window.dispatchEvent(new CustomEvent('open-ai-chat-with-prompt', { detail: prompt }));
+              }}
+            />
+          </Suspense>
+        )}
+
+        {activeTab === 'perfumer_game' && (
+          <Suspense fallback={<div className="py-16 text-center"><Loader2 className="mx-auto h-8 w-8 animate-spin text-amber-700" aria-label="loading" /></div>}>
+            <PerfumerAtelierGame currentLang={currentLang} />
+          </Suspense>
+        )}
+
+        {activeTab === 'studio_voice' && (
+          <Suspense fallback={<div className="py-16 text-center"><Loader2 className="mx-auto h-8 w-8 animate-spin text-amber-700" aria-label="loading" /></div>}>
+            <StudioVoiceHub currentLang={currentLang} />
           </Suspense>
         )}
 

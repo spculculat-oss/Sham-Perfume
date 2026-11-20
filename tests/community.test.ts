@@ -822,6 +822,64 @@ test('saved posts are idempotent, private to each account, and can be removed re
   await assert.rejects(social.savePost(ctx, reader.id, 'missing-post'), { code: 'NOT_FOUND' });
 });
 
+test('polls: validated on create, one changeable vote per member, counts are honest', async () => {
+  const author = await newMember('PollAuthor');
+  const voter = await newMember('PollVoter');
+  const abstainer = await newMember('PollAbstainer');
+  const post = await social.createPost(ctx, author.id, {
+    body: 'Which note wins the summer?',
+    poll: { question: 'أنسب نوتة للصيف؟', options: ['حمضيات', 'مسك', 'بخور'] },
+  });
+  assert.equal(post.poll?.question, 'أنسب نوتة للصيف؟');
+  assert.deepEqual(post.poll?.options, ['حمضيات', 'مسك', 'بخور']);
+  assert.equal(post.poll?.myVote, null);
+  assert.deepEqual(post.poll?.counts, {});
+
+  const afterVote = await social.votePoll(ctx, voter.id, post.id, 1);
+  assert.equal(afterVote.poll?.myVote, 1);
+  assert.deepEqual(afterVote.poll?.counts, { '1': 1 });
+  assert.equal((await social.getPost(ctx, abstainer.id, post.id)).poll?.myVote, null, 'votes are private per member');
+
+  const changed = await social.votePoll(ctx, voter.id, post.id, 2);
+  assert.equal(changed.poll?.myVote, 2);
+  assert.deepEqual(changed.poll?.counts, { '2': 1 }, 'changing a vote never leaves a duplicate');
+  assert.equal((await sql.query(`SELECT * FROM poll_votes WHERE post_id = $1`, [post.id])).length, 1);
+
+  await assert.rejects(social.votePoll(ctx, voter.id, post.id, 3), { code: 'INVALID_FIELD' });
+  await assert.rejects(social.votePoll(ctx, voter.id, post.id, -1), { code: 'INVALID_FIELD' });
+  await assert.rejects(social.votePoll(ctx, voter.id, post.id, 'x'), { code: 'INVALID_FIELD' });
+
+  // A poll-only post is a real post; garbage polls are simply dropped instead of failing the post.
+  const pollOnly = await social.createPost(ctx, author.id, { poll: { question: '', options: ['أ', 'ب'] } });
+  assert.equal(pollOnly.poll?.options.length, 2);
+  const noPoll = await social.createPost(ctx, author.id, { body: 'بلا استفتاء', poll: { question: 'سؤال', options: ['واحد'] } });
+  assert.equal(noPoll.poll, null);
+  assert.equal((await sql.query(`SELECT * FROM post_polls WHERE post_id = $1`, [noPoll.id])).length, 0, 'an invalid poll never writes a row');
+  await assert.rejects(social.createPost(ctx, author.id, { poll: { options: [] } }), { code: 'EMPTY_POST' });
+
+  const many = await social.createPost(ctx, author.id, { poll: { question: 'كثير', options: ['1', '2', '3', '4', '5', '6', '7', '8'] } });
+  assert.equal(many.poll?.options.length, 6, 'options are capped at six');
+  const long = await social.createPost(ctx, author.id, { poll: { question: 'q'.repeat(400), options: ['x'.repeat(400), 'y'] } });
+  assert.equal(long.poll?.question.length, 200);
+  assert.equal(long.poll?.options[0].length, 120);
+});
+
+test('a poll vote never bypasses visibility, moderation, deletion or blocking', async () => {
+  const author = await newMember('PollPrivacyAuthor');
+  const reader = await newMember('PollPrivacyReader');
+  const post = await social.createPost(ctx, author.id, { body: 'Polls and privacy', poll: { question: 'س', options: ['أ', 'ب'] } });
+  await social.editPost(ctx, author.id, post.id, { visibility: 'friends' });
+  await assert.rejects(social.votePoll(ctx, reader.id, post.id, 0), { code: 'NOT_FOUND' }, 'a friends-only poll disappears with its post');
+  await social.editPost(ctx, author.id, post.id, { visibility: 'public' });
+  await social.votePoll(ctx, reader.id, post.id, 0);
+  await social.block(ctx, author.id, reader.id);
+  await assert.rejects(social.votePoll(ctx, reader.id, post.id, 1), { code: 'NOT_FOUND' });
+  await social.unblock(ctx, author.id, reader.id);
+  await social.deletePost(ctx, author.id, post.id);
+  await assert.rejects(social.votePoll(ctx, reader.id, post.id, 1), { code: 'NOT_FOUND' });
+  await assert.rejects(social.votePoll(ctx, author.id, 'missing-post', 0), { code: 'NOT_FOUND' });
+});
+
 test('bookmarks never bypass visibility changes, moderation, deletion or blocking', async () => {
   const author = await newMember('BookmarkPrivacyAuthor');
   const reader = await newMember('BookmarkPrivacyReader');
