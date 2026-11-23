@@ -42,5 +42,6 @@ export const ADHAN_RECORDINGS: Record<AdhanVariant, Partial<Record<AdhanVoiceId,
 export const adhanFileUrl = (recording: AdhanRecording): string => prayerAssetUrl(`audio/adhan/${recording.file}`);
 
 export const MAX_ADHAN_FILE_BYTES = 12 * 1024 * 1024;
+export const MAX_ADHAN_DURATION_SECONDS = 8 * 60;
 export const validAdhanFile = (file: Pick<File, 'name' | 'size' | 'type'>): boolean => file.size > 0 && file.size <= MAX_ADHAN_FILE_BYTES
   && /\.(mp3|m4a|aac|wav)$/i.test(file.name) && (!file.type || file.type === 'application/octet-stream' || file.type.startsWith('audio/') || file.type === 'video/mp4');

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { MAX_ADHAN_DURATION_SECONDS } from '../../data/adhanVoices';
 
-export type AdhanTrack = { name: string } & ({ url: string } | { file: File });
+export type AdhanTrack = { name: string } & ({ url: string } | { file: Blob });
 type PlaybackKind = 'preview' | 'reminder';
 type PlaybackStatus = { state: 'idle' } | { state: 'loading' | 'playing' | 'blocked' | 'error'; kind: PlaybackKind; name: string };
 type AudioJob = { request: AbortController; node?: AudioBufferSourceNode; kind: PlaybackKind };
@@ -65,7 +66,7 @@ export function useAdhanAudio() {
       if (job.current !== current) return;
       const buffer = await audio.decodeAudioData(bytes);
       if (job.current !== current) return;
-      if (buffer.duration <= 0 || buffer.duration > 8 * 60) throw new Error('Adhan recording duration');
+      if (!(buffer.duration > 0 && buffer.duration <= MAX_ADHAN_DURATION_SECONDS)) throw new Error('Adhan recording duration');
       if (audio.state !== 'running') { setStatus({ state: 'blocked', kind, name: track.name }); return; }
       const node = audio.createBufferSource();
       current.node = node;

@@ -127,9 +127,15 @@
 .prayer-checks label { display: flex; align-items: center; gap: 0.29rem; padding: 0.15rem 0.36rem; min-height: 36px; }
 .prayer-checks input { appearance: auto; accent-color: #466e51; width: 17px; height: 17px; }
 .prayer-voice { display: grid; align-content: start; gap: 0.42rem; min-width: 0; background: #f8f1e4; border: 1px solid #e9dac0; border-radius: 0.68rem; padding: 0.48rem; }
-.prayer-voice .prayer-file { position: relative; color: #4e5e48; cursor: pointer; }
+.prayer-voice .prayer-file { display: inline-flex; position: relative; color: #4e5e48; cursor: pointer; }
+.prayer-file > svg { flex: none; }
 .prayer-file input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; cursor: pointer; }
 .prayer-file:focus-within { outline: 2px solid #6e824d; outline-offset: 2px; }
+.prayer-voice .prayer-file[data-disabled='true'], .prayer-voice :is(button, input):disabled { opacity: .65; cursor: wait; }
+.prayer-file-status { display: flex; align-items: start; gap: .35rem; overflow-wrap: anywhere; min-width: 0; }
+.prayer-file-status:empty { position: absolute; clip-path: inset(50%); width: 1px; height: 1px; overflow: hidden; }
+.prayer-file-status svg { flex: none; margin-block-start: .14rem; }
+.prayer-voice .prayer-delete-file { color: #8a392b; background: #fff7ee; border-color: #e6cdbf; }
 .prayer-credit { color: #625141; font-size: 0.71rem; }
 .prayer-credit summary { min-height: 32px; cursor: pointer; font-weight: 740; }
 .prayer-credit li { padding: 0.27rem 0; }

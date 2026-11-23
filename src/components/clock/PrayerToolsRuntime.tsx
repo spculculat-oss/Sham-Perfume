@@ -3,12 +3,13 @@ import { Bell, BellRing, BookOpen, CalendarDays, EyeOff } from 'lucide-react';
 import { ADHAN_RECORDINGS, adhanFileUrl, type AdhanVariant } from '../../data/adhanVoices';
 import type { SupportedLanguage } from '../../types/i18n';
 import { loc } from '../../لغات/localize';
-import type { PrayerPreferences, ReminderMode, ReminderPrayer } from '../../utils/prayerConfig';
+import type { PrayerPreferences, ReminderMode, ReminderPrayer, VoiceChoice } from '../../utils/prayerConfig';
 import { gpsPrayerPlace, placeIsConfirmed, type ResolvedPrayerPlace } from '../../utils/prayerPlaces';
 import { PRAYER_CITIES, isPrayerCity, usePrayerCalendar, type PrayerCalendarSettings } from './usePrayerCalendar';
 import { useDisplayTime } from './useClockTools';
 import { PrayerDialog } from './PrayerDialog';
-import { PrayerAdhanPane, type LocalRecordings } from './PrayerAdhanPane';
+import { PrayerAdhanPane } from './PrayerAdhanPane';
+import { useDeviceAdhan } from './useDeviceAdhan';
 import { PrayerSchedulePane, type GpsState } from './PrayerSchedulePane';
 import { PRAYER_LABELS, prayerPlaceLabel, prayerT } from './prayerText';
 import { usePrayerReminders, type PrayerNotice } from './usePrayerReminders';
@@ -42,8 +43,8 @@ export default function PrayerToolsRuntime({ lang, geo, browserZone, gps, setGps
   const [locationSettingsOpen, setLocationSettingsOpen] = useState(false);
   const [gpsState, setGpsState] = useState<GpsState>('idle');
   const gpsToken = useRef(0);
-  const [custom, setCustom] = useState<LocalRecordings>({});
-  const fileRevision = useRef(0);
+  const recordings = useDeviceAdhan();
+  const { files, revision } = recordings;
   const tabBody = useRef<HTMLDivElement>(null);
   const sectionId = useId();
   const active = open || mode !== 'off';
@@ -51,13 +52,13 @@ export default function PrayerToolsRuntime({ lang, geo, browserZone, gps, setGps
   const { resolved, place, method, asr, today, events, upcoming } = usePrayerCalendar({ prefs, geo, browserZone, gps }, active ? now : undefined);
   const confirmed = placeIsConfirmed(resolved);
   const trackForVariant = useCallback((variant: AdhanVariant): AdhanTrack | undefined => {
-    const file = custom[variant];
-    if (file) return { file, name: file.name.slice(0, 80) };
+    const recording = files[variant];
+    if (recording?.selected) return { file: recording.audio, name: recording.name.slice(0, 80) };
     const voice = ADHAN_RECORDINGS[variant][variant === 'fajr' ? prefs.fajrVoice : prefs.regularVoice];
     return voice ? { name: loc(lang, voice.title), url: adhanFileUrl(voice) } : undefined;
-  }, [custom, prefs.fajrVoice, prefs.regularVoice, lang]);
+  }, [files, prefs.fajrVoice, prefs.regularVoice, lang]);
   const trackFor = useCallback((name: ReminderPrayer) => trackForVariant(name === 'fajr' ? 'fajr' : 'regular'), [trackForVariant]);
-  const fingerprint = JSON.stringify([place?.key, place?.lat, place?.lon, place?.timeZone, method, asr, prefs.prayers, prefs.fajrVoice, prefs.regularVoice, fileRevision.current]);
+  const fingerprint = JSON.stringify([place?.key, place?.lat, place?.lon, place?.timeZone, method, asr, prefs.prayers, prefs.fajrVoice, prefs.regularVoice, revision]);
   const canArm = confirmed && prefs.prayers.length > 0;
   const audio = usePrayerReminders({ now, events, selected: prefs.prayers, canArm, fingerprint, placeName: prayerPlaceLabel(lang, resolved), trackFor, mode, setMode });
 
@@ -84,10 +85,14 @@ export default function PrayerToolsRuntime({ lang, geo, browserZone, gps, setGps
       }, { enableHighAccuracy: true, maximumAge: 60_000, timeout: 12_000 });
     } catch { setGpsState('failed'); }
   };
-  const pickFile = (variant: AdhanVariant, file?: File) => {
-    if (!file && !custom[variant]) return;
-    fileRevision.current += 1;
-    setCustom((old) => ({ ...old, [variant]: file }));
+  const selectVoice = (variant: AdhanVariant, choice: VoiceChoice) => {
+    if (choice === 'device-file') { void recordings.select(variant, true); return; }
+    const setBuiltIn = () => {
+      if (variant === 'fajr' && choice !== 'aaqib-azeez') update({ fajrVoice: choice });
+      if (variant === 'regular' && choice !== 'besim-azemi-fajr') update({ regularVoice: choice });
+    };
+    if (files[variant]?.selected) void recordings.select(variant, false, setBuiltIn);
+    else setBuiltIn();
   };
   const preview = (variant: AdhanVariant) => {
     const track = trackForVariant(variant);
@@ -110,9 +115,9 @@ export default function PrayerToolsRuntime({ lang, geo, browserZone, gps, setGps
       {tab === 'today' && <PrayerSchedulePane lang={lang} cities={PRAYER_CITIES} resolved={resolved} prefs={prefs} onUpdate={update} onCity={selectCity} onGps={requestGps} onAutomatic={selectAutomatic}
         gpsState={gpsState} method={method} asr={asr} now={now} today={today} upcoming={upcoming} settingsOpen={locationSettingsOpen} onSettings={setLocationSettingsOpen} hasGps={!!gps} suggestedCountry={geo?.country} />}
       {tab === 'adhan' && <PrayerAdhanPane lang={lang} prefs={prefs} update={update} canArm={canArm} hasPlace={confirmed} hasSchedule={Boolean(today?.reliable)} audio={audio}
-        files={custom} onFile={pickFile} onPreview={preview} onChoosePlace={() => { setLocationSettingsOpen(true); jumpTo('today'); }} />}
+        recordings={recordings} onVoice={selectVoice} onPreview={preview} onChoosePlace={() => { setLocationSettingsOpen(true); jumpTo('today'); }} />}
       {tab === 'adhkar' && <Suspense fallback={<p className="prayer-load-note" role="status">{label('loading')}</p>}><AdhkarLibrary lang={lang} /></Suspense>}
     </div>
-    <footer className="prayer-dialog-footer"><button type="button" onClick={() => { cancelGps(); audio.disarm(); onHide(); }}><EyeOff size={16} aria-hidden="true" />{label('hide')}</button></footer>
+    <footer className="prayer-dialog-footer"><button type="button" onClick={() => { cancelGps(); recordings.cancel(); audio.disarm(); onHide(); }}><EyeOff size={16} aria-hidden="true" />{label('hide')}</button></footer>
   </PrayerDialog>;
 }
