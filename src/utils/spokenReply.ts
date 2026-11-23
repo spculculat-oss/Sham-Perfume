@@ -329,6 +329,32 @@ const MORE: Record<string, string> = {
   zh: '要我继续说吗？', tr: 'Devam edeyim mi?', fa: 'ادامه بدهم؟',
 };
 const wordCount = (text: string) => text.split(/\s+/).filter(Boolean).length;
+export const ARABIC_SPEECH_FALLBACK = 'مش قادر أقول الرد ده بالعربي دلوقتي.';
+
+const ENGLISH_SPEECH_CUES = new Set([
+  'a', 'an', 'the', 'and', 'or', 'but', 'if', 'then', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'do', 'does', 'did',
+  'have', 'has', 'had', 'of', 'to', 'you', 'your', 'we', 'our', 'they', 'their', 'with', 'for', 'this', 'that', 'it', 'in', 'on',
+  'from', 'by', 'as', 'at', 'not', 'can', 'could', 'will', 'would', 'should', 'what', 'when', 'where', 'why', 'how', 'which', 'who',
+  'because', 'while', 'about', 'into', 'after', 'before', 'than', 'also', 'there', 'here', 'i', 'me', 'my', 'he', 'she', 'his', 'her',
+  'good', 'great', 'best', 'better', 'perfect', 'wonderful', 'excellent', 'beautiful', 'lovely', 'favorite', 'choice', 'recommend', 'recommended', 'lasting', 'lasts', 'long', 'available', 'suitable',
+  'choose', 'especially', 'enjoy', 'match', 'fits', 'works', 'daily', 'office', 'occasion', 'fresh', 'strong', 'wear', 'smells', 'worth',
+  'check', 'details', 'very', 'well', 'all', 'day', 'summer', 'winter', 'skin', 'perfume', 'fragrance', 'scent', 'men', 'women',
+]);
+const LATIN_SPEECH_RUN = /(?<![A-Za-z])(?:[A-Za-zÀ-ÖØ-öø-ÿ]+(?:['’][A-Za-zÀ-ÖØ-öø-ÿ]+)?)(?:\s+(?:[A-Za-zÀ-ÖØ-öø-ÿ]+(?:['’][A-Za-zÀ-ÖØ-öø-ÿ]+)?))*(?![A-Za-z])/gu;
+
+/** Final Arabic TTS safeguard: drop English prose, while keeping title-cased product names and brands. */
+export function arabicSpeechOnly(text: string, dialect?: Dialect): string {
+  const localizedNames = arabicBrandNames(text, dialect);
+  return localizedNames.replace(LATIN_SPEECH_RUN, (run) => {
+    const words = run.match(/[A-Za-zÀ-ÖØ-öø-ÿ]+/gu) || [];
+    if (!words.length) return ' ';
+    const lower = words.map((word) => word.toLowerCase());
+    const cue = lower.some((word) => ENGLISH_SPEECH_CUES.has(word));
+    const properName = words.length >= 2 && words.every((word) => /^[A-ZÀ-ÖØ-Þ]/u.test(word)) && !cue;
+    // Keep names such as «Oud Royal», but never read an English clause (even if it starts with a capital letter).
+    return properName ? run : ' ';
+  }).replace(/\s+([،,.!?؟])/gu, '$1').replace(/([،,]){2,}/gu, '$1').replace(/\s{2,}/gu, ' ').trim();
+}
 
 export interface SpokenReply {
   /** What he says now. */
@@ -367,7 +393,7 @@ export function spokenReply(text: string, { language, dialect, words = 45, opene
       for (const [re, name] of SPOKEN_NAMES) s = s.replace(re, name);
       // A product code («SKU: LAT-095») is for the screen, not for the ear (before its digits become words).
       s = s.replace(/(?<![A-Za-z])SKU\s*[:：#]?\s*/gi, '').replace(/[([]?(?<![A-Za-z])[A-Z]{2,5}-\d{2,5}(?!\d)[)\]]?/g, ' ');
-      s = arabicBrandNames(everydayWords(speakArabicNumbers(s, dialect), dialect), dialect);
+      s = arabicSpeechOnly(everydayWords(speakArabicNumbers(s, dialect), dialect), dialect);
     } else {
       s = speakWorldNumbers(worldTerms(s, language), language, speechLocale);
     }
@@ -376,8 +402,9 @@ export function spokenReply(text: string, { language, dialect, words = 45, opene
   // «شاهين بيحكي مش بيقرا» (talkStyle.ts): lists, labels, steps and written verbs re-said as talk first.
   // Arabic and Persian pause on «،»; the other languages' voices on «,».
   const comma = arabic || language === 'fa' ? '، ' : ', ';
-  const sentences = sentencesOf(talkLines(talkify(speechTidy(text), { language, dialect, opener }), comma), comma).map(prepared).filter((s) => /[\p{L}\p{N}]/u.test(s));
-  if (!sentences.length) return { say: '', rest: '' };
+  const spokenLines = talkLines(talkify(speechTidy(text), { language, dialect, opener }), comma);
+  const sentences = sentencesOf(spokenLines, comma).map(prepared).filter((s) => /[\p{L}\p{N}]/u.test(s));
+  if (!sentences.length) return { say: arabic && /[A-Za-z]/u.test(spokenLines.join(' ')) ? ARABIC_SPEECH_FALLBACK : '', rest: '' };
   const total = sentences.reduce((sum, s) => sum + wordCount(s), 0);
   if (!Number.isFinite(words) || total <= words * 1.2) return { say: sentences.join(' '), rest: '' };
   const said: string[] = [];
