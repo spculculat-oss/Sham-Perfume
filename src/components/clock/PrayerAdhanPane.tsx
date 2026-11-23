@@ -1,15 +1,14 @@
-import { useState } from 'react';
-import { Bell, BellOff, BookOpen, ChevronDown, ExternalLink, Headphones, Landmark, Play, Upload, Volume2, VolumeX } from 'lucide-react';
+import { Bell, BellOff, BookOpen, CheckCircle2, ChevronDown, ExternalLink, FileAudio, Headphones, Landmark, Play, Trash2, Volume2, VolumeX } from 'lucide-react';
 import { ADHAN_LISTENING_GROUPS } from '../../data/adhanListening';
-import { ADHAN_RECORDINGS, validAdhanFile, type AdhanVariant } from '../../data/adhanVoices';
+import { ADHAN_RECORDINGS, type AdhanVariant } from '../../data/adhanVoices';
 import type { SupportedLanguage } from '../../types/i18n';
 import { loc } from '../../لغات/localize';
 import { formatLocalizedNumber } from '../../لغات/numerals';
-import { REMINDER_PRAYERS, type AdhanVoiceId, type PrayerPreferences, type ReminderMode } from '../../utils/prayerConfig';
+import { REMINDER_PRAYERS, type AdhanVoiceId, type PrayerPreferences, type ReminderMode, type VoiceChoice } from '../../utils/prayerConfig';
 import { PRAYER_LABELS, prayerT } from './prayerText';
+import type { useDeviceAdhan } from './useDeviceAdhan';
 import type { usePrayerReminders } from './usePrayerReminders';
 
-export type LocalRecordings = Partial<Record<AdhanVariant, File>>;
 const variants = ['regular', 'fajr'] as const;
 const modes = [{ name: 'off', Icon: BellOff }, { name: 'visual', Icon: Bell }, { name: 'audio', Icon: Volume2 }] as const;
 
@@ -44,25 +43,12 @@ function AdhanListeningLibrary({ lang }: { lang: SupportedLanguage }) {
   </details>;
 }
 
-export function PrayerAdhanPane({ lang, prefs, update, canArm, hasPlace, hasSchedule, audio, files, onFile, onPreview, onChoosePlace }: {
+export function PrayerAdhanPane({ lang, prefs, update, canArm, hasPlace, hasSchedule, audio, recordings, onVoice, onPreview, onChoosePlace }: {
   lang: SupportedLanguage; prefs: PrayerPreferences; update: (delta: Partial<PrayerPreferences>) => void;
-  canArm: boolean; hasPlace: boolean; hasSchedule: boolean; audio: ReturnType<typeof usePrayerReminders>; files: LocalRecordings;
-  onFile: (variant: AdhanVariant, file?: File) => void; onPreview: (variant: AdhanVariant) => void; onChoosePlace: () => void;
+  canArm: boolean; hasPlace: boolean; hasSchedule: boolean; audio: ReturnType<typeof usePrayerReminders>; recordings: ReturnType<typeof useDeviceAdhan>;
+  onVoice: (variant: AdhanVariant, choice: VoiceChoice) => void; onPreview: (variant: AdhanVariant) => void; onChoosePlace: () => void;
 }) {
   const label = prayerT(lang);
-  const [fileError, setFileError] = useState<AdhanVariant>();
-  const chooseFile = (variant: AdhanVariant, file?: File) => {
-    if (!file) return;
-    if (!validAdhanFile(file)) { setFileError(variant); return; }
-    setFileError(undefined);
-    onFile(variant, file);
-  };
-  const pickVoice = (variant: AdhanVariant, id: string) => {
-    if (id === 'device-file' || !Object.hasOwn(ADHAN_RECORDINGS[variant], id)) return;
-    onFile(variant, undefined);
-    setFileError(undefined);
-    update(variant === 'fajr' ? { fajrVoice: id as PrayerPreferences['fajrVoice'] } : { regularVoice: id as PrayerPreferences['regularVoice'] });
-  };
   const { status } = audio;
   const canStop = status.state === 'playing' || status.state === 'loading';
   const changeMode = (next: ReminderMode) => { void audio.changeMode(next); };
@@ -72,7 +58,7 @@ export function PrayerAdhanPane({ lang, prefs, update, canArm, hasPlace, hasSche
       <h3><Bell size={18} aria-hidden="true" />{label('reminders')}</h3>
       <p className="prayer-help">{label('reminderHelp')}</p>
       <div className="prayer-modes" role="group" aria-label={label('reminders')}>
-        {modes.map(({ name, Icon }) => <button key={name} type="button" aria-pressed={audio.mode === name} disabled={name !== 'off' && (!canArm || !hasSchedule || audio.activation === 'waiting')}
+        {modes.map(({ name, Icon }) => <button key={name} type="button" aria-pressed={audio.mode === name} disabled={name !== 'off' && (!canArm || !hasSchedule || audio.activation === 'waiting' || (name === 'audio' && recordings.loading))}
           onClick={() => changeMode(name)}><Icon size={17} aria-hidden="true" />{label(name)}</button>)}
       </div>
       <p className="prayer-mode-status" data-testid="prayer-reminder-state" data-mode={audio.mode} role="status">{label(audio.activation === 'waiting' ? 'activateWaiting' : audio.mode === 'audio' ? 'enabledAudio' : audio.mode === 'visual' ? 'enabledVisual' : 'muted')}</p>
@@ -93,22 +79,42 @@ export function PrayerAdhanPane({ lang, prefs, update, canArm, hasPlace, hasSche
         {variants.map((variant) => {
           const title = label(variant === 'fajr' ? 'fajrVoice' : 'regularVoice');
           const builtin = variant === 'fajr' ? prefs.fajrVoice : prefs.regularVoice;
-          const file = files[variant];
-          return <div key={variant} className="prayer-voice">
-            <label>{title}<select aria-label={title} value={file ? 'device-file' : builtin} onChange={(event) => pickVoice(variant, event.target.value)}>
+          const file = recordings.files[variant];
+          const feedback = recordings.feedback[variant];
+          const pending = feedback && 'pending' in feedback ? feedback.pending : undefined;
+          const chooseFile = label(file ? 'replaceFile' : 'chooseAndSave');
+          const busy = recordings.loading || Boolean(pending);
+          return <div key={variant} className="prayer-voice" data-voice-variant={variant}>
+            <label>{title}<select aria-label={title} disabled={busy} value={file?.selected ? 'device-file' : builtin} onChange={(event) => {
+              const choice = event.currentTarget.value as VoiceChoice;
+              if ((choice === 'device-file' && file) || Object.hasOwn(ADHAN_RECORDINGS[variant], choice)) onVoice(variant, choice);
+            }}>
               {Object.entries(ADHAN_RECORDINGS[variant]).map(([id, voice]) => <option key={id} value={id}>{loc(lang, voice.title)}</option>)}
-              {file && <option value="device-file">{label('deviceVoice')} · {file.name.slice(0, 64)}</option>}
+              {file && <option value="device-file">{label('deviceVoice')}</option>}
             </select></label>
-            <button type="button" onClick={() => onPreview(variant)}><Play size={15} aria-hidden="true" />{label(variant === 'fajr' ? 'previewFajr' : 'previewRegular')}</button>
-            <label className="prayer-file"><Upload size={15} aria-hidden="true" />{label('deviceVoice')}<input type="file" aria-label={`${label('deviceVoice')} · ${title}`} accept="audio/mpeg,audio/mp4,audio/aac,audio/wav,.mp3,.m4a,.aac,.wav" onChange={(event) => {
-              chooseFile(variant, event.target.files?.[0]);
-              event.target.value = '';
-            }} /></label>
-            {fileError === variant && <p className="prayer-warn" role="alert">{label('invalidFile')}</p>}
+            <button type="button" disabled={busy} onClick={() => onPreview(variant)}><Play size={15} aria-hidden="true" />{label(variant === 'fajr' ? 'previewFajr' : 'previewRegular')}</button>
+            <label className="prayer-file" data-disabled={busy}><FileAudio size={15} aria-hidden="true" />{chooseFile}
+              <input type="file" disabled={busy} aria-label={`${chooseFile} · ${title}`} accept="audio/mpeg,audio/mp4,audio/aac,audio/wav,.mp3,.m4a,.aac,.wav" onChange={(event) => {
+                const picked = event.currentTarget.files?.[0];
+                if (picked) void recordings.save(variant, picked);
+                event.currentTarget.value = '';
+              }} />
+            </label>
+            <p className="prayer-mode-status prayer-file-status" role="status">
+              {pending ? label(pending === 'save' ? 'savingFile' : pending === 'remove' ? 'removingFile' : 'choosingFile')
+                : feedback && 'removed' in feedback ? label('fileDeleted')
+                : file && <><CheckCircle2 size={14} aria-hidden="true" /><span>{label('savedFile')} · <bdi title={file.name}>{file.name}</bdi></span></>}
+            </p>
+            {file && <button type="button" className="prayer-delete-file" aria-label={`${label('deleteFile')} · ${title}`} disabled={busy} onClick={() => { void recordings.remove(variant); }}>
+              <Trash2 size={15} aria-hidden="true" />{label('deleteFile')}
+            </button>}
+            {feedback && 'issue' in feedback && <p className="prayer-warn" role="alert">{label(feedback.issue)}</p>}
           </div>;
         })}
       </div>
-      <p className="prayer-help">{label('importNote')}</p>
+      {recordings.loading && <p className="prayer-help" role="status">{label('loadingFiles')}</p>}
+      {recordings.readFailed && <p className="prayer-warn" role="alert">{label('loadFilesFailed')}</p>}
+      <p className="prayer-help">{label('importNote')} {label('fileLimits')}</p>
       {canStop && <div className="prayer-actions"><button type="button" onClick={() => audio.stop()}><VolumeX size={16} aria-hidden="true" />{label('stop')}</button></div>}
       {status.state !== 'idle' && <p className={status.state === 'blocked' || status.state === 'error' ? 'prayer-warn' : 'prayer-mode-status'} role="status" data-testid="adhan-playback" data-state={status.state}>
         {label(status.state === 'playing' ? 'playing' : status.state === 'loading' ? 'fetchingAudio' : status.state === 'blocked' ? 'activationBlocked' : 'playbackError')} · <bdi>{status.name}</bdi>

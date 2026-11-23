@@ -1,5 +1,5 @@
 /** Browser smoke: run against a built site. The clock and geolocation are simulated;
- * actual Chromium Web Audio decodes and plays the bundled MP3 and a local WAV. */
+ * actual Chromium IndexedDB and Web Audio save, restore and play device recordings. */
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright-core';
 
@@ -7,6 +7,7 @@ const base = process.env.CLOCK_BASE_URL || 'http://localhost:3000/';
 const origin = new URL(base).origin;
 const scenario = process.env.PRAYER_SCENARIO || 'all';
 const apiOrigin = process.env.PRAYER_API_ORIGIN || origin;
+const deviceDatabase = 'sham-prayer-device-audio';
 const cairoFajr = Date.parse('2026-11-18T02:52:00Z');
 const initial = new Date('2026-11-18T02:12:00Z');
 const cairo = { placeId: 'EG:cairo', cityEn: 'Cairo', cityAr: 'القاهرة', country: 'EG', lat: 30.04, lon: 31.24, precision: 'edge-coords' };
@@ -42,7 +43,8 @@ async function fixture({ lang = 'en', mobile = false, geo = { country: 'EG', tim
   context.on('request', (r) => requests.push({ url: r.url(), body: r.postData() || '' }));
   await context.grantPermissions(['geolocation'], { origin });
   await context.addInitScript(({ language, savedPrayerPrefs }) => {
-    if (window === window.top && savedPrayerPrefs && !localStorage.getItem('sham_prayer_preferences_v1')) {
+    if (window !== window.top) return;
+    if (savedPrayerPrefs && !localStorage.getItem('sham_prayer_preferences_v1')) {
       localStorage.setItem('sham_prayer_preferences_v1', JSON.stringify(savedPrayerPrefs));
     }
     localStorage.setItem('sham_perfume_user_language', language);
@@ -61,7 +63,7 @@ async function fixture({ lang = 'en', mobile = false, geo = { country: 'EG', tim
       createBufferSource() {
         const source = super.createBufferSource();
         const start = source.start.bind(source), stop = source.stop.bind(source);
-        source.start = (...args) => { const r = start(...args); probe.played += 1; return r; };
+        source.start = (...args) => { const r = start(...args); probe.played += 1; probe.duration = source.buffer.duration; return r; };
         source.stop = (...args) => { const r = stop(...args); probe.stopped += 1; return r; };
         return source;
       }
@@ -93,13 +95,13 @@ async function fixture({ lang = 'en', mobile = false, geo = { country: 'EG', tim
   return { context, page: await newPage(), newPage, requests, errors };
 }
 
-function localWav() {
-  const frames = 8_000 * 40;
+function localWav(seconds = 40, hz = 262) {
+  const frames = 8_000 * seconds;
   const bytes = Buffer.alloc(44 + frames * 2);
   bytes.write('RIFF'); bytes.writeUInt32LE(bytes.length - 8, 4); bytes.write('WAVEfmt ', 8); bytes.writeUInt32LE(16, 16);
   bytes.writeUInt16LE(1, 20); bytes.writeUInt16LE(1, 22); bytes.writeUInt32LE(8000, 24); bytes.writeUInt32LE(16000, 28);
   bytes.writeUInt16LE(2, 32); bytes.writeUInt16LE(16, 34); bytes.write('data', 36); bytes.writeUInt32LE(frames * 2, 40);
-  for (let i = 0; i < frames; i += 1) bytes.writeInt16LE(Math.round(Math.sin(i * 2 * Math.PI * 262 / 8000) * 640), 44 + i * 2);
+  for (let i = 0; i < frames; i += 1) bytes.writeInt16LE(Math.round(Math.sin(i * 2 * Math.PI * hz / 8000) * 640), 44 + i * 2);
   return bytes;
 }
 
@@ -151,13 +153,14 @@ async function checkDesktop() {
   assert.equal((await probe(page)).stopped, 1);
   console.log('  A licensed MP3 decoded and played only via its Preview button.');
   await state(page, 'off');
-  const local = dialog.getByLabel('File from my device · Voice for Fajr', { exact: true });
-  await local.setInputFiles({ name: 'my-adhan.wav', mimeType: 'audio/wav', buffer: localWav() });
+  await chooseRecording(voice(dialog, 'fajr'), 'my-adhan.wav');
+  await savedRecording(voice(dialog, 'fajr'), 'my-adhan.wav');
   await dialog.getByRole('button', { name: 'Preview Fajr adhan', exact: true }).click();
   await playback(page, 'playing');
   await dialog.getByRole('button', { name: 'Stop sound', exact: true }).click();
   assert.equal(audioURLs(desktop).length, 1, 'imported file should never make an audio request');
   await dialog.getByLabel('Voice for Fajr', { exact: true }).selectOption('ahmed-khalaf');
+  await voice(dialog, 'fajr').locator('select:enabled').waitFor();
   const saved = await page.evaluate(() => localStorage.getItem('sham_prayer_preferences_v1'));
   assert.ok(!saved.includes('my-adhan.wav'));
   await startNear(page, fajr);
@@ -268,6 +271,17 @@ async function checkMobile() {
   assert.match(await library.getByRole('link', { name: /^أذان الجمعة يوم إعادة الافتتاح/ }).textContent(), /٢٠٢٠/);
   assert.equal(await library.locator('iframe, audio, video').count(), 0, 'opening the library must not embed outside media');
   assert.ok(!mobile.requests.some(({ url }) => /islamweb|assabile|misharialafasy|diyanet\.tv|youtube\.com/.test(url)), 'no connection to an audio publisher before clicking a link');
+  const mobileFile = 'تسجيل-الأذان-لصلاة-الفجر-من-جهازي-' + 'طويل'.repeat(15) + '.wav';
+  await chooseRecording(voice(dialog, 'fajr'), mobileFile);
+  await savedRecording(voice(dialog, 'fajr'), mobileFile);
+  assert.equal(await voice(dialog, 'fajr').locator('select').inputValue(), 'device-file');
+  assert.ok(await fits(), 'the saved filename and actions fit a right-to-left 320px screen');
+  assert.ok(await voice(dialog, 'fajr').evaluate((el) => el.scrollWidth <= el.clientWidth + 1), 'the saved filename wraps inside the voice card');
+  if (process.env.PRAYER_SCREENSHOTS) {
+    await voice(dialog, 'fajr').scrollIntoViewIfNeeded();
+    await screenshot(small, 'saved-device-mobile');
+  }
+  await state(small, 'off');
   assert.ok(await fits(), 'listening library fits at 320px');
   await screenshot(small, 'listening-mobile');
   // Route the new tab to a local fixture: exercises the link without claiming external media playback.
@@ -435,20 +449,268 @@ async function checkTwoTabs() {
   assert.deepEqual(two.errors, []);
 }
 
-async function checkPages() {
-  console.log('Pages: prefixed same-origin asset URL and working Web Audio…');
-  const assets = await fixture();
-  const dialog = await open(assets.page);
-  await dialog.getByTestId('prayer-place').getByText(/Cairo/).waitFor();
+const voice = (dialog, variant) => dialog.locator(`[data-voice-variant="${variant}"]`);
+const savedRecording = (card, name) => card.locator('.prayer-file-status').getByText(name, { exact: true }).waitFor();
+const chooseRecording = (card, name, buffer = localWav(), mimeType = 'audio/wav') => card.locator('input[type=file]:enabled').setInputFiles({ name, mimeType, buffer });
+const chooseVoice = async (card, choice) => {
+  await card.locator('select:enabled').selectOption(choice);
+  await card.locator('select:enabled').waitFor();
+  assert.equal(await card.locator('select').inputValue(), choice);
+};
+const openAdhan = async (page) => {
+  const dialog = await open(page);
   await dialog.getByRole('button', { name: 'Adhan & reminders', exact: true }).click();
+  await voice(dialog, 'fajr').locator('select:enabled').waitFor();
+  return dialog;
+};
+const hasDeviceDatabase = (page) => page.evaluate(async (name) => (await indexedDB.databases()).some((db) => db.name === name), deviceDatabase);
+const localPlayback = async (page, name, duration) => {
+  await playback(page, 'playing');
+  await page.getByTestId('adhan-playback').getByText(name, { exact: true }).waitFor();
+  assert.equal((await probe(page)).duration, duration);
+};
+const assertNoUploads = (fixture) => {
+  assert.ok(!fixture.requests.some(({ url, body }) => /-private\.wav|\bRIFF|UklGR|blob:/.test(`${url} ${body}`)),
+    'no local recording filename, data or object URL is sent over the network');
+};
+
+async function checkDevice() {
+  console.log('Device sounds: separate saved WAVs, playback, reminder opt-in, replacement, hide and removal…');
+  const device = await fixture();
+  let { page } = device;
+  const regularName = 'regular-private.wav', fajrName = 'fajr-private.wav', replacedName = 'replacement-private.wav';
+  assert.equal(await hasDeviceDatabase(page), false, 'entry did not open the audio database');
+  const schedule = await open(page);
+  await schedule.getByTestId('prayer-place').getByText(/Cairo/).waitFor();
+  const fajr = await timeOf(schedule, 'fajr'), dhuhr = await timeOf(schedule, 'dhuhr');
+  await schedule.getByRole('button', { name: 'Adhan & reminders', exact: true }).click();
+  await Promise.all([
+    chooseRecording(voice(schedule, 'regular'), regularName, localWav(32)),
+    chooseRecording(voice(schedule, 'fajr'), fajrName, localWav(36, 330)),
+  ]);
+  await savedRecording(voice(schedule, 'regular'), regularName);
+  await savedRecording(voice(schedule, 'fajr'), fajrName);
+  await state(page, 'off');
+  assert.equal((await probe(page)).created, 0, 'saving did not unlock an AudioContext');
+  assert.deepEqual(audioURLs(device), []);
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  let dialog = await openAdhan(page);
+  await state(page, 'off');
+  await cross(page, fajr);
+  await noNotice(page);
+  assert.equal((await probe(page)).created, 0, 'opening saved sounds did not unlock audio');
+  for (const [variant, name, duration] of [['regular', regularName, 32], ['fajr', fajrName, 36]]) {
+    const card = voice(dialog, variant);
+    await savedRecording(card, name);
+    assert.equal(await card.locator('select').inputValue(), 'device-file');
+    await card.getByRole('button', { name: /^Preview/ }).click();
+    await localPlayback(page, name, duration);
+    await dialog.getByRole('button', { name: 'Stop sound', exact: true }).click();
+  }
+  const regular = voice(dialog, 'regular');
+  await chooseRecording(regular, replacedName, localWav(38, 440));
+  await savedRecording(regular, replacedName);
+  assert.equal(await regular.getByText(regularName, { exact: true }).count(), 0);
+  await savedRecording(voice(dialog, 'fajr'), fajrName);
+  await state(page, 'off');
+  console.log('  Both local WAVs decoded after reload; a replacement changed only its own slot.');
+
+  await startNear(page, fajr);
+  await dialog.getByRole('button', { name: 'Reminder with adhan', exact: true }).click();
+  await state(page, 'audio');
+  for (const [deadline, label, name, duration] of [[fajr, 'Fajr', fajrName, 36], [dhuhr, 'Dhuhr', replacedName, 38]]) {
+    await startNear(page, deadline);
+    await cross(page, deadline);
+    const notice = page.getByTestId('prayer-notice');
+    await notice.getByText(new RegExp(`time for prayer.*${label}`)).waitFor();
+    await localPlayback(page, name, duration);
+    await notice.getByRole('button', { name: 'Dismiss reminder', exact: true }).click();
+  }
+  assert.equal((await probe(page)).played, 4, 'only two previews and two explicitly enabled reminders');
+  assert.deepEqual(audioURLs(device), [], 'local previews and reminders did not fetch audio');
+  await dialog.getByRole('button', { name: 'Hide tool and turn reminders off', exact: true }).click();
+  await page.getByRole('button', { name: 'Restore prayer times & adhkar', exact: true }).waitFor();
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.getByRole('button', { name: 'Restore prayer times & adhkar', exact: true }).waitFor();
+  dialog = await openAdhan(page);
+  await state(page, 'off');
+  await savedRecording(voice(dialog, 'regular'), replacedName);
+  await savedRecording(voice(dialog, 'fajr'), fajrName);
+  await chooseVoice(voice(dialog, 'regular'), 'aaqib-azeez');
+  await savedRecording(voice(dialog, 'regular'), replacedName);
+  await page.close();
+  page = await device.newPage();
+  dialog = await openAdhan(page);
+  await state(page, 'off');
+  assert.equal((await probe(page)).created, 0);
+  assert.equal(await voice(dialog, 'regular').locator('select').inputValue(), 'aaqib-azeez');
+  await savedRecording(voice(dialog, 'regular'), replacedName);
+  await chooseVoice(voice(dialog, 'regular'), 'device-file');
+  await voice(dialog, 'fajr').getByRole('button', { name: /^Delete saved recording/ }).click();
+  await voice(dialog, 'fajr').getByText('Recording deleted from this browser', { exact: true }).waitFor();
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  dialog = await openAdhan(page);
+  await state(page, 'off');
+  const dawn = voice(dialog, 'fajr');
+  assert.equal(await dawn.locator('select').inputValue(), 'ahmed-khalaf');
+  assert.equal(await dawn.locator('option[value="device-file"]').count(), 0);
+  assert.equal(await voice(dialog, 'regular').locator('select').inputValue(), 'device-file');
+  await savedRecording(voice(dialog, 'regular'), replacedName);
+  await dawn.getByRole('button', { name: 'Preview Fajr adhan', exact: true }).click();
+  await playback(page, 'playing');
+  assert.deepEqual(audioURLs(device), [new URL('audio/adhan/ahmed-khalaf-fajr.mp3', base).pathname]);
+  const prefs = await page.evaluate(() => localStorage.getItem('sham_prayer_preferences_v1'));
+  assert.doesNotMatch(prefs, /\.wav|device-file|reminderMode/);
+  assertNoUploads(device);
+  assert.deepEqual(device.errors, []);
+  console.log('  Restoring and returning kept both choices off, and deletion restored only the Fajr fallback.');
+}
+
+async function holdNextDecode(page) {
+  await page.evaluate(() => {
+    const prototype = OfflineAudioContext.prototype;
+    const original = prototype.decodeAudioData;
+    prototype.decodeAudioData = function (...args) {
+      prototype.decodeAudioData = original;
+      return new Promise((resolve, reject) => {
+        window.releaseAdhanDecode = async () => {
+          delete window.releaseAdhanDecode;
+          try { resolve(await original.apply(this, args)); } catch (error) { reject(error); }
+        };
+      });
+    };
+  });
+}
+
+async function checkDeviceStorage() {
+  console.log('Device storage: invalid audio, rolled-back write, hide cancellation and confirmed privacy wipe…');
+  const device = await fixture();
+  const { page } = device;
+  const kept = 'keep-private.wav', dawn = 'dawn-private.wav';
+  let dialog = await openAdhan(page);
+  let card = voice(dialog, 'regular');
+  await chooseRecording(card, kept);
+  await savedRecording(card, kept);
+  await chooseRecording(voice(dialog, 'fajr'), dawn);
+  await savedRecording(voice(dialog, 'fajr'), dawn);
+  for (const [name, bytes, type, issue] of [
+    ['invalid-private.wav', Buffer.from('<html>'), 'text/html', /Choose an MP3/],
+    ['corrupt-private.wav', Buffer.from('Not an audio recording'), 'audio/wav', /could not be decoded/],
+    ['long-private.wav', localWav(481), 'audio/wav', /longer than 8 minutes/],
+  ]) {
+    await chooseRecording(card, name, bytes, type);
+    await card.getByRole('alert').filter({ hasText: issue }).waitFor();
+    await savedRecording(card, kept);
+    assert.equal(await card.locator('select').inputValue(), 'device-file');
+  }
+  await page.evaluate((dbName) => {
+    const put = IDBObjectStore.prototype.put;
+    IDBObjectStore.prototype.put = function (value, key) {
+      const request = put.call(this, value, key);
+      if (this.transaction.db.name === dbName && value.name === 'rolled-back-private.wav') {
+        // A put request can succeed even though the overall write failed to commit.
+        request.addEventListener('success', () => this.transaction.abort(), { once: true });
+      }
+      return request;
+    };
+  }, deviceDatabase);
+  await chooseRecording(card, 'rolled-back-private.wav');
+  await card.getByRole('alert').filter({ hasText: /could not save the recording/ }).waitFor();
+  await savedRecording(card, kept);
+  await holdNextDecode(page);
+  await chooseRecording(card, 'hidden-pending-private.wav');
+  await page.waitForFunction(() => typeof window.releaseAdhanDecode === 'function');
+  await card.getByText('Checking and saving the recording…', { exact: true }).waitFor();
+  await dialog.getByRole('button', { name: 'Hide tool and turn reminders off', exact: true }).click();
+  await dialog.waitFor({ state: 'detached' });
+  await page.evaluate(() => window.releaseAdhanDecode());
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  dialog = await openAdhan(page);
+  card = voice(dialog, 'regular');
+  await savedRecording(card, kept);
+  await savedRecording(voice(dialog, 'fajr'), dawn);
+  await state(page, 'off');
+  assert.equal((await probe(page)).created, 0);
+
+  await holdNextDecode(page);
+  await chooseRecording(card, 'wipe-pending-private.wav');
+  await page.waitForFunction(() => typeof window.releaseAdhanDecode === 'function');
+  const freshPage = await device.newPage();
+  // This tab has never opened the prayer runtime. Keep an extra real database
+  // connection open to exercise the blocked deletion path, then let it close.
+  await freshPage.evaluate((name) => new Promise((resolve, reject) => {
+    const request = indexedDB.open(name);
+    request.onsuccess = () => { window.heldAdhanConnection = request.result; resolve(); };
+    request.onerror = () => reject(request.error);
+  }), deviceDatabase);
+  await freshPage.getByRole('button', { name: 'Privacy', exact: true, description: 'User data protection & privacy (GDPR)' }).click();
+  await freshPage.getByRole('button', { name: 'Wipe All My Data', exact: true }).click();
+  const confirm = freshPage.getByRole('button', { name: 'Confirm Full Wipe', exact: true });
+  await confirm.click();
+  await freshPage.getByRole('alert').filter({ hasText: /could not confirm that saved adhan recordings were erased/ }).waitFor();
+  assert.ok(await confirm.isVisible(), 'a blocked wipe did not close as if it had succeeded');
+  assert.notEqual(await freshPage.evaluate(() => localStorage.getItem('sham_prayer_preferences_v1')), null, 'unconfirmed wipe did not discard normal settings');
+  await dialog.waitFor({ state: 'detached' });
+  await freshPage.evaluate(() => window.heldAdhanConnection.close());
+  await freshPage.waitForFunction(async (name) => !(await indexedDB.databases()).some((db) => db.name === name), deviceDatabase);
+  await page.evaluate(() => window.releaseAdhanDecode());
+  assert.equal(await hasDeviceDatabase(freshPage), false, 'the pending decode cannot recreate the erased store');
+  await confirm.click();
+  await freshPage.getByRole('heading', { name: /User Data Protection & Privacy Charter/ }).waitFor({ state: 'detached' });
+  assert.equal(await hasDeviceDatabase(freshPage), false);
+  assert.equal(await freshPage.evaluate(() => localStorage.getItem('sham_prayer_preferences_v1')), null);
+  dialog = await openAdhan(freshPage);
+  await state(freshPage, 'off');
+  assert.equal(await dialog.locator('option[value="device-file"]').count(), 0);
+  console.log('  Transaction failure kept the old WAVs; blocked deletion was reported and a retry wiped both slots.');
+
+  await freshPage.reload({ waitUntil: 'domcontentloaded' });
+  await freshPage.evaluate((dbName) => {
+    const open = IDBFactory.prototype.open;
+    IDBFactory.prototype.open = function (name, ...args) {
+      if (name === dbName) throw new DOMException('Storage denied in fixture', 'SecurityError');
+      return open.call(this, name, ...args);
+    };
+  }, deviceDatabase);
+  dialog = await openAdhan(freshPage);
+  await dialog.getByRole('alert').filter({ hasText: /Could not read saved recordings/ }).waitFor();
+  card = voice(dialog, 'fajr');
+  await chooseRecording(card, 'blocked-private.wav');
+  await card.getByRole('alert').filter({ hasText: /could not save the recording/ }).waitFor();
+  assert.equal(await card.locator('option[value="device-file"]').count(), 0);
+  await card.getByRole('button', { name: 'Preview Fajr adhan', exact: true }).click();
+  await playback(freshPage, 'playing');
+  await state(freshPage, 'off');
+  assertNoUploads(device);
+  assert.deepEqual(device.errors, []);
+}
+
+async function checkPages() {
+  console.log('Pages: prefixed built-in asset and a restored local recording without an audio request…');
+  const assets = await fixture();
+  const { page } = assets;
+  let dialog = await openAdhan(page);
   await dialog.getByRole('button', { name: 'Preview Fajr adhan', exact: true }).click();
-  await playback(assets.page, 'playing');
+  await playback(page, 'playing');
+  await dialog.getByRole('button', { name: 'Stop sound', exact: true }).click();
+  const name = 'pages-private.wav';
+  await chooseRecording(voice(dialog, 'fajr'), name);
+  await savedRecording(voice(dialog, 'fajr'), name);
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  dialog = await openAdhan(page);
+  await state(page, 'off');
+  assert.equal((await probe(page)).created, 0);
+  await savedRecording(voice(dialog, 'fajr'), name);
+  await dialog.getByRole('button', { name: 'Preview Fajr adhan', exact: true }).click();
+  await localPlayback(page, name, 40);
+  await dialog.getByRole('button', { name: 'Stop sound', exact: true }).click();
   assert.deepEqual(audioURLs(assets), [new URL('audio/adhan/ahmed-khalaf-fajr.mp3', base).pathname]);
+  assertNoUploads(assets);
   assert.deepEqual(assets.errors, []);
 }
 
-const checks = { desktop: checkDesktop, mobile: checkMobile, restore: checkRestore, two: checkTwoTabs, pages: checkPages };
-const selected = scenario === 'all' ? ['desktop', 'mobile', 'restore', 'two'] : [scenario];
+const checks = { desktop: checkDesktop, mobile: checkMobile, restore: checkRestore, two: checkTwoTabs, device: checkDevice, 'device-storage': checkDeviceStorage, pages: checkPages };
+const selected = scenario === 'all' ? ['desktop', 'mobile', 'restore', 'two', 'device', 'device-storage'] : [scenario];
 for (const name of selected) {
   if (!Object.hasOwn(checks, name)) throw new Error(`Unknown PRAYER_SCENARIO ${name}`);
   // A clean instance isolates browser emulation/audio state between scenarios.

@@ -1,5 +1,6 @@
 import { UserProfile, CraftLevel } from '../types/auth';
 import { CLOCK_TOOLS_CLEARED, CLOCK_TOOLS_KEY, decodeClockTools } from './clockTools';
+import { clearDeviceAdhan } from './deviceAdhan';
 import { PRAYER_CLAIM_KEY, PRAYER_CLEARED, PRAYER_PREFS_KEY, decodePrayerPreferences } from './prayerConfig';
 import { CommunityApiError, cx, getSessionToken, setSessionToken, type AuthResult, type Me, type PendingLogin } from '../community/api';
 
@@ -273,7 +274,10 @@ export function logoutUser(): void {
   } catch (e) {}
 }
 
-export function wipeAllUserData(): void {
+export async function wipeAllUserData(): Promise<void> {
+  // Cancel any pending import before erasing the sound store, even when the prayer tool is hidden.
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event(PRAYER_CLEARED));
+  await clearDeviceAdhan();
   try {
     localStorage.removeItem(USER_AUTH_STORAGE_KEY);
     localStorage.removeItem(REGISTERED_USERS_KEY);

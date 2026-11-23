@@ -35,7 +35,9 @@ const S = {
   export_ok: { ar: 'تم التصدير بنجاح!', en: 'Exported Successfully!', fr: 'Exporté avec succès !', es: '¡Exportado con éxito!', it: 'Esportato con successo!', de: 'Erfolgreich exportiert!', ru: 'Экспорт выполнен!', zh: '导出成功！', tr: 'Başarıyla dışa aktarıldı!', fa: 'خروجی با موفقیت گرفته شد!' },
   export_btn: { ar: 'تصدير بياناتي (JSON)', en: 'Export My Data (JSON)', fr: 'Exporter mes données (JSON)', es: 'Exportar mis datos (JSON)', it: 'Esporta i miei dati (JSON)', de: 'Meine Daten exportieren (JSON)', ru: 'Экспортировать данные (JSON)', zh: '导出我的数据（JSON）', tr: 'Verilerimi dışa aktar (JSON)', fa: 'خروجی داده‌های من (JSON)' },
   wipe_title: { ar: 'المسح النهائي لكافة البيانات (Right to be Forgotten)', en: 'Final Erasure of All Data (Right to be Forgotten)', fr: 'Effacement définitif de toutes les données (droit à l’oubli)', es: 'Borrado definitivo de todos los datos (derecho al olvido)', it: 'Cancellazione definitiva di tutti i dati (diritto all’oblio)', de: 'Endgültige Löschung aller Daten (Recht auf Vergessenwerden)', ru: 'Окончательное стирание всех данных (право на забвение)', zh: '彻底清除所有数据（被遗忘权）', tr: 'Tüm verilerin kalıcı silinmesi (unutulma hakkı)', fa: 'حذف نهایی همه داده‌ها (حق فراموشی)' },
-  wipe_sub: { ar: 'حذف كافة الخلطات وسجل الدخول والمحادثات نهائياً من هذا الجهاز', en: 'Permanently delete all formulas, login history, and chats from this device', fr: 'Supprimer définitivement formules, connexions et conversations de cet appareil', es: 'Eliminar para siempre fórmulas, inicios de sesión y conversaciones de este dispositivo', it: 'Elimina per sempre formule, accessi e conversazioni da questo dispositivo', de: 'Formeln, Anmeldungen und Chats endgültig von diesem Gerät löschen', ru: 'Безвозвратно удалить формулы, историю входа и переписку с этого устройства', zh: '从此设备永久删除所有配方、登录记录与对话', tr: 'Formülleri, oturum geçmişini ve sohbetleri bu cihazdan kalıcı olarak sil', fa: 'حذف دائمی همه فرمول‌ها، سوابق ورود و گفتگوها از این دستگاه' },
+  wipe_sub: { ar: 'حذف الخلطات وسجل الدخول والمحادثات ونسخ تسجيلات الأذان المحفوظة في المتصفح', en: 'Delete formulas, login history, chats and adhan recordings saved in this browser', fr: 'Supprimer définitivement formules, connexions et conversations de cet appareil', es: 'Eliminar para siempre fórmulas, inicios de sesión y conversaciones de este dispositivo', it: 'Elimina per sempre formule, accessi e conversazioni da questo dispositivo', de: 'Formeln, Anmeldungen und Chats endgültig von diesem Gerät löschen', ru: 'Безвозвратно удалить формулы, историю входа и переписку с этого устройства', zh: '从此设备永久删除所有配方、登录记录与对话', tr: 'Formülleri, oturum geçmişini ve sohbetleri bu cihazdan kalıcı olarak sil', fa: 'حذف دائمی همه فرمول‌ها، سوابق ورود و گفتگوها از این دستگاه' },
+  wiping: { ar: 'جاري المسح…', en: 'Erasing local data…' },
+  wipe_audio_failed: { ar: 'المتصفح ماقدرش يأكّد مسح تسجيلات الأذان المحفوظة. اقفل التبويبات التانية للموقع وجرّب تاني، أو امسح بيانات الموقع من إعدادات المتصفح.', en: 'Your browser could not confirm that saved adhan recordings were erased. Close other tabs of the site and try again, or clear the site data in your browser settings.' },
   cancel: { ar: 'تراجع', en: 'Cancel', fr: 'Annuler', es: 'Cancelar', it: 'Annulla', de: 'Abbrechen', ru: 'Отмена', zh: '取消', tr: 'Vazgeç', fa: 'انصراف' },
   confirm_wipe: { ar: 'تأكيد المسح الشامل', en: 'Confirm Full Wipe', fr: 'Confirmer l’effacement total', es: 'Confirmar borrado total', it: 'Conferma cancellazione totale', de: 'Vollständige Löschung bestätigen', ru: 'Подтвердить полное стирание', zh: '确认全部清除', tr: 'Tam silmeyi onayla', fa: 'تأیید پاک‌سازی کامل' },
   wipe_btn: { ar: 'مسح جميع بياناتي', en: 'Wipe All My Data', fr: 'Effacer toutes mes données', es: 'Borrar todos mis datos', it: 'Cancella tutti i miei dati', de: 'Alle meine Daten löschen', ru: 'Стереть все мои данные', zh: '清除我的所有数据', tr: 'Tüm verilerimi sil', fa: 'پاک‌کردن همه داده‌های من' },
@@ -59,6 +61,8 @@ export const DataPrivacyModal: React.FC<DataPrivacyModalProps> = ({
   const rtl = isRTL(currentLang);
   const L = makeT(currentLang, S);
   const [confirmWipe, setConfirmWipe] = useState(false);
+  const [wiping, setWiping] = useState(false);
+  const [wipeFailed, setWipeFailed] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
 
   const handleExport = () => {
@@ -69,8 +73,12 @@ export const DataPrivacyModal: React.FC<DataPrivacyModalProps> = ({
     }
   };
 
-  const handleWipe = () => {
-    wipeAllUserData();
+  const handleWipe = async () => {
+    setWiping(true);
+    setWipeFailed(false);
+    try { await wipeAllUserData(); }
+    catch { setWipeFailed(true); return; }
+    finally { setWiping(false); }
     onUserDataWiped();
     onClose();
   };
@@ -79,7 +87,7 @@ export const DataPrivacyModal: React.FC<DataPrivacyModalProps> = ({
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === 'Escape' && !wiping) {
         onClose();
       }
     };
@@ -88,12 +96,12 @@ export const DataPrivacyModal: React.FC<DataPrivacyModalProps> = ({
       document.body.style.overflow = originalOverflow;
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onClose]);
+  }, [onClose, wiping]);
 
   return (
     <div
       className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
-      onClick={onClose}
+      onClick={wiping ? undefined : onClose}
     >
       <div
         className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-stone-200 overflow-hidden my-6 animate-in fade-in zoom-in-95 text-stone-900"
@@ -116,6 +124,7 @@ export const DataPrivacyModal: React.FC<DataPrivacyModalProps> = ({
             </div>
           </div>
           <button
+            disabled={wiping}
             onClick={onClose}
             className="p-1.5 text-stone-400 hover:text-white rounded-lg cursor-pointer"
           >
@@ -217,16 +226,18 @@ export const DataPrivacyModal: React.FC<DataPrivacyModalProps> = ({
               {confirmWipe ? (
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => setConfirmWipe(false)}
+                    disabled={wiping}
+                    onClick={() => { setConfirmWipe(false); setWipeFailed(false); }}
                     className="px-3 py-2 rounded-xl bg-stone-200 text-stone-700 text-xs font-medium cursor-pointer"
                   >
                     {L('cancel')}
                   </button>
                   <button
-                    onClick={handleWipe}
+                    disabled={wiping}
+                    onClick={() => { void handleWipe(); }}
                     className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold shadow-sm cursor-pointer"
                   >
-                    {L('confirm_wipe')}
+                    {L(wiping ? 'wiping' : 'confirm_wipe')}
                   </button>
                 </div>
               ) : (
@@ -238,6 +249,7 @@ export const DataPrivacyModal: React.FC<DataPrivacyModalProps> = ({
                 </button>
               )}
             </div>
+            {wipeFailed && <p className="text-xs text-red-800" role="alert">{L('wipe_audio_failed')}</p>}
           </div>
 
         </div>
@@ -248,6 +260,7 @@ export const DataPrivacyModal: React.FC<DataPrivacyModalProps> = ({
             {L('footer_note')}
           </span>
           <button
+            disabled={wiping}
             onClick={onClose}
             className="px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold cursor-pointer"
           >
