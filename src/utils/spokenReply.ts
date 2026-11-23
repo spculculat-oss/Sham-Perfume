@@ -16,6 +16,7 @@ import { removeToolBlocks } from './shaheenTools';
 import { plainMath } from './shaheenText';
 import { talkify } from './talkStyle';
 import { arabicBrandNames, MORE_WORLD, speakWorldNumbers, wantsMoreWorld, worldTerms } from './spokenWorld';
+import { arabicSpeechText } from './latinToArabic';
 import { shaheenSpeechLocale } from './shaheenVoice';
 
 // ── Numbers as people say them ───────────────────────────────────────────────────────────────────────────
@@ -350,9 +351,10 @@ export function arabicSpeechOnly(text: string, dialect?: Dialect): string {
     if (!words.length) return ' ';
     const lower = words.map((word) => word.toLowerCase());
     const cue = lower.some((word) => ENGLISH_SPEECH_CUES.has(word));
-    const properName = words.length >= 2 && words.every((word) => /^[A-ZÀ-ÖØ-Þ]/u.test(word)) && !cue;
-    // Keep names such as «Oud Royal», but never read an English clause (even if it starts with a capital letter).
-    return properName ? run : ' ';
+    if (cue) return ' ';
+    const properName = words.length >= 2 && words.every((word) => /^[A-ZÀ-ÖØ-Þ]/u.test(word));
+    // Keep multiword perfume names intact; common notes/shop phrases become Arabic and unknown words are transliterated.
+    return properName ? run : arabicSpeechText(run, dialect);
   }).replace(/\s+([،,.!?؟])/gu, '$1').replace(/([،,]){2,}/gu, '$1').replace(/\s{2,}/gu, ' ').trim();
 }
 
