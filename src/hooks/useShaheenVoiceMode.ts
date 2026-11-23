@@ -8,9 +8,9 @@ import { anchorPair, learnedLine, teachingPair } from '../utils/sayWords';
 import { tunedVoice, type VoiceMood } from '../utils/voiceMood';
 import { resolveDialect, saveDialectChoice, savedDialectChoice, type Dialect, type DialectChoice } from '../utils/arabicDialect';
 import { currentStoreCountry } from '../utils/storeCheckout';
-import { initialTalkLanguage, languageAfterSentence, saveTalkLanguage, savedTalkLanguage, sayAgainLine, writtenLanguage } from '../utils/talkLanguage';
+import { initialTalkLanguage, languageAfterSentence, saveTalkLanguage, savedTalkLanguage, sayAgainLine } from '../utils/talkLanguage';
 import { learnablePair, planVoiceTurn, readingsFrom, type PendingConfirm } from '../utils/heardFix';
-import { spokenReply, wantsMore } from '../utils/spokenReply';
+import { ARABIC_SPEECH_FALLBACK, arabicSpeechOnly, spokenReply, wantsMore } from '../utils/spokenReply';
 import { addressee, askDoneLine, finishedAnswer, joinTurn, learnBarge, restOfReply, saveBargeMemory, savedBargeMemory, settleUnsure, turnState, type BargeMemory } from '../utils/turnTaking';
 import { baseLexicon, buildLexicon, type Lexicon } from '../utils/shaheenSpelling';
 import { isStaticHosting, requestApi } from '../utils/api';
@@ -315,10 +315,9 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     setTalkChoice(next);
     if (remember) saveTalkLanguage(next);
   }, []);
-  /** The language a text is SAID in: its own when plainly Arabic or English (never Arabic words in an English voice). */
-  const voiceFor = useCallback((text: string): { language: SupportedLanguage; dialect?: Dialect } => {
-    const written = writtenLanguage(text);
-    const said: SupportedLanguage = written ?? languageRef.current;
+  /** Replies always use the selected conversation language; mixed-language model output must not switch the voice. */
+  const voiceFor = useCallback((_text: string): { language: SupportedLanguage; dialect?: Dialect } => {
+    const said = languageRef.current;
     if (said !== 'ar') return { language: said };
     return { language: 'ar', dialect: dialectRef.current || resolveDialect({ choice: savedDialectChoice(), country: currentStoreCountry() }) };
   }, []);
@@ -621,11 +620,18 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     // «صوت شاهين البشري» only (the owner's decision, 2026-11-14: the device's robotic voices are gone): the recorded
     // sentences from the site in the voices he chose, every other sentence in the human voice from our server.
     // «بيتعلم النطق من الناس»: the words visitors taught are said their way.
-    const talk = talkChunks(sayItRight(text));
+    const said = voiceFor(text);
+    const normalized = sayItRight(text);
+    // Last-line safety net: Arabic speech never reads English prose, even if an offline or cached reply slips through.
+    const arabicOnly = said.language === 'ar' ? arabicSpeechOnly(normalized, said.dialect) : undefined;
+    const speechText = said.language === 'ar'
+      ? arabicOnly || (/[A-Za-z]/u.test(normalized) ? ARABIC_SPEECH_FALLBACK : '')
+      : normalized;
+    const talk = talkChunks(speechText);
     if (!talk.length) { onComplete(); return; }
     cancelSpeech();
     const sequence = speechSequenceRef.current;
-    replyTextRef.current = text;
+    replyTextRef.current = speechText;
     spokenSoFarRef.current = '';
     speechPosRef.current = { chunks: talk, index: 0, at: 0 };
     bargeRestartsRef.current = 0;
@@ -654,7 +660,6 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
       if (failed) setNoVoice(true);
       onComplete();
     };
-    const said = voiceFor(text);
     const handle = playHumanSpeech(talk, {
       language: said.language, ...(said.dialect ? { dialect: said.dialect } : {}), gender,
       mood: tune.mood === 'upset' || tune.mood === 'low' ? 'calm' : tune.mood === 'hurried' ? 'quick' : 'warm',

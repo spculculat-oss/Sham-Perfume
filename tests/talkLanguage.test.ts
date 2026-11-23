@@ -67,7 +67,8 @@ test('the voice hook hears and speaks in the conversation\'s language, and a sou
   assert.match(hook, /languageAfterSentence\(/);
   assert.match(hook, /watch\.onspeechstart = null;/);
   assert.match(hook, /if \(!candidate\.said\.trim\(\)\) \{ dropCandidate\(\); return; \}/);
-  assert.match(hook, /const said = voiceFor\(text\);/, 'an Arabic reply is said in the Arabic voice even on another page');
+  assert.match(hook, /const said = voiceFor\(text\);/, 'speech uses the conversation-language helper');
+  assert.match(hook, /arabicSpeechOnly\(normalized, said\.dialect\)/, 'the final human-voice path strips English prose from Arabic audio');
   const stage = readFileSync('src/components/ShaheenVoiceStage.tsx', 'utf8');
   assert.match(stage, /data-testid="voice-talk-language"/);
 });

@@ -35,6 +35,18 @@ test('prices, units, percentages, ranges and math are spoken, not read', () => {
   assert.equal(speakArabicNumbers('عطر كامل'), 'عطر كامل');
 });
 
+test('Arabic speech drops English prose even when it leaks into mixed or cached replies', () => {
+  const spoken = spokenReply('العود مناسب ليك. amazing جدًا. It is very long lasting and works well for you. Oud Royal اختيار كويس، وTom Ford مناسب للسهرات.', {
+    language: 'ar', dialect: 'egyptian', words: Infinity,
+  }).say;
+  assert.doesNotMatch(spoken, /\b(?:amazing|it|is|very|long|lasting|and|works|well|for|you)\b/i, spoken);
+  assert.match(spoken, /Oud Royal/, 'a product name is not English prose');
+  assert.match(spoken, /توم فورد/, 'known brands are pronounced in Arabic');
+  const englishOnly = spokenReply('It is a great choice for you.', { language: 'ar', words: Infinity }).say;
+  assert.equal(englishOnly, 'مش قادر أقول الرد ده بالعربي دلوقتي.');
+  assert.doesNotMatch(englishOnly, /[A-Za-z]/);
+});
+
 test('written words become everyday ones in the visitor\'s dialect (whole words only)', () => {
   assert.equal(everydayWords('لذلك يجب أن تختار الآن، لكن هذا العطر الذي اخترته جيد وسوف يثبت'),
     'عشان كده لازم تختار دلوقتي، بس العطر ده اللي اخترته كويس وهيثبت');
