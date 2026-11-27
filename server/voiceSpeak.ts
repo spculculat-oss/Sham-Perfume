@@ -41,6 +41,12 @@ const MOOD_STYLE: Record<SpeechMood, string> = {
 // 2026-11-14 live probe: the Interactions endpoint answered 400 «invalid argument» to every TTS model while
 // `models/<m>:generateContent` returned audio for all of them on the same key — so speech goes through generateContent.
 const API = 'https://generativelanguage.googleapis.com/v1beta/models';
+/** Keep voice requests bounded so one stalled provider cannot hold Shaheen's reply indefinitely. */
+export const VOICE_TOTAL_BUDGET_MS = 10_000;
+export const VOICE_MODEL_TIMEOUT_MS = 4_000;
+export function speechAttemptTimeoutMs(remainingMs: number): number {
+  return Math.max(1, Math.min(VOICE_MODEL_TIMEOUT_MS, Math.floor(remainingMs)));
+}
 /**
  * When the chosen model is busy or refuses, the next one says the line. 2026-11-14 live probe: on the free tier each
  * of these allows only about 10 requests a DAY for the whole site (the 3.1 preview: 3 a minute) — each has its own
@@ -214,12 +220,15 @@ export async function synthesize(env: Env, req: SpeechRequest, budget: VoiceBudg
   if (rest.wait(models) > 0) throw new SpeechError(503, 'voice_busy', rest.wait(models));
   if (!budget.take()) throw new SpeechError(503, 'voice_busy');
   const body = JSON.stringify(speechBody(env, req));
+  const deadline = Date.now() + VOICE_TOTAL_BUDGET_MS;
   for (const model of models) {
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) break;
     if (!rest.ready(model)) continue;
     let response: Response;
     try {
       response = await fetcher(`${API}/${encodeURIComponent(model)}:generateContent`, {
-        method: 'POST', signal: AbortSignal.timeout(20_000),
+        method: 'POST', signal: AbortSignal.timeout(speechAttemptTimeoutMs(remaining)),
         headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY!.trim() },
         body,
       });
