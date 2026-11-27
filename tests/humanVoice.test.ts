@@ -160,7 +160,7 @@ test('pronunciation: shared with everyone only after several different people ta
 test('human voice: a short first group (he starts sooner), then longer ones', () => {
   const groups = speechGroups(['أهلاً بيك.', 'أنا شاهين.', 'x'.repeat(170), 'y'.repeat(200), 'z'.repeat(200)]);
   assert.equal(groups[0], 'أهلاً بيك. أنا شاهين.');
-  assert.ok(groups[0]!.length <= 180);
+  assert.ok(groups[0]!.length <= 130);
   assert.equal(groups[1], `${'x'.repeat(170)} ${'y'.repeat(200)}`);
   assert.equal(groups[2], 'z'.repeat(200));
   assert.equal(groups.length, 3);
