@@ -10,7 +10,10 @@
     "deploymentEnabled": {
       "arena/**": false,
       "arena/*": false,
-      "doctor/**": false
+      "doctor/**": false,
+      "agent/**": false,
+      "preview/**": false
     }
   }
 }
+

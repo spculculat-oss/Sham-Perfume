@@ -81,3 +81,47 @@ test('the deployed API is the Node function built from server/vercel-entry.cts, 
   assert.match(build, /entryPoints:\s*\['server\/vercel-entry\.cts'\]/, 'the Vercel function entry is the Node server');
   assert.doesNotMatch(build, /api\/main\.py/, 'the build never touches the local FastAPI app');
 });
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Branches that must never auto-deploy, and the trap behind it.
+ *
+ * 27 Nov 2026, branch `agent/approved-store-design-arabic-2026-11-27` (commit 62f2d84):
+ *   15:33:30.663 Running "sh scripts/vercel-ignore.sh"
+ *   15:33:30.699 sh: scripts/vercel-ignore.sh: No such file or directory
+ * The branch forked from a main that predates scripts/vercel-ignore.sh, so the `ignoreCommand`
+ * named a file that branch does not have. `vercel.json` is NOT read as an allowlist: a branch is
+ * deployed unless it is matched by `git.deploymentEnabled`, so an unlisted working branch gets a
+ * real deployment — and in the main project a push can become production. Every agent/robot branch
+ * pattern therefore has to be listed explicitly.
+ */
+test('agent, doctor and arena working branches never deploy (main and production only)', () => {
+  const settings = JSON.parse(readFileSync(path.join(root, 'vercel.json'), 'utf8')) as {
+    git?: { deploymentEnabled?: Record<string, boolean> };
+  };
+  const disabled = settings.git?.deploymentEnabled || {};
+  for (const pattern of ['arena/**', 'arena/*', 'doctor/**', 'agent/**', 'preview/**']) {
+    assert.equal(disabled[pattern], false, `${pattern} must be listed as false in vercel.json git.deploymentEnabled`);
+  }
+  // Only these branches are switched off; main itself must stay deployable.
+  assert.equal(disabled.main, undefined, 'main must never be disabled');
+  assert.equal(disabled['**'], undefined, 'never disable every branch — production is built from main');
+});
+
+test('the ignore command only runs from a commit that ships the script', () => {
+  const settings = JSON.parse(readFileSync(path.join(root, 'vercel.json'), 'utf8')) as { ignoreCommand?: string };
+  // `sh scripts/vercel-ignore.sh` is correct on main (and any branch merged with main); this pins the
+  // contract so the script and the command can never be separated by a rename or a path change.
+  assert.equal(settings.ignoreCommand, 'sh scripts/vercel-ignore.sh');
+  assert.ok(existsSync(path.join(root, 'scripts', 'vercel-ignore.sh')), 'the script named by ignoreCommand must exist in this commit');
+});
+
+test('every branch the ignore script treats as main builds, and the unused backup skips', () => {
+  // The gate is covered in depth by tests/vercelIgnore.test.ts; this is the smoke check that the
+  // script still exits 1 (build) for the main project after the branch rules changed.
+  const result = spawnSync('sh', [path.join(root, 'scripts', 'vercel-ignore.sh')], {
+    env: { PATH: process.env.PATH || '/usr/bin:/bin', VERCEL_PROJECT_PRODUCTION_URL: 'sham-perfume-49bf.vercel.app' },
+    encoding: 'utf8',
+  });
+  assert.equal(result.status, 1, `main project must build: ${result.stdout}${result.stderr}`);
+  assert.match(result.stdout, /Main project: building/);
+});
