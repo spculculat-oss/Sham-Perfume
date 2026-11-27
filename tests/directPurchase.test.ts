@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFileSync } from 'node:fs';
 import { DIRECT_PURCHASE_EVENT, readDirectPurchase, requestDirectPurchase, takeDirectPurchase } from '../src/utils/directPurchase';
-import { addToCart, readCart, removePurchasedItems } from '../src/utils/storeCart';
+import { addToCart, readCart, removePurchasedItems, setCartQty } from '../src/utils/storeCart';
 import { startCheckout, returnedPayment, CheckoutError } from '../src/utils/storeCheckout';
 import { storeText } from '../src/لغات/storeL10n';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
@@ -26,6 +26,25 @@ test('buy now hands off only SKU and selected quantity, once, without changing t
 test('buy-now intent rejects stale, future and invalid quantities instead of constructing payment data', () => {
   for (const value of [null, { sku: 'A', qty: 0, at: 100 }, { sku: 'A', qty: 100, at: 100 }, { sku: 'A', qty: 1.5, at: 100 }, { sku: 'A', qty: 1, at: 1001 }, { sku: '', qty: 1, at: 100 }]) assert.equal(readDirectPurchase(value, 1000), undefined);
   assert.equal(readDirectPurchase({ sku: 'A', qty: 1, at: 0 }, 16 * 60000), undefined);
+});
+test('cart quantities reject invalid input, clamp valid values, and ignore blank product IDs', () => {
+  const b = browser();
+  try {
+    addToCart('  VALID-SKU  ', 2.8);
+    addToCart('VALID-SKU', Number.NaN);
+    addToCart('VALID-SKU', Number.POSITIVE_INFINITY);
+    addToCart('VALID-SKU', -4);
+    addToCart('   ', 5);
+    assert.deepEqual(readCart(), { 'VALID-SKU': 2 });
+    addToCart('VALID-SKU', 200);
+    assert.deepEqual(readCart(), { 'VALID-SKU': 99 });
+    setCartQty('VALID-SKU', Number.NaN);
+    setCartQty('VALID-SKU', Number.POSITIVE_INFINITY);
+    setCartQty(' ', 4);
+    assert.deepEqual(readCart(), { 'VALID-SKU': 99 });
+    setCartQty('VALID-SKU', 0);
+    assert.deepEqual(readCart(), {});
+  } finally { b.restore(); }
 });
 test('cart confirmation removes only purchased quantities, keeping later additions and other products', () => {
   const b = browser();

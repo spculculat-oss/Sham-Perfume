@@ -9,13 +9,16 @@ const KEY = 'sham-store-cart';
 const EVENT = 'sham-store-cart-change';
 export type Cart = Record<string, number>; // sku → quantity
 
+const cleanSku = (sku: string) => typeof sku === 'string' ? sku.trim() : '';
+const cleanQty = (qty: number) => Number.isFinite(qty) && qty > 0 ? Math.min(99, Math.floor(qty)) : 0;
+
 export function readCart(): Cart {
   try {
     const raw = JSON.parse(localStorage.getItem(KEY) || '{}') as unknown;
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
     return Object.fromEntries(Object.entries(raw as Record<string, unknown>)
-      .map(([sku, q]) => [sku, Math.min(99, Math.floor(Number(q)))] as const)
-      .filter(([, q]) => Number.isFinite(q) && q > 0));
+      .map(([sku, q]) => [cleanSku(sku), cleanQty(Number(q))] as const)
+      .filter(([sku, qty]) => Boolean(sku) && qty > 0));
   } catch { return {}; }
 }
 
@@ -31,14 +34,22 @@ function write(cart: Cart) {
 }
 
 export function addToCart(sku: string, qty = 1) {
-  trackInsight('cart', { sku, qty }); // «خزنة فهم الزوار» (only with the visitor's consent)
+  const key = cleanSku(sku);
+  const amount = cleanQty(qty);
+  if (!key || !amount) return;
+  trackInsight('cart', { sku: key, qty: amount }); // «خزنة فهم الزوار» (only with the visitor's consent)
   const cart = readCart();
-  cart[sku] = Math.min(99, (cart[sku] || 0) + qty);
+  cart[key] = Math.min(99, (cart[key] || 0) + amount);
   write(cart);
 }
 export function setCartQty(sku: string, qty: number) {
+  const key = cleanSku(sku);
+  if (!key || !Number.isFinite(qty)) return;
   const cart = readCart();
-  if (qty > 0) cart[sku] = Math.min(99, Math.floor(qty)); else delete cart[sku];
+  if (qty > 0) {
+    const amount = cleanQty(qty);
+    if (amount) cart[key] = amount; else delete cart[key];
+  } else delete cart[key];
   write(cart);
 }
 export const clearCart = () => write({});
