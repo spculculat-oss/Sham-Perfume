@@ -55,7 +55,7 @@ test('after a sentence: words in the other language move the conversation; a bad
   assert.deepEqual(languageAfterSentence({ heard: 'is the cool mood', confidence: 0.32, current: 'en', site: 'en', country: 'EG' }), { switchTo: 'ar', askAgain: true });
   assert.equal(languageAfterSentence({ heard: 'is the cool mood', confidence: 0.32, current: 'en', site: 'en', country: 'US', deviceLanguages: ['en-US'] }).switchTo, undefined);
   // English speaker on the Arabic page with an Arabic-only phone: low-confidence Arabic ASR must ask again in English.
-  assert.deepEqual(languageAfterSentence({ heard: 'cool perfume for summer', confidence: 0.28, current: 'ar', site: 'ar', country: 'EG', deviceLanguages: ['ar-EG'] }), { switchTo: 'en', askAgain: true });
+  assert.deepEqual(languageAfterSentence({ heard: 'kool prfm smmr', confidence: 0.28, current: 'ar', site: 'ar', country: 'EG', deviceLanguages: ['ar-EG'] }), { switchTo: 'en', askAgain: true });
   // Heard well, or the conversation already settled: nothing moves.
   assert.equal(languageAfterSentence({ heard: 'fresh perfume', confidence: 0.9, current: 'en', site: 'en', country: 'EG' }).switchTo, undefined);
   assert.equal(languageAfterSentence({ heard: 'is the cool mood', confidence: 0.3, current: 'en', site: 'en', country: 'EG', understood: 2 }).switchTo, undefined);
