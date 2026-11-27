@@ -13,7 +13,8 @@ Vercel (`sham-perfume-49bf`) هو **محرّك الموقع** (API وشاهين 
 | المشروع الاحتياطي | `sham-perfume.vercel.app` — بيتبني بس لو ملفات الـ redirect اتغيّرت (`scripts/vercel-ignore.sh`) |
 | التثبيت | `npx --yes bun@1.4.3 install --frozen-lockfile` (من `bun.lock`) |
 | أمر البناء | `npm run build:vercel` = `vite build` + صفحات المنتجات + ملفات SEO + `scripts/build-vercel.mjs` |
-| الفروع | `arena/**` متعطّلة على Vercel (`vercel.json` → `git.deploymentEnabled`) — بتتحقق عندنا في GitHub Actions |
+| الفروع اللي **مابتتنشرش** | `arena/**`, `arena/*`, `doctor/**`, `agent/**`, `preview/**` (`vercel.json` → `git.deploymentEnabled`) |
+| الفروع اللي بتتنشر | أي فرع **مش** في القائمة اللي فوق — بما فيها فروع العمل المؤقتة. `deploymentEnabled` **مش** قائمة سماح: هو قائمة تعطيل بس |
 
 ---
 
@@ -95,7 +96,37 @@ test_order_manager.py
 
 ---
 
-## 5. حادثة 2026‑10‑20 (مرجع)
+## 5. `scripts/vercel-ignore.sh: No such file or directory` (حادثة 2026‑11‑27)
+
+```text
+15:33:25.720 Cloning … (Branch: agent/approved-store-design-arabic-2026-11-27, Commit: 62f2d84)
+15:33:30.406 Found .vercelignore (repository root)          ← إصلاح الـ Python شغّال
+15:33:30.428 Removed 5 ignored files defined in .vercelignore
+15:33:30.663 Running "sh scripts/vercel-ignore.sh"
+15:33:30.699 sh: scripts/vercel-ignore.sh: No such file or directory
+```
+
+**السبب:** الفرع `agent/…` اتفرّع من `main` **قبل** الكوميت اللي ضاف `scripts/vercel-ignore.sh`،
+فـ `vercel.json` فيه بيطلب ملف مش موجود في الفرع ده. النشر على `main` نفسه سليم — `/api/health`
+بيرد `ok` من نفس المشروع.
+
+**ليه الفرع ده اتنشر أصلاً؟** لأن `git.deploymentEnabled` في `vercel.json` **قائمة تعطيل مش قائمة سماح**:
+أي فرع **مش مذكور** فيها بيتنشر عادي. ولما المشروع الرئيسي يبني من فرع عمل، ممكن تدفعة واحدة تبقى
+هي الـ production.
+
+**الإصلاح:** ضفنا `agent/**` و`preview/**` للقائمة، فبقت كل فروع العمل (شات الوكيل، الروبوتات، الفحص)
+مستبعدة من النشر، و`main` لوحده هو اللي بيوصل للإنتاج.
+
+**قواعد:**
+- أي نمط فروع عمل جديد (مثلاً `feature/**`) لازم يتضاف لـ `deploymentEnabled: false` **قبل** أول دفعة.
+- الملف اللي `vercel.json` بينده لازم يكون موجود في **كل** فرع بيتبني: أي إعادة تسمية لـ
+  `scripts/vercel-ignore.sh` تتزامن مع `ignoreCommand` في نفس الكوميت (الاختبار بيمنع الانفصال).
+- لو مشروع Vercel بيبني فرع قديم ومش عايز تلمسه: **Settings → Build and Deployment → Ignored Build Step →
+  Automatic** (بيلغي قراءة `ignoreCommand`).
+
+---
+
+## 6. حادثة 2026‑10‑20 (مرجع)
 
 - **الدفعة اللي فشلت:** `06b235a` (دمج PR #165) — `src/admin/ContractsPanel.tsx:232` وسم `</section>` ناقص
   (ضاع أثناء حل تعارض الدمج)، فالبناء وقع في 2.2 ثانية عند `vite build`.
@@ -107,7 +138,7 @@ test_order_manager.py
 
 ---
 
-## 6. منع التكرار
+## 7. منع التكرار
 
 1. أي PR مايتدمجش قبل ما يبقى «Build, test and deploy Pages / Check and build React» **أخضر**
    (Settings → Branches → Branch protection rules → Require status checks to pass).
@@ -117,3 +148,5 @@ test_order_manager.py
 3. `Shaheen Doctor` (`.github/workflows/shaheen-doctor.yml`) بيراقب النشر؛ ومتغيّر `VERCEL_TOKEN` في الأسرار
    بيسمح له يعيد النشر لوحده (`redeploy_vercel` في `scripts/doctor/agent.ts`). من غيره بيطلب من صاحب الموقع
    يعيد النشر يدوياً.
+4. ولا تشغّل build من فرع عمل على المشروع الرئيسي: `main` بس هو اللي بيغذّي الإنتاج، وفرع العمل
+   اللي محتاج معاينة يترفع على مشروع Vercel منفصل (Branch Tracking) مش على `sham-perfume-49bf`.
