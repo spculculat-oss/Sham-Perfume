@@ -117,7 +117,11 @@ export function languageAfterSentence({ heard, confidence, current, site, countr
   const unsure = confidence !== undefined && confidence > 0 && confidence < 0.5;
   if (!unsure) return { askAgain: false };
   const other = otherTalkLanguage(current, site);
-  const otherLikely = other === 'ar' ? arabicLikely(country, deviceLanguages) : site !== 'ar' || deviceLanguages.slice(0, 2).some((l) => l.toLowerCase().startsWith(other));
+  const otherLikely = other === 'ar'
+    ? arabicLikely(country, deviceLanguages)
+    // An Arabic-page visitor may still be speaking English even when the phone itself is set to Arabic.
+    // A low-confidence first recognition is not enough to answer; switch once and ask for a repeat.
+    : site !== 'ar' || deviceLanguages.slice(0, 2).some((l) => l.toLowerCase().startsWith(other)) || current === 'ar';
   return otherLikely ? { switchTo: other, askAgain: true } : { askAgain: false };
 }
 
