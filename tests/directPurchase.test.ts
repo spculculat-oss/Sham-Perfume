@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFileSync } from 'node:fs';
 import { DIRECT_PURCHASE_EVENT, readDirectPurchase, requestDirectPurchase, takeDirectPurchase } from '../src/utils/directPurchase';
-import { addToCart, readCart, removePurchasedItems } from '../src/utils/storeCart';
+import { addToCart, readCart, removePurchasedItems, setCartQty } from '../src/utils/storeCart';
 import { startCheckout, returnedPayment, CheckoutError } from '../src/utils/storeCheckout';
 import { storeText } from '../src/لغات/storeL10n';
 import { SUPPORTED_LANGUAGES } from '../src/types/i18n';
