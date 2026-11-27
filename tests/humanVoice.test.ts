@@ -49,9 +49,9 @@ test('human voice: on with the server key, off on request; a conversational mode
 
 
 test('human voice: a stalled provider cannot consume the entire reply budget', () => {
-  assert.equal(VOICE_TOTAL_BUDGET_MS, 10_000);
-  assert.equal(VOICE_MODEL_TIMEOUT_MS, 4_000);
-  assert.equal(speechAttemptTimeoutMs(20_000), 4_000);
+  assert.equal(VOICE_TOTAL_BUDGET_MS, 7_000);
+  assert.equal(VOICE_MODEL_TIMEOUT_MS, 2_500);
+  assert.equal(speechAttemptTimeoutMs(20_000), 2_500);
   assert.equal(speechAttemptTimeoutMs(2_500), 2_500);
   assert.equal(speechAttemptTimeoutMs(0), 1);
 });
