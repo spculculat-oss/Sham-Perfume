@@ -3,7 +3,7 @@ import test from 'node:test';
 import express from 'express';
 import type { AddressInfo } from 'node:net';
 import {
-  audioFromReply, cleanSpeechRequest, createVoiceRouter, dailyVoiceLimit, speechBody, voiceModels, retryAfterMs, ModelRest, speechPrompt, speechStyle, speechText, VoiceBudget, voiceEnabled, voiceModel,
+  audioFromReply, cleanSpeechRequest, createVoiceRouter, dailyVoiceLimit, speechBody, voiceModels, retryAfterMs, ModelRest, speechPrompt, speechStyle, speechText, VoiceBudget, voiceEnabled, voiceModel, speechAttemptTimeoutMs, VOICE_MODEL_TIMEOUT_MS, VOICE_TOTAL_BUDGET_MS,
 } from '../server/voiceSpeak';
 import { ShaheenMemory } from '../server/core/memory';
 import { MemoryStore } from '../server/core/store';
@@ -45,6 +45,15 @@ test('human voice: on with the server key, off on request; a conversational mode
   assert.equal(voiceModels({})[0], voiceModel({}));
   assert.equal(voiceModels({ SHAM_VOICE_MODEL: 'x-tts' }).length, 4, 'the chosen model plus backups');
   assert.equal(voiceModels({}).length, 4, 'four free quotas used in turn');
+});
+
+
+test('human voice: a stalled provider cannot consume the entire reply budget', () => {
+  assert.equal(VOICE_TOTAL_BUDGET_MS, 10_000);
+  assert.equal(VOICE_MODEL_TIMEOUT_MS, 4_000);
+  assert.equal(speechAttemptTimeoutMs(20_000), 4_000);
+  assert.equal(speechAttemptTimeoutMs(2_500), 2_500);
+  assert.equal(speechAttemptTimeoutMs(0), 1);
 });
 
 test('human voice: only clean visitor text reaches the engine (no tags, bounded length)', () => {
