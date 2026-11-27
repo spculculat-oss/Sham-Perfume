@@ -110,8 +110,13 @@ export function languageAfterSentence({ heard, confidence, current, site, countr
   understood?: number;
 }): { switchTo?: SupportedLanguage; askAgain: boolean } {
   const written = writtenLanguage(heard);
-  if (written && written !== current && (written === 'ar' ? !ARABIC_SCRIPT_LANGUAGES.has(current) : current === 'ar')) {
-    return { switchTo: written, askAgain: false };
+  // A short English-looking ASR fragment ("what is", "the mood") is often a mishearing of Arabic.
+  // Require a complete, clearly English phrase before changing an Arabic voice session to English.
+  if (written === 'ar' && current !== 'ar' && !ARABIC_SCRIPT_LANGUAGES.has(current)) {
+    return { switchTo: 'ar', askAgain: false };
+  }
+  if (written === 'en' && current === 'ar' && strongEnglish(heard)) {
+    return { switchTo: 'en', askAgain: false };
   }
   if (understood >= 2) return { askAgain: false };
   const unsure = confidence !== undefined && confidence > 0 && confidence < 0.5;
