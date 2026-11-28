@@ -55,7 +55,9 @@ test('a news question never ends in "busy": the Google answer is shown when ever
 test("today's news is never answered from the encyclopedia when Google search fails (Bahrain 2011 is not today's news)", async () => {
   for (const e of [newsEnv, {}]) {
     const w = fake(() => down(), { googleDown: true });
-    await silent(() => assert.rejects(askWorkspace(news, { env: e, fetch: w.request, retryDelayMs: 0 }), (err: unknown) => err instanceof ReadError));
+    const out = await silent(() => askWorkspace(news, { env: e, fetch: w.request, retryDelayMs: 0 }));
+    assert.match(out.reply, /البحث المباشر ما رجّعش نتائج موثوقة/);
+    assert.equal(out.sources.length, 0);
     assert.equal(w.seen.wiki, 0);
   }
 });
