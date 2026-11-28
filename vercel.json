@@ -8,11 +8,8 @@
   "fluid": true,
   "git": {
     "deploymentEnabled": {
-      "arena/**": false,
-      "arena/*": false,
-      "doctor/**": false,
-      "agent/**": false,
-      "preview/**": false
+      "main": true,
+      "**": false
     }
   }
 }

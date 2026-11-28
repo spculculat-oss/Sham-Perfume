@@ -100,9 +100,10 @@ test('Vercel config builds explicit full-stack output instead of Vite-only dist'
   assert.equal(settings.buildCommand, 'npm run build:vercel');
   assert.match(settings.installCommand, /bun@1\.4\.3.*--frozen-lockfile/);
   // Work branches skip Vercel previews (the free plan's daily deployment cap must stay free for main);
-  // main is never disabled.
-  assert.equal(settings.git.deploymentEnabled['arena/**'], false);
-  assert.equal(settings.git.deploymentEnabled['doctor/**'], false, 'the maintenance agent\'s branches must not use the Vercel deploy quota');
+  // main is never disabled. The rule is "main only": `**` is off so a branch name nobody listed yet
+  // (fix/…, agent/…, feature/a/b) cannot reach production — see docs/design/vercel-build.md §5.
+  assert.equal(settings.git.deploymentEnabled['**'], false, 'only main may deploy: every other branch is denied by default');
+  assert.notEqual(settings.git.deploymentEnabled.main, false);
   // Fluid compute: one instance serves many visitors at once, sharing Shaheen's answer cache and queue.
   assert.equal(settings.fluid, true);
   assert.notEqual(settings.git.deploymentEnabled.main, false);

@@ -85,26 +85,70 @@ test('the deployed API is the Node function built from server/vercel-entry.cts, 
 /* ─────────────────────────────────────────────────────────────────────────────
  * Branches that must never auto-deploy, and the trap behind it.
  *
- * 27 Nov 2026, branch `agent/approved-store-design-arabic-2026-11-27` (commit 62f2d84):
- *   15:33:30.663 Running "sh scripts/vercel-ignore.sh"
- *   15:33:30.699 sh: scripts/vercel-ignore.sh: No such file or directory
- * The branch forked from a main that predates scripts/vercel-ignore.sh, so the `ignoreCommand`
- * named a file that branch does not have. `vercel.json` is NOT read as an allowlist: a branch is
- * deployed unless it is matched by `git.deploymentEnabled`, so an unlisted working branch gets a
- * real deployment — and in the main project a push can become production. Every agent/robot branch
- * pattern therefore has to be listed explicitly.
+ * `git.deploymentEnabled` is a DENY list, not an allow list: Vercel's documentation says
+ * "By default, any unspecified branch is set to true". Two real failures came from that:
+ *   27 Nov — branch `agent/approved-store-design-arabic-2026-11-27` (commit 62f2d84) deployed from a
+ *            main that predates scripts/vercel-ignore.sh:
+ *              sh: scripts/vercel-ignore.sh: No such file or directory
+ *   28 Nov — branch `fix/shaheen-faster-turns-stable-language-2026-11-28` deployed and reached the end:
+ *            "agent/**" and "preview/**" were listed, but a fix/* branch matches neither.
+ * Listing the working-branch patterns one by one cannot keep up with names chosen per session, so the
+ * rule is inverted: everything is off except main.
  */
-test('agent, doctor and arena working branches never deploy (main and production only)', () => {
+
+/**
+ * The branch matching Vercel performs (minimatch syntax over the whole branch name), and one `true`
+ * rule wins over any `false`. Written here instead of importing minimatch so the check needs no new
+ * dependency; it is only ever asked about `main`, `*` and `**`, which are the three forms we use.
+ */
+function globToRegExp(pattern: string): RegExp {
+  const body = pattern
+    .replace(/[.+^${}()|[\]\\]/g, '\\$&') // escape regex metacharacters (glob has its own)
+    .replace(/\*\*/g, '\u0000')            // `**` spans slashes, `*` does not — keep them apart
+    .replace(/\*/g, '[^/]*')
+    .replace(/\u0000/g, '.*');
+  return new RegExp(`^${body}$`);
+}
+const minimatch = (branch: string, pattern: string) => globToRegExp(pattern).test(branch);
+
+function deploys(branch: string, rules: Record<string, boolean>): boolean {
+  const matched = Object.keys(rules).filter((pattern) => minimatch(branch, pattern));
+  if (matched.length === 0) return true; // unspecified ⇒ true (Vercel's documented default)
+  return matched.some((pattern) => rules[pattern] === true);
+}
+
+const branchRules = () => {
   const settings = JSON.parse(readFileSync(path.join(root, 'vercel.json'), 'utf8')) as {
-    git?: { deploymentEnabled?: Record<string, boolean> };
+    git?: { deploymentEnabled?: Record<string, boolean> | boolean };
   };
-  const disabled = settings.git?.deploymentEnabled || {};
-  for (const pattern of ['arena/**', 'arena/*', 'doctor/**', 'agent/**', 'preview/**']) {
-    assert.equal(disabled[pattern], false, `${pattern} must be listed as false in vercel.json git.deploymentEnabled`);
+  const enabled = settings.git?.deploymentEnabled;
+  assert.equal(typeof enabled, 'object', 'git.deploymentEnabled must list branches explicitly');
+  return enabled as Record<string, boolean>;
+};
+
+test('only main deploys: every other branch, including names nobody has used yet, is skipped', () => {
+  const rules = branchRules();
+  assert.equal(deploys('main', rules), true, 'main is the production branch and must deploy');
+  // Real branch names from this repository's failures, plus names a future session would invent.
+  for (const branch of [
+    'agent/approved-store-design-arabic-2026-11-27',
+    'fix/shaheen-faster-turns-stable-language-2026-11-28',
+    'arena/31119fed-sham-perfume',
+    'doctor/maintenance',
+    'feature/a/b',
+    'chore/tidy',
+    'hotfix/urgent',
+    'release-2026-12',
+  ]) {
+    assert.equal(deploys(branch, rules), false, `${branch} must not auto-deploy — only main reaches production`);
   }
-  // Only these branches are switched off; main itself must stay deployable.
-  assert.equal(disabled.main, undefined, 'main must never be disabled');
-  assert.equal(disabled['**'], undefined, 'never disable every branch — production is built from main');
+});
+
+test('main is never disabled and the deny-all rule stays in place', () => {
+  const rules = branchRules();
+  assert.equal(rules['**'], false, 'a deny-all rule keeps new branch names from deploying');
+  assert.notEqual(rules.main, false, 'main must never be disabled — production is built from main');
+  assert.equal(deploys('main', rules), true, 'the deny-all rule plus main:true must still deploy main');
 });
 
 test('the ignore command only runs from a commit that ships the script', () => {
@@ -124,4 +168,22 @@ test('every branch the ignore script treats as main builds, and the unused backu
   });
   assert.equal(result.status, 1, `main project must build: ${result.stdout}${result.stderr}`);
   assert.match(result.stdout, /Main project: building/);
+});
+
+test('the build log stays clean: the main project never runs git, so no "bad revision" line', () => {
+  // Seen in real deployments: `fatal: bad revision 'HEAD^'` printed while the build continued. The
+  // main project must decide before any git command, and the backup comparison must not need HEAD^.
+  const envs: Record<string, string>[] = [
+    { VERCEL_PROJECT_PRODUCTION_URL: 'sham-perfume-49bf.vercel.app' },
+    { VERCEL_URL: 'sham-perfume-49bf-abc123.vercel.app' },
+    { VERCEL_PROJECT_PRODUCTION_URL: 'sham-perfume.vercel.app' },
+  ];
+  for (const env of envs) {
+    const result = run(env);
+    const output = `${result.stdout}${result.stderr}`;
+    assert.doesNotMatch(output, /fatal:/, `no git error may reach the Vercel log for ${JSON.stringify(env)}: ${output}`);
+  }
+  // Comments may explain the old behaviour; only executable lines matter.
+  const code = readFileSync(script, 'utf8').split('\n').filter((line) => !line.trim().startsWith('#')).join('\n');
+  assert.doesNotMatch(code, /HEAD\^/, 'a shallow clone has no HEAD^ — comparing against it always fails');
 });
