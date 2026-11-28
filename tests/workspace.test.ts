@@ -154,6 +154,22 @@ test('workspace routes: the ask route answers with the engine and adds numbered 
   assert.ok(calls.some((u) => u.includes('openai')));
 });
 
+test('workspace route: current news never falls back to a model trained on stale information when live search is unavailable', async () => {
+  let modelWasCalled = false;
+  const fetcher = (async (url: string) => {
+    modelWasCalled = true;
+    throw new Error(`Unexpected request after live search failed: ${url}`);
+  }) as unknown as typeof fetch;
+  await withServer({ OPENAI_API_KEY: 'sk-test-key-123456789' }, fetcher, async (base) => {
+    const response = await post(`${base}/ask`, { messages: [{ role: 'user', text: 'عايز آخر أخبار النهارده' }], language: 'ar' });
+    assert.equal(response.status, 200);
+    const result = await response.json() as { reply: string; sources: unknown[] };
+    assert.match(result.reply, /البحث المباشر ما رجّعش نتائج موثوقة/);
+    assert.deepEqual(result.sources, []);
+    assert.equal(modelWasCalled, false, 'a general model must not answer a current-news question without live sources');
+  });
+});
+
 test('workspace route: current date/time is answered from Google Search only, even when regular search is off', async () => {
   let googleQuery = '';
   const fetcher = (async (url: string, init?: RequestInit) => {
