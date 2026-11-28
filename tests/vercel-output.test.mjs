@@ -127,7 +127,7 @@ test('the unused second Vercel project redirects to the main site and does not r
   assert.equal(redirect.status, 307);
   assert.equal(redirect.headers.Location, 'https://sham-perfume-49bf.vercel.app/$1');
   const settings = JSON.parse(await readFile('vercel.json', 'utf8'));
-  assert.equal(settings.ignoreCommand, 'sh scripts/vercel-ignore.sh');
+  assert.equal(settings.ignoreCommand, 'sh scripts/vercel-ignore.sh || false');
 });
 
 test('all API methods/paths route before the filesystem and SPA fallback', () => {
