@@ -157,10 +157,13 @@ test('workspace routes: the ask route answers with the engine and adds numbered 
 test('workspace route: current news never falls back to a model trained on stale information when live search is unavailable', async () => {
   let modelWasCalled = false;
   const fetcher = (async (url: string) => {
+    if (String(url).includes('generativelanguage.googleapis.com')) {
+      return new Response(JSON.stringify({ candidates: [{ content: { parts: [{ text: 'No grounded result' }] } }] }), { headers: { 'content-type': 'application/json' } });
+    }
     modelWasCalled = true;
-    throw new Error(`Unexpected request after live search failed: ${url}`);
+    throw new Error(`Unexpected model request after live search failed: ${url}`);
   }) as unknown as typeof fetch;
-  await withServer({ OPENAI_API_KEY: 'sk-test-key-123456789' }, fetcher, async (base) => {
+  await withServer({ OPENAI_API_KEY: 'sk-test-key-123456789', GEMINI_API_KEY: 'test-gemini-key' }, fetcher, async (base) => {
     const response = await post(`${base}/ask`, { messages: [{ role: 'user', text: 'عايز آخر أخبار النهارده' }], language: 'ar' });
     assert.equal(response.status, 200);
     const result = await response.json() as { reply: string; sources: unknown[] };
