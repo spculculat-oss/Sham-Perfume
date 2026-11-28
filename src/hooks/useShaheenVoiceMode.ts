@@ -11,7 +11,7 @@ import { currentStoreCountry } from '../utils/storeCheckout';
 import { initialTalkLanguage, languageAfterSentence, saveTalkLanguage, savedTalkLanguage, sayAgainLine } from '../utils/talkLanguage';
 import { learnablePair, planVoiceTurn, readingsFrom, type PendingConfirm } from '../utils/heardFix';
 import { ARABIC_SPEECH_FALLBACK, arabicSpeechOnly, spokenReply, wantsMore } from '../utils/spokenReply';
-import { addressee, askDoneLine, finishedAnswer, joinTurn, learnBarge, restOfReply, saveBargeMemory, savedBargeMemory, settleUnsure, turnState, type BargeMemory } from '../utils/turnTaking';
+import { addressee, finishedAnswer, joinTurn, learnBarge, restOfReply, saveBargeMemory, savedBargeMemory, settleUnsure, turnState, type BargeMemory } from '../utils/turnTaking';
 import { baseLexicon, buildLexicon, type Lexicon } from '../utils/shaheenSpelling';
 import { isStaticHosting, requestApi } from '../utils/api';
 import { activeVoicePrint, bargeDecision, deleteVoicePrint, earSupported, openEar, otherVoice, savedVoicePrint, saveVoicePrint,
@@ -837,30 +837,27 @@ export function useShaheenVoiceMode({ language, messages, isLoading, disabled = 
     }, ms);
   }, [cancelRecognition, clearSilenceTimer]);
 
-  /** «خلصت ولا لسه؟» — and if he says nothing, he is taken to be finished. */
+  /** A short quiet pause confirms the end of an uncertain turn; do not make the visitor answer another question. */
   const askIfDone = useCallback(() => {
     askedDoneRef.current = true;
     waitingMoreRef.current = false;
     clearListenTimer();
-    cancelRecognition();
     setInterim(joinTurn(turnPartsRef.current));
-    speakReply(askDoneLine(languageRef.current, dialectRef.current), () => {
-      scheduleListening(150);
-      armSilence(4500, () => { if (askedDoneRef.current) sendTurn(); });
-    });
-  }, [armSilence, cancelRecognition, clearListenTimer, scheduleListening, sendTurn, speakReply]);
+    scheduleListening(80);
+    armSilence(1100, () => { if (askedDoneRef.current) sendTurn(); });
+  }, [armSilence, clearListenTimer, scheduleListening, sendTurn]);
 
-  /** He paused in the middle of a sentence: keep listening quietly for the rest; a silence → «خلصت ولا لسه؟». */
+  /** A trailing word means he may continue; wait briefly, then send what he has said without an extra prompt. */
   const listenForMore = useCallback(() => {
     waitingMoreRef.current = true;
     scheduleListening(60);
-    armSilence(3000, () => {
+    armSilence(1800, () => {
       if (!waitingMoreRef.current) return;
       waitingMoreRef.current = false;
-      if (turnPartsRef.current.length) askIfDone();
+      if (turnPartsRef.current.length) sendTurn();
       else scheduleListening(300);
     });
-  }, [armSilence, askIfDone, scheduleListening]);
+  }, [armSilence, scheduleListening, sendTurn]);
 
   /**
    * «ترتيب الحوار»: one piece of what he said. Answers to Shaheen's own short questions go straight on; otherwise the

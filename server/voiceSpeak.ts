@@ -42,8 +42,8 @@ const MOOD_STYLE: Record<SpeechMood, string> = {
 // `models/<m>:generateContent` returned audio for all of them on the same key — so speech goes through generateContent.
 const API = 'https://generativelanguage.googleapis.com/v1beta/models';
 /** Keep voice requests bounded so one stalled provider cannot hold Shaheen's reply indefinitely. */
-export const VOICE_TOTAL_BUDGET_MS = 10_000;
-export const VOICE_MODEL_TIMEOUT_MS = 4_000;
+export const VOICE_TOTAL_BUDGET_MS = 7_000;
+export const VOICE_MODEL_TIMEOUT_MS = 2_500;
 export function speechAttemptTimeoutMs(remainingMs: number): number {
   return Math.max(1, Math.min(VOICE_MODEL_TIMEOUT_MS, Math.floor(remainingMs)));
 }

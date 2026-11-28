@@ -49,9 +49,9 @@ test('human voice: on with the server key, off on request; a conversational mode
 
 
 test('human voice: a stalled provider cannot consume the entire reply budget', () => {
-  assert.equal(VOICE_TOTAL_BUDGET_MS, 10_000);
-  assert.equal(VOICE_MODEL_TIMEOUT_MS, 4_000);
-  assert.equal(speechAttemptTimeoutMs(20_000), 4_000);
+  assert.equal(VOICE_TOTAL_BUDGET_MS, 7_000);
+  assert.equal(VOICE_MODEL_TIMEOUT_MS, 2_500);
+  assert.equal(speechAttemptTimeoutMs(20_000), 2_500);
   assert.equal(speechAttemptTimeoutMs(2_500), 2_500);
   assert.equal(speechAttemptTimeoutMs(0), 1);
 });
@@ -160,7 +160,7 @@ test('pronunciation: shared with everyone only after several different people ta
 test('human voice: a short first group (he starts sooner), then longer ones', () => {
   const groups = speechGroups(['أهلاً بيك.', 'أنا شاهين.', 'x'.repeat(170), 'y'.repeat(200), 'z'.repeat(200)]);
   assert.equal(groups[0], 'أهلاً بيك. أنا شاهين.');
-  assert.ok(groups[0]!.length <= 180);
+  assert.ok(groups[0]!.length <= 130);
   assert.equal(groups[1], `${'x'.repeat(170)} ${'y'.repeat(200)}`);
   assert.equal(groups[2], 'z'.repeat(200));
   assert.equal(groups.length, 3);

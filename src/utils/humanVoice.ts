@@ -144,7 +144,8 @@ export function playHumanSpeech(chunks: readonly string[], options: HumanSpeechO
   const findClip = options.clipFor || (() => undefined);
   // One request for a whole reply when it fits (the free voice allows only a few requests): fewer requests, and no
   // seam between parts in the middle of what he says.
-  const plain = speechGroups(chunks, 180, 480);
+  // Keep the first synthesis request short so playback begins sooner; longer follow-up groups are prefetched while it plays.
+  const plain = speechGroups(chunks, 130, 480);
   // A recorded line only when it is the whole thing (one voice through a reply).
   const clipFor = plain.length === 1 && findClip(plain[0]!) ? findClip : () => undefined;
   const groups = plain;
@@ -168,7 +169,7 @@ export function playHumanSpeech(chunks: readonly string[], options: HumanSpeechO
     if (clip) { job = Promise.resolve(clip); jobs.set(i, job); return job; }
     if (!server) { job = Promise.reject(new Error('no voice server')); job.catch(() => undefined); jobs.set(i, job); return job; }
     const ask = () => fetch(apiUrl('/api/voice/speak'), {
-      method: 'POST', signal: AbortSignal.any ? AbortSignal.any([controller.signal, AbortSignal.timeout(i === 0 ? 15_000 : 25_000)]) : controller.signal,
+      method: 'POST', signal: AbortSignal.any ? AbortSignal.any([controller.signal, AbortSignal.timeout(i === 0 ? 9_000 : 25_000)]) : controller.signal,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: groups[i], language: options.language, dialect: options.dialect, gender: options.gender, mood: options.mood }),
     }).then(async (response) => {
@@ -185,7 +186,7 @@ export function playHumanSpeech(chunks: readonly string[], options: HumanSpeechO
     // «الصوت بيقطع»: the engine's per-minute limit used to end the reply in the middle; a wait of a few seconds is
     // now waited (the next part comes a little later) instead of cutting him off.
     job = ask().catch((error: unknown) => {
-      if (controller.signal.aborted) throw error;
+      if (controller.signal.aborted || (error instanceof Error && error.name === 'TimeoutError')) throw error;
       const refusal = error instanceof VoiceRefusal ? error : undefined;
       if (refusal?.code === 'voice_busy' && refusal.retryMs > 0 && refusal.retryMs <= SHORT_WAIT_MS) {
         return new Promise<void>((resolve) => { setTimeout(resolve, refusal.retryMs + 300); }).then(ask);

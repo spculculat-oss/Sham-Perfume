@@ -51,6 +51,7 @@ test('after a sentence: words in the other language move the conversation; a bad
   // Arabic heard while listening in English (the engine sometimes writes it): switch, no question.
   assert.deepEqual(languageAfterSentence({ heard: 'عايز عطر', current: 'en', site: 'en' }), { switchTo: 'ar', askAgain: false });
   assert.deepEqual(languageAfterSentence({ heard: 'I want something fresh for the gym', current: 'ar', site: 'ar' }), { switchTo: 'en', askAgain: false });
+  assert.equal(languageAfterSentence({ heard: 'what is', confidence: 0.92, current: 'ar', site: 'ar' }).switchTo, undefined, 'a short ASR fragment must not flip Arabic speech to English');
   // Arabic said into the English engine comes back as unsure English words: an Egyptian visitor → Arabic, «say it again».
   assert.deepEqual(languageAfterSentence({ heard: 'is the cool mood', confidence: 0.32, current: 'en', site: 'en', country: 'EG' }), { switchTo: 'ar', askAgain: true });
   assert.equal(languageAfterSentence({ heard: 'is the cool mood', confidence: 0.32, current: 'en', site: 'en', country: 'US', deviceLanguages: ['en-US'] }).switchTo, undefined);
