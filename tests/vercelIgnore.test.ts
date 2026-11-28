@@ -151,12 +151,17 @@ test('main is never disabled and the deny-all rule stays in place', () => {
   assert.equal(deploys('main', rules), true, 'the deny-all rule plus main:true must still deploy main');
 });
 
-test('the ignore command only runs from a commit that ships the script', () => {
+test('a missing ignore script falls back to building instead of failing the deployment', () => {
   const settings = JSON.parse(readFileSync(path.join(root, 'vercel.json'), 'utf8')) as { ignoreCommand?: string };
-  // `sh scripts/vercel-ignore.sh` is correct on main (and any branch merged with main); this pins the
-  // contract so the script and the command can never be separated by a rename or a path change.
-  assert.equal(settings.ignoreCommand, 'sh scripts/vercel-ignore.sh');
+  // Some Vercel deployments have reported the tracked script missing even on main. Exit 1 means
+  // "build" to Vercel, so the fallback keeps production deployable instead of failing pre-build.
+  assert.equal(settings.ignoreCommand, 'sh scripts/vercel-ignore.sh || false');
   assert.ok(existsSync(path.join(root, 'scripts', 'vercel-ignore.sh')), 'the script named by ignoreCommand must exist in this commit');
+  const result = spawnSync('sh', ['-c', settings.ignoreCommand], {
+    cwd: path.join(root, 'src'), // scripts/ does not exist relative to this working directory
+    encoding: 'utf8',
+  });
+  assert.equal(result.status, 1, `missing script must request a build, got ${result.status}`);
 });
 
 test('every branch the ignore script treats as main builds, and the unused backup skips', () => {
