@@ -13,8 +13,8 @@ Vercel (`sham-perfume-49bf`) هو **محرّك الموقع** (API وشاهين 
 | المشروع الاحتياطي | `sham-perfume.vercel.app` — بيتبني بس لو ملفات الـ redirect اتغيّرت (`scripts/vercel-ignore.sh`) |
 | التثبيت | `npx --yes bun@1.4.3 install --frozen-lockfile` (من `bun.lock`) |
 | أمر البناء | `npm run build:vercel` = `vite build` + صفحات المنتجات + ملفات SEO + `scripts/build-vercel.mjs` |
-| الفروع اللي **مابتتنشرش** | `arena/**`, `arena/*`, `doctor/**`, `agent/**`, `preview/**` (`vercel.json` → `git.deploymentEnabled`) |
-| الفروع اللي بتتنشر | أي فرع **مش** في القائمة اللي فوق — بما فيها فروع العمل المؤقتة. `deploymentEnabled` **مش** قائمة سماح: هو قائمة تعطيل بس |
+| الفروع اللي بتتنشر | **`main` بس** (`git.deploymentEnabled: {"main": true, "**": false}`) |
+| أي فرع تاني | مستبعد تلقائياً — `fix/…`, `agent/…`, `arena/…`, `feature/a/b`… أي اسم. `deploymentEnabled` **قائمة تعطيل مش قائمة سماح**: الفرع غير المذكور بيرجع `true` |
 
 ---
 
@@ -96,7 +96,7 @@ test_order_manager.py
 
 ---
 
-## 5. `scripts/vercel-ignore.sh: No such file or directory` (حادثة 2026‑11‑27)
+## 5. نشر فروع العمل + `vercel-ignore.sh: No such file or directory` (2026‑11‑27 و2026‑11‑28)
 
 ```text
 15:33:25.720 Cloning … (Branch: agent/approved-store-design-arabic-2026-11-27, Commit: 62f2d84)
@@ -114,15 +114,42 @@ test_order_manager.py
 أي فرع **مش مذكور** فيها بيتنشر عادي. ولما المشروع الرئيسي يبني من فرع عمل، ممكن تدفعة واحدة تبقى
 هي الـ production.
 
-**الإصلاح:** ضفنا `agent/**` و`preview/**` للقائمة، فبقت كل فروع العمل (شات الوكيل، الروبوتات، الفحص)
-مستبعدة من النشر، و`main` لوحده هو اللي بيوصل للإنتاج.
+**الإصلاح الأول (ناقص):** ضفنا `agent/**` و`preview/**`. لكن ده ماحلّش المشكلة، لأن **كل جلسة بتختار
+اسم فرع جديد** — والدليل حادثة اليوم اللي بعده.
+
+### التكملة: 2026‑11‑28 — `fix/shaheen-faster-turns-stable-language-2026-11-28`
+
+```text
+01:53:21.267 Running "sh scripts/vercel-ignore.sh"
+01:53:21.303 sh: scripts/vercel-ignore.sh: No such file or directory
+01:53:21.3xx → البناء كمّل عادي (193 سطر) ونجح
+```
+
+لاحظ حاجتين:
+1. السطر التحذيري **مش فشل نشر** — الأمر خرج بكود ≠ 0 والبناء كمّل.
+2. الفرع `fix/…` **مطابقش** `agent/**` ولا `preview/**` ⇒ اتنشر رغم إنه فرع عمل، والإنتاج ممكن يتلوّث.
+
+**الدرس:** تعداد أنماط الفروع واحد واحد **مستحيل يلاحق** أسماء الجلسات. فالقاعدة اتعكست:
+
+```json
+"git": { "deploymentEnabled": { "main": true, "**": false } }
+```
+
+- `**` بتغطي أي فرع (بما فيها `feature/a/b`)، و`main: true` بترجّح لأن فيرسال بيقول:
+  «If a branch matches multiple rules and at least one rule is `true`, a deployment will occur.»
+- النتيجة: **`main` بس** هو اللي بيوصل للإنتاج، وأي فرع جديد بيبقى مستبعد تلقائياً من غير تعديل.
+
+**تنضيف السكربت:** المشروع الرئيسي بقى بيتحدد **قبل** أي أمر git. زمان كان الأمر بيوصل لـ
+`git diff --quiet HEAD^ HEAD` في clone مقطوع (shallow) فيطبع `fatal: bad revision 'HEAD^'` ثم يكمّل.
+دلوقتي المقارنة (للمشروع الاحتياطي بس) بقت على `$VERCEL_GIT_PREVIOUS_SHA` بدل `HEAD^`، ومفيش `fatal`
+بيوصل للوج. (`tests/vercelIgnore.test.ts` بيثبت ده.)
 
 **قواعد:**
-- أي نمط فروع عمل جديد (مثلاً `feature/**`) لازم يتضاف لـ `deploymentEnabled: false` **قبل** أول دفعة.
+- متضيفش أنماط فروع فردية تاني — `**` مع `main: true` هي القاعدة، وأي استثناء مستقبلي يتكتب صريح.
 - الملف اللي `vercel.json` بينده لازم يكون موجود في **كل** فرع بيتبني: أي إعادة تسمية لـ
   `scripts/vercel-ignore.sh` تتزامن مع `ignoreCommand` في نفس الكوميت (الاختبار بيمنع الانفصال).
-- لو مشروع Vercel بيبني فرع قديم ومش عايز تلمسه: **Settings → Build and Deployment → Ignored Build Step →
-  Automatic** (بيلغي قراءة `ignoreCommand`).
+- أي فرع عمل قديم اتفرّع قبل السكربت: يتعمله rebase على `main` أو يتشال — أو من لوحة فيرسال:
+  **Settings → Build and Deployment → Ignored Build Step → Automatic** (بيلغي قراءة `ignoreCommand`).
 
 ---
 
@@ -148,5 +175,7 @@ test_order_manager.py
 3. `Shaheen Doctor` (`.github/workflows/shaheen-doctor.yml`) بيراقب النشر؛ ومتغيّر `VERCEL_TOKEN` في الأسرار
    بيسمح له يعيد النشر لوحده (`redeploy_vercel` في `scripts/doctor/agent.ts`). من غيره بيطلب من صاحب الموقع
    يعيد النشر يدوياً.
-4. ولا تشغّل build من فرع عمل على المشروع الرئيسي: `main` بس هو اللي بيغذّي الإنتاج، وفرع العمل
-   اللي محتاج معاينة يترفع على مشروع Vercel منفصل (Branch Tracking) مش على `sham-perfume-49bf`.
+4. متشغّلش build من فرع عمل على المشروع الرئيسي: `main` بس هو اللي بيغذّي الإنتاج (`**` معطّلة)،
+   وفرع العمل اللي محتاج معاينة يترفع على مشروع Vercel منفصل (Branch Tracking) مش على `sham-perfume-49bf`.
+5. أي فرع عمل قديم اتنشر قبل القاعدة دي: اتمسح أو اتعمله rebase، وإلا هيفضل يحمل `vercel.json` قديم
+   ويفضل يطبع `No such file or directory` كل مرة.
