@@ -513,6 +513,14 @@ export async function askWorkspace(body: AskBody, { env, fetch: request = fetch,
         : 'I can’t reach Google Search right now to verify the current time and date, so I won’t guess. Please try again shortly.';
       return { reply, sources: [] };
     }
+    // A live question must never fall through to a general model's training data when every live-search
+    // provider failed. That path produced stale answers and the misleading «I cannot access the internet» reply.
+    if (liveQuestion && found.results.length === 0) {
+      const reply = language === 'ar'
+        ? 'البحث المباشر ما رجّعش نتائج موثوقة دلوقتي، فمش هخمن معلومة متغيرة أو أقدّم معلومات قديمة على إنها حديثة. جرّب تاني بعد شوية.'
+        : 'Live search did not return verifiable results just now, so I won’t guess or present older information as current. Please try again shortly.';
+      return { reply, sources: [] };
+    }
     sources = found.results;
     if (sources.length) {
       const list = sources.map((s, i) => `[${i + 1}] ${s.title} — ${s.url}${s.snippet ? `\n${s.snippet}` : ''}`).join('\n');
